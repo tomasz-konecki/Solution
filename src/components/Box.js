@@ -1,5 +1,5 @@
 import React from 'react'
-import './Box.scss'
+import '../scss/Box.scss'
 
 class Box extends React.Component {
   constructor(props) {

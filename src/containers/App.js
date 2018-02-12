@@ -1,6 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import './App.scss'
+import '../scss/App.scss'
 import Box from '../components/Box'
 
 

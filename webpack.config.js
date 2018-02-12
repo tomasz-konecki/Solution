@@ -6,7 +6,7 @@ const OptimizeJsPlugin = require('optimize-js-plugin')
 const env = process.env.NODE_ENV || 'development'
 
 const plugins = [new HtmlWebpackPlugin({
-  template: './src/index.ejs',
+  template: './public/index.ejs',
   filename: 'index.html',
   inject: 'body'
 })];

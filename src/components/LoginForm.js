@@ -25,7 +25,7 @@ class LoginForm extends React.Component {
             </div>
           </div>
 
-          <div className="container centric-container">
+          <div className="container">
             <span className="psw">Forgot <a href="#">password?</a></span>
           </div>
         </form>

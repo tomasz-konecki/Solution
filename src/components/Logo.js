@@ -3,7 +3,7 @@ import '../scss/Logo.scss'
 
 const Logo = () => {
   return (
-    <div className="logo">
+    <div className="logo-container">
       <img src={'../public/img/logo.png'} />
     </div>
   )

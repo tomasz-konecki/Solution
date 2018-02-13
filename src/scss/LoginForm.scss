@@ -1,8 +1,17 @@
 .login-form {
     margin: auto;
-    width: 33%;
+    width: 15%;
     min-width: 300px;
-    // border: 1px solid red;
+
+    ::-webkit-input-placeholder {
+        text-align: center;
+        font-weight: 200;
+     }
+     
+     :-moz-placeholder {
+        text-align: center;
+        font-weight: 200;
+     }
 }
 
 .container{
@@ -21,12 +30,12 @@
         border: 1px solid gray;
         border-radius: 2px;
         padding: 0.5em;
-        width: 50%;
+        width: 100%;
         font-family: 'Roboto Condensed', sans-serif;
     }
     button[type='submit']{
-        margin: 1em;
         font-weight: 700;
+        margin-top: 2em;
     }
     button:active {
         border: 1px solid orange;
@@ -37,7 +46,6 @@
     text-align: center;
     button {
         display: inline-block;
-        margin: 0.5em;
     }
 }
 
@@ -49,6 +57,8 @@
     width: 100%;
     overflow: hidden;
     white-space: nowrap;
+    text-align: center;
+
     label {
         display: inline-block;
         padding: 0.5em;
@@ -61,8 +71,9 @@
         outline: none;
         border-bottom: 1.2px solid darkgray;
         font-family: 'Roboto Condensed', sans-serif;
-        width: 70%;
         font-weight: 700;
+        text-align: center;
+        width: 100%;
     }
     input:focus{
         border-bottom: 1.2px solid orange;

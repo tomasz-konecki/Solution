@@ -1,9 +1,9 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import '../scss/App.scss'
-import Box from '../components/Box'
+import FrontScreen from '../components/FrontScreen'
 
 
-const App = <Box text='Box' />
+const App = <FrontScreen text='Front screen' />
 
 export default App

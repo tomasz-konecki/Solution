@@ -24,7 +24,6 @@ class LoginForm extends React.Component {
               <input type="password" placeholder="Enter Password" name="psw" required />
             </div>
 
-
               <button type="submit">Login</button>
               <label>
                 <input type="checkbox" checked="checked" name="remember" /> Remember me

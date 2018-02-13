@@ -1,6 +1,7 @@
 import React from 'react'
 import '../scss/FrontScreen.scss'
 import LoginForm from '../components/LoginForm'
+import Logo from '../components/Logo'
 
 class FrontScreen extends React.Component {
   constructor(props) {
@@ -9,6 +10,7 @@ class FrontScreen extends React.Component {
   render() {
     return (
       <div className="front-screen">
+        <Logo />
         <p>{this.props.text}</p>
         <LoginForm />
 

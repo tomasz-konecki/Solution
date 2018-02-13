@@ -13,18 +13,20 @@ class LoginForm extends React.Component {
         <form action="" method="post">
           <div className="container login-details">
             <div className="user-container">
-              <label htmlFor="uname"><b>Username</b></label>
               <input type="text" placeholder="Enter Username" name="uname" required />
             </div>
 
             <div className="password-container">
-              <label htmlFor="psw"><b>Password</b></label>
               <input type="password" placeholder="Enter Password" name="psw" required />
             </div>
 
             <div className="centric-container">
               <button type="submit">Login</button>
             </div>
+<<<<<<< HEAD
+=======
+            
+>>>>>>> f02d249341751b05b69fafe57bc06a2b44d4d717
           </div>
 
           <div className="container">

@@ -11,9 +11,7 @@ class LoginForm extends React.Component {
     return (
       <div className="container login-form">
         <form action="" method="post">
-
           <div className="container login-details">
-
             <div className="user-container">
               <label htmlFor="uname"><b>Username</b></label>
               <input type="text" placeholder="Enter Username" name="uname" required />
@@ -24,18 +22,17 @@ class LoginForm extends React.Component {
               <input type="password" placeholder="Enter Password" name="psw" required />
             </div>
 
-
+            <div className="centric-container">
               <button type="submit">Login</button>
-              <label>
-                <input type="checkbox" checked="checked" name="remember" /> Remember me
-              </label>
-
+            </div>
+            <label className="checkbox-container">
+              <input type="checkbox" checked="checked" name="remember" /> Remember me
+            </label>
           </div>
 
           <div className="container" >
             <span className="psw">Forgot <a href="#">password?</a></span>
           </div>
-
         </form>
       </div>
     )

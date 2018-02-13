@@ -74,10 +74,12 @@
         font-weight: 700;
         text-align: center;
         width: 100%;
+        caret-color: transparent;
     }
     input:focus{
         border-bottom: 1.2px solid orange;
-        transition: all 0.3s;
+        transition: all 0.5s;
+        caret-color: black;
     }
 }
 

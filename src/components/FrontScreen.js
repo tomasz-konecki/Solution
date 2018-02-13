@@ -11,7 +11,6 @@ class FrontScreen extends React.Component {
     return (
       <div className="front-screen">
         <Logo />
-        <p>{this.props.text}</p>
         <LoginForm />
 
       </div>

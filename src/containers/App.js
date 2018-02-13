@@ -4,6 +4,6 @@ import '../scss/App.scss'
 import FrontScreen from '../components/FrontScreen'
 
 
-const App = <FrontScreen text='Front screen' />
+const App = <FrontScreen />
 
 export default App

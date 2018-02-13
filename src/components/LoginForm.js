@@ -30,7 +30,7 @@ class LoginForm extends React.Component {
             </label>
           </div>
 
-          <div className="container" >
+          <div className="container">
             <span className="psw">Forgot <a href="#">password?</a></span>
           </div>
         </form>

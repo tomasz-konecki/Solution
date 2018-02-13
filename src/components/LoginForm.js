@@ -23,18 +23,10 @@ class LoginForm extends React.Component {
             <div className="centric-container">
               <button type="submit">Login</button>
             </div>
-<<<<<<< HEAD
-=======
-            
->>>>>>> f02d249341751b05b69fafe57bc06a2b44d4d717
           </div>
 
           <div className="container">
             <span className="psw">Forgot <a href="#">password?</a></span>
-
-            <label className="checkbox-container remember-me">
-              <input type="checkbox" checked="checked" name="remember" /> Remember me
-            </label>
           </div>
         </form>
       </div>

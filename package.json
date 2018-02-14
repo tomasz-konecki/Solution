@@ -8,7 +8,8 @@
     "start": "npm-run-all --parallel webpack lint:watch",
     "lint": "node_modules/.bin/esw webpack.config.* src tools",
     "lint:watch": "npm run lint -- --watch",
-    "test": "babel-node mocha --reporter progress tools/testSetup.js \"src/**/*.test.js\"",
+    "test":
+      "babel-node mocha --reporter progress tools/testSetup.js \"src/**/*.test.js\"",
     "webpack": "webpack-dev-server --inline --hot --config ./webpack.config.js",
     "build": "SET NODE_ENV=production & webpack"
   },

@@ -1,0 +1,24 @@
+button {
+  outline: none;
+  display: inline-block;
+  background: transparent;
+  border: 1px solid lightgray;
+  border-radius: 2px;
+  padding: 0.5em;
+  transition: all 0.5s;
+
+  &[type="submit"] {
+    margin-top: 2em;
+  }
+  &:hover {
+    border: 1px solid orange;
+  }
+  &:hover {
+    background-color: 1px solid rgba(255, 166, 0, 0.289);
+  }
+  &:active {
+    border: 1px solid orange;
+  }
+}
+
+

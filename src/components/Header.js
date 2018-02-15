@@ -5,6 +5,7 @@ import TopBar from "./TopBar";
 const Header = () => {
   return (
     <div className="header">
+      <Logo />
       <TopBar />
     </div>
   );

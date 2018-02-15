@@ -1,0 +1,41 @@
+.wrapper {
+  height: 100vh;
+  .header {
+    height: 5vh;
+    overflow: hidden;
+    white-space: nowrap;
+
+    .logo {
+      display: inline-block;
+      width: 15%;
+      background-color: crimson;
+    }
+    .top-bar {
+      background-color: rgb(149, 15, 89);
+      display: inline-block;
+      width: 85%;
+    }
+  }
+  .content {
+    height: 95vh;
+    overflow: hidden;
+    white-space: nowrap;
+
+    .left {
+      background-color: rgb(63, 20, 220);
+      display: inline-block;
+      width: 15%;
+      nav {
+        ul {
+          li {
+          }
+        }
+      }
+    }
+    .right {
+      background-color: rgb(15, 133, 70);
+      display: inline-block;
+      width: 85%;
+    }
+  }
+}

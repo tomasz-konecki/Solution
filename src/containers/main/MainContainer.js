@@ -1,8 +1,8 @@
 import React from "react";
-import Header from "../components/Header";
-import Content from "../components/Content";
-import Navigation from "../components/Navigation";
-import "../scss/MainContainer.scss";
+import Header from "./Header";
+import Content from "./Content";
+import Navigation from "../../components/menu/horizontal/Navigation";
+import "../../scss/MainContainer.scss";
 
 class MainContainer extends React.Component {
   constructor(props) {

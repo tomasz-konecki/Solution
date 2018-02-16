@@ -8,12 +8,14 @@
       display: inline-block;
       width: 15%;
       background-color: crimson;
+      vertical-align: top;
     }
     .top-bar {
       background-color: rgb(149, 15, 89);
       display: inline-block;
       width: 85%;
       border: 1px solid blue;
+      vertical-align: top;
     }
   }
   .content {

@@ -1,11 +1,11 @@
 import React from "react";
-import Logo from "./Logo";
+import Logo from "../../components/common/Logo";
 import TopBar from "./TopBar";
 
 const Header = () => {
   return (
     <div className="header">
-      <Logo />
+      <Logo size="vector_cut" title/>
       <TopBar />
     </div>
   );

@@ -1,9 +1,8 @@
-import React from 'react'
-import ReactDOM from 'react-dom'
-import '../scss/App.scss'
-import Box from '../components/Box'
+import React from "react";
+import ReactDOM from "react-dom";
+import "../scss/App.scss";
+import FrontScreen from "../components/FrontScreen";
 
+const App = <FrontScreen />;
 
-const App = <Box text='Box' />
-
-export default App
+export default App;

@@ -45,6 +45,7 @@
       vertical-align: top;
       button {
         margin-right: 15px;
+        transition: all 0.3s;
       }
     }
   }
@@ -69,10 +70,12 @@
           vertical-align: baseline;
           cursor: default;
           user-select: none;
+          transition: all 0.3s;
 
           i {
-            margin-left: -2.4vw;
+            margin-left: -2.5vw;
             padding-right: 1.1vw;
+            transition: all 0.3s;
           }
           &:hover {
             background-color: rgba(255, 166, 0, 0.289);

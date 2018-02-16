@@ -1,5 +1,5 @@
 import React from "react";
-import Icon from "./Icon";
+import Icon from "../../common/Icon";
 
 class VerticalMenuElement extends React.Component {
   constructor(props) {

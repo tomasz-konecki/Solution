@@ -1,6 +1,7 @@
-.wrapper {
-  .header {
-    height: 1.5em;
+.wrapper{
+  height: 100vh;
+  .header{
+    height: 5vh;
     overflow: hidden;
     white-space: nowrap;
 
@@ -18,7 +19,8 @@
       vertical-align: top;
     }
   }
-  .content {
+.content{
+    height: 95vh;
     overflow: hidden;
     white-space: nowrap;
 

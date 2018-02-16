@@ -5,35 +5,37 @@
     overflow: hidden;
     white-space: nowrap;
 
-    .logo{
+    .logo {
       display: inline-block;
       width: 15%;
       background-color: crimson;
+      vertical-align: top;
     }
-    .top-bar{
+    .top-bar {
       background-color: rgb(149, 15, 89);
       display: inline-block;
       width: 85%;
+      border: 1px solid blue;
+      vertical-align: top;
     }
   }
-  .content{
+.content{
     height: 95vh;
     overflow: hidden;
     white-space: nowrap;
 
-    .left{
+    .left {
       background-color: rgb(63, 20, 220);
       display: inline-block;
       width: 15%;
-      nav{
-        ul{
-          li{
-
+      nav {
+        ul {
+          li {
           }
         }
       }
     }
-    .right{
+    .right {
       background-color: rgb(15, 133, 70);
       display: inline-block;
       width: 85%;

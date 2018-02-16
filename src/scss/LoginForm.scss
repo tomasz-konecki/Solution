@@ -1,3 +1,5 @@
+@import "./components/Button.scss";
+
 .login-form {
   margin: auto;
   margin-top: -6em;
@@ -25,20 +27,8 @@
     text-decoration: none;
   }
   button {
-    outline: none;
-    display: inline-block;
-    background: white;
-    border: 1px solid lightgray;
-    border-radius: 2px;
-    padding: 0.5em;
     width: 100%;
     font-family: "Roboto Condensed", sans-serif;
-  }
-  button[type="submit"] {
-    margin-top: 2em;
-  }
-  button:active {
-    border: 1px solid orange;
   }
 }
 

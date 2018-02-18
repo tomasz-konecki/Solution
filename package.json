@@ -8,8 +8,7 @@
     "start": "npm-run-all --parallel webpack lint:watch",
     "lint": "node_modules/.bin/esw webpack.config.* src tools",
     "lint:watch": "npm run lint -- --watch",
-    "test":
-      "babel-node mocha --reporter progress tools/testSetup.js \"src/**/*.test.js\"",
+    "test": "babel-node mocha --reporter progress tools/testSetup.js \"src/**/*.test.js\"",
     "webpack": "webpack-dev-server --inline --hot --config ./webpack.config.js",
     "build": "SET NODE_ENV=production & webpack"
   },
@@ -53,6 +52,7 @@
     "react-dom": "^16.2.0",
     "react-redux": "^5.0.6",
     "react-router": "^4.2.0",
+    "react-router-dom": "^4.2.2",
     "redux": "^3.7.2",
     "redux-logger": "^3.0.6"
   },

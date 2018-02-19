@@ -1,19 +1,29 @@
 import React from "react";
-import Header from "./Header";
-import Content from "./Content";
-import Navigation from "../../components/menu/horizontal/Navigation";
+import { Route } from "react-router-dom";
+import Header from "./header/Header";
+import Content from "./content/right/Content";
+import Navigation from "../../containers/main/header/nav/Navigation";
 import "../../scss/MainContainer.scss";
 
 class MainContainer extends React.Component {
-  constructor(props) {
+  constructor(props, match) {
     super(props);
+
   }
 
   render() {
-    return (
+    const { match } = this.props;
+
+    const pageTemplate = () => (
       <div className="wrapper">
-        <Header />
-        <Content />
+        <Header {...this.props}/>
+        <Content {...this.props}/>
+      </div>
+    );
+
+    return (
+      <div>
+        <Route exact path={match.url} component={pageTemplate} />
       </div>
     );
   }

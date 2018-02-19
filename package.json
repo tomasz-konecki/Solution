@@ -53,8 +53,11 @@
     "react-redux": "^5.0.6",
     "react-router": "^4.2.0",
     "react-router-dom": "^4.2.2",
+    "react-router-redux": "^5.0.0-alpha.9",
     "redux": "^3.7.2",
-    "redux-logger": "^3.0.6"
+    "redux-devtools": "^3.4.1",
+    "redux-logger": "^3.0.6",
+    "source-map-loader": "^0.2.3"
   },
   "bugs": {
     "url": "https://github.com/tomasz-konecki/Solution/issues"

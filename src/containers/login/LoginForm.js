@@ -9,7 +9,7 @@ class LoginForm extends React.Component {
   render() {
     return (
       <div className="container login-form">
-        <form action="" method="post">
+        <form>
           <div className="container login-details">
             <div className="user-container">
               <input
@@ -30,7 +30,7 @@ class LoginForm extends React.Component {
             </div>
 
             <div className="centric-container">
-              <button type="submit">Login</button>
+              <button className="submitter" type="button" onClick={this.props.login}>Login</button>
             </div>
           </div>
 

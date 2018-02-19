@@ -69,11 +69,17 @@ module.exports = {
             loader: "css-loader"
           }
         ]
+      },
+      {
+        test: /\.js$/,
+        use: ["source-map-loader"],
+        enforce: "pre"
       }
     ]
   },
   plugins: plugins,
   devServer: {
     historyApiFallback: true
-  }
+  },
+  devtool:'source-map',
 };

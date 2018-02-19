@@ -12,7 +12,7 @@ button {
     padding-right: 5px;
   }
 
-  &[type="submit"] {
+  &.submitter {
     margin-top: 2em;
   }
   &:hover {

@@ -7,6 +7,6 @@ import MainContainer from "../containers/main/MainContainer";
 export const Home = connect(null, dispatch => ({
   logout: () => {
     dispatch(authFail());
-    dispatch(push('/login'));
+    dispatch(push('/'));
   }
 }))(MainContainer);

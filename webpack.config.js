@@ -72,5 +72,8 @@ module.exports = {
       }
     ]
   },
-  plugins: plugins
+  plugins: plugins,
+  devServer: {
+    historyApiFallback: true
+  }
 };

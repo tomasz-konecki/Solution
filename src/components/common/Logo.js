@@ -30,8 +30,14 @@ const Logo = (props) => {
     </div>);
   }
 
+  let className = "logo";
+
+  if(props.container){
+    className = "logo-container";
+  }
+
   return (
-    <div className="logo">
+    <div className={className}>
       <img src={url} />
       {titleBlock}
     </div>

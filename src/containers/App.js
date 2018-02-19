@@ -7,8 +7,8 @@ import "../scss/App.scss";
 
 const App = () => (
   <Switch>
-    <Route path="/login" component={Login} />
-    <PrivateRoute exact path="/" component={Home} />
+    <Route exact path="/" component={Login} />
+    <PrivateRoute path="/main" component={Home} />
   </Switch>
 );
 

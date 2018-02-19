@@ -7,6 +7,6 @@ import FrontScreen from "../containers/login/FrontScreen";
 export const Login = connect(null, dispatch => ({
   login: () => {
     dispatch(authSuccess());
-    dispatch(push('/'));
+    dispatch(push('/main'));
   }
 }))(FrontScreen);

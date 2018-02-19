@@ -1,6 +1,6 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import LeftMenu from "../left/LeftMenu";
+import LeftMenu from "../menu/LeftMenu";
 import { withRouter } from 'react-router';
 
 const Content = (props) => {

@@ -1,7 +1,7 @@
 import React from "react";
 import { Route } from "react-router-dom";
 import Header from "./header/Header";
-import Content from "./content/right/Content";
+import Content from "./content/Content";
 import Navigation from "../../containers/main/header/nav/Navigation";
 import "../../scss/MainContainer.scss";
 

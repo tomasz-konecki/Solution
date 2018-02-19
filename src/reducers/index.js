@@ -1,4 +1,3 @@
-import workersReducer from "./workers-reducer";
-import projectsReducer from "./projects-reducer";
-
-export { workersReducer, projectsReducer};
+export * from "./auth-reducer";
+export * from "./projects-reducer";
+export * from "./workers-reducer";

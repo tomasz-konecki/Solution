@@ -18,7 +18,7 @@ class PrivateRouteContainer extends Component {
             ? <Component {...props} />
             : (
             <Redirect to={{
-              pathname: '/login',
+              pathname: '/',
               state: { from: props.location }
             }} />
           )

@@ -5,7 +5,7 @@ import TopBar from "./TopBar";
 const Header = (props) => {
   return (
     <div className="header">
-      <Logo size="vector_cut" title/>
+      <Logo size="vector_cut"/>
       <TopBar logout={props.logout} />
     </div>
   );

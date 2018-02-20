@@ -1,12 +1,12 @@
 button {
   outline: none;
   display: inline-block;
-  background: transparent;
-  border: 1px solid lightgray;
-  border-radius: 2px;
-  padding: 0.5em;
   transition: all 0.5s;
-  color: lightgray;
+  background: #767881;
+  color: white;
+  height: 1.5em;
+  line-height: 1.5em;
+  vertical-align: baseline;
 
   i{
     padding-right: 5px;
@@ -16,23 +16,19 @@ button {
     margin-top: 2em;
   }
   &:hover {
-    background-color: rgba(255, 166, 0, 0.289);
-    border: 1px solid orange;
-    color: orange;
-  }
-  &:active {
-    border: 1px solid orange;
+    background-color: darken(rgba(75, 148, 173, 0.89), 5%);
+    border: lighten(#A4B9C0, 5%);
+    color: lighten(#A4B9C0, 55%);
   }
   &.nav-compact {
     border: 0;
-    border-bottom: 1px solid transparent;
-    color: black;
+    min-width: 100px;
     user-select: none;
     cursor: pointer;
-  }
-  &.nav-compact:active, &.nav-compact:hover {
-    border: 0px solid orange;
-    border-bottom: 1px solid orange;
+
+    i{
+      padding-left: 10px;
+    }
   }
 }
 

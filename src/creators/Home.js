@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import { push } from 'react-router-redux';
-import { authSuccess, authFail } from '../actions/auth-actions';
+import { authSuccess, authFail } from '../actions/authActions';
 
 import MainContainer from "../containers/main/MainContainer";
 

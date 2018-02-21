@@ -22,9 +22,10 @@
       background: $body-background;
 
       img {
-        height: 6vh;
-        padding: 1vh;
         display: inline-block;
+        height: 6vh;
+        width: 6vh;
+        padding: 1vh;
       }
       .title-container {
         display: inline-block;

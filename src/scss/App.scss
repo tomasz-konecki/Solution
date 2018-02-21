@@ -1,11 +1,18 @@
 @import "3rd/Reset.scss";
+@import "ColorSchema.scss"
+;@import "./components/Button";
 @import url("https://fonts.googleapis.com/css?family=Roboto+Condensed");
 
 body {
-  background: #D7D9DE;
+  background: $body-background;
   font-family: "Roboto Condensed", sans-serif;
 }
 
-.right {
+.text-right {
   text-align: right;
+}
+
+a, a:visited {
+  text-decoration: none;
+  color: darken(rgb(103, 163, 181), 8%);
 }

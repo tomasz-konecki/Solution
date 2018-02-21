@@ -1,11 +1,11 @@
-@import "./components/Button.scss";
+@import "ColorSchema.scss";
 @import url("https://use.fontawesome.com/releases/v5.0.6/css/all.css");
+@import url('https://fonts.googleapis.com/css?family=Roboto');
 
 .wrapper {
   height: 100vh;
-  width: 99vw;
-  margin-left: 1vw;
-  background: #FFFBF6;
+  width: 100vw;
+  background: $wrapper-background;
 
   .header {
     height: 8vh;
@@ -19,14 +19,12 @@
       vertical-align: top;
       overflow: hidden;
       white-space: nowrap;
-      background: #92949F;
-      text-align: center;
+      background: $body-background;
 
       img {
         height: 6vh;
         padding: 1vh;
         display: inline-block;
-        filter: invert(100%);
       }
       .title-container {
         display: inline-block;
@@ -34,9 +32,12 @@
         padding-left: 0.6vw;
 
         .title {
-          height: 3vh;
-          line-height: 3vh;
-          padding: 1.1vh;
+          text-shadow: 0 0 1px rgba(35,31,32, 0.1);
+          font-family: 'Roboto', sans-serif;
+          color: #231F20;
+          line-height: 8vh;
+          font-size: 2em;
+          font-weight: 900;
           display: inline-block;
           vertical-align: top;
         }
@@ -49,8 +50,8 @@
       vertical-align: top;
       line-height: 8vh;
       text-align: right;
-      border-bottom: 1px solid lighten(#92949F, 25%);
-      background: #D7D9DE;
+      border-bottom: 1px solid lighten($logo-background, 25%);
+      background: $body-background;
       button {
         margin-right: 15px;
         transition: all 0.3s;
@@ -58,7 +59,7 @@
     }
   }
   .content {
-    height: 92vh;
+    height: 84vh;
     overflow: hidden;
     white-space: nowrap;
     margin-top: -1px;
@@ -71,7 +72,7 @@
       vertical-align: top;
       .left-menu {
         padding: 1.1vh;
-        background: #92949F;
+        background: $logo-background;
         height: 100%;
 
         li {
@@ -82,8 +83,8 @@
           user-select: none;
           transition: all 0.3s;
           padding: 0.4em;
-          color: white;
-          background: #767881;
+          color: $menu-element-text-color;
+          background: $menu-element-background;
           margin-bottom: 0.4em;
           border: 1px solid transparent;
           transition: all 0.3s;
@@ -93,12 +94,12 @@
             padding-left: 0.5vw;
           }
           &:hover {
-            background-color: darken(rgba(75, 148, 173, 0.89), 5%);
-            border: 1px solid lighten(rgba(75, 148, 173, 0.89), 25%);
+            background-color: darken($menu-element-hover-background, 5%);
+            border: 1px solid lighten($menu-element-hover-background, 25%);
             padding-left: 20px;
             cursor: pointer;
             i {
-              color: lighten(#A4B9C0, 35%);
+              color: lighten($menu-element-icon-hover-color, 35%);
             }
           }
         }
@@ -109,7 +110,16 @@
       width: 85%;
       height: 100%;
       padding: 1.1vh;
-      border-left: 1px solid lighten(#92949F, 25%);
+      border-left: 1px solid lighten($logo-background, 25%);
     }
+  }
+  .footer {
+    box-sizing: border-box;
+    height: 8vh;
+    line-height: 8vh;
+    padding: 1vh;
+    vertical-align: bottom;
+    background: $body-background;
+    color: $logo-background;
   }
 }

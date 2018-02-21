@@ -1,12 +1,12 @@
+@import "../ColorSchema.scss";
 button {
   outline: none;
   display: inline-block;
   transition: all 0.5s;
-  background: #767881;
-  color: white;
-  height: 1.5em;
-  line-height: 1.5em;
+  background: $menu-element-background;
+  color: $menu-element-text-color;
   vertical-align: baseline;
+  border: 1px solid transparent;
 
   i{
     padding-right: 5px;
@@ -14,17 +14,23 @@ button {
 
   &.submitter {
     margin-top: 2em;
+    padding: 0.5em;
   }
   &:hover {
-    background-color: darken(rgba(75, 148, 173, 0.89), 5%);
-    border: lighten(#A4B9C0, 5%);
-    color: lighten(#A4B9C0, 55%);
+    background-color: darken($menu-element-hover-background, 5%);
+    border: 1px solid lighten($menu-element-icon-hover-color, 5%);
+    color: lighten($menu-element-icon-hover-color, 55%);
   }
   &.nav-compact {
     border: 0;
     min-width: 100px;
     user-select: none;
+    border-radius: 6px;
     cursor: pointer;
+    height: unset;
+    padding: 5px;
+
+    box-shadow: 0 0 2px rgba(35,31,32, 0.3);
 
     i{
       padding-left: 10px;

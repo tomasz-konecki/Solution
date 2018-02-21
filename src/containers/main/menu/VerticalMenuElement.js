@@ -1,4 +1,5 @@
 import React from "react";
+import { withRouter, Link } from "react-router-dom";
 import Icon from "../../../components/common/Icon";
 
 class VerticalMenuElement extends React.Component {
@@ -6,11 +7,11 @@ class VerticalMenuElement extends React.Component {
     super(props);
   }
   render() {
-    const { iconType, icon, title} = this.props;
+    const { iconType, icon, title, path, match } = this.props;
     return (
-      <li><Icon icon={icon} iconType={iconType}/><span>{title}</span></li>
+      <Link to={match.url + path}><li><Icon icon={icon} iconType={iconType}/><span>{title}</span></li></Link>
     );
   }
 }
 
-export default VerticalMenuElement;
+export default withRouter(VerticalMenuElement);

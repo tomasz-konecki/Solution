@@ -1,14 +1,17 @@
 import React from "react";
+import { withRouter } from "react-router-dom";
 import VerticalMenuElement from "./VerticalMenuElement";
 
 class LeftMenu extends React.Component {
   constructor(props) {
     super(props);
   }
+
   render() {
+    const { match } = this.props;
     return (
       <ul className="left-menu">
-        <VerticalMenuElement icon="user-circle" iconType="far" title="Użytkownicy"/>
+        <VerticalMenuElement match={match} path="/users" icon="user-circle" iconType="far" title="Użytkownicy"/>
         <VerticalMenuElement icon="user" iconType="fas" title="Pracownicy"/>
         <VerticalMenuElement icon="briefcase" iconType="fas" title="Projekty"/>
         <VerticalMenuElement icon="pencil-alt" iconType="fas" title="Przypisz"/>
@@ -17,4 +20,4 @@ class LeftMenu extends React.Component {
   }
 }
 
-export default LeftMenu;
+export default withRouter(LeftMenu);

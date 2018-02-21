@@ -1,8 +1,8 @@
 import React from "react";
-import { Route } from "react-router-dom";
+import { Route, withRouter  } from "react-router-dom";
 import Header from "./header/Header";
+import Footer from "./footer/Footer";
 import Content from "./content/Content";
-import Navigation from "../../containers/main/header/nav/Navigation";
 import "../../scss/MainContainer.scss";
 
 class MainContainer extends React.Component {
@@ -17,8 +17,9 @@ class MainContainer extends React.Component {
     return (
       <div>
         <div className="wrapper">
-          <Header {...this.props}/>
-          <Content {...this.props}/>
+          <Header logout={this.props.logout}/>
+          <Content match={match} />
+          <Footer/>
         </div>
       </div>
     );

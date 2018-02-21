@@ -1,5 +1,4 @@
 import React from "react";
-import Navigation from "../../../containers/main/header/nav/Navigation";
 import Icon from "../../../components/common/Icon";
 
 const TopBar = (props) => {

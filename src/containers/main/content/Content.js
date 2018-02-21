@@ -1,6 +1,7 @@
 import React from "react";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { Route, Link, withRouter } from "react-router-dom";
 import LeftMenu from "../menu/LeftMenu";
+import Users from "./views/Users";
 
 const Content = (props) => {
   const { match } = props;
@@ -11,14 +12,10 @@ const Content = (props) => {
         <LeftMenu />
       </aside>
       <aside className="right">
-        <Route path={match.url + 'users'} render={Users}/>
+        <Route path={match.url + '/users'} render={Users}/>
       </aside>
     </div>
   );
 };
 
-const Users = () => (
-  <div>Users</div>
-);
-
-export default Content;
+export default withRouter(Content);

@@ -1,23 +1,47 @@
 import { SubmissionError } from 'redux-form';
 import { connect } from 'react-redux';
-import { authSuccess } from '../actions/authActions';
+import { authSuccess, authStart, authStop } from '../actions/authActions';
 import { push } from 'react-router-redux';
 import axios from 'axios';
+import * as jwtDecode from 'jwt-decode';
+import * as Promise from 'bluebird';
 
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 
-const submit = (values, dispatch) => {
-  // this is a testing endpoint!
-  axios.post('http://localhost:8000/jwt', values)
-    .then(response => {
-      const token = response.data.token;
-      console.log(token);
-    })
-    .catch(error => {
-      console.log(error);
+const errorHandler = (error) => {
+  if(error.response === undefined){
+    throw new SubmissionError({
+      _error: error.toString()
     });
-  //dispatch(authSuccess());
-  //dispatch(push('/main'));
+  }
+  switch(error.response.status){
+    case 401:
+      throw new SubmissionError({
+        _error: "Nieprawidłowe dane"
+      });
+    default:
+      throw new SubmissionError({
+        _error: "Nieoczekiwany błąd"
+      });
+  }
+};
+
+const submit = ({ username, password }, dispatch) => {
+  return Promise.resolve()
+    .then(() => dispatch(authStart()))
+    .then(() => sleep(2000))
+    // this is a testing endpoint!
+    .then(() => axios.post('http://localhost:3001/sessions/create', { username, password }))
+    .then(response => {
+      const tokenData = jwtDecode(response.data.id_token);
+
+      const name = tokenData.extra;
+
+      dispatch(authSuccess(tokenData));
+      dispatch(push('/main'));
+    })
+    .catch(errorHandler)
+    .lastly(() => dispatch(authStop()));
 };
 
 export default submit;

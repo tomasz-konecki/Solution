@@ -3,6 +3,7 @@ import { routerReducer, routerMiddleware } from 'react-router-redux';
 import { persistStore, persistReducer } from 'redux-persist';
 import { reducer as formReducer } from 'redux-form';
 import storage from 'redux-persist/lib/storage';
+import * as reducers from '../reducers';
 
 const persistConfig = {
   key: 'root',
@@ -10,7 +11,7 @@ const persistConfig = {
   blacklist: ['form']
 };
 
-const storeCreator = (reducers, history) => {
+const storeCreator = (history) => {
   const middleware = applyMiddleware(routerMiddleware(history));
   const persistedReducer = persistReducer(persistConfig,
     combineReducers(Object.assign({}, reducers, routerReducer, { form: formReducer })));

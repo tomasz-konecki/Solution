@@ -1,18 +1,32 @@
+import * as types from '../constants';
+
 const initialState = {
-  isAuthenticated: false
+  isAuthenticated: false,
+  loading: false
 };
 
 export const authReducer = (state = initialState , action) => {
   switch (action.type) {
-    case 'AUTH_SUCCESS':
+    case types.AUTH_SUCCESS:
       return {
         ...state,
-        isAuthenticated: true
+        isAuthenticated: true,
+        ...action.token_block
       };
-    case 'AUTH_FAIL':
+    case types.AUTH_FAIL:
       return {
         ...state,
         isAuthenticated: false
+      };
+    case types.AUTH_START:
+      return {
+        ...state,
+        loading: true
+      };
+    case types.AUTH_STOP:
+      return {
+        ...state,
+        loading: false
       };
     default:
       return state;

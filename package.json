@@ -47,6 +47,7 @@
     "webpack-dev-server": "^2.8.2"
   },
   "dependencies": {
+    "axios": "^0.18.0",
     "bootstrap": "^4.0.0",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
@@ -55,8 +56,10 @@
     "react-router": "^4.2.0",
     "react-router-dom": "^4.2.2",
     "react-router-redux": "^5.0.0-alpha.9",
+    "react-thunk": "^1.0.0",
     "redux": "^3.7.2",
     "redux-devtools": "^3.4.1",
+    "redux-form": "^7.2.3",
     "redux-logger": "^3.0.6",
     "redux-persist": "^5.9.1",
     "source-map-loader": "^0.2.3"

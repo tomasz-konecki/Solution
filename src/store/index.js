@@ -1,16 +1,19 @@
 import { createStore, applyMiddleware, combineReducers, compose } from 'redux';
 import { routerReducer, routerMiddleware } from 'react-router-redux';
 import { persistStore, persistReducer } from 'redux-persist';
+import { reducer as formReducer } from 'redux-form';
 import storage from 'redux-persist/lib/storage';
 
 const persistConfig = {
   key: 'root',
   storage,
+  blacklist: ['form']
 };
 
 const storeCreator = (reducers, history) => {
   const middleware = applyMiddleware(routerMiddleware(history));
-  const persistedReducer = persistReducer(persistConfig, combineReducers(Object.assign({}, reducers, routerReducer)));
+  const persistedReducer = persistReducer(persistConfig,
+    combineReducers(Object.assign({}, reducers, routerReducer, { form: formReducer })));
 
   let store = createStore(
     persistedReducer,

@@ -5,7 +5,8 @@ import { authSuccess, authFail } from '../actions/authActions';
 import FrontScreen from "../containers/login/FrontScreen";
 
 export const Login = connect(null, dispatch => ({
-  login: () => {
+  login: (credentials) => {
+    console.log(credentials);
     dispatch(authSuccess());
     dispatch(push('/main'));
   }

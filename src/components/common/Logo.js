@@ -24,9 +24,6 @@ const Logo = props => {
 
   let titleBlock = "";
 
-  console.log("props.container = " + props.container);
-  console.log("props.title = " + props.title);
-
   if (props.title) {
     titleBlock = (
       <div className="title-container">

@@ -7,7 +7,6 @@ class LoginForm extends React.Component {
   }
 
   render() {
-    console.log(this.props.login);
     return (
       <div className="container login-form">
         <form>

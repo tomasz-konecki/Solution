@@ -1,10 +1,10 @@
 import React from "react";
 import "../../scss/Logo.scss";
 
-const Logo = (props) => {
+const Logo = props => {
   let url = "";
 
-  switch(props.size){
+  switch (props.size) {
     case "small":
       url = "../public/img/logo_small.png";
       break;
@@ -24,15 +24,20 @@ const Logo = (props) => {
 
   let titleBlock = "";
 
-  if(props.title){
-    titleBlock = (<div className="title-container">
-      <span className="title">DCMT</span>
-    </div>);
+  console.log("props.container = " + props.container);
+  console.log("props.title = " + props.title);
+
+  if (props.title) {
+    titleBlock = (
+      <div className="title-container">
+        <span className="title">DCMT</span>
+      </div>
+    );
   }
 
   let className = "logo";
 
-  if(props.container){
+  if (props.container) {
     className = "logo-container";
   }
 

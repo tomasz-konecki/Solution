@@ -7,6 +7,7 @@ class LoginForm extends React.Component {
   }
 
   render() {
+    console.log(this.props.login);
     return (
       <div className="container login-form">
         <form>
@@ -30,7 +31,13 @@ class LoginForm extends React.Component {
             </div>
 
             <div className="centric-container">
-              <button className="submitter" type="button" onClick={this.props.login}>Login</button>
+              <button
+                className="submitter"
+                type="button"
+                onClick={this.props.login}
+              >
+                Login
+              </button>
             </div>
           </div>
 

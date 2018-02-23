@@ -1,3 +1,5 @@
+@import "./3rd/Loader";
+
 .login-form {
   margin: auto;
   margin-top: -6em;
@@ -27,6 +29,13 @@
   button {
     width: 100%;
     font-family: "Roboto Condensed", sans-serif;
+  }
+}
+
+.context-container {
+  height: 10px;
+  .loader{
+    padding-top: 5px;
   }
 }
 

@@ -22,9 +22,10 @@
       background: $body-background;
 
       img {
-        height: 6vh;
-        padding: 1vh;
         display: inline-block;
+        height: 6vh;
+        width: 6vh;
+        padding: 1vh;
       }
       .title-container {
         display: inline-block;
@@ -52,6 +53,12 @@
       text-align: right;
       border-bottom: 1px solid lighten($logo-background, 25%);
       background: $body-background;
+      .logged-in-user {
+        padding-right: 1em;
+        strong{
+          font-weight: 800;
+        }
+      }
       button {
         margin-right: 15px;
         transition: all 0.3s;

@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Route, Switch } from 'react-router';
+import { Route, Switch, BrowserRouter } from 'react-router';
 import { PrivateRoute, Login, Home } from '../creators';
 
 import "../scss/App.scss";

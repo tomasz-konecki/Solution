@@ -19,10 +19,10 @@ class Content extends React.Component {
           <LeftMenu />
         </aside>
         <aside className="right">
-          <Route path={match.url + "/users"} render={UsersContainer} />
-          <Route path={match.url + "/employees"} render={Employees} />
-          <Route path={match.url + "/projects"} render={Projects} />
-          <Route path={match.url + "/assign"} render={Assign} />
+          <Route path={match.url + "/users"} component={UsersContainer} />
+          <Route path={match.url + "/employees"} component={Employees} />
+          <Route path={match.url + "/projects"} component={Projects} />
+          <Route path={match.url + "/assign"} component={Assign} />
         </aside>
       </div>
     );

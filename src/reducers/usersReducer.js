@@ -7,7 +7,10 @@ const initialState = {
 export const usersReducer = (state = initialState, action) => {
   switch (action.type) {
     case LOAD_USERS_SUCCESS:
-      return [...state, { firstName: "John", lastName: "Cleese" }];
+      return {
+        ...state,
+        users: action.users
+      };
 
     default:
       return state;

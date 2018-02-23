@@ -1,19 +1,17 @@
 import React from "react";
+import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import PropTypes from "../../../../../node_modules/prop-types/checkPropTypes";
-import { loadUsers } from "../../../../actions/usersActions";
+import * as usersActions from "../../../../actions/usersActions";
 import Users from "../views/Users";
 
 class UsersContainer extends React.Component {
   constructor(props) {
     super(props);
   }
-  componentWillMount() {
-    this.props.loadUsers();
-  }
 
   componentDidMount() {
-    console.log("USERS_CONTAINER PROPS - ", this.props);
+    this.props.userActions.loadUsers();
   }
 
   render() {
@@ -34,9 +32,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    loadUsers: () => {
-      dispatch(loadUsers());
-    }
+    userActions: bindActionCreators(usersActions, dispatch)
   };
 }
 

@@ -7,7 +7,10 @@ import Users from "../views/Users";
 class UsersContainer extends React.Component {
   constructor(props) {
     super(props);
-    this.props.loadUsers;
+  }
+  componentWillMount() {
+    console.log(this.props.users);
+    this.props.loadUsers();
   }
 
   render() {
@@ -21,7 +24,6 @@ class UsersContainer extends React.Component {
 // };
 
 function mapStateToProps(state) {
-  console.log(state.users);
   return {
     users: state.users
   };
@@ -30,7 +32,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     loadUsers: () => {
-      dispatch(loadUsers);
+      dispatch(loadUsers());
     }
   };
 }

@@ -1,36 +1,37 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import PropTypes from '../../../../../node_modules/prop-types/checkPropTypes';
-import { loadUsers } from '../../../../actions/usersActions';
+import React from "react";
+import { connect } from "react-redux";
+import PropTypes from "../../../../../node_modules/prop-types/checkPropTypes";
+import { loadUsers } from "../../../../actions/usersActions";
+import Users from "../views/Users";
 
 class UsersContainer extends React.Component {
-	constructor(props) {
-		super(props);
-		this.props.loadUsers;
-	}
+  constructor(props) {
+    super(props);
+    this.props.loadUsers;
+  }
 
-	render() {
-		return <div>Users Container</div>;
-	}
+  render() {
+    return <Users users={this.props.users} />;
+  }
 }
 
-UsersContainer.propTypes = {
-	dispatch: PropTypes.func,
-	users: PropTypes.array
-};
+// UsersContainer.propTypes = {
+//   dispatch: PropTypes.function,
+//   users: PropTypes.array
+// };
 
 function mapStateToProps(state) {
-	return {
-		users: state.users
-	};
+  return {
+    users: state.users
+  };
 }
 
 function mapDispatchToProps(dispatch) {
-	return {
-		loadUsers: () => {
-			dispatch(loadUsers);
-		}
-	};
+  return {
+    loadUsers: () => {
+      dispatch(loadUsers);
+    }
+  };
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(UsersContainer);

@@ -21,6 +21,7 @@ class UsersContainer extends React.Component {
 // };
 
 function mapStateToProps(state) {
+  console.log(state.users);
   return {
     users: state.users
   };

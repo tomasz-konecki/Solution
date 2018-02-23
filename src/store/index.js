@@ -2,6 +2,7 @@ import { createStore, applyMiddleware, combineReducers, compose } from 'redux';
 import { routerReducer, routerMiddleware } from 'react-router-redux';
 import { persistStore, persistReducer } from 'redux-persist';
 import { reducer as formReducer } from 'redux-form';
+import thunk from "redux-thunk";
 import storage from 'redux-persist/lib/storage';
 import * as reducers from '../reducers';
 
@@ -12,7 +13,7 @@ const persistConfig = {
 };
 
 const storeCreator = (history) => {
-  const middleware = applyMiddleware(routerMiddleware(history));
+  const middleware = applyMiddleware(routerMiddleware(history), thunk);
   const persistedReducer = persistReducer(persistConfig,
     combineReducers(Object.assign({}, reducers, routerReducer, { form: formReducer })));
 

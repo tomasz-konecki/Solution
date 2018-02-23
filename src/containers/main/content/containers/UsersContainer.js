@@ -9,8 +9,11 @@ class UsersContainer extends React.Component {
     super(props);
   }
   componentWillMount() {
-    console.log(this.props.users);
     this.props.loadUsers();
+  }
+
+  componentDidMount() {
+    console.log("USERS_CONTAINER PROPS - ", this.props);
   }
 
   render() {

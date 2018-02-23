@@ -2,7 +2,7 @@ import { LOAD_USERS_SUCCESS } from "../constants";
 import axios from "axios";
 
 export const loadUsersSuccess = users => {
-  console.log(users);
+  console.log("USERS_ACTIONS USERS:", users);
   return {
     type: "LOAD_USERS_SUCCESS",
     users

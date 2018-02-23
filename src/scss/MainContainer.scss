@@ -1,14 +1,16 @@
-@import "./components/Button.scss";
+@import "ColorSchema.scss";
 @import url("https://use.fontawesome.com/releases/v5.0.6/css/all.css");
+@import url('https://fonts.googleapis.com/css?family=Roboto');
 
 .wrapper {
   height: 100vh;
+  width: 100vw;
+  background: $wrapper-background;
+
   .header {
-    height: 5vh;
-    line-height: 5vh;
+    height: 8vh;
     overflow: hidden;
     white-space: nowrap;
-    border-bottom: 1px solid rgba(169, 169, 169, 0.296);
 
     .logo {
       display: inline-block;
@@ -17,10 +19,13 @@
       vertical-align: top;
       overflow: hidden;
       white-space: nowrap;
+      background: $body-background;
+
       img {
-        height: 3vh;
-        padding: 1vh;
         display: inline-block;
+        height: 6vh;
+        width: 6vh;
+        padding: 1vh;
       }
       .title-container {
         display: inline-block;
@@ -28,9 +33,12 @@
         padding-left: 0.6vw;
 
         .title {
-          height: 3vh;
-          line-height: 3vh;
-          padding: 1.1vh;
+          text-shadow: 0 0 1px rgba(35,31,32, 0.1);
+          font-family: 'Roboto', sans-serif;
+          color: #231F20;
+          line-height: 8vh;
+          font-size: 2em;
+          font-weight: 900;
           display: inline-block;
           vertical-align: top;
         }
@@ -41,6 +49,16 @@
       width: 85%;
       height: 100%;
       vertical-align: top;
+      line-height: 8vh;
+      text-align: right;
+      border-bottom: 1px solid lighten($logo-background, 25%);
+      background: $body-background;
+      .logged-in-user {
+        padding-right: 1em;
+        strong{
+          font-weight: 800;
+        }
+      }
       button {
         margin-right: 15px;
         transition: all 0.3s;
@@ -48,21 +66,22 @@
     }
   }
   .content {
-    height: 95vh;
+    height: 84vh;
     overflow: hidden;
     white-space: nowrap;
     margin-top: -1px;
 
     .left {
       padding-right: -1px;
-      border-right: 1px solid rgba(169, 169, 169, 0.296);
       display: inline-block;
       width: 15%;
       height: 100%;
       vertical-align: top;
       .left-menu {
         padding: 1.1vh;
-        margin-left: 5.7vh;
+        background: $logo-background;
+        height: 100%;
+
         li {
           height: 1.5em;
           line-height: 1.5em;
@@ -70,21 +89,25 @@
           cursor: default;
           user-select: none;
           transition: all 0.3s;
+          padding: 0.4em;
+          color: $menu-element-text-color;
+          background: $menu-element-background;
+          margin-bottom: 0.4em;
+          border: 1px solid transparent;
+          transition: all 0.3s;
 
           i {
-            margin-left: -2.5vw;
             padding-right: 1.1vw;
-            transition: all 0.3s;
+            padding-left: 0.5vw;
           }
           &:hover {
-            background-color: rgba(255, 166, 0, 0.289);
+            background-color: darken($menu-element-hover-background, 5%);
+            border: 1px solid lighten($menu-element-hover-background, 25%);
+            padding-left: 20px;
             cursor: pointer;
             i {
-              color: orange;
+              color: lighten($menu-element-icon-hover-color, 35%);
             }
-          }
-          span {
-            margin-left: 10px;
           }
         }
       }
@@ -94,6 +117,16 @@
       width: 85%;
       height: 100%;
       padding: 1.1vh;
+      border-left: 1px solid lighten($logo-background, 25%);
     }
+  }
+  .footer {
+    box-sizing: border-box;
+    height: 8vh;
+    line-height: 8vh;
+    padding: 1vh;
+    vertical-align: bottom;
+    background: $body-background;
+    color: $logo-background;
   }
 }

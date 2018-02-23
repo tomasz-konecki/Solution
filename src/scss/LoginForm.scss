@@ -1,4 +1,4 @@
-@import "./components/Button.scss";
+@import "./3rd/Loader";
 
 .login-form {
   margin: auto;
@@ -32,6 +32,13 @@
   }
 }
 
+.context-container {
+  height: 10px;
+  .loader{
+    padding-top: 5px;
+  }
+}
+
 .centric-container {
   text-align: center;
   button {
@@ -60,12 +67,13 @@
     padding: 0.5em;
     border: none;
     outline: none;
-    border-bottom: 1.2px solid lightgray;
+    border-bottom: 1.2px solid transparent;
     font-family: "Roboto Condensed", sans-serif;
     font-weight: 700;
     text-align: center;
     width: 100%;
     caret-color: transparent;
+    margin-bottom: 0.5em;
   }
   input:focus {
     border-bottom: 1.2px solid lightblue;

@@ -1,9 +1,15 @@
 import React from "react";
-import ReactDOM from "react-dom";
-import "../scss/App.scss";
-// import FrontScreen from "../components/FrontScreen";
-import MainContainer from "./main/MainContainer";
 
-const App = <MainContainer />;
+import { Route, Switch, BrowserRouter } from 'react-router';
+import { PrivateRoute, Login, Home } from '../creators';
+
+import "../scss/App.scss";
+
+const App = () => (
+  <Switch>
+    <Route exact path="/" component={Login} />
+    <PrivateRoute path="/main" component={Home} />
+  </Switch>
+);
 
 export default App;

@@ -1,5 +1,6 @@
 import React from "react";
-import "../../scss/FrontScreen.scss";
+import "../../scss/LoginForm.scss";
+import "../../scss/Logo.scss";
 import LoginForm from "../login/LoginForm";
 import Logo from "../../components/common/Logo";
 
@@ -10,8 +11,8 @@ class FrontScreen extends React.Component {
   render() {
     return (
       <div className="front-screen">
-        <Logo />
-        <LoginForm />
+        <Logo size="vector" container/>
+        <LoginForm login={this.props.login} />
       </div>
     );
   }

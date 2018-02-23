@@ -26,7 +26,8 @@ module.exports = {
   entry: ["react-hot-loader/patch", "./src/index.js"],
   output: {
     path: __dirname + "/dist",
-    filename: "app.bundle.js"
+    filename: "app.bundle.js",
+    publicPath: "/"
   },
 
   module: {
@@ -52,7 +53,7 @@ module.exports = {
       },
       {
         test: /\.(woff(2)?|ttf|eot|svg)(\?v=\d+\.\d+\.\d+)?$/,
-        loader: "url-loader?limit=10000"
+        loader: "url-loader"
       },
       {
         test: /\.scss$/,
@@ -69,8 +70,19 @@ module.exports = {
             loader: "css-loader"
           }
         ]
+      },
+      {
+        test: /\.js$/,
+        use: ["source-map-loader"],
+        enforce: "pre"
       }
     ]
   },
-  plugins: plugins
+  plugins: plugins,
+  devServer: {
+    historyApiFallback: {
+      index:'/'
+    }
+  },
+  devtool:'source-map',
 };

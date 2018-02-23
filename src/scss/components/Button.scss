@@ -1,38 +1,40 @@
+@import "../ColorSchema.scss";
 button {
   outline: none;
   display: inline-block;
-  background: transparent;
-  border: 1px solid lightgray;
-  border-radius: 2px;
-  padding: 0.5em;
   transition: all 0.5s;
-  color: lightgray;
+  background: $menu-element-background;
+  color: $menu-element-text-color;
+  vertical-align: baseline;
+  border: 1px solid transparent;
 
   i{
     padding-right: 5px;
   }
 
-  &[type="submit"] {
+  &.submitter {
     margin-top: 2em;
+    padding: 0.5em;
   }
   &:hover {
-    background-color: rgba(255, 166, 0, 0.289);
-    border: 1px solid orange;
-    color: orange;
-  }
-  &:active {
-    border: 1px solid orange;
+    background-color: darken($menu-element-hover-background, 5%);
+    border: 1px solid lighten($menu-element-icon-hover-color, 5%);
+    color: lighten($menu-element-icon-hover-color, 55%);
   }
   &.nav-compact {
     border: 0;
-    border-bottom: 1px solid transparent;
-    color: black;
+    min-width: 100px;
     user-select: none;
+    border-radius: 6px;
     cursor: pointer;
-  }
-  &.nav-compact:active, &.nav-compact:hover {
-    border: 0px solid orange;
-    border-bottom: 1px solid orange;
+    height: unset;
+    padding: 5px;
+
+    box-shadow: 0 0 2px rgba(35,31,32, 0.3);
+
+    i{
+      padding-left: 10px;
+    }
   }
 }
 

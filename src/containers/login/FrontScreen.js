@@ -12,7 +12,7 @@ class FrontScreen extends React.Component {
     return (
       <div className="front-screen">
         <Logo size="vector" container />
-        <LoginForm login={this.props.login} />
+        <LoginForm />
       </div>
     );
   }

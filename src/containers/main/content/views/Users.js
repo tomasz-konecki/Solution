@@ -1,7 +1,11 @@
 import React, { Component } from "react";
 
 const Users = props => {
-  //   console.log(props);
+  /*
+    <UsersTableManagement/>
+    <UsersList/>
+    <Pagination/>
+  */
   return <div>Users List</div>;
 };
 

@@ -15,9 +15,7 @@ class Content extends React.Component {
     const { match } = this.props;
     return (
       <div className="content">
-        <aside className="left">
-          <LeftMenu />
-        </aside>
+        <LeftMenu className="left-menu" extended={false} />
         <aside className="right">
           <Route path={match.url + "/users"} component={UsersContainer} />
           <Route path={match.url + "/employees"} component={Employees} />

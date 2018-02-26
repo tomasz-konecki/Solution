@@ -1,8 +1,8 @@
 import React from "react";
 
-const Icon = (props) => {
+const Icon = ({iconType = "fas", iconSize = "lg", icon}) => {
   return (
-    <i className={props.iconType + " fa-" + props.icon}/>
+    <i className={iconType + " fa-" + icon + " fa-" + iconSize}/>
   );
 };
 

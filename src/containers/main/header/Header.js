@@ -1,5 +1,6 @@
 import React from "react";
 import { withRouter } from "react-router-dom";
+import PropTypes from 'prop-types';
 import Logo from "../../../components/common/Logo";
 import TopBar from "./TopBar";
 
@@ -10,6 +11,10 @@ const Header = (props) => {
       <TopBar logout={props.logout} />
     </div>
   );
+};
+
+Header.propTypes = {
+  logout: PropTypes.func
 };
 
 export default withRouter(Header);

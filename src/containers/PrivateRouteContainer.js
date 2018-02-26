@@ -3,6 +3,8 @@ import { Route } from 'react-router';
 import { Redirect } from 'react-router-dom';
 
 class PrivateRouteContainer extends Component {
+  /* eslint-disable react/prop-types*/
+  /* eslint-disable react/jsx-no-bind*/
   render() {
     const {
       isAuthenticated,

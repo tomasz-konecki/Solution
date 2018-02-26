@@ -4,6 +4,7 @@ import Header from "./header/Header";
 import Footer from "./footer/Footer";
 import Content from "./content/Content";
 import "../../scss/MainContainer.scss";
+import PropTypes from 'prop-types';
 
 class MainContainer extends React.Component {
   constructor(props, match) {
@@ -25,5 +26,10 @@ class MainContainer extends React.Component {
     );
   }
 }
+
+MainContainer.propTypes = {
+  match: PropTypes.object,
+  logout: PropTypes.func
+};
 
 export default MainContainer;

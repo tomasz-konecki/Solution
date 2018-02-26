@@ -2,6 +2,7 @@ import React from "react";
 import { withRouter } from "react-router-dom";
 import VerticalMenuElement from "./VerticalMenuElement";
 import Icon from "../../../components/common/Icon";
+import PropTypes from 'prop-types';
 
 class LeftMenu extends React.Component {
   constructor(props) {
@@ -61,5 +62,9 @@ class LeftMenu extends React.Component {
     );
   }
 }
+
+LeftMenu.propTypes = {
+  match: PropTypes.object
+};
 
 export default withRouter(LeftMenu);

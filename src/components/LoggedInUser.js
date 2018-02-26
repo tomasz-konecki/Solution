@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 class LoggedInUser extends Component {
@@ -13,6 +14,10 @@ const mapStateToProps = (state) => {
   return {
     user: state.authReducer.extra
   };
+};
+
+LoggedInUser.propTypes = {
+  user: PropTypes.string
 };
 
 export default connect(mapStateToProps)(LoggedInUser);

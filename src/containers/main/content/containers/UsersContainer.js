@@ -1,7 +1,7 @@
 import React from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import PropTypes from "../../../../../node_modules/prop-types/checkPropTypes";
+import PropTypes from 'prop-types';
 import * as usersActions from "../../../../actions/usersActions";
 import Users from "../views/Users";
 
@@ -35,5 +35,10 @@ function mapDispatchToProps(dispatch) {
     userActions: bindActionCreators(usersActions, dispatch)
   };
 }
+
+UsersContainer.propTypes = {
+  users: PropTypes.object,
+  userActions: PropTypes.object
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(UsersContainer);

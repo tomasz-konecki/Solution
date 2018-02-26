@@ -1,6 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { Field, reduxForm } from 'redux-form';
+import PropTypes from 'prop-types';
 import submit from '../../auth/submit';
 import LoaderHorizontal from "../../components/common/LoaderHorizontal";
 import "../../scss/LoginForm.scss";
@@ -68,5 +69,11 @@ const Form = reduxForm({
   form: 'login',
   onSubmit: submit
 })(LoginForm);
+
+LoginForm.propTypes = {
+  handleSubmit: PropTypes.func,
+  error: PropTypes.string,
+  loading: PropTypes.bool
+};
 
 export default connect(mapStateToProps)(Form);

@@ -1,6 +1,7 @@
 import React from "react";
 import { withRouter, NavLink } from "react-router-dom";
 import Icon from "../../../components/common/Icon";
+import PropTypes from 'prop-types';
 
 class VerticalMenuElement extends React.Component {
   constructor(props) {
@@ -18,5 +19,15 @@ class VerticalMenuElement extends React.Component {
     );
   }
 }
+
+VerticalMenuElement.propTypes = {
+  iconType: PropTypes.string,
+  iconSize: PropTypes.string,
+  icon: PropTypes.string,
+  title: PropTypes.string,
+  path: PropTypes.string,
+  match: PropTypes.object,
+  extended: PropTypes.bool
+};
 
 export default withRouter(VerticalMenuElement);

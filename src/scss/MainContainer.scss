@@ -70,6 +70,7 @@
     overflow: hidden;
     white-space: nowrap;
     margin-top: -1px;
+    position: relative;
 
     .left-menu {
       background: darken($menu-element-background, 10%);
@@ -79,6 +80,9 @@
       display: inline-block;
       vertical-align: top;
       position: relative;
+      z-index: 1;
+      transition-property: width;
+      transition-duration: 0.3s;
 
       li {
         height: 4vh;
@@ -91,13 +95,19 @@
         border-bottom: 1px solid darken($menu-element-background, 15%);
         padding-top: 0.5em;
         padding-bottom: 0.5em;
-        text-align: center;
+        //text-align: center;
         user-select: none;
-        transition-property: background-color;
-        transition-duration: 0.3ms;
 
+        span {
+          visibility: hidden;
+          opacity: 0;
+          transition-property: opacity;
+          transition-duration: 0.2s;
+          max-width: 0;
+        }
         i {
           padding: 1vh;
+          margin-left: 1.4vh;
         }
         &:hover {
           background-color: lighten($menu-element-hover-background, 5%);
@@ -106,10 +116,18 @@
             color: lighten($menu-element-icon-hover-color, 35%);
           }
         }
-        &.extender {
-          position: absolute;
-          bottom: 0;
-          width: 8vh;
+      }
+      .extender {
+        position: absolute;
+        bottom: 0;
+        width: 8vh;
+        height: 4vh;
+        line-height: 1.5em;
+        vertical-align: baseline;
+        color: $menu-element-text-color;
+        padding-top: 0.5em;
+        i {
+          padding-left: 0.9em;
         }
       }
       .active {
@@ -118,20 +136,27 @@
         }
       }
       &.extended {
-        width: 10%;
+        width: 15%;
         li {
-          i {
-            margin-left: 1.6vh;
+          span {
+            display: inline-block;
+            visibility: visible;
+            width: 100%;
+            opacity: 1;
+            padding-left: 1vh;
           }
-          text-align: left;
+          i {
+
+          }
           &.extender {
             width: 100%;
-            text-align: center;
           }
         }
       }
     }
     .right {
+      position: absolute;
+      left: 8vh;
       display: inline-block;
       width: 88%;
       height: 100%;

@@ -7,13 +7,21 @@ import PropTypes from 'prop-types';
 class LeftMenu extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {extended: false};
+    this.state = {extended: false, blocked: false};
 
-    this.handleExtendClick = this.handleExtendClick.bind(this);
+    this.handleExtend = this.handleExtend.bind(this);
+    this.handleBlockedClick = this.handleBlockedClick.bind(this);
   }
 
-  handleExtendClick() {
+  handleExtend() {
+    if(this.state.blocked) return;
     this.setState(prevState => ({
+      extended: !prevState.extended
+    }));
+  }
+  handleBlockedClick() {
+    this.setState(prevState => ({
+      blocked: !prevState.blocked,
       extended: !prevState.extended
     }));
   }
@@ -22,7 +30,7 @@ class LeftMenu extends React.Component {
     const { match } = this.props;
     const { extended } = this.state;
     return (
-      <ul className={"left-menu" + (extended ? " extended" : "")}>
+      <ul onMouseEnter={this.handleExtend} onMouseLeave={this.handleExtend} className={"left-menu" + (extended ? " extended" : "")}>
         <VerticalMenuElement
           match={match}
           extended={extended}
@@ -55,9 +63,9 @@ class LeftMenu extends React.Component {
           iconType="fas"
           title="Przypisz"
         />
-        <li onClick={this.handleExtendClick} className="extender">
+        <div onClick={this.handleBlockedClick} className="extender">
           <Icon icon="bars"/>
-        </li>
+        </div>
       </ul>
     );
   }

@@ -5,6 +5,7 @@ import { push } from 'react-router-redux';
 import axios from 'axios';
 import * as jwtDecode from 'jwt-decode';
 import * as Promise from 'bluebird';
+import DCMTWebApi from '../api';
 
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 
@@ -30,18 +31,12 @@ const submit = ({ username, password }, dispatch) => {
   return Promise.resolve()
     .then(() => dispatch(authStart()))
     .then(() => sleep(2000))
-    // this is a testing endpoint!
-    .then(() => axios.post('http://localhost:3001/sessions/create', { username, password }))
-    .then(response => {
-      const tokenData = jwtDecode(response.data.id_token);
-
-      const name = tokenData.extra;
-
-      dispatch(authSuccess(tokenData));
+    .then(() => DCMTWebApi.auth(username, password))
+    .then(token => {
+      dispatch(authSuccess(token));
       dispatch(push('/main'));
     })
-    .catch(errorHandler)
-    .lastly(() => dispatch(authStop()));
+    .catch(errorHandler);
 };
 
 export default submit;

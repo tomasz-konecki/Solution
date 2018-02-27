@@ -50,7 +50,7 @@ const Logo = props => {
 Logo.propTypes = {
   size: PropTypes.string,
   title: PropTypes.bool,
-  container: PropTypes.string
+  container: PropTypes.bool
 };
 
 export default Logo;

@@ -25,6 +25,7 @@ class Projects extends React.Component {
           <ReactModal
             isOpen={this.state.showModal}
             contentLabel="Projects test modal"
+            ariaHideApp={false}
             onRequestClose={this.handleCloseModal}>
             <p>Text here</p>
             <hr/>

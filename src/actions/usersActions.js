@@ -1,5 +1,6 @@
 import { LOAD_USERS_SUCCESS } from "../constants";
 import axios from "axios";
+import DCMTWebApi from "../api";
 
 export const loadUsersSuccess = users => {
   return {
@@ -10,8 +11,7 @@ export const loadUsersSuccess = users => {
 
 export const loadUsers = () => {
   return dispatch => {
-    axios
-      .get("http://10.24.14.148/users")
+    DCMTWebApi.getUsers()
       .then(response => {
         dispatch(loadUsersSuccess(response.data.results));
       })

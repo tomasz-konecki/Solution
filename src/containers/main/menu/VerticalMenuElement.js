@@ -13,7 +13,7 @@ class VerticalMenuElement extends React.Component {
       <NavLink to={match.url + path} activeClassName="active">
         <li>
           <Icon icon={icon} iconType={iconType} iconSize={iconSize}/>
-          {extended && <span>{title}</span>}
+          <span>{title}</span>
         </li>
       </NavLink>
     );

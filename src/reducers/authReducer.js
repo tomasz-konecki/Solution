@@ -11,22 +11,19 @@ export const authReducer = (state = initialState , action) => {
       return {
         ...state,
         isAuthenticated: true,
+        loading: false,
         ...action.token_block
       };
     case types.AUTH_FAIL:
       return {
         ...state,
-        isAuthenticated: false
+        isAuthenticated: false,
+        loading: false
       };
     case types.AUTH_START:
       return {
         ...state,
         loading: true
-      };
-    case types.AUTH_STOP:
-      return {
-        ...state,
-        loading: false
       };
     default:
       return state;

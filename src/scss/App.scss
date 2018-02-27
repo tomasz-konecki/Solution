@@ -16,3 +16,7 @@ a, a:visited {
   text-decoration: none;
   color: darken(rgb(103, 163, 181), 8%);
 }
+
+.ReactModal__Overlay{
+  z-index: 2;
+}

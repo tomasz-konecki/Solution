@@ -1,7 +1,8 @@
 import React from "react";
+import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import PropTypes from "../../../node_modules/prop-types/checkPropTypes";
-import { loadUsers } from "../../actions/usersActions";
+import PropTypes from "prop-types";
+import * as usersActions from "../../actions/usersActions";
 import UsersList from "../main/content/views/UsersList";
 import UsersTableManagement from "./UsersTableManagement";
 
@@ -11,8 +12,7 @@ class UsersContainer extends React.Component {
   }
 
   componentDidMount() {
-    this.props.loadUsers();
-    console.log("USERS_CONTAINER PROPS - ", this.props);
+    this.props.userActions.loadUsers();
   }
 
   render() {
@@ -30,17 +30,15 @@ class UsersContainer extends React.Component {
 //   users: PropTypes.array
 // };
 
-function mapStateToProps(state) {
+function mapStateToProps(store) {
   return {
-    users: state.users
+    users: store.usersReducer.users
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    loadUsers: () => {
-      dispatch(loadUsers());
-    }
+    userActions: bindActionCreators(usersActions, dispatch)
   };
 }
 

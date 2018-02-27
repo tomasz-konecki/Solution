@@ -1,4 +1,6 @@
 import React from "react";
+import AddUser from "./AddUser";
+
 import "../../scss/UsersTableManagement.scss";
 
 class UsersTableManagement extends React.Component {
@@ -12,10 +14,7 @@ class UsersTableManagement extends React.Component {
         <div className="title-container">
           <p>Users Table Management</p>
         </div>
-
-        <div className="add-user-button-container">
-          <button className="add-user-button">Add User</button>
-        </div>
+        <AddUser />
       </div>
     );
   }

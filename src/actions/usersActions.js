@@ -12,7 +12,12 @@ export const loadUsersSuccess = users => {
 export const loadUsers = () => {
   return dispatch => {
     return axios
-      .get("http://10.24.14.148/users")
+      .get("http://10.24.14.148/users", {
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          "Content-Type": "application/json"
+        }
+      })
       .then(response => {
         dispatch(loadUsersSuccess(response.data.results));
       })

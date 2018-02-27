@@ -2,7 +2,6 @@
   .title-container,
   .add-user-button-container {
     display: inline-block;
-    // border: 1px solid blue;
   }
 
   .title-container {
@@ -15,4 +14,14 @@
     width: 80px;
     cursor: pointer;
   }
+}
+.firstNames,
+.lastNames,
+.roles {
+  display: inline-block;
+}
+
+.lastNames,
+.roles {
+  padding-left: 10px;
 }

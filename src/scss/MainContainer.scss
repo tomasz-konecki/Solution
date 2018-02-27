@@ -20,6 +20,7 @@
       overflow: hidden;
       white-space: nowrap;
       background: $body-background;
+      user-select: none;
 
       img {
         display: inline-block;

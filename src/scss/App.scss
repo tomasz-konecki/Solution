@@ -8,6 +8,10 @@ body {
   font-family: "Roboto Condensed", sans-serif;
 }
 
+::selection {
+  background: #ffb97c; /* WebKit/Blink Browsers */
+}
+
 .text-right {
   text-align: right;
 }
@@ -17,6 +21,6 @@ a, a:visited {
   color: darken(rgb(103, 163, 181), 8%);
 }
 
-.ReactModal__Overlay{
+.ReactModal__Overlay {
   z-index: 2;
 }

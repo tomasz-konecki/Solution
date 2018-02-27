@@ -1,8 +1,6 @@
 import React from "react";
 import AddUser from "./AddUser";
 
-import "../../scss/UsersTableManagement.scss";
-
 class UsersTableManagement extends React.Component {
   constructor(props) {
     super(props);

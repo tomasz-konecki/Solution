@@ -6,6 +6,8 @@ import * as usersActions from "../../actions/usersActions";
 import UsersList from "../main/content/views/UsersList";
 import UsersTableManagement from "./UsersTableManagement";
 
+import "../../scss/UsersContainer.scss";
+
 class UsersContainer extends React.Component {
   constructor(props) {
     super(props);
@@ -25,10 +27,10 @@ class UsersContainer extends React.Component {
   }
 }
 
-// UsersContainer.propTypes = {
-//   dispatch: PropTypes.function,
-//   users: PropTypes.array
-// };
+UsersContainer.propTypes = {
+  // dispatch: PropTypes.function,
+  users: PropTypes.array
+};
 
 function mapStateToProps(store) {
   return {

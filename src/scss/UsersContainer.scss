@@ -15,13 +15,18 @@
     cursor: pointer;
   }
 }
+.numbers,
 .firstNames,
 .lastNames,
 .roles {
   display: inline-block;
 }
 
+.firstNames {
+  padding-left: 20px;
+}
+
 .lastNames,
 .roles {
-  padding-left: 10px;
+  padding-left: 30px;
 }

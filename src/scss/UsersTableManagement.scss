@@ -1,0 +1,18 @@
+.container {
+  .title-container,
+  .add-user-button-container {
+    display: inline-block;
+    // border: 1px solid blue;
+  }
+
+  .title-container {
+    width: 90%;
+  }
+  .add-user-button-container {
+    padding: 1em;
+  }
+  .add-user-button {
+    width: 80px;
+    cursor: pointer;
+  }
+}

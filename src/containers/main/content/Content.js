@@ -1,7 +1,7 @@
 import React from "react";
 import { Route, Link, withRouter } from "react-router-dom";
 import LeftMenu from "../menu/LeftMenu";
-import UsersContainer from "./containers/UsersContainer";
+import UsersContainer from "../../users/UsersContainer";
 import Employees from "./views/Employees";
 import Projects from "./views/Projects";
 import Assign from "./views/Assign";

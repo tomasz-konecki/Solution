@@ -1,23 +1,27 @@
 import React from "react";
 import { connect } from "react-redux";
-import PropTypes from "../../../../../node_modules/prop-types/checkPropTypes";
-import { loadUsers } from "../../../../actions/usersActions";
-import Users from "../views/Users";
+import PropTypes from "../../../node_modules/prop-types/checkPropTypes";
+import { loadUsers } from "../../actions/usersActions";
+import UsersList from "../main/content/views/UsersList";
+import UsersTableManagement from "./UsersTableManagement";
 
 class UsersContainer extends React.Component {
   constructor(props) {
     super(props);
   }
-  componentWillMount() {
-    this.props.loadUsers();
-  }
 
   componentDidMount() {
+    this.props.loadUsers();
     console.log("USERS_CONTAINER PROPS - ", this.props);
   }
 
   render() {
-    return <Users users={this.props.users} />;
+    return (
+      <div>
+        <UsersTableManagement />
+        <UsersList users={this.props.users} />
+      </div>
+    );
   }
 }
 

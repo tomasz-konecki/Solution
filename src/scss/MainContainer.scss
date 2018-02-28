@@ -1,6 +1,6 @@
 @import "ColorSchema.scss";
 @import url("https://use.fontawesome.com/releases/v5.0.6/css/all.css");
-@import url("https://fonts.googleapis.com/css?family=Roboto");
+@import url('https://fonts.googleapis.com/css?family=Roboto');
 
 .wrapper {
   height: 100vh;
@@ -34,9 +34,9 @@
         padding-left: 0.6vw;
 
         .title {
-          text-shadow: 0 0 1px rgba(35, 31, 32, 0.1);
-          font-family: "Roboto", sans-serif;
-          color: #231f20;
+          text-shadow: 0 0 1px rgba(35,31,32, 0.1);
+          font-family: 'Roboto', sans-serif;
+          color: #231F20;
           line-height: 8vh;
           font-size: 1.7em;
           font-weight: 900;
@@ -56,7 +56,7 @@
       background: $top-bar-background;
       .logged-in-user {
         padding-right: 1em;
-        strong {
+        strong{
           font-weight: 800;
         }
       }
@@ -85,19 +85,19 @@
       transition-property: width;
       transition-duration: 0.3s;
 
-        li {
-          // height: 1.5em;
-          line-height: 1.5em;
-          vertical-align: baseline;
-          cursor: default;
-          user-select: none;
-          transition: all 0.3s;
-          padding: 0.4em;
-          color: $menu-element-text-color;
-          background: $menu-element-background;
-          margin-bottom: 0.4em;
-          border: 1px solid transparent;
-          transition: all 0.3s;
+      li {
+        height: 4vh;
+        width: 100%;
+        line-height: 1.5em;
+        vertical-align: baseline;
+        cursor: default;
+        color: $menu-element-text-color;
+        background: darken($menu-element-background, 20%);
+        border-bottom: 1px solid darken($menu-element-background, 15%);
+        padding-top: 0.5em;
+        padding-bottom: 0.5em;
+        //text-align: center;
+        user-select: none;
 
         span {
           visibility: hidden;
@@ -119,6 +119,7 @@
         }
       }
       .extender {
+        cursor: pointer;
         position: absolute;
         bottom: 0;
         width: 8vh;

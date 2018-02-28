@@ -19,7 +19,7 @@
       vertical-align: top;
       overflow: hidden;
       white-space: nowrap;
-      background: $body-background;
+      background: $logo-background;
       user-select: none;
 
       img {
@@ -52,8 +52,8 @@
       vertical-align: top;
       line-height: 8vh;
       text-align: right;
-      border-bottom: 1px solid lighten($logo-background, 25%);
-      background: $body-background;
+      border-bottom: 1px solid lighten($top-bar-background, 25%);
+      background: $top-bar-background;
       .logged-in-user {
         padding-right: 1em;
         strong{
@@ -163,6 +163,7 @@
       height: 100%;
       padding: 1.1vh;
       border-left: 1px solid lighten($logo-background, 25%);
+      background: $content-background;
     }
   }
   .footer {

@@ -3,7 +3,7 @@ button {
   outline: none;
   display: inline-block;
   transition: all 0.5s;
-  background: $menu-element-background;
+  background: $button-element-background;
   color: $menu-element-text-color;
   vertical-align: baseline;
   border: 1px solid transparent;
@@ -17,8 +17,8 @@ button {
     padding: 0.5em;
   }
   &:hover {
-    background-color: darken($menu-element-hover-background, 5%);
-    border: 1px solid lighten($menu-element-icon-hover-color, 5%);
+    background-color: $button-element-hover-background;
+    border: 1px solid lighten($button-element-hover-background, 5%);
     color: lighten($menu-element-icon-hover-color, 55%);
   }
   &.nav-compact {

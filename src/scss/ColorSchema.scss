@@ -1,7 +1,13 @@
-$body-background: #D7D9DE;
-$wrapper-background: lighten(#D7D9DE, 10%);
-$logo-background: #92949F;
+$body-background: rgb(197, 197, 197);
+$wrapper-background: white;
 $menu-element-text-color: white;
-$menu-element-background: #767881;
-$menu-element-hover-background: rgba(75, 148, 173, 0.89);
+$content-background: white;
+$menu-element-background: #f65a00;
+$top-bar-background: lighten(desaturate($menu-element-background, 50%), 53%);
+$logo-background: $top-bar-background;
+$emblem-background: darken($menu-element-background, 10%);
+$button-element-background: #8C1B2F;
+$button-element-hover-background: darken($button-element-background, 15%);
+$menu-element-active-background: darken($menu-element-background, 35%);
+$menu-element-hover-background: #954A1D;
 $menu-element-icon-hover-color: #A4B9C0;

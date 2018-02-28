@@ -4,7 +4,7 @@ import "../../scss/Logo.scss";
 import LoginForm from "../login/LoginForm";
 import Logo from "../../components/common/Logo";
 
-class FrontScreen extends React.Component {
+class LoginScreen extends React.Component {
   constructor(props) {
     super(props);
   }
@@ -18,4 +18,4 @@ class FrontScreen extends React.Component {
   }
 }
 
-export default FrontScreen;
+export default LoginScreen;

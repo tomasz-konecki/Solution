@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 import "../../scss/Logo.scss";
 
 const Logo = props => {
@@ -44,6 +45,12 @@ const Logo = props => {
       {titleBlock}
     </div>
   );
+};
+
+Logo.propTypes = {
+  size: PropTypes.string,
+  title: PropTypes.bool,
+  container: PropTypes.bool
 };
 
 export default Logo;

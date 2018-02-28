@@ -1,8 +1,8 @@
 import { LOAD_USERS_SUCCESS } from "../constants";
 import axios from "axios";
+import DCMTWebApi from "../api";
 
 export const loadUsersSuccess = users => {
-  console.log("USERS_ACTIONS USERS:", users);
   return {
     type: "LOAD_USERS_SUCCESS",
     users
@@ -11,13 +11,7 @@ export const loadUsersSuccess = users => {
 
 export const loadUsers = () => {
   return dispatch => {
-    return axios
-      .get("http://10.24.14.148/users", {
-        headers: {
-          "Access-Control-Allow-Origin": "*",
-          "Content-Type": "application/json"
-        }
-      })
+    DCMTWebApi.getUsers()
       .then(response => {
         dispatch(loadUsersSuccess(response.data.results));
       })

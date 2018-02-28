@@ -1,6 +1,6 @@
 @import "ColorSchema.scss";
 @import url("https://use.fontawesome.com/releases/v5.0.6/css/all.css");
-@import url('https://fonts.googleapis.com/css?family=Roboto');
+@import url("https://fonts.googleapis.com/css?family=Roboto");
 
 .wrapper {
   height: 100vh;
@@ -33,9 +33,9 @@
         padding-left: 0.6vw;
 
         .title {
-          text-shadow: 0 0 1px rgba(35,31,32, 0.1);
-          font-family: 'Roboto', sans-serif;
-          color: #231F20;
+          text-shadow: 0 0 1px rgba(35, 31, 32, 0.1);
+          font-family: "Roboto", sans-serif;
+          color: #231f20;
           line-height: 8vh;
           font-size: 2em;
           font-weight: 900;
@@ -55,7 +55,7 @@
       background: $body-background;
       .logged-in-user {
         padding-right: 1em;
-        strong{
+        strong {
           font-weight: 800;
         }
       }
@@ -83,7 +83,7 @@
         height: 100%;
 
         li {
-          height: 1.5em;
+          // height: 1.5em;
           line-height: 1.5em;
           vertical-align: baseline;
           cursor: default;

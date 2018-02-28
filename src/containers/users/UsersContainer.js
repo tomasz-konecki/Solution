@@ -5,6 +5,7 @@ import PropTypes from "prop-types";
 import * as usersActions from "../../actions/usersActions";
 import UsersList from "../main/content/views/UsersList";
 import UsersTableManagement from "./UsersTableManagement";
+import "../../../node_modules/bootstrap/dist/css/bootstrap-grid.min.css";
 
 import "../../scss/UsersContainer.scss";
 

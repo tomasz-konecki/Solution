@@ -12,7 +12,7 @@ class AddUser extends React.Component {
 
   render() {
     return (
-      <div className="add-user-button-container">
+      <div className="add-user-button-container col-3 offset-6">
         <button className="add-user-button" onClick={this.handleAddUser}>
           Add User
         </button>

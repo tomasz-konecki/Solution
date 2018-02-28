@@ -9,10 +9,12 @@ class UsersTableManagement extends React.Component {
   render() {
     return (
       <div className="container">
-        <div className="title-container">
-          <p>Users Table Management</p>
+        <div className="row">
+          <div className="title-container col-3">
+            <p>Users:</p>
+          </div>
+          <AddUser />
         </div>
-        <AddUser />
       </div>
     );
   }

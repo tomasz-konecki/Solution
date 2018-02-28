@@ -1,32 +1,42 @@
+// UsersTableManagement
 .container {
   .title-container,
   .add-user-button-container {
     display: inline-block;
   }
-
   .title-container {
-    width: 90%;
+    p {
+      padding: 20px 0;
+    }
   }
   .add-user-button-container {
     padding: 1em;
+    text-align: right;
   }
   .add-user-button {
     width: 80px;
     cursor: pointer;
   }
 }
-.numbers,
-.firstNames,
-.lastNames,
-.roles {
-  display: inline-block;
-}
 
-.firstNames {
-  padding-left: 20px;
-}
-
-.lastNames,
-.roles {
-  padding-left: 30px;
+// UsersList
+.users-list-container {
+  // border: 1px solid red;
+  padding: 20px;
+  .numbers,
+  .firstNames,
+  .lastNames,
+  .roles {
+    display: inline-block;
+  }
+  .firstNames {
+    padding-left: 20px;
+  }
+  .lastNames,
+  .roles {
+    padding-left: 30px;
+  }
+  .roles {
+    color: gray;
+  }
 }

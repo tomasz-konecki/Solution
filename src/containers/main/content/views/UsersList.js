@@ -17,7 +17,7 @@ const UsersList = props => {
   const roles = createList("role");
 
   return (
-    <div>
+    <div className="users-list-container">
       <ul className="numbers">{numbers}</ul>
       <ul className="firstNames">{firstNames}</ul>
       <ul className="lastNames">{lastNames}</ul>

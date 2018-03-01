@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 
 const UsersList = props => {
-  console.log("USERS LIST: ", props.users);
+  console.log("USERS LIST!!!: ", props.users);
 
   const numbers = props.users.map((item, index) => {
     index += 1;

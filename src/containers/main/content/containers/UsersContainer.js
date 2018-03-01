@@ -4,7 +4,6 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import * as usersActions from "../../../../actions/usersActions";
 import Users from "../views/Users";
-import UsersTableManagement from "../../../users/UsersTableManagement";
 
 import "../../../../scss/UsersContainer.scss";
 
@@ -31,9 +30,9 @@ UsersContainer.propTypes = {
   users: PropTypes.array
 };
 
-function mapStateToProps(store) {
+function mapStateToProps(state) {
   return {
-    users: store.usersReducer.users
+    users: state.usersReducer.users
   };
 }
 

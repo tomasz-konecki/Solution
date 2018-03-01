@@ -1,8 +1,7 @@
 import React, { Component } from "react";
 import ReactModal from "react-modal";
 
-import UsersTableManagement from "../../../users/UsersTableManagement";
-import UsersList from "./UsersList";
+import UsersList from "../../../../components/users/UsersList";
 
 import UsersSelector from "../../../../components/usersModals/UserSelector";
 
@@ -27,7 +26,6 @@ class Users extends Component {
   render() {
     return (
       <div>
-        {/* <UsersTableManagement /> */}
         <button onClick={this.handleOpenModal}>Add user</button>
         <UsersList users={this.props.users} />
         <ReactModal

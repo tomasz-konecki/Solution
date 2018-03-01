@@ -23,6 +23,10 @@ class Users extends Component {
     this.setState({ showModal: false });
   }
 
+  // componentDidMount() {
+  //   console.log("Users Component Props:", this.props);
+  // }
+
   render() {
     return (
       <div>
@@ -34,7 +38,7 @@ class Users extends Component {
           ariaHideApp={false}
           onRequestClose={this.handleCloseModal}
         >
-          <UsersSelector />
+          <UsersSelector searchAD={this.props.searchAD} />
           <hr />
           <button onClick={this.handleCloseModal}>Close</button>
         </ReactModal>

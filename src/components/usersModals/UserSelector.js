@@ -30,6 +30,10 @@ class UserSelector extends Component {
     });
   }
 
+  componentDidMount() {
+    console.log("UserSelector Props:", this.props);
+  }
+
   render() {
     return (
       <div className="parent-container">
@@ -41,6 +45,7 @@ class UserSelector extends Component {
           isVisible={this.state.twoIsVisible}
           selectedUser={this.state.selectedUser}
           resetState={this.resetState}
+          searchAD={this.props.searchAD}
         />
       </div>
     );

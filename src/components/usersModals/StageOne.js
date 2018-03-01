@@ -17,6 +17,8 @@ class StageOne extends Component {
 
   componentDidMount() {
     this.setState({ show: "stage-one-show" });
+    console.log("StageOne props: ", this.props);
+    // this.props.searchAD(this.state.searchText);
   }
 
   componentWillReceiveProps(nextProps) {

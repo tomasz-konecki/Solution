@@ -16,6 +16,8 @@ class StageTwo extends Component {
 
   componentDidMount() {
     this.setState({ show: "stage-two-hide" });
+    console.log("StageTwo props:", this.props);
+    this.props.searchAD(this.props.selectedUser);
   }
 
   componentWillReceiveProps(nextProps) {

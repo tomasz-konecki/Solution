@@ -1,7 +1,8 @@
-import { LOAD_USERS_SUCCESS } from "../constants";
+import { LOAD_USERS_SUCCESS, SEARCH_AD_SUCCESS } from "../constants";
 
 const initialState = {
-  users: []
+  users: [],
+  foundUsers: []
 };
 
 export const usersReducer = (state = initialState, action) => {
@@ -10,6 +11,12 @@ export const usersReducer = (state = initialState, action) => {
       return {
         ...state,
         users: action.users
+      };
+
+    case SEARCH_AD_SUCCESS:
+      return {
+        ...state,
+        foundUsers: action.foundUsers
       };
 
     default:

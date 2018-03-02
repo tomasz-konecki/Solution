@@ -1,8 +1,9 @@
 $body-background: rgb(197, 197, 197);
-$wrapper-background: #fafafa;
+$wrapper-background: #e8e8e8;
 $main-color: #006064;
 $menu-element-text-color: white;
-$content-background: white;
+$content-background: $wrapper-background;
+$content-color: #2b2b2b;
 $menu-element-background: $main-color;
 
 $top-bar-background: lighten(desaturate($menu-element-background, 50%), 53%);

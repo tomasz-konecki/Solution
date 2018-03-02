@@ -1,34 +1,39 @@
 import React, { Component } from "react";
 import "../../scss/components/users/FoundUsersTable.scss";
 
-const FoundUsersTable = props => {
-  const createList = property =>
-    props.foundUsers.map((item, index) => (
-      <li key={index}>{item[property]}</li>
+class FoundUsersTable extends Component {
+  constructor(props) {
+    super(props);
+    this.handleOnClick = this.handleOnClick.bind(this);
+  }
+
+  handleOnClick(userObject) {
+    this.props.setSelectedUser(userObject);
+  }
+
+  render() {
+    const tableData = this.props.foundUsers.map((item, index) => (
+      <tr key={item.id} onClick={event => this.handleOnClick(item, event)}>
+        <td id={item.id}>{item.firstName}</td>
+        <td id={item.id}>{item.lastName}</td>
+        <td id={item.id}>{item.id}</td>
+      </tr>
     ));
 
-  const firstNames = createList("firstName");
-  const lastNames = createList("lastName");
-  const emails = createList("email");
-
-  const styles = {
-    display: "inline-block",
-    padding: "0 20px 0 0"
-  };
-
-  return (
-    <div className="users-list-container">
-      <ul style={styles} className="firstNames">
-        {firstNames}
-      </ul>
-      <ul style={styles} className="lastNames">
-        {lastNames}
-      </ul>
-      <ul style={styles} className="email">
-        {emails}
-      </ul>
-    </div>
-  );
-};
+    return (
+      <div className="users-list-container">
+        <table>
+          <tbody>
+            <tr>
+              <th>Name</th>
+              <th>Last name</th>
+            </tr>
+            {tableData}
+          </tbody>
+        </table>
+      </div>
+    );
+  }
+}
 
 export default FoundUsersTable;

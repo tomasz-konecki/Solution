@@ -1,30 +1,22 @@
 import React, { Component } from "react";
 import "../../scss/components/usersModals/StageOne.scss";
+import FoundUsersTable from "../users/FoundUsersTable";
+import LoaderHorizontal from "../../components/common/LoaderHorizontal";
 
 class StageOne extends Component {
   constructor() {
     super();
 
     this.state = {
-      show: "",
-      searchText: ""
+      searchText: "",
+      isLoading: false,
+      isSearchingDone: false
     };
 
     this.handleClick = this.handleClick.bind(this);
     this.handleInput = this.handleInput.bind(this);
     this.handleKeyUp = this.handleKeyUp.bind(this);
-  }
-
-  componentDidMount() {
-    this.setState({ show: "stage-one-show" });
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.isVisible !== this.props.isVisible) {
-      this.setState({
-        show: this.props.isVisible ? "stage-one-hide" : "stage-one-show"
-      });
-    }
+    this.stopLoading = this.stopLoading.bind(this);
   }
 
   handleInput(e) {
@@ -32,8 +24,11 @@ class StageOne extends Component {
   }
 
   handleClick(e) {
-    this.props.setSelectedUser(this.state.searchText);
     this.props.searchUsersInAD(this.state.searchText);
+    this.setState({
+      isLoading: true,
+      isSearchingDone: true
+    });
   }
 
   handleKeyUp(e) {
@@ -41,9 +36,14 @@ class StageOne extends Component {
       this.handleClick(e);
     }
   }
+
+  stopLoading() {
+    this.setState({ isLoading: false });
+  }
+
   render() {
     return (
-      <div className={["stage-one-container", this.state.show].join(" ")}>
+      <div className="stage-one-container">
         <input
           name="user"
           type="text"
@@ -51,6 +51,15 @@ class StageOne extends Component {
           onKeyUp={this.handleKeyUp}
         />
         <input type="button" value="Search" onClick={this.handleClick} />
+
+        {this.state.isLoading === true && <LoaderHorizontal />}
+
+        {this.state.isSearchingDone === true && (
+          <FoundUsersTable
+            foundUsers={this.props.foundUsers}
+            setSelectedUser={this.props.setSelectedUser}
+          />
+        )}
       </div>
     );
   }

@@ -1,3 +1,32 @@
-// li:hover {
-//     background: red;
-// }
+.user-selector-container {
+  height: 680px;
+}
+
+.users-list-container {
+  height: 550px;
+  margin-left: 10px;
+  margin-top: 40px;
+  overflow: auto;
+  background: rgb(212, 222, 232);
+  table {
+    tbody {
+      tr {
+        th {
+          color: blue;
+          font-size: 0.8em;
+          text-align: left;
+          padding-bottom: 5px;
+        }
+        &:hover {
+          background: #cde;
+        }
+        td {
+          padding-right: 10px;
+        }
+        &:hover {
+          background: rgb(170, 202, 235);
+        }
+      }
+    }
+  }
+}

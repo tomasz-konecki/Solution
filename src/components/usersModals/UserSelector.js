@@ -7,10 +7,9 @@ class UserSelector extends Component {
   constructor() {
     super();
     this.state = {
-      oneIsVisible: true,
-      twoIsVisible: false,
-      selectedUser: "",
-      foundUsers: []
+      selectedUser: {},
+      foundUsers: [],
+      isStageTwo: false
     };
 
     this.setSelectedUser = this.setSelectedUser.bind(this);
@@ -21,24 +20,27 @@ class UserSelector extends Component {
 
   setSelectedUser(value) {
     this.setState({
-      oneIsVisible: false,
-      twoIsVisible: true,
-      selectedUser: value
+      selectedUser: value,
+      isStageTwo: true
     });
+    console.log("userId:", value);
   }
 
   resetState() {
     this.setState({
-      oneIsVisible: true,
-      twoIsVisible: false,
-      selectedUser: ""
+      selectedUser: {},
+      isStageTwo: false
     });
   }
 
   searchUsersInAD(user) {
+    this.setState({
+      foundUsers: []
+    });
     DCMTWebApi.searchAD(user)
       .then(response => {
         this.setState({ foundUsers: response.data });
+        this.refs.StageOne.stopLoading();
       })
       .catch(error => {
         throw error;
@@ -47,17 +49,21 @@ class UserSelector extends Component {
 
   render() {
     return (
-      <div className="parent-container">
-        <StageOne
-          isVisible={this.state.oneIsVisible}
-          setSelectedUser={this.setSelectedUser}
-          searchUsersInAD={this.searchUsersInAD}
-        />
-        <StageTwo
-          isVisible={this.state.twoIsVisible}
-          foundUsers={this.state.foundUsers}
-          resetState={this.resetState}
-        />
+      <div className="user-selector-container">
+        {this.state.isStageTwo === false && (
+          <StageOne
+            ref="StageOne"
+            setSelectedUser={this.setSelectedUser}
+            searchUsersInAD={this.searchUsersInAD}
+            foundUsers={this.state.foundUsers}
+          />
+        )}
+        {this.state.isStageTwo === true && (
+          <StageTwo
+            selectedUser={this.state.selectedUser}
+            resetState={this.resetState}
+          />
+        )}
       </div>
     );
   }

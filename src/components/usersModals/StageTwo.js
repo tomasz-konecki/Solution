@@ -6,33 +6,109 @@ class StageTwo extends Component {
   constructor() {
     super();
     this.state = {
-      show: ""
+      firstName: "",
+      lastName: "",
+      email: "",
+      phoneNumber: "",
+      id: "",
+      role: ""
     };
     this.handleBack = this.handleBack.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   handleBack() {
     this.props.resetState();
   }
 
-  componentDidMount() {
-    this.setState({ show: "stage-two-hide" });
+  handleChange(field, event) {
+    let object = {};
+    object[field] = event.target.value;
+    this.setState(object);
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.isVisible !== this.props.isVisible) {
-      this.setState({
-        show: this.props.isVisible ? "stage-two-hide" : "stage-two-show"
-      });
+  handleSubmit(event) {
+    event.preventDefault();
+    console.log(this.state);
+  }
+
+  componentDidMount() {
+    let {
+      firstName,
+      lastName,
+      id,
+      email,
+      phoneNumber,
+      role
+    } = this.props.selectedUser;
+
+    if (phoneNumber === null) {
+      phoneNumber = "";
     }
-    // console.log("Stage Two, found users:", this.props.foundUsers);
+
+    this.setState({
+      firstName,
+      lastName,
+      email,
+      phoneNumber,
+      id
+    });
   }
 
   render() {
     return (
-      <div className={["stage-two-container", this.state.show].join(" ")}>
-        <FoundUsersTable foundUsers={this.props.foundUsers} />
+      <div className="stage-two-container">
         <div className="button-back-container">
+          <form onSubmit={this.handleSubmit}>
+            <label>
+              Name:
+              <input
+                disabled
+                type="text"
+                value={this.state.firstName}
+                onChange={event => this.handleChange("firstName", event)}
+              />
+            </label>
+            <label>
+              Last name:
+              <input
+                disabled
+                type="text"
+                value={this.state.lastName}
+                onChange={event => this.handleChange("lastName", event)}
+              />
+            </label>
+            <label>
+              Email:
+              <input
+                disabled
+                type="text"
+                value={this.state.email}
+                onChange={event => this.handleChange("email", event)}
+              />
+            </label>
+            <label>
+              Phone number
+              <input
+                disabled
+                type="text"
+                value={this.state.phoneNumber}
+                onChange={event => this.handleChange("phoneNumber", event)}
+              />
+            </label>
+            <hr />
+            <select
+              value={this.state.role}
+              onChange={event => this.handleChange("role", event)}
+            >
+              <option>teamLeader</option>
+              <option>developer</option>
+              <option>HR</option>
+              <option>administrator</option>
+            </select>
+            <input type="submit" value="Submit" />
+          </form>
+
           <button onClick={this.handleBack}>Back</button>
         </div>
       </div>

@@ -16,13 +16,10 @@ class Content extends React.Component {
     const { match } = this.props;
     return (
       <div className="content">
-        <LeftMenu className="left-menu" extended={false} />
-        <aside className="right">
-          <Route path={match.url + "/users"} component={UsersContainer} />
-          <Route path={match.url + "/employees"} component={Employees} />
-          <Route path={match.url + "/projects"} component={Projects} />
-          <Route path={match.url + "/assign"} component={Assign} />
-        </aside>
+        <Route path={match.url + "/users"} component={UsersContainer} />
+        <Route path={match.url + "/employees"} component={Employees} />
+        <Route path={match.url + "/projects"} component={Projects} />
+        <Route path={match.url + "/assign"} component={Assign} />
       </div>
     );
   }

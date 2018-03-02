@@ -3,15 +3,47 @@ import { withRouter } from "react-router-dom";
 import PropTypes from 'prop-types';
 import Logo from "../../../components/common/Logo";
 import TopBar from "./TopBar";
+import Icon from "../../../components/common/Icon";
+import LeftMenu from "../menu/LeftMenu";
 
-const Header = (props) => {
-  return (
-    <div className="header">
-      <Logo size="vector_cut" title/>
-      <TopBar logout={props.logout} />
-    </div>
-  );
-};
+class Header extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {extended: false, blocked: false};
+
+    this.handleExtend = this.handleExtend.bind(this);
+    this.handleBlockedClick = this.handleBlockedClick.bind(this);
+  }
+
+  handleExtend() {
+    if(this.state.blocked) return;
+    this.setState(prevState => ({
+      extended: !prevState.extended
+    }));
+  }
+  handleBlockedClick() {
+    this.setState(prevState => ({
+      blocked: !prevState.blocked,
+      extended: !prevState.extended
+    }));
+  }
+
+  render() {
+    return (
+      <div className="header">
+        <div className="first-bar"/>
+        <div className="second-bar"/>
+        <div onClick={this.handleBlockedClick} className="extender">
+          <Icon icon="bars" iconSize="lg"/>
+        </div>
+        <LeftMenu className="left-menu" extended={this.state.extended} />
+        <Logo size="vector_cut"/>
+        <div className="title">DCMT</div>
+        <TopBar logout={this.props.logout} />
+      </div>
+    );
+  }
+}
 
 Header.propTypes = {
   logout: PropTypes.func

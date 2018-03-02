@@ -7,7 +7,7 @@ const API_ENDPOINT = "http://10.24.14.148";
 class DCMTWebApi {
   auth(username, password) {
     return axios
-      .post("http://localhost:3001/sessions/create", { username, password })
+      .post(`${API_ENDPOINT}/account/login`, { username, password })
       .then(response => jwtDecode(response.data.id_token));
   }
 

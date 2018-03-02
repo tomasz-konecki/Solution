@@ -1,7 +1,6 @@
 @import "3rd/Reset.scss";
 @import "ColorSchema.scss";
 @import "./components/Button";
-@import url("https://fonts.googleapis.com/css?family=Roboto+Condensed");
 
 body {
   background: $body-background;
@@ -22,5 +21,5 @@ a, a:visited {
 }
 
 .ReactModal__Overlay {
-  z-index: 2;
+  z-index: 100;
 }

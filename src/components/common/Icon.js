@@ -1,9 +1,9 @@
 import React from "react";
 import PropTypes from 'prop-types';
 
-const Icon = ({iconType = "fas", iconSize = "lg", icon}) => {
+const Icon = ({iconType = "fas", iconSize = "", icon}) => {
   return (
-    <i className={iconType + " fa-" + icon + " fa-" + iconSize}/>
+    <i className={iconType + " fa-" + icon + (iconSize !== "" ? " fa-" + iconSize : "")}/>
   );
 };
 

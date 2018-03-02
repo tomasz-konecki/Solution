@@ -8,11 +8,11 @@ class VerticalMenuElement extends React.Component {
     super(props);
   }
   render() {
-    const { iconType, iconSize, icon, title, path, match, extended } = this.props;
+    const { iconType, icon, title, path, match, extended } = this.props;
     return (
       <NavLink to={match.url + path} activeClassName="active">
         <li>
-          <Icon icon={icon} iconType={iconType} iconSize={iconSize}/>
+          <Icon icon={icon} iconType={iconType} iconSize="lg"/>
           <span>{title}</span>
         </li>
       </NavLink>

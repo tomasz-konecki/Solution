@@ -7,28 +7,10 @@ import PropTypes from 'prop-types';
 class LeftMenu extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {extended: false, blocked: false};
-
-    this.handleExtend = this.handleExtend.bind(this);
-    this.handleBlockedClick = this.handleBlockedClick.bind(this);
-  }
-
-  handleExtend() {
-    if(this.state.blocked) return;
-    this.setState(prevState => ({
-      extended: !prevState.extended
-    }));
-  }
-  handleBlockedClick() {
-    this.setState(prevState => ({
-      blocked: !prevState.blocked,
-      extended: !prevState.extended
-    }));
   }
 
   render() {
-    const { match } = this.props;
-    const { extended } = this.state;
+    const { match, extended } = this.props;
     return (
       <ul onMouseEnter={this.handleExtend} onMouseLeave={this.handleExtend} className={"left-menu" + (extended ? " extended" : "")}>
         <VerticalMenuElement
@@ -63,16 +45,14 @@ class LeftMenu extends React.Component {
           iconType="fas"
           title="Przypisz"
         />
-        <div onClick={this.handleBlockedClick} className="extender">
-          <Icon icon="bars"/>
-        </div>
       </ul>
     );
   }
 }
 
 LeftMenu.propTypes = {
-  match: PropTypes.object
+  match: PropTypes.object,
+  extended: PropTypes.bool
 };
 
 export default withRouter(LeftMenu);

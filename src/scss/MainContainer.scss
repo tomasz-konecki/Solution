@@ -1,89 +1,70 @@
 @import "ColorSchema.scss";
 @import url("https://use.fontawesome.com/releases/v5.0.6/css/all.css");
 @import url("https://fonts.googleapis.com/css?family=Roboto");
+@import url('https://fonts.googleapis.com/css?family=Fugaz+One');
+@import url('https://fonts.googleapis.com/css?family=Faster+One');
+@import url("https://fonts.googleapis.com/css?family=Roboto+Condensed");
+
+::-webkit-scrollbar-track
+{
+	border: 1px solid $main-color;
+	background-color: #F5F5F5;
+}
+
+::-webkit-scrollbar
+{
+	width: 10px;
+	background-color: #F5F5F5;
+}
+
+::-webkit-scrollbar-thumb
+{
+	background-color: $main-color;
+}
 
 .wrapper {
   height: 100vh;
   width: 100vw;
-  background: $wrapper-background;
+  background: $content-background;
+
+  overflow-y: scroll;
 
   .header {
-    height: 8vh;
+    height: 6vh;
     overflow: hidden;
     white-space: nowrap;
+    box-shadow: 0px 1px 3px 0px rgba(0,0,0,0.75);
+    top: 0;
+    width: calc(100% - 9px);
+    position: fixed;
+    z-index: 2;
+    right: 9px;
 
-    .logo {
-      display: inline-block;
-      width: 15%;
-      height: 100%;
-      vertical-align: top;
-      overflow: hidden;
-      white-space: nowrap;
-      background: $logo-background;
-      user-select: none;
-
-      img {
-        display: inline-block;
-        height: 6vh;
-        width: 6vh;
-        padding: 1vh;
-      }
-      .title-container {
-        display: inline-block;
-        vertical-align: top;
-        padding-left: 0.6vw;
-
-        .title {
-          text-shadow: 0 0 1px rgba(35, 31, 32, 0.1);
-          font-family: "Roboto", sans-serif;
-          color: #231f20;
-          line-height: 8vh;
-          font-size: 1.7em;
-          font-weight: 900;
-          display: inline-block;
-          vertical-align: top;
-        }
-      }
+    .first-bar {
+      height: 1vh;
+      width: 100%;
+      background: darken($main-color, 5%);
     }
-    .top-bar {
-      display: inline-block;
-      width: 85%;
-      height: 100%;
-      vertical-align: top;
-      line-height: 8vh;
-      text-align: right;
-      border-bottom: 1px solid lighten($top-bar-background, 25%);
-      background: $top-bar-background;
-      .logged-in-user {
-        padding-right: 1em;
-        strong {
-          font-weight: 800;
-        }
-      }
-      button {
-        margin-right: 15px;
-        transition: all 0.3s;
-      }
+    .second-bar {
+      height: 5vh;
+      width: 100%;
+      background: $main-color;
     }
-  }
-  .content {
-    height: 84vh;
-    overflow: hidden;
-    white-space: nowrap;
-    margin-top: -1px;
-    position: relative;
 
     .left-menu {
-      background: darken($menu-element-background, 10%);
-      height: 100%;
-      width: 8vh;
+      background: $left-menu-background;
+      position: fixed;
+      left: 0;
+      height: 94vh;
+      width: 6.5vh;
+      top: 6vh;
       color: transparent;
       display: inline-block;
       vertical-align: top;
-      position: relative;
       z-index: 1;
       transition-property: width;
       transition-duration: 0.3s;
+      box-shadow: 0px 4px 3px 3px rgba(0,0,0,0.75);
 
       li {
         height: 4vh;
@@ -92,8 +73,8 @@
         vertical-align: baseline;
         cursor: default;
         color: $menu-element-text-color;
-        background: darken($menu-element-background, 20%);
-        border-bottom: 1px solid darken($menu-element-background, 15%);
+        background: $left-menu-li-background;
+        border-bottom: 1px solid $left-menu-li-border-bottom-color;
         padding-top: 0.5em;
         padding-bottom: 0.5em;
         //text-align: center;
@@ -108,37 +89,23 @@
         }
         i {
           padding: 1vh;
-          margin-left: 1.4vh;
+          margin-left: 0.9vh;
         }
         &:hover {
-          background-color: lighten($menu-element-hover-background, 5%);
+          background-color: $left-menu-li-hover-background;
           cursor: pointer;
           i {
-            color: lighten($menu-element-icon-hover-color, 35%);
+            color: $left-menu-li-hover-icon-color;
           }
-        }
-      }
-      .extender {
-        cursor: pointer;
-        position: absolute;
-        bottom: 0;
-        width: 8vh;
-        height: 4vh;
-        line-height: 1.5em;
-        vertical-align: baseline;
-        color: $menu-element-text-color;
-        padding-top: 0.5em;
-        i {
-          padding-left: 0.9em;
         }
       }
       .active {
         li {
-          background: darken($menu-element-active-background, 5%);
+          background: $left-menu-li-active-background;
         }
       }
       &.extended {
-        width: 15%;
+        width: 10%;
         li {
           span {
             display: inline-block;
@@ -155,25 +122,77 @@
         }
       }
     }
-    .right {
+    .top-bar {
       position: absolute;
-      left: 8vh;
-      display: inline-block;
-      width: 80%;
-      margin: 0 auto;
-      height: 100%;
-      padding: 1.1vh;
-      border-left: 1px solid lighten($logo-background, 25%);
-      background: $content-background;
+      right: 1vw;
+      top: 1vh;
+      line-height: 5vh;
+      font-size: 2vh;
+      height: 5vh;
+      vertical-align: baseline;
+      color: white;
+      .logged-in-user {
+        padding-right: 1vw;
+      }
+      .nav-compact {
+        height: 3vh;
+        span {
+          font-size: 1.65vh;
+        }
+        i {
+          font-size: 1.65vh;
+        }
+      }
     }
+    .logo {
+      position: absolute;
+      margin-left: auto;
+      margin-right: auto;
+      left: 0;
+      right: 0;
+      top: 1.7vh;
+      text-align: center;
+      img {
+        height: 3.5vh;
+        filter: brightness(0) invert(1);
+      }
+    }
+    .title {
+      position: absolute;
+      left: 5vw;
+      top: 1.4vh;
+      line-height: 3.8vh;
+      vertical-align: baseline;
+      color: white;
+      font-size: 3.8vh;
+      font-family: 'Faster One', cursive;
+    }
+
+    .extender {
+      cursor: pointer;
+      position: absolute;
+      top: 1vh;
+      width: 8vh;
+      height: 5vh;
+      line-height: 5vh;
+      vertical-align: baseline;
+      color: $menu-element-text-color;
+      z-index: 2;
+      i {
+        padding-left: 2vh;
+        font-size: 3.3vh;
+        padding-top: 1.32vh;
+      }
+    }
+
   }
-  .footer {
+  .content {
+    height: 94vh;
+    margin-left: auto;
+    margin-right: auto;
+    width: 80%;
+    padding: 1.1vh;
     box-sizing: border-box;
-    height: 8vh;
-    line-height: 8vh;
-    padding: 1vh;
-    vertical-align: bottom;
-    background: $body-background;
-    color: $logo-background;
+    margin-top: 6vh;
   }
 }

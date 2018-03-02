@@ -20,7 +20,6 @@ class MainContainer extends React.Component {
         <div className="wrapper">
           <Header logout={this.props.logout}/>
           <Content match={match} />
-          <Footer/>
         </div>
       </div>
     );

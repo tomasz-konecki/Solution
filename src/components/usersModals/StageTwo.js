@@ -31,7 +31,7 @@ class StageTwo extends Component {
   render() {
     return (
       <div className={["stage-two-container", this.state.show].join(" ")}>
-        <FoundUsersTable foundUsers={this.props.foundUsers} />
+        {/* <FoundUsersTable foundUsers={this.props.foundUsers} /> */}
         <div className="button-back-container">
           <button onClick={this.handleBack}>Back</button>
         </div>

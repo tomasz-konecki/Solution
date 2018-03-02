@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import "../../scss/components/usersModals/StageOne.scss";
+import FoundUsersTable from "../users/FoundUsersTable";
 
 class StageOne extends Component {
   constructor() {
@@ -7,7 +8,8 @@ class StageOne extends Component {
 
     this.state = {
       show: "",
-      searchText: ""
+      searchText: "",
+      isSearchingDone: false
     };
 
     this.handleClick = this.handleClick.bind(this);
@@ -34,6 +36,7 @@ class StageOne extends Component {
   handleClick(e) {
     this.props.setSelectedUser(this.state.searchText);
     this.props.searchUsersInAD(this.state.searchText);
+    this.setState({ isSearchingDone: true });
   }
 
   handleKeyUp(e) {
@@ -42,6 +45,11 @@ class StageOne extends Component {
     }
   }
   render() {
+    let foundUsersTable = null;
+    if (this.state.isSearchingDone) {
+      foundUsersTable = <FoundUsersTable foundUsers={this.props.foundUsers} />;
+    }
+
     return (
       <div className={["stage-one-container", this.state.show].join(" ")}>
         <input
@@ -51,6 +59,7 @@ class StageOne extends Component {
           onKeyUp={this.handleKeyUp}
         />
         <input type="button" value="Search" onClick={this.handleClick} />
+        {foundUsersTable}
       </div>
     );
   }

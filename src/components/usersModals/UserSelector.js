@@ -7,8 +7,6 @@ class UserSelector extends Component {
   constructor() {
     super();
     this.state = {
-      oneIsVisible: true,
-      twoIsVisible: false,
       selectedUser: "",
       foundUsers: []
     };
@@ -29,8 +27,6 @@ class UserSelector extends Component {
 
   resetState() {
     this.setState({
-      oneIsVisible: true,
-      twoIsVisible: false,
       selectedUser: ""
     });
   }
@@ -47,17 +43,17 @@ class UserSelector extends Component {
 
   render() {
     return (
-      <div className="parent-container">
+      <div className="user-selector-container">
         <StageOne
-          isVisible={this.state.oneIsVisible}
           setSelectedUser={this.setSelectedUser}
           searchUsersInAD={this.searchUsersInAD}
+          foundUsers={this.state.foundUsers}
         />
-        <StageTwo
+        {/* <StageTwo
           isVisible={this.state.twoIsVisible}
           foundUsers={this.state.foundUsers}
           resetState={this.resetState}
-        />
+        /> */}
       </div>
     );
   }

@@ -2,13 +2,9 @@ import React, { Component } from "react";
 import "../../scss/components/users/FoundUsersTable.scss";
 
 const FoundUsersTable = props => {
-  console.log("FOUND USERS TABLE, found users:", props.foundUsers);
-
   const createList = property =>
     props.foundUsers.map((item, index) => (
-      <li key={index} onClick={() => console.log("item " + this + " clicked")}>
-        {item[property]}
-      </li>
+      <li key={index}>{item[property]}</li>
     ));
 
   const firstNames = createList("firstName");

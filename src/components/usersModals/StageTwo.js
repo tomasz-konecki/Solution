@@ -10,7 +10,8 @@ class StageTwo extends Component {
       lastName: "",
       email: "",
       phoneNumber: "",
-      id: ""
+      id: "",
+      role: ""
     };
     this.handleBack = this.handleBack.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);

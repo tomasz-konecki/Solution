@@ -67,7 +67,7 @@
     padding: 0.5em;
     border: none;
     outline: none;
-    border-bottom: 1.2px solid transparent;
+    border: 1.2px solid transparent;
     font-family: "Roboto Condensed", sans-serif;
     font-weight: 700;
     text-align: center;
@@ -78,7 +78,7 @@
     box-sizing: border-box;
   }
   input:focus {
-    border-bottom: 1.2px solid lightblue;
+    border: 1.2px solid lightblue;
     transition: all 0.5s;
     caret-color: black;
   }

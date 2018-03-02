@@ -40,7 +40,7 @@ class LoginForm extends React.Component {
 
             <div className="context-container">
               {error && <strong>{error}</strong>}
-              {this.props.loading && <LoaderHorizontal/>}
+              {this.props.loading === true && <LoaderHorizontal/>}
             </div>
 
             <div className="centric-container">

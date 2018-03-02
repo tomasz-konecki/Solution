@@ -9,7 +9,11 @@ import * as reducers from '../reducers';
 const persistConfig = {
   key: 'root',
   storage,
-  blacklist: ['form']
+  blacklist: ['form'],
+  migrate: (state) => {
+    state.authReducer.loading = false;
+    return Promise.resolve(state);
+  }
 };
 
 const storeCreator = (history) => {

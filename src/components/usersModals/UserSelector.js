@@ -19,8 +19,6 @@ class UserSelector extends Component {
 
   setSelectedUser(value) {
     this.setState({
-      oneIsVisible: false,
-      twoIsVisible: true,
       selectedUser: value
     });
   }

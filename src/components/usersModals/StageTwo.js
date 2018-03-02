@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import "../../scss/components/usersModals/StageTwo.scss";
+import FoundUsersTable from "../users/FoundUsersTable";
 
 class StageTwo extends Component {
   constructor() {
@@ -24,12 +25,13 @@ class StageTwo extends Component {
         show: this.props.isVisible ? "stage-two-hide" : "stage-two-show"
       });
     }
+    // console.log("Stage Two, found users:", this.props.foundUsers);
   }
 
   render() {
     return (
       <div className={["stage-two-container", this.state.show].join(" ")}>
-        <span>Selected user: {this.props.selectedUser}</span>
+        <FoundUsersTable foundUsers={this.props.foundUsers} />
         <div className="button-back-container">
           <button onClick={this.handleBack}>Back</button>
         </div>

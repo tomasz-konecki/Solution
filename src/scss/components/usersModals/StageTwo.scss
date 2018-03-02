@@ -1,20 +1,23 @@
+$stage-two-container-height: 300px;
+
 .stage-two-container {
-	background: #d3d3d1;
-	padding: 25px;
-	height: 30px;
+  background: #d3d3d1;
+  padding: 25px;
+  height: $stage-two-container-height;
 }
 
 .stage-two-show {
-	display: block;
+  display: block;
 }
 .stage-two-hide {
-	display: none;
+  display: none;
 }
 .button-back-container {
-	text-align: right;
-	width: 97%;
+  text-align: right;
+  width: 97%;
+  margin-top: ($stage-two-container-height - 190px);
 }
 
 .button-back-container button {
-	width: 100px;
+  width: 100px;
 }

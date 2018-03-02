@@ -33,6 +33,7 @@ class StageOne extends Component {
 
   handleClick(e) {
     this.props.setSelectedUser(this.state.searchText);
+    this.props.searchUsersInAD(this.state.searchText);
   }
 
   handleKeyUp(e) {

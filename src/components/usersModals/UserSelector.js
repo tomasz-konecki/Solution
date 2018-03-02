@@ -7,8 +7,9 @@ class UserSelector extends Component {
   constructor() {
     super();
     this.state = {
-      selectedUser: "",
-      foundUsers: []
+      selectedUser: {},
+      foundUsers: [],
+      isStageTwo: false
     };
 
     this.setSelectedUser = this.setSelectedUser.bind(this);
@@ -19,20 +20,27 @@ class UserSelector extends Component {
 
   setSelectedUser(value) {
     this.setState({
-      selectedUser: value
+      selectedUser: value,
+      isStageTwo: true
     });
+    console.log("userId:", value);
   }
 
   resetState() {
     this.setState({
-      selectedUser: ""
+      selectedUser: {},
+      isStageTwo: false
     });
   }
 
   searchUsersInAD(user) {
+    this.setState({
+      foundUsers: []
+    });
     DCMTWebApi.searchAD(user)
       .then(response => {
         this.setState({ foundUsers: response.data });
+        this.refs.StageOne.stopLoading();
       })
       .catch(error => {
         throw error;
@@ -42,16 +50,20 @@ class UserSelector extends Component {
   render() {
     return (
       <div className="user-selector-container">
-        <StageOne
-          setSelectedUser={this.setSelectedUser}
-          searchUsersInAD={this.searchUsersInAD}
-          foundUsers={this.state.foundUsers}
-        />
-        {/* <StageTwo
-          isVisible={this.state.twoIsVisible}
-          foundUsers={this.state.foundUsers}
-          resetState={this.resetState}
-        /> */}
+        {this.state.isStageTwo === false && (
+          <StageOne
+            ref="StageOne"
+            setSelectedUser={this.setSelectedUser}
+            searchUsersInAD={this.searchUsersInAD}
+            foundUsers={this.state.foundUsers}
+          />
+        )}
+        {this.state.isStageTwo === true && (
+          <StageTwo
+            selectedUser={this.state.selectedUser}
+            resetState={this.resetState}
+          />
+        )}
       </div>
     );
   }

@@ -17,7 +17,7 @@ render(
   <Provider store={store}>
     <PersistGate loading={null} persistor={persistor}>
       <ConnectedRouter history={history}>
-        <App {...this.props}/>
+        <App history={history}/>
       </ConnectedRouter>
     </PersistGate>
   </Provider>,

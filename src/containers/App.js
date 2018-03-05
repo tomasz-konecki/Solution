@@ -5,10 +5,10 @@ import { PrivateRoute, Login, Home } from '../creators';
 
 import "../scss/App.scss";
 
-const App = () => (
+const App = (props) => (
   <Switch>
     <Route exact path="/" component={Login} />
-    <PrivateRoute path="/main" component={Home} />
+    <PrivateRoute path="/main" component={Home} history={props.history} />
   </Switch>
 );
 

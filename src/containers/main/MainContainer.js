@@ -9,7 +9,6 @@ import PropTypes from 'prop-types';
 class MainContainer extends React.Component {
   constructor(props, match) {
     super(props);
-
   }
 
   render() {
@@ -18,7 +17,7 @@ class MainContainer extends React.Component {
     return (
       <div>
         <div className="wrapper">
-          <Header logout={this.props.logout}/>
+          <Header history={this.props.history} logout={this.props.logout}/>
           <Content match={match} />
         </div>
       </div>

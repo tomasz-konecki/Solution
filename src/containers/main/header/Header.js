@@ -5,6 +5,7 @@ import Logo from "../../../components/common/Logo";
 import TopBar from "./TopBar";
 import Icon from "../../../components/common/Icon";
 import LeftMenu from "../menu/LeftMenu";
+import { browserHistory } from 'react-router';
 
 class Header extends React.Component {
   constructor(props) {
@@ -13,6 +14,16 @@ class Header extends React.Component {
 
     this.handleExtend = this.handleExtend.bind(this);
     this.handleBlockedClick = this.handleBlockedClick.bind(this);
+
+    console.log(window.innerWidth, window.innerWidth <= 1366);
+
+    if(window.innerWidth <= 1366){
+      props.history.listen(location =>  {
+        this.setState({
+          extended: false
+        });
+      });
+    }
   }
 
   handleExtend() {
@@ -21,6 +32,7 @@ class Header extends React.Component {
       extended: !prevState.extended
     }));
   }
+
   handleBlockedClick() {
     this.setState(prevState => ({
       blocked: !prevState.blocked,

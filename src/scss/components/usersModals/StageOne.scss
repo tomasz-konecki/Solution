@@ -1,15 +1,17 @@
 .stage-one-container {
-	background: #d3d3d1;
-	padding: 25px;
-	height: 30px;
+  //   background: rgb(232, 229, 229);
+  padding: 25px;
+  border-top: 1px solid lightgray;
+  border-bottom: 1px solid lightgray;
+  height: 30px;
 }
 input {
-	margin-left: 10px;
+  margin-left: 10px;
 }
 
 .stage-one-show {
-	display: block;
+  display: block;
 }
 .stage-one-hide {
-	display: none;
+  display: none;
 }

@@ -11,7 +11,7 @@ class StageTwo extends Component {
       email: "",
       phoneNumber: "",
       id: "",
-      role: ""
+      role: "teamLeader"
     };
     this.handleBack = this.handleBack.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -58,57 +58,59 @@ class StageTwo extends Component {
   render() {
     return (
       <div className="stage-two-container">
-        <div className="button-back-container">
-          <form onSubmit={this.handleSubmit}>
-            <label>
-              Name:
-              <input
-                disabled
-                type="text"
-                value={this.state.firstName}
-                onChange={event => this.handleChange("firstName", event)}
-              />
-            </label>
-            <label>
-              Last name:
-              <input
-                disabled
-                type="text"
-                value={this.state.lastName}
-                onChange={event => this.handleChange("lastName", event)}
-              />
-            </label>
-            <label>
-              Email:
-              <input
-                disabled
-                type="text"
-                value={this.state.email}
-                onChange={event => this.handleChange("email", event)}
-              />
-            </label>
-            <label>
-              Phone number
-              <input
-                disabled
-                type="text"
-                value={this.state.phoneNumber}
-                onChange={event => this.handleChange("phoneNumber", event)}
-              />
-            </label>
-            <hr />
-            <select
-              value={this.state.role}
-              onChange={event => this.handleChange("role", event)}
-            >
-              <option>teamLeader</option>
-              <option>developer</option>
-              <option>HR</option>
-              <option>administrator</option>
-            </select>
-            <input type="submit" value="Submit" />
-          </form>
+        <form onSubmit={this.handleSubmit}>
+          <label>
+            Name:
+            <input
+              disabled
+              type="text"
+              value={this.state.firstName}
+              onChange={event => this.handleChange("firstName", event)}
+            />
+          </label>
+          <label>
+            Last name:
+            <input
+              disabled
+              type="text"
+              value={this.state.lastName}
+              onChange={event => this.handleChange("lastName", event)}
+            />
+          </label>
+          <label>
+            Email:
+            <input
+              disabled
+              type="text"
+              value={this.state.email}
+              onChange={event => this.handleChange("email", event)}
+            />
+          </label>
+          <label>
+            Phone number
+            <input
+              disabled
+              type="text"
+              value={this.state.phoneNumber}
+              onChange={event => this.handleChange("phoneNumber", event)}
+            />
+          </label>
+          <hr />
 
+          <select
+            value={this.state.role}
+            onChange={event => this.handleChange("role", event)}
+          >
+            <option>teamLeader</option>
+            <option>developer</option>
+            <option>HR</option>
+            <option>administrator</option>
+          </select>
+
+          <input type="submit" value="Submit" />
+        </form>
+
+        <div className="button-back-container">
           <button onClick={this.handleBack}>Back</button>
         </div>
       </div>

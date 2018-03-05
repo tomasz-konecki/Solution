@@ -1,23 +1,10 @@
 import React, { Component } from "react";
-import ReactModal from "react-modal";
+import Modal from "react-responsive-modal";
 import "../../../../scss/components/usersModals/usersModal.scss";
 
 import UsersList from "../../../../components/users/UsersList";
 
 import UsersSelector from "../../../../components/usersModals/UserSelector";
-
-// const customStyles = {
-//   content: {
-//     height: "400px",
-//     top: "50%",
-//     left: "50%",
-//     overflow: "none",
-//     right: "auto",
-//     bottom: "auto",
-//     marginRight: "-50%",
-//     transform: "translate(-50%, -50%)"
-//   }
-// };
 
 class Users extends Component {
   constructor(props) {
@@ -25,6 +12,7 @@ class Users extends Component {
     this.state = {
       showModal: false
     };
+
     this.handleOpenModal = this.handleOpenModal.bind(this);
     this.handleCloseModal = this.handleCloseModal.bind(this);
   }
@@ -42,21 +30,17 @@ class Users extends Component {
       <div>
         <button onClick={this.handleOpenModal}>Add user</button>
         <UsersList users={this.props.users} />
-        <ReactModal
-          isOpen={this.state.showModal}
-          className="UsersModal"
+        <Modal
+          open={this.state.showModal}
+          classNames={{modal: 'Modal'}}
           contentLabel="Users modal"
-          ariaHideApp={false}
-          onRequestClose={this.handleCloseModal}
+          onClose={this.handleCloseModal}
         >
           <header>
             <span>Users</span>
-            <button className="close-button" onClick={this.handleCloseModal}>
-              Close
-            </button>
           </header>
           <UsersSelector />
-        </ReactModal>
+        </Modal>
       </div>
     );
   }

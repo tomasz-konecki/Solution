@@ -6,6 +6,8 @@ import Content from "./content/Content";
 import "../../scss/MainContainer.scss";
 import PropTypes from 'prop-types';
 
+import 'react-responsive-modal/lib/react-responsive-modal.css';
+
 class MainContainer extends React.Component {
   constructor(props, match) {
     super(props);

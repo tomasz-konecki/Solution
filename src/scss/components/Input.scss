@@ -1,29 +1,25 @@
 
-  input {
-    display: inline-block;
-    padding: 0.5em;
-    border: none;
-    outline: none;
-    border: 1.2px solid transparent;
-    font-family: "Roboto Condensed", sans-serif;
-    font-weight: 700;
-    text-align: center;
-    width: 100%;
-    caret-color: transparent;
-    margin: 0;
-    margin-bottom: 0.5em;
-    box-sizing: border-box;
-  }
-  input:focus {
-    border: 1.2px solid lightblue;
-    transition: all 0.5s;
-    caret-color: black;
-  }
-  input:focus::-webkit-input-placeholder {
-    color: transparent;
-    transition: all 0.2s;
-  }
-  input:focus::-moz-placeholder {
-    color: transparent;
-    transition: all 0.2s;
-  }
+input {
+  display: inline-block;
+  padding: 0.5em;
+  border: none;
+  outline: none;
+  border: 1.2px solid gray;
+  font-family: "Roboto Condensed", sans-serif;
+  margin: 0;
+  margin-bottom: 0.5em;
+  margin-right: 0.5em;
+  box-sizing: border-box;
+}
+input:focus {
+  border: 1.2px solid darkslategray;
+  transition: all 0.5s;
+}
+input:focus::-webkit-input-placeholder {
+  color: transparent;
+  transition: all 0.2s;
+}
+input:focus::-moz-placeholder {
+  color: transparent;
+  transition: all 0.2s;
+}

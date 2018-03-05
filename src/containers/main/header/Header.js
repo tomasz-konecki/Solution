@@ -15,9 +15,7 @@ class Header extends React.Component {
     this.handleExtend = this.handleExtend.bind(this);
     this.handleBlockedClick = this.handleBlockedClick.bind(this);
 
-    console.log(window.innerWidth, window.innerWidth <= 1366);
-
-    if(window.innerWidth <= 1366){
+    if(window.outerWidth <= 1366){
       props.history.listen(location =>  {
         this.setState({
           extended: false

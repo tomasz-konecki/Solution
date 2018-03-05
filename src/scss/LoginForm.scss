@@ -7,6 +7,16 @@
   min-width: 300px;
   background: rgb(166, 166, 166);
 
+  input {
+    width: 100%;
+    caret-color: transparent;
+    font-weight: 700;
+    text-align: center;
+    &:focus {
+      caret-color: black;
+    }
+  }
+
   ::-webkit-input-placeholder {
     text-align: center;
     font-weight: 200;

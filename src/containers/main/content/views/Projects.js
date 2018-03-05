@@ -1,5 +1,5 @@
 import React from "react";
-import ReactModal from "react-modal";
+import Modal from "react-responsive-modal";
 
 class Projects extends React.Component {
   constructor(props) {
@@ -22,15 +22,14 @@ class Projects extends React.Component {
     return (
       <div>
         <button onClick={this.handleOpenModal}>Open Modal</button>
-          <ReactModal
-            isOpen={this.state.showModal}
+          <Modal
+            open={this.state.showModal}
             contentLabel="Projects test modal"
-            ariaHideApp={false}
-            onRequestClose={this.handleCloseModal}>
+            onClose={this.handleCloseModal}>
             <p>Text here</p>
             <hr/>
             <button onClick={this.handleCloseModal}>Close</button>
-          </ReactModal>
+          </Modal>
       </div>
      );
   }

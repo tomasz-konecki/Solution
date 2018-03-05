@@ -1,7 +1,7 @@
 $stage-two-container-height: 300px;
 
 .stage-two-container {
-  background: #d3d3d1;
+  background: #eeeeee;
   padding: 25px;
   height: $stage-two-container-height;
 }
@@ -18,6 +18,8 @@ $stage-two-container-height: 300px;
   margin-top: ($stage-two-container-height - 190px);
 }
 
-.button-back-container button {
-  width: 100px;
+.button-back-container {
+  button {
+    width: 100px;
+  }
 }

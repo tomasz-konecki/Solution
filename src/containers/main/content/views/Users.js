@@ -51,7 +51,9 @@ class Users extends Component {
         >
           <header>
             <span>Users</span>
-            <button onClick={this.handleCloseModal}>Close</button>
+            <button className="close-button" onClick={this.handleCloseModal}>
+              Close
+            </button>
           </header>
           <UsersSelector />
         </ReactModal>

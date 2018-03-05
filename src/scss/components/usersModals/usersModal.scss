@@ -4,12 +4,24 @@
   width: 600px;
   top: 50%;
   left: 50%;
-  overflow: auto;
+  // overflow: auto;
   right: auto;
   bottom: auto;
-  marginright: -50%;
+  margin-right: -50%;
   transform: translate(-50%, -50%);
   background-color: #eee;
+  box-shadow: 5px 10px 10px #888888;
+
+  header {
+    padding: 15px;
+
+    .close-button {
+      margin-left: 83%;
+      &:hover {
+        cursor: pointer;
+      }
+    }
+  }
 }
 
 // .Overlay {

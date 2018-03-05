@@ -11,7 +11,7 @@ class StageTwo extends Component {
       email: "",
       phoneNumber: "",
       id: "",
-      role: "teamLeader"
+      role: "developer"
     };
     this.handleBack = this.handleBack.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -101,8 +101,8 @@ class StageTwo extends Component {
             value={this.state.role}
             onChange={event => this.handleChange("role", event)}
           >
-            <option>teamLeader</option>
             <option>developer</option>
+            <option>teamLeader</option>
             <option>HR</option>
             <option>administrator</option>
           </select>

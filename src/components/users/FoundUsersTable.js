@@ -21,7 +21,7 @@ class FoundUsersTable extends Component {
     ));
 
     return (
-      <div className="users-list-container">
+      <div className="found-users-container">
         <table>
           <tbody>
             <tr>

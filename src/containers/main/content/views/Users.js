@@ -1,9 +1,23 @@
 import React, { Component } from "react";
 import ReactModal from "react-modal";
+import "../../../../scss/components/usersModals/usersModal.scss";
 
 import UsersList from "../../../../components/users/UsersList";
 
 import UsersSelector from "../../../../components/usersModals/UserSelector";
+
+// const customStyles = {
+//   content: {
+//     height: "400px",
+//     top: "50%",
+//     left: "50%",
+//     overflow: "none",
+//     right: "auto",
+//     bottom: "auto",
+//     marginRight: "-50%",
+//     transform: "translate(-50%, -50%)"
+//   }
+// };
 
 class Users extends Component {
   constructor(props) {
@@ -30,13 +44,16 @@ class Users extends Component {
         <UsersList users={this.props.users} />
         <ReactModal
           isOpen={this.state.showModal}
-          contentLabel="Projects test modal"
+          className="UsersModal"
+          contentLabel="Users modal"
           ariaHideApp={false}
           onRequestClose={this.handleCloseModal}
         >
+          <header>
+            <span>Users</span>
+            <button onClick={this.handleCloseModal}>Close</button>
+          </header>
           <UsersSelector />
-          <hr />
-          <button onClick={this.handleCloseModal}>Close</button>
         </ReactModal>
       </div>
     );

@@ -6,19 +6,6 @@ import UsersList from "../../../../components/users/UsersList";
 
 import UsersSelector from "../../../../components/usersModals/UserSelector";
 
-// const customStyles = {
-//   content: {
-//     height: "400px",
-//     top: "50%",
-//     left: "50%",
-//     overflow: "none",
-//     right: "auto",
-//     bottom: "auto",
-//     marginRight: "-50%",
-//     transform: "translate(-50%, -50%)"
-//   }
-// };
-
 class Users extends Component {
   constructor(props) {
     super(props);
@@ -50,7 +37,7 @@ class Users extends Component {
           onRequestClose={this.handleCloseModal}
         >
           <header>
-            <span>Users</span>
+            <span>Użytkownicy</span>
             <button className="close-button" onClick={this.handleCloseModal}>
               Close
             </button>

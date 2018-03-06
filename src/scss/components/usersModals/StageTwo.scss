@@ -1,18 +1,18 @@
 $stage-two-container-height: 18em;
 
 .stage-two-container {
-  background: #eeeeee;
-  height: $stage-two-container-height;
-
+  padding: 15px;
   .user-details-container {
     padding-bottom: 1.5em;
     border-bottom: 1px solid lightgray;
-    width: 90%;
-    margin: 0 auto;
+
+    .detail-container {
+      margin-bottom: 0.5em;
+    }
 
     label {
       display: inline-block;
-      width: 5em;
+      width: 20%;
     }
     span {
       font-weight: 700;
@@ -21,9 +21,9 @@ $stage-two-container-height: 18em;
   }
 
   .form-container {
-    width: 90%;
-    margin: 0 auto;
     padding-top: 0.7em;
+    .form-navigation {
+    }
   }
 }
 
@@ -32,9 +32,6 @@ $stage-two-container-height: 18em;
 }
 
 .button-back-container {
-  text-align: right;
-  width: 97%;
-  margin-top: ($stage-two-container-height - 11em);
   button {
     width: 6em;
   }

@@ -16,23 +16,20 @@ class FoundUsersTable extends Component {
       <tr key={item.id} onClick={event => this.handleOnClick(item, event)}>
         <td id={item.id}>{item.firstName}</td>
         <td id={item.id}>{item.lastName}</td>
-        <td id={item.id}>{item.id}</td>
       </tr>
     ));
 
     return (
-      <div className="found-users-container">
-        <table>
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Last name</th>
-            </tr>
-          </thead>
-          <tbody>
-            {tableData}
-          </tbody>
-        </table>
+      <div className="found-users-wrapper">
+        <div>
+          <span>Imię</span>
+          <span>Nazwisko</span>
+        </div>
+        <div className="found-users-container">
+          <table>
+            <tbody>{tableData}</tbody>
+          </table>
+        </div>
       </div>
     );
   }

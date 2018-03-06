@@ -36,9 +36,6 @@ class Users extends Component {
           contentLabel="Users modal"
           onClose={this.handleCloseModal}
         >
-          <header>
-            <span>Dodaj użytkownika</span>
-          </header>
           <UsersSelector />
         </Modal>
       </div>

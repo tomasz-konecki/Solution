@@ -1,26 +1,41 @@
 @import "../../ColorSchema.scss";
 
 .user-selector-container {
-  min-height: 15em;
+  height: 100%;
   box-sizing: border-box;
+  position: relative;
+}
+
+.found-users-wrapper {
+  overflow: hidden;
+  white-space: nowrap;
+  height: 100%;
+  padding-top: 2.5em;
+  div:nth-of-type(1) {
+    width: 100%;
+    span {
+      display: inline-block;
+      color: $main-color;
+      font-size: 80%;
+      padding: 0.4rem 0.4rem 0.4rem 0.4rem;
+      box-sizing: border-box;
+      &:nth-of-type(1) {
+        width: 39.4%;
+      }
+      &:nth-of-type(2) {
+        width: 59.6%;
+      }
+    }
+  }
 }
 
 .found-users-container {
   width: 100%;
+  height: calc(100% - 4.5em);
   overflow-y: auto;
-  min-height: 10em;
+  // max-height: 10rem;
   table {
     width: 100%;
-    thead {
-      tr {
-        th {
-          color: $main-color;
-          font-size: 80%;
-          text-align: left;
-          padding: 0.4rem;
-        }
-      }
-    }
 
     tbody {
       tr {
@@ -29,6 +44,12 @@
 
         td {
           padding: 0.4rem;
+          &:nth-child(1) {
+            width: 40%;
+          }
+          &:nth-child(2) {
+            width: 60%;
+          }
         }
         &:hover {
           background: $main-color-hover-light;

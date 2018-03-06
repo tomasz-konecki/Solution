@@ -44,14 +44,15 @@ class StageOne extends Component {
   render() {
     return (
       <div className="stage-one-container">
-        <input
-          name="user"
-          type="text"
-          onChange={this.handleInput}
-          onKeyUp={this.handleKeyUp}
-        />
-        <input type="button" value="Search" onClick={this.handleClick} />
-
+        <div className="search-container">
+          <input
+            name="user"
+            type="text"
+            onChange={this.handleInput}
+            onKeyUp={this.handleKeyUp}
+          />
+          <button onClick={this.handleClick}>Search</button>
+        </div>
         {this.state.isLoading === true && <LoaderHorizontal />}
 
         {this.state.isSearchingDone === true && (

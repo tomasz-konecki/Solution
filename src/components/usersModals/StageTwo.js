@@ -64,23 +64,23 @@ class StageTwo extends Component {
     return (
       <div className="stage-two-container">
         <div className="user-details-container">
-          <div className="first-name-container">
+          <div className="detail-container">
             <label>Imię:</label>
             <span>{this.state.firstName}</span>
           </div>
-          <div className="last-name-container">
+          <div className="detail-container">
             <label>Nazwisko:</label>
             <span>{this.state.lastName}</span>
           </div>
-          <div className="email-container">
+          <div className="detail-container">
             <label>Email:</label>
             <span>{this.state.email}</span>
           </div>
-          <div className="phone-container">
+          <div className="detail-container">
             <label>Telefon:</label>
             <span>{this.state.phoneNumber}</span>
           </div>
-          <div className="role-container">
+          <div className="detail-container">
             <label>Role:</label>
             <span>{this.state.roles.join(", ")}</span>
           </div>
@@ -133,14 +133,16 @@ class StageTwo extends Component {
               />
               <span>Administrator</span>
             </div>
-            <div className="submit-button-container">
-              <input type="submit" value="Submit" />
+
+            <div className="form-navigation">
+              <div className="submit-button-container">
+                <button type="submit">Submit</button>
+              </div>
+              <div className="button-back-container">
+                <button onClick={this.handleBack}>Back</button>
+              </div>
             </div>
           </form>
-        </div>
-
-        <div className="button-back-container">
-          <button onClick={this.handleBack}>Back</button>
         </div>
       </div>
     );

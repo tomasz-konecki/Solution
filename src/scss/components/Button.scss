@@ -1,27 +1,32 @@
 @import "../ColorSchema.scss";
 button {
   outline: none;
+  height: 2.5em;
+  line-height: 2.1em;
+  vertical-align: baseline;
   display: inline-block;
   transition: all 0.5s;
   background: $button-element-background;
   color: $menu-element-text-color;
   vertical-align: baseline;
-  border: 1px solid transparent;
-  padding: 10px;
+  border: 1.2px solid transparent;
+  padding: 0 10px;
+  box-sizing: border-box;
+  vertical-align: top;
 
   @media only screen and (max-width: 1366px) {
     & {
-       font-size: 1em;
+      font-size: 1em;
     }
   }
 
   @media only screen and (max-width: 640px) {
     & {
-       font-size: 2.5em;
+      font-size: 2.5em;
     }
   }
 
-  i{
+  i {
     padding-right: 5px;
   }
 
@@ -31,7 +36,7 @@ button {
   }
   &:hover {
     background-color: $button-element-hover-background;
-    border: 1px solid lighten($button-element-hover-background, 5%);
+    border: 1.2px solid lighten($button-element-hover-background, 5%);
     color: lighten($menu-element-icon-hover-color, 55%);
   }
   &.nav-compact {
@@ -43,12 +48,10 @@ button {
     height: unset;
     padding: 5px;
 
-    box-shadow: 0 0 2px rgba(35,31,32, 0.3);
+    box-shadow: 0 0 2px rgba(35, 31, 32, 0.3);
 
-    i{
+    i {
       padding-left: 10px;
     }
   }
 }
-
-

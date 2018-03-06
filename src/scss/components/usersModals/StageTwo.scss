@@ -1,25 +1,41 @@
-$stage-two-container-height: 300px;
+$stage-two-container-height: 18em;
 
 .stage-two-container {
   background: #eeeeee;
-  padding: 25px;
   height: $stage-two-container-height;
+
+  .user-details-container {
+    padding-bottom: 1.5em;
+    border-bottom: 1px solid lightgray;
+    width: 90%;
+    margin: 0 auto;
+
+    label {
+      display: inline-block;
+      width: 5em;
+    }
+    span {
+      font-weight: 700;
+      margin-left: 0.5em;
+    }
+  }
+
+  .form-container {
+    width: 90%;
+    margin: 0 auto;
+    padding-top: 0.7em;
+  }
 }
 
-.stage-two-show {
-  display: block;
+.submit-button-container {
+  margin-top: 1em;
 }
-.stage-two-hide {
-  display: none;
-}
+
 .button-back-container {
   text-align: right;
   width: 97%;
-  margin-top: ($stage-two-container-height - 190px);
-}
-
-.button-back-container {
+  margin-top: ($stage-two-container-height - 11em);
   button {
-    width: 100px;
+    width: 6em;
   }
 }

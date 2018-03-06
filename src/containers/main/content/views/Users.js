@@ -32,12 +32,12 @@ class Users extends Component {
         <UsersList users={this.props.users} />
         <Modal
           open={this.state.showModal}
-          classNames={{modal: 'Modal'}}
+          classNames={{ modal: "Modal" }}
           contentLabel="Users modal"
           onClose={this.handleCloseModal}
         >
           <header>
-            <span>Users</span>
+            <span>Dodaj użytkownika</span>
           </header>
           <UsersSelector />
         </Modal>

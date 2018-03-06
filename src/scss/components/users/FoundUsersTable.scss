@@ -1,29 +1,37 @@
+@import "../../ColorSchema.scss";
+
 .user-selector-container {
   min-height: 15em;
   box-sizing: border-box;
 }
 
 .found-users-container {
+  width: 100%;
   overflow-y: auto;
   min-height: 10em;
   table {
     width: 100%;
-    tbody {
+    thead {
       tr {
         th {
-          color: blue;
+          color: $main-color;
           font-size: 80%;
           text-align: left;
-          padding-bottom: 5px;
+          padding: 0.4rem;
         }
-        &:hover {
-          background: #cde;
-        }
+      }
+    }
+
+    tbody {
+      tr {
+        cursor: pointer;
+        user-select: none;
+
         td {
-          padding-right: 10px;
+          padding: 0.4rem;
         }
         &:hover {
-          background: rgb(170, 202, 235);
+          background: $main-color-hover-light;
         }
       }
     }

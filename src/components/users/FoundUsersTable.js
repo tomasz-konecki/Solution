@@ -23,11 +23,13 @@ class FoundUsersTable extends Component {
     return (
       <div className="found-users-container">
         <table>
-          <tbody>
+          <thead>
             <tr>
               <th>Name</th>
               <th>Last name</th>
             </tr>
+          </thead>
+          <tbody>
             {tableData}
           </tbody>
         </table>

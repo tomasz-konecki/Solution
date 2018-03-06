@@ -82,7 +82,7 @@ class StageTwo extends Component {
           </div>
           <div className="role-container">
             <label>Role:</label>
-            <span>{`${this.state.roles}`}</span>
+            <span>{this.state.roles.join(", ")}</span>
           </div>
         </div>
 
@@ -92,7 +92,7 @@ class StageTwo extends Component {
               <input
                 type="checkbox"
                 name="role"
-                value="programista"
+                value="Developer"
                 onChange={this.handleSelectRole}
               />
               <span>Programista</span>
@@ -101,7 +101,7 @@ class StageTwo extends Component {
               <input
                 type="checkbox"
                 name="role"
-                value="team leader"
+                value="Team Leader"
                 onChange={this.handleSelectRole}
               />
               <span>Team leader</span>
@@ -110,16 +110,25 @@ class StageTwo extends Component {
               <input
                 type="checkbox"
                 name="role"
-                value="HR"
+                value="Human Resources"
                 onChange={this.handleSelectRole}
               />
-              <span>HR</span>
+              <span>Human Resources</span>
             </div>
             <div className="">
               <input
                 type="checkbox"
                 name="role"
-                value="admnistrator"
+                value="Tradesman"
+                onChange={this.handleSelectRole}
+              />
+              <span>Handlowiec</span>
+            </div>
+            <div className="">
+              <input
+                type="checkbox"
+                name="role"
+                value="Administrator"
                 onChange={this.handleSelectRole}
               />
               <span>Administrator</span>

@@ -1,8 +1,7 @@
 import axios from "axios";
 import * as jwtDecode from "jwt-decode";
 import * as Promise from "bluebird";
-import UsersObject from "./usersObject";
-import usersAD from "./usersAD";
+import * as usersMocks from "./mock/users";
 
 const API_ENDPOINT = "http://10.24.14.148";
 
@@ -198,13 +197,13 @@ class DCMTMockApi extends DCMTWebApi {
 
   getUsers() {
     return Promise.resolve({
-      data: UsersObject
+      data: usersMocks.UsersObject
     });
   }
 
   searchAD(user) {
     return Promise.resolve({
-      data: usersAD(user)
+      data: usersMocks.ActiveDirectory(user)
     });
   }
 }

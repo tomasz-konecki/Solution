@@ -1,4 +1,4 @@
-const UsersObject = {
+export const UsersObject = {
   results: [
     {
       id: "Desperados",
@@ -229,5 +229,3 @@ const UsersObject = {
   currentPage: 1,
   totalPageCount: 2
 };
-
-export default UsersObject;

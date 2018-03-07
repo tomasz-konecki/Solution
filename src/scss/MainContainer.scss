@@ -20,7 +20,6 @@
 }
 
 .wrapper {
-  height: 100vh;
   width: 100vw;
   background: $content-background;
 
@@ -131,6 +130,8 @@
       }
       .nav-compact {
         height: 3vh;
+        line-height: 2vh;
+        vertical-align: baseline;
         span {
           font-size: 1.65vh;
         }
@@ -237,7 +238,7 @@
     height: auto;
     overflow: auto;
 
-    font-size: 150%;
+    font-size: 270%;
 
     .header {
       width: 100%;

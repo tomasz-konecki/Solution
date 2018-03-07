@@ -34,7 +34,11 @@ class StageTwo extends Component {
 
   handleSubmit = event => {
     event.preventDefault();
-    console.log("User's profile:", this.state);
+    if (this.state.roles.length === 0) {
+      alert("Dodaj role!");
+    } else {
+      console.log("User's profile:", this.state);
+    }
   };
 
   componentDidMount() {

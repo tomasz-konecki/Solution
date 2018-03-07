@@ -53,6 +53,7 @@ class DCMTWebApi {
   addProject(
     name,
     description,
+    client,
     responsiblePerson,
     startDate,
     estimatedEndDate
@@ -70,6 +71,7 @@ class DCMTWebApi {
     id,
     name,
     description,
+    client,
     responsiblePerson,
     startDate,
     estimatedEndDate
@@ -205,6 +207,56 @@ class DCMTMockApi extends DCMTWebApi {
     return Promise.resolve({
       data: usersMocks.ActiveDirectory(user)
     });
+  }
+
+  getUser(id) {
+    return Promise.resolve({});
+  }
+
+  changeUserRole(id, role) {
+    return Promise.resolve({});
+  }
+  deleteUser(id) {
+    return Promise.resolve({});
+  }
+
+  addProject(
+    name,
+    description,
+    client,
+    responsiblePerson,
+    startDate,
+    estimatedEndDate
+  ) {
+    return Promise.resolve({});
+  }
+
+  editProject(
+    id,
+    name,
+    description,
+    client,
+    responsiblePerson,
+    startDate,
+    estimatedEndDate
+  ) {
+    return Promise.resolve({});
+  }
+
+  deleteProject(id) {
+    return Promise.resolve({});
+  }
+
+  getProjects() {
+    return Promise.resolve({});
+  }
+
+  getProject(id) {
+    return Promise.resolve({});
+  }
+
+  addOwner() {
+    return Promise.resolve({});
   }
 }
 

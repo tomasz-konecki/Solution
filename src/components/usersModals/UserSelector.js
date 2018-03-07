@@ -23,7 +23,7 @@ class UserSelector extends Component {
       selectedUser: value,
       isStageTwo: true
     });
-    console.log("userId:", value);
+    console.log("Selected user:", value);
   }
 
   resetState() {

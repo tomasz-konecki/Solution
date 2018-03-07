@@ -34,7 +34,7 @@ class StageTwo extends Component {
 
   handleSubmit = event => {
     event.preventDefault();
-    console.log(this.state);
+    console.log("User's profile:", this.state);
   };
 
   componentDidMount() {

@@ -13,7 +13,7 @@ export const loadUsers = () => {
   return dispatch => {
     DCMTWebApi.getUsers()
       .then(response => {
-        dispatch(loadUsersSuccess(response.data.results));
+        dispatch(loadUsersSuccess(response.data.dtoObject.results));
       })
       .catch(error => {
         throw error;

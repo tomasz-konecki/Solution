@@ -39,7 +39,7 @@ class UserSelector extends Component {
     });
     DCMTWebApi.searchAD(user)
       .then(response => {
-        this.setState({ foundUsers: response.data });
+        this.setState({ foundUsers: response.data.dtoObject });
         this.refs.StageOne.stopLoading();
       })
       .catch(error => {

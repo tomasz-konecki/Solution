@@ -7,6 +7,10 @@ const API_ENDPOINT = "http://10.24.14.148";
 
 class DCMTWebApi {
   auth(username, password) {
+    return Promise.resolve({
+      email: "jane.doe@kappa.com",
+      extra: "Jane Doe"
+    });
     return axios
       .post(`${API_ENDPOINT}/account/login`, { username, password })
       .then(response => jwtDecode(response.data.id_token));
@@ -190,6 +194,20 @@ class DCMTWebApi {
 }
 
 class DCMTMockApi extends DCMTWebApi {
+  pretendResponse(dtoObject, simulateError) {
+    const status = simulateError ? 500 : 200;
+    const statusText = simulateError ? "Internal Server Error" : "OK";
+    return {
+      data: {
+        dtoObject,
+        errorOccured: simulateError,
+        errors: {}
+      },
+      status,
+      statusText
+    };
+  }
+
   auth(username, password) {
     return Promise.resolve({
       email: "jane.doe@kappa.com",
@@ -198,24 +216,23 @@ class DCMTMockApi extends DCMTWebApi {
   }
 
   getUsers() {
-    return Promise.resolve({
-      data: usersMocks.UsersObject
-    });
+    return Promise.resolve(this.pretendResponse(usersMocks.UsersObject));
   }
 
   searchAD(user) {
-    return Promise.resolve({
-      data: usersMocks.ActiveDirectory(user)
-    });
+    return Promise.resolve(
+      this.pretendResponse(usersMocks.ActiveDirectory(user))
+    );
   }
 
   getUser(id) {
-    return Promise.resolve({});
+    return Promise.resolve(this.pretendResponse(usersMocks.UserObject(id)));
   }
 
   changeUserRole(id, role) {
     return Promise.resolve({});
   }
+
   deleteUser(id) {
     return Promise.resolve({});
   }

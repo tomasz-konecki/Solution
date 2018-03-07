@@ -1,0 +1,68 @@
+@import "../../ColorSchema";
+
+$default-color: white;
+
+.smooth-table {
+  box-shadow: 0px 0px 1px 0px rgba(0,0,0,0.3);
+  margin-bottom: 5vh;
+  margin-top: 3vh;
+  background: $default-color;
+  padding: 0 2vh;
+
+  .smooth-row {
+    $margin: 2vw;
+
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+
+    &:last-of-type{
+      border: none;
+    }
+
+    .smooth-cell {
+      display: inline-block;
+      height: 5vh;
+      line-height: 5vh;
+      flex-basis: 10vw;
+      flex-grow: 1;
+
+      button {
+        $default-dim: 35%;
+        display: inline-block;
+        text-align: center;
+        height: 3vh;
+        line-height: 2vh;
+        background: darken($default-color, $default-dim);
+        vertical-align: middle;
+        border: 1px solid transparent;
+        margin-right: 0.5vh;
+        i {
+          padding: 0;
+        }
+
+        &:hover {
+          background: darken($default-color, $default-dim + 10%);
+          border: 1px solid darken($default-color, $default-dim + 20%);
+        }
+        &:active {
+          background: darken($default-color, $default-dim + 30%);
+          border: 1px solid darken($default-color, $default-dim + 20%);
+        }
+      }
+    }
+
+    @for $i from 0 through 24 {
+      .smooth-#{$i}x {
+        flex-grow: $i;
+      }
+    }
+
+    @media (max-width: 1000px) {
+      border-bottom: 5px solid $wrapper-background;
+      border: $margin solid $default-color;
+      margin: 0 $margin;
+      flex: 1 1 auto;
+    }
+  }
+}

@@ -2,6 +2,7 @@
 @import "ColorSchema.scss";
 @import "./components/Button";
 @import "./components/Input";
+@import "./components/table/SmoothTable";
 
 body {
   font-family: "Roboto Condensed", sans-serif;
@@ -29,8 +30,6 @@ a:visited {
   background-color: #eee;
   box-shadow: 5px 10px 10px #888888;
 
-  font-size: 230% !important;
-
   svg {
     z-index: 2;
   }
@@ -49,5 +48,13 @@ a:visited {
   @media only screen and (max-width: 1366px) {
     height: 80%;
     width: 80%;
+
+    font-size: 160% !important;
+  }
+  @media only screen and (max-width: 1000px) {
+    height: 80%;
+    width: 80%;
+
+    font-size: 230% !important;
   }
 }

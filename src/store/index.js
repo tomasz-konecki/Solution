@@ -21,10 +21,11 @@ const storeCreator = (history) => {
   const persistedReducer = persistReducer(persistConfig,
     combineReducers(Object.assign({}, reducers, routerReducer, { form: formReducer })));
 
+  const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+
   let store = createStore(
     persistedReducer,
-    compose(middleware,
-      window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__())
+    composeEnhancers(middleware)
   );
 
   let persistor = persistStore(store);

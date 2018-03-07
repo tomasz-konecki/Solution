@@ -16,13 +16,7 @@ button {
 
   @media only screen and (max-width: 1366px) {
     & {
-      font-size: 80%;
-    }
-  }
-
-  @media only screen and (max-width: 640px) {
-    & {
-      font-size: 2.5em;
+      font-size: 100%;
     }
   }
 
@@ -32,7 +26,6 @@ button {
 
   &.submitter {
     margin-top: 2em;
-    padding: 0.5em;
   }
   &:hover {
     background-color: $button-element-hover-background;

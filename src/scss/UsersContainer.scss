@@ -18,24 +18,3 @@
     cursor: pointer;
   }
 }
-
-// UsersList
-.users-list-container {
-  padding: 20px;
-  .numbers,
-  .firstNames,
-  .lastNames,
-  .roles {
-    display: inline-block;
-  }
-  .firstNames {
-    padding-left: 20px;
-  }
-  .lastNames,
-  .roles {
-    padding-left: 30px;
-  }
-  .roles {
-    color: gray;
-  }
-}

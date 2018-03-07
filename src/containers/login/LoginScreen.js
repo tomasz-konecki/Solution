@@ -11,7 +11,7 @@ class LoginScreen extends React.Component {
   render() {
     return (
       <div className="front-screen">
-        <Logo size="vector" container />
+        <Logo size="vector_cut" container />
         <LoginForm />
       </div>
     );

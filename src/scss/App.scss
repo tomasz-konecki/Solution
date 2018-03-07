@@ -4,8 +4,9 @@
 @import "./components/Input";
 
 body {
-  background: $body-background;
   font-family: "Roboto Condensed", sans-serif;
+  min-height: 100vh;
+  background: $content-background;
 }
 
 ::selection {
@@ -27,6 +28,9 @@ a:visited {
   width: 600px;
   background-color: #eee;
   box-shadow: 5px 10px 10px #888888;
+
+  font-size: 230% !important;
+
   svg {
     z-index: 2;
   }

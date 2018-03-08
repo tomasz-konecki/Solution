@@ -174,6 +174,7 @@
       vertical-align: baseline;
       color: $menu-element-text-color;
       z-index: 2;
+      font-size: 60%;
       i {
         padding-left: 2vh;
         font-size: 3.3vh;
@@ -237,11 +238,12 @@
   .wrapper {
     height: auto;
     overflow: auto;
-
     font-size: 270%;
 
     .header {
       width: 100%;
+      font-size: 75%;
+
       .left-menu {
         height: 0;
         width: 100%;

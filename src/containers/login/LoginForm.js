@@ -15,45 +15,47 @@ class LoginForm extends React.Component {
     const { handleSubmit, error } = this.props;
 
     return (
-      <div className="container login-form">
-        <form onSubmit={handleSubmit}>
-          <div className="container login-details">
-            <div className="user-container">
-              <Field
-                component="input"
-                type="text"
-                placeholder="Enter Username"
-                name="username"
-                required
-              />
+      <div className="login-wrapper">
+        <div className="container login-form">
+          <form onSubmit={handleSubmit}>
+            <div className="container login-details">
+              <div className="user-container">
+                <Field
+                  component="input"
+                  type="text"
+                  placeholder="Enter Username"
+                  name="username"
+                  required
+                />
+              </div>
+
+              <div className="password-container">
+                <Field
+                  type="password"
+                  component="input"
+                  placeholder="Enter Password"
+                  name="password"
+                  required
+                />
+              </div>
+
+              <div className="context-container">
+                {error && <strong>{error}</strong>}
+                {this.props.loading === true && <LoaderHorizontal/>}
+              </div>
+
+              <div className="centric-container">
+                <button className="submitter" type="submit">Login</button>
+              </div>
             </div>
 
-            <div className="password-container">
-              <Field
-                type="password"
-                component="input"
-                placeholder="Enter Password"
-                name="password"
-                required
-              />
+            <div className="container">
+              <span className="psw">
+                Forgot <a href="#">password?</a>
+              </span>
             </div>
-
-            <div className="context-container">
-              {error && <strong>{error}</strong>}
-              {this.props.loading === true && <LoaderHorizontal/>}
-            </div>
-
-            <div className="centric-container">
-              <button className="submitter" type="submit">Login</button>
-            </div>
-          </div>
-
-          <div className="container">
-            <span className="psw">
-              Forgot <a href="#">password?</a>
-            </span>
-          </div>
-        </form>
+          </form>
+        </div>
       </div>
     );
   }

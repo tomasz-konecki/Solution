@@ -22,6 +22,16 @@ class SmoothTable extends Component {
       </button>
     ));
   }
+  generateOperators() {
+    return this.state.construct.operators.map((operator, index) => (
+      <button
+        key={index}
+        onClick={this.deepenFunction(operator.click)}
+      >
+        {operator.pretty}
+      </button>
+    ));
+  }
   generateLegend() {
     return this.state.construct.columns.map((column, index) => (
       <th key={column.field + index}>{column.pretty}</th>
@@ -68,17 +78,19 @@ class SmoothTable extends Component {
       this.generateRow(object)
     );
     return (
-      <table
-        className={
-          "smooth-table" +
-          (construct.tableClass !== undefined ? " " + construct.tableClass : "")
-        }
-      >
-        <thead>
-          <tr className="smooth-row">{this.generateLegend()}</tr>
-        </thead>
-        <tbody>{list}</tbody>
-      </table>
+      <div className="smooth-table">
+        <div className="smooth-operator">{this.generateOperators()}</div>
+        <table
+          className={
+            (construct.tableClass !== undefined ? " " + construct.tableClass : "")
+          }
+        >
+          <thead>
+            <tr className="smooth-row">{this.generateLegend()}</tr>
+          </thead>
+          <tbody>{list}</tbody>
+        </table>
+      </div>
     );
   }
 }

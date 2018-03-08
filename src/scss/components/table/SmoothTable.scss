@@ -8,26 +8,39 @@ $default-color: white;
   margin-top: 3vh;
   background: $default-color;
   padding: 0 2vh;
+  width: 100%;
+
+  thead {
+    th {
+      text-align: left;
+      vertical-align: middle;
+      font-weight: bold;
+      font-size: 80%;
+      border-bottom: 1px solid darken($default-color, 15%);
+
+      &:first-of-type {
+        padding-left: 2vh;
+      }
+    }
+  }
 
   .smooth-row {
     $margin: 2vw;
+    height: 5vh;
 
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-
-    border-bottom: 1px solid darken($default-color, 15%);
+    border-bottom: 1px solid darken($default-color, 5%);
 
     &:last-of-type{
       border: none;
     }
 
     .smooth-cell {
-      display: inline-block;
-      height: 5vh;
       line-height: 5vh;
-      flex-basis: 10vw;
-      flex-grow: 1;
+      white-space: nowrap;
+
+      &:first-of-type {
+        padding-left: 2vh;
+      }
 
       button {
         $default-dim: 35%;
@@ -45,28 +58,23 @@ $default-color: white;
           color: black;
           font-size: 120%;
           transition: all 0.2s;
+        }
 
-          &:hover {
+        &:hover {
+          i {
             color: rgb(159, 0, 0);
           }
-          &:active {
+        }
+        &:active {
+          i {
             color: darken(rgb(125, 0, 0), $default-dim);
           }
         }
       }
     }
 
-    @for $i from 0 through 24 {
-      .smooth-#{$i}x {
-        flex-grow: $i;
-      }
-    }
-
     @media (max-width: 1000px) {
-      border-bottom: 5px solid $wrapper-background;
-      border: $margin solid $default-color;
-      margin: 0 $margin;
-      flex: 1 1 auto;
+      //
     }
   }
 }

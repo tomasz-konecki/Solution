@@ -48,7 +48,6 @@ class Header extends React.Component {
         </div>
         <LeftMenu className="left-menu" extended={this.state.extended} />
         <Logo size="vector_cut"/>
-        <div className="title">DCMT</div>
         <TopBar logout={this.props.logout} />
       </div>
     );

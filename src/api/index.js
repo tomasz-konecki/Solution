@@ -1,8 +1,8 @@
 import axios from "axios";
 import * as jwtDecode from "jwt-decode";
 import * as Promise from "bluebird";
-import UsersObject from "./usersObject";
-import usersAD from "./usersAD";
+import * as usersMocks from "./mock/users";
+import * as projectsMocks from "./mock/projects";
 
 const API_ENDPOINT = "http://10.24.14.148";
 
@@ -54,6 +54,7 @@ class DCMTWebApi {
   addProject(
     name,
     description,
+    client,
     responsiblePerson,
     startDate,
     estimatedEndDate
@@ -71,6 +72,7 @@ class DCMTWebApi {
     id,
     name,
     description,
+    client,
     responsiblePerson,
     startDate,
     estimatedEndDate
@@ -188,7 +190,23 @@ class DCMTWebApi {
   // }
 }
 
+// ------------------------------------------------------------------------------
+
 class DCMTMockApi extends DCMTWebApi {
+  pretendResponse(dtoObject, simulateError) {
+    const status = simulateError ? 400 : 200;
+    const statusText = simulateError ? "Internal Server Error" : "OK";
+    return {
+      data: {
+        dtoObject,
+        errorOccured: simulateError,
+        errors: {}
+      },
+      status,
+      statusText
+    };
+  }
+
   auth(username, password) {
     return Promise.resolve({
       email: "jane.doe@kappa.com",
@@ -196,16 +214,79 @@ class DCMTMockApi extends DCMTWebApi {
     });
   }
 
-  getUsers() {
-    return Promise.resolve({
-      data: UsersObject
-    });
+  getUsers(page, simulateError = false) {
+    return Promise.resolve(
+      this.pretendResponse(usersMocks.UsersObject(page), simulateError)
+    );
   }
 
-  searchAD(user) {
-    return Promise.resolve({
-      data: usersAD(user)
-    });
+  searchAD(user, simulateError = false) {
+    return Promise.resolve(
+      this.pretendResponse(usersMocks.ActiveDirectory(user, simulateError))
+    );
+  }
+
+  addUser(id, role, simulateError = false) {
+    return Promise.resolve(this.pretendResponse(null, simulateError));
+  }
+
+  getUser(id, simulateError = false) {
+    return Promise.resolve(
+      this.pretendResponse(usersMocks.UserObject(id, simulateError))
+    );
+  }
+
+  changeUserRole(id, role, simulateError = false) {
+    return Promise.resolve(this.pretendResponse(null, simulateError));
+  }
+
+  deleteUser(id, simulateError = false) {
+    return Promise.resolve(this.pretendResponse(null, simulateError));
+  }
+
+  addProject(
+    name,
+    description,
+    client,
+    responsiblePerson,
+    startDate,
+    estimatedEndDate,
+    simulateError = false
+  ) {
+    return Promise.resolve(this.pretendResponse(null, simulateError));
+  }
+
+  editProject(
+    id,
+    name,
+    description,
+    client,
+    responsiblePerson,
+    startDate,
+    estimatedEndDate,
+    simulateError = false
+  ) {
+    return Promise.resolve(this.pretendResponse(null, simulateError));
+  }
+
+  deleteProject(id, simulateError = false) {
+    return Promise.resolve(this.pretendResponse(null, simulateError));
+  }
+
+  getProjects(page, simulateError = false) {
+    return Promise.resolve(
+      this.pretendResponse(projectsMocks.ProjectsObject(page), simulateError)
+    );
+  }
+
+  getProject(id, simulateError = false) {
+    return Promise.resolve(
+      this.pretendResponse(projectsMocks.ProjectObject(id, simulateError))
+    );
+  }
+
+  addOwner(id, simulateError = false) {
+    return Promise.resolve(this.pretendResponse(null, simulateError));
   }
 }
 

@@ -1,4 +1,4 @@
-const usersAD = user => {
+export const ActiveDirectory = user => {
   return [
     {
       firstName: user,
@@ -226,5 +226,3 @@ const usersAD = user => {
     }
   ];
 };
-
-export default usersAD;

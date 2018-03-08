@@ -12,16 +12,22 @@ const UsersList = props => {
       { width: 30, field: "lastName", pretty: "Nazwisko" },
       { width: 30, field: "email", pretty: "Email" },
       { width: 19, field: "phoneNumber", pretty: "Telefon" },
-      { width: 1, toolBox: [
-        { icon: { icon: "times" }, click: () => {} },
-        { icon: { icon: "edit", iconType: "far" }, click: (object) => { alert(object.firstName); } }
-      ] }
+      {
+        width: 1,
+        toolBox: [
+          { icon: { icon: "times" }, click: () => {} },
+          {
+            icon: { icon: "edit", iconType: "far" },
+            click: object => {
+              alert(object.firstName);
+            }
+          }
+        ]
+      }
     ]
   };
 
-  return (
-    <SmoothTable construct={construct} data={props.users}/>
-  );
+  return <SmoothTable construct={construct} data={props.users} />;
 };
 
 export default UsersList;

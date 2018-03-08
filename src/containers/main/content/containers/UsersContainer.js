@@ -5,15 +5,18 @@ import PropTypes from "prop-types";
 import * as usersActions from "../../../../actions/usersActions";
 import Users from "../views/Users";
 
-import "../../../../scss/UsersContainer.scss";
+import "../../../../scss/containers/UsersContainer.scss";
 
 class UsersContainer extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      page: 3
+    };
   }
 
   componentDidMount() {
-    this.props.userActions.loadUsers();
+    this.props.userActions.loadUsers(this.state.page);
   }
 
   render() {

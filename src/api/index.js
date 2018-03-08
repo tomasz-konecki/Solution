@@ -2,15 +2,12 @@ import axios from "axios";
 import * as jwtDecode from "jwt-decode";
 import * as Promise from "bluebird";
 import * as usersMocks from "./mock/users";
+import * as projectsMocks from "./mock/projects";
 
 const API_ENDPOINT = "http://10.24.14.148";
 
 class DCMTWebApi {
   auth(username, password) {
-    return Promise.resolve({
-      email: "jane.doe@kappa.com",
-      extra: "Jane Doe"
-    });
     return axios
       .post(`${API_ENDPOINT}/account/login`, { username, password })
       .then(response => jwtDecode(response.data.id_token));
@@ -195,7 +192,7 @@ class DCMTWebApi {
 
 class DCMTMockApi extends DCMTWebApi {
   pretendResponse(dtoObject, simulateError) {
-    const status = simulateError ? 500 : 200;
+    const status = simulateError ? 400 : 200;
     const statusText = simulateError ? "Internal Server Error" : "OK";
     return {
       data: {
@@ -225,16 +222,20 @@ class DCMTMockApi extends DCMTWebApi {
     );
   }
 
+  addUser(id, role) {
+    return Promise.resolve(this.pretendResponse(null));
+  }
+
   getUser(id) {
     return Promise.resolve(this.pretendResponse(usersMocks.UserObject(id)));
   }
 
   changeUserRole(id, role) {
-    return Promise.resolve({});
+    return Promise.resolve(this.pretendResponse(null));
   }
 
   deleteUser(id) {
-    return Promise.resolve({});
+    return Promise.resolve(this.pretendResponse(null));
   }
 
   addProject(
@@ -245,7 +246,7 @@ class DCMTMockApi extends DCMTWebApi {
     startDate,
     estimatedEndDate
   ) {
-    return Promise.resolve({});
+    return Promise.resolve(this.pretendResponse(null));
   }
 
   editProject(
@@ -265,7 +266,7 @@ class DCMTMockApi extends DCMTWebApi {
   }
 
   getProjects() {
-    return Promise.resolve({});
+    return Promise.resolve(this.pretendResponse(projectsMocks.ProjectsObject));
   }
 
   getProject(id) {

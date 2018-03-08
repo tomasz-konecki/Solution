@@ -31,25 +31,27 @@ $default-color: white;
 
       button {
         $default-dim: 35%;
+
         display: inline-block;
         text-align: center;
         height: 3vh;
         line-height: 2vh;
-        background: darken($default-color, $default-dim);
         vertical-align: middle;
         border: 1px solid transparent;
         margin-right: 0.5vh;
+        background: transparent;
         i {
           padding: 0;
-        }
+          color: black;
+          font-size: 120%;
+          transition: all 0.2s;
 
-        &:hover {
-          background: darken($default-color, $default-dim + 10%);
-          border: 1px solid darken($default-color, $default-dim + 20%);
-        }
-        &:active {
-          background: darken($default-color, $default-dim + 30%);
-          border: 1px solid darken($default-color, $default-dim + 20%);
+          &:hover {
+            color: rgb(159, 0, 0);
+          }
+          &:active {
+            color: darken(rgb(125, 0, 0), $default-dim);
+          }
         }
       }
     }

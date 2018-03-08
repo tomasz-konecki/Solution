@@ -1,6 +1,8 @@
 import React from "react";
 import Modal from "react-responsive-modal";
 
+import ProjectsList from "../../../../components/projects/ProjectsList";
+
 class Projects extends React.Component {
   constructor(props) {
     super(props);
@@ -19,14 +21,11 @@ class Projects extends React.Component {
     this.setState({ showModal: false });
   }
 
-  componentDidMount() {
-    console.log("Projects", this.props.projects);
-  }
-
   render() {
     return (
       <div>
         <button onClick={this.handleOpenModal}>Open Modal</button>
+        <ProjectsList projects={this.props.projects} />
         <Modal
           open={this.state.showModal}
           contentLabel="Projects test modal"

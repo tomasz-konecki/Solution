@@ -228,6 +228,6 @@ export const UsersObject = page => {
       }
     ],
     currentPage: page,
-    totalPageCount: 2
+    totalPageCount: 40
   };
 };

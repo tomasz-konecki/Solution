@@ -16,6 +16,8 @@ $default-color: white;
     flex-direction: row;
     flex-wrap: wrap;
 
+    border-bottom: 1px solid darken($default-color, 15%);
+
     &:last-of-type{
       border: none;
     }

@@ -9,9 +9,9 @@ export const loadUsersSuccess = users => {
   };
 };
 
-export const loadUsers = () => {
+export const loadUsers = page => {
   return dispatch => {
-    DCMTWebApi.getUsers()
+    DCMTWebApi.getUsers(page)
       .then(response => {
         dispatch(loadUsersSuccess(response.data.dtoObject.results));
       })

@@ -1,231 +1,233 @@
-export const UsersObject = {
-  results: [
-    {
-      id: "Desperados",
-      firstName: "Antonio",
-      lastName: "Banderas",
-      role: null,
-      isDeleted: false,
-      email: "zonororo@nana.pl",
-      phoneNumber: null
-    },
-    {
-      id: "jgndfkjgdfs",
-      firstName: "Basia",
-      lastName: "Banderas",
-      role: null,
-      isDeleted: false,
-      email: "basiabanda@nana.pl",
-      phoneNumber: null
-    },
-    {
-      id: "stringyjkjkllut",
-      firstName: "Mikołaj",
-      lastName: "Butkownik",
-      role: null,
-      isDeleted: false,
-      email: "Butkowymifrancuski@sksa.pl",
-      phoneNumber: null
-    },
-    {
-      id: "programmer",
-      firstName: "Siszarp",
-      lastName: "Ceplusplus",
-      role: null,
-      isDeleted: false,
-      email: "cc@mail.pl",
-      phoneNumber: null
-    },
-    {
-      id: "ide",
-      firstName: "wizualstudjo",
-      lastName: "codeblokzzz",
-      role: null,
-      isDeleted: false,
-      email: "wizcode@mail.pl",
-      phoneNumber: null
-    },
-    {
-      id: "csharp",
-      firstName: "csharp",
-      lastName: "csharp",
-      role: null,
-      isDeleted: false,
-      email: "csharp@csharp.csharp",
-      phoneNumber: null
-    },
-    {
-      id: "jfkskajd21",
-      firstName: "Testownik",
-      lastName: "Czterystacztery",
-      role: null,
-      isDeleted: false,
-      email: "error100404@populacjaeuro.ru",
-      phoneNumber: null
-    },
-    {
-      id: "fdomurad",
-      firstName: "Fabian",
-      lastName: "Domurad",
-      role: null,
-      isDeleted: false,
-      email: "fabian.domurad@billennium.pl",
-      phoneNumber: null
-    },
-    {
-      id: "prezydent",
-      firstName: "Adndrzej",
-      lastName: "Duda",
-      role: null,
-      isDeleted: false,
-      email: "Duda@nana.pl",
-      phoneNumber: null
-    },
-    {
-      id: "pescobar",
-      firstName: "Pablo",
-      lastName: "Escobar",
-      role: null,
-      isDeleted: false,
-      email: "columbia@ciamail.com",
-      phoneNumber: null
-    },
-    {
-      id: "database",
-      firstName: "majeskuel",
-      lastName: "eskuelserwer",
-      role: null,
-      isDeleted: false,
-      email: "me@mail.pl",
-      phoneNumber: null
-    },
-    {
-      id: "jfkskafghfjd21",
-      firstName: "Radosław",
-      lastName: "Goniący",
-      role: null,
-      isDeleted: false,
-      email: "radekgoniacypilke@pilkadonogi.me",
-      phoneNumber: null
-    },
-    {
-      id: "mjackson",
-      firstName: "Michał",
-      lastName: "Jackson",
-      role: null,
-      isDeleted: false,
-      email: "mjackson@mockmail.com",
-      phoneNumber: null
-    },
-    {
-      id: "json",
-      firstName: "json",
-      lastName: "json",
-      role: null,
-      isDeleted: false,
-      email: "json@json.json",
-      phoneNumber: null
-    },
-    {
-      id: "Donald",
-      firstName: "Donald",
-      lastName: "Kaczor",
-      role: null,
-      isDeleted: false,
-      email: "DonaldKaczor@nana.pl",
-      phoneNumber: null
-    },
-    {
-      id: "prezes",
-      firstName: "Jarosław",
-      lastName: "Kaczyński",
-      role: null,
-      isDeleted: false,
-      email: "Juro@nana.pl",
-      phoneNumber: null
-    },
-    {
-      id: "jkowalski",
-      firstName: "Jan",
-      lastName: "Kowalski",
-      role: null,
-      isDeleted: false,
-      email: "jan.kowalski@mail.com",
-      phoneNumber: null
-    },
-    {
-      id: "id",
-      firstName: "firstName",
-      lastName: "lastName",
-      role: null,
-      isDeleted: false,
-      email: "email@mail.pl",
-      phoneNumber: null
-    },
-    {
-      id: "marcin",
-      firstName: "marcin",
-      lastName: "marcin",
-      role: null,
-      isDeleted: false,
-      email: "marcindlu993@gmail.com",
-      phoneNumber: null
-    },
-    {
-      id: "emelo",
-      firstName: "Elo",
-      lastName: "Melo",
-      role: null,
-      isDeleted: false,
-      email: "zero@elomelo.com",
-      phoneNumber: null
-    },
-    {
-      id: "Krzysztof",
-      firstName: "Krzysztof",
-      lastName: "Nanna",
-      role: null,
-      isDeleted: false,
-      email: "mamamiak@billennium.pl",
-      phoneNumber: null
-    },
-    {
-      id: "stringjkl",
-      firstName: "Anna",
-      lastName: "Nowak",
-      role: null,
-      isDeleted: false,
-      email: "annnnnnanoooowaaaak@o222.pl",
-      phoneNumber: null
-    },
-    {
-      id: "stringyut",
-      firstName: "Joanna",
-      lastName: "Nowocińska",
-      role: null,
-      isDeleted: false,
-      email: "annnanoooowaak@o220002.pl",
-      phoneNumber: null
-    },
-    {
-      id: "wolczak",
-      firstName: "Wojciech",
-      lastName: "Olczak",
-      role: null,
-      isDeleted: false,
-      email: "testEmail@mail.mock",
-      phoneNumber: null
-    },
-    {
-      id: "stringyjklut",
-      firstName: "Mariusz",
-      lastName: "Piłosz",
-      role: null,
-      isDeleted: false,
-      email: "polowmariusz123121@o0002.pl",
-      phoneNumber: null
-    }
-  ],
-  currentPage: 1,
-  totalPageCount: 2
+export const UsersObject = page => {
+  return {
+    results: [
+      {
+        id: `Desperados-${page}`,
+        firstName: "Antonio",
+        lastName: `Banderas (p:${page})`,
+        role: null,
+        isDeleted: false,
+        email: "zonororo@nana.pl",
+        phoneNumber: null
+      },
+      {
+        id: `jgndfkjgdfs-${page}`,
+        firstName: "Basia",
+        lastName: `Banderas (p:${page})`,
+        role: null,
+        isDeleted: false,
+        email: "basiabanda@nana.pl",
+        phoneNumber: null
+      },
+      {
+        id: `stringyjkjkllut-${page}`,
+        firstName: "Mikołaj",
+        lastName: `Butkownik (p:${page})`,
+        role: null,
+        isDeleted: false,
+        email: "Butkowymifrancuski@sksa.pl",
+        phoneNumber: null
+      },
+      {
+        id: `programmer-${page}`,
+        firstName: "Siszarp",
+        lastName: `Ceplusplus (p:${page})`,
+        role: null,
+        isDeleted: false,
+        email: "cc@mail.pl",
+        phoneNumber: null
+      },
+      {
+        id: `ide-${page}`,
+        firstName: "wizualstudjo",
+        lastName: `codeblokzzz (p:${page})`,
+        role: null,
+        isDeleted: false,
+        email: "wizcode@mail.pl",
+        phoneNumber: null
+      },
+      {
+        id: `csharp-${page}`,
+        firstName: "csharp",
+        lastName: `csharp (p:${page})`,
+        role: null,
+        isDeleted: false,
+        email: "csharp@csharp.csharp",
+        phoneNumber: null
+      },
+      {
+        id: `jfkskajd21-${page}`,
+        firstName: "Testownik",
+        lastName: `Czterystacztery (p:${page})`,
+        role: null,
+        isDeleted: false,
+        email: "error100404@populacjaeuro.ru",
+        phoneNumber: null
+      },
+      {
+        id: `fdomurad-${page}`,
+        firstName: "Fabian",
+        lastName: `Domurad (p:${page})`,
+        role: null,
+        isDeleted: false,
+        email: "fabian.domurad@billennium.pl",
+        phoneNumber: null
+      },
+      {
+        id: `prezydent-${page}`,
+        firstName: "Adndrzej",
+        lastName: `Duda (p:${page})`,
+        role: null,
+        isDeleted: false,
+        email: "Duda@nana.pl",
+        phoneNumber: null
+      },
+      {
+        id: `pescobar-${page}`,
+        firstName: "Pablo",
+        lastName: `Escobar (p:${page})`,
+        role: null,
+        isDeleted: false,
+        email: "columbia@ciamail.com",
+        phoneNumber: null
+      },
+      {
+        id: `database-${page}`,
+        firstName: "majeskuel",
+        lastName: `eskuelserwer (p:${page})`,
+        role: null,
+        isDeleted: false,
+        email: "me@mail.pl",
+        phoneNumber: null
+      },
+      {
+        id: `jfkskafghfjd21-${page}`,
+        firstName: "Radosław",
+        lastName: `Goniący (p:${page})`,
+        role: null,
+        isDeleted: false,
+        email: "radekgoniacypilke@pilkadonogi.me",
+        phoneNumber: null
+      },
+      {
+        id: `mjackson-${page}`,
+        firstName: "Michał",
+        lastName: `Jackson (p:${page})`,
+        role: null,
+        isDeleted: false,
+        email: "mjackson@mockmail.com",
+        phoneNumber: null
+      },
+      {
+        id: `json-${page}`,
+        firstName: "json",
+        lastName: `json (p:${page})`,
+        role: null,
+        isDeleted: false,
+        email: "json@json.json",
+        phoneNumber: null
+      },
+      {
+        id: `Donald-${page}`,
+        firstName: "Donald",
+        lastName: `Kaczor (p:${page})`,
+        role: null,
+        isDeleted: false,
+        email: "DonaldKaczor@nana.pl",
+        phoneNumber: null
+      },
+      {
+        id: `prezes-${page}`,
+        firstName: "Jarosław",
+        lastName: `Kaczyński (p:${page})`,
+        role: null,
+        isDeleted: false,
+        email: "Juro@nana.pl",
+        phoneNumber: null
+      },
+      {
+        id: `jkowalski-${page}`,
+        firstName: "Jan",
+        lastName: `Kowalski (p:${page})`,
+        role: null,
+        isDeleted: false,
+        email: "jan.kowalski@mail.com",
+        phoneNumber: null
+      },
+      {
+        id: `id-${page}`,
+        firstName: "firstName",
+        lastName: `lastName (p:${page})`,
+        role: null,
+        isDeleted: false,
+        email: "email@mail.pl",
+        phoneNumber: null
+      },
+      {
+        id: `marcin-${page}`,
+        firstName: "marcin",
+        lastName: `marcin (p:${page})`,
+        role: null,
+        isDeleted: false,
+        email: "marcindlu993@gmail.com",
+        phoneNumber: null
+      },
+      {
+        id: `emelo-${page}`,
+        firstName: "Elo",
+        lastName: `Melo (p:${page})`,
+        role: null,
+        isDeleted: false,
+        email: "zero@elomelo.com",
+        phoneNumber: null
+      },
+      {
+        id: `Krzysztof--${page}`,
+        firstName: "Krzysztof",
+        lastName: `Nanna (p:${page})`,
+        role: null,
+        isDeleted: false,
+        email: "mamamiak@billennium.pl",
+        phoneNumber: null
+      },
+      {
+        id: `stringjkl-${page}`,
+        firstName: "Anna",
+        lastName: `Nowak (p:${page})`,
+        role: null,
+        isDeleted: false,
+        email: "annnnnnanoooowaaaak@o222.pl",
+        phoneNumber: null
+      },
+      {
+        id: `stringyu-${page}`,
+        firstName: "Joanna",
+        lastName: `Nowocińska (p:${page})`,
+        role: null,
+        isDeleted: false,
+        email: "annnanoooowaak@o220002.pl",
+        phoneNumber: null
+      },
+      {
+        id: `wolczak-${page}`,
+        firstName: "Wojciech",
+        lastName: `Olczak (p:${page})`,
+        role: null,
+        isDeleted: false,
+        email: "testEmail@mail.mock",
+        phoneNumber: null
+      },
+      {
+        id: `stringyjklut-${page}`,
+        firstName: "Mariusz",
+        lastName: `Piłosz (p:${page})`,
+        role: null,
+        isDeleted: false,
+        email: "polowmariusz123121@o0002.pl",
+        phoneNumber: null
+      }
+    ],
+    currentPage: page,
+    totalPageCount: 2
+  };
 };

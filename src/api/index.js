@@ -190,6 +190,8 @@ class DCMTWebApi {
   // }
 }
 
+// ------------------------------------------------------------------------------
+
 class DCMTMockApi extends DCMTWebApi {
   pretendResponse(dtoObject, simulateError) {
     const status = simulateError ? 400 : 200;
@@ -212,30 +214,34 @@ class DCMTMockApi extends DCMTWebApi {
     });
   }
 
-  getUsers() {
-    return Promise.resolve(this.pretendResponse(usersMocks.UsersObject));
-  }
-
-  searchAD(user) {
+  getUsers(page, simulateError = false) {
     return Promise.resolve(
-      this.pretendResponse(usersMocks.ActiveDirectory(user))
+      this.pretendResponse(usersMocks.UsersObject(page), simulateError)
     );
   }
 
-  addUser(id, role) {
-    return Promise.resolve(this.pretendResponse(null));
+  searchAD(user, simulateError = false) {
+    return Promise.resolve(
+      this.pretendResponse(usersMocks.ActiveDirectory(user, simulateError))
+    );
   }
 
-  getUser(id) {
-    return Promise.resolve(this.pretendResponse(usersMocks.UserObject(id)));
+  addUser(id, role, simulateError = false) {
+    return Promise.resolve(this.pretendResponse(null, simulateError));
   }
 
-  changeUserRole(id, role) {
-    return Promise.resolve(this.pretendResponse(null));
+  getUser(id, simulateError = false) {
+    return Promise.resolve(
+      this.pretendResponse(usersMocks.UserObject(id, simulateError))
+    );
   }
 
-  deleteUser(id) {
-    return Promise.resolve(this.pretendResponse(null));
+  changeUserRole(id, role, simulateError = false) {
+    return Promise.resolve(this.pretendResponse(null, simulateError));
+  }
+
+  deleteUser(id, simulateError = false) {
+    return Promise.resolve(this.pretendResponse(null, simulateError));
   }
 
   addProject(
@@ -244,9 +250,10 @@ class DCMTMockApi extends DCMTWebApi {
     client,
     responsiblePerson,
     startDate,
-    estimatedEndDate
+    estimatedEndDate,
+    simulateError = false
   ) {
-    return Promise.resolve(this.pretendResponse(null));
+    return Promise.resolve(this.pretendResponse(null, simulateError));
   }
 
   editProject(
@@ -256,25 +263,30 @@ class DCMTMockApi extends DCMTWebApi {
     client,
     responsiblePerson,
     startDate,
-    estimatedEndDate
+    estimatedEndDate,
+    simulateError = false
   ) {
-    return Promise.resolve({});
+    return Promise.resolve(this.pretendResponse(null, simulateError));
   }
 
-  deleteProject(id) {
-    return Promise.resolve({});
+  deleteProject(id, simulateError = false) {
+    return Promise.resolve(this.pretendResponse(null, simulateError));
   }
 
-  getProjects() {
-    return Promise.resolve(this.pretendResponse(projectsMocks.ProjectsObject));
+  getProjects(page, simulateError = false) {
+    return Promise.resolve(
+      this.pretendResponse(projectsMocks.ProjectsObject(page), simulateError)
+    );
   }
 
-  getProject(id) {
-    return Promise.resolve({});
+  getProject(id, simulateError = false) {
+    return Promise.resolve(
+      this.pretendResponse(projectsMocks.ProjectObject(id, simulateError))
+    );
   }
 
-  addOwner() {
-    return Promise.resolve({});
+  addOwner(id, simulateError = false) {
+    return Promise.resolve(this.pretendResponse(null, simulateError));
   }
 }
 

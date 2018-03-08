@@ -3,8 +3,9 @@ import { Route, Link, withRouter } from "react-router-dom";
 import LeftMenu from "../menu/LeftMenu";
 import PropTypes from "prop-types";
 import UsersContainer from "./containers/UsersContainer";
+import ProjectsContainer from "./containers/ProjectsContainer";
 import Employees from "./views/Employees";
-import Projects from "./views/Projects";
+// import Projects from "./views/Projects";
 import Assign from "./views/Assign";
 
 class Content extends React.Component {
@@ -18,7 +19,7 @@ class Content extends React.Component {
       <div className="content">
         <Route path={match.url + "/users"} component={UsersContainer} />
         <Route path={match.url + "/employees"} component={Employees} />
-        <Route path={match.url + "/projects"} component={Projects} />
+        <Route path={match.url + "/projects"} component={ProjectsContainer} />
         <Route path={match.url + "/assign"} component={Assign} />
       </div>
     );

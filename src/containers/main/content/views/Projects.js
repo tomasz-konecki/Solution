@@ -11,27 +11,33 @@ class Projects extends React.Component {
     this.handleOpenModal = this.handleOpenModal.bind(this);
     this.handleCloseModal = this.handleCloseModal.bind(this);
   }
-  handleOpenModal () {
+  handleOpenModal() {
     this.setState({ showModal: true });
   }
 
-  handleCloseModal () {
+  handleCloseModal() {
     this.setState({ showModal: false });
   }
+
+  componentDidMount() {
+    console.log("Projects", this.props.projects);
+  }
+
   render() {
     return (
       <div>
         <button onClick={this.handleOpenModal}>Open Modal</button>
-          <Modal
-            open={this.state.showModal}
-            contentLabel="Projects test modal"
-            onClose={this.handleCloseModal}>
-            <p>Text here</p>
-            <hr/>
-            <button onClick={this.handleCloseModal}>Close</button>
-          </Modal>
+        <Modal
+          open={this.state.showModal}
+          contentLabel="Projects test modal"
+          onClose={this.handleCloseModal}
+        >
+          <p>Text here</p>
+          <hr />
+          <button onClick={this.handleCloseModal}>Close</button>
+        </Modal>
       </div>
-     );
+    );
   }
 }
 

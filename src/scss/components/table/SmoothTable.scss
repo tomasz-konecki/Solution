@@ -2,6 +2,29 @@
 
 $default-color: white;
 
+.smooth-operator {
+  height: 4vh;
+  line-height: 5vh;
+  padding-left: 0.5vh;
+
+  button {
+    background: $default-color;
+    height: 3vh;
+    line-height: 3vh;
+    color: #7CA5F3;
+    font-family: 'Roboto';
+    border: none;
+    border-radius: 6px;
+    vertical-align: middle;
+    font-weight: bold;
+    font-size: 1rem;
+    &:hover {
+      border: none;
+      background: darken($default-color, 5%);
+    }
+  }
+}
+
 .smooth-table {
   box-shadow: 0px 0px 1px 0px rgba(0,0,0,0.3);
   margin-bottom: 5vh;
@@ -17,6 +40,7 @@ $default-color: white;
       font-weight: bold;
       font-size: 80%;
       border-bottom: 1px solid darken($default-color, 15%);
+      padding: 0 15px;
 
       &:first-of-type {
         padding-left: 2vh;
@@ -37,6 +61,7 @@ $default-color: white;
     .smooth-cell {
       line-height: 5vh;
       white-space: nowrap;
+      padding: 0 15px;
 
       &:first-of-type {
         padding-left: 2vh;

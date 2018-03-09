@@ -14,14 +14,17 @@ class Header extends React.Component {
 
     this.handleExtend = this.handleExtend.bind(this);
     this.handleBlockedClick = this.handleBlockedClick.bind(this);
+    this.closeMenu = this.closeMenu.bind(this);
 
-    if(window.outerWidth <= 1366){
-      props.history.listen(location =>  {
-        this.setState({
-          extended: false
-        });
-      });
-    }
+    props.history.listen(location =>  {
+      this.closeMenu();
+    });
+  }
+
+  closeMenu() {
+    this.setState({
+      extended: false
+    });
   }
 
   handleExtend() {
@@ -43,10 +46,10 @@ class Header extends React.Component {
       <div className="header">
         <div className="first-bar"/>
         <div className="second-bar"/>
-        <div onClick={this.handleBlockedClick} className="extender">
-          <Icon icon="bars" iconSize="lg"/>
+        <div onClick={this.handleBlockedClick} className="extender menu-hide-exclusion">
+          <Icon additionalClass="menu-hide-exclusion" icon="bars" iconSize="lg"/>
         </div>
-        <LeftMenu className="left-menu" extended={this.state.extended} />
+        <LeftMenu className="left-menu" close={this.closeMenu} extended={this.state.extended} />
         <Logo size="vector_cut"/>
         <TopBar logout={this.props.logout} />
       </div>

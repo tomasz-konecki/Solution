@@ -18,6 +18,8 @@ $default-color: white;
     vertical-align: middle;
     font-weight: bold;
     font-size: 1rem;
+    cursor: pointer;
+
     &:hover {
       border: none;
       background: darken($default-color, 5%);
@@ -32,18 +34,22 @@ $default-color: white;
   background: $default-color;
   padding: 0 2vh;
   width: 100%;
+  display: table;
 
-  thead {
-    th {
-      text-align: left;
-      vertical-align: middle;
-      font-weight: bold;
-      font-size: 80%;
-      border-bottom: 1px solid darken($default-color, 15%);
-      padding: 0 15px;
+  table {
+    width: 100%;
+    thead {
+      th {
+        text-align: left;
+        vertical-align: middle;
+        font-weight: bold;
+        font-size: 80%;
+        border-bottom: 1px solid darken($default-color, 15%);
+        padding: 0 15px;
 
-      &:first-of-type {
-        padding-left: 2vh;
+        &:first-of-type {
+          padding-left: 2vh;
+        }
       }
     }
   }
@@ -78,6 +84,8 @@ $default-color: white;
         border: 1px solid transparent;
         margin-right: 0.5vh;
         background: transparent;
+        cursor: pointer;
+
         i {
           padding: 0;
           color: black;

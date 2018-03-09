@@ -34,7 +34,8 @@ class UsersList extends Component {
                 alert(object.firstName);
               }
             }
-          ]
+          ],
+          pretty: "Usuń/Edytuj"
         }
       ]
     };

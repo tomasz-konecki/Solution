@@ -41,7 +41,8 @@ class ProjectsList extends Component {
                 alert(object.name);
               }
             }
-          ]
+          ],
+          pretty: "Usuń/Edytuj"
         }
       ]
     };

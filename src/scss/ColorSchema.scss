@@ -22,3 +22,5 @@ $left-menu-li-border-bottom-color: darken($left-menu-background, 5%);
 $left-menu-li-hover-background: darken($left-menu-background, 5%);
 $left-menu-li-hover-icon-color: lighten($menu-element-icon-hover-color, 35%);
 $left-menu-li-active-background: darken($left-menu-background, 15%);
+
+:export { mainColor: $main-color; contentBackground: $content-background; }

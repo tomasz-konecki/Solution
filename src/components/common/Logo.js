@@ -1,6 +1,5 @@
 import React from "react";
 import PropTypes from "prop-types";
-import "../../scss/Logo.scss";
 
 const Logo = props => {
   let url = "";

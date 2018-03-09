@@ -12,7 +12,12 @@ class UsersList extends Component {
       tableClass: "users-list-container",
       keyField: "id",
       operators: [
-        { pretty: "DODAJ", click: () => { this.props.openAddUserModal(); } }
+        {
+          pretty: "DODAJ",
+          click: () => {
+            this.props.openAddUserModal();
+          }
+        }
       ],
       columns: [
         { width: 20, field: "firstName", pretty: "Imię" },

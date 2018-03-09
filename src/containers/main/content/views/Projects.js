@@ -25,8 +25,10 @@ class Projects extends Component {
   render() {
     return (
       <div>
-        <button onClick={this.handleOpenModal}>Dodaj projekt</button>
-        <ProjectsList projects={this.props.projects} />
+        <ProjectsList
+          openAddProjectModal={this.handleOpenModal}
+          projects={this.props.projects}
+        />
         <Modal
           open={this.state.showModal}
           classNames={{ modal: "Modal" }}

@@ -1,9 +1,10 @@
-import React from "react";
+import React, { Component } from "react";
 import Modal from "react-responsive-modal";
 
 import ProjectsList from "../../../../components/projects/ProjectsList";
+import AddProjectScreen from "../../../../components/projectsModals/AddProjectScreen";
 
-class Projects extends React.Component {
+class Projects extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -24,16 +25,15 @@ class Projects extends React.Component {
   render() {
     return (
       <div>
-        <button onClick={this.handleOpenModal}>Open Modal</button>
+        <button onClick={this.handleOpenModal}>Dodaj projekt</button>
         <ProjectsList projects={this.props.projects} />
         <Modal
           open={this.state.showModal}
+          classNames={{ modal: "Modal" }}
           contentLabel="Projects test modal"
           onClose={this.handleCloseModal}
         >
-          <p>Text here</p>
-          <hr />
-          <button onClick={this.handleCloseModal}>Close</button>
+          <AddProjectScreen />
         </Modal>
       </div>
     );

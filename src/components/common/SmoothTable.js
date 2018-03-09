@@ -46,6 +46,9 @@ class SmoothTable extends Component {
                 style={{ width: column.width + "%" }}
               >
                 {object[column.field]}
+                {column.field === "isActive"
+                  ? object[column.field] ? "Aktywny" : "Zakończony"
+                  : ""}
               </td>
             );
           else if (column.toolBox !== undefined)

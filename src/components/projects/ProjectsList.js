@@ -1,31 +1,53 @@
 import React, { Component } from "react";
 import Icon from "../common/Icon";
+import SmoothTable from "../common/SmoothTable";
 
-const ProjectsList = props => {
-  console.log("Projects", props.projects);
+class ProjectsList extends Component {
+  constructor(props) {
+    super(props);
+  }
+  render() {
+    const construct = {
+      rowClass: "project-block",
+      tableClass: "projects-list-container",
+      keyField: "id",
+      operators: [
+        {
+          pretty: "DODAJ",
+          click: () => {
+            this.props.openAddProjectModal();
+          }
+        }
+      ],
+      columns: [
+        { width: 20, field: "name", pretty: "Nazwa projektu" },
+        { width: 20, field: "client", pretty: "Klient" },
+        { width: 20, field: "startDate", pretty: "Data rozpoczęcia" },
+        { width: 20, field: "endDate", pretty: "Data zakończenia" },
+        {
+          width: 10,
+          field: "isActive",
+          pretty: "Status",
+          multiState: { true: "Aktywny", false: "Zakończony" }
+        },
+        {
+          width: 1,
 
-  const projectsList = props.projects.map((item, index) => (
-    <div key={item.id} className="smooth-row project-block">
-      <div className="smooth-cell smooth-2x">{item.name}</div>
-      <div className="smooth-cell smooth-3x">{item.client}</div>
-      <div className="smooth-cell smooth-1x">{item.startDate}</div>
-      <div className="smooth-cell smooth-1x">{item.endDate}</div>
-      <div className="smooth-cell smooth-1x">
-        {item.isActive ? "active" : "finished"}
-      </div>
+          toolBox: [
+            { icon: { icon: "times" }, click: () => {} },
+            {
+              icon: { icon: "edit", iconType: "far" },
+              click: object => {
+                alert(object.name);
+              }
+            }
+          ]
+        }
+      ]
+    };
 
-      <div className="smooth-cell smooth-0x">
-        <button>
-          <Icon icon="times" />
-        </button>
-        <button>
-          <Icon iconType="far" icon="edit" />
-        </button>
-      </div>
-    </div>
-  ));
-
-  return <div className="smooth-table">{projectsList}</div>;
-};
+    return <SmoothTable construct={construct} data={this.props.projects} />;
+  }
+}
 
 export default ProjectsList;

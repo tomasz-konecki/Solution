@@ -28,7 +28,10 @@ class Users extends Component {
   render() {
     return (
       <div>
-        <UsersList openAddUserModal={this.handleOpenModal} users={this.props.users} />
+        <UsersList
+          openAddUserModal={this.handleOpenModal}
+          users={this.props.users}
+        />
         <Modal
           open={this.state.showModal}
           classNames={{ modal: "Modal" }}

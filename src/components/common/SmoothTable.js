@@ -24,10 +24,7 @@ class SmoothTable extends Component {
   }
   generateOperators() {
     return this.state.construct.operators.map((operator, index) => (
-      <button
-        key={index}
-        onClick={this.deepenFunction(operator.click)}
-      >
+      <button key={index} onClick={this.deepenFunction(operator.click)}>
         {operator.pretty}
       </button>
     ));
@@ -55,7 +52,9 @@ class SmoothTable extends Component {
                 className="smooth-cell"
                 style={{ width: column.width + "%" }}
               >
-                {object[column.field]}
+                {column.multiState === undefined
+                  ? object[column.field]
+                  : column.multiState[object[column.field]]}
               </td>
             );
           else if (column.toolBox !== undefined)
@@ -82,7 +81,7 @@ class SmoothTable extends Component {
         <div className="smooth-operator">{this.generateOperators()}</div>
         <table
           className={
-            (construct.tableClass !== undefined ? " " + construct.tableClass : "")
+            construct.tableClass !== undefined ? " " + construct.tableClass : ""
           }
         >
           <thead>

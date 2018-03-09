@@ -139,11 +139,11 @@ class StageTwo extends Component {
             </div>
 
             <div className="form-navigation">
-              <div className="submit-button-container">
-                <button type="submit">Submit</button>
-              </div>
               <div className="button-back-container">
                 <button onClick={this.handleBack}>Back</button>
+              </div>
+              <div className="submit-button-container">
+                <button type="submit">Submit</button>
               </div>
             </div>
           </form>

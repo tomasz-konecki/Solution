@@ -17,6 +17,12 @@ class UsersList extends Component {
           click: () => {
             this.props.openAddUserModal();
           }
+        },
+        {
+          pretty: "ODŚWIEŻ",
+          click: () => {
+            alert('not implemented yet');
+          }
         }
       ],
       columns: [

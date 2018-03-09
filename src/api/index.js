@@ -8,9 +8,13 @@ const API_ENDPOINT = "http://10.24.14.148";
 
 class DCMTWebApi {
   auth(username, password) {
-    return axios
-      .post(`${API_ENDPOINT}/account/login`, { username, password })
-      .then(response => jwtDecode(response.data.id_token));
+    return Promise.resolve({
+      email: "jane.doe@kappa.com",
+      extra: "Jane Doe"
+    });
+    // return axios
+    //   .post(`${API_ENDPOINT}/account/login`, { username, password })
+    //   .then(response => jwtDecode(response.data.id_token));
   }
 
   getStatistics() {
@@ -290,4 +294,4 @@ class DCMTMockApi extends DCMTWebApi {
   }
 }
 
-export default new DCMTMockApi();
+export default new DCMTWebApi();

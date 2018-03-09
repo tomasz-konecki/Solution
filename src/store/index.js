@@ -11,7 +11,8 @@ const persistConfig = {
   storage,
   blacklist: ['form'],
   migrate: (state) => {
-    if(state.authReducer !== undefined) state.authReducer.loading = false;
+    if(state !== undefined && state.authReducer !== undefined)
+      state.authReducer.loading = false;
     return Promise.resolve(state);
   }
 };

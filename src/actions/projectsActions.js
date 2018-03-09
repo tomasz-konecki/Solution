@@ -13,7 +13,7 @@ export const loadProjects = page => {
   return dispatch => {
     DCMTWebApi.getProjects(page)
       .then(response => {
-        dispatch(loadProjectsSuccess(response.data.dtoObject.results));
+        dispatch(loadProjectsSuccess(response.data.dtoObjects));
       })
       .catch(error => {
         throw error;

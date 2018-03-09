@@ -3,15 +3,15 @@
 $default-color: white;
 
 .smooth-operator {
-  height: 4vh;
-  line-height: 5vh;
+  height: 6vh;
+  line-height: 6vh;
   padding-left: 0.5vh;
 
   button {
     background: $default-color;
-    height: 3vh;
+    height: 5vh;
     line-height: 3vh;
-    color: #7CA5F3;
+    color: lighten($button-element-background, 20%);
     font-family: 'Roboto';
     border: none;
     border-radius: 6px;
@@ -78,13 +78,19 @@ $default-color: white;
 
         display: inline-block;
         text-align: center;
-        height: 3vh;
+        height: 4vh;
+        height: 4vh;
         line-height: 2vh;
         vertical-align: middle;
         border: 1px solid transparent;
         margin-right: 0.5vh;
         background: transparent;
         cursor: pointer;
+        border-radius: 6px;
+
+        &:hover {
+          background: darken($default-color, 5%);
+        }
 
         i {
           padding: 0;
@@ -95,12 +101,12 @@ $default-color: white;
 
         &:hover {
           i {
-            color: rgb(159, 0, 0);
+            color: lighten($button-element-background, 20%);
           }
         }
         &:active {
           i {
-            color: darken(rgb(125, 0, 0), $default-dim);
+            color: lighten($button-element-background, 40%);
           }
         }
       }

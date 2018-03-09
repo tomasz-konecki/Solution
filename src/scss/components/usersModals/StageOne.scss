@@ -1,0 +1,13 @@
+.stage-one-container {
+  height: 100%;
+
+  .search-container {
+    width: 100%;
+    position: absolute;
+  }
+  input[type="text"] {
+    margin-left: 10px;
+    width: 50%;
+    margin-bottom: 0 !important;
+  }
+}

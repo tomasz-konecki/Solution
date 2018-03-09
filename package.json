@@ -9,7 +9,7 @@
     "lint": "node_modules/.bin/esw webpack.config.* src tools",
     "lint:watch": "npm run lint -- --watch",
     "test": "babel-node mocha --reporter progress tools/testSetup.js \"src/**/*.test.js\"",
-    "webpack": "webpack-dev-server --inline --hot --config ./webpack.config.js",
+    "webpack": "webpack-dev-server --inline --hot --port 8080 --host 0.0.0.0 --config ./webpack.config.js",
     "build": "SET NODE_ENV=production & webpack"
   },
   "repository": {
@@ -52,12 +52,15 @@
     "bluebird": "^3.5.1",
     "bootstrap": "^4.0.0",
     "jwt-decode": "^2.2.0",
-    "bootstrap": "^4.0.0",
+    "lodash": "^4.17.5",
+    "moment": "^2.21.0",
     "prop-types": "^15.6.0",
     "react": "^16.2.0",
+    "react-datepicker": "^1.2.2",
     "react-dom": "^16.2.0",
     "react-persist": "^1.0.2",
     "react-redux": "^5.0.6",
+    "react-responsive-modal": "^2.0.1",
     "react-router": "^4.2.0",
     "react-router-dom": "^4.2.2",
     "react-router-redux": "^5.0.0-alpha.9",
@@ -67,8 +70,10 @@
     "redux-form": "^7.2.3",
     "redux-logger": "^3.0.6",
     "redux-persist": "^5.9.1",
+    "redux-persist-transform-filter": "^0.0.16",
     "redux-thunk": "^2.2.0",
-    "source-map-loader": "^0.2.3"
+    "source-map-loader": "^0.2.3",
+    "uuid": "^3.2.1"
   },
   "bugs": {
     "url": "https://github.com/tomasz-konecki/Solution/issues"

@@ -1,3 +1,4 @@
+/* eslint-disable */
 var expect = reqiure("expect");
 // import expect from 'expect'
 

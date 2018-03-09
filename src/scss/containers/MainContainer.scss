@@ -1,0 +1,281 @@
+@import "../ColorSchema.scss";
+@import url("https://use.fontawesome.com/releases/v5.0.6/css/all.css");
+@import url("https://fonts.googleapis.com/css?family=Roboto");
+@import url("https://fonts.googleapis.com/css?family=Fugaz+One");
+@import url("https://fonts.googleapis.com/css?family=Faster+One");
+@import url("https://fonts.googleapis.com/css?family=Roboto+Condensed");
+
+::-webkit-scrollbar-track {
+  border: 1px solid $main-color;
+  background-color: #f5f5f5;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  background-color: #f5f5f5;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: $main-color;
+}
+
+.wrapper {
+  width: 100vw;
+  background: $content-background;
+
+  overflow-y: scroll;
+
+  .header {
+    height: 6vh;
+    overflow: hidden;
+    white-space: nowrap;
+    box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.75);
+    top: 0;
+    width: calc(100% - 9px);
+    position: fixed;
+    z-index: 2;
+    right: 9px;
+
+    .first-bar {
+      height: 1vh;
+      width: 100%;
+      background: darken($main-color, 5%);
+    }
+    .second-bar {
+      height: 5vh;
+      width: 100%;
+      background: $main-color;
+    }
+
+    .left-menu {
+      background: $left-menu-background;
+      position: fixed;
+      left: 0;
+      height: 94vh;
+      width: 6.5vh;
+      top: 6vh;
+      color: transparent;
+      display: inline-block;
+      vertical-align: top;
+      z-index: 1;
+      transition-property: width;
+      transition-duration: 0.3s;
+      box-shadow: 0px 4px 3px 3px rgba(0, 0, 0, 0.75);
+
+      li {
+        height: 4vh;
+        width: 100%;
+        line-height: 1.5em;
+        vertical-align: baseline;
+        cursor: default;
+        color: $menu-element-text-color;
+        background: $left-menu-li-background;
+        border-bottom: 1px solid $left-menu-li-border-bottom-color;
+        padding-top: 0.5em;
+        padding-bottom: 0.5em;
+        //text-align: center;
+        user-select: none;
+
+        span {
+          visibility: hidden;
+          opacity: 0;
+          transition-property: opacity;
+          transition-duration: 0.2s;
+          max-width: 0;
+        }
+        i {
+          padding: 1vh;
+          margin-left: 0.9vh;
+        }
+        &:hover {
+          background-color: $left-menu-li-hover-background;
+          cursor: pointer;
+          i {
+            color: $left-menu-li-hover-icon-color;
+          }
+        }
+      }
+      .active {
+        li {
+          background: $left-menu-li-active-background;
+        }
+      }
+      &.extended {
+        width: 10%;
+        li {
+          span {
+            display: inline-block;
+            visibility: visible;
+            width: 100%;
+            opacity: 1;
+            padding-left: 1vh;
+          }
+          &.extender {
+            width: 100%;
+          }
+        }
+      }
+    }
+    .top-bar {
+      position: absolute;
+      right: 1vw;
+      top: 1vh;
+      line-height: 5vh;
+      font-size: 2vh;
+      height: 5vh;
+      vertical-align: baseline;
+      color: white;
+      .logged-in-user {
+        padding-right: 1vw;
+      }
+      .nav-compact {
+        height: 3vh;
+        line-height: 2vh;
+        vertical-align: baseline;
+        span {
+          font-size: 1.65vh;
+        }
+        i {
+          font-size: 1.65vh;
+        }
+      }
+    }
+    .logo {
+      position: absolute;
+      margin-left: auto;
+      margin-right: auto;
+      left: 0;
+      right: 0;
+      top: 1.7vh;
+      text-align: center;
+      img {
+        height: 3.5vh;
+        filter: brightness(0) invert(1);
+      }
+    }
+    .title {
+      position: absolute;
+      left: 5vw;
+      top: 1.4vh;
+      line-height: 3.8vh;
+      vertical-align: baseline;
+      color: white;
+      font-size: 3.8vh;
+      font-family: "Faster One", cursive;
+    }
+
+    .extender {
+      cursor: pointer;
+      position: absolute;
+      top: 1vh;
+      width: 8vh;
+      height: 5vh;
+      line-height: 5vh;
+      vertical-align: baseline;
+      color: $menu-element-text-color;
+      z-index: 2;
+      font-size: 60%;
+      i {
+        padding-left: 2vh;
+        font-size: 3.3vh;
+        padding-top: 1.32vh;
+      }
+    }
+  }
+  .content {
+    height: 94vh;
+    margin-left: auto;
+    margin-right: auto;
+    width: 80%;
+    padding: 1.1vh;
+    box-sizing: border-box;
+    margin-top: 6vh;
+    color: $content-color;
+  }
+}
+@media (max-width: 1366px) {
+  .wrapper {
+    height: auto;
+    overflow: auto;
+
+    font-size: 120%;
+
+    .header {
+      width: 100%;
+      .left-menu {
+        width: 0;
+        li {
+          display: none;
+        }
+        &.extended {
+          width: 20%;
+
+          li {
+            display: block;
+          }
+        }
+      }
+      .title {
+        display: none;
+      }
+      .top-bar {
+        margin-right: 0.5em;
+        .logged-in-user {
+          color: transparent;
+          strong {
+            color: $menu-element-text-color;
+            margin-right: 15px;
+          }
+        }
+      }
+    }
+    .content {
+      width: 95%;
+    }
+  }
+}
+@media (max-width: 1000px) {
+  .wrapper {
+    height: auto;
+    overflow: auto;
+    font-size: 270%;
+
+    .header {
+      width: 100%;
+      font-size: 75%;
+
+      .left-menu {
+        height: 0;
+        width: 100%;
+        box-shadow: none;
+        li {
+          display: none;
+        }
+        &.extended {
+          height: auto;
+          width: 100%;
+          box-shadow: 0px 4px 3px 3px rgba(0, 0, 0, 0.75);
+          li {
+            display: block;
+          }
+        }
+      }
+      .title {
+        display: none;
+      }
+      .top-bar {
+        margin-right: 0.5em;
+        .logged-in-user {
+          color: transparent;
+          strong {
+            color: $menu-element-text-color;
+            margin-right: 15px;
+          }
+        }
+      }
+    }
+    .content {
+      width: 95%;
+    }
+  }
+}

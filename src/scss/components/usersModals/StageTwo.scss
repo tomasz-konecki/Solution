@@ -1,0 +1,38 @@
+$stage-two-container-height: 18em;
+
+.stage-two-container {
+  padding: 15px;
+  .user-details-container {
+    padding-bottom: 1.5em;
+    border-bottom: 1px solid lightgray;
+
+    .detail-container {
+      margin-bottom: 0.5em;
+    }
+
+    label {
+      display: inline-block;
+      width: 20%;
+    }
+    span {
+      font-weight: 700;
+      margin-left: 0.5em;
+    }
+  }
+
+  .form-container {
+    padding-top: 0.7em;
+    .form-navigation {
+    }
+  }
+}
+
+.submit-button-container {
+  margin-top: 1em;
+}
+
+.button-back-container {
+  button {
+    width: 6em;
+  }
+}

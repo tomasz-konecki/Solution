@@ -1,18 +1,60 @@
 @import "3rd/Reset.scss";
 @import "ColorSchema.scss";
 @import "./components/Button";
-@import url("https://fonts.googleapis.com/css?family=Roboto+Condensed");
+@import "./components/Input";
+@import "./components/table/SmoothTable";
 
 body {
-  background: $body-background;
   font-family: "Roboto Condensed", sans-serif;
+  min-height: 100vh;
+  background: $content-background;
+}
+
+::selection {
+  background: #ffb97c; /* WebKit/Blink Browsers */
 }
 
 .text-right {
   text-align: right;
 }
 
-a, a:visited {
+a,
+a:visited {
   text-decoration: none;
-  color: darken(rgb(103, 163, 181), 8%);
+  color: darken(rgb(103, 163, 181), 18%);
+}
+
+.Modal {
+  height: 400px;
+  width: 600px;
+  background-color: #eee;
+  box-shadow: 5px 10px 10px #888888;
+
+  svg {
+    z-index: 2;
+  }
+
+  header {
+    padding-left: 15px;
+
+    .close-button {
+      margin-left: 83%;
+      &:hover {
+        cursor: pointer;
+      }
+    }
+  }
+
+  @media only screen and (max-width: 1366px) {
+    height: 80%;
+    width: 80%;
+
+    font-size: 160% !important;
+  }
+  @media only screen and (max-width: 1000px) {
+    height: 80%;
+    width: 80%;
+
+    font-size: 230% !important;
+  }
 }

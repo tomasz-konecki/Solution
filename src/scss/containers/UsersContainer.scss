@@ -1,0 +1,20 @@
+// UsersTableManagement
+.container {
+  .title-container,
+  .add-user-button-container {
+    display: inline-block;
+  }
+  .title-container {
+    p {
+      padding: 20px 0;
+    }
+  }
+  .add-user-button-container {
+    padding: 1em;
+    text-align: right;
+  }
+  .add-user-button {
+    width: 80px;
+    cursor: pointer;
+  }
+}

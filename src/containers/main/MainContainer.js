@@ -1,14 +1,16 @@
 import React from "react";
-import { Route, withRouter  } from "react-router-dom";
+import { Route, withRouter } from "react-router-dom";
 import Header from "./header/Header";
 import Footer from "./footer/Footer";
 import Content from "./content/Content";
-import "../../scss/MainContainer.scss";
+import "../../scss/containers/MainContainer.scss";
+import PropTypes from "prop-types";
+
+import "react-responsive-modal/lib/react-responsive-modal.css";
 
 class MainContainer extends React.Component {
   constructor(props, match) {
     super(props);
-
   }
 
   render() {
@@ -17,13 +19,17 @@ class MainContainer extends React.Component {
     return (
       <div>
         <div className="wrapper">
-          <Header logout={this.props.logout}/>
+          <Header history={this.props.history} logout={this.props.logout} />
           <Content match={match} />
-          <Footer/>
         </div>
       </div>
     );
   }
 }
+
+MainContainer.propTypes = {
+  match: PropTypes.object,
+  logout: PropTypes.func
+};
 
 export default MainContainer;

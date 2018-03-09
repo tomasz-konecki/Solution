@@ -1,10 +1,17 @@
 import React from "react";
+import PropTypes from 'prop-types';
 
-const Icon = (props) => {
+const Icon = ({iconType = "fas", iconSize = "", icon, additionalClass = ""}) => {
   return (
-    <i className={props.iconType + " fa-" + props.icon}/>
+    <i className={iconType + " fa-" + icon + (iconSize !== "" ? " fa-" + iconSize : "") + " " + additionalClass}/>
   );
 };
 
-export default Icon;
+Icon.propTypes = {
+  iconType: PropTypes.string,
+  iconSize: PropTypes.string,
+  additionalClass: PropTypes.string,
+  icon: PropTypes.string
+};
 
+export default Icon;

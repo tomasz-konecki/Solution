@@ -1,42 +1,47 @@
 import React from "react";
+import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import PropTypes from "../../../../../node_modules/prop-types/checkPropTypes";
-import { loadUsers } from "../../../../actions/usersActions";
+import PropTypes from "prop-types";
+import * as usersActions from "../../../../actions/usersActions";
 import Users from "../views/Users";
+
+import "../../../../scss/containers/UsersContainer.scss";
 
 class UsersContainer extends React.Component {
   constructor(props) {
     super(props);
-  }
-  componentWillMount() {
-    this.props.loadUsers();
+    this.state = {
+      page: 3
+    };
   }
 
   componentDidMount() {
-    console.log("USERS_CONTAINER PROPS - ", this.props);
+    this.props.userActions.loadUsers(this.state.page);
   }
 
   render() {
-    return <Users users={this.props.users} />;
+    return (
+      <div>
+        <Users users={this.props.users} />
+      </div>
+    );
   }
 }
 
-// UsersContainer.propTypes = {
-//   dispatch: PropTypes.function,
-//   users: PropTypes.array
-// };
+UsersContainer.propTypes = {
+  // dispatch: PropTypes.function,
+  users: PropTypes.array
+};
 
 function mapStateToProps(state) {
   return {
-    users: state.users
+    users: state.usersReducer.users
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    loadUsers: () => {
-      dispatch(loadUsers());
-    }
+    userActions: bindActionCreators(usersActions, dispatch)
   };
 }
 

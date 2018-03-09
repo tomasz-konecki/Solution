@@ -9,7 +9,11 @@ import * as reducers from '../reducers';
 const persistConfig = {
   key: 'root',
   storage,
-  blacklist: ['form']
+  blacklist: ['form'],
+  migrate: (state) => {
+    state.authReducer.loading = false;
+    return Promise.resolve(state);
+  }
 };
 
 const storeCreator = (history) => {
@@ -17,10 +21,11 @@ const storeCreator = (history) => {
   const persistedReducer = persistReducer(persistConfig,
     combineReducers(Object.assign({}, reducers, routerReducer, { form: formReducer })));
 
+  const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+
   let store = createStore(
     persistedReducer,
-    compose(middleware,
-      window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__())
+    composeEnhancers(middleware)
   );
 
   let persistor = persistStore(store);

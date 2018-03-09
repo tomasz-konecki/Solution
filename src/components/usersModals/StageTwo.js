@@ -41,6 +41,12 @@ class StageTwo extends Component {
     }
   };
 
+  parseRoles = () => {
+    return this.state.roles.length !== 0
+      ? this.state.roles.join(", ")
+      : "<brak>";
+  };
+
   componentDidMount() {
     let {
       firstName,
@@ -86,7 +92,7 @@ class StageTwo extends Component {
           </div>
           <div className="detail-container">
             <label>Role:</label>
-            <span>{this.state.roles.join(", ")}</span>
+            <span>{this.parseRoles()}</span>
           </div>
         </div>
 

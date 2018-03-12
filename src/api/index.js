@@ -245,12 +245,7 @@ class DCMTMockApi extends DCMTWebApi {
   }
 
   addProject(
-    name,
-    description,
-    client,
-    responsiblePerson,
-    startDate,
-    estimatedEndDate,
+    { projectName, description, client, responsiblePerson, startDate, endDate },
     simulateError = false
   ) {
     return Promise.resolve(this.pretendResponse(null, simulateError));

@@ -8,6 +8,7 @@ class AddProjectScreen extends Component {
     super(props);
     this.state = {
       name: "",
+      id: Math.floor(Math.random() * 101),
       description: "",
       client: "",
       responsiblePerson: "",
@@ -69,17 +70,17 @@ class AddProjectScreen extends Component {
       isLoading: true
     });
 
-    let newProject = {
-      name: "",
-      description: "",
-      client: "",
-      responsiblePerson: "",
-      startDate: "",
-      endDate: "",
-      isActive: true
-    };
+    // let newProject = {
+    //   name: "",
+    //   description: "",
+    //   client: "",
+    //   responsiblePerson: "",
+    //   startDate: "",
+    //   endDate: "",
+    //   isActive: true
+    // };
 
-    newProject = this.state;
+    const newProject = this.state;
     this.getResponse(newProject);
   }
 

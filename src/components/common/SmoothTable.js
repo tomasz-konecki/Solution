@@ -73,9 +73,15 @@ class SmoothTable extends Component {
   }
   render() {
     const { construct } = this.state;
-    const list = this.props.data.map((object, index) =>
-      this.generateRow(object)
-    );
+    let list, empty = false;
+    if(this.props.data !== undefined) {
+      list = this.props.data.map((object, index) =>
+        this.generateRow(object)
+      );
+    }
+    else{
+      empty = true;
+    }
     return (
       <div className="smooth-table">
         <div className="smooth-operator">{this.generateOperators()}</div>
@@ -90,6 +96,7 @@ class SmoothTable extends Component {
           </thead>
           <tbody>{list}</tbody>
         </table>
+        { empty && <div className="smooth-footer">Brak danych bądź wyników</div> }
       </div>
     );
   }

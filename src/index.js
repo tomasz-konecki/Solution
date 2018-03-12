@@ -4,14 +4,12 @@ import { Provider } from 'react-redux';
 import { ConnectedRouter } from 'react-router-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 
-import createHistory from 'history/createBrowserHistory';
-
 import storeCreator from './store';
 import App from './containers/App';
 
-const history = createHistory();
 
-const { store, persistor } = storeCreator(history);
+
+const { store, persistor, history } = storeCreator();
 
 render(
   <Provider store={store}>

@@ -1,4 +1,4 @@
-import { LOAD_PROJECTS_SUCCESS } from "../constants";
+import { LOAD_PROJECTS_SUCCESS, LOGOUT } from "../constants";
 
 const initialState = {
   projects: []
@@ -10,6 +10,10 @@ export const projectsReducer = (state = initialState, action) => {
       return {
         ...state,
         projects: action.projects
+      };
+    case LOGOUT:
+      return {
+        users: []
       };
     default:
       return state;

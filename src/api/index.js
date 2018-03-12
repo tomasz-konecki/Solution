@@ -6,12 +6,11 @@ import * as projectsMocks from "./mock/projects";
 
 const API_ENDPOINT = "http://10.24.14.148";
 
+const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
+
 class DCMTWebApi {
   auth(login, password) {
-    // return Promise.resolve({
-    //   email: "jane.doe@kappa.com",
-    //   extra: "Jane Doe"
-    // });
+    //console.log(store.getState());
     return axios
       .post(`${API_ENDPOINT}/users/login`, { login, password })
       .then(response => response.data.dtoObject);
@@ -22,7 +21,6 @@ class DCMTWebApi {
   }
 
   getUsers(settings = null) {
-    if (settings === null) return axios.get(`${API_ENDPOINT}/users`);
     return axios.get(`${API_ENDPOINT}/users`, { params: settings });
   }
 

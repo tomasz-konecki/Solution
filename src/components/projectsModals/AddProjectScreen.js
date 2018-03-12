@@ -7,12 +7,13 @@ class AddProjectScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      projectName: "",
+      name: "",
       description: "",
       client: "",
       responsiblePerson: "",
       startDate: "",
       endDate: "",
+      isActive: true,
       isLoading: false,
       result: "",
       resultColor: "green"
@@ -21,7 +22,7 @@ class AddProjectScreen extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.getResponse = this.getResponse.bind(this);
-    this.handleError = this.handleError.bind(this);
+    this.handleStatus = this.handleStatus.bind(this);
   }
 
   handleChange(event) {
@@ -30,7 +31,7 @@ class AddProjectScreen extends Component {
     });
   }
 
-  handleError(status) {
+  handleStatus(status) {
     status === 200
       ? this.setState({
           result: "Projekt dodany pomyślnie",
@@ -42,12 +43,12 @@ class AddProjectScreen extends Component {
         });
   }
 
-  getResponse(project) {
+  getResponse(newProject) {
     setTimeout(() => {
-      DCMTWebApi.addProject(project, false)
+      DCMTWebApi.addProject(newProject, false)
         .then(response => {
-          this.handleError(response.status);
-          console.table(project);
+          this.handleStatus(response.status);
+          console.table(newProject);
         })
         .then(() => {
           this.setState({
@@ -57,6 +58,8 @@ class AddProjectScreen extends Component {
         .catch(error => {
           throw error;
         });
+
+      this.props.projectActions.loadProjects(1, newProject);
     }, 2000);
   }
 
@@ -66,17 +69,18 @@ class AddProjectScreen extends Component {
       isLoading: true
     });
 
-    let project = {
-      projectName: "",
+    let newProject = {
+      name: "",
       description: "",
       client: "",
       responsiblePerson: "",
       startDate: "",
-      endDate: ""
+      endDate: "",
+      isActive: true
     };
 
-    project = this.state;
-    this.getResponse(project);
+    newProject = this.state;
+    this.getResponse(newProject);
   }
 
   render() {
@@ -87,7 +91,7 @@ class AddProjectScreen extends Component {
             <label>Nazwa projektu: </label>
             <input
               type="text"
-              name="projectName"
+              name="name"
               onChange={this.handleChange}
               required
             />

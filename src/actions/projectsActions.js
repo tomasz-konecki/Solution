@@ -9,7 +9,7 @@ export const loadProjectsSuccess = projects => {
   };
 };
 
-export const loadProjects = (page, newProject = {}) => {
+export const loadProjects = (page, newProject = { id: "abcdef" }) => {
   return dispatch => {
     DCMTWebApi.getProjects(page)
       .then(response => {

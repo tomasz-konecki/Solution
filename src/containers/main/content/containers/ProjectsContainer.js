@@ -22,7 +22,10 @@ class ProjectsContainer extends React.Component {
   render() {
     return (
       <div>
-        <Projects projects={this.props.projects} />
+        <Projects
+          projects={this.props.projects}
+          projectActions={this.props.projectActions}
+        />
       </div>
     );
   }

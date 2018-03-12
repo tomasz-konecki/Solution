@@ -1,3 +1,5 @@
+@import "../../ColorSchema";
+
 .add-project-screen {
   padding: 40px 10px 20px;
   form {
@@ -12,6 +14,13 @@
         flex: 3;
         margin: 0;
         border-color: gray;
+        &:focus {
+          border-color: $button-element-background;
+        }
+      }
+      input[type="date"] {
+        border: 1px solid gray;
+        flex: 3.15;
       }
       textarea {
         flex: 2;
@@ -24,16 +33,30 @@
         font-family: "Roboto Condensed", sans-serif;
         margin: 0;
         box-sizing: border-box;
+        &:focus {
+          border-color: $button-element-background;
+        }
       }
     }
     .project-submit-container {
       padding-top: 0.9em;
       display: flex;
-      justify-content: flex-end;
-      .project-submit-button {
+      .submit-result {
+        flex: 6;
       }
+      .green {
+        color: green;
+      }
+      .red {
+        color: red;
+      }
+
+      .project-submit-button {
+        flex: 1;
+      }
+    }
+    .loading-bar-container {
+      padding: 0.3em 0;
     }
   }
 }
-
-//Color Schema

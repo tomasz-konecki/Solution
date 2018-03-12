@@ -9,11 +9,18 @@ export const loadProjectsSuccess = projects => {
   };
 };
 
-export const loadProjects = page => {
+export const loadProjects = (page, newProject) => {
   return dispatch => {
     DCMTWebApi.getProjects(page)
       .then(response => {
-        dispatch(loadProjectsSuccess(response.data.dtoObjects));
+        if(newProject !== undefined)
+          dispatch(
+            loadProjectsSuccess([...response.data.dtoObject.results, newProject])
+          );
+        else
+          dispatch(
+            loadProjectsSuccess(response.data.dtoObject.results)
+          );
       })
       .catch(error => {
         throw error;

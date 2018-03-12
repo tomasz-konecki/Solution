@@ -1,12 +1,12 @@
 import React, { Component } from "react";
 import Icon from "./Icon";
+import LoaderHorizontal from "./LoaderHorizontal";
 
 class SmoothTable extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      construct: props.construct,
-      data: props.data
+      construct: props.construct
     };
   }
   deepenFunction(func, ...args) {
@@ -73,12 +73,13 @@ class SmoothTable extends Component {
   }
   render() {
     const { construct } = this.state;
-    const list = this.state.data.map((object, index) =>
+    const list = this.props.data.map((object, index) =>
       this.generateRow(object)
     );
     return (
       <div className="smooth-table">
         <div className="smooth-operator">{this.generateOperators()}</div>
+        { this.props.loading && <LoaderHorizontal/> }
         <table
           className={
             construct.tableClass !== undefined ? " " + construct.tableClass : ""

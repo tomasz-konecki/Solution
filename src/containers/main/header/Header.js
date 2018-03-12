@@ -15,8 +15,10 @@ class Header extends React.Component {
     this.handleExtend = this.handleExtend.bind(this);
     this.handleBlockedClick = this.handleBlockedClick.bind(this);
     this.closeMenu = this.closeMenu.bind(this);
+  }
 
-    props.history.listen(location =>  {
+  componentDidMount() {
+    this.props.history.listen(location =>  {
       this.closeMenu();
     });
   }

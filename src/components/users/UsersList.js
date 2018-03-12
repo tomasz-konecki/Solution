@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import Icon from "../common/Icon";
 import SmoothTable from "../common/SmoothTable";
+import { connect } from "react-redux";
+import { loadUsers } from "../../actions/usersActions";
 
 class UsersList extends Component {
   constructor(props) {
@@ -21,7 +23,7 @@ class UsersList extends Component {
         {
           pretty: "ODŚWIEŻ",
           click: () => {
-            alert('not implemented yet');
+            this.props.dispatch(loadUsers(1, 25));
           }
         }
       ],
@@ -46,8 +48,8 @@ class UsersList extends Component {
       ]
     };
 
-    return <SmoothTable construct={construct} data={this.props.users} />;
+    return <SmoothTable loading={this.props.loading} construct={construct} data={this.props.users} />;
   }
 }
 
-export default UsersList;
+export default connect()(UsersList);

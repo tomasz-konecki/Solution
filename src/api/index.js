@@ -7,14 +7,14 @@ import * as projectsMocks from "./mock/projects";
 const API_ENDPOINT = "http://10.24.14.148";
 
 class DCMTWebApi {
-  auth(username, password) {
-    return Promise.resolve({
-      email: "jane.doe@kappa.com",
-      extra: "Jane Doe"
-    });
-    // return axios
-    //   .post(`${API_ENDPOINT}/account/login`, { username, password })
-    //   .then(response => jwtDecode(response.data.id_token));
+  auth(login, password) {
+    // return Promise.resolve({
+    //   email: "jane.doe@kappa.com",
+    //   extra: "Jane Doe"
+    // });
+    return axios
+      .post(`${API_ENDPOINT}/users/login`, { login, password })
+      .then(response => response.data.dtoObject);
   }
 
   getStatistics() {

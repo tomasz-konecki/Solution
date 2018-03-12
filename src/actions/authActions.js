@@ -1,8 +1,8 @@
 import { AUTH_SUCCESS, AUTH_FAIL, AUTH_START, AUTH_STOP } from '../constants';
 
-export const authSuccess = (token_block) => ({
+export const authSuccess = (userBlock) => ({
   type: AUTH_SUCCESS,
-  token_block
+  userBlock
 });
 
 export const authFail = () => ({

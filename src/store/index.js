@@ -9,7 +9,7 @@ import * as reducers from '../reducers';
 const persistConfig = {
   key: 'root',
   storage,
-  blacklist: ['form'],
+  blacklist: ['form', 'asyncReducer'],
   migrate: (state) => {
     if(state !== undefined && state.authReducer !== undefined)
       state.authReducer.loading = false;

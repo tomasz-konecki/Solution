@@ -12,7 +12,7 @@ export const authReducer = (state = initialState, action) => {
         ...state,
         isAuthenticated: true,
         loading: false,
-        ...action.token_block
+        ...action.userBlock
       };
     case types.AUTH_FAIL:
       return {

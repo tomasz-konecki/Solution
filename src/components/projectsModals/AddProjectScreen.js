@@ -70,16 +70,6 @@ class AddProjectScreen extends Component {
       isLoading: true
     });
 
-    // let newProject = {
-    //   name: "",
-    //   description: "",
-    //   client: "",
-    //   responsiblePerson: "",
-    //   startDate: "",
-    //   endDate: "",
-    //   isActive: true
-    // };
-
     const newProject = this.state;
     this.getResponse(newProject);
   }

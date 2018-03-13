@@ -9,9 +9,11 @@ class SmoothTable extends Component {
       construct: props.construct
     };
   }
+
   deepenFunction(func, ...args) {
     return () => func(...args);
   }
+
   generateToolBox(object, toolBoxColumn) {
     return toolBoxColumn.toolBox.map((button, index) => (
       <button
@@ -22,6 +24,7 @@ class SmoothTable extends Component {
       </button>
     ));
   }
+
   generateOperators() {
     return this.state.construct.operators.map((operator, index) => (
       <button key={index} onClick={this.deepenFunction(operator.click)}>
@@ -29,11 +32,13 @@ class SmoothTable extends Component {
       </button>
     ));
   }
+
   generateLegend() {
     return this.state.construct.columns.map((column, index) => (
       <th key={column.field + index}>{column.pretty}</th>
     ));
   }
+
   generateRow(object) {
     const { construct } = this.state;
     return (
@@ -71,21 +76,20 @@ class SmoothTable extends Component {
       </tr>
     );
   }
+
   render() {
     const { construct } = this.state;
-    let list, empty = false;
-    if(this.props.data !== undefined) {
-      list = this.props.data.map((object, index) =>
-        this.generateRow(object)
-      );
-    }
-    else{
+    let list,
+      empty = false;
+    if (this.props.data !== undefined) {
+      list = this.props.data.map((object, index) => this.generateRow(object));
+    } else {
       empty = true;
     }
     return (
       <div className="smooth-table">
         <div className="smooth-operator">{this.generateOperators()}</div>
-        { this.props.loading && <LoaderHorizontal/> }
+        {this.props.loading && <LoaderHorizontal />}
         <table
           className={
             construct.tableClass !== undefined ? " " + construct.tableClass : ""
@@ -96,7 +100,7 @@ class SmoothTable extends Component {
           </thead>
           <tbody>{list}</tbody>
         </table>
-        { empty && <div className="smooth-footer">Brak danych bądź wyników</div> }
+        {empty && <div className="smooth-footer">Brak danych bądź wyników</div>}
       </div>
     );
   }

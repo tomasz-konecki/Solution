@@ -20,32 +20,26 @@ class AddProjectScreen extends Component {
       result: "",
       resultColor: "green"
     };
-
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleChange = this.handleChange.bind(this);
-    this.getResponse = this.getResponse.bind(this);
-    this.handleStatus = this.handleStatus.bind(this);
   }
 
-  handleChange(event) {
+  handleChange = event => {
     this.setState({
       [event.target.name]: event.target.value
     });
-  }
+  };
 
-  handleStatus(status) {
+  handleStatus = status => {
     status === 200
       ? this.setState({
-          result: "Projekt dodany pomyślnie",
-          resultColor: "green"
+          result: "Projekt dodany pomyślnie"
         })
       : this.setState({
           result: "Coś poszło nie tak...",
           resultColor: "red"
         });
-  }
+  };
 
-  getResponse(newProject) {
+  getResponse = newProject => {
     console.table(newProject);
     setTimeout(() => {
       DCMTWebApi.addProject(newProject, false)
@@ -57,14 +51,13 @@ class AddProjectScreen extends Component {
           throw error;
         });
       this.setState({
-        isLoading: false,
-        result: "OK"
+        isLoading: false
       });
       this.props.projectActions.loadProjects(1, newProject);
     }, 2000);
-  }
+  };
 
-  handleSubmit(event) {
+  handleSubmit = event => {
     event.preventDefault();
     this.setState({
       isLoading: true
@@ -72,7 +65,7 @@ class AddProjectScreen extends Component {
 
     const newProject = this.state;
     this.getResponse(newProject);
-  }
+  };
 
   render() {
     return (

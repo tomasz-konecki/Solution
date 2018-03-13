@@ -48,7 +48,7 @@ class UsersList extends Component {
       ]
     };
 
-    return <SmoothTable loading={this.props.loading} construct={construct} data={this.props.users} />;
+    return <SmoothTable currentPage loading={this.props.loading} construct={construct} data={this.props.users} />;
   }
 }
 

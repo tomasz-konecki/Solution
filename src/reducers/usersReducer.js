@@ -1,7 +1,9 @@
 import { LOAD_USERS_SUCCESS, LOGOUT } from "../constants";
 
 const initialState = {
-  users: []
+  users: [],
+  currentPage: 1,
+  totalPageCount: 1
 };
 
 export const usersReducer = (state = initialState, action) => {
@@ -9,11 +11,13 @@ export const usersReducer = (state = initialState, action) => {
     case LOAD_USERS_SUCCESS:
       return {
         ...state,
-        users: action.users
+        ...action
       };
     case LOGOUT:
       return {
-        users: []
+        users: [],
+        currentPage: 1,
+        totalPageCount: 1
       };
     default:
       return state;

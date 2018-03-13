@@ -14,6 +14,7 @@ class UsersContainer extends React.Component {
     super(props);
     this.state = {
       page: 1,
+
       showModal: false
     };
 

@@ -101,6 +101,7 @@ class SmoothTable extends Component {
           <tbody>{list}</tbody>
         </table>
         {empty && <div className="smooth-footer">Brak danych bądź wyników</div>}
+        {this.props.currentPage !== this.props.totalPageCount && <div className="smooth-footer">Paginacja</div>}
       </div>
     );
   }

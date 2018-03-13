@@ -35,6 +35,14 @@ $default-color: white;
   padding: 0 2vh;
   width: 100%;
   display: table;
+  position: relative;
+
+  .loader {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+  }
 
   table {
     width: 100%;

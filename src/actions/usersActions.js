@@ -21,10 +21,11 @@ export const loadUsers = (page = 1, limit = 25) => {
     DCMTWebApi.getUsers(settings)
       .then(response => {
         dispatch(loadUsersSuccess(response.data.dtoObject.results));
+        dispatch(asyncEnded());
       })
       .catch(error => {
+        dispatch(asyncEnded());
         throw error;
-      })
-      .then(dispatch(asyncEnded()));
+      });
   };
 };

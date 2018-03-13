@@ -30,8 +30,8 @@ class DCMTWebApi {
     return axios.get(`${API_ENDPOINT}/users/searchAD/${user}`);
   }
 
-  addUser(id, role) {
-    return axios.post(`${API_ENDPOINT}/users`, { id, role });
+  addUser(id, roles) {
+    return axios.post(`${API_ENDPOINT}/users`, { id, roles });
   }
 
   deleteUser(id) {

@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import "../../scss/components/usersModals/StageTwo.scss";
 import FoundUsersTable from "../users/FoundUsersTable";
+import LoaderHorizontal from "../../components/common/LoaderHorizontal";
+import DCMTWebApi from "../../api";
 
 class StageTwo extends Component {
   constructor() {
@@ -11,7 +13,8 @@ class StageTwo extends Component {
       email: "",
       phoneNumber: "",
       id: "",
-      roles: []
+      roles: [],
+      isLoading: false
     };
   }
 
@@ -32,12 +35,24 @@ class StageTwo extends Component {
     });
   };
 
+  getResponse = newUser => {
+    DCMTWebApi.addUser(newUser.id, newUser.roles)
+      .then(response => {
+        console.log("Add user - response:", response);
+      })
+      .catch(error => {
+        throw error;
+      });
+  };
+
   handleSubmit = event => {
     event.preventDefault();
     if (this.state.roles.length === 0) {
       alert("Dodaj role!");
     } else {
-      console.log("User's profile:", this.state);
+      const newUser = this.state;
+      console.table(newUser);
+      this.getResponse(newUser);
     }
   };
 
@@ -153,6 +168,9 @@ class StageTwo extends Component {
               </div>
             </div>
           </form>
+        </div>
+        <div className="stage-two-loader-container">
+          <LoaderHorizontal />
         </div>
       </div>
     );

@@ -16,7 +16,7 @@ class AddProjectScreen extends Component {
       endDate: "",
       isActive: true,
       isLoading: false,
-      result: "",
+      result: "result",
       resultColor: "green"
     };
 
@@ -51,15 +51,17 @@ class AddProjectScreen extends Component {
           this.handleStatus(response.status);
           console.table(newProject);
         })
-        .then(() => {
-          this.setState({
-            isLoading: false
-          });
-        })
+        // .then(() => {
+        //   this.setState({
+        //     isLoading: false
+        //   });
+        // })
         .catch(error => {
           throw error;
         });
-
+      this.setState({
+        isLoading: false
+      });
       this.props.projectActions.loadProjects(1, newProject);
     }, 2000);
   }

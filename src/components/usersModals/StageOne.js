@@ -53,8 +53,9 @@ class StageOne extends Component {
           />
           <button onClick={this.handleClick}>Search</button>
         </div>
-        {this.state.isLoading === true && <LoaderHorizontal />}
-
+        <div className="loader-container">
+          {this.state.isLoading === true && <LoaderHorizontal />}
+        </div>
         {this.state.isSearchingDone === true && (
           <FoundUsersTable
             foundUsers={this.props.foundUsers}

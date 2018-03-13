@@ -10,7 +10,7 @@
   overflow: hidden;
   white-space: nowrap;
   height: 100%;
-  padding-top: 2.5em;
+  padding-top: 1.2em;
   div:nth-of-type(1) {
     width: 100%;
     span {
@@ -31,9 +31,9 @@
 
 .found-users-container {
   width: 100%;
-  height: calc(100% - 4.5em);
+  height: calc(100% - 2.5em);
   overflow-y: auto;
-  // max-height: 10rem;
+
   table {
     width: 100%;
 

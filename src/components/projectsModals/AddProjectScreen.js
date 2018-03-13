@@ -11,12 +11,13 @@ class AddProjectScreen extends Component {
       id: Math.floor(Math.random() * 101),
       description: "",
       client: "",
-      responsiblePerson: "",
-      startDate: "",
-      endDate: "",
+      responsiblePerson: 0,
+      startDate: new Date(),
+      endDate: new Date(),
+      createdBy: "wolczak",
       isActive: true,
       isLoading: false,
-      result: "result",
+      result: "",
       resultColor: "green"
     };
 
@@ -45,22 +46,19 @@ class AddProjectScreen extends Component {
   }
 
   getResponse(newProject) {
+    console.table(newProject);
     setTimeout(() => {
       DCMTWebApi.addProject(newProject, false)
         .then(response => {
+          console.log("Response:", response.status);
           this.handleStatus(response.status);
-          console.table(newProject);
         })
-        // .then(() => {
-        //   this.setState({
-        //     isLoading: false
-        //   });
-        // })
         .catch(error => {
           throw error;
         });
       this.setState({
-        isLoading: false
+        isLoading: false,
+        result: "OK"
       });
       this.props.projectActions.loadProjects(1, newProject);
     }, 2000);
@@ -120,7 +118,7 @@ class AddProjectScreen extends Component {
           <div className="input-block">
             <label>Osoba do kontaktu:</label>
             <input
-              type="text"
+              type="number"
               name="responsiblePerson"
               onChange={this.handleChange}
               required

@@ -18,10 +18,12 @@
           border-color: $button-element-background;
         }
       }
-      input[type="date"] {
+      input[type="date"],
+      input[type="number"] {
         border: 1px solid gray;
         flex: 3.15;
       }
+
       textarea {
         flex: 2;
         flex-basis: 28%;

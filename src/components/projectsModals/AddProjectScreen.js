@@ -36,8 +36,7 @@ class AddProjectScreen extends Component {
   handleStatus(status) {
     status === 200
       ? this.setState({
-          result: "Projekt dodany pomyślnie",
-          resultColor: "green"
+          result: "Projekt dodany pomyślnie"
         })
       : this.setState({
           result: "Coś poszło nie tak...",
@@ -57,8 +56,7 @@ class AddProjectScreen extends Component {
           throw error;
         });
       this.setState({
-        isLoading: false,
-        result: "OK"
+        isLoading: false
       });
       this.props.projectActions.loadProjects(1, newProject);
     }, 2000);

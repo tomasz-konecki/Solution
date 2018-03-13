@@ -14,7 +14,9 @@ class StageTwo extends Component {
       phoneNumber: "",
       id: "",
       roles: [],
-      isLoading: false
+      isLoading: false,
+      result: "",
+      resultColor: "green"
     };
   }
 
@@ -35,10 +37,21 @@ class StageTwo extends Component {
     });
   };
 
+  handleStatus = status => {
+    status === 201
+      ? this.setState({ result: "Użytkownik dodany pomyślnie" })
+      : this.setState({ result: "Coś poszło nie tak...", resultColor: "red" });
+  };
+
   getResponse = newUser => {
     DCMTWebApi.addUser(newUser.id, newUser.roles)
       .then(response => {
-        console.log("Add user - response:", response);
+        this.handleStatus(response.status);
+      })
+      .then(() => {
+        this.setState({
+          isLoading: false
+        });
       })
       .catch(error => {
         throw error;
@@ -47,6 +60,7 @@ class StageTwo extends Component {
 
   handleSubmit = event => {
     event.preventDefault();
+    this.setState({ isLoading: true });
     if (this.state.roles.length === 0) {
       alert("Dodaj role!");
     } else {
@@ -163,6 +177,13 @@ class StageTwo extends Component {
               <div className="button-back-container">
                 <button onClick={this.handleBack}>Back</button>
               </div>
+              <div
+                className={["add-user-result", this.state.resultColor].join(
+                  " "
+                )}
+              >
+                {this.state.result}
+              </div>
               <div className="submit-button-container">
                 <button type="submit">Submit</button>
               </div>
@@ -170,7 +191,7 @@ class StageTwo extends Component {
           </form>
         </div>
         <div className="stage-two-loader-container">
-          <LoaderHorizontal />
+          {this.state.isLoading === true && <LoaderHorizontal />}
         </div>
       </div>
     );

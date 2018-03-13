@@ -6,11 +6,13 @@ import * as projectsMocks from "./mock/projects";
 
 const API_ENDPOINT = "http://10.24.14.148";
 
+// osobny plik z konfiguracją
+//
+
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 
 class DCMTWebApi {
   auth(login, password) {
-    //console.log(store.getState());
     return axios
       .post(`${API_ENDPOINT}/users/login`, { login, password })
       .then(response => response.data.dtoObject);
@@ -53,23 +55,20 @@ class DCMTWebApi {
     return axios.get(`${API_ENDPOINT}/projects/${id}`);
   }
 
-  addProject({
+  addProject(
     name,
     description,
     client,
     responsiblePerson,
     startDate,
-    endDate,
-    createdBy
-  }) {
+    estimatedEndDate
+  ) {
     return axios.post(`${API_ENDPOINT}/projects`, {
       name,
       description,
-      client,
       responsiblePerson,
       startDate,
-      endDate,
-      createdBy
+      estimatedEndDate
     });
   }
 

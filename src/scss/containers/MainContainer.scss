@@ -148,10 +148,9 @@
       right: 0;
       top: 1.7vh;
       text-align: center;
-      img {
-        height: 3.5vh;
-        filter: brightness(0) invert(1);
-      }
+      height: 3.5vh;
+      background-size: 3.5vh;
+      filter: brightness(0) invert(1);
     }
     .title {
       position: absolute;

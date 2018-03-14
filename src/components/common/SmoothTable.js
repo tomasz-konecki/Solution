@@ -87,7 +87,7 @@ class SmoothTable extends Component {
     const { construct } = this.state;
     let list,
       empty = false;
-    if (this.props.data !== undefined) {
+    if (this.props.data !== undefined && this.props.data[0] !== undefined) {
       list = this.props.data.map((object, index) => this.generateRow(object));
     } else {
       empty = true;

@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import Icon from "../common/Icon";
 import SmoothTable from "../common/SmoothTable";
 import { connect } from "react-redux";
-import { loadUsers } from "../../actions/usersActions";
 
 class UsersList extends Component {
   constructor(props) {
@@ -13,6 +12,7 @@ class UsersList extends Component {
       rowClass: "user-block",
       tableClass: "users-list-container",
       keyField: "id",
+      pageChange: this.props.pageChange,
       operators: [
         {
           pretty: "DODAJ",
@@ -23,7 +23,7 @@ class UsersList extends Component {
         {
           pretty: "ODŚWIEŻ",
           click: () => {
-            this.props.dispatch(loadUsers(1, 25));
+            this.props.pageChange(this.props.currentPage);
           }
         }
       ],
@@ -48,7 +48,13 @@ class UsersList extends Component {
       ]
     };
 
-    return <SmoothTable currentPage loading={this.props.loading} construct={construct} data={this.props.users} />;
+    return <SmoothTable
+      currentPage={this.props.currentPage}
+      totalPageCount={this.props.totalPageCount}
+      loading={this.props.loading}
+      data={this.props.users}
+      construct={construct}
+    />;
   }
 }
 

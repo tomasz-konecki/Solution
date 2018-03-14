@@ -10,8 +10,9 @@ export const usersReducer = (state = initialState, action) => {
   switch (action.type) {
     case LOAD_USERS_SUCCESS:
       return {
-        ...state,
-        ...action
+        users: action.users.results,
+        currentPage: action.users.currentPage,
+        totalPageCount: action.users.totalPageCount
       };
     case LOGOUT:
       return {

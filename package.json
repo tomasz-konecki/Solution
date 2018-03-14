@@ -58,6 +58,7 @@
     "react": "^16.2.0",
     "react-datepicker": "^1.2.2",
     "react-dom": "^16.2.0",
+    "react-paginate": "^5.1.0",
     "react-persist": "^1.0.2",
     "react-redux": "^5.0.6",
     "react-responsive-modal": "^2.0.1",

@@ -37,11 +37,92 @@ $default-color: white;
   display: table;
   position: relative;
 
-  .loader {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
+  .smooth-paginator {
+    height: 3rem;
+    padding-right: 4vh;
+    line-height: 3rem;
+    text-align: right;
+    font-size: 120%;
+    user-select: none;
+
+    .active {
+      a {
+        color: lighten($button-element-background, 20%);
+      }
+    }
+
+    a {
+      outline: none;
+      font-weight: bold;
+    }
+
+    li {
+      display: inline-block;
+      padding-right: 2vh;
+      cursor: pointer;
+      outline: none;
+      &:hover {
+        a {
+          color: lighten($button-element-background, 30%);
+        }
+      }
+      &:active {
+        a {
+          color: lighten($button-element-background, 40%);
+        }
+      }
+    }
+
+    .disabled {
+      cursor: not-allowed;
+    }
+
+    .next {
+      padding-right: 0;
+    }
+
+    .smooth-navigator {
+      i {
+        padding: 0 1vh;
+        color: black;
+        transition: all 0.2s;
+      }
+
+      &:hover {
+        i {
+          color: lighten($button-element-background, 20%);
+        }
+      }
+      &:active {
+        i {
+          color: lighten($button-element-background, 40%);
+        }
+      }
+    }
+
+
+
+    span {
+
+    }
+  }
+
+  .smooth-loader-top {
+    .loader {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+    }
+  }
+
+  .smooth-loader-bottom {
+    .loader {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+    }
   }
 
   table {

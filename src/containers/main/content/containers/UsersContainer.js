@@ -13,17 +13,24 @@ class UsersContainer extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      page: 1,
-
+      currentPage: 1,
+      limit: 5,
       showModal: false
     };
 
     this.handleOpenModal = this.handleOpenModal.bind(this);
     this.handleCloseModal = this.handleCloseModal.bind(this);
+    this.pageChange = this.pageChange.bind(this);
   }
 
   componentDidMount() {
-    this.props.userActions.loadUsers(1, 25);
+    this.pageChange(this.state.currentPage);
+  }
+
+  pageChange(page) {
+    this.setState({
+      currentPage: page
+    }, () => this.props.userActions.loadUsers(this.state.currentPage, this.state.limit));
   }
 
   handleOpenModal() {
@@ -41,6 +48,9 @@ class UsersContainer extends React.Component {
           openAddUserModal={this.handleOpenModal}
           users={this.props.users}
           loading={this.props.loading}
+          currentPage={this.state.currentPage}
+          totalPageCount={this.props.totalPageCount}
+          pageChange={this.pageChange}
         />
         <Modal
           open={this.state.showModal}
@@ -63,6 +73,7 @@ UsersContainer.propTypes = {
 function mapStateToProps(state) {
   return {
     users: state.usersReducer.users,
+    totalPageCount: state.usersReducer.totalPageCount,
     loading: state.asyncReducer.loading
   };
 }

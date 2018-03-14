@@ -14,13 +14,15 @@ export const loadUsers = (page = 1, limit = 25) => {
   return dispatch => {
     const settings = {
       Limit: limit,
-      Page: page
+      PageNumber: page,
+      Ascending: true,
+      IsDeleted: false
     };
 
     dispatch(asyncStarted());
     DCMTWebApi.getUsers(settings)
       .then(response => {
-        dispatch(loadUsersSuccess(response.data.dtoObject.results));
+        dispatch(loadUsersSuccess(response.data.dtoObject));
         dispatch(asyncEnded());
       })
       .catch(error => {

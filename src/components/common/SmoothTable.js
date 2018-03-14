@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Icon from "./Icon";
 import LoaderHorizontal from "./LoaderHorizontal";
-import ReactPaginate from 'react-paginate';
+import ReactPaginate from "react-paginate";
 
 class SmoothTable extends Component {
   constructor(props) {
@@ -16,7 +16,7 @@ class SmoothTable extends Component {
     return () => func(...args);
   }
 
-  handlePageChange(paginator){
+  handlePageChange(paginator) {
     this.props.construct.pageChange(paginator.selected + 1);
   }
 
@@ -95,7 +95,9 @@ class SmoothTable extends Component {
     return (
       <div className="smooth-table">
         <div className="smooth-operator">{this.generateOperators()}</div>
-        <div className="smooth-loader-top">{this.props.loading && <LoaderHorizontal />}</div>
+        <div className="smooth-loader-top">
+          {this.props.loading && <LoaderHorizontal />}
+        </div>
         <table
           className={
             construct.tableClass !== undefined ? " " + construct.tableClass : ""
@@ -107,21 +109,33 @@ class SmoothTable extends Component {
           <tbody>{list}</tbody>
         </table>
         {empty && <div className="smooth-footer">Brak danych bądź wyników</div>}
-        { 1 !== this.props.totalPageCount &&
-        <ReactPaginate
-          previousLabel={<span className="smooth-navigator"><Icon icon="arrow-left"/></span>}
-          nextLabel={<span className="smooth-navigator"><Icon icon="arrow-right"/></span>}
-          breakLabel={<a href="">...</a>}
-          breakClassName={"break-me"}
-          forcePage={this.props.currentPage - 1}
-          pageCount={this.props.totalPageCount}
-          marginPagesDisplayed={2}
-          pageRangeDisplayed={5}
-          onPageChange={this.handlePageChange}
-          containerClassName={"smooth-paginator"}
-          subContainerClassName={"pages pagination"}
-          activeClassName={"active"} /> }
-        <div className="smooth-loader-bottom">{this.props.loading && <LoaderHorizontal />}</div>
+        {1 !== this.props.totalPageCount && (
+          <ReactPaginate
+            previousLabel={
+              <span className="smooth-navigator">
+                <Icon icon="arrow-left" />
+              </span>
+            }
+            nextLabel={
+              <span className="smooth-navigator">
+                <Icon icon="arrow-right" />
+              </span>
+            }
+            breakLabel={<a href="">...</a>}
+            breakClassName={"break-me"}
+            forcePage={this.props.currentPage - 1}
+            pageCount={this.props.totalPageCount}
+            marginPagesDisplayed={2}
+            pageRangeDisplayed={5}
+            onPageChange={this.handlePageChange}
+            containerClassName={"smooth-paginator"}
+            subContainerClassName={"pages pagination"}
+            activeClassName={"active"}
+          />
+        )}
+        <div className="smooth-loader-bottom">
+          {this.props.loading && <LoaderHorizontal />}
+        </div>
       </div>
     );
   }

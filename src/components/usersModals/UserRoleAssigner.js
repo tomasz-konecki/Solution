@@ -18,8 +18,8 @@ class UserRoleAssigner extends Component {
 
   render() {
     return (
-      <div className="form-container">
-        <div className="">
+      <div className="roles-container">
+        <div className="check-box-container">
           <input
             type="checkbox"
             name="role"
@@ -29,7 +29,7 @@ class UserRoleAssigner extends Component {
           />
           <span>Developer</span>
         </div>
-        <div className="">
+        <div className="check-box-container">
           <input
             type="checkbox"
             name="role"
@@ -39,7 +39,7 @@ class UserRoleAssigner extends Component {
           />
           <span>Team Leader</span>
         </div>
-        <div className="">
+        <div className="check-box-container">
           <input
             type="checkbox"
             name="role"
@@ -49,7 +49,7 @@ class UserRoleAssigner extends Component {
           />
           <span>Human Resources</span>
         </div>
-        <div className="">
+        <div className="check-box-container">
           <input
             type="checkbox"
             name="role"
@@ -59,7 +59,7 @@ class UserRoleAssigner extends Component {
           />
           <span>Handlowiec</span>
         </div>
-        <div className="">
+        <div className="check-box-container">
           <input
             type="checkbox"
             name="role"

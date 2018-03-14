@@ -21,65 +21,56 @@ class UserDetailsBlock extends Component {
   render() {
     return (
       <div className="user-details-container">
-        {this.props.editable ? (
-          <form>
-            <div className="detail-container">
-              <label>Imię:</label>
+        <form>
+          <div className="detail-container">
+            <label>Imię:</label>
+            {this.props.editable ? (
               <input
                 type="text"
                 placeholder={this.props.user.firstName}
                 required
               />
-            </div>
-            <div className="detail-container">
-              <label>Nazwisko:</label>
+            ) : (
+              <span>{this.props.user.firstName}</span>
+            )}
+          </div>
+          <div className="detail-container">
+            <label>Nazwisko:</label>
+            {this.props.editable ? (
               <input
                 type="text"
                 placeholder={this.props.user.lastName}
                 required
               />
-            </div>
-            <div className="detail-container">
-              <label>Email:</label>
+            ) : (
+              <span>{this.props.user.lastName}</span>
+            )}
+          </div>
+          <div className="detail-container">
+            <label>Email:</label>
+            {this.props.editable ? (
               <input type="text" placeholder={this.props.user.email} required />
-            </div>
-            <div className="detail-container">
-              <label>Telefon</label>
+            ) : (
+              <span>{this.props.user.email}</span>
+            )}
+          </div>
+          <div className="detail-container">
+            <label>Telefon</label>
+            {this.props.editable ? (
               <input
                 type="text"
                 placeholder={this.props.user.phoneNumber}
                 required
               />
-            </div>
-            <div className="detail-container">
-              <label>Role:</label>
-              <span>{this.parseRoles()}</span>
-            </div>
-          </form>
-        ) : (
-          <div>
-            <div className="detail-container">
-              <label>Imię:</label>
-              <span>{this.props.user.firstName}</span>
-            </div>
-            <div className="detail-container">
-              <label>Nazwisko:</label>
-              <span>{this.props.user.lastName}</span>
-            </div>
-            <div className="detail-container">
-              <label>Email:</label>
-              <span>{this.props.user.email}</span>
-            </div>
-            <div className="detail-container">
-              <label>Telefon:</label>
-              <span>{this.parsePhoneNumber()}</span>
-            </div>
-            <div className="detail-container">
-              <label>Role:</label>
-              <span>{this.parseRoles()}</span>
-            </div>
+            ) : (
+              <span>{this.props.user.phoneNumber}</span>
+            )}
           </div>
-        )}
+          <div className="detail-container">
+            <label>Role:</label>
+            <span>{this.parseRoles()}</span>
+          </div>
+        </form>
       </div>
     );
   }

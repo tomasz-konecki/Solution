@@ -46,12 +46,15 @@ class StageTwo extends Component {
     this.props.resetState();
   };
 
-  handleStatus = status => {
-    console.log("STATUS ==>", status);
-    status === 201
-      ? this.setState({ result: "Użytkownik dodany pomyślnie" })
-      : this.setState({ result: "Coś poszło nie tak...", resultColor: "red" });
+  handleError = error => {
+    let errorMessage = "Coś poszło nie tak";
+    if (error.response.data.errorOccured === true) {
+      const { errors } = error.response.data;
+      errorMessage = errors[Object.keys(errors)[0]];
+    }
     this.setState({
+      result: errorMessage,
+      resultColor: "failure",
       isLoading: false
     });
   };
@@ -59,14 +62,16 @@ class StageTwo extends Component {
   getResponse = newUser => {
     DCMTWebApi.addUser(newUser.id, newUser.roles)
       .then(response => {
-        console.log("Response: ", response);
-        console.log("Response status: ", response.status);
-        console.log("Response status: ", response.data.errors);
-        this.handleStatus(response.status);
+        if (response.status === 201) {
+          this.setState({
+            result: "Użytkownik dodany pomyślnie",
+            resultColor: "success",
+            isLoading: false
+          });
+        }
       })
       .catch(error => {
-        this.handleStatus(error);
-        throw error;
+        this.handleError(error);
       });
   };
 

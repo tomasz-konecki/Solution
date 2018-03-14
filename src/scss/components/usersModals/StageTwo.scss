@@ -2,30 +2,8 @@ $stage-two-container-height: 18em;
 
 .stage-two-container {
   padding: 15px;
-  .user-details-container {
-    padding-bottom: 1.5em;
-    border-bottom: 1px solid lightgray;
-
-    .detail-container {
-      margin-bottom: 0.4em;
-    }
-
-    label {
-      display: inline-block;
-      width: 20%;
-    }
-    span {
-      font-weight: 700;
-      margin-left: 0.5em;
-    }
-    input {
-      margin: 0;
-      height: 1.7em;
-    }
-  }
 
   .form-container {
-    padding-top: 0.7em;
     .form-navigation {
       padding-top: 1.5em;
       display: flex;
@@ -37,16 +15,52 @@ $stage-two-container-height: 18em;
           width: 6em;
         }
       }
+      .add-user-result {
+        padding-top: 7px;
+      }
+      .success {
+        color: green;
+      }
+      .failure {
+        color: red;
+      }
+    }
+  }
+  .user-details-container {
+    padding-bottom: 1.5em;
+    border-bottom: 1px solid lightgray;
+
+    .detail-container {
+      margin-bottom: 0.4em;
+    }
+
+    label {
+      display: inline-block;
+      font-size: 15px;
+      width: 20%;
+    }
+    span {
+      font-weight: 700;
+      font-size: 15px;
+      margin-left: 0.5em;
+    }
+    input {
+      margin: 0;
+      height: 1.7em;
+    }
+  }
+
+  .roles-container {
+    padding-top: 0.7em;
+
+    .check-box-container {
+      span {
+        font-size: 15px;
+      }
     }
   }
 
   .stage-two-loader-container {
     margin-top: 0.5em;
-  }
-  .green {
-    color: green;
-  }
-  .red {
-    color: red;
   }
 }

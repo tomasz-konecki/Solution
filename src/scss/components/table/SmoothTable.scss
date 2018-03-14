@@ -132,7 +132,7 @@ $default-color: white;
         text-align: left;
         vertical-align: middle;
         font-weight: bold;
-        font-size: 80%;
+        font-size: 16px;
         border-bottom: 1px solid darken($default-color, 15%);
         padding: 0 15px;
 
@@ -145,7 +145,6 @@ $default-color: white;
 
   .smooth-row {
     $margin: 2vw;
-    // height: 5vh;
     height: 2rem;
 
     border-bottom: 1px solid darken($default-color, 5%);
@@ -155,10 +154,10 @@ $default-color: white;
     }
 
     .smooth-cell {
-      // line-height: 5vh;
       line-height: 2rem;
       white-space: nowrap;
       padding: 0 15px;
+      font-size: 18px;
 
       &:first-of-type {
         padding-left: 2vh;

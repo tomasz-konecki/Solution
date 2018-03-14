@@ -7,7 +7,7 @@ $stage-two-container-height: 18em;
     border-bottom: 1px solid lightgray;
 
     .detail-container {
-      margin-bottom: 0.5em;
+      margin-bottom: 0.4em;
     }
 
     label {
@@ -17,6 +17,10 @@ $stage-two-container-height: 18em;
     span {
       font-weight: 700;
       margin-left: 0.5em;
+    }
+    input {
+      margin: 0;
+      height: 1.7em;
     }
   }
 

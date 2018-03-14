@@ -7,6 +7,11 @@ class UsersList extends Component {
   constructor(props) {
     super(props);
   }
+
+  editUser = object => {
+    console.table(object);
+  };
+
   render() {
     const construct = {
       rowClass: "user-block",
@@ -39,6 +44,7 @@ class UsersList extends Component {
             {
               icon: { icon: "edit", iconType: "far" },
               click: object => {
+                this.editUser(object);
                 alert(object.firstName);
               }
             }
@@ -48,13 +54,15 @@ class UsersList extends Component {
       ]
     };
 
-    return <SmoothTable
-      currentPage={this.props.currentPage}
-      totalPageCount={this.props.totalPageCount}
-      loading={this.props.loading}
-      data={this.props.users}
-      construct={construct}
-    />;
+    return (
+      <SmoothTable
+        currentPage={this.props.currentPage}
+        totalPageCount={this.props.totalPageCount}
+        loading={this.props.loading}
+        data={this.props.users}
+        construct={construct}
+      />
+    );
   }
 }
 

@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import DCMTWebApi from "../../api";
+import CheckBox from "../common/CheckBox";
 
 class UserRoleAssigner extends Component {
   constructor(props) {
@@ -19,56 +20,45 @@ class UserRoleAssigner extends Component {
   render() {
     return (
       <div className="roles-container">
-        <div className="check-box-container">
-          <input
-            type="checkbox"
-            name="role"
-            value="Developer"
-            onChange={this.handleSelectRole}
-            checked={this.props.roles.indexOf("Developer") !== -1}
-          />
-          <span>Developer</span>
-        </div>
-        <div className="check-box-container">
-          <input
-            type="checkbox"
-            name="role"
-            value="Team Leader"
-            onChange={this.handleSelectRole}
-            checked={this.props.roles.indexOf("Team Leader") !== -1}
-          />
-          <span>Team Leader</span>
-        </div>
-        <div className="check-box-container">
-          <input
-            type="checkbox"
-            name="role"
-            value="Human Resources"
-            onChange={this.handleSelectRole}
-            checked={this.props.roles.indexOf("Human Resources") !== -1}
-          />
-          <span>Human Resources</span>
-        </div>
-        <div className="check-box-container">
-          <input
-            type="checkbox"
-            name="role"
-            value="Tradesman"
-            onChange={this.handleSelectRole}
-            checked={this.props.roles.indexOf("Tradesman") !== -1}
-          />
-          <span>Handlowiec</span>
-        </div>
-        <div className="check-box-container">
-          <input
-            type="checkbox"
-            name="role"
-            value="Administrator"
-            onChange={this.handleSelectRole}
-            checked={this.props.roles.indexOf("Administrator") !== -1}
-          />
-          <span>Administrator</span>
-        </div>
+        <CheckBox
+          type="checkbox"
+          name="role"
+          value="Developer"
+          onChange={this.handleSelectRole}
+          checked={this.props.roles.indexOf("Developer") !== -1}
+        />
+
+        <CheckBox
+          type="checkbox"
+          name="role"
+          value="Team Leader"
+          onChange={this.handleSelectRole}
+          checked={this.props.roles.indexOf("Team Leader") !== -1}
+        />
+
+        <CheckBox
+          type="checkbox"
+          name="role"
+          value="Human Resources"
+          onChange={this.handleSelectRole}
+          checked={this.props.roles.indexOf("Human Resources") !== -1}
+        />
+
+        <CheckBox
+          type="checkbox"
+          name="role"
+          value="Tradesman"
+          onChange={this.handleSelectRole}
+          checked={this.props.roles.indexOf("Tradesman") !== -1}
+        />
+
+        <CheckBox
+          type="checkbox"
+          name="role"
+          value="Administrator"
+          onChange={this.handleSelectRole}
+          checked={this.props.roles.indexOf("Administrator") !== -1}
+        />
       </div>
     );
   }

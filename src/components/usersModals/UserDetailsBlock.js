@@ -1,9 +1,13 @@
 import React, { Component } from "react";
+import Detail from "../common/Detail";
 const emptyField = "<brak>";
 
 class UserDetailsBlock extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      editable: false
+    };
   }
 
   parseRoles = () => {
@@ -21,56 +25,40 @@ class UserDetailsBlock extends Component {
   render() {
     return (
       <div className="user-details-container">
-        <form>
-          <div className="detail-container">
-            <label>Imię:</label>
-            {this.props.editable ? (
-              <input
-                type="text"
-                placeholder={this.props.user.firstName}
-                required
-              />
-            ) : (
-              <span>{this.props.user.firstName}</span>
-            )}
-          </div>
-          <div className="detail-container">
-            <label>Nazwisko:</label>
-            {this.props.editable ? (
-              <input
-                type="text"
-                placeholder={this.props.user.lastName}
-                required
-              />
-            ) : (
-              <span>{this.props.user.lastName}</span>
-            )}
-          </div>
-          <div className="detail-container">
-            <label>Email:</label>
-            {this.props.editable ? (
-              <input type="text" placeholder={this.props.user.email} required />
-            ) : (
-              <span>{this.props.user.email}</span>
-            )}
-          </div>
-          <div className="detail-container">
-            <label>Telefon</label>
-            {this.props.editable ? (
-              <input
-                type="text"
-                placeholder={this.props.user.phoneNumber}
-                required
-              />
-            ) : (
-              <span>{this.props.user.phoneNumber}</span>
-            )}
-          </div>
-          <div className="detail-container">
-            <label>Role:</label>
-            <span>{this.parseRoles()}</span>
-          </div>
-        </form>
+        <Detail
+          type="text"
+          editable={this.state.editable}
+          pretty="Imię"
+          user={this.props.user.firstName}
+        />
+
+        <Detail
+          type="text"
+          editable={this.state.editable}
+          pretty="Nazwisko"
+          user={this.props.user.lastName}
+        />
+
+        <Detail
+          type="text"
+          editable={this.state.editable}
+          pretty="Email"
+          user={this.props.user.email}
+        />
+
+        <Detail
+          type="text"
+          editable={this.state.editable}
+          pretty="Telefon"
+          user={this.parsePhoneNumber()}
+        />
+
+        <Detail
+          type="text"
+          editable={false}
+          pretty="Role"
+          user={this.parseRoles()}
+        />
       </div>
     );
   }

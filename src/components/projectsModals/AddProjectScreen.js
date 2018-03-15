@@ -14,7 +14,7 @@ class AddProjectScreen extends Component {
       responsiblePerson: 0,
       startDate: new Date(),
       endDate: new Date(),
-      createdBy: this.props.login,
+      createdBy: "tkonecki",
       isActive: true,
       isLoading: false,
       result: "",

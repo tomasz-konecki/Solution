@@ -25,6 +25,18 @@ a:visited {
   color: darken(rgb(103, 163, 181), 18%);
 }
 
+.result-block {
+  width: 100%;
+  display: inline-block;
+  text-align: center;
+}
+.result-success {
+  color: darkgreen;
+}
+.result-failure {
+  color: $button-element-background;
+}
+
 .Modal {
   height: 350px;
   width: 600px;

@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import "../../scss/components/usersModals/StageOne.scss";
 import FoundUsersTable from "../users/FoundUsersTable";
 import LoaderHorizontal from "../../components/common/LoaderHorizontal";
+import ResultBlock from "../common/ResultBlock";
 
 class StageOne extends Component {
   constructor() {
@@ -27,7 +28,7 @@ class StageOne extends Component {
     this.props.searchUsersInAD(this.state.searchText);
     this.setState({
       isLoading: true,
-      isSearchingDone: true
+      isSearchingDone: false
     });
   }
 
@@ -38,7 +39,7 @@ class StageOne extends Component {
   }
 
   stopLoading() {
-    this.setState({ isLoading: false });
+    this.setState({ isLoading: false, isSearchingDone: true });
   }
 
   render() {
@@ -54,9 +55,10 @@ class StageOne extends Component {
           <button onClick={this.handleClick}>Search</button>
         </div>
         <div className="loader-container">
-          {this.state.isLoading === true && <LoaderHorizontal />}
+          {this.state.isLoading && <LoaderHorizontal />}
+          {this.props.errorBlock !== null && <ResultBlock errorBlock={this.props.errorBlock}/>}
         </div>
-        {this.state.isSearchingDone === true && (
+        {this.state.isSearchingDone === true && this.props.errorBlock === null && (
           <FoundUsersTable
             foundUsers={this.props.foundUsers}
             setSelectedUser={this.props.setSelectedUser}

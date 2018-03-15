@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import Icon from "../common/Icon";
 import SmoothTable from "../common/SmoothTable";
 import { connect } from "react-redux";
+import Confirmation from "../common/modals/Confirmation";
+import { setActionConfirmation } from "../../actions/asyncActions";
 
 class UsersList extends Component {
   constructor(props) {
@@ -40,7 +42,15 @@ class UsersList extends Component {
         {
           width: 1,
           toolBox: [
-            { icon: { icon: "times" }, click: () => {} },
+            { icon: { icon: "times" },
+              click: object => {
+                this.props.dispatch(setActionConfirmation(true, {
+                  key: "deleteUser",
+                  string: `Delete user ${object.firstName} ${object.lastName}`,
+                  id: object.id,
+                  successMessage: "Użytkownik został usunięty"
+                }));
+            }},
             {
               icon: { icon: "edit", iconType: "far" },
               click: object => {

@@ -5,6 +5,7 @@ import DCMTWebApi from "../../api";
 import UserDetailsBlock from "./UserDetailsBlock";
 import UserRoleAssigner from "./UserRoleAssigner";
 import LoaderHorizontal from "../../components/common/LoaderHorizontal";
+import ResultBlock from "../common/ResultBlock";
 
 class StageTwo extends Component {
   constructor() {
@@ -15,7 +16,8 @@ class StageTwo extends Component {
       email: "",
       phoneNumber: "",
       id: "",
-      roles: []
+      roles: [],
+      isLoading: false
     };
   }
 
@@ -46,35 +48,6 @@ class StageTwo extends Component {
     this.props.resetState();
   };
 
-  handleError = error => {
-    let errorMessage = "Coś poszło nie tak";
-    if (error.response.data.errorOccured === true) {
-      const { errors } = error.response.data;
-      errorMessage = errors[Object.keys(errors)[0]];
-    }
-    this.setState({
-      result: errorMessage,
-      resultColor: "failure",
-      isLoading: false
-    });
-  };
-
-  getResponse = newUser => {
-    DCMTWebApi.addUser(newUser.id, newUser.roles)
-      .then(response => {
-        if (response.status === 201) {
-          this.setState({
-            result: "Użytkownik dodany pomyślnie",
-            resultColor: "success",
-            isLoading: false
-          });
-        }
-      })
-      .catch(error => {
-        this.handleError(error);
-      });
-  };
-
   handleRoleChange = roles => {
     this.setState({ roles });
   };
@@ -86,11 +59,13 @@ class StageTwo extends Component {
       alert("Dodaj role!");
     } else {
       this.setState({ isLoading: true });
-      const newUser = this.state;
-      console.table(newUser);
-      this.getResponse(newUser);
+      this.props.doAddUser(this.state);
     }
   };
+
+  stopLoading = () => {
+    this.setState({ isLoading: false });
+  }
 
   render() {
     return (
@@ -110,10 +85,8 @@ class StageTwo extends Component {
             <div className="button-back-container">
               <button onClick={this.handleBack}>Back</button>
             </div>
-            <div
-              className={["add-user-result", this.state.resultColor].join(" ")}
-            >
-              {this.state.result}
+            <div>
+              <ResultBlock errorBlock={this.props.errorBlock} errorOnly={false} successMessage={"Użytkownik dodany pomyślnie"}/>
             </div>
             <div className="submit-button-container">
               <button type="submit" onClick={this.handleSubmit}>

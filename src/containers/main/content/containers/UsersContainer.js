@@ -3,18 +3,20 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import * as usersActions from "../../../../actions/usersActions";
+import * as asyncActions from "../../../../actions/asyncActions";
 
 import "../../../../scss/containers/UsersContainer.scss";
 import Modal from "react-responsive-modal";
 import UserSelector from "../../../../components/usersModals/UserSelector";
 import UsersList from "../../../../components/users/UsersList";
+import { ACTION_CONFIRMED } from './../../../../constants';
 
 class UsersContainer extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       currentPage: 1,
-      limit: 25,
+      limit: 15,
       showModal: false
     };
 
@@ -25,6 +27,26 @@ class UsersContainer extends React.Component {
 
   componentDidMount() {
     this.pageChange(this.state.currentPage);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if(this.validatePropsForUserDeletion(nextProps)) {
+      this.props.async.setActionConfirmationProgress(true);
+      setTimeout(() => {
+        this.props.async.setActionConfirmationResult({
+          response: {
+            status: 202
+          }
+        });
+      }, 2000);
+    }
+  }
+
+  validatePropsForUserDeletion(nextProps) {
+    return nextProps.confirmed &&
+    (!nextProps.isWorking) &&
+    nextProps.type === ACTION_CONFIRMED &&
+    nextProps.toConfirm.key === 'deleteUser';
   }
 
   pageChange(page) {
@@ -58,7 +80,7 @@ class UsersContainer extends React.Component {
           contentLabel="Users modal"
           onClose={this.handleCloseModal}
         >
-          <UserSelector />
+          <UserSelector closeModal={this.handleCloseModal} />
         </Modal>
       </div>
     );
@@ -74,13 +96,18 @@ function mapStateToProps(state) {
   return {
     users: state.usersReducer.users,
     totalPageCount: state.usersReducer.totalPageCount,
-    loading: state.asyncReducer.loading
+    loading: state.asyncReducer.loading,
+    confirmed: state.asyncReducer.confirmed,
+    toConfirm: state.asyncReducer.toConfirm,
+    isWorking: state.asyncReducer.isWorking,
+    type: state.asyncReducer.type
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    userActions: bindActionCreators(usersActions, dispatch)
+    userActions: bindActionCreators(usersActions, dispatch),
+    async: bindActionCreators(asyncActions, dispatch)
   };
 }
 

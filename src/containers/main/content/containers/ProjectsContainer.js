@@ -15,7 +15,7 @@ class ProjectsContainer extends React.Component {
     this.state = {
       showModal: false,
       currentPage: 1,
-      limit: 25
+      limit: 15
     };
 
     this.handleOpenModal = this.handleOpenModal.bind(this);

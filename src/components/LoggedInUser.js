@@ -6,7 +6,8 @@ class LoggedInUser extends Component {
   render() {
     return (
       <span className="logged-in-user">
-        Zalogowany: <strong>{this.props.firstName + " " + this.props.lastName}</strong>
+        Zalogowany:{" "}
+        <strong>{this.props.firstName + " " + this.props.lastName}</strong>
       </span>
     );
   }

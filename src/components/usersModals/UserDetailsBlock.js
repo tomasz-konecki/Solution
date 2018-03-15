@@ -29,6 +29,7 @@ class UserDetailsBlock extends Component {
           type="text"
           editable={this.state.editable}
           pretty="Imię"
+          required
           user={this.props.user.firstName}
         />
 
@@ -36,6 +37,7 @@ class UserDetailsBlock extends Component {
           type="text"
           editable={this.state.editable}
           pretty="Nazwisko"
+          required
           user={this.props.user.lastName}
         />
 
@@ -43,6 +45,7 @@ class UserDetailsBlock extends Component {
           type="text"
           editable={this.state.editable}
           pretty="Email"
+          required
           user={this.props.user.email}
         />
 
@@ -50,6 +53,7 @@ class UserDetailsBlock extends Component {
           type="text"
           editable={this.state.editable}
           pretty="Telefon"
+          required
           user={this.parsePhoneNumber()}
         />
 

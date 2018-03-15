@@ -5,7 +5,11 @@ const Detail = props => {
     <div className="detail-container">
       <label>{props.pretty}</label>
       {props.editable === true ? (
-        <input type={props.type} placeholder={props.user} />
+        <input
+          type={props.type}
+          placeholder={props.user}
+          required={props.required}
+        />
       ) : (
         <span>{props.user}</span>
       )}

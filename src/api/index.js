@@ -55,18 +55,21 @@ class DCMTWebApi {
     return axios.get(`${API_ENDPOINT}/projects/${id}`);
   }
 
-  addProject(
+  addProject({
     name,
     description,
     client,
     responsiblePerson,
+    createdBy,
     startDate,
     estimatedEndDate
-  ) {
+  }) {
     return axios.post(`${API_ENDPOINT}/projects`, {
       name,
       description,
+      client,
       responsiblePerson,
+      createdBy,
       startDate,
       estimatedEndDate
     });

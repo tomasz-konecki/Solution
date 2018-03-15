@@ -35,7 +35,10 @@ class Projects extends Component {
           contentLabel="Projects test modal"
           onClose={this.handleCloseModal}
         >
-          <AddProjectScreen projectActions={this.props.projectActions} />
+          <AddProjectScreen
+            projectActions={this.props.projectActions}
+            login={this.props.login}
+          />
         </Modal>
       </div>
     );

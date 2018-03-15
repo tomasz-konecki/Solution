@@ -24,6 +24,7 @@ class ProjectsContainer extends React.Component {
       <div>
         <Projects
           projects={this.props.projects}
+          login={this.props.login}
           projectActions={this.props.projectActions}
         />
       </div>
@@ -33,7 +34,8 @@ class ProjectsContainer extends React.Component {
 
 function mapStateToProps(state) {
   return {
-    projects: state.projectsReducer.projects
+    projects: state.projectsReducer.projects,
+    login: state.authReducer.login
   };
 }
 

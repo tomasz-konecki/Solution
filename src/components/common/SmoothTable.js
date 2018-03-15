@@ -109,7 +109,7 @@ class SmoothTable extends Component {
           <tbody>{list}</tbody>
         </table>
         {empty && <div className="smooth-footer">Brak danych bądź wyników</div>}
-        {1 !== this.props.totalPageCount && (
+        {(this.props.construct.pageChange !== undefined && 1 !== this.props.totalPageCount) && (
           <ReactPaginate
             previousLabel={
               <span className="smooth-navigator">

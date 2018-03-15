@@ -32,10 +32,11 @@ $default-color: white;
   margin-bottom: 5vh;
   margin-top: 3vh;
   background: $default-color;
-  padding: 0 2vh;
+  padding: 0 2vh 6vh 2vh;
   width: 100%;
   display: table;
   position: relative;
+  min-height: 78.9vh;
 
   .smooth-paginator {
     height: 3rem;
@@ -44,6 +45,10 @@ $default-color: white;
     text-align: right;
     font-size: 120%;
     user-select: none;
+    position: absolute;
+
+    bottom: 0;
+    right: 0;
 
     .active {
       a {
@@ -54,11 +59,11 @@ $default-color: white;
     a {
       outline: none;
       font-weight: bold;
+      padding: 1vh;
     }
 
     li {
       display: inline-block;
-      padding-right: 2vh;
       cursor: pointer;
       outline: none;
       &:hover {

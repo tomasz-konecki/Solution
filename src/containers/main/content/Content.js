@@ -5,7 +5,6 @@ import PropTypes from "prop-types";
 import UsersContainer from "./containers/UsersContainer";
 import ProjectsContainer from "./containers/ProjectsContainer";
 import Employees from "./views/Employees";
-// import Projects from "./views/Projects";
 import Assign from "./views/Assign";
 
 class Content extends React.Component {

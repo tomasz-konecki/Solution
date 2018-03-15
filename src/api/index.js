@@ -47,7 +47,6 @@ class DCMTWebApi {
   }
 
   getProjects(settings = null) {
-    if (settings === null) return axios.get(`${API_ENDPOINT}/projects`);
     return axios.get(`${API_ENDPOINT}/projects`, { params: settings });
   }
 

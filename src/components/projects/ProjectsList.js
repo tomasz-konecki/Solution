@@ -11,11 +11,18 @@ class ProjectsList extends Component {
       rowClass: "project-block",
       tableClass: "projects-list-container",
       keyField: "id",
+      pageChange: this.props.pageChange,
       operators: [
         {
           pretty: "DODAJ",
           click: () => {
             this.props.openAddProjectModal();
+          }
+        },
+        {
+          pretty: "ODŚWIEŻ",
+          click: () => {
+            this.props.pageChange(this.props.currentPage);
           }
         }
       ],
@@ -32,7 +39,6 @@ class ProjectsList extends Component {
         },
         {
           width: 1,
-
           toolBox: [
             { icon: { icon: "times" }, click: () => {} },
             {
@@ -47,7 +53,13 @@ class ProjectsList extends Component {
       ]
     };
 
-    return <SmoothTable construct={construct} data={this.props.projects} />;
+    return <SmoothTable
+      currentPage={this.props.currentPage}
+      totalPageCount={this.props.totalPageCount}
+      loading={this.props.loading}
+      data={this.props.projects}
+      construct={construct}
+    />;
   }
 }
 

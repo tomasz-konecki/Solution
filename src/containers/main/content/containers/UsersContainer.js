@@ -14,7 +14,7 @@ class UsersContainer extends React.Component {
     super(props);
     this.state = {
       currentPage: 1,
-      limit: 5,
+      limit: 25,
       showModal: false
     };
 
@@ -47,10 +47,10 @@ class UsersContainer extends React.Component {
         <UsersList
           openAddUserModal={this.handleOpenModal}
           users={this.props.users}
-          loading={this.props.loading}
           currentPage={this.state.currentPage}
           totalPageCount={this.props.totalPageCount}
           pageChange={this.pageChange}
+          loading={this.props.loading}
         />
         <Modal
           open={this.state.showModal}

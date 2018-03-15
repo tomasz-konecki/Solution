@@ -14,7 +14,7 @@ class AddProjectScreen extends Component {
       responsiblePerson: 0,
       startDate: new Date(),
       endDate: new Date(),
-      createdBy: this.props.login,
+      createdBy: "tkonecki",
       isActive: true,
       isLoading: false,
       result: "",
@@ -87,7 +87,6 @@ class AddProjectScreen extends Component {
             <label>Opis:</label>
             <textarea
               onChange={this.handleChange}
-              style={{ height: 50, width: 200 }}
               name="description"
               required
             />

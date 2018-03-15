@@ -28,9 +28,16 @@ class ProjectsContainer extends React.Component {
   }
 
   pageChange(page) {
-    this.setState({
-      currentPage: page
-    }, () => this.props.projectActions.loadProjects(this.state.currentPage, this.state.limit));
+    this.setState(
+      {
+        currentPage: page
+      },
+      () =>
+        this.props.projectActions.loadProjects(
+          this.state.currentPage,
+          this.state.limit
+        )
+    );
   }
 
   handleOpenModal() {
@@ -58,10 +65,7 @@ class ProjectsContainer extends React.Component {
           contentLabel="Projects test modal"
           onClose={this.handleCloseModal}
         >
-          <AddProjectScreen
-            projectActions={this.props.projectActions}
-            login={this.props.login}
-          />
+          <AddProjectScreen projectActions={this.props.projectActions} />
         </Modal>
       </div>
     );

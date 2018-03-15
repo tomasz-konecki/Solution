@@ -87,7 +87,6 @@ class AddProjectScreen extends Component {
             <label>Opis:</label>
             <textarea
               onChange={this.handleChange}
-              style={{ height: 50, width: 200 }}
               name="description"
               required
             />

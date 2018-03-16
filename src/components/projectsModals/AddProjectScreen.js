@@ -45,7 +45,6 @@ class AddProjectScreen extends Component {
     console.table(newProject);
     DCMTWebApi.addProject(newProject, false)
       .then(response => {
-        console.log("Response:", response.status);
         if (response.status == 200) {
           this.setState({
             result: "Projekt dodany pomyślnie",

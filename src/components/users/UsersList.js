@@ -17,13 +17,14 @@ class UsersList extends Component {
     };
   }
 
-  editUser = object => {
+  handleEditUser = object => {
     DCMTWebApi.getUser(object.id)
       .then(response => {
-        console.log(response.status);
-        this.setState({
-          user: response.data.dtoObject
-        });
+        if (response.status === 200) {
+          this.setState({
+            user: response.data.dtoObject
+          });
+        }
       })
       .catch(error => {
         throw error;
@@ -87,8 +88,7 @@ class UsersList extends Component {
             {
               icon: { icon: "edit", iconType: "far" },
               click: object => {
-                this.editUser(object);
-                // alert(object.firstName);
+                this.handleEditUser(object);
               }
             }
           ],

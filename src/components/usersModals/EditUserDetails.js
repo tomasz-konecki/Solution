@@ -20,6 +20,9 @@ class EditUserDetails extends Component {
       <div>
         <UserDetailsBlock editable={true} user={this.props.user} />
         <UserRoleAssigner roles={this.state.user.roles} />
+        <div className="edit-user-button-container">
+          <button>Potwierdź</button>
+        </div>
       </div>
     );
   }

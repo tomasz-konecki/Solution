@@ -82,6 +82,13 @@ a:visited {
     }
   }
 
+  .edit-user-button-container {
+    display: flex;
+    justify-content: flex-end;
+    padding-right: 20px;
+    padding-top: 10px;
+  }
+
   @media only screen and (max-width: 1366px) {
     // height: 80%;
     // width: 80%;

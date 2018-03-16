@@ -17,7 +17,7 @@ class UsersList extends Component {
     };
   }
 
-  handleEditUser = object => {
+  handleGetUser = object => {
     DCMTWebApi.getUser(object.id)
       .then(response => {
         if (response.status === 200) {
@@ -88,7 +88,7 @@ class UsersList extends Component {
             {
               icon: { icon: "edit", iconType: "far" },
               click: object => {
-                this.handleEditUser(object);
+                this.handleGetUser(object);
               }
             }
           ],

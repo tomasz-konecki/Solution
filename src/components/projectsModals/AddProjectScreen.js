@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import "../../scss/components/projectsModals/AddProjectScreen.scss";
 import LoaderHorizontal from "../../components/common/LoaderHorizontal";
 import DCMTWebApi from "../../api";
+import ResultBlock from "./../common/ResultBlock";
 
 class AddProjectScreen extends Component {
   constructor(props) {
@@ -17,8 +18,7 @@ class AddProjectScreen extends Component {
       createdBy: "tkonecki",
       isActive: true,
       isLoading: false,
-      result: "",
-      resultColor: ""
+      errorBlock: null
     };
   }
 
@@ -28,33 +28,23 @@ class AddProjectScreen extends Component {
     });
   };
 
-  handleError = error => {
-    let errorMessage = "Coś poszło nie tak";
-    if (error.response.data.errorOccured === true) {
-      const { errors } = error.response.data;
-      errorMessage = errors[Object.keys(errors)[0]];
-    }
-    this.setState({
-      result: errorMessage,
-      resultColor: "failure",
-      isLoading: false
-    });
-  };
-
   getResponse = newProject => {
-    DCMTWebApi.addProject(newProject, false)
+    DCMTWebApi.addProject(newProject)
       .then(response => {
-        if (response.status == 200) {
-          this.setState({
-            result: "Projekt dodany pomyślnie",
-            resultColor: "success",
-            isLoading: false
-          });
-        }
-        this.props.projectActions.loadProjects(1, newProject);
+        this.props.projectActions.loadProjects(
+          this.props.currentPage,
+          this.props.limit
+        );
+        this.setState({
+          errorBlock: { response },
+          isLoading: false
+        });
       })
-      .catch(error => {
-        this.handleError(error);
+      .catch(errorBlock => {
+        this.setState({
+          errorBlock,
+          isLoading: false
+        });
       });
   };
 
@@ -132,12 +122,14 @@ class AddProjectScreen extends Component {
           </div>
 
           <div className="project-submit-container">
-            <div
-              className={["submit-result", this.state.resultColor].join(" ")}
-            >
-              {this.state.result}
-            </div>
             <button className="project-submit-button">Submit</button>
+          </div>
+          <div>
+            <ResultBlock
+              errorBlock={this.state.errorBlock}
+              errorOnly={false}
+              successMessage="Projekt dodano pomyślnie"
+            />
           </div>
         </form>
       </div>

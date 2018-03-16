@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import Icon from "../common/Icon";
 import SmoothTable from "../common/SmoothTable";
+import { setActionConfirmation } from "./../../actions/asyncActions";
+import { connect } from "react-redux";
 
 class ProjectsList extends Component {
   constructor(props) {
@@ -40,7 +42,19 @@ class ProjectsList extends Component {
         {
           width: 1,
           toolBox: [
-            { icon: { icon: "times" }, click: () => {} },
+            {
+              icon: { icon: "times" },
+              click: object => {
+                this.props.dispatch(
+                  setActionConfirmation(true, {
+                    key: "deleteProject",
+                    string: `Delete project ${object.name}`,
+                    id: object.id,
+                    successMessage: "Projekt został usunięty"
+                  })
+                );
+              }
+            },
             {
               icon: { icon: "edit", iconType: "far" },
               click: object => {
@@ -53,14 +67,16 @@ class ProjectsList extends Component {
       ]
     };
 
-    return <SmoothTable
-      currentPage={this.props.currentPage}
-      totalPageCount={this.props.totalPageCount}
-      loading={this.props.loading}
-      data={this.props.projects}
-      construct={construct}
-    />;
+    return (
+      <SmoothTable
+        currentPage={this.props.currentPage}
+        totalPageCount={this.props.totalPageCount}
+        loading={this.props.loading}
+        data={this.props.projects}
+        construct={construct}
+      />
+    );
   }
 }
 
-export default ProjectsList;
+export default connect()(ProjectsList);

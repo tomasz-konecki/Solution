@@ -8,6 +8,7 @@ import AddProjectScreen from "../../../../components/projectsModals/AddProjectSc
 import ProjectsList from "../../../../components/projects/ProjectsList";
 
 import "../../../../scss/containers/ProjectsContainer.scss";
+import { ACTION_CONFIRMED } from "./../../../../constants";
 
 class ProjectsContainer extends React.Component {
   constructor(props) {
@@ -25,6 +26,28 @@ class ProjectsContainer extends React.Component {
 
   componentDidMount() {
     this.pageChange(this.state.currentPage);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (this.validatePropsForProjectDeletion(nextProps)) {
+      this.props.async.setActionConfirmationProgress(true);
+      setTimeout(() => {
+        this.props.async.setActionConfirmationResult({
+          response: {
+            status: 401
+          }
+        });
+      }, 2000);
+    }
+  }
+
+  validatePropsForProjectDeletion(nextProps) {
+    return (
+      nextProps.confirmed &&
+      !nextProps.isWorking &&
+      nextProps.type === ACTION_CONFIRMED &&
+      nextProps.toConfirm.key === "deleteProject"
+    );
   }
 
   pageChange(page) {
@@ -65,7 +88,11 @@ class ProjectsContainer extends React.Component {
           contentLabel="Projects test modal"
           onClose={this.handleCloseModal}
         >
-          <AddProjectScreen projectActions={this.props.projectActions} />
+          <AddProjectScreen
+            projectActions={this.props.projectActions}
+            limit={this.state.limit}
+            currentPage={this.state.currentPage}
+          />
         </Modal>
       </div>
     );

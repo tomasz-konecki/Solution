@@ -4,14 +4,32 @@ import SmoothTable from "../common/SmoothTable";
 import { connect } from "react-redux";
 import Confirmation from "../common/modals/Confirmation";
 import { setActionConfirmation } from "../../actions/asyncActions";
+import Modal from "react-responsive-modal";
+import EditUserDetails from "../usersModals/EditUserDetails";
 
 class UsersList extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      showModal: false,
+      user: {}
+    };
   }
 
   editUser = object => {
     console.table(object);
+    this.setState({
+      user: object
+    });
+    this.handleOpenModal();
+  };
+
+  handleOpenModal = () => {
+    this.setState({ showModal: true });
+  };
+
+  handleCloseModal = () => {
+    this.setState({ showModal: false });
   };
 
   render() {
@@ -42,20 +60,26 @@ class UsersList extends Component {
         {
           width: 1,
           toolBox: [
-            { icon: { icon: "times" },
+            {
+              icon: { icon: "times" },
               click: object => {
-                this.props.dispatch(setActionConfirmation(true, {
-                  key: "deleteUser",
-                  string: `Delete user ${object.firstName} ${object.lastName}`,
-                  id: object.id,
-                  successMessage: "Użytkownik został usunięty"
-                }));
-            }},
+                this.props.dispatch(
+                  setActionConfirmation(true, {
+                    key: "deleteUser",
+                    string: `Delete user ${object.firstName} ${
+                      object.lastName
+                    }`,
+                    id: object.id,
+                    successMessage: "Użytkownik został usunięty"
+                  })
+                );
+              }
+            },
             {
               icon: { icon: "edit", iconType: "far" },
               click: object => {
                 this.editUser(object);
-                alert(object.firstName);
+                // alert(object.firstName);
               }
             }
           ],
@@ -65,13 +89,26 @@ class UsersList extends Component {
     };
 
     return (
-      <SmoothTable
-        currentPage={this.props.currentPage}
-        totalPageCount={this.props.totalPageCount}
-        loading={this.props.loading}
-        data={this.props.users}
-        construct={construct}
-      />
+      <div>
+        <SmoothTable
+          currentPage={this.props.currentPage}
+          totalPageCount={this.props.totalPageCount}
+          loading={this.props.loading}
+          data={this.props.users}
+          construct={construct}
+        />
+        <Modal
+          open={this.state.showModal}
+          classNames={{ modal: "Modal" }}
+          contentLabel="Edit users details"
+          onClose={this.handleCloseModal}
+        >
+          <EditUserDetails
+            closeModal={this.handleCloseModal}
+            user={this.state.user}
+          />
+        </Modal>
+      </div>
     );
   }
 }

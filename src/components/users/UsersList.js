@@ -6,6 +6,7 @@ import Confirmation from "../common/modals/Confirmation";
 import { setActionConfirmation } from "../../actions/asyncActions";
 import Modal from "react-responsive-modal";
 import EditUserDetails from "../usersModals/EditUserDetails";
+import DCMTWebApi from "../../api";
 
 class UsersList extends Component {
   constructor(props) {
@@ -17,10 +18,17 @@ class UsersList extends Component {
   }
 
   editUser = object => {
-    console.table(object);
-    this.setState({
-      user: object
-    });
+    DCMTWebApi.getUser(object.id)
+      .then(response => {
+        console.log(response.status);
+        this.setState({
+          user: response.data.dtoObject
+        });
+      })
+      .catch(error => {
+        throw error;
+      });
+
     this.handleOpenModal();
   };
 
@@ -33,6 +41,7 @@ class UsersList extends Component {
   };
 
   render() {
+    console.log("UsersList RESPONSE (render):", this.state.user);
     const construct = {
       rowClass: "user-block",
       tableClass: "users-list-container",

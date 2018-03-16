@@ -57,6 +57,29 @@ a:visited {
       }
     }
   }
+  .user-details-container {
+    padding-bottom: 1.5em;
+    border-bottom: 1px solid lightgray;
+
+    .detail-container {
+      margin-bottom: 0.4em;
+    }
+
+    label {
+      display: inline-block;
+      font-size: 15px;
+      width: 20%;
+    }
+    span {
+      font-weight: 700;
+      font-size: 15px;
+      margin-left: 0.5em;
+    }
+    input {
+      margin: 0;
+      height: 1.7em;
+    }
+  }
 
   @media only screen and (max-width: 1366px) {
     // height: 80%;

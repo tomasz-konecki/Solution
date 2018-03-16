@@ -5,15 +5,21 @@ import UserRoleAssigner from "./UserRoleAssigner";
 class EditUserDetails extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      user: {
+        firstName: "Jan",
+        lastName: "Nowak",
+        id: "jnowak",
+        roles: ["Administrator", "Team Leader"],
+        email: "jan.nowak@ex.com"
+      }
+    };
   }
   render() {
-    console.log("EditUserDetails USER:", this.props.user);
     return (
       <div>
-        <h2>Edit user details Modal</h2>
         <UserDetailsBlock editable={true} user={this.props.user} />
-        <UserRoleAssigner roles={this.props.user.roles} />
+        <UserRoleAssigner roles={this.state.user.roles} />
       </div>
     );
   }

@@ -23,12 +23,11 @@ class UserDetailsBlock extends Component {
   };
 
   render() {
-    console.log("UserDetailsBlock USER:", this.props.user);
     return (
       <div className="user-details-container">
         <Detail
           type="text"
-          editable={this.state.editable}
+          editable={this.props.editable}
           pretty="Imię"
           required
           value={this.props.user.firstName}
@@ -36,7 +35,7 @@ class UserDetailsBlock extends Component {
 
         <Detail
           type="text"
-          editable={this.state.editable}
+          editable={this.props.editable}
           pretty="Nazwisko"
           required
           value={this.props.user.lastName}
@@ -44,7 +43,7 @@ class UserDetailsBlock extends Component {
 
         <Detail
           type="text"
-          editable={this.state.editable}
+          editable={this.props.editable}
           pretty="Email"
           required
           value={this.props.user.email}
@@ -52,7 +51,7 @@ class UserDetailsBlock extends Component {
 
         <Detail
           type="text"
-          editable={this.state.editable}
+          editable={this.props.editable}
           pretty="Telefon"
           required
           value={this.parsePhoneNumber()}
@@ -62,7 +61,7 @@ class UserDetailsBlock extends Component {
           type="text"
           editable={false}
           pretty="Role"
-          value={this.parseRoles()}
+          /* value={this.parseRoles()} */
         />
       </div>
     );

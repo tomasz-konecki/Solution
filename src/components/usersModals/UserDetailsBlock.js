@@ -17,12 +17,13 @@ class UserDetailsBlock extends Component {
   };
 
   parsePhoneNumber = () => {
-    return this.props.user.phoneNumber.length !== 0
+    return this.props.user.phoneNumber !== null
       ? this.props.user.phoneNumber
       : emptyField;
   };
 
   render() {
+    console.log("UserDetailsBlock USER:", this.props.user);
     return (
       <div className="user-details-container">
         <Detail
@@ -30,7 +31,7 @@ class UserDetailsBlock extends Component {
           editable={this.state.editable}
           pretty="Imię"
           required
-          user={this.props.user.firstName}
+          value={this.props.user.firstName}
         />
 
         <Detail
@@ -38,7 +39,7 @@ class UserDetailsBlock extends Component {
           editable={this.state.editable}
           pretty="Nazwisko"
           required
-          user={this.props.user.lastName}
+          value={this.props.user.lastName}
         />
 
         <Detail
@@ -46,7 +47,7 @@ class UserDetailsBlock extends Component {
           editable={this.state.editable}
           pretty="Email"
           required
-          user={this.props.user.email}
+          value={this.props.user.email}
         />
 
         <Detail
@@ -54,14 +55,14 @@ class UserDetailsBlock extends Component {
           editable={this.state.editable}
           pretty="Telefon"
           required
-          user={this.parsePhoneNumber()}
+          value={this.parsePhoneNumber()}
         />
 
         <Detail
           type="text"
           editable={false}
           pretty="Role"
-          user={this.parseRoles()}
+          value={this.parseRoles()}
         />
       </div>
     );

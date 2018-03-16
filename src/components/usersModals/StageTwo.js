@@ -65,7 +65,7 @@ class StageTwo extends Component {
 
   stopLoading = () => {
     this.setState({ isLoading: false });
-  }
+  };
 
   render() {
     return (
@@ -86,7 +86,11 @@ class StageTwo extends Component {
               <button onClick={this.handleBack}>Back</button>
             </div>
             <div>
-              <ResultBlock errorBlock={this.props.errorBlock} errorOnly={false} successMessage={"Użytkownik dodany pomyślnie"}/>
+              <ResultBlock
+                errorBlock={this.props.errorBlock}
+                errorOnly={false}
+                successMessage={"Użytkownik dodany pomyślnie"}
+              />
             </div>
             <div className="submit-button-container">
               <button type="submit" onClick={this.handleSubmit}>

@@ -1,15 +1,21 @@
-import React from 'react';
+import React from "react";
 
 const shouldRender = (errorOnly, errorStatus) => {
-  if(errorOnly && (errorStatus === false)) return false;
+  if (errorOnly && errorStatus === false) return false;
   return true;
 };
 
-const ResultBlock = ({errorBlock, errorOnly = true, successMessage = "Operacja wykonana pomyślnie", successCallback, customErrors = {}}) => {
-  let classes = ['result-block'];
+const ResultBlock = ({
+  errorBlock,
+  errorOnly = true,
+  successMessage = "Operacja wykonana pomyślnie",
+  successCallback,
+  customErrors = {}
+}) => {
+  let classes = ["result-block"];
   let message = successMessage;
 
-  if(errorBlock === undefined || errorBlock === null) return <span/>;
+  if (errorBlock === undefined || errorBlock === null) return <span />;
 
   const { response } = errorBlock;
 
@@ -87,13 +93,19 @@ const ResultBlock = ({errorBlock, errorOnly = true, successMessage = "Operacja w
 
   classes.push(statusHasErrorToClass[errorStatus]);
 
-  if((successCallback !== undefined && successCallback !== null) && (!errorStatus)) {
+  if (
+    successCallback !== undefined &&
+    successCallback !== null &&
+    !errorStatus
+  ) {
     successCallback();
   }
 
   return (
     <span>
-      {shouldRender(errorOnly, errorStatus) && <span className={classes.join(" ")}>{message}</span>}
+      {shouldRender(errorOnly, errorStatus) && (
+        <span className={classes.join(" ")}>{message}</span>
+      )}
     </span>
   );
 };

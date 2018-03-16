@@ -7,11 +7,11 @@ const Detail = props => {
       {props.editable === true ? (
         <input
           type={props.type}
-          placeholder={props.user}
+          placeholder={props.value}
           required={props.required}
         />
       ) : (
-        <span>{props.user}</span>
+        <span>{props.value}</span>
       )}
     </div>
   );

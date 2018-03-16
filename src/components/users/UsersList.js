@@ -42,7 +42,6 @@ class UsersList extends Component {
   };
 
   render() {
-    console.log("UsersList RESPONSE (render):", this.state.user);
     const construct = {
       rowClass: "user-block",
       tableClass: "users-list-container",

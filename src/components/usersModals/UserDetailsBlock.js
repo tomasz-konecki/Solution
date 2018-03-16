@@ -61,7 +61,7 @@ class UserDetailsBlock extends Component {
           type="text"
           editable={false}
           pretty="Role"
-          /* value={this.parseRoles()} */
+          value={this.parseRoles()}
         />
       </div>
     );

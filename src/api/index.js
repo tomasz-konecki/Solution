@@ -42,8 +42,11 @@ class DCMTWebApi {
     return axios.get(`${API_ENDPOINT}/users/${id}`);
   }
 
-  changeUserRole(id, role) {
-    return axios.patch(`${API_ENDPOINT}/users/${id}`, { role });
+  changeUserRole(id, roles) {
+    return axios.patch(`${API_ENDPOINT}/users`, {
+      id,
+      roles
+    });
   }
 
   getProjects(settings = null) {

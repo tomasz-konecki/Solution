@@ -13,24 +13,64 @@ class UsersList extends Component {
     super(props);
     this.state = {
       showModal: false,
-      user: {}
+      user: {},
+      responseBlock: {},
+      loading: false
     };
   }
 
   handleGetUser = object => {
-    DCMTWebApi.getUser(object.id)
-      .then(response => {
-        if (response.status === 200) {
-          this.setState({
-            user: response.data.dtoObject
-          });
-        }
-      })
-      .catch(error => {
-        throw error;
-      });
+    // DCMTWebApi.getUser(object.id)
+    //   .then(response => {
+    //     if (response.status === 200) {
+    //       this.setState({
+    //         user: response.data.dtoObject
+    //       });
+    //     }
+    //   })
+    //   .catch(error => {
+    //     throw error;
+    //   });
+    this.setState({
+      user: object
+    });
 
     this.handleOpenModal();
+  };
+
+  handleRoleChange = roles => {
+    let _user = this.state.user;
+    _user.roles = roles;
+
+    this.setState({
+      user: _user
+    });
+  };
+
+  changeUserRoles = () => {
+    const { id, roles } = this.state.user;
+    this.setState(
+      {
+        loading: true
+      },
+      () => {
+        DCMTWebApi.changeUserRole(id, roles)
+          .then(response => {
+            this.setState({
+              responseBlock: {
+                response
+              },
+              loading: false
+            });
+          })
+          .catch(error => {
+            this.setState({
+              responseBlock: error,
+              loading: false
+            });
+          });
+      }
+    );
   };
 
   handleOpenModal = () => {
@@ -114,6 +154,10 @@ class UsersList extends Component {
           <EditUserDetails
             closeModal={this.handleCloseModal}
             user={this.state.user}
+            handleRoleChange={this.handleRoleChange}
+            responseBlock={this.state.responseBlock}
+            loading={this.state.loading}
+            changeUserRoles={this.changeUserRoles}
           />
         </Modal>
       </div>

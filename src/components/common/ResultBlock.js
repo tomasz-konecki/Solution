@@ -18,6 +18,9 @@ const ResultBlock = ({
   if (errorBlock === undefined || errorBlock === null) return <span />;
 
   const { response } = errorBlock;
+
+  if(response === undefined) return <span/>;
+
   const { status } = response;
 
   const defaultServerError = "Wewnętrzny błąd serwera";

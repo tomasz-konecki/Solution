@@ -35,7 +35,7 @@ class UsersContainer extends React.Component {
       setTimeout(() => {
         this.props.async.setActionConfirmationResult({
           response: {
-            status: 202
+            status: 401
           }
         });
       }, 2000);

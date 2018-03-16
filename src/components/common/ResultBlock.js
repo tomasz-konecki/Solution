@@ -12,6 +12,9 @@ const ResultBlock = ({errorBlock, errorOnly = true, successMessage = "Operacja w
   if(errorBlock === undefined || errorBlock === null) return <span/>;
 
   const { response } = errorBlock;
+
+  if(response === undefined) return <span/>;
+
   const { status } = response;
 
   const defaultServerError = "Wewnętrzny błąd serwera";
@@ -84,7 +87,7 @@ const ResultBlock = ({errorBlock, errorOnly = true, successMessage = "Operacja w
 
   classes.push(statusHasErrorToClass[errorStatus]);
 
-  if((successCallback !== undefined || successCallback !== null) && (!errorStatus)) {
+  if((successCallback !== undefined && successCallback !== null) && (!errorStatus)) {
     successCallback();
   }
 

@@ -37,6 +37,8 @@ class EditUserDetails extends Component {
             errorBlock={this.props.responseBlock}
           />
         </div>
+
+        <br />
         <div>{this.props.loading && <LoaderHorizontal />}</div>
       </div>
     );

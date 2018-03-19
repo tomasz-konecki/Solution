@@ -20,29 +20,28 @@
 }
 
 .wrapper {
-  width: 100vw;
+  width: 100%;
   background: $content-background;
 
   overflow-y: scroll;
 
   .header {
-    height: 6vh;
+    height: 55px;
     overflow: hidden;
     white-space: nowrap;
     box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.75);
     top: 0;
-    width: calc(100% - 9px);
+    width: 100%;
     position: fixed;
     z-index: 2;
-    right: 9px;
 
     .first-bar {
-      height: 1vh;
+      height: 9px;
       width: 100%;
       background: darken($main-color, 5%);
     }
     .second-bar {
-      height: 5vh;
+      height: 100%;
       width: 100%;
       background: $main-color;
     }
@@ -51,9 +50,9 @@
       background: $left-menu-background;
       position: fixed;
       left: 0;
-      height: 94vh;
-      width: 6.5vh;
-      top: 6vh;
+      height: 94%;
+      width: 62px;
+      top: 55px;
       color: transparent;
       display: inline-block;
       vertical-align: top;
@@ -63,7 +62,7 @@
       box-shadow: 0px 4px 3px 3px rgba(0, 0, 0, 0.75);
 
       li {
-        height: 4vh;
+        height: 33px;
         width: 100%;
         line-height: 1.5em;
         vertical-align: baseline;
@@ -73,7 +72,6 @@
         border-bottom: 1px solid $left-menu-li-border-bottom-color;
         padding-top: 0.5em;
         padding-bottom: 0.5em;
-        //text-align: center;
         user-select: none;
 
         span {
@@ -84,8 +82,8 @@
           max-width: 0;
         }
         i {
-          padding: 1vh;
-          margin-left: 0.9vh;
+          padding: 11px;
+          margin-left: 10px;
         }
         &:hover {
           background-color: $left-menu-li-hover-background;
@@ -118,25 +116,25 @@
     }
     .top-bar {
       position: absolute;
-      right: 1vw;
-      top: 1vh;
-      line-height: 5vh;
-      font-size: 2vh;
-      height: 5vh;
+      right: 16px;
+      top: 9px;
+      line-height: 42px;
+      font-size: 16px;
+      // height: 5vh;
       vertical-align: baseline;
       color: white;
       .logged-in-user {
         padding-right: 1vw;
       }
       .nav-compact {
-        height: 3vh;
-        line-height: 2vh;
+        height: 25px;
+        line-height: 14px;
         vertical-align: baseline;
         span {
-          font-size: 1.65vh;
+          font-size: 13px;
         }
         i {
-          font-size: 1.65vh;
+          font-size: 13px;
         }
       }
     }
@@ -146,10 +144,10 @@
       margin-right: auto;
       left: 0;
       right: 0;
-      top: 1.7vh;
+      top: 15px;
       text-align: center;
-      height: 3.5vh;
-      background-size: 3.5vh;
+      height: 34px;
+      background-size: 32px;
       filter: brightness(0) invert(1);
     }
     .title {
@@ -166,18 +164,18 @@
     .extender {
       cursor: pointer;
       position: absolute;
-      top: 1vh;
-      width: 8vh;
-      height: 5vh;
-      line-height: 5vh;
+      top: 8px;
+      width: 60px;
+      height: 43px;
+      line-height: 43px;
       vertical-align: baseline;
       color: $menu-element-text-color;
       z-index: 2;
       font-size: 60%;
       i {
-        padding-left: 2vh;
-        font-size: 3.3vh;
-        padding-top: 1.32vh;
+        padding-left: 16px;
+        font-size: 33px;
+        padding-top: 11px;
       }
     }
   }
@@ -275,6 +273,11 @@
     }
     .content {
       width: 95%;
+    }
+  }
+  @media (max-width: 540px) {
+    .logged-in-user {
+      display: none;
     }
   }
 }

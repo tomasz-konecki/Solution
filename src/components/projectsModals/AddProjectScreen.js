@@ -76,7 +76,7 @@ class AddProjectScreen extends Component {
             <textarea
               onChange={this.handleChange}
               name="description"
-              maxlength="1500"
+              maxLength="1500"
             />
           </div>
           <div className="input-block">

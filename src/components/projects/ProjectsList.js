@@ -3,11 +3,50 @@ import Icon from "../common/Icon";
 import SmoothTable from "../common/SmoothTable";
 import { setActionConfirmation } from "./../../actions/asyncActions";
 import { connect } from "react-redux";
+import Modal from "react-responsive-modal";
+import EditProjectDetails from "../projectsModals/EditProjectDetails";
+import DCMTWebApi from "../../api";
 
 class ProjectsList extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      showModal: false,
+      project: {},
+      responseBlock: {},
+      loading: false
+    };
   }
+
+  handleGetProject = object => {
+    DCMTWebApi.getProject(object.id)
+      .then(response => {
+        if (response.status === 200) {
+          this.setState({
+            project: response.data.dtoObject
+          });
+
+          console.log("ProjectsList:");
+          console.table(this.state.project);
+        }
+      })
+      .catch(error => {
+        throw error;
+      });
+
+    this.setState({
+      showModal: true
+    });
+  };
+
+  handleOpenModal = () => {
+    this.setState({ showModal: true });
+  };
+
+  handleCloseModal = () => {
+    this.setState({ showModal: false });
+  };
+
   render() {
     const construct = {
       rowClass: "project-block",
@@ -58,7 +97,7 @@ class ProjectsList extends Component {
             {
               icon: { icon: "edit", iconType: "far" },
               click: object => {
-                alert(object.name);
+                this.handleGetProject(object);
               }
             }
           ],
@@ -68,13 +107,28 @@ class ProjectsList extends Component {
     };
 
     return (
-      <SmoothTable
-        currentPage={this.props.currentPage}
-        totalPageCount={this.props.totalPageCount}
-        loading={this.props.loading}
-        data={this.props.projects}
-        construct={construct}
-      />
+      <div>
+        <SmoothTable
+          currentPage={this.props.currentPage}
+          totalPageCount={this.props.totalPageCount}
+          loading={this.props.loading}
+          data={this.props.projects}
+          construct={construct}
+        />
+        <Modal
+          open={this.state.showModal}
+          classNames={{ modal: "Modal" }}
+          contentLabel="Edit projects details"
+          onClose={this.handleCloseModal}
+        >
+          <EditProjectDetails
+            closeModal={this.handleCloseModal}
+            project={this.state.project}
+            responseBlock={this.state.responseBlock}
+            loading={this.state.loading}
+          />
+        </Modal>
+      </div>
     );
   }
 }

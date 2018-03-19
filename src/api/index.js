@@ -77,21 +77,24 @@ class DCMTWebApi {
     });
   }
 
-  editProject(
+  editProject({
     id,
     name,
     description,
     client,
     responsiblePerson,
     startDate,
-    estimatedEndDate
-  ) {
+    estimatedEndDate,
+    createdBy
+  }) {
     return axios.put(`${API_ENDPOINT}/projects/${id}`, {
       name,
+      client,
       description,
       responsiblePerson,
       startDate,
-      estimatedEndDate
+      estimatedEndDate,
+      createdBy
     });
   }
 

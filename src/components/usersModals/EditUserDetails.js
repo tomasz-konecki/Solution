@@ -8,13 +8,6 @@ class EditUserDetails extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      user: {
-        firstName: "Jan",
-        lastName: "Nowak",
-        id: "jnowak",
-        roles: ["Administrator", "Team Leader"],
-        email: "jan.nowak@ex.com"
-      },
       loading: false
     };
   }

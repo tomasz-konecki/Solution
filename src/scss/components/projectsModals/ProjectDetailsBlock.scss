@@ -1,0 +1,13 @@
+.project-details-block {
+  .project-details-container {
+    .detail-container {
+      display: flex;
+      label {
+        flex: 1;
+      }
+      input {
+        flex: 3;
+      }
+    }
+  }
+}

@@ -9,7 +9,7 @@ import "../../../../scss/containers/UsersContainer.scss";
 import Modal from "react-responsive-modal";
 import UserSelector from "../../../../components/usersModals/UserSelector";
 import UsersList from "../../../../components/users/UsersList";
-import { ACTION_CONFIRMED } from './../../../../constants';
+import { ACTION_CONFIRMED } from "./../../../../constants";
 
 class UsersContainer extends React.Component {
   constructor(props) {
@@ -30,7 +30,7 @@ class UsersContainer extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if(this.validatePropsForUserDeletion(nextProps)) {
+    if (this.validatePropsForUserDeletion(nextProps)) {
       this.props.async.setActionConfirmationProgress(true);
       setTimeout(() => {
         this.props.async.setActionConfirmationResult({
@@ -43,16 +43,25 @@ class UsersContainer extends React.Component {
   }
 
   validatePropsForUserDeletion(nextProps) {
-    return nextProps.confirmed &&
-    (!nextProps.isWorking) &&
-    nextProps.type === ACTION_CONFIRMED &&
-    nextProps.toConfirm.key === 'deleteUser';
+    return (
+      nextProps.confirmed &&
+      !nextProps.isWorking &&
+      nextProps.type === ACTION_CONFIRMED &&
+      nextProps.toConfirm.key === "deleteUser"
+    );
   }
 
   pageChange(page) {
-    this.setState({
-      currentPage: page
-    }, () => this.props.userActions.loadUsers(this.state.currentPage, this.state.limit));
+    this.setState(
+      {
+        currentPage: page
+      },
+      () =>
+        this.props.userActions.loadUsers(
+          this.state.currentPage,
+          this.state.limit
+        )
+    );
   }
 
   handleOpenModal() {
@@ -76,7 +85,7 @@ class UsersContainer extends React.Component {
         />
         <Modal
           open={this.state.showModal}
-          classNames={{ modal: "Modal" }}
+          classNames={{ modal: "Modal Modal-users" }}
           contentLabel="Users modal"
           onClose={this.handleCloseModal}
         >

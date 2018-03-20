@@ -1,11 +1,13 @@
 import React from "react";
+import "bootstrap/dist/css/bootstrap.css";
 
 const Detail = props => {
   return (
     <div className="detail-container">
       <label>{props.pretty}</label>
+
       {props.editable === true && props.type === "textarea" ? (
-        <textarea rows="5" cols="30" resize="none">
+        <textarea rows={props.rows} cols={props.cols} resize="none">
           {props.value}
         </textarea>
       ) : props.editable === true ? (

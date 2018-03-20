@@ -14,50 +14,45 @@ class UserSelector extends Component {
   constructor() {
     super();
     this.state = initialState;
-
-    this.setSelectedUser = this.setSelectedUser.bind(this);
-    this.resetState = this.resetState.bind(this);
-    this.setState = this.setState.bind(this);
-    this.searchUsersInAD = this.searchUsersInAD.bind(this);
   }
 
-  setSelectedUser(value) {
+  setSelectedUser = user => {
+    // alert(user.fullName);
     this.setState({
-      selectedUser: value,
+      selectedUser: user,
       isStageTwo: true,
       errorBlock: null
     });
-  }
+  };
 
-  resetState() {
+  resetState = () => {
     this.setState({
       ...initialState
     });
-  }
+  };
 
-  searchUsersInAD(user) {
-    this.setState({
-      foundUsers: [],
-      errorBlock: null
-    }, () => {
-      DCMTWebApi.searchAD(user)
+  getUsers = user => {
+    if (!user) {
+      return Promise.resolve({ options: [] });
+    }
+    return DCMTWebApi.searchAD(user)
       .then(response => {
-        this.setState({ foundUsers: response.data.dtoObjects });
-        this.refs.StageOne.stopLoading();
+        return { options: response.data.dtoObjects };
       })
       .catch(errorBlock => {
         this.setState({ errorBlock });
         this.refs.StageOne.stopLoading();
       });
-    });
-  }
+  };
 
   doAddUser = newUser => {
     DCMTWebApi.addUser(newUser.id, newUser.roles)
       .then(response => {
-        this.setState({ errorBlock: {
-          response
-        }});
+        this.setState({
+          errorBlock: {
+            response
+          }
+        });
         this.refs.StageTwo.stopLoading();
         setTimeout(() => {
           this.props.closeModal();
@@ -67,7 +62,7 @@ class UserSelector extends Component {
         this.setState({ errorBlock });
         this.refs.StageTwo.stopLoading();
       });
-  }
+  };
 
   render() {
     return (
@@ -76,9 +71,9 @@ class UserSelector extends Component {
           <StageOne
             ref="StageOne"
             setSelectedUser={this.setSelectedUser}
-            searchUsersInAD={this.searchUsersInAD}
             foundUsers={this.state.foundUsers}
             errorBlock={this.state.errorBlock}
+            getUsers={this.getUsers}
           />
         )}
         {this.state.isStageTwo === true && (

@@ -3,67 +3,68 @@ import "../../scss/components/usersModals/StageOne.scss";
 import FoundUsersTable from "../users/FoundUsersTable";
 import LoaderHorizontal from "../../components/common/LoaderHorizontal";
 import ResultBlock from "../common/ResultBlock";
+import Select from "react-select";
+import "react-select/dist/react-select.css";
+import DCMTWebApi from "../../api";
 
 class StageOne extends Component {
   constructor() {
     super();
 
     this.state = {
-      searchText: "",
-      isLoading: false,
-      isSearchingDone: false
+      backspaceRemoves: true,
+      multi: false,
+      creatable: true
     };
-
-    this.handleClick = this.handleClick.bind(this);
-    this.handleInput = this.handleInput.bind(this);
-    this.handleKeyUp = this.handleKeyUp.bind(this);
-    this.stopLoading = this.stopLoading.bind(this);
   }
 
-  handleInput(e) {
-    this.setState({ searchText: e.target.value });
-  }
-
-  handleClick(e) {
-    this.props.searchUsersInAD(this.state.searchText);
+  onChange = value => {
     this.setState({
-      isLoading: true,
-      isSearchingDone: false
+      value
     });
-  }
+  };
 
-  handleKeyUp(e) {
-    if (e.keyCode === 13) {
-      this.handleClick(e);
-    }
-  }
+  getUsers = input => {
+    return this.props.getUsers(input);
+  };
 
-  stopLoading() {
-    this.setState({ isLoading: false, isSearchingDone: true });
-  }
+  handleClick = () => {
+    this.props.setSelectedUser(this.state.value);
+  };
 
   render() {
+    const AsyncComponent = this.state.creatable
+      ? Select.AsyncCreatable
+      : Select.Async;
+    console.log(this.state.value);
     return (
       <div className="stage-one-container">
+        <header>
+          <h3 className="section-heading">Wyszukaj użytkownika w AD</h3>
+        </header>
         <div className="search-container">
-          <input
-            name="user"
-            type="text"
-            onChange={this.handleInput}
-            onKeyUp={this.handleKeyUp}
+          <AsyncComponent
+            multi={this.state.multi}
+            value={this.state.value}
+            onChange={this.onChange}
+            // valueKey="lastName"
+            labelKey="fullName"
+            loadOptions={this.getUsers}
+            backspaceRemoves={this.state.backspaceRemoves}
           />
-          <button onClick={this.handleClick}>Search</button>
+          <div className="error-block-container">
+            {this.props.errorBlock !== null && (
+              <ResultBlock errorBlock={this.props.errorBlock} />
+            )}
+          </div>
+          {this.state.value && (
+            <div className="forward-button-container">
+              <button className="btn btn-primary" onClick={this.handleClick}>
+                Dalej
+              </button>
+            </div>
+          )}
         </div>
-        <div className="loader-container">
-          {this.state.isLoading && <LoaderHorizontal />}
-          {this.props.errorBlock !== null && <ResultBlock errorBlock={this.props.errorBlock}/>}
-        </div>
-        {this.state.isSearchingDone === true && this.props.errorBlock === null && (
-          <FoundUsersTable
-            foundUsers={this.props.foundUsers}
-            setSelectedUser={this.props.setSelectedUser}
-          />
-        )}
       </div>
     );
   }

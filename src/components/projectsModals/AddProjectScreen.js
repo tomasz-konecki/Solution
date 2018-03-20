@@ -3,7 +3,6 @@ import "../../scss/components/projectsModals/AddProjectScreen.scss";
 import LoaderHorizontal from "../../components/common/LoaderHorizontal";
 import DCMTWebApi from "../../api";
 import ResultBlock from "./../common/ResultBlock";
-import "bootstrap/dist/css/bootstrap.css";
 
 class AddProjectScreen extends Component {
   constructor(props) {

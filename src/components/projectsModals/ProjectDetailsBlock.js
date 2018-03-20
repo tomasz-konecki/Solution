@@ -33,7 +33,7 @@ class ProjectDetailsBlock extends Component {
 
   render() {
     return (
-      <div>
+      <div className="project-details-block">
         <header>
           <h3>Edycja danych projektu</h3>
         </header>

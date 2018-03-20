@@ -4,6 +4,9 @@ $stage-two-container-height: 18em;
   padding: 15px;
 
   .form-container {
+    header {
+      border-bottom: 1px solid lightgray;
+    }
     .form-navigation {
       padding-top: 1.5em;
       display: flex;

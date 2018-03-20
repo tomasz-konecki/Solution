@@ -49,14 +49,17 @@ a:visited {
   }
 
   header {
-    border-bottom: 1px solid #d3d3d3;
+    // border-bottom: 1px solid #d3d3d3;
     height: 30px;
     vertical-align: middle;
     margin-bottom: 10px;
+    padding-left: 5px;
     h3 {
       line-height: 30px;
+      font-size: 1.1em;
       color: gray;
       font-variant: small-caps;
+      letter-spacing: 0.7px;
     }
 
     .close-button {
@@ -115,4 +118,8 @@ a:visited {
 
     // font-size: 230% !important;
   }
+}
+
+.Modal-users {
+  height: 400px;
 }

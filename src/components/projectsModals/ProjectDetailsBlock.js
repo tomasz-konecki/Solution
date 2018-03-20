@@ -49,7 +49,7 @@ class ProjectDetailsBlock extends Component {
               handleChange={this.handleChange}
             />
             <Detail
-              type="text"
+              type="textarea"
               editable={this.props.editable}
               name="description"
               pretty="Opis"

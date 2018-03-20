@@ -3,6 +3,7 @@ import "../../scss/components/projectsModals/AddProjectScreen.scss";
 import LoaderHorizontal from "../../components/common/LoaderHorizontal";
 import DCMTWebApi from "../../api";
 import ResultBlock from "./../common/ResultBlock";
+import "bootstrap/dist/css/bootstrap.css";
 
 class AddProjectScreen extends Component {
   constructor(props) {
@@ -62,74 +63,109 @@ class AddProjectScreen extends Component {
     return (
       <div className="add-project-screen">
         <form onSubmit={this.handleSubmit}>
-          <div className="input-block">
-            <label>Nazwa projektu: </label>
-            <input
-              type="text"
-              name="name"
-              onChange={this.handleChange}
-              required
-            />
+          <div className="form-group row">
+            <label htmlFor="projectName" className="col-sm-3 col-form-label">
+              Nazwa projektu:
+            </label>
+            <div className="col-sm-9">
+              <input
+                type="text"
+                className="form-control"
+                name="name"
+                onChange={this.handleChange}
+              />
+            </div>
           </div>
-          <div className="input-block">
-            <label>Opis:</label>
-            <textarea
-              onChange={this.handleChange}
-              name="description"
-              maxLength="1500"
-            />
+          <div className="form-group row">
+            <label htmlFor="description" className="col-sm-3 col-form-label">
+              Opis:
+            </label>
+            <div className="col-sm-9">
+              <textarea
+                rows="5"
+                cols="30"
+                className="form-control"
+                id="description"
+                maxLength="1500"
+                onChange={this.handleChange}
+              />
+            </div>
           </div>
-          <div className="input-block">
-            <label>Klient:</label>
-            <input
-              type="text"
-              name="client"
-              onChange={this.handleChange}
-              required
-            />
+          <div className="form-group row">
+            <label htmlFor="client" className="col-sm-3 col-form-label">
+              Klient:
+            </label>
+            <div className="col-sm-9">
+              <input
+                type="text"
+                className="form-control"
+                name="client"
+                onChange={this.handleChange}
+              />
+            </div>
           </div>
-          <div className="input-block">
-            <label>Osoba do kontaktu:</label>
-            <input
-              type="number"
-              name="responsiblePerson"
-              onChange={this.handleChange}
-              required
-            />
+          <div className="form-group row">
+            <label htmlFor="client" className="col-sm-3 col-form-label">
+              Osoba do kontaktu:
+            </label>
+            <div className="col-sm-9">
+              <input
+                type="number"
+                min="1"
+                className="form-control"
+                name="responsiblePerson"
+                onChange={this.handleChange}
+              />
+            </div>
           </div>
-          <div className="input-block">
-            <label>Data rozpoczęcia:</label>
-            <input
-              type="date"
-              name="startDate"
-              onChange={this.handleChange}
-              required
-            />
+          <div className="form-group row">
+            <label htmlFor="client" className="col-sm-3 col-form-label">
+              Data rozpoczęcia:
+            </label>
+            <div className="col-sm-9">
+              <input
+                type="date"
+                className="form-control"
+                name="startDate"
+                onChange={this.handleChange}
+              />
+            </div>
           </div>
-          <div className="input-block">
-            <label>Data zakończenia:</label>
 
-            <input
-              type="date"
-              name="endDate"
-              onChange={this.handleChange}
-              required
-            />
+          <div className="form-group row">
+            <label htmlFor="client" className="col-sm-3 col-form-label">
+              Data zakończenia:
+            </label>
+            <div className="col-sm-9">
+              <input
+                type="date"
+                className="form-control"
+                name="endDate"
+                onChange={this.handleChange}
+              />
+            </div>
           </div>
 
           <div className="loading-bar-container">
             {this.state.isLoading === true && <LoaderHorizontal />}
           </div>
 
-          <div className="project-submit-container">
-            <button className="project-submit-button">Submit</button>
-          </div>
-          <div>
-            <ResultBlock
-              errorBlock={this.state.errorBlock}
-              errorOnly={false}
-              successMessage="Projekt dodano pomyślnie"
-            />
+          <div className="form-group row">
+            <div className="col-sm-9 result-block">
+              <ResultBlock
+                errorBlock={this.state.errorBlock}
+                errorOnly={false}
+                successMessage="Projekt dodano pomyślnie"
+              />
+            </div>
+            <div className="project-submit-container col-sm-3">
+              <button
+                type="submit"
+                className="btn btn-primary project-submit-button"
+              >
+                Potwierdź
+              </button>
+            </div>
           </div>
         </form>
       </div>

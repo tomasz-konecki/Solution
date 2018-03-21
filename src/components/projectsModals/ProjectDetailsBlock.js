@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import Detail from "../common/Detail";
-import DCMTWebApi from "../../api";
+import ResultBlock from "./../common/ResultBlock";
+import "../../scss/components/projectsModals/ProjectDetailsBlock.scss";
 const emptyField = "<brak>";
 const active = "Aktywny";
 const inActive = "Nieaktywny";
@@ -24,7 +25,7 @@ class ProjectDetailsBlock extends Component {
   handleSubmit = event => {
     event.preventDefault();
     console.table(this.state.project);
-    DCMTWebApi.editProject(this.state.project);
+    this.props.editProject(this.state.project);
   };
 
   componentDidMount() {
@@ -54,6 +55,8 @@ class ProjectDetailsBlock extends Component {
               name="description"
               pretty="Opis"
               reuired
+              rows={3}
+              cols={30}
               value={this.props.project.description}
               handleChange={this.handleChange}
             />
@@ -94,7 +97,14 @@ class ProjectDetailsBlock extends Component {
               handleChange={this.handleChange}
             />
             <div className="edit-project-button-container">
-              <button>Potwierdź</button>
+              <button className="btn btn-primary">Potwierdź</button>
+              <div className="col-sm-9 result-block">
+                <ResultBlock
+                  errorBlock={this.state.errorBlock}
+                  errorOnly={false}
+                  successMessage="Projekt edytowano pomyślnie"
+                />
+              </div>
             </div>
           </form>
         </div>

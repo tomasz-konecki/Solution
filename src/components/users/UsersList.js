@@ -62,6 +62,9 @@ class UsersList extends Component {
               },
               loading: false
             });
+            setTimeout(() => {
+              this.handleCloseModal();
+            }, 500);
           })
           .catch(error => {
             this.setState({
@@ -93,13 +96,13 @@ class UsersList extends Component {
           click: () => {
             this.props.openAddUserModal();
           }
-        },
-        {
-          pretty: "ODŚWIEŻ",
-          click: () => {
-            this.props.pageChange(this.props.currentPage);
-          }
         }
+        // {
+        //   pretty: "ODŚWIEŻ",
+        //   click: () => {
+        //     this.props.pageChange(this.props.currentPage);
+        //   }
+        // }
       ],
       columns: [
         { width: 20, field: "firstName", pretty: "Imię" },
@@ -147,7 +150,7 @@ class UsersList extends Component {
         />
         <Modal
           open={this.state.showModal}
-          classNames={{ modal: "Modal" }}
+          classNames={{ modal: "Modal Modal-users" }}
           contentLabel="Edit users details"
           onClose={this.handleCloseModal}
         >

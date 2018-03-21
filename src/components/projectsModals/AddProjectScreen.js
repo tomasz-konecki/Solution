@@ -39,6 +39,9 @@ class AddProjectScreen extends Component {
           errorBlock: { response },
           isLoading: false
         });
+        setTimeout(() => {
+          this.props.closeModal();
+        }, 500);
       })
       .catch(errorBlock => {
         this.setState({

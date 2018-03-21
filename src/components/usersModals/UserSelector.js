@@ -17,7 +17,6 @@ class UserSelector extends Component {
   }
 
   setSelectedUser = user => {
-    // alert(user.fullName);
     this.setState({
       selectedUser: user,
       isStageTwo: true,

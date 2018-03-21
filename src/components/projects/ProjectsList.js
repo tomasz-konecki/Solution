@@ -28,6 +28,7 @@ class ProjectsList extends Component {
 
           console.log("ProjectsList:");
           console.table(this.state.project);
+          console.log("DESCRIPTION:", this.state.project.description);
         }
       })
       .catch(error => {
@@ -59,13 +60,13 @@ class ProjectsList extends Component {
           click: () => {
             this.props.openAddProjectModal();
           }
-        },
-        {
-          pretty: "ODŚWIEŻ",
-          click: () => {
-            this.props.pageChange(this.props.currentPage);
-          }
         }
+        // {
+        //   pretty: "ODŚWIEŻ",
+        //   click: () => {
+        //     this.props.pageChange(this.props.currentPage);
+        //   }
+        // }
       ],
       columns: [
         { width: 20, field: "name", pretty: "Nazwa projektu" },
@@ -126,6 +127,9 @@ class ProjectsList extends Component {
             project={this.state.project}
             responseBlock={this.state.responseBlock}
             loading={this.state.loading}
+            projectActions={this.props.projectActions}
+            limit={this.state.limit}
+            currentPage={this.state.currentPage}
           />
         </Modal>
       </div>

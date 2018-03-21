@@ -1,12 +1,32 @@
 .project-details-block {
   .project-details-container {
-    .detail-container {
-      display: flex;
-      label {
-        flex: 1;
+    border: none;
+    form {
+      .form-group {
+        margin-bottom: 0;
+
+        label {
+        }
+        div {
+          input,
+          textarea {
+            width: 80%;
+            border: 1px solid lightgray;
+          }
+          textarea {
+            resize: none;
+            margin-bottom: 10px;
+          }
+        }
       }
-      input {
-        flex: 3;
+      .edit-project-button-container {
+        position: relative;
+
+        padding: 7px 0 0;
+        .btn-primary {
+          position: absolute;
+          left: 390px;
+        }
       }
     }
   }

@@ -28,7 +28,7 @@ class StageTwo extends Component {
       id,
       email,
       phoneNumber,
-      role
+      roles
     } = this.props.selectedUser;
 
     if (phoneNumber === null) {

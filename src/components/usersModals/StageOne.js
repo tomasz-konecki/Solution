@@ -13,8 +13,7 @@ class StageOne extends Component {
 
     this.state = {
       backspaceRemoves: true,
-      multi: false,
-      creatable: true
+      multi: false
     };
   }
 
@@ -42,6 +41,11 @@ class StageOne extends Component {
         <header>
           <h3 className="section-heading">Wyszukaj użytkownika w AD</h3>
         </header>
+        <div className="error-block-container">
+          {this.props.errorBlock !== null && (
+            <ResultBlock errorBlock={this.props.errorBlock} />
+          )}
+        </div>
         <div className="search-container">
           <AsyncComponent
             multi={this.state.multi}
@@ -52,11 +56,7 @@ class StageOne extends Component {
             loadOptions={this.getUsers}
             backspaceRemoves={this.state.backspaceRemoves}
           />
-          <div className="error-block-container">
-            {this.props.errorBlock !== null && (
-              <ResultBlock errorBlock={this.props.errorBlock} />
-            )}
-          </div>
+
           {this.state.value && (
             <div className="forward-button-container">
               <button className="btn btn-primary" onClick={this.handleClick}>

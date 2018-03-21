@@ -1,6 +1,8 @@
 .project-details-block {
   .project-details-container {
     border: none;
+    padding-left: 20px;
+    // border: 1px solid blue;
     form {
       .form-group {
         margin-bottom: 0;
@@ -10,7 +12,7 @@
         div {
           input,
           textarea {
-            width: 80%;
+            width: 90%;
             border: 1px solid lightgray;
           }
           textarea {
@@ -23,9 +25,9 @@
         position: relative;
 
         padding: 7px 0 0;
-        .btn-primary {
+        button {
           position: absolute;
-          left: 390px;
+          left: 415px;
         }
       }
     }

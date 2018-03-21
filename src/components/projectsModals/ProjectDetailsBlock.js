@@ -97,7 +97,7 @@ class ProjectDetailsBlock extends Component {
               handleChange={this.handleChange}
             />
             <div className="edit-project-button-container">
-              <button className="btn btn-primary">Potwierdź</button>
+              <button className="">Potwierdź</button>
               <div className="col-sm-9 result-block">
                 <ResultBlock
                   errorBlock={this.state.errorBlock}

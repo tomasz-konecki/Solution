@@ -11,6 +11,7 @@ class EditProjectDetails extends Component {
   }
 
   editProject = project => {
+    this.setState({ loading: true });
     DCMTWebApi.editProject(project)
       .then(response => {
         this.props.projectActions.loadProjects(
@@ -19,7 +20,7 @@ class EditProjectDetails extends Component {
         );
         this.setState({
           errorBlock: { response },
-          isLoading: false
+          loading: false
         });
         setTimeout(() => {
           this.props.closeModal();
@@ -28,7 +29,7 @@ class EditProjectDetails extends Component {
       .catch(errorBlock => {
         this.setState({
           errorBlock,
-          isLoading: false
+          loading: false
         });
       });
   };
@@ -51,7 +52,7 @@ class EditProjectDetails extends Component {
           errorBlock={this.props.responseBlock}
         />
         <br />
-        <div>{this.props.loading && <LoaderHorizontal />}</div>
+        <div>{this.state.loading && <LoaderHorizontal />}</div>
       </div>
     );
   }

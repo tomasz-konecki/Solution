@@ -14,9 +14,10 @@ const Detail = props => {
             cols={props.cols}
             resize="none"
             className="form-control"
-          >
-            {props.value}
-          </textarea>
+            name={props.name}
+            value={props.value || ""}
+            onChange={props.handleChange}
+          />
         </div>
       ) : props.editable === true ? (
         <div className="col-sm-9">

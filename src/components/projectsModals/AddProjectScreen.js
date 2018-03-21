@@ -87,7 +87,7 @@ class AddProjectScreen extends Component {
                 rows="5"
                 cols="30"
                 className="form-control"
-                id="description"
+                name="description"
                 maxLength="1500"
                 onChange={this.handleChange}
               />
@@ -161,12 +161,7 @@ class AddProjectScreen extends Component {
               />
             </div>
             <div className="project-submit-container col-sm-3">
-              <button
-                type="submit"
-                className="btn btn-primary project-submit-button"
-              >
-                Potwierdź
-              </button>
+              <button className="project-submit-button">Potwierdź</button>
             </div>
           </div>
         </form>

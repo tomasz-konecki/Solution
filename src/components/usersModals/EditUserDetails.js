@@ -22,7 +22,12 @@ class EditUserDetails extends Component {
             handleRoleChange={this.props.handleRoleChange}
           />
           <div className="edit-user-button-container">
-            <button onClick={this.props.changeUserRoles}>Potwierdź</button>
+            <button
+              className="dcmt-button"
+              onClick={this.props.changeUserRoles}
+            >
+              Potwierdź
+            </button>
           </div>
           <div>
             <ResultBlock

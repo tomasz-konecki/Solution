@@ -13,12 +13,16 @@ class AddProjectScreen extends Component {
     super(props);
     this.state = {
       name: "",
-      id: Math.floor(Math.random() * 101),
       description: "",
       client: "",
-      responsiblePerson: 0,
+      responsiblePerson: {
+        firstName: "",
+        lastName: "",
+        email: "",
+        phoneNumber: ""
+      },
       startDate: moment(),
-      endDate: moment(),
+      estimatedEndDate: moment(),
       createdBy: "tkonecki",
       isActive: true,
       isLoading: false,
@@ -39,8 +43,16 @@ class AddProjectScreen extends Component {
   };
 
   handleEndDate = date => {
+    const a = this.state.startDate;
+    const b = date;
+    let estimatedEndDate = moment();
+
+    a.diff(b) > 0
+      ? (estimatedEndDate = this.state.startDate)
+      : (estimatedEndDate = date);
+
     this.setState({
-      endDate: date
+      estimatedEndDate
     });
   };
 
@@ -75,6 +87,15 @@ class AddProjectScreen extends Component {
 
     const newProject = this.state;
     this.getResponse(newProject);
+  };
+
+  setResponsiblePerson = person => {
+    this.setState({
+      responsiblePerson: {
+        ...this.state.responsiblePerson,
+        ...person
+      }
+    });
   };
 
   render() {
@@ -131,7 +152,10 @@ class AddProjectScreen extends Component {
             </label>
 
             <div className="col-sm-9">
-              <ResponsiblePersonBlock />
+              <ResponsiblePersonBlock
+                setResponsiblePerson={this.setResponsiblePerson}
+                respPerson={this.state.responsiblePerson}
+              />
             </div>
           </div>
 
@@ -142,10 +166,17 @@ class AddProjectScreen extends Component {
             <div className="col-sm-9">
               <DatePicker
                 selected={this.state.startDate}
+                selectsStart
+                startDate={this.state.startDate}
+                endDate={this.state.endDate}
                 onChange={this.handleStartDate}
                 locale="pl"
                 dateFormat="DD/MM/YYYY"
                 todayButton={"Dzisiaj"}
+                peekNextMonth
+                showMonthDropdown
+                showYearDropdown
+                dropdownMode="select"
               />
             </div>
           </div>
@@ -156,11 +187,18 @@ class AddProjectScreen extends Component {
             </label>
             <div className="col-sm-9">
               <DatePicker
-                selected={this.state.endDate}
+                selected={this.state.estimatedEndDate}
+                selectsEnd
+                startDate={this.state.startDate}
+                endDate={this.state.estimatedEndDate}
                 onChange={this.handleEndDate}
                 locale="pl"
                 dateFormat="DD/MM/YYYY"
                 todayButton={"Dzisiaj"}
+                peekNextMonth
+                showMonthDropdown
+                showYearDropdown
+                dropdownMode="select"
               />
             </div>
           </div>
@@ -178,7 +216,9 @@ class AddProjectScreen extends Component {
               />
             </div>
             <div className="project-submit-container col-sm-3">
-              <button className="project-submit-button">Potwierdź</button>
+              <button className="project-submit-button dcmt-button">
+                Dodaj
+              </button>
             </div>
           </div>
         </form>

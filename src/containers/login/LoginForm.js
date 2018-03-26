@@ -1,8 +1,8 @@
 import React from "react";
 import { connect } from "react-redux";
-import { Field, reduxForm } from 'redux-form';
-import PropTypes from 'prop-types';
-import submit from '../../auth/submit';
+import { Field, reduxForm } from "redux-form";
+import PropTypes from "prop-types";
+import submit from "../../auth/submit";
 import LoaderHorizontal from "../../components/common/LoaderHorizontal";
 import "../../scss/LoginForm.scss";
 
@@ -41,11 +41,13 @@ class LoginForm extends React.Component {
 
               <div className="context-container">
                 {error && <strong>{error}</strong>}
-                {this.props.loading === true && <LoaderHorizontal/>}
+                {this.props.loading === true && <LoaderHorizontal />}
               </div>
 
               <div className="centric-container">
-                <button className="submitter" type="submit">Login</button>
+                <button className="submitter dcmt-button" type="submit">
+                  Login
+                </button>
               </div>
             </div>
 
@@ -61,14 +63,14 @@ class LoginForm extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
   return {
     loading: state.authReducer.loading
   };
 };
 
 const Form = reduxForm({
-  form: 'login',
+  form: "login",
   onSubmit: submit
 })(LoginForm);
 

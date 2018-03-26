@@ -16,8 +16,8 @@ const select = state =>
   state.authReducer.tokens !== undefined ? state.authReducer.tokens.token : "";
 
 function listener() {
-  const token = select(store.getState());
-  console.log("WebApi TOKEN:", token);
+  const token = `Bearer ${select(store.getState())}`;
+
   axios.defaults.headers.common["Authorization"] = token;
 }
 
@@ -74,7 +74,7 @@ class DCMTWebApi {
     responsiblePerson,
     createdBy,
     startDate,
-    endDate
+    estimatedEndDate
   }) {
     return axios.post(`${API_ENDPOINT}/projects`, {
       name,
@@ -83,7 +83,7 @@ class DCMTWebApi {
       responsiblePerson,
       createdBy,
       startDate,
-      endDate
+      estimatedEndDate
     });
   }
 

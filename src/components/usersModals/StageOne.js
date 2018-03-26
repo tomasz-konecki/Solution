@@ -59,7 +59,10 @@ class StageOne extends Component {
 
           {this.state.value && (
             <div className="forward-button-container">
-              <button className="btn btn-primary" onClick={this.handleClick}>
+              <button
+                className="btn btn-primary dcmt-button"
+                onClick={this.handleClick}
+              >
                 Dalej
               </button>
             </div>

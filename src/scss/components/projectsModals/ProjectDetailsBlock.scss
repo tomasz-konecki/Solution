@@ -35,12 +35,12 @@
       }
 
       .edit-project-button-container {
-        position: relative;
-
+        // position: relative;
+        display: flex;
         padding: 7px 0 0;
         button {
-          position: absolute;
-          left: 415px;
+          // position: absolute;
+          // left: 415px;
         }
       }
     }

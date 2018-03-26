@@ -8,6 +8,7 @@
         margin-bottom: 0;
 
         label {
+          display: inline-block;
         }
         div {
           input,
@@ -21,6 +22,18 @@
           }
         }
       }
+
+      .date-picker-container {
+        // border: 1px solid blue;
+        display: flex;
+        label {
+          flex: 1.05;
+        }
+        .date-picker {
+          flex: 3;
+        }
+      }
+
       .edit-project-button-container {
         position: relative;
 

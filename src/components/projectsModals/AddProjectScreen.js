@@ -1,5 +1,8 @@
 import React, { Component } from "react";
+import DatePicker from "react-datepicker";
+import moment from "moment";
 import "../../scss/components/projectsModals/AddProjectScreen.scss";
+import "react-datepicker/dist/react-datepicker.css";
 import LoaderHorizontal from "../../components/common/LoaderHorizontal";
 import DCMTWebApi from "../../api";
 import ResultBlock from "./../common/ResultBlock";
@@ -13,8 +16,8 @@ class AddProjectScreen extends Component {
       description: "",
       client: "",
       responsiblePerson: 0,
-      startDate: new Date(),
-      endDate: new Date(),
+      startDate: moment(),
+      endDate: moment(),
       createdBy: "tkonecki",
       isActive: true,
       isLoading: false,
@@ -25,6 +28,18 @@ class AddProjectScreen extends Component {
   handleChange = event => {
     this.setState({
       [event.target.name]: event.target.value
+    });
+  };
+
+  handleStartDate = date => {
+    this.setState({
+      startDate: date
+    });
+  };
+
+  handleEndDate = date => {
+    this.setState({
+      endDate: date
     });
   };
 
@@ -125,11 +140,11 @@ class AddProjectScreen extends Component {
               Data rozpoczęcia:
             </label>
             <div className="col-sm-9">
-              <input
-                type="date"
-                className="form-control"
-                name="startDate"
-                onChange={this.handleChange}
+              <DatePicker
+                selected={this.state.startDate}
+                onChange={this.handleStartDate}
+                dateFormat="DD/MM/YYYY"
+                todayButton={"Today"}
               />
             </div>
           </div>
@@ -139,11 +154,11 @@ class AddProjectScreen extends Component {
               Data zakończenia:
             </label>
             <div className="col-sm-9">
-              <input
-                type="date"
-                className="form-control"
-                name="endDate"
-                onChange={this.handleChange}
+              <DatePicker
+                selected={this.state.endDate}
+                onChange={this.handleEndDate}
+                dateFormat="DD/MM/YYYY"
+                todayButton={"Today"}
               />
             </div>
           </div>

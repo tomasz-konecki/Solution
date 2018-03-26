@@ -14,8 +14,7 @@ const errorHandler = dispatch => error => {
   if (error.response.data.errorOccured === true) {
     const { errors } = error.response.data;
     throw new SubmissionError({
-      _error:
-        errors[Object.keys(errors)[0]]
+      _error: errors[Object.keys(errors)[0]]
     });
   }
   switch (error.response.status) {
@@ -35,6 +34,7 @@ const submit = ({ username, password }, dispatch) => {
     .then(() => dispatch(authStart()))
     .then(() => DCMTWebApi.auth(username, password))
     .then(userBlock => {
+      console.log("TOKEN:", userBlock);
       dispatch(authSuccess(userBlock));
       dispatch(authStop());
       dispatch(push("/main"));

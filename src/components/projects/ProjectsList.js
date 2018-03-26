@@ -23,21 +23,17 @@ class ProjectsList extends Component {
       .then(response => {
         if (response.status === 200) {
           this.setState({
-            project: response.data.dtoObject
+            project: response.data.dtoObject,
+            showModal: true
           });
-
-          console.log("ProjectsList:");
-          console.table(this.state.project);
-          console.log("DESCRIPTION:", this.state.project.description);
         }
       })
       .catch(error => {
-        throw error;
+        this.setState({
+          responseBlock: error,
+          loading: false
+        });
       });
-
-    this.setState({
-      showModal: true
-    });
   };
 
   handleOpenModal = () => {

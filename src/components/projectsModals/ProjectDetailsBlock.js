@@ -1,7 +1,10 @@
 import React, { Component } from "react";
 import Detail from "../common/Detail";
 import ResultBlock from "./../common/ResultBlock";
+import DatePicker from "react-datepicker";
+import moment from "moment";
 import "../../scss/components/projectsModals/ProjectDetailsBlock.scss";
+import "react-datepicker/dist/react-datepicker.css";
 const emptyField = "<brak>";
 const active = "Aktywny";
 const inActive = "Nieaktywny";
@@ -9,28 +12,59 @@ const inActive = "Nieaktywny";
 class ProjectDetailsBlock extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+
+    console.table(this.props.project);
+    const {
+      id,
+      name,
+      client,
+      description,
+      responsiblePerson,
+      startDate,
+      estimatedEndDate
+    } = this.props.project;
+
+    this.state = {
+      id,
+      name,
+      client,
+      description,
+      responsiblePerson,
+      createdBy: "tkonecki",
+      startDate: moment(startDate),
+      estimatedEndDate: moment(estimatedEndDate)
+    };
   }
 
   handleChange = event => {
-    const field = event.target.name;
-    let project = this.props.project;
-    project[field] = event.target.value;
-    project.createdBy = "tkonecki";
     this.setState({
-      project
+      [event.target.name]: event.target.value
+    });
+  };
+
+  handleStartDate = date => {
+    this.setState({
+      startDate: date
+    });
+  };
+
+  handleEndDate = date => {
+    this.setState({
+      estimatedEndDate: date
     });
   };
 
   handleSubmit = event => {
     event.preventDefault();
-    console.table(this.state.project);
-    this.props.editProject(this.state.project);
+    const project = Object.assign(
+      {},
+      this.state,
+      { startDate: moment.utc(this.state.startDate) },
+      { estimatedEndDate: moment.utc(this.state.estimatedEndDate) }
+    );
+    console.log("NEW PROJECT:", project);
+    this.props.editProject(project);
   };
-
-  componentDidMount() {
-    console.log("ProjectDSetailsBlock props = ", this.props);
-  }
 
   render() {
     return (
@@ -46,9 +80,10 @@ class ProjectDetailsBlock extends Component {
               name="name"
               pretty="Nazwa projektu"
               reuired
-              value={this.props.project.name}
+              value={this.state.name}
               handleChange={this.handleChange}
             />
+
             <Detail
               type="textarea"
               editable={this.props.editable}
@@ -57,45 +92,55 @@ class ProjectDetailsBlock extends Component {
               reuired
               rows={3}
               cols={30}
-              value={this.props.project.description}
+              value={this.state.description}
               handleChange={this.handleChange}
             />
+
             <Detail
               type="text"
               editable={this.props.editable}
               name="client"
               pretty="Klient"
               reuired
-              value={this.props.project.client}
+              value={this.state.client}
               handleChange={this.handleChange}
             />
+
             <Detail
               type="number"
               editable={this.props.editable}
               name="responsiblePerson"
               pretty="Osoba do kontaktu"
               reuired
-              value={this.props.project.responsiblePerson}
+              value={this.state.responsiblePerson || 1}
               handleChange={this.handleChange}
             />
-            <Detail
-              type="date"
-              editable={this.props.editable}
-              name="startDate"
-              pretty="Data rozpoczęcia"
-              reuired
-              value={this.props.project.startDate}
-              handleChange={this.handleChange}
-            />
-            <Detail
-              type="date"
-              editable={this.props.editable}
-              name="endDate"
-              pretty="Data zakończenia"
-              reuired
-              value={this.props.project.endDate}
-              handleChange={this.handleChange}
-            />
+            <div className="date-picker-container">
+              <label>Data rozpoczęcia:</label>
+              <div className="date-picker">
+                <DatePicker
+                  selected={this.state.startDate}
+                  onChange={this.handleStartDate}
+                  key="start"
+                  dateFormat="DD/MM/YYYY"
+                  todayButton={"Today"}
+                />
+              </div>
+            </div>
+
+            <div className="date-picker-container">
+              <label>Data zakończenia:</label>
+              <div className="date-picker">
+                <DatePicker
+                  selected={this.state.estimatedEndDate}
+                  onChange={this.handleEndDate}
+                  key="end"
+                  dateFormat="DD/MM/YYYY"
+                  todayButton={"Today"}
+                />
+              </div>
+            </div>
+
             <div className="edit-project-button-container">
               <button className="">Potwierdź</button>
               <div className="col-sm-9 result-block">

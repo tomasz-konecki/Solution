@@ -17,13 +17,17 @@
           font-size: 14px;
         }
       }
-      input {
+      input,
+      .react-datepicker-wrapper .react-datepicker__input-container input {
         flex: 3;
         margin: 0;
         border-color: gray;
         &:focus {
           border-color: $button-element-background;
         }
+      }
+      .react-datepicker-wrapper .react-datepicker__input-container input {
+        border-radius: 0.25rem;
       }
       input[type="date"],
       input[type="number"] {

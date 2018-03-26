@@ -6,6 +6,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import LoaderHorizontal from "../../components/common/LoaderHorizontal";
 import DCMTWebApi from "../../api";
 import ResultBlock from "./../common/ResultBlock";
+import ResponsiblePersonBlock from "./ResponsiblePersonBlock";
 
 class AddProjectScreen extends Component {
   constructor(props) {
@@ -122,43 +123,44 @@ class AddProjectScreen extends Component {
             </div>
           </div>
           <div className="form-group row">
-            <label htmlFor="client" className="col-sm-3 col-form-label">
+            <label
+              htmlFor="responsiblePerson"
+              className="col-sm-3 col-form-label"
+            >
               Osoba do kontaktu:
             </label>
+
             <div className="col-sm-9">
-              <input
-                type="number"
-                min="1"
-                className="form-control"
-                name="responsiblePerson"
-                onChange={this.handleChange}
-              />
+              <ResponsiblePersonBlock />
             </div>
           </div>
+
           <div className="form-group row">
-            <label htmlFor="client" className="col-sm-3 col-form-label">
+            <label htmlFor="startDate" className="col-sm-3 col-form-label">
               Data rozpoczęcia:
             </label>
             <div className="col-sm-9">
               <DatePicker
                 selected={this.state.startDate}
                 onChange={this.handleStartDate}
+                locale="pl"
                 dateFormat="DD/MM/YYYY"
-                todayButton={"Today"}
+                todayButton={"Dzisiaj"}
               />
             </div>
           </div>
 
           <div className="form-group row">
-            <label htmlFor="client" className="col-sm-3 col-form-label">
+            <label htmlFor="endDate" className="col-sm-3 col-form-label">
               Data zakończenia:
             </label>
             <div className="col-sm-9">
               <DatePicker
                 selected={this.state.endDate}
                 onChange={this.handleEndDate}
+                locale="pl"
                 dateFormat="DD/MM/YYYY"
-                todayButton={"Today"}
+                todayButton={"Dzisiaj"}
               />
             </div>
           </div>

@@ -115,28 +115,34 @@ class ProjectDetailsBlock extends Component {
               value={this.state.responsiblePerson || 1}
               handleChange={this.handleChange}
             />
-            <div className="date-picker-container">
-              <label>Data rozpoczęcia:</label>
-              <div className="date-picker">
+            <div className="date-picker-container form-group row">
+              <label className="col-sm-3 col-form-label">
+                Data rozpoczęcia:
+              </label>
+              <div className="date-picker col-sm-9">
                 <DatePicker
                   selected={this.state.startDate}
                   onChange={this.handleStartDate}
+                  locale="pl"
                   key="start"
                   dateFormat="DD/MM/YYYY"
-                  todayButton={"Today"}
+                  todayButton={"Dzisiaj"}
                 />
               </div>
             </div>
 
-            <div className="date-picker-container">
-              <label>Data zakończenia:</label>
-              <div className="date-picker">
+            <div className="date-picker-container form-group row">
+              <label className="col-sm-3 col-form-label">
+                Data zakończenia:
+              </label>
+              <div className="date-picker col-sm-9">
                 <DatePicker
                   selected={this.state.estimatedEndDate}
                   onChange={this.handleEndDate}
+                  locale="pl"
                   key="end"
                   dateFormat="DD/MM/YYYY"
-                  todayButton={"Today"}
+                  todayButton={"Dzisiaj"}
                 />
               </div>
             </div>

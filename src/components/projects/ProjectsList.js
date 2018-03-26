@@ -114,7 +114,7 @@ class ProjectsList extends Component {
         />
         <Modal
           open={this.state.showModal}
-          classNames={{ modal: "Modal" }}
+          classNames={{ modal: "Modal Modal-projects" }}
           contentLabel="Edit projects details"
           onClose={this.handleCloseModal}
         >

@@ -34,7 +34,7 @@ const submit = ({ username, password }, dispatch) => {
     .then(() => dispatch(authStart()))
     .then(() => DCMTWebApi.auth(username, password))
     .then(userBlock => {
-      console.log("TOKEN:", userBlock);
+      console.log("submit.js TOKEN:", userBlock);
       dispatch(authSuccess(userBlock));
       dispatch(authStop());
       dispatch(push("/main"));

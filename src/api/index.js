@@ -17,7 +17,7 @@ const select = state =>
 
 function listener() {
   const token = select(store.getState());
-  console.log("TOKEN:", token);
+  console.log("WebApi TOKEN:", token);
   axios.defaults.headers.common["Authorization"] = token;
 }
 

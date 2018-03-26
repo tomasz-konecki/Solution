@@ -87,7 +87,7 @@ class ProjectsContainer extends React.Component {
         />
         <Modal
           open={this.state.showModal}
-          classNames={{ modal: "Modal" }}
+          classNames={{ modal: "Modal Modal-projects" }}
           contentLabel="Projects test modal"
           onClose={this.handleCloseModal}
         >

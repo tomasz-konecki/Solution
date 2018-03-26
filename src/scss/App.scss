@@ -74,3 +74,10 @@ a:visited {
 .Modal-users {
   height: 400px;
 }
+
+.Modal-projects {
+  height: 500px;
+  @media (max-width: 575px) {
+    height: 900px;
+  }
+}

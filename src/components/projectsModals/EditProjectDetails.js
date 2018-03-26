@@ -12,7 +12,6 @@ class EditProjectDetails extends Component {
 
   editProject = project => {
     this.setState({ loading: true });
-    console.log(project, "projekt");
     DCMTWebApi.editProject(project)
       .then(response => {
         this.props.projectActions.loadProjects(
@@ -28,7 +27,6 @@ class EditProjectDetails extends Component {
         }, 500);
       })
       .catch(errorBlock => {
-        console.log(errorBlock);
         this.setState({
           errorBlock,
           loading: false

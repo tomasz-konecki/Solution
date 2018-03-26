@@ -6,6 +6,7 @@ import ResultBlock from "../common/ResultBlock";
 import Select from "react-select";
 import "react-select/dist/react-select.css";
 import DCMTWebApi from "../../api";
+import { Throttle } from "react-throttle";
 
 class StageOne extends Component {
   constructor() {
@@ -24,7 +25,8 @@ class StageOne extends Component {
   };
 
   getUsers = input => {
-    return this.props.getUsers(input);
+    console.log(input);
+    if (input.length >= 3) return this.props.getUsers(input);
   };
 
   handleClick = () => {
@@ -35,7 +37,6 @@ class StageOne extends Component {
     const AsyncComponent = this.state.creatable
       ? Select.AsyncCreatable
       : Select.Async;
-    console.log(this.state.value);
     return (
       <div className="stage-one-container">
         <header>
@@ -47,15 +48,17 @@ class StageOne extends Component {
           )}
         </div>
         <div className="search-container">
-          <AsyncComponent
-            multi={this.state.multi}
-            value={this.state.value}
-            onChange={this.onChange}
-            // valueKey="lastName"
-            labelKey="fullName"
-            loadOptions={this.getUsers}
-            backspaceRemoves={this.state.backspaceRemoves}
-          />
+          <Throttle time="2000" handler="onChange">
+            <AsyncComponent
+              multi={this.state.multi}
+              value={this.state.value}
+              onChange={this.onChange}
+              // valueKey="lastName"
+              labelKey="fullName"
+              loadOptions={this.getUsers}
+              backspaceRemoves={this.state.backspaceRemoves}
+            />
+          </Throttle>
 
           {this.state.value && (
             <div className="forward-button-container">

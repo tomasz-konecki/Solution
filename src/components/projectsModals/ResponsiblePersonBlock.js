@@ -21,7 +21,6 @@ class ResponsiblePersonBlock extends Component {
   };
 
   render() {
-    console.log(this.props.respPerson);
     return (
       <div className="responsible-person-container">
         <div className="form-group row">

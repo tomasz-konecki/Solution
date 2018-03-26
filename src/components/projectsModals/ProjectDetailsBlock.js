@@ -80,13 +80,11 @@ class ProjectDetailsBlock extends Component {
       { startDate: moment.utc(this.state.startDate) },
       { estimatedEndDate: moment.utc(this.state.estimatedEndDate) }
     );
-    console.log("NEW PROJECT:", project);
+
     this.props.editProject(project);
   };
 
   render() {
-    // console.log("ProjectDetailsBlock:");
-    // console.table(this.state.responsiblePerson);
     return (
       <div className="project-details-block">
         <header>

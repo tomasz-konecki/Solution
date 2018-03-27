@@ -14,26 +14,15 @@ class ProjectDetailsBlock extends Component {
   constructor(props) {
     super(props);
 
-    console.table(this.props.project);
-    const {
-      id,
-      name,
-      client,
-      description,
-      responsiblePerson,
-      startDate,
-      estimatedEndDate
-    } = this.props.project;
-
     this.state = {
-      id,
-      name,
-      client,
-      description,
-      responsiblePerson,
+      id: 0,
+      name: "",
+      client: "",
+      description: "",
+      responsiblePerson: {},
       createdBy: "tkonecki",
-      startDate: moment(startDate),
-      estimatedEndDate: moment(estimatedEndDate)
+      startDate: moment(),
+      estimatedEndDate: moment()
     };
   }
 
@@ -43,7 +32,11 @@ class ProjectDetailsBlock extends Component {
     });
   };
 
-  editResponsiblePerson = person => {
+  setResponsiblePerson = event => {
+    let person = {
+      [event.target.name]: event.target.value
+    };
+
     this.setState({
       responsiblePerson: {
         ...this.state.responsiblePerson,
@@ -83,6 +76,30 @@ class ProjectDetailsBlock extends Component {
 
     this.props.editProject(project);
   };
+
+  componentDidMount() {
+    console.log("ProjectDetailsBlock:");
+    console.table(this.props.project);
+    const {
+      id,
+      name,
+      client,
+      description,
+      responsiblePerson,
+      startDate,
+      estimatedEndDate
+    } = this.props.project;
+
+    this.setState({
+      id,
+      name,
+      client,
+      description,
+      responsiblePerson,
+      startDate: moment(startDate),
+      estimatedEndDate: moment(estimatedEndDate)
+    });
+  }
 
   render() {
     return (
@@ -128,12 +145,10 @@ class ProjectDetailsBlock extends Component {
                 Osoba do kontaktu:
               </label>
 
-              <div className="col-sm-9">
-                <ResponsiblePersonBlock
-                  respPerson={this.state.responsiblePerson}
-                  editResponsiblePerson={this.editResponsiblePerson}
-                />
-              </div>
+              <ResponsiblePersonBlock
+                responsiblePerson={this.state.responsiblePerson}
+                setResponsiblePerson={this.setResponsiblePerson}
+              />
             </div>
 
             <div className="date-picker-container form-group row">
@@ -181,13 +196,13 @@ class ProjectDetailsBlock extends Component {
             </div>
 
             <div className="edit-project-button-container form-group row">
-              <div className="col-sm-3 result-block">
+              {/* <div className="col-sm-3 result-block">
                 <ResultBlock
                   errorBlock={this.state.errorBlock}
                   errorOnly={false}
                   successMessage="Projekt edytowano pomyślnie"
                 />
-              </div>
+              </div> */}
               <div className="col-sm-3 edit-button-container">
                 <button className="dcmt-button">Potwierdź</button>
               </div>

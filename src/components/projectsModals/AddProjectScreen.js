@@ -89,7 +89,11 @@ class AddProjectScreen extends Component {
     this.getResponse(newProject);
   };
 
-  setResponsiblePerson = person => {
+  setResponsiblePerson = event => {
+    let person = {
+      [event.target.name]: event.target.value
+    };
+
     this.setState({
       responsiblePerson: {
         ...this.state.responsiblePerson,
@@ -151,12 +155,10 @@ class AddProjectScreen extends Component {
               Osoba do kontaktu:
             </label>
 
-            <div className="col-sm-9">
-              <ResponsiblePersonBlock
-                setResponsiblePerson={this.setResponsiblePerson}
-                respPerson={this.state.responsiblePerson}
-              />
-            </div>
+            <ResponsiblePersonBlock
+              setResponsiblePerson={this.setResponsiblePerson}
+              responsiblePerson={this.state.responsiblePerson}
+            />
           </div>
 
           <div className="form-group row">

@@ -89,6 +89,34 @@ class ProjectDetailsBlock extends Component {
     this.props.editProject(project);
   };
 
+  validate = e => {
+    const patterns = {
+      name: /^[0-9a-z\s\-]+$/i,
+      client: /(.*?)/,
+      firstName: /^[a-z]+$/i,
+      lastName: /^[a-z]+$/i,
+      email: /^([a-z\d\.-]+)@([a-z\d-]+)\.([a-z]{2,8})(\.[a-z]{2,8})?$/,
+      phoneNumber: /^\d{9,11}$/
+    };
+
+    let fieldName = e.target.name;
+    let fieldValue = e.target.value;
+    let styles = "";
+    let object = {};
+
+    !patterns[fieldName].test(fieldValue)
+      ? (styles = "invalid")
+      : (styles = "");
+
+    object[fieldName] = styles;
+
+    // console.log(object);
+
+    this.setState({
+      validStyles: object
+    });
+  };
+
   componentDidMount() {
     const {
       id,
@@ -112,6 +140,17 @@ class ProjectDetailsBlock extends Component {
   }
 
   render() {
+    const editable = this.props.editable;
+    const {
+      name,
+      description,
+      client,
+      responsiblePerson,
+      startDate,
+      estimatedEndDate,
+      validStyles
+    } = this.state;
+
     return (
       <div className="project-details-block">
         <header>
@@ -121,34 +160,50 @@ class ProjectDetailsBlock extends Component {
           <form onSubmit={this.handleSubmit}>
             <Detail
               type="text"
-              editable={this.props.editable}
+              editable={editable}
               name="name"
               pretty="Nazwa projektu"
               reuired
-              value={this.state.name}
-              handleChange={this.handleChange}
+              value={name}
+              handleChange={e => {
+                this.handleChange(e);
+                this.validate(e);
+              }}
             />
+            <p
+              className={["project-name", this.state.validStyles.name].join(
+                " "
+              )}
+            >
+              Nazwa projektu nie może zawierać znaków specjalnych.
+            </p>
 
             <Detail
               type="textarea"
-              editable={this.props.editable}
+              editable={editable}
               name="description"
               pretty="Opis"
               reuired
               rows={3}
               cols={30}
-              value={this.state.description}
-              handleChange={this.handleChange}
+              value={description}
+              handleChange={e => {
+                this.handleChange(e);
+                this.validate(e);
+              }}
             />
 
             <Detail
               type="text"
-              editable={this.props.editable}
+              editable={editable}
               name="client"
               pretty="Klient"
               reuired
-              value={this.state.client}
-              handleChange={this.handleChange}
+              value={client}
+              handleChange={e => {
+                this.handleChange(e);
+                this.validate(e);
+              }}
             />
             <div className="form-group row">
               <label
@@ -159,9 +214,14 @@ class ProjectDetailsBlock extends Component {
               </label>
 
               <ResponsiblePersonBlock
-                responsiblePerson={this.state.responsiblePerson}
+                responsiblePerson={responsiblePerson}
                 setResponsiblePerson={this.setResponsiblePerson}
-                styles={this.state.validStyles}
+                styles={validStyles}
+                validate={this.validate}
+                handleChange={e => {
+                  this.setResponsiblePerson(e);
+                  this.validate(e);
+                }}
               />
             </div>
 
@@ -171,10 +231,10 @@ class ProjectDetailsBlock extends Component {
               </label>
               <div className="date-picker col-sm-9">
                 <DatePicker
-                  selected={this.state.startDate}
+                  selected={startDate}
                   selectsStart
-                  startDate={this.state.startDate}
-                  endDate={this.state.endDate}
+                  startDate={startDate}
+                  endDate={estimatedEndDate}
                   onChange={this.handleStartDate}
                   locale="pl"
                   dateFormat="DD/MM/YYYY"
@@ -193,10 +253,10 @@ class ProjectDetailsBlock extends Component {
               </label>
               <div className="date-picker col-sm-9">
                 <DatePicker
-                  selected={this.state.estimatedEndDate}
+                  selected={estimatedEndDate}
                   selectsEnd
-                  startDate={this.state.startDate}
-                  endDate={this.state.estimatedEndDate}
+                  startDate={startDate}
+                  endDate={estimatedEndDate}
                   onChange={this.handleEndDate}
                   locale="pl"
                   dateFormat="DD/MM/YYYY"

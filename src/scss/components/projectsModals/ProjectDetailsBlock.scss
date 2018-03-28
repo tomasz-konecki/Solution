@@ -8,6 +8,21 @@
         text-align: left;
         line-height: 100%;
       }
+      p {
+        display: none;
+      }
+
+      p.invalid {
+        display: block;
+        margin: 10px 0 5px;
+        color: crimson;
+        font-size: 0.68em;
+        opacity: 0.8;
+      }
+
+      p.project-name.invalid {
+        margin: 10px 0 5px 150px;
+      }
 
       .form-group {
         margin-bottom: 5px;
@@ -27,10 +42,6 @@
           &:focus {
             border-color: $button-element-background;
           }
-        }
-
-        p {
-          display: none;
         }
 
         .react-datepicker-wrapper .react-datepicker__input-container input {

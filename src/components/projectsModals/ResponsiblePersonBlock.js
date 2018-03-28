@@ -11,8 +11,7 @@ const ResponsiblePersonBlock = project => {
             value={project.responsiblePerson.firstName}
             placeholder="Imię"
             className="form-control"
-            onChange={project.setResponsiblePerson}
-            onKeyUp={project.validate}
+            onChange={project.handleChange}
           />
           <p className={project.styles.firstName}>
             Imię nie może zawierać znaków specjalnych ani cyfr.
@@ -24,8 +23,7 @@ const ResponsiblePersonBlock = project => {
             value={project.responsiblePerson.lastName}
             placeholder="Nazwisko"
             className="form-control"
-            onChange={project.setResponsiblePerson}
-            onKeyUp={project.validate}
+            onChange={project.handleChange}
           />
           <p className={project.styles.lastName}>
             Nazwisko nie może zawierać znaków specjalnych ani cyfr.
@@ -40,8 +38,7 @@ const ResponsiblePersonBlock = project => {
             value={project.responsiblePerson.email}
             placeholder="Email"
             className="form-control"
-            onChange={project.setResponsiblePerson}
-            onKeyUp={project.validate}
+            onChange={project.handleChange}
           />
           <p className={project.styles.email}>
             Adres email powinien mieć odpowiednią strukturę, np. me@mydomain.com
@@ -53,8 +50,8 @@ const ResponsiblePersonBlock = project => {
             value={project.responsiblePerson.phoneNumber}
             placeholder="Telefon"
             className="form-control"
-            onChange={project.setResponsiblePerson}
-            onKeyUp={project.validate}
+            maxLength="11"
+            onChange={project.handleChange}
           />
           <p className={project.styles.phoneNumber}>
             Numer telefonu powinien zawierać od 9 do 11 cyfr

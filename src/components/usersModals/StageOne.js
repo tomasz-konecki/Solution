@@ -14,7 +14,8 @@ class StageOne extends Component {
 
     this.state = {
       backspaceRemoves: true,
-      multi: false
+      multi: false,
+      isLoading: false
     };
   }
 
@@ -26,7 +27,16 @@ class StageOne extends Component {
 
   getUsers = input => {
     console.log(input);
-    if (input.length >= 3) return this.props.getUsers(input);
+
+    if (input.length >= 3)
+      this.setState({
+        isLoading: true
+      });
+    return this.props.getUsers(input).then(() => {
+      this.setState({
+        isLoading: false
+      });
+    });
   };
 
   handleClick = () => {
@@ -37,6 +47,7 @@ class StageOne extends Component {
     const AsyncComponent = this.state.creatable
       ? Select.AsyncCreatable
       : Select.Async;
+    const { multi, value, backspaceRemoves, isLoading } = this.state;
     return (
       <div className="stage-one-container">
         <header>
@@ -48,17 +59,17 @@ class StageOne extends Component {
           )}
         </div>
         <div className="search-container">
-          <Throttle time="2000" handler="onChange">
-            <AsyncComponent
-              multi={this.state.multi}
-              value={this.state.value}
-              onChange={this.onChange}
-              // valueKey="lastName"
-              labelKey="fullName"
-              loadOptions={this.getUsers}
-              backspaceRemoves={this.state.backspaceRemoves}
-            />
-          </Throttle>
+          <AsyncComponent
+            multi={multi}
+            value={value}
+            autoload={false}
+            isLoading={isLoading}
+            onChange={this.onChange}
+            // valueKey="lastName"
+            labelKey="fullName"
+            loadOptions={this.getUsers}
+            backspaceRemoves={backspaceRemoves}
+          />
 
           {this.state.value && (
             <div className="forward-button-container">

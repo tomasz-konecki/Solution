@@ -24,15 +24,21 @@ class AddProjectScreen extends Component {
       startDate: moment(),
       estimatedEndDate: moment(),
       createdBy: "tkonecki",
-      isActive: true,
       isLoading: false,
       errorBlock: null,
+      btnDisabled: true,
       validStyles: {
         name: "",
         firstName: "",
         lastName: "",
         email: "",
         phoneNumber: ""
+      },
+      fieldsValid: {
+        nameValid: false,
+        firstNameValid: false,
+        emailValid: false,
+        phoneNumberValid: false
       }
     };
   }
@@ -109,35 +115,86 @@ class AddProjectScreen extends Component {
     });
   };
 
+  checkAllFields = (fieldName, test) => {
+    let field = fieldName + "Valid";
+    let object = {};
+
+    object[field] = test;
+
+    let fieldsValid = Object.assign({}, this.state.fieldsValid, object);
+
+    this.setState(
+      {
+        fieldsValid
+      },
+      () => {}
+    );
+  };
+
   validate = e => {
+    const {
+      nameValid,
+      firstNameValid,
+      lastNameValid,
+      emailValid,
+      phoneNumberValid
+    } = this.state.fieldsValid;
+
     const patterns = {
       name: /^[0-9a-z\s\-]+$/i,
       client: /(.*?)/,
-      firstName: /^[a-z]+$/i,
-      lastName: /^[a-z]+$/i,
+      firstName: /^[A-Z][a-zżźćńółęąśŻŹĆĄŚĘŁÓŃ]+$/i,
+      lastName: /^[a-zżźćńółęąśŻŹĆĄŚĘŁÓŃ]+$/i,
       email: /^([a-z\d\.-]+)@([a-z\d-]+)\.([a-z]{2,8})(\.[a-z]{2,8})?$/,
       phoneNumber: /^\d{9,11}$/
     };
+
+    if (
+      nameValid &&
+      firstNameValid &&
+      lastNameValid &&
+      emailValid &&
+      phoneNumberValid
+    ) {
+      console.log("ALL FIELDS ARE OK!");
+      this.setState({
+        btnDisabled: false
+      });
+    } else {
+      console.log("NOT ALL FIELDS ARE OK");
+      this.setState({
+        btnDisabled: true
+      });
+    }
 
     let fieldName = e.target.name;
     let fieldValue = e.target.value;
     let styles = "";
     let object = {};
+    let test = patterns[fieldName].test(fieldValue);
 
-    !patterns[fieldName].test(fieldValue)
-      ? (styles = "invalid")
-      : (styles = "");
+    test ? (styles = "") : (styles = "invalid");
 
     object[fieldName] = styles;
-
-    // console.log(object);
 
     this.setState({
       validStyles: object
     });
+
+    this.checkAllFields(fieldName, test);
   };
 
   render() {
+    const {
+      responsiblePerson,
+      validStyles,
+      startDate,
+      estimatedEndDate,
+      errorBlock,
+      isLoading,
+      btnDisabled
+    } = this.state;
+
     return (
       <div className="add-project-screen">
         <form onSubmit={this.handleSubmit}>
@@ -150,10 +207,12 @@ class AddProjectScreen extends Component {
                 type="text"
                 className="form-control"
                 name="name"
-                onChange={this.handleChange}
-                onKeyUp={this.validate}
+                onChange={e => {
+                  this.handleChange(e);
+                  this.validate(e);
+                }}
               />
-              <p className={this.state.validStyles.name}>
+              <p className={validStyles.name}>
                 Nazwa projektu nie może zawierać znaków specjalnych.
               </p>
             </div>
@@ -182,8 +241,10 @@ class AddProjectScreen extends Component {
                 type="text"
                 className="form-control"
                 name="client"
-                onChange={this.handleChange}
-                onKeyUp={this.validate}
+                onChange={e => {
+                  this.handleChange(e);
+                  this.validate(e);
+                }}
               />
             </div>
           </div>
@@ -197,9 +258,13 @@ class AddProjectScreen extends Component {
 
             <ResponsiblePersonBlock
               setResponsiblePerson={this.setResponsiblePerson}
-              responsiblePerson={this.state.responsiblePerson}
+              responsiblePerson={responsiblePerson}
               validate={this.validate}
-              styles={this.state.validStyles}
+              styles={validStyles}
+              handleChange={e => {
+                this.setResponsiblePerson(e);
+                this.validate(e);
+              }}
             />
           </div>
 
@@ -209,10 +274,10 @@ class AddProjectScreen extends Component {
             </label>
             <div className="col-sm-9">
               <DatePicker
-                selected={this.state.startDate}
+                selected={startDate}
                 selectsStart
-                startDate={this.state.startDate}
-                endDate={this.state.endDate}
+                startDate={startDate}
+                endDate={estimatedEndDate}
                 onChange={this.handleStartDate}
                 locale="pl"
                 dateFormat="DD/MM/YYYY"
@@ -231,10 +296,10 @@ class AddProjectScreen extends Component {
             </label>
             <div className="col-sm-9">
               <DatePicker
-                selected={this.state.estimatedEndDate}
+                selected={estimatedEndDate}
                 selectsEnd
-                startDate={this.state.startDate}
-                endDate={this.state.estimatedEndDate}
+                startDate={startDate}
+                endDate={estimatedEndDate}
                 onChange={this.handleEndDate}
                 locale="pl"
                 dateFormat="DD/MM/YYYY"
@@ -248,19 +313,22 @@ class AddProjectScreen extends Component {
           </div>
 
           <div className="loading-bar-container">
-            {this.state.isLoading === true && <LoaderHorizontal />}
+            {isLoading === true && <LoaderHorizontal />}
           </div>
 
           <div className="form-group row">
             <div className="col-sm-9 result-block">
               <ResultBlock
-                errorBlock={this.state.errorBlock}
+                errorBlock={errorBlock}
                 errorOnly={false}
                 successMessage="Projekt dodano pomyślnie"
               />
             </div>
             <div className="project-submit-container col-sm-3">
-              <button className="project-submit-button dcmt-button">
+              <button
+                disabled={btnDisabled}
+                className="project-submit-button dcmt-button"
+              >
                 Dodaj
               </button>
             </div>

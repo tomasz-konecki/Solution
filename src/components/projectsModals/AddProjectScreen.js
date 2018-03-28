@@ -26,7 +26,14 @@ class AddProjectScreen extends Component {
       createdBy: "tkonecki",
       isActive: true,
       isLoading: false,
-      errorBlock: null
+      errorBlock: null,
+      validStyles: {
+        name: "",
+        firstName: "",
+        lastName: "",
+        email: "",
+        phoneNumber: ""
+      }
     };
   }
 
@@ -102,6 +109,34 @@ class AddProjectScreen extends Component {
     });
   };
 
+  validate = e => {
+    const patterns = {
+      name: /^[0-9a-z\s\-]+$/i,
+      client: /(.*?)/,
+      firstName: /^[a-z]+$/i,
+      lastName: /^[a-z]+$/i,
+      email: /^([a-z\d\.-]+)@([a-z\d-]+)\.([a-z]{2,8})(\.[a-z]{2,8})?$/,
+      phoneNumber: /^\d{9,11}$/
+    };
+
+    let fieldName = e.target.name;
+    let fieldValue = e.target.value;
+    let styles = "";
+    let object = {};
+
+    !patterns[fieldName].test(fieldValue)
+      ? (styles = "invalid")
+      : (styles = "");
+
+    object[fieldName] = styles;
+
+    // console.log(object);
+
+    this.setState({
+      validStyles: object
+    });
+  };
+
   render() {
     return (
       <div className="add-project-screen">
@@ -116,7 +151,11 @@ class AddProjectScreen extends Component {
                 className="form-control"
                 name="name"
                 onChange={this.handleChange}
+                onKeyUp={this.validate}
               />
+              <p className={this.state.validStyles.name}>
+                Nazwa projektu nie może zawierać znaków specjalnych.
+              </p>
             </div>
           </div>
           <div className="form-group row">
@@ -144,6 +183,7 @@ class AddProjectScreen extends Component {
                 className="form-control"
                 name="client"
                 onChange={this.handleChange}
+                onKeyUp={this.validate}
               />
             </div>
           </div>
@@ -158,6 +198,8 @@ class AddProjectScreen extends Component {
             <ResponsiblePersonBlock
               setResponsiblePerson={this.setResponsiblePerson}
               responsiblePerson={this.state.responsiblePerson}
+              validate={this.validate}
+              styles={this.state.validStyles}
             />
           </div>
 

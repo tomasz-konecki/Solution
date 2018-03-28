@@ -19,7 +19,7 @@ const ResultBlock = ({
 
   const { response } = errorBlock;
 
-  if(response === undefined) return <span/>;
+  if (response === undefined) return <span />;
 
   const { status } = response;
 

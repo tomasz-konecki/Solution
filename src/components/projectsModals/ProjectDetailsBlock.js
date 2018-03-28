@@ -19,10 +19,22 @@ class ProjectDetailsBlock extends Component {
       name: "",
       client: "",
       description: "",
-      responsiblePerson: {},
+      responsiblePerson: {
+        firstName: "",
+        lastName: "",
+        email: "",
+        phoneNumber: ""
+      },
       createdBy: "tkonecki",
       startDate: moment(),
-      estimatedEndDate: moment()
+      estimatedEndDate: moment(),
+      validStyles: {
+        name: "",
+        firstName: "",
+        lastName: "",
+        email: "",
+        phoneNumber: ""
+      }
     };
   }
 
@@ -78,8 +90,6 @@ class ProjectDetailsBlock extends Component {
   };
 
   componentDidMount() {
-    console.log("ProjectDetailsBlock:");
-    console.table(this.props.project);
     const {
       id,
       name,
@@ -141,17 +151,21 @@ class ProjectDetailsBlock extends Component {
               handleChange={this.handleChange}
             />
             <div className="form-group row">
-              <label className="col-sm-3 col-form-label">
+              <label
+                htmlFor="responsiblePerson"
+                className="col-sm-3 col-form-label"
+              >
                 Osoba do kontaktu:
               </label>
 
               <ResponsiblePersonBlock
                 responsiblePerson={this.state.responsiblePerson}
                 setResponsiblePerson={this.setResponsiblePerson}
+                styles={this.state.validStyles}
               />
             </div>
 
-            <div className="date-picker-container form-group row">
+            <div className="form-group row">
               <label className="col-sm-3 col-form-label">
                 Data rozpoczęcia:
               </label>
@@ -173,8 +187,8 @@ class ProjectDetailsBlock extends Component {
               </div>
             </div>
 
-            <div className="date-picker-container form-group row">
-              <label className="col-sm-3 col-form-label">
+            <div className="form-group row">
+              <label htmlFor="endDate" className="col-sm-3 col-form-label">
                 Data zakończenia:
               </label>
               <div className="date-picker col-sm-9">
@@ -195,17 +209,8 @@ class ProjectDetailsBlock extends Component {
               </div>
             </div>
 
-            <div className="edit-project-button-container form-group row">
-              {/* <div className="col-sm-3 result-block">
-                <ResultBlock
-                  errorBlock={this.state.errorBlock}
-                  errorOnly={false}
-                  successMessage="Projekt edytowano pomyślnie"
-                />
-              </div> */}
-              <div className="col-sm-3 edit-button-container">
-                <button className="dcmt-button">Potwierdź</button>
-              </div>
+            <div className="edit-project-button-container">
+              <button className="dcmt-button">Potwierdź</button>
             </div>
           </form>
         </div>

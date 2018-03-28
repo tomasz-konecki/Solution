@@ -51,7 +51,7 @@ class EditProjectDetails extends Component {
           successMessage="Projekt edytowano pomyślnie"
           errorBlock={this.state.errorBlock}
         />
-        <br />
+
         <div>{this.state.loading && <LoaderHorizontal />}</div>
       </div>
     );

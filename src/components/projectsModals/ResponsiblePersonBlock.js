@@ -12,7 +12,11 @@ const ResponsiblePersonBlock = project => {
             placeholder="Imię"
             className="form-control"
             onChange={project.setResponsiblePerson}
+            onKeyUp={project.validate}
           />
+          <p className={project.styles.firstName}>
+            Imię nie może zawierać znaków specjalnych ani cyfr.
+          </p>
         </div>
         <div className="col-sm-6 responsible-person-right">
           <input
@@ -21,7 +25,11 @@ const ResponsiblePersonBlock = project => {
             placeholder="Nazwisko"
             className="form-control"
             onChange={project.setResponsiblePerson}
+            onKeyUp={project.validate}
           />
+          <p className={project.styles.lastName}>
+            Nazwisko nie może zawierać znaków specjalnych ani cyfr.
+          </p>
         </div>
       </div>
 
@@ -29,12 +37,15 @@ const ResponsiblePersonBlock = project => {
         <div className="col-sm-6 responsible-person-left">
           <input
             name="email"
-            pattern="/^(([^<>()\[\]\\.,;:\s@&quot;]+(\.[^<>()\[\]\\.,;:\s@&quot;]+)*)|(&quot;.+&quot;))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/"
             value={project.responsiblePerson.email}
             placeholder="Email"
             className="form-control"
             onChange={project.setResponsiblePerson}
+            onKeyUp={project.validate}
           />
+          <p className={project.styles.email}>
+            Adres email powinien mieć odpowiednią strukturę, np. me@mydomain.com
+          </p>
         </div>
         <div className="col-sm-6 responsible-person-right">
           <input
@@ -43,7 +54,11 @@ const ResponsiblePersonBlock = project => {
             placeholder="Telefon"
             className="form-control"
             onChange={project.setResponsiblePerson}
+            onKeyUp={project.validate}
           />
+          <p className={project.styles.phoneNumber}>
+            Numer telefonu powinien zawierać od 9 do 11 cyfr
+          </p>
         </div>
       </div>
     </div>

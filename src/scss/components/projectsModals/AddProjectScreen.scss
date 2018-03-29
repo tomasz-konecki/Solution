@@ -62,7 +62,14 @@
     .project-submit-container {
       text-align: right;
 
-      .project-submit-button {
+      .project-button-active {
+      }
+
+      .project-button-inactive {
+        background-color: lightgray;
+        &:hover {
+          border: none;
+        }
       }
       .submit-result {
         flex: 6;

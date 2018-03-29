@@ -116,6 +116,13 @@ class AddProjectScreen extends Component {
   };
 
   checkAllFields = (fieldName, test) => {
+    const {
+      nameValid,
+      firstNameValid,
+      lastNameValid,
+      emailValid,
+      phoneNumberValid
+    } = this.state.fieldsValid;
     let field = fieldName + "Valid";
     let object = {};
 
@@ -127,19 +134,27 @@ class AddProjectScreen extends Component {
       {
         fieldsValid
       },
-      () => {}
+      () => {
+        if (
+          nameValid &&
+          firstNameValid &&
+          lastNameValid &&
+          emailValid &&
+          phoneNumberValid
+        ) {
+          this.setState({
+            btnDisabled: false
+          });
+        } else {
+          this.setState({
+            btnDisabled: true
+          });
+        }
+      }
     );
   };
 
   validate = e => {
-    const {
-      nameValid,
-      firstNameValid,
-      lastNameValid,
-      emailValid,
-      phoneNumberValid
-    } = this.state.fieldsValid;
-
     const patterns = {
       name: /^[0-9a-z\s\-]+$/i,
       client: /(.*?)/,
@@ -148,24 +163,6 @@ class AddProjectScreen extends Component {
       email: /^([a-z\d\.-]+)@([a-z\d-]+)\.([a-z]{2,8})(\.[a-z]{2,8})?$/,
       phoneNumber: /^\d{9,11}$/
     };
-
-    if (
-      nameValid &&
-      firstNameValid &&
-      lastNameValid &&
-      emailValid &&
-      phoneNumberValid
-    ) {
-      console.log("ALL FIELDS ARE OK!");
-      this.setState({
-        btnDisabled: false
-      });
-    } else {
-      console.log("NOT ALL FIELDS ARE OK");
-      this.setState({
-        btnDisabled: true
-      });
-    }
 
     let fieldName = e.target.name;
     let fieldValue = e.target.value;
@@ -325,10 +322,7 @@ class AddProjectScreen extends Component {
               />
             </div>
             <div className="project-submit-container col-sm-3">
-              <button
-                disabled={btnDisabled}
-                className="project-submit-button dcmt-button"
-              >
+              <button disabled={btnDisabled} className="dcmt-button">
                 Dodaj
               </button>
             </div>

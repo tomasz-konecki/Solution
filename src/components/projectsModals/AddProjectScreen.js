@@ -7,10 +7,12 @@ import LoaderHorizontal from "../../components/common/LoaderHorizontal";
 import DCMTWebApi from "../../api";
 import ResultBlock from "./../common/ResultBlock";
 import ResponsiblePersonBlock from "./ResponsiblePersonBlock";
+import constraints from "../../constraints";
 
 class AddProjectScreen extends Component {
   constructor(props) {
     super(props);
+
     this.state = {
       name: "",
       description: "",
@@ -23,10 +25,10 @@ class AddProjectScreen extends Component {
       },
       startDate: moment(),
       estimatedEndDate: moment(),
-      createdBy: "tkonecki",
       isLoading: false,
       errorBlock: null,
       btnDisabled: true,
+      btnInactiveStyle: "project-button-inactive",
       validStyles: {
         name: "",
         firstName: "",
@@ -69,7 +71,7 @@ class AddProjectScreen extends Component {
     });
   };
 
-  getResponse = newProject => {
+  handleAddProject = newProject => {
     DCMTWebApi.addProject(newProject)
       .then(response => {
         this.props.projectActions.loadProjects(
@@ -92,14 +94,33 @@ class AddProjectScreen extends Component {
       });
   };
 
+  createNewProject = () => {
+    const {
+      name,
+      description,
+      client,
+      responsiblePerson,
+      startDate,
+      estimatedEndDate
+    } = this.state;
+
+    return {
+      name,
+      description,
+      client,
+      responsiblePerson,
+      startDate,
+      estimatedEndDate
+    };
+  };
+
   handleSubmit = event => {
     event.preventDefault();
     this.setState({
       isLoading: true
     });
 
-    const newProject = this.state;
-    this.getResponse(newProject);
+    this.handleAddProject(this.createNewProject());
   };
 
   setResponsiblePerson = event => {
@@ -116,13 +137,6 @@ class AddProjectScreen extends Component {
   };
 
   checkAllFields = (fieldName, test) => {
-    const {
-      nameValid,
-      firstNameValid,
-      lastNameValid,
-      emailValid,
-      phoneNumberValid
-    } = this.state.fieldsValid;
     let field = fieldName + "Valid";
     let object = {};
 
@@ -135,35 +149,41 @@ class AddProjectScreen extends Component {
         fieldsValid
       },
       () => {
-        if (
-          nameValid &&
-          firstNameValid &&
-          lastNameValid &&
-          emailValid &&
-          phoneNumberValid
-        ) {
-          this.setState({
-            btnDisabled: false
-          });
-        } else {
-          this.setState({
-            btnDisabled: true
-          });
-        }
+        this.validateForm();
       }
     );
   };
 
-  validate = e => {
-    const patterns = {
-      name: /^[0-9a-z\s\-]+$/i,
-      client: /(.*?)/,
-      firstName: /^[A-Z][a-zżźćńółęąśŻŹĆĄŚĘŁÓŃ]+$/i,
-      lastName: /^[a-zżźćńółęąśŻŹĆĄŚĘŁÓŃ]+$/i,
-      email: /^([a-z\d\.-]+)@([a-z\d-]+)\.([a-z]{2,8})(\.[a-z]{2,8})?$/,
-      phoneNumber: /^\d{9,11}$/
-    };
+  validateForm = () => {
+    const {
+      nameValid,
+      firstNameValid,
+      lastNameValid,
+      emailValid,
+      phoneNumberValid
+    } = this.state.fieldsValid;
 
+    if (
+      nameValid &&
+      firstNameValid &&
+      lastNameValid &&
+      emailValid &&
+      phoneNumberValid
+    ) {
+      this.setState({
+        btnDisabled: false,
+        btnInactiveStyle: ""
+      });
+    } else {
+      this.setState({
+        btnDisabled: true,
+        btnInactiveStyle: "project-button-inactive"
+      });
+    }
+  };
+
+  validate = e => {
+    const patterns = constraints.projetctFormPattern;
     let fieldName = e.target.name;
     let fieldValue = e.target.value;
     let styles = "";
@@ -174,11 +194,12 @@ class AddProjectScreen extends Component {
 
     object[fieldName] = styles;
 
-    this.setState({
-      validStyles: object
-    });
-
-    this.checkAllFields(fieldName, test);
+    this.setState(
+      {
+        validStyles: object
+      },
+      this.checkAllFields(fieldName, test)
+    );
   };
 
   render() {
@@ -189,7 +210,8 @@ class AddProjectScreen extends Component {
       estimatedEndDate,
       errorBlock,
       isLoading,
-      btnDisabled
+      btnDisabled,
+      btnInactiveStyle
     } = this.state;
 
     return (
@@ -322,7 +344,10 @@ class AddProjectScreen extends Component {
               />
             </div>
             <div className="project-submit-container col-sm-3">
-              <button disabled={btnDisabled} className="dcmt-button">
+              <button
+                disabled={btnDisabled}
+                className={["dcmt-button", btnInactiveStyle].join(" ")}
+              >
                 Dodaj
               </button>
             </div>

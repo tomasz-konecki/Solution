@@ -62,13 +62,11 @@
     .project-submit-container {
       text-align: right;
 
-      .project-button-active {
-      }
-
       .project-button-inactive {
         background-color: lightgray;
         &:hover {
           border: none;
+          cursor: default;
         }
       }
       .submit-result {

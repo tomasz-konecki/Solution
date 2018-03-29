@@ -72,7 +72,6 @@ class DCMTWebApi {
     description,
     client,
     responsiblePerson,
-    createdBy,
     startDate,
     estimatedEndDate
   }) {
@@ -81,7 +80,6 @@ class DCMTWebApi {
       description,
       client,
       responsiblePerson,
-      createdBy,
       startDate,
       estimatedEndDate
     });
@@ -94,8 +92,7 @@ class DCMTWebApi {
     client,
     responsiblePerson,
     startDate,
-    estimatedEndDate,
-    createdBy
+    estimatedEndDate
   }) {
     return axios.put(`${API_ENDPOINT}/projects/${id}`, {
       name,
@@ -103,8 +100,7 @@ class DCMTWebApi {
       description,
       responsiblePerson,
       startDate,
-      estimatedEndDate,
-      createdBy
+      estimatedEndDate
     });
   }
 

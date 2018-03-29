@@ -6,6 +6,8 @@ import moment from "moment";
 import "../../scss/components/projectsModals/ProjectDetailsBlock.scss";
 import "react-datepicker/dist/react-datepicker.css";
 import ResponsiblePersonBlock from "./ResponsiblePersonBlock";
+import constraints from "../../constraints";
+
 const emptyField = "<brak>";
 const active = "Aktywny";
 const inActive = "Nieaktywny";
@@ -25,15 +27,23 @@ class ProjectDetailsBlock extends Component {
         email: "",
         phoneNumber: ""
       },
-      createdBy: "tkonecki",
       startDate: moment(),
       estimatedEndDate: moment(),
+      btnDisabled: false,
+      btnInactiveStyle: "",
       validStyles: {
         name: "",
         firstName: "",
         lastName: "",
         email: "",
         phoneNumber: ""
+      },
+      fieldsValid: {
+        nameValid: true,
+        firstNameValid: true,
+        lastNameValid: true,
+        emailValid: true,
+        phoneNumberValid: true
       }
     };
   }
@@ -89,32 +99,70 @@ class ProjectDetailsBlock extends Component {
     this.props.editProject(project);
   };
 
-  validate = e => {
-    const patterns = {
-      name: /^[0-9a-z\s\-]+$/i,
-      client: /(.*?)/,
-      firstName: /^[a-z]+$/i,
-      lastName: /^[a-z]+$/i,
-      email: /^([a-z\d\.-]+)@([a-z\d-]+)\.([a-z]{2,8})(\.[a-z]{2,8})?$/,
-      phoneNumber: /^\d{9,11}$/
-    };
+  checkAllFields = (fieldName, test) => {
+    let field = fieldName + "Valid";
+    let object = {};
 
+    object[field] = test;
+
+    let fieldsValid = Object.assign({}, this.state.fieldsValid, object);
+
+    this.setState(
+      {
+        fieldsValid
+      },
+      () => {
+        this.validateForm();
+      }
+    );
+  };
+
+  validateForm = () => {
+    const {
+      nameValid,
+      firstNameValid,
+      lastNameValid,
+      emailValid,
+      phoneNumberValid
+    } = this.state.fieldsValid;
+
+    if (
+      nameValid &&
+      firstNameValid &&
+      lastNameValid &&
+      emailValid &&
+      phoneNumberValid
+    ) {
+      this.setState({
+        btnDisabled: false,
+        btnInactiveStyle: ""
+      });
+    } else {
+      this.setState({
+        btnDisabled: true,
+        btnInactiveStyle: "project-button-inactive"
+      });
+    }
+  };
+
+  validate = e => {
+    const patterns = constraints.projetctFormPattern;
     let fieldName = e.target.name;
     let fieldValue = e.target.value;
     let styles = "";
     let object = {};
+    let test = patterns[fieldName].test(fieldValue);
 
-    !patterns[fieldName].test(fieldValue)
-      ? (styles = "invalid")
-      : (styles = "");
+    test ? (styles = "") : (styles = "invalid");
 
     object[fieldName] = styles;
 
-    // console.log(object);
-
-    this.setState({
-      validStyles: object
-    });
+    this.setState(
+      {
+        validStyles: object
+      },
+      this.checkAllFields(fieldName, test)
+    );
   };
 
   componentDidMount() {
@@ -148,7 +196,9 @@ class ProjectDetailsBlock extends Component {
       responsiblePerson,
       startDate,
       estimatedEndDate,
-      validStyles
+      validStyles,
+      btnDisabled,
+      btnInactiveStyle
     } = this.state;
 
     return (
@@ -170,11 +220,7 @@ class ProjectDetailsBlock extends Component {
                 this.validate(e);
               }}
             />
-            <p
-              className={["project-name", this.state.validStyles.name].join(
-                " "
-              )}
-            >
+            <p className={["project-name", validStyles.name].join(" ")}>
               Nazwa projektu nie może zawierać znaków specjalnych.
             </p>
 
@@ -189,7 +235,6 @@ class ProjectDetailsBlock extends Component {
               value={description}
               handleChange={e => {
                 this.handleChange(e);
-                this.validate(e);
               }}
             />
 
@@ -270,7 +315,12 @@ class ProjectDetailsBlock extends Component {
             </div>
 
             <div className="edit-project-button-container">
-              <button className="dcmt-button">Potwierdź</button>
+              <button
+                disabled={btnDisabled}
+                className={["dcmt-button", btnInactiveStyle].join(" ")}
+              >
+                Potwierdź
+              </button>
             </div>
           </form>
         </div>

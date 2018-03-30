@@ -32,11 +32,8 @@ class StageOne extends Component {
       this.setState({
         isLoading: true
       });
-    return this.props.getUsers(input).then(() => {
-      this.setState({
-        isLoading: false
-      });
-    });
+
+    return this.props.getUsers(input);
   };
 
   handleClick = () => {

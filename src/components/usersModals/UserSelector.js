@@ -38,9 +38,14 @@ class UserSelector extends Component {
       .then(response => {
         return { options: response.data.dtoObjects };
       })
+      .then(
+        this.setState({
+          errorBlock: null
+        })
+      )
       .catch(errorBlock => {
         this.setState({ errorBlock });
-        this.refs.StageOne.stopLoading();
+        // this.refs.StageOne.stopLoading();
       });
   };
 

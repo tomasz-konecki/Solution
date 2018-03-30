@@ -19,21 +19,28 @@ class StageOne extends Component {
     };
   }
 
-  onChange = value => {
-    this.setState({
-      value
-    });
+  handleKeyUp = e => {
+    console.log(e);
   };
 
-  getUsers = input => {
-    console.log(input);
+  // onChange = value => {
+  //   console.log(value);
+  //   this.setState({
+  //     value
+  //   });
+  // };
 
+  getUsers = input => {
     if (input.length >= 3)
       this.setState({
         isLoading: true
       });
 
-    return this.props.getUsers(input);
+    return this.props.getUsers(input).then(
+      this.setState({
+        isLoading: false
+      })
+    );
   };
 
   handleClick = () => {
@@ -61,7 +68,7 @@ class StageOne extends Component {
             value={value}
             autoload={false}
             isLoading={isLoading}
-            onChange={this.onChange}
+            onChange={this.handleChange}
             // valueKey="lastName"
             labelKey="fullName"
             loadOptions={this.getUsers}

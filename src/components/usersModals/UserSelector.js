@@ -31,9 +31,9 @@ class UserSelector extends Component {
   };
 
   getUsers = user => {
-    if (!user) {
-      return Promise.resolve({ options: [] });
-    }
+    // if (!user) {
+    //   return Promise.resolve({ options: [] });
+    // }
     return DCMTWebApi.searchAD(user)
       .then(response => {
         return { options: response.data.dtoObjects };

@@ -6,7 +6,6 @@ import ResultBlock from "../common/ResultBlock";
 import Select from "react-select";
 import "react-select/dist/react-select.css";
 import DCMTWebApi from "../../api";
-import { Throttle } from "react-throttle";
 
 class StageOne extends Component {
   constructor() {
@@ -19,28 +18,32 @@ class StageOne extends Component {
     };
   }
 
-  handleKeyUp = e => {
-    console.log(e);
+  handleChange = value => {
+    console.log(value);
+    this.setState({
+      value
+    });
   };
 
-  // onChange = value => {
-  //   console.log(value);
-  //   this.setState({
-  //     value
-  //   });
-  // };
+  checkLength = input => {
+    return input.length >= 3;
+  };
 
   getUsers = input => {
-    if (input.length >= 3)
-      this.setState({
-        isLoading: true
-      });
+    let isLoading = null;
+    this.checkLength(input) ? (isLoading = true) : (isLoading = false);
 
-    return this.props.getUsers(input).then(
-      this.setState({
-        isLoading: false
-      })
-    );
+    this.setState({
+      isLoading
+    });
+
+    return this.checkLength(input)
+      ? this.props.getUsers(input).then(
+          this.setState({
+            isLoading: false
+          })
+        )
+      : Promise.resolve({ options: [] });
   };
 
   handleClick = () => {
@@ -52,16 +55,19 @@ class StageOne extends Component {
       ? Select.AsyncCreatable
       : Select.Async;
     const { multi, value, backspaceRemoves, isLoading } = this.state;
+
     return (
       <div className="stage-one-container">
         <header>
           <h3 className="section-heading">Wyszukaj użytkownika w AD</h3>
         </header>
+
         <div className="error-block-container">
           {this.props.errorBlock !== null && (
             <ResultBlock errorBlock={this.props.errorBlock} />
           )}
         </div>
+
         <div className="search-container">
           <AsyncComponent
             multi={multi}

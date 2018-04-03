@@ -118,7 +118,7 @@ class UsersList extends Component {
                 this.props.dispatch(
                   setActionConfirmation(true, {
                     key: "deleteUser",
-                    string: `Delete user ${object.firstName} ${
+                    string: `Usunąć użytkownika ${object.firstName} ${
                       object.lastName
                     }`,
                     id: object.id,

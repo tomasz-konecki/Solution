@@ -62,19 +62,19 @@ class Confirmation extends Component {
         >
           {!this.isCompleted() && (
             <div className="result-modal-container">
-              <div className="result-about-to">You are about to:</div>
+              <div className="result-about-to">Właśnie chcesz:</div>
               <div className="result-string">{this.state.toConfirm.string}</div>
               <div className="result-confirmation">
-                Are you sure you want to perform this action?
+                Jesteś pewien?
               </div>
               <div className="result-confirmation">
-                It might be irreversible
+                Cofnięcie tej akcji może być niemożliwe
               </div>
               <button
                 className="result-confirm-button dcmt-button"
                 onClick={this.confirm}
               >
-                Yes
+                Potwierdź
               </button>
               <div className="result-loader-container">
                 {this.props.isWorking && <LoaderHorizontal />}

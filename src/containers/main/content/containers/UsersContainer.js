@@ -33,6 +33,7 @@ class UsersContainer extends React.Component {
   componentWillReceiveProps(nextProps) {
     if (this.validatePropsForUserDeletion(nextProps)) {
       this.props.async.setActionConfirmationProgress(true);
+
       DCMTWebApi.deleteUser(this.props.toConfirm.id)
         .then(response => {
           this.props.async.setActionConfirmationResult({

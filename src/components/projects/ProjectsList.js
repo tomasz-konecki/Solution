@@ -84,7 +84,7 @@ class ProjectsList extends Component {
                 this.props.dispatch(
                   setActionConfirmation(true, {
                     key: "deleteProject",
-                    string: `Delete project ${object.name}`,
+                    string: `Usunąć projekt ${object.name}`,
                     id: object.id,
                     successMessage: "Projekt został usunięty"
                   })

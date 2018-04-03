@@ -3,67 +3,95 @@ import "../../scss/components/usersModals/StageOne.scss";
 import FoundUsersTable from "../users/FoundUsersTable";
 import LoaderHorizontal from "../../components/common/LoaderHorizontal";
 import ResultBlock from "../common/ResultBlock";
+import Select from "react-select";
+import "react-select/dist/react-select.css";
+import DCMTWebApi from "../../api";
 
 class StageOne extends Component {
   constructor() {
     super();
 
     this.state = {
-      searchText: "",
-      isLoading: false,
-      isSearchingDone: false
+      backspaceRemoves: true,
+      multi: false,
+      isLoading: false
     };
-
-    this.handleClick = this.handleClick.bind(this);
-    this.handleInput = this.handleInput.bind(this);
-    this.handleKeyUp = this.handleKeyUp.bind(this);
-    this.stopLoading = this.stopLoading.bind(this);
   }
 
-  handleInput(e) {
-    this.setState({ searchText: e.target.value });
-  }
-
-  handleClick(e) {
-    this.props.searchUsersInAD(this.state.searchText);
+  handleChange = value => {
+    console.log(value);
     this.setState({
-      isLoading: true,
-      isSearchingDone: false
+      value
     });
-  }
+  };
 
-  handleKeyUp(e) {
-    if (e.keyCode === 13) {
-      this.handleClick(e);
-    }
-  }
+  checkLength = input => {
+    return input.length >= 3;
+  };
 
-  stopLoading() {
-    this.setState({ isLoading: false, isSearchingDone: true });
-  }
+  getUsers = input => {
+    let isLoading = null;
+    this.checkLength(input) ? (isLoading = true) : (isLoading = false);
+
+    this.setState({
+      isLoading
+    });
+
+    return this.checkLength(input)
+      ? this.props.getUsers(input).then(
+          this.setState({
+            isLoading: false
+          })
+        )
+      : Promise.resolve({ options: [] });
+  };
+
+  handleClick = () => {
+    this.props.setSelectedUser(this.state.value);
+  };
 
   render() {
+    const AsyncComponent = this.state.creatable
+      ? Select.AsyncCreatable
+      : Select.Async;
+    const { multi, value, backspaceRemoves, isLoading } = this.state;
+
     return (
       <div className="stage-one-container">
+        <header>
+          <h3 className="section-heading">Wyszukaj użytkownika w AD</h3>
+        </header>
+
+        <div className="error-block-container">
+          {this.props.errorBlock !== null && (
+            <ResultBlock errorBlock={this.props.errorBlock} />
+          )}
+        </div>
+
         <div className="search-container">
-          <input
-            name="user"
-            type="text"
-            onChange={this.handleInput}
-            onKeyUp={this.handleKeyUp}
+          <AsyncComponent
+            multi={multi}
+            value={value}
+            autoload={false}
+            isLoading={isLoading}
+            onChange={this.handleChange}
+            // valueKey="lastName"
+            labelKey="fullName"
+            loadOptions={this.getUsers}
+            backspaceRemoves={backspaceRemoves}
           />
-          <button onClick={this.handleClick}>Search</button>
+
+          {this.state.value && (
+            <div className="forward-button-container">
+              <button
+                className="btn btn-primary dcmt-button"
+                onClick={this.handleClick}
+              >
+                Dalej
+              </button>
+            </div>
+          )}
         </div>
-        <div className="loader-container">
-          {this.state.isLoading && <LoaderHorizontal />}
-          {this.props.errorBlock !== null && <ResultBlock errorBlock={this.props.errorBlock}/>}
-        </div>
-        {this.state.isSearchingDone === true && this.props.errorBlock === null && (
-          <FoundUsersTable
-            foundUsers={this.props.foundUsers}
-            setSelectedUser={this.props.setSelectedUser}
-          />
-        )}
       </div>
     );
   }

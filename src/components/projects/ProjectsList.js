@@ -3,11 +3,47 @@ import Icon from "../common/Icon";
 import SmoothTable from "../common/SmoothTable";
 import { setActionConfirmation } from "./../../actions/asyncActions";
 import { connect } from "react-redux";
+import Modal from "react-responsive-modal";
+import EditProjectDetails from "../projectsModals/EditProjectDetails";
+import DCMTWebApi from "../../api";
 
 class ProjectsList extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      showModal: false,
+      project: {},
+      responseBlock: {},
+      loading: false
+    };
   }
+
+  handleGetProject = object => {
+    DCMTWebApi.getProject(object.id)
+      .then(response => {
+        if (response.status === 200) {
+          this.setState({
+            project: response.data.dtoObject,
+            showModal: true
+          });
+        }
+      })
+      .catch(error => {
+        this.setState({
+          responseBlock: error,
+          loading: false
+        });
+      });
+  };
+
+  handleOpenModal = () => {
+    this.setState({ showModal: true });
+  };
+
+  handleCloseModal = () => {
+    this.setState({ showModal: false });
+  };
+
   render() {
     const construct = {
       rowClass: "project-block",
@@ -20,13 +56,13 @@ class ProjectsList extends Component {
           click: () => {
             this.props.openAddProjectModal();
           }
-        },
-        {
-          pretty: "ODŚWIEŻ",
-          click: () => {
-            this.props.pageChange(this.props.currentPage);
-          }
         }
+        // {
+        //   pretty: "ODŚWIEŻ",
+        //   click: () => {
+        //     this.props.pageChange(this.props.currentPage);
+        //   }
+        // }
       ],
       columns: [
         { width: 20, field: "name", pretty: "Nazwa projektu" },
@@ -58,7 +94,7 @@ class ProjectsList extends Component {
             {
               icon: { icon: "edit", iconType: "far" },
               click: object => {
-                alert(object.name);
+                this.handleGetProject(object);
               }
             }
           ],
@@ -68,13 +104,31 @@ class ProjectsList extends Component {
     };
 
     return (
-      <SmoothTable
-        currentPage={this.props.currentPage}
-        totalPageCount={this.props.totalPageCount}
-        loading={this.props.loading}
-        data={this.props.projects}
-        construct={construct}
-      />
+      <div>
+        <SmoothTable
+          currentPage={this.props.currentPage}
+          totalPageCount={this.props.totalPageCount}
+          loading={this.props.loading}
+          data={this.props.projects}
+          construct={construct}
+        />
+        <Modal
+          open={this.state.showModal}
+          classNames={{ modal: "Modal Modal-projects" }}
+          contentLabel="Edit projects details"
+          onClose={this.handleCloseModal}
+        >
+          <EditProjectDetails
+            closeModal={this.handleCloseModal}
+            project={this.state.project}
+            responseBlock={this.state.responseBlock}
+            loading={this.state.loading}
+            projectActions={this.props.projectActions}
+            limit={this.state.limit}
+            currentPage={this.state.currentPage}
+          />
+        </Modal>
+      </div>
     );
   }
 }

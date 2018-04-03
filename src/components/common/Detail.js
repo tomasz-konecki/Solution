@@ -1,17 +1,40 @@
 import React from "react";
+import "bootstrap/dist/css/bootstrap.css";
+import "../../scss/components/Detail.scss";
 
-const Detail = props => {
+const Detail = details => {
   return (
-    <div className="detail-container">
-      <label>{props.pretty}</label>
-      {props.editable === true ? (
-        <input
-          type={props.type}
-          placeholder={props.value}
-          required={props.required}
-        />
+    <div className="form-group row">
+      <label className="col-sm-3 col-form-label">{details.pretty}</label>
+
+      {details.editable === true && details.type === "textarea" ? (
+        <div className="col-sm-9">
+          <textarea
+            rows={details.rows}
+            cols={details.cols}
+            resize="none"
+            className="form-control"
+            name={details.name}
+            value={details.value || ""}
+            onChange={details.handleChange}
+          />
+        </div>
+      ) : details.editable === true ? (
+        <div className="col-sm-9">
+          <input
+            type={details.type}
+            className="form-control"
+            name={details.name}
+            value={details.value || ""}
+            placeholder={details.value}
+            required={details.required}
+            onChange={details.handleChange}
+          />
+        </div>
       ) : (
-        <span>{props.value}</span>
+        <div className="col-sm-9">
+          <span>{details.value}</span>
+        </div>
       )}
     </div>
   );

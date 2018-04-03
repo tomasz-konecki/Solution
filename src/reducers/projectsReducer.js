@@ -1,9 +1,14 @@
-import { LOAD_PROJECTS_SUCCESS, LOGOUT } from "../constants";
+import {
+  LOAD_PROJECTS_SUCCESS,
+  LOGOUT,
+  CHANGE_EDITED_PROJECT
+} from "../constants";
 
 const initialState = {
   projects: [],
   currentPage: 1,
-  totalPageCount: 1
+  totalPageCount: 1,
+  editedProjectId: null
 };
 
 export const projectsReducer = (state = initialState, action) => {
@@ -19,6 +24,10 @@ export const projectsReducer = (state = initialState, action) => {
         projects: [],
         currentPage: 1,
         totalPageCount: 1
+      };
+    case CHANGE_EDITED_PROJECT:
+      return {
+        editedProjectId: action.projectId
       };
     default:
       return state;

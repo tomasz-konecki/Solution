@@ -1,16 +1,21 @@
-import { LOAD_PROJECTS_SUCCESS } from "../constants";
+import { LOAD_PROJECTS_SUCCESS, CHANGE_EDITED_PROJECT } from "../constants";
 import axios from "axios";
 import DCMTWebApi from "../api";
 import { asyncStarted, asyncEnded } from "./asyncActions";
 
 export const loadProjectsSuccess = projects => {
   return {
-    type: "LOAD_PROJECTS_SUCCESS",
+    type: LOAD_PROJECTS_SUCCESS,
     projects
   };
 };
 
-export const loadProjects = (page = 1, limit = 25, ascending = true, isDeleted = false) => {
+export const loadProjects = (
+  page = 1,
+  limit = 25,
+  ascending = true,
+  isDeleted = false
+) => {
   const settings = {
     Limit: limit,
     PageNumber: page,
@@ -27,5 +32,12 @@ export const loadProjects = (page = 1, limit = 25, ascending = true, isDeleted =
       .catch(error => {
         dispatch(asyncEnded());
       });
+  };
+};
+
+export const changeEditedProjectId = projectId => {
+  return {
+    type: CHANGE_EDITED_PROJECT,
+    projectId
   };
 };

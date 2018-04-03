@@ -1,5 +1,6 @@
 @import "../ColorSchema.scss";
-button {
+.dcmt-button {
+  width: 100px;
   outline: none;
   height: 2.5em;
   line-height: 2.1em;
@@ -38,6 +39,7 @@ button {
     background-color: $button-element-hover-background;
     border: 1.2px solid lighten($button-element-hover-background, 5%);
     color: lighten($menu-element-icon-hover-color, 55%);
+    cursor: pointer;
   }
   &.nav-compact {
     border: 0;

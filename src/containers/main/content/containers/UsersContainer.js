@@ -9,8 +9,12 @@ import "../../../../scss/containers/UsersContainer.scss";
 import Modal from "react-responsive-modal";
 import UserSelector from "../../../../components/usersModals/UserSelector";
 import UsersList from "../../../../components/users/UsersList";
+<<<<<<< HEAD
 import { ACTION_CONFIRMED } from './../../../../constants';
 import DCMTWebApi from "../../../../api/";
+=======
+import { ACTION_CONFIRMED } from "./../../../../constants";
+>>>>>>> c8e008ef18d8617b4d2283c6822e1a454f76266a
 
 class UsersContainer extends React.Component {
   constructor(props) {
@@ -31,7 +35,7 @@ class UsersContainer extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if(this.validatePropsForUserDeletion(nextProps)) {
+    if (this.validatePropsForUserDeletion(nextProps)) {
       this.props.async.setActionConfirmationProgress(true);
       DCMTWebApi.deleteUser(this.props.toConfirm.id)
         .then(response => {
@@ -47,16 +51,25 @@ class UsersContainer extends React.Component {
   }
 
   validatePropsForUserDeletion(nextProps) {
-    return nextProps.confirmed &&
-    (!nextProps.isWorking) &&
-    nextProps.type === ACTION_CONFIRMED &&
-    nextProps.toConfirm.key === 'deleteUser';
+    return (
+      nextProps.confirmed &&
+      !nextProps.isWorking &&
+      nextProps.type === ACTION_CONFIRMED &&
+      nextProps.toConfirm.key === "deleteUser"
+    );
   }
 
   pageChange(page) {
-    this.setState({
-      currentPage: page
-    }, () => this.props.userActions.loadUsers(this.state.currentPage, this.state.limit));
+    this.setState(
+      {
+        currentPage: page
+      },
+      () =>
+        this.props.userActions.loadUsers(
+          this.state.currentPage,
+          this.state.limit
+        )
+    );
   }
 
   handleOpenModal() {
@@ -80,7 +93,7 @@ class UsersContainer extends React.Component {
         />
         <Modal
           open={this.state.showModal}
-          classNames={{ modal: "Modal" }}
+          classNames={{ modal: "Modal Modal-users" }}
           contentLabel="Users modal"
           onClose={this.handleCloseModal}
         >

@@ -2,8 +2,15 @@ $stage-two-container-height: 18em;
 
 .stage-two-container {
   padding: 15px;
+  height: 300px;
 
   .form-container {
+    header {
+      border-bottom: 1px solid lightgray;
+    }
+    .edit-user-button-container {
+      margin-top: 10px;
+    }
     .form-navigation {
       padding-top: 1.5em;
       display: flex;
@@ -30,8 +37,11 @@ $stage-two-container-height: 18em;
     padding-bottom: 1.5em;
     border-bottom: 1px solid lightgray;
 
-    .detail-container {
-      margin-bottom: 0.4em;
+    .form-group {
+      margin: 0;
+      label {
+        padding: 0;
+      }
     }
 
     label {

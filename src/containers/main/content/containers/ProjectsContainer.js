@@ -86,10 +86,13 @@ class ProjectsContainer extends React.Component {
           totalPageCount={this.props.totalPageCount}
           pageChange={this.pageChange}
           loading={this.props.loading}
+          projectActions={this.props.projectActions}
+          limit={this.state.limit}
+          currentPage={this.state.currentPage}
         />
         <Modal
           open={this.state.showModal}
-          classNames={{ modal: "Modal" }}
+          classNames={{ modal: "Modal Modal-projects" }}
           contentLabel="Projects test modal"
           onClose={this.handleCloseModal}
         >
@@ -97,6 +100,7 @@ class ProjectsContainer extends React.Component {
             projectActions={this.props.projectActions}
             limit={this.state.limit}
             currentPage={this.state.currentPage}
+            closeModal={this.handleCloseModal}
           />
         </Modal>
       </div>

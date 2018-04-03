@@ -24,45 +24,50 @@ class UserDetailsBlock extends Component {
 
   render() {
     return (
-      <div className="user-details-container">
-        <Detail
-          type="text"
-          editable={this.props.editable}
-          pretty="Imię"
-          required
-          value={this.props.user.firstName}
-        />
+      <div>
+        <header>
+          <h3>Edycja danych użytkownika</h3>
+        </header>
+        <div className="user-details-container">
+          <Detail
+            type="text"
+            editable={this.props.editable}
+            pretty="Imię"
+            required
+            value={this.props.user.firstName}
+          />
 
-        <Detail
-          type="text"
-          editable={this.props.editable}
-          pretty="Nazwisko"
-          required
-          value={this.props.user.lastName}
-        />
+          <Detail
+            type="text"
+            editable={this.props.editable}
+            pretty="Nazwisko"
+            required
+            value={this.props.user.lastName}
+          />
 
-        <Detail
-          type="text"
-          editable={this.props.editable}
-          pretty="Email"
-          required
-          value={this.props.user.email}
-        />
+          <Detail
+            type="text"
+            editable={this.props.editable}
+            pretty="Email"
+            required
+            value={this.props.user.email}
+          />
 
-        <Detail
-          type="text"
-          editable={this.props.editable}
-          pretty="Telefon"
-          required
-          value={this.parsePhoneNumber()}
-        />
+          <Detail
+            type="text"
+            editable={this.props.editable}
+            pretty="Telefon"
+            required
+            value={this.parsePhoneNumber()}
+          />
 
-        <Detail
-          type="text"
-          editable={false}
-          pretty="Role"
-          value={this.parseRoles()}
-        />
+          <Detail
+            type="text"
+            editable={false}
+            pretty="Role"
+            value={this.parseRoles()}
+          />
+        </div>
       </div>
     );
   }

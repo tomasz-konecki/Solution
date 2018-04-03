@@ -1,11 +1,12 @@
 import React from "react";
+import "bootstrap/dist/css/bootstrap.css";
 
-import { Route, Switch, BrowserRouter } from 'react-router';
-import { PrivateRoute, Login, Home } from '../creators';
+import { Route, Switch, BrowserRouter } from "react-router";
+import { PrivateRoute, Login, Home } from "../creators";
 
 import "../scss/App.scss";
 
-const App = (props) => (
+const App = props => (
   <Switch>
     <Route exact path="/" component={Login} />
     <PrivateRoute path="/main" component={Home} history={props.history} />

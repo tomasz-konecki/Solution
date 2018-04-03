@@ -65,6 +65,8 @@
     "react-router": "^4.2.0",
     "react-router-dom": "^4.2.2",
     "react-router-redux": "^5.0.0-alpha.9",
+    "react-select": "^1.2.1",
+    "react-throttle": "^0.3.0",
     "react-thunk": "^1.0.0",
     "redux": "^3.7.2",
     "redux-devtools": "^3.4.1",
@@ -73,6 +75,8 @@
     "redux-persist": "^5.9.1",
     "redux-persist-transform-filter": "^0.0.16",
     "redux-thunk": "^2.2.0",
+    "regex": "^0.1.1",
+    "regexp": "^1.0.0",
     "source-map-loader": "^0.2.3",
     "url-loader": "^1.0.1",
     "uuid": "^3.2.1"

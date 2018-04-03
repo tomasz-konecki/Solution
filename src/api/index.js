@@ -3,13 +3,23 @@ import * as jwtDecode from "jwt-decode";
 import * as Promise from "bluebird";
 import * as usersMocks from "./mock/users";
 import * as projectsMocks from "./mock/projects";
+import redux from "redux";
+import storeCreator from "./../store";
+import storage from "redux-persist/lib/storage";
+const { store } = storeCreator;
 
 const API_ENDPOINT = "http://10.24.14.148";
 
-// osobny plik z konfiguracją
-//
+store.subscribe(listener);
 
-const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
+const select = state =>
+  state.authReducer.tokens !== undefined ? state.authReducer.tokens.token : "";
+
+function listener() {
+  const token = `Bearer ${select(store.getState())}`;
+
+  axios.defaults.headers.common["Authorization"] = token;
+}
 
 class DCMTWebApi {
   auth(login, password) {
@@ -62,7 +72,6 @@ class DCMTWebApi {
     description,
     client,
     responsiblePerson,
-    createdBy,
     startDate,
     estimatedEndDate
   }) {
@@ -71,13 +80,12 @@ class DCMTWebApi {
       description,
       client,
       responsiblePerson,
-      createdBy,
       startDate,
       estimatedEndDate
     });
   }
 
-  editProject(
+  editProject({
     id,
     name,
     description,
@@ -85,9 +93,10 @@ class DCMTWebApi {
     responsiblePerson,
     startDate,
     estimatedEndDate
-  ) {
+  }) {
     return axios.put(`${API_ENDPOINT}/projects/${id}`, {
       name,
+      client,
       description,
       responsiblePerson,
       startDate,

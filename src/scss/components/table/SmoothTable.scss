@@ -43,7 +43,7 @@ $default-color: white;
     padding-right: 4vh;
     line-height: 3rem;
     text-align: right;
-    font-size: 120%;
+    // font-size: 120%;
     user-select: none;
     position: absolute;
 
@@ -105,10 +105,7 @@ $default-color: white;
       }
     }
 
-
-
     span {
-
     }
   }
 
@@ -133,6 +130,11 @@ $default-color: white;
   table {
     width: 100%;
     thead {
+      .smooth-row {
+        &:hover {
+          background-color: #fff;
+        }
+      }
       th {
         text-align: left;
         vertical-align: middle;
@@ -156,6 +158,11 @@ $default-color: white;
 
     &:last-of-type {
       border: none;
+    }
+
+    &:hover {
+      background-color: rgb(230, 230, 230);
+      cursor: pointer;
     }
 
     .smooth-cell {

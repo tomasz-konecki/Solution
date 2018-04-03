@@ -28,7 +28,7 @@ class StageTwo extends Component {
       id,
       email,
       phoneNumber,
-      role
+      roles
     } = this.props.selectedUser;
 
     if (phoneNumber === null) {
@@ -83,7 +83,9 @@ class StageTwo extends Component {
           />
           <div className="form-navigation">
             <div className="button-back-container">
-              <button onClick={this.handleBack}>Back</button>
+              <button className="dcmt-button" onClick={this.handleBack}>
+                Powrót
+              </button>
             </div>
             <div>
               <ResultBlock
@@ -93,8 +95,12 @@ class StageTwo extends Component {
               />
             </div>
             <div className="submit-button-container">
-              <button type="submit" onClick={this.handleSubmit}>
-                Submit
+              <button
+                className="dcmt-button"
+                type="submit"
+                onClick={this.handleSubmit}
+              >
+                Dodaj
               </button>
             </div>
           </div>

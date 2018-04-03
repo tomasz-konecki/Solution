@@ -14,8 +14,7 @@ const errorHandler = dispatch => error => {
   if (error.response.data.errorOccured === true) {
     const { errors } = error.response.data;
     throw new SubmissionError({
-      _error:
-        errors[Object.keys(errors)[0]]
+      _error: errors[Object.keys(errors)[0]]
     });
   }
   switch (error.response.status) {

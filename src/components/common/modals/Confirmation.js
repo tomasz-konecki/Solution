@@ -64,14 +64,6 @@ class Confirmation extends Component {
             <div className="result-modal-container">
               <div className="result-about-to">You are about to:</div>
               <div className="result-string">{this.state.toConfirm.string}</div>
-<<<<<<< HEAD
-              <div className="result-confirmation">Are you sure you want to perform this action?</div>
-              <div className="result-confirmation">It might be irreversible</div>
-              <button className={"result-confirm-button" + (this.props.isWorking ? " button-disabled" : "")} onClick={this.confirm}>
-                {!this.props.isWorking ? "Yes" : "..."}
-              </button>
-              <div className="result-loader-container">{this.props.isWorking && <LoaderHorizontal/>}</div>
-=======
               <div className="result-confirmation">
                 Are you sure you want to perform this action?
               </div>
@@ -87,7 +79,6 @@ class Confirmation extends Component {
               <div className="result-loader-container">
                 {this.props.isWorking && <LoaderHorizontal />}
               </div>
->>>>>>> c8e008ef18d8617b4d2283c6822e1a454f76266a
             </div>
           )}
           {this.isCompleted() && (

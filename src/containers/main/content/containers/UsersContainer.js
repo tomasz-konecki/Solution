@@ -9,12 +9,8 @@ import "../../../../scss/containers/UsersContainer.scss";
 import Modal from "react-responsive-modal";
 import UserSelector from "../../../../components/usersModals/UserSelector";
 import UsersList from "../../../../components/users/UsersList";
-<<<<<<< HEAD
 import { ACTION_CONFIRMED } from './../../../../constants';
 import DCMTWebApi from "../../../../api/";
-=======
-import { ACTION_CONFIRMED } from "./../../../../constants";
->>>>>>> c8e008ef18d8617b4d2283c6822e1a454f76266a
 
 class UsersContainer extends React.Component {
   constructor(props) {

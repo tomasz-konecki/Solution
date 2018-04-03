@@ -3,9 +3,11 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import * as projectsActions from "../../../../actions/projectsActions";
+import * as asyncActions from "../../../../actions/asyncActions";
 import Modal from "react-responsive-modal";
 import AddProjectScreen from "../../../../components/projectsModals/AddProjectScreen";
 import ProjectsList from "../../../../components/projects/ProjectsList";
+import DCMTWebApi from "../../../../api/";
 
 import "../../../../scss/containers/ProjectsContainer.scss";
 import { ACTION_CONFIRMED } from "./../../../../constants";
@@ -31,13 +33,16 @@ class ProjectsContainer extends React.Component {
   componentWillReceiveProps(nextProps) {
     if (this.validatePropsForProjectDeletion(nextProps)) {
       this.props.async.setActionConfirmationProgress(true);
-      setTimeout(() => {
-        this.props.async.setActionConfirmationResult({
-          response: {
-            status: 401
-          }
+      DCMTWebApi.deleteProject(this.props.toConfirm.id)
+        .then(response => {
+          this.props.async.setActionConfirmationResult({
+            response
+          });
+          this.pageChange(this.state.currentPage);
+        })
+        .catch(error => {
+          this.props.async.setActionConfirmationResult(error);
         });
-      }, 2000);
     }
   }
 
@@ -103,13 +108,18 @@ function mapStateToProps(state) {
   return {
     projects: state.projectsReducer.projects,
     totalPageCount: state.projectsReducer.totalPageCount,
-    loading: state.asyncReducer.loading
+    loading: state.asyncReducer.loading,
+    confirmed: state.asyncReducer.confirmed,
+    toConfirm: state.asyncReducer.toConfirm,
+    isWorking: state.asyncReducer.isWorking,
+    type: state.asyncReducer.type
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    projectActions: bindActionCreators(projectsActions, dispatch)
+    projectActions: bindActionCreators(projectsActions, dispatch),
+    async: bindActionCreators(asyncActions, dispatch)
   };
 }
 

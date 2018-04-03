@@ -24,6 +24,13 @@ button {
     padding-right: 5px;
   }
 
+  &.button-disabled {
+    background: #333;
+    &:hover {
+      background: #222;
+    }
+  }
+
   &.submitter {
     margin-top: 2em;
   }

@@ -10,6 +10,7 @@ import Modal from "react-responsive-modal";
 import UserSelector from "../../../../components/usersModals/UserSelector";
 import UsersList from "../../../../components/users/UsersList";
 import { ACTION_CONFIRMED } from './../../../../constants';
+import DCMTWebApi from "../../../../api/";
 
 class UsersContainer extends React.Component {
   constructor(props) {
@@ -32,13 +33,16 @@ class UsersContainer extends React.Component {
   componentWillReceiveProps(nextProps) {
     if(this.validatePropsForUserDeletion(nextProps)) {
       this.props.async.setActionConfirmationProgress(true);
-      setTimeout(() => {
-        this.props.async.setActionConfirmationResult({
-          response: {
-            status: 401
-          }
+      DCMTWebApi.deleteUser(this.props.toConfirm.id)
+        .then(response => {
+          this.props.async.setActionConfirmationResult({
+            response
+          });
+          this.pageChange(this.state.currentPage);
+        })
+        .catch(error => {
+          this.props.async.setActionConfirmationResult(error);
         });
-      }, 2000);
     }
   }
 

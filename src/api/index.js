@@ -102,7 +102,7 @@ class DCMTWebApi {
   }
 
   deleteProject(id) {
-    return axios.delete(`${API_ENDPOINT}/projects/${id}`);
+    return axios.delete(`${API_ENDPOINT}/projects/${id}/delete`);
   }
 
   getAssignmentsForEmployee(id) {

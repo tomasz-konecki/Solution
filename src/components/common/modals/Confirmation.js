@@ -66,7 +66,9 @@ class Confirmation extends Component {
               <div className="result-string">{this.state.toConfirm.string}</div>
               <div className="result-confirmation">Are you sure you want to perform this action?</div>
               <div className="result-confirmation">It might be irreversible</div>
-              <button className="result-confirm-button" onClick={this.confirm}>Yes</button>
+              <button className={"result-confirm-button" + (this.props.isWorking ? " button-disabled" : "")} onClick={this.confirm}>
+                {!this.props.isWorking ? "Yes" : "..."}
+              </button>
               <div className="result-loader-container">{this.props.isWorking && <LoaderHorizontal/>}</div>
             </div>
           }

@@ -7,13 +7,42 @@ class SmoothTable extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      construct: props.construct
+      construct: props.construct,
+      currentlySortedColumn: "",
+      ascending: true,
+      columns: {}
     };
+    this.state.currentlySortedColumn = props.construct.defaultSortField;
+    props.construct.columns.map((column, index) => {
+      if(column.field === undefined) return;
+      let newField = {};
+      newField[column.field] = true;
+      Object.assign(this.state.columns, newField);
+    });
+    this.state.columns[props.construct.defaultSortField] = props.construct.defaultSortAscending;
+    this.handleSortColumnClick = this.handleSortColumnClick.bind(this);
     this.handlePageChange = this.handlePageChange.bind(this);
   }
 
   deepenFunction(func, ...args) {
     return () => func(...args);
+  }
+
+  handleSortColumnClick(field) {
+    if(field !== undefined){
+      let oldFields = this.state.columns;
+      oldFields[field] = !oldFields[field];
+      this.setState({
+        columns: oldFields,
+        currentlySortedColumn: field
+      }, () => {
+        this.props.construct.pageChange(this.props.currentPage, {
+          Sort: field,
+          Ascending: this.state.columns[field]
+        });
+      });
+      console.log(this.state.columns);
+    }
   }
 
   handlePageChange(paginator) {
@@ -39,10 +68,20 @@ class SmoothTable extends Component {
     ));
   }
 
+  generateSortingArrow(asc){
+    const ascending = asc ? "arrow-down" : "arrow-up";
+    return <span className="smooth-arrow-right"><Icon icon={ascending}/></span>;
+  }
+
   generateLegend() {
-    return this.state.construct.columns.map((column, index) => (
-      <th key={column.field + index}>{column.pretty}</th>
-    ));
+    const {currentlySortedColumn, columns} = this.state;
+    return this.state.construct.columns.map((column, index) => {
+      if(currentlySortedColumn === column.field)
+        return <th onClick={this.deepenFunction(this.handleSortColumnClick, column.field)} key={column.field + index}>{column.pretty}
+        {this.generateSortingArrow(columns[currentlySortedColumn])}</th>;
+      else
+        return <th onClick={this.deepenFunction(this.handleSortColumnClick, column.field)} key={column.field + index}>{column.pretty}</th>;
+    });
   }
 
   generateRow(object) {
@@ -56,7 +95,7 @@ class SmoothTable extends Component {
         }
       >
         {construct.columns.map((column, index) => {
-          if (column.field !== undefined)
+          if (column.field !== undefined){
             return (
               <td
                 key={column.field}
@@ -68,6 +107,7 @@ class SmoothTable extends Component {
                   : column.multiState[object[column.field]]}
               </td>
             );
+          }
           else if (column.toolBox !== undefined)
             return (
               <td

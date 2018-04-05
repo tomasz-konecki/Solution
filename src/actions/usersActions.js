@@ -10,14 +10,13 @@ export const loadUsersSuccess = users => {
   };
 };
 
-export const loadUsers = (page = 1, limit = 25) => {
+export const loadUsers = (page = 1, limit = 25, other = {}) => {
   return dispatch => {
-    const settings = {
+    const settings = Object.assign({}, {
       Limit: limit,
       PageNumber: page,
-      Ascending: true,
       IsDeleted: false
-    };
+    }, other);
 
     dispatch(asyncStarted());
     DCMTWebApi.getUsers(settings)

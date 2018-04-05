@@ -56,7 +56,7 @@ class UsersContainer extends React.Component {
     );
   }
 
-  pageChange(page) {
+  pageChange(page, other) {
     this.setState(
       {
         currentPage: page
@@ -64,7 +64,8 @@ class UsersContainer extends React.Component {
       () =>
         this.props.userActions.loadUsers(
           this.state.currentPage,
-          this.state.limit
+          this.state.limit,
+          other
         )
     );
   }

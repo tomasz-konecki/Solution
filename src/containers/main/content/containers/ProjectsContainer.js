@@ -55,7 +55,7 @@ class ProjectsContainer extends React.Component {
     );
   }
 
-  pageChange(page) {
+  pageChange(page, other) {
     this.setState(
       {
         currentPage: page
@@ -63,7 +63,8 @@ class ProjectsContainer extends React.Component {
       () =>
         this.props.projectActions.loadProjects(
           this.state.currentPage,
-          this.state.limit
+          this.state.limit,
+          other
         )
     );
   }

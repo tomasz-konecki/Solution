@@ -90,6 +90,8 @@ class UsersList extends Component {
       tableClass: "users-list-container",
       keyField: "id",
       pageChange: this.props.pageChange,
+      defaultSortField: "lastName",
+      defaultSortAscending: true,
       operators: [
         {
           pretty: "DODAJ",
@@ -97,12 +99,6 @@ class UsersList extends Component {
             this.props.openAddUserModal();
           }
         }
-        // {
-        //   pretty: "ODŚWIEŻ",
-        //   click: () => {
-        //     this.props.pageChange(this.props.currentPage);
-        //   }
-        // }
       ],
       columns: [
         { width: 20, field: "firstName", pretty: "Imię" },

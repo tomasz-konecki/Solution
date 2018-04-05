@@ -10,18 +10,12 @@ export const loadProjectsSuccess = projects => {
   };
 };
 
-export const loadProjects = (
-  page = 1,
-  limit = 25,
-  ascending = true,
-  isDeleted = false
-) => {
-  const settings = {
+export const loadProjects = (page = 1, limit = 25, other = {}) => {
+  const settings = Object.assign({}, {
     Limit: limit,
     PageNumber: page,
-    Ascending: ascending,
-    IsDeleted: isDeleted
-  };
+    IsDeleted: false
+  }, other);
   return dispatch => {
     dispatch(asyncStarted());
     DCMTWebApi.getProjects(settings)

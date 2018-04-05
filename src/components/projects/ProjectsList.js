@@ -50,6 +50,8 @@ class ProjectsList extends Component {
       tableClass: "projects-list-container",
       keyField: "id",
       pageChange: this.props.pageChange,
+      defaultSortField: "name",
+      defaultSortAscending: true,
       operators: [
         {
           pretty: "DODAJ",
@@ -57,12 +59,6 @@ class ProjectsList extends Component {
             this.props.openAddProjectModal();
           }
         }
-        // {
-        //   pretty: "ODŚWIEŻ",
-        //   click: () => {
-        //     this.props.pageChange(this.props.currentPage);
-        //   }
-        // }
       ],
       columns: [
         { width: 20, field: "name", pretty: "Nazwa projektu" },

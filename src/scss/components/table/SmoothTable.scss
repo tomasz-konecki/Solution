@@ -109,6 +109,11 @@ $default-color: white;
     }
   }
 
+  .smooth-arrow-right {
+    float: right;
+    color: lighten($button-element-background, 20%);
+  }
+
   .smooth-loader-top {
     .loader {
       position: absolute;
@@ -136,6 +141,7 @@ $default-color: white;
         }
       }
       th {
+        user-select: none;
         text-align: left;
         vertical-align: middle;
         font-weight: bold;

@@ -1,7 +1,7 @@
 @import "../ColorSchema.scss";
 .dcmt-button {
   width: 100px;
-  outline: none;
+  outline: none !important;
   height: 2.5em;
   line-height: 2.1em;
   vertical-align: baseline;

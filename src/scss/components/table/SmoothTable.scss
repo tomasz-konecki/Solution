@@ -15,7 +15,6 @@ $default-color: white;
     font-family: "Roboto";
     border: none;
     border-radius: 6px;
-    vertical-align: middle;
     font-weight: bold;
     font-size: 1rem;
     cursor: pointer;
@@ -24,6 +23,19 @@ $default-color: white;
       border: none;
       background: darken($default-color, 5%);
     }
+  }
+
+  input {
+    width: 40%;
+    height: auto;
+    margin: 0 1em;
+    transition: none !important;
+  }
+  .loading {
+    background-image: url("../../public/img/loader.gif");
+    background-size: 16px 16px;
+    background-position: 98% 50%;
+    background-repeat: no-repeat;
   }
 }
 
@@ -152,6 +164,24 @@ $default-color: white;
         &:first-of-type {
           padding-left: 2vh;
         }
+      }
+    }
+    .smooth-text-center-row {
+      text-align: center;
+    }
+    tr td {
+      input {
+        width: 90%;
+        height: auto;
+        margin: 0 1em;
+        transition: none !important;
+        margin: 5px;
+      }
+      .loading {
+        background-image: url("../../public/img/loader.gif");
+        background-size: 16px 16px;
+        background-position: 98% 50%;
+        background-repeat: no-repeat;
       }
     }
   }

@@ -52,7 +52,7 @@ module.exports = {
         }
       },
       {
-        test: /\.(png|svg)(\?v=\d+\.\d+\.\d+)?$/,
+        test: /\.(png|svg|gif)(\?v=\d+\.\d+\.\d+)?$/,
         loader: "url-loader?limit=50000&name=./public/img/[name].[ext]"
       },
       {

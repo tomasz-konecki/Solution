@@ -101,10 +101,10 @@ class UsersList extends Component {
         }
       ],
       columns: [
-        { width: 20, field: "firstName", pretty: "Imię" },
-        { width: 30, field: "lastName", pretty: "Nazwisko" },
-        { width: 30, field: "email", pretty: "Email" },
-        { width: 19, field: "phoneNumber", pretty: "Telefon" },
+        { width: 20, field: "firstName", pretty: "Imię", type: "text", filter: true },
+        { width: 30, field: "lastName", pretty: "Nazwisko", type: "text", filter: true },
+        { width: 30, field: "email", pretty: "Email", type: "text", filter: true },
+        { width: 19, field: "phoneNumber", pretty: "Telefon", type: "text", filter: false },
         {
           width: 1,
           toolBox: [

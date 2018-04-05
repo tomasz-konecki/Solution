@@ -61,15 +61,17 @@ class ProjectsList extends Component {
         }
       ],
       columns: [
-        { width: 20, field: "name", pretty: "Nazwa projektu" },
-        { width: 20, field: "client", pretty: "Klient" },
+        { width: 20, field: "name", pretty: "Nazwa projektu", type: "text", filter: true },
+        { width: 20, field: "client", pretty: "Klient", type: "text", filter: true },
         { width: 20, field: "startDate", pretty: "Data rozpoczęcia" },
         { width: 20, field: "endDate", pretty: "Data zakończenia" },
         {
           width: 10,
           field: "isActive",
           pretty: "Status",
-          multiState: { true: "Aktywny", false: "Zakończony" }
+          multiState: { true: "Aktywny", false: "Zakończony" },
+          type: "multiState",
+          filter: true
         },
         {
           width: 1,

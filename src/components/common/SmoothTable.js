@@ -170,12 +170,38 @@ class SmoothTable extends Component {
     });
   }
 
+  generateFieldFilter(column, classes) {
+    switch(column.type){
+      case "text": {
+        return <input
+          type="text"
+          name={"__SEARCH_" + column.field}
+          value={this.state.columnFilters[column.field]}
+          placeholder={"Szukaj " + column.pretty}
+          required
+          onChange={this.deepenFunction(this.handleColumnFilterChange, column.field)}
+          className={classes}
+        />;
+      }
+      case "multiState": {
+        return <select name={"__MULTISTATE_" + column.field} className="form-control form-control-sm manual-input">
+          <option/>
+          {
+            Object.values(column.multiState).map((stateValue, index) => {
+              return <option key={index}>{stateValue}</option>;
+            })
+          }
+        </select>;
+      }
+    }
+  }
+
   generateFieldSearchRow() {
     let columns = [];
     let inputClasses = ["form-control", "form-control-sm"];
     let loaderClass = "loading";
     this.props.construct.columns.map((column, index) => {
-      if (column.field !== undefined){
+      if (column.field !== undefined && column.type !== undefined && column.filter){
         let additionalClass = this.state.columnFiltersLoaders[column.field] ? loaderClass : "";
         columns.push(
           <td
@@ -183,18 +209,11 @@ class SmoothTable extends Component {
             className="smooth-cell smooth-text-center-row"
             style={{ width: column.width + "%" }}
           >
-            <input
-              type="text"
-              name={"__SEARCH_" + column.field}
-              value={this.state.columnFilters[column.field]}
-              placeholder={"Szukaj " + column.pretty}
-              required
-              onChange={this.deepenFunction(this.handleColumnFilterChange, column.field)}
-              className={inputClasses.concat([additionalClass]).join(" ")}
-            />
+            {this.generateFieldFilter(column, inputClasses.concat([additionalClass]).join(" "))}
           </td>
         );
       }
+      else columns.push(<td key={index}/>);
     });
     return <tr key="__FILTER_ROW">{columns}</tr>;
   }

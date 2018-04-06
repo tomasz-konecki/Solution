@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import "../../scss/components/projectsModals/ResponsiblePersonBlock.scss";
+import "../../../scss/components/projects/modals/ResponsiblePersonBlock.scss";
 
 const ResponsiblePersonBlock = project => {
   return (

@@ -1,11 +1,11 @@
 import React, { Component } from "react";
-import "../../scss/components/usersModals/StageOne.scss";
-import FoundUsersTable from "../users/FoundUsersTable";
-import LoaderHorizontal from "../../components/common/LoaderHorizontal";
-import ResultBlock from "../common/ResultBlock";
+import "../../../scss/components/users/modals/StageOne.scss";
+import FoundUsersTable from "../FoundUsersTable";
+import LoaderHorizontal from "../../../components/common/LoaderHorizontal";
+import ResultBlock from "../../common/ResultBlock";
 import Select from "react-select";
 import "react-select/dist/react-select.css";
-import DCMTWebApi from "../../api";
+import DCMTWebApi from "../../../api";
 
 class StageOne extends Component {
   constructor() {

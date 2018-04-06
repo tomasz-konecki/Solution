@@ -1,11 +1,11 @@
 import React, { Component } from "react";
-import "../../scss/components/usersModals/StageTwo.scss";
-import FoundUsersTable from "../users/FoundUsersTable";
-import DCMTWebApi from "../../api";
+import "../../../scss/components/users/modals/StageTwo.scss";
+import FoundUsersTable from "../FoundUsersTable";
+import DCMTWebApi from "../../../api";
 import UserDetailsBlock from "./UserDetailsBlock";
 import UserRoleAssigner from "./UserRoleAssigner";
-import LoaderHorizontal from "../../components/common/LoaderHorizontal";
-import ResultBlock from "../common/ResultBlock";
+import LoaderHorizontal from "../../../components/common/LoaderHorizontal";
+import ResultBlock from "../../common/ResultBlock";
 
 class StageTwo extends Component {
   constructor() {

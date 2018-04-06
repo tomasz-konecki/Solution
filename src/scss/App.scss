@@ -1,10 +1,10 @@
 @import "3rd/Reset.scss";
 @import "ColorSchema.scss";
-@import "./components/Button";
-@import "./components/Input";
+@import "./components/common/Button";
+@import "./components/common/Input";
 @import "./components/table/SmoothTable";
-@import "./components/Logo";
-@import "./components/commonModals/ResultModal";
+@import "./components/common/Logo";
+@import "./components/common/modals/ResultModal";
 
 body {
   font-family: "Roboto Condensed", sans-serif;

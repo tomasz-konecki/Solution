@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import StageOne from "./StageOne";
 import StageTwo from "./StageTwo";
-import DCMTWebApi from "../../api";
+import DCMTWebApi from "../../../api";
 
 const initialState = {
   selectedUser: {},

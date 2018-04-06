@@ -4,7 +4,7 @@ import SmoothTable from "../common/SmoothTable";
 import { setActionConfirmation } from "./../../actions/asyncActions";
 import { connect } from "react-redux";
 import Modal from "react-responsive-modal";
-import EditProjectDetails from "../projectsModals/EditProjectDetails";
+import EditProjectDetails from "../projects/modals/EditProjectDetails";
 import DCMTWebApi from "../../api";
 import "react-datepicker/dist/react-datepicker.css";
 import DatePicker from "react-datepicker";
@@ -80,6 +80,19 @@ class ProjectsList extends Component {
           width: 1,
           toolBox: [
             {
+              icon: { icon: "file-archive", iconType: "far" },
+              click: object => {
+                this.props.dispatch(
+                  setActionConfirmation(true, {
+                    key: "closeProject",
+                    string: `Zamknąć projekt ${object.name}`,
+                    id: object.id,
+                    successMessage: "Projekt został zamknięty"
+                  })
+                );
+              }
+            },
+            {
               icon: { icon: "times" },
               click: object => {
                 this.props.dispatch(
@@ -99,7 +112,7 @@ class ProjectsList extends Component {
               }
             }
           ],
-          pretty: "Usuń/Edytuj"
+          pretty: "Deaktywuj/Usuń/Edytuj"
         }
       ]
     };

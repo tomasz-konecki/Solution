@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import DCMTWebApi from "../../api";
-import CheckBox from "../common/CheckBox";
+import DCMTWebApi from "../../../api";
+import CheckBox from "../../common/CheckBox";
 
 class UserRoleAssigner extends Component {
   constructor(props) {

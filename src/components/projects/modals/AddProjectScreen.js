@@ -1,13 +1,13 @@
 import React, { Component } from "react";
 import DatePicker from "react-datepicker";
 import moment from "moment";
-import "../../scss/components/projectsModals/AddProjectScreen.scss";
+import "../../../scss/components/projects/modals/AddProjectScreen.scss";
 import "react-datepicker/dist/react-datepicker.css";
-import LoaderHorizontal from "../../components/common/LoaderHorizontal";
-import DCMTWebApi from "../../api";
-import ResultBlock from "./../common/ResultBlock";
+import LoaderHorizontal from "../../../components/common/LoaderHorizontal";
+import DCMTWebApi from "../../../api";
+import ResultBlock from "./../../common/ResultBlock";
 import ResponsiblePersonBlock from "./ResponsiblePersonBlock";
-import constraints from "../../constraints";
+import constraints from "../../../constraints";
 
 class AddProjectScreen extends Component {
   constructor(props) {

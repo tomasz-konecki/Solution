@@ -197,7 +197,7 @@ $default-color: white;
     }
 
     &:hover {
-      background-color: rgb(230, 230, 230);
+      background-color: lighten($button-element-background, 61%);
       cursor: pointer;
     }
 
@@ -254,6 +254,13 @@ $default-color: white;
       //
     }
   }
+  .react-datepicker-wrapper, .react-datepicker__input-container{
+    width: 100%;
+  }
+}
+
+.smooth-text-center {
+  text-align: center;
 }
 
 .smooth-footer {

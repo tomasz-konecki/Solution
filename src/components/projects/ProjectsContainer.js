@@ -2,15 +2,15 @@ import React from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import * as projectsActions from "../../../../actions/projectsActions";
-import * as asyncActions from "../../../../actions/asyncActions";
+import * as projectsActions from "../../actions/projectsActions";
+import * as asyncActions from "../../actions/asyncActions";
 import Modal from "react-responsive-modal";
-import AddProjectScreen from "../../../../components/projectsModals/AddProjectScreen";
-import ProjectsList from "../../../../components/projects/ProjectsList";
-import DCMTWebApi from "../../../../api/";
+import AddProjectScreen from "../../components/projects/modals/AddProjectScreen";
+import ProjectsList from "../../components/projects/ProjectsList";
+import DCMTWebApi from "../../api/";
 
-import "../../../../scss/containers/ProjectsContainer.scss";
-import { ACTION_CONFIRMED } from "./../../../../constants";
+import "../../scss/containers/ProjectsContainer.scss";
+import { ACTION_CONFIRMED } from "./../../constants";
 
 class ProjectsContainer extends React.Component {
   constructor(props) {
@@ -44,6 +44,19 @@ class ProjectsContainer extends React.Component {
           this.props.async.setActionConfirmationResult(error);
         });
     }
+    if (this.validatePropsForProjectClosing(nextProps)) {
+      this.props.async.setActionConfirmationProgress(true);
+      DCMTWebApi.closeProject(this.props.toConfirm.id)
+        .then(response => {
+          this.props.async.setActionConfirmationResult({
+            response
+          });
+          this.pageChange(this.state.currentPage);
+        })
+        .catch(error => {
+          this.props.async.setActionConfirmationResult(error);
+        });
+    }
   }
 
   validatePropsForProjectDeletion(nextProps) {
@@ -52,6 +65,15 @@ class ProjectsContainer extends React.Component {
       !nextProps.isWorking &&
       nextProps.type === ACTION_CONFIRMED &&
       nextProps.toConfirm.key === "deleteProject"
+    );
+  }
+
+  validatePropsForProjectClosing(nextProps) {
+    return (
+      nextProps.confirmed &&
+      !nextProps.isWorking &&
+      nextProps.type === ACTION_CONFIRMED &&
+      nextProps.toConfirm.key === "closeProject"
     );
   }
 

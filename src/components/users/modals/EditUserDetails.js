@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import UserDetailsBlock from "./UserDetailsBlock";
 import UserRoleAssigner from "./UserRoleAssigner";
-import LoaderHorizontal from "./../common/LoaderHorizontal";
-import ResultBlock from "./../common/ResultBlock";
+import LoaderHorizontal from "./../../common/LoaderHorizontal";
+import ResultBlock from "./../../common/ResultBlock";
 
 class EditUserDetails extends Component {
   constructor(props) {

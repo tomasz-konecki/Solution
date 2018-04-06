@@ -1,12 +1,12 @@
 import React, { Component } from "react";
-import Detail from "../common/Detail";
-import ResultBlock from "./../common/ResultBlock";
+import Detail from "../../common/Detail";
+import ResultBlock from "./../../common/ResultBlock";
 import DatePicker from "react-datepicker";
 import moment from "moment";
-import "../../scss/components/projectsModals/ProjectDetailsBlock.scss";
+import "../../../scss/components/projects/modals/ProjectDetailsBlock.scss";
 import "react-datepicker/dist/react-datepicker.css";
 import ResponsiblePersonBlock from "./ResponsiblePersonBlock";
-import constraints from "../../constraints";
+import constraints from "../../../constraints";
 
 const emptyField = "<brak>";
 const active = "Aktywny";

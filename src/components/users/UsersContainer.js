@@ -2,15 +2,15 @@ import React from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import * as usersActions from "../../../../actions/usersActions";
-import * as asyncActions from "../../../../actions/asyncActions";
+import * as usersActions from "../../actions/usersActions";
+import * as asyncActions from "../../actions/asyncActions";
 
-import "../../../../scss/containers/UsersContainer.scss";
+import "../../scss/containers/UsersContainer.scss";
 import Modal from "react-responsive-modal";
-import UserSelector from "../../../../components/usersModals/UserSelector";
-import UsersList from "../../../../components/users/UsersList";
-import { ACTION_CONFIRMED } from './../../../../constants';
-import DCMTWebApi from "../../../../api/";
+import UserSelector from "../../components/users/modals/UserSelector";
+import UsersList from "../../components/users/UsersList";
+import { ACTION_CONFIRMED } from './../../constants';
+import DCMTWebApi from "../../api/";
 
 class UsersContainer extends React.Component {
   constructor(props) {

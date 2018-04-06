@@ -14,7 +14,7 @@ export const loadProjects = (page = 1, limit = 25, other = {}) => {
   const settings = Object.assign({}, {
     Limit: limit,
     PageNumber: page,
-    IsDeleted: false
+    IsDeleted: true
   }, other);
   return dispatch => {
     dispatch(asyncStarted());

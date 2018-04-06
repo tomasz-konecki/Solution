@@ -29,6 +29,7 @@ class SmoothTable extends Component {
       if(column.field === undefined) return;
 
       let newField = {};
+      let newDateFilters = {};
       let newFilterField = {};
       let newFilterFieldLoaders = {};
       let newFilterFieldOverrides = {};
@@ -98,6 +99,10 @@ class SmoothTable extends Component {
 
   handlePageChange(paginator) {
     this.props.construct.pageChange(paginator.selected + 1, this.generateSettings());
+  }
+
+  handleFilterDateChange() {
+
   }
 
   generateToolBox(object, toolBoxColumn) {
@@ -264,9 +269,10 @@ class SmoothTable extends Component {
       case "date": {
         return <DatePicker
           selectsStart
+          selected={this.state.columnFilters[column.field]}
           locale="pl"
           className="form-control form-control-sm manual-input"
-          dateFormat="DD/MM/YYYY"
+          dateFormat="YYYY-MM-DD"
           todayButton={"Dzisiaj"}
           peekNextMonth
           showMonthDropdown
@@ -301,6 +307,17 @@ class SmoothTable extends Component {
     return <tr key="__FILTER_ROW">{columns}</tr>;
   }
 
+  generateCell(column, object) {
+    switch(column.type){
+      case "text":
+        return object[column.field];
+      case "multiState":
+        return column.multiState[object[column.field]];
+      case "date":
+        return moment(object[column.field]).format('YYYY-MM-DD');
+    }
+  }
+
   generateRow(object) {
     const { construct } = this.state;
     return (
@@ -319,9 +336,7 @@ class SmoothTable extends Component {
                 className="smooth-cell"
                 style={{ width: column.width + "%" }}
               >
-                {column.multiState === undefined
-                  ? object[column.field]
-                  : column.multiState[object[column.field]]}
+                {this.generateCell(column, object)}
               </td>
             );
           }

@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 import Confirmation from "../common/modals/Confirmation";
 import { setActionConfirmation } from "../../actions/asyncActions";
 import Modal from "react-responsive-modal";
-import EditUserDetails from "../usersModals/EditUserDetails";
+import EditUserDetails from "../users/modals/EditUserDetails";
 import DCMTWebApi from "../../api";
 
 class UsersList extends Component {

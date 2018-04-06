@@ -1,5 +1,6 @@
 import React, { Component } from "react";
-import Detail from "../common/Detail";
+import Detail from "../../common/Detail";
+
 const emptyField = "<brak>";
 
 class UserDetailsBlock extends Component {

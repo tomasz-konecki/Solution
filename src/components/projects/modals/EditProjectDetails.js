@@ -1,8 +1,8 @@
 import React, { Component } from "react";
-import LoaderHorizontal from "./../common/LoaderHorizontal";
-import ResultBlock from "./../common/ResultBlock";
+import LoaderHorizontal from "./../../common/LoaderHorizontal";
+import ResultBlock from "./../../common/ResultBlock";
 import ProjectDetailsBlock from "./ProjectDetailsBlock";
-import DCMTWebApi from "../../api";
+import DCMTWebApi from "../../../api";
 
 class EditProjectDetails extends Component {
   constructor(props) {

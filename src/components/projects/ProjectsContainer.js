@@ -2,15 +2,15 @@ import React from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import * as projectsActions from "../../../../actions/projectsActions";
-import * as asyncActions from "../../../../actions/asyncActions";
+import * as projectsActions from "../../actions/projectsActions";
+import * as asyncActions from "../../actions/asyncActions";
 import Modal from "react-responsive-modal";
-import AddProjectScreen from "../../../../components/projectsModals/AddProjectScreen";
-import ProjectsList from "../../../../components/projects/ProjectsList";
-import DCMTWebApi from "../../../../api/";
+import AddProjectScreen from "../../components/projects/modals/AddProjectScreen";
+import ProjectsList from "../../components/projects/ProjectsList";
+import DCMTWebApi from "../../api/";
 
-import "../../../../scss/containers/ProjectsContainer.scss";
-import { ACTION_CONFIRMED } from "./../../../../constants";
+import "../../scss/containers/ProjectsContainer.scss";
+import { ACTION_CONFIRMED } from "./../../constants";
 
 class ProjectsContainer extends React.Component {
   constructor(props) {

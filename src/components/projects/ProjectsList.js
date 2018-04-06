@@ -4,7 +4,7 @@ import SmoothTable from "../common/SmoothTable";
 import { setActionConfirmation } from "./../../actions/asyncActions";
 import { connect } from "react-redux";
 import Modal from "react-responsive-modal";
-import EditProjectDetails from "../projectsModals/EditProjectDetails";
+import EditProjectDetails from "../projects/modals/EditProjectDetails";
 import DCMTWebApi from "../../api";
 import "react-datepicker/dist/react-datepicker.css";
 import DatePicker from "react-datepicker";

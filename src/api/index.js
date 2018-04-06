@@ -33,7 +33,7 @@ class DCMTWebApi {
   }
 
   getUsers(settings = null) {
-    return axios.get(`${API_ENDPOINT}/users`, { params: settings });
+    return axios.post(`${API_ENDPOINT}/users`, settings);
   }
 
   searchAD(user) {

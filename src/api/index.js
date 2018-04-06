@@ -32,7 +32,7 @@ class DCMTWebApi {
     return axios.get(`${API_ENDPOINT}/statistics`);
   }
 
-  getUsers(settings = null) {
+  getUsers(settings = {}) {
     return axios.post(`${API_ENDPOINT}/users`, settings);
   }
 
@@ -59,8 +59,8 @@ class DCMTWebApi {
     });
   }
 
-  getProjects(settings = null) {
-    return axios.get(`${API_ENDPOINT}/projects`, { params: settings });
+  getProjects(settings = {}) {
+    return axios.post(`${API_ENDPOINT}/projects`, settings);
   }
 
   getProject(id) {

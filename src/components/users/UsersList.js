@@ -92,6 +92,7 @@ class UsersList extends Component {
       pageChange: this.props.pageChange,
       defaultSortField: "lastName",
       defaultSortAscending: true,
+      filterClass: "UserFilter",
       operators: [
         {
           pretty: "DODAJ",

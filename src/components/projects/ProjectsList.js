@@ -6,6 +6,8 @@ import { connect } from "react-redux";
 import Modal from "react-responsive-modal";
 import EditProjectDetails from "../projectsModals/EditProjectDetails";
 import DCMTWebApi from "../../api";
+import "react-datepicker/dist/react-datepicker.css";
+import DatePicker from "react-datepicker";
 
 class ProjectsList extends Component {
   constructor(props) {
@@ -52,6 +54,7 @@ class ProjectsList extends Component {
       pageChange: this.props.pageChange,
       defaultSortField: "name",
       defaultSortAscending: true,
+      filterClass: "ProjectFilter",
       operators: [
         {
           pretty: "DODAJ",
@@ -63,8 +66,8 @@ class ProjectsList extends Component {
       columns: [
         { width: 20, field: "name", pretty: "Nazwa projektu", type: "text", filter: true },
         { width: 20, field: "client", pretty: "Klient", type: "text", filter: true },
-        { width: 20, field: "startDate", pretty: "Data rozpoczęcia" },
-        { width: 20, field: "endDate", pretty: "Data zakończenia" },
+        { width: 20, field: "startDate", pretty: "Data rozpoczęcia", type: "date", filter: true, filterFieldOverride: "fromDate" },
+        { width: 20, field: "endDate", pretty: "Data zakończenia", type: "date", filter: true, filterFieldOverride: "toDate" },
         {
           width: 10,
           field: "isActive",

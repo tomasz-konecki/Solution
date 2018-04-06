@@ -19,7 +19,7 @@ class MainContainer extends React.Component {
     return (
       <div>
         <div className="wrapper">
-          <Header history={this.props.history} logout={this.props.logout} />
+          <Header history={this.props.history} />
           <Content match={match} />
         </div>
       </div>
@@ -28,8 +28,7 @@ class MainContainer extends React.Component {
 }
 
 MainContainer.propTypes = {
-  match: PropTypes.object,
-  logout: PropTypes.func
+  match: PropTypes.object
 };
 
 export default MainContainer;

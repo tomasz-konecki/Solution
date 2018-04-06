@@ -1,12 +1,12 @@
-import { AUTH_SUCCESS, AUTH_FAIL, AUTH_START, AUTH_STOP } from '../constants';
+import { AUTH_SUCCESS, AUTH_START, AUTH_STOP, LOGOUT } from '../constants';
 
-export const authSuccess = (token_block) => ({
-  type: AUTH_SUCCESS,
-  token_block
+export const logout = () => ({
+  type: LOGOUT
 });
 
-export const authFail = () => ({
-  type: AUTH_FAIL
+export const authSuccess = (userBlock) => ({
+  type: AUTH_SUCCESS,
+  userBlock
 });
 
 export const authStart = () => ({

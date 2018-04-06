@@ -1,0 +1,49 @@
+.user-details-container,
+.project-details-container {
+  padding-bottom: 1.5em;
+  border-bottom: 1px solid lightgray;
+
+  .detail-container {
+    margin-bottom: 0.4em;
+  }
+
+  label {
+    // display: inline-block;
+    font-size: 15px;
+    // width: 20%;
+  }
+  span {
+    font-weight: 700;
+    font-size: 15px;
+    margin-left: 0.5em;
+  }
+  input {
+    margin: 0;
+    height: 1.7em;
+  }
+}
+
+.edit-user-button-container,
+.edit-project-button-container {
+  display: flex;
+  justify-content: flex-end;
+  padding-right: 20px;
+  padding-top: 10px;
+}
+
+@media only screen and (max-width: 1366px) {
+  // height: 80%;
+  // width: 80%;
+
+  // font-size: 160% !important;
+}
+@media (min-width: 461px) and (max-width: 608px) {
+  height: 370px;
+  font-size: 14px;
+}
+
+@media only screen and (max-width: 460px) {
+  height: 500px;
+
+  // font-size: 230% !important;
+}

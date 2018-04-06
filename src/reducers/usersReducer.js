@@ -1,17 +1,25 @@
-import { LOAD_USERS_SUCCESS } from "../constants";
+import { LOAD_USERS_SUCCESS, LOGOUT } from "../constants";
 
 const initialState = {
-  users: []
+  users: [],
+  currentPage: 1,
+  totalPageCount: 1
 };
 
 export const usersReducer = (state = initialState, action) => {
   switch (action.type) {
     case LOAD_USERS_SUCCESS:
       return {
-        ...state,
-        users: action.users
+        users: action.users.results,
+        currentPage: action.users.currentPage,
+        totalPageCount: action.users.totalPageCount
       };
-
+    case LOGOUT:
+      return {
+        users: [],
+        currentPage: 1,
+        totalPageCount: 1
+      };
     default:
       return state;
   }

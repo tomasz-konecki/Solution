@@ -1,6 +1,7 @@
 @import "../ColorSchema.scss";
-button {
-  outline: none;
+.dcmt-button {
+  width: 100px;
+  outline: none !important;
   height: 2.5em;
   line-height: 2.1em;
   vertical-align: baseline;
@@ -24,6 +25,13 @@ button {
     padding-right: 5px;
   }
 
+  &.button-disabled {
+    background: #333;
+    &:hover {
+      background: #222;
+    }
+  }
+
   &.submitter {
     margin-top: 2em;
   }
@@ -31,6 +39,7 @@ button {
     background-color: $button-element-hover-background;
     border: 1.2px solid lighten($button-element-hover-background, 5%);
     color: lighten($menu-element-icon-hover-color, 55%);
+    cursor: pointer;
   }
   &.nav-compact {
     border: 0;

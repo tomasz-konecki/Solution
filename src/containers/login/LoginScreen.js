@@ -1,16 +1,25 @@
 import React from "react";
 import "../../scss/LoginForm.scss";
-import "../../scss/Logo.scss";
+import colors from "../../scss/ColorSchema.scss";
 import LoginForm from "../login/LoginForm";
 import Logo from "../../components/common/Logo";
 
 class LoginScreen extends React.Component {
   constructor(props) {
     super(props);
+
   }
+
+  componentWillMount(){
+    document.body.style.backgroundColor = colors.mainColor;
+  }
+  componentWillUnmount(){
+    document.body.style.backgroundColor = colors.contentBackground;
+  }
+
   render() {
     return (
-      <div className="front-screen">
+      <div className="login-screen">
         <Logo size="vector_cut" container />
         <LoginForm />
       </div>

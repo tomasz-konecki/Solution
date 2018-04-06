@@ -65,6 +65,10 @@
     "react/require-extension": 0,
     "react/self-closing-comp": 1,
     "react/sort-comp": 1,
-    "react/wrap-multilines": 0
+    "react/wrap-multilines": 0,
+    "import/no-named-as-default-member": 0,
+    "import/no-named-as-default": 0,
+    "import/default": 0,
+    "import/namespace": 0
   }
 }

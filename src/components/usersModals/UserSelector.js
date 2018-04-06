@@ -3,49 +3,70 @@ import StageOne from "./StageOne";
 import StageTwo from "./StageTwo";
 import DCMTWebApi from "../../api";
 
+const initialState = {
+  selectedUser: {},
+  foundUsers: [],
+  isStageTwo: false,
+  errorBlock: null
+};
+
 class UserSelector extends Component {
   constructor() {
     super();
-    this.state = {
-      selectedUser: {},
-      foundUsers: [],
-      isStageTwo: false
-    };
-
-    this.setSelectedUser = this.setSelectedUser.bind(this);
-    this.resetState = this.resetState.bind(this);
-    this.setState = this.setState.bind(this);
-    this.searchUsersInAD = this.searchUsersInAD.bind(this);
+    this.state = initialState;
   }
 
-  setSelectedUser(value) {
+  setSelectedUser = user => {
     this.setState({
-      selectedUser: value,
-      isStageTwo: true
+      selectedUser: user,
+      isStageTwo: true,
+      errorBlock: null
     });
-    console.log("Selected user:", value);
-  }
+  };
 
-  resetState() {
+  resetState = () => {
     this.setState({
-      selectedUser: {},
-      isStageTwo: false
+      ...initialState
     });
-  }
+  };
 
-  searchUsersInAD(user) {
-    this.setState({
-      foundUsers: []
-    });
-    DCMTWebApi.searchAD(user)
+  getUsers = user => {
+    // if (!user) {
+    //   return Promise.resolve({ options: [] });
+    // }
+    return DCMTWebApi.searchAD(user)
       .then(response => {
-        this.setState({ foundUsers: response.data.dtoObject });
-        this.refs.StageOne.stopLoading();
+        return { options: response.data.dtoObjects };
       })
-      .catch(error => {
-        throw error;
+      .then(
+        this.setState({
+          errorBlock: null
+        })
+      )
+      .catch(errorBlock => {
+        this.setState({ errorBlock });
+        // this.refs.StageOne.stopLoading();
       });
-  }
+  };
+
+  doAddUser = newUser => {
+    DCMTWebApi.addUser(newUser.id, newUser.roles)
+      .then(response => {
+        this.setState({
+          errorBlock: {
+            response
+          }
+        });
+        this.refs.StageTwo.stopLoading();
+        setTimeout(() => {
+          this.props.closeModal();
+        }, 500);
+      })
+      .catch(errorBlock => {
+        this.setState({ errorBlock });
+        this.refs.StageTwo.stopLoading();
+      });
+  };
 
   render() {
     return (
@@ -54,14 +75,18 @@ class UserSelector extends Component {
           <StageOne
             ref="StageOne"
             setSelectedUser={this.setSelectedUser}
-            searchUsersInAD={this.searchUsersInAD}
             foundUsers={this.state.foundUsers}
+            errorBlock={this.state.errorBlock}
+            getUsers={this.getUsers}
           />
         )}
         {this.state.isStageTwo === true && (
           <StageTwo
+            ref="StageTwo"
             selectedUser={this.state.selectedUser}
             resetState={this.resetState}
+            errorBlock={this.state.errorBlock}
+            doAddUser={this.doAddUser}
           />
         )}
       </div>

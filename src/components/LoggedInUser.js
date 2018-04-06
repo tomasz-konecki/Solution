@@ -6,7 +6,8 @@ class LoggedInUser extends Component {
   render() {
     return (
       <span className="logged-in-user">
-        Zalogowany: <strong>{this.props.user}</strong>
+        Zalogowany:{" "}
+        <strong>{this.props.firstName + " " + this.props.lastName}</strong>
       </span>
     );
   }
@@ -14,7 +15,8 @@ class LoggedInUser extends Component {
 
 const mapStateToProps = state => {
   return {
-    user: state.authReducer.extra
+    firstName: state.authReducer.firstName,
+    lastName: state.authReducer.lastName
   };
 };
 

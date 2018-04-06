@@ -1,4 +1,4 @@
-input[type="text"], input[type="password"] {
+input[type="text"], input[type="password"], .manual-input {
   display: inline-block;
   padding: 0 10px;
   border: none;
@@ -35,4 +35,7 @@ input[type="text"], input[type="password"] {
       //
     }
   }
+}
+.manual-input {
+  height: auto !important;
 }

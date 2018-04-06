@@ -12,18 +12,22 @@ export const authReducer = (state = initialState, action) => {
         ...state,
         isAuthenticated: true,
         loading: false,
-        ...action.token_block
-      };
-    case types.AUTH_FAIL:
-      return {
-        ...state,
-        isAuthenticated: false,
-        loading: false
+        ...action.userBlock
       };
     case types.AUTH_START:
       return {
         ...state,
         loading: true
+      };
+    case types.AUTH_STOP:
+      return {
+        ...state,
+        loading: false
+      };
+    case types.LOGOUT:
+      return {
+        isAuthenticated: false,
+        loading: false
       };
     default:
       return state;

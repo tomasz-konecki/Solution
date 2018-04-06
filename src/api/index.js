@@ -3,31 +3,45 @@ import * as jwtDecode from "jwt-decode";
 import * as Promise from "bluebird";
 import * as usersMocks from "./mock/users";
 import * as projectsMocks from "./mock/projects";
+import redux from "redux";
+import storeCreator from "./../store";
+import storage from "redux-persist/lib/storage";
+const { store } = storeCreator;
 
 const API_ENDPOINT = "http://10.24.14.148";
 
+store.subscribe(listener);
+
+const select = state =>
+  state.authReducer.tokens !== undefined ? state.authReducer.tokens.token : "";
+
+function listener() {
+  const token = `Bearer ${select(store.getState())}`;
+
+  axios.defaults.headers.common["Authorization"] = token;
+}
+
 class DCMTWebApi {
-  auth(username, password) {
+  auth(login, password) {
     return axios
-      .post(`${API_ENDPOINT}/account/login`, { username, password })
-      .then(response => jwtDecode(response.data.id_token));
+      .post(`${API_ENDPOINT}/users/login`, { login, password })
+      .then(response => response.data.dtoObject);
   }
 
   getStatistics() {
     return axios.get(`${API_ENDPOINT}/statistics`);
   }
 
-  getUsers(settings = null) {
-    if (settings === null) return axios.get(`${API_ENDPOINT}/users`);
-    return axios.get(`${API_ENDPOINT}/users`, { params: settings });
+  getUsers(settings = {}) {
+    return axios.post(`${API_ENDPOINT}/users`, settings);
   }
 
   searchAD(user) {
     return axios.get(`${API_ENDPOINT}/users/searchAD/${user}`);
   }
 
-  addUser(id, role) {
-    return axios.post(`${API_ENDPOINT}/users`, { id, role });
+  addUser(id, roles) {
+    return axios.post(`${API_ENDPOINT}/users`, { id, roles });
   }
 
   deleteUser(id) {
@@ -38,37 +52,40 @@ class DCMTWebApi {
     return axios.get(`${API_ENDPOINT}/users/${id}`);
   }
 
-  changeUserRole(id, role) {
-    return axios.patch(`${API_ENDPOINT}/users/${id}`, { role });
+  changeUserRole(id, roles) {
+    return axios.patch(`${API_ENDPOINT}/users`, {
+      id,
+      roles
+    });
   }
 
-  getProjects(settings = null) {
-    if (settings === null) return axios.get(`${API_ENDPOINT}/projects`);
-    return axios.get(`${API_ENDPOINT}/projects`, { params: settings });
+  getProjects(settings = {}) {
+    return axios.post(`${API_ENDPOINT}/projects`, settings);
   }
 
   getProject(id) {
     return axios.get(`${API_ENDPOINT}/projects/${id}`);
   }
 
-  addProject(
+  addProject({
     name,
     description,
     client,
     responsiblePerson,
     startDate,
     estimatedEndDate
-  ) {
+  }) {
     return axios.post(`${API_ENDPOINT}/projects`, {
       name,
       description,
+      client,
       responsiblePerson,
       startDate,
       estimatedEndDate
     });
   }
 
-  editProject(
+  editProject({
     id,
     name,
     description,
@@ -76,9 +93,10 @@ class DCMTWebApi {
     responsiblePerson,
     startDate,
     estimatedEndDate
-  ) {
+  }) {
     return axios.put(`${API_ENDPOINT}/projects/${id}`, {
       name,
+      client,
       description,
       responsiblePerson,
       startDate,
@@ -93,7 +111,7 @@ class DCMTWebApi {
   }
 
   deleteProject(id) {
-    return axios.delete(`${API_ENDPOINT}/projects/${id}`);
+    return axios.delete(`${API_ENDPOINT}/projects/${id}/delete`);
   }
 
   getAssignmentsForEmployee(id) {
@@ -245,12 +263,7 @@ class DCMTMockApi extends DCMTWebApi {
   }
 
   addProject(
-    name,
-    description,
-    client,
-    responsiblePerson,
-    startDate,
-    estimatedEndDate,
+    { projectName, description, client, responsiblePerson, startDate, endDate },
     simulateError = false
   ) {
     return Promise.resolve(this.pretendResponse(null, simulateError));
@@ -290,4 +303,4 @@ class DCMTMockApi extends DCMTWebApi {
   }
 }
 
-export default new DCMTMockApi();
+export default new DCMTWebApi();

@@ -15,8 +15,10 @@ class Header extends React.Component {
     this.handleExtend = this.handleExtend.bind(this);
     this.handleBlockedClick = this.handleBlockedClick.bind(this);
     this.closeMenu = this.closeMenu.bind(this);
+  }
 
-    props.history.listen(location =>  {
+  componentDidMount() {
+    this.props.history.listen(location =>  {
       this.closeMenu();
     });
   }
@@ -51,7 +53,7 @@ class Header extends React.Component {
         </div>
         <LeftMenu className="left-menu" close={this.closeMenu} extended={this.state.extended} />
         <Logo size="vector_cut"/>
-        <TopBar logout={this.props.logout} />
+        <TopBar />
       </div>
     );
   }

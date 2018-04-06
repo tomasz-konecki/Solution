@@ -1,6 +1,6 @@
 import { SubmissionError } from "redux-form";
 import { connect } from "react-redux";
-import { authSuccess, authStart, authStop, authFail } from "../actions/authActions";
+import { authSuccess, authStart, authStop } from "../actions/authActions";
 import { push } from "react-router-redux";
 import axios from "axios";
 import * as jwtDecode from "jwt-decode";
@@ -10,10 +10,11 @@ import DCMTWebApi from "../api";
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 
 const errorHandler = dispatch => error => {
-  dispatch(authFail());
-  if (error.response === undefined) {
+  dispatch(authStop());
+  if (error.response.data.errorOccured === true) {
+    const { errors } = error.response.data;
     throw new SubmissionError({
-      _error: error.toString()
+      _error: errors[Object.keys(errors)[0]]
     });
   }
   switch (error.response.status) {
@@ -31,10 +32,10 @@ const errorHandler = dispatch => error => {
 const submit = ({ username, password }, dispatch) => {
   return Promise.resolve()
     .then(() => dispatch(authStart()))
-    .then(() => sleep(2000))
     .then(() => DCMTWebApi.auth(username, password))
-    .then(token => {
-      dispatch(authSuccess(token));
+    .then(userBlock => {
+      dispatch(authSuccess(userBlock));
+      dispatch(authStop());
       dispatch(push("/main"));
     })
     .catch(errorHandler(dispatch));

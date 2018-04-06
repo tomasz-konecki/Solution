@@ -1,6 +1,11 @@
 import React, { Component } from "react";
 import "../../scss/components/usersModals/StageTwo.scss";
 import FoundUsersTable from "../users/FoundUsersTable";
+import DCMTWebApi from "../../api";
+import UserDetailsBlock from "./UserDetailsBlock";
+import UserRoleAssigner from "./UserRoleAssigner";
+import LoaderHorizontal from "../../components/common/LoaderHorizontal";
+import ResultBlock from "../common/ResultBlock";
 
 class StageTwo extends Component {
   constructor() {
@@ -11,35 +16,10 @@ class StageTwo extends Component {
       email: "",
       phoneNumber: "",
       id: "",
-      roles: []
+      roles: [],
+      isLoading: false
     };
   }
-
-  handleBack = () => {
-    this.props.resetState();
-  };
-
-  handleSelectRole = event => {
-    const itemExists =
-      this.state.roles.findIndex(item => item === event.target.value) !== -1;
-
-    const roles = itemExists
-      ? this.state.roles.filter(item => item !== event.target.value)
-      : [...this.state.roles, event.target.value];
-
-    this.setState({
-      roles
-    });
-  };
-
-  handleSubmit = event => {
-    event.preventDefault();
-    if (this.state.roles.length === 0) {
-      alert("Dodaj role!");
-    } else {
-      console.log("User's profile:", this.state);
-    }
-  };
 
   componentDidMount() {
     let {
@@ -48,7 +28,7 @@ class StageTwo extends Component {
       id,
       email,
       phoneNumber,
-      role
+      roles
     } = this.props.selectedUser;
 
     if (phoneNumber === null) {
@@ -64,89 +44,70 @@ class StageTwo extends Component {
     });
   }
 
+  handleBack = () => {
+    this.props.resetState();
+  };
+
+  handleRoleChange = roles => {
+    this.setState({ roles });
+  };
+
+  handleSubmit = event => {
+    event.preventDefault();
+
+    if (this.state.roles.length === 0) {
+      alert("Dodaj role!");
+    } else {
+      this.setState({ isLoading: true });
+      this.props.doAddUser(this.state);
+    }
+  };
+
+  stopLoading = () => {
+    this.setState({ isLoading: false });
+  };
+
   render() {
     return (
       <div className="stage-two-container">
-        <div className="user-details-container">
-          <div className="detail-container">
-            <label>Imię:</label>
-            <span>{this.state.firstName}</span>
-          </div>
-          <div className="detail-container">
-            <label>Nazwisko:</label>
-            <span>{this.state.lastName}</span>
-          </div>
-          <div className="detail-container">
-            <label>Email:</label>
-            <span>{this.state.email}</span>
-          </div>
-          <div className="detail-container">
-            <label>Telefon:</label>
-            <span>{this.state.phoneNumber}</span>
-          </div>
-          <div className="detail-container">
-            <label>Role:</label>
-            <span>{this.state.roles.join(", ")}</span>
+        <div className="form-container">
+          <UserDetailsBlock
+            parseRoles={this.parseRoles}
+            user={this.state}
+            editable={false}
+          />
+          <UserRoleAssigner
+            roles={this.state.roles}
+            resetState={this.props.resetState}
+            handleRoleChange={this.handleRoleChange}
+          />
+          <div className="form-navigation">
+            <div className="button-back-container">
+              <button className="dcmt-button" onClick={this.handleBack}>
+                Powrót
+              </button>
+            </div>
+            <div>
+              <ResultBlock
+                errorBlock={this.props.errorBlock}
+                errorOnly={false}
+                successMessage={"Użytkownik dodany pomyślnie"}
+              />
+            </div>
+            <div className="submit-button-container">
+              <button
+                className="dcmt-button"
+                type="submit"
+                onClick={this.handleSubmit}
+              >
+                Dodaj
+              </button>
+            </div>
           </div>
         </div>
 
-        <div className="form-container">
-          <form onSubmit={this.handleSubmit}>
-            <div className="">
-              <input
-                type="checkbox"
-                name="role"
-                value="Developer"
-                onChange={this.handleSelectRole}
-              />
-              <span>Programista</span>
-            </div>
-            <div className="">
-              <input
-                type="checkbox"
-                name="role"
-                value="Team Leader"
-                onChange={this.handleSelectRole}
-              />
-              <span>Team leader</span>
-            </div>
-            <div className="">
-              <input
-                type="checkbox"
-                name="role"
-                value="Human Resources"
-                onChange={this.handleSelectRole}
-              />
-              <span>Human Resources</span>
-            </div>
-            <div className="">
-              <input
-                type="checkbox"
-                name="role"
-                value="Tradesman"
-                onChange={this.handleSelectRole}
-              />
-              <span>Handlowiec</span>
-            </div>
-            <div className="">
-              <input
-                type="checkbox"
-                name="role"
-                value="Administrator"
-                onChange={this.handleSelectRole}
-              />
-              <span>Administrator</span>
-            </div>
-
-            <div className="form-navigation">
-              <div className="button-back-container">
-                <button onClick={this.handleBack}>Back</button>
-              </div>
-              <div className="submit-button-container">
-                <button type="submit">Submit</button>
-              </div>
-            </div>
-          </form>
+        <div className="stage-two-loader-container">
+          {this.state.isLoading === true && <LoaderHorizontal />}
         </div>
       </div>
     );

@@ -5,8 +5,8 @@ import PropTypes from "prop-types";
 import UsersContainer from "./containers/UsersContainer";
 import ProjectsContainer from "./containers/ProjectsContainer";
 import Employees from "./views/Employees";
-// import Projects from "./views/Projects";
 import Assign from "./views/Assign";
+import Confirmation from './../../../components/common/modals/Confirmation';
 
 class Content extends React.Component {
   constructor(props) {
@@ -17,6 +17,7 @@ class Content extends React.Component {
     const { match } = this.props;
     return (
       <div className="content">
+        <Confirmation/>
         <Route path={match.url + "/users"} component={UsersContainer} />
         <Route path={match.url + "/employees"} component={Employees} />
         <Route path={match.url + "/projects"} component={ProjectsContainer} />

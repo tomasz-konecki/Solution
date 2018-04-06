@@ -1,28 +1,28 @@
 @import "./3rd/Loader";
 @import "./ColorSchema";
 
-.logo-container {
+.login-screen {
+  background: $main-color;
+}
+
+.logo {
   position: absolute;
-  top: 10%;
+  top: 0;
   width: 100%;
-  height: 100%;
-  img {
-    filter: invert(1);
-    height: 40%;
-  }
+  text-align: center;
+  filter: invert(1);
+  height: 40%;
 }
 
-@media only screen and (max-width: 1000px) {
-  .logo-container {
-    margin: auto;
-    text-align: center;
-    top: 6%;
-
-    img {
-      height: 15%;
-    }
-  }
-}
+// @media only screen and (max-width: 1000px) {
+//   .logo {
+//     top: 20px;
+//     left: 32%;
+//     width: 35%;
+//     height: 100px;
+//     background-size: contain !important;
+//   }
+// }
 
 body {
   background: $left-menu-li-border-bottom-color;
@@ -30,7 +30,7 @@ body {
 
 .login-wrapper {
   position: absolute;
-  top: 30%;
+  top: 35%;
   width: 100%;
   text-align: center;
   .login-form {
@@ -40,10 +40,10 @@ body {
     background: $wrapper-background !important;
 
     @media only screen and (max-width: 1000px) {
-      font-size: 230%;
-      width: 90%;
+      font-size: 180%;
+      width: 50%;
+      // height: 300px;
     }
-
 
     input {
       width: 100%;
@@ -82,7 +82,7 @@ body {
     }
     .context-container {
       height: 10px;
-      .loader{
+      .loader {
         padding-top: 5px;
       }
     }

@@ -1,4 +1,4 @@
-export const workersReducer = (state = 'reactjs', action) => {
+export const workersReducer = (state = "", action) => {
   switch (action.type) {
     default:
       return state;

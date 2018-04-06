@@ -52,8 +52,8 @@ module.exports = {
         }
       },
       {
-        test: /\.(woff(2)?|ttf|eot|svg)(\?v=\d+\.\d+\.\d+)?$/,
-        loader: "url-loader"
+        test: /\.(png|svg|gif)(\?v=\d+\.\d+\.\d+)?$/,
+        loader: "url-loader?limit=50000&name=./public/img/[name].[ext]"
       },
       {
         test: /\.scss$/,

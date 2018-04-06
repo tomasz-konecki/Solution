@@ -1,39 +1,48 @@
-$color: #2980b9;
+@import "../ColorSchema";
+
+$width: 10%;
+$animation: cubic-bezier(0.23, 1, 0.320, 1);
 
 .loader {
 	height: 4px;
 	width: 100%;
 	position: relative;
-	overflow: hidden;
-	&:before {
+  overflow: hidden;
+  &:before {
 		display: block;
 		position: absolute;
 		content: "";
-		left: -200px;
-		width: 200px;
+		width: $width;
 		height: 4px;
-		background-color: $color;
-		animation: loading 2s linear infinite;
+		background-color: $main-color;
+		animation: loading 1s $animation infinite;
+	}
+	&:after {
+		display: block;
+		position: absolute;
+		content: "";
+		width: $width;
+		height: 4px;
+    background-color: $main-color;
+    animation-delay: 0.5s;
+		animation: loading-reverse 1s $animation infinite;
 	}
 }
 @keyframes loading {
-	from {
-		left: -200px;
-		width: 30%;
-	}
-	50% {
-		width: 30%;
-	}
-	70% {
-		width: 70%;
-	}
-	80% {
-		left: 50%;
-	}
-	95% {
-		left: 120%;
-	}
-	to {
-		left: 100%;
-	}
+	0% {
+    left: 0;
+  }
+  100% {
+    left: (100% - $width);
+  }
 }
+
+@keyframes loading-reverse {
+	0% {
+    left: (100% - $width);
+  }
+  100% {
+    left: 0;
+  }
+}
+

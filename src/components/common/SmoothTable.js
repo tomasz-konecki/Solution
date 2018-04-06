@@ -269,7 +269,6 @@ class SmoothTable extends Component {
       case "date": {
         return <DatePicker
           selectsStart
-          selected={this.state.columnFilters[column.field]}
           locale="pl"
           className="form-control form-control-sm manual-input"
           dateFormat="YYYY-MM-DD"
@@ -344,7 +343,7 @@ class SmoothTable extends Component {
             return (
               <td
                 key="____toolBox"
-                className="smooth-cell"
+                className="smooth-cell smooth-text-center"
                 style={{ width: column.width + "%" }}
               >
                 {this.generateToolBox(object, column)}

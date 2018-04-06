@@ -36,6 +36,6 @@ input[type="text"], input[type="password"], .manual-input {
     }
   }
 }
-.manual-input {
-  height: auto !important;
+select {
+  height: calc(1.3525rem + 2px) !important;
 }

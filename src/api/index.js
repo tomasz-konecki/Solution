@@ -114,6 +114,10 @@ class DCMTWebApi {
     return axios.delete(`${API_ENDPOINT}/projects/${id}/delete`);
   }
 
+  closeProject(id) {
+    return axios.put(`${API_ENDPOINT}/projects/${id}/close`);
+  }
+
   getAssignmentsForEmployee(id) {
     return axios.get(`${API_ENDPOINT}/assignments/employee/${id}`);
   }

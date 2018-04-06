@@ -44,6 +44,19 @@ class ProjectsContainer extends React.Component {
           this.props.async.setActionConfirmationResult(error);
         });
     }
+    if (this.validatePropsForProjectClosing(nextProps)) {
+      this.props.async.setActionConfirmationProgress(true);
+      DCMTWebApi.closeProject(this.props.toConfirm.id)
+        .then(response => {
+          this.props.async.setActionConfirmationResult({
+            response
+          });
+          this.pageChange(this.state.currentPage);
+        })
+        .catch(error => {
+          this.props.async.setActionConfirmationResult(error);
+        });
+    }
   }
 
   validatePropsForProjectDeletion(nextProps) {
@@ -52,6 +65,15 @@ class ProjectsContainer extends React.Component {
       !nextProps.isWorking &&
       nextProps.type === ACTION_CONFIRMED &&
       nextProps.toConfirm.key === "deleteProject"
+    );
+  }
+
+  validatePropsForProjectClosing(nextProps) {
+    return (
+      nextProps.confirmed &&
+      !nextProps.isWorking &&
+      nextProps.type === ACTION_CONFIRMED &&
+      nextProps.toConfirm.key === "closeProject"
     );
   }
 

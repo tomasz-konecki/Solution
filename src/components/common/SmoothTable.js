@@ -178,7 +178,6 @@ class SmoothTable extends Component {
           }, () => {
             this.props.construct.pageChange(1, this.generateSettings());
           });
-          console.log(this.generateSettings());
         }
       }, offset);
     });
@@ -358,8 +357,8 @@ class SmoothTable extends Component {
     const { construct } = this.state;
     let list = [],
       empty = false;
+    list.push(this.generateFieldSearchRow());
     if (this.props.data !== undefined && this.props.data[0] !== undefined) {
-      list.push(this.generateFieldSearchRow());
       list = list.concat(this.props.data.map((object, index) => this.generateRow(object)));
     } else {
       empty = true;

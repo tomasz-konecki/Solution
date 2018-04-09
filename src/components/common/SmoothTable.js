@@ -105,15 +105,17 @@ class SmoothTable extends Component {
 
   }
 
+  toolBoxButton(button, object) {
+    return <button
+      key={button.icon.icon}
+      onClick={this.deepenFunction(button.click, object)}
+    >
+      <Icon {...button.icon} />
+    </button>;
+  }
+
   generateToolBox(object, toolBoxColumn) {
-    return toolBoxColumn.toolBox.map((button, index) => (
-      <button
-        key={button.icon.icon}
-        onClick={this.deepenFunction(button.click, object)}
-      >
-        <Icon {...button.icon} />
-      </button>
-    ));
+    return toolBoxColumn.toolBox.map((button, index) => this.toolBoxButton(button, object));
   }
 
   handleQueryChange(event) {
@@ -191,16 +193,18 @@ class SmoothTable extends Component {
     });
   }
 
+  operatorButton(index, operator) {
+    return <button key={index} onClick={this.deepenFunction(operator.click)}>
+      {operator.pretty}
+    </button>;
+  }
+
   generateOperators() {
     let operators = [];
     let inputClasses = ["form-control"];
     if(this.state.isQueryLoading) inputClasses.push('loading');
     this.state.construct.operators.map((operator, index) => (
-      operators.push(
-        <button key={index} onClick={this.deepenFunction(operator.click)}>
-          {operator.pretty}
-        </button>
-      )
+      operators.push(this.operatorButton(index, operator))
     ));
     operators.push(
       <input
@@ -227,15 +231,17 @@ class SmoothTable extends Component {
     return <span className="smooth-arrow-right"><Icon icon={ascending}/></span>;
   }
 
+  tableHeader(currentlySortedColumn, columns, column, index) {
+    if(currentlySortedColumn === column.field)
+      return <th onClick={this.deepenFunction(this.handleSortColumnClick, column.field)} key={column.field + index}>{column.pretty}
+      {this.generateSortingArrow(columns[currentlySortedColumn])}</th>;
+    else
+      return <th onClick={this.deepenFunction(this.handleSortColumnClick, column.field)} key={column.field + index}>{column.pretty}</th>;
+  }
+
   generateLegend() {
-    const {currentlySortedColumn, columns} = this.state;
-    return this.state.construct.columns.map((column, index) => {
-      if(currentlySortedColumn === column.field)
-        return <th onClick={this.deepenFunction(this.handleSortColumnClick, column.field)} key={column.field + index}>{column.pretty}
-        {this.generateSortingArrow(columns[currentlySortedColumn])}</th>;
-      else
-        return <th onClick={this.deepenFunction(this.handleSortColumnClick, column.field)} key={column.field + index}>{column.pretty}</th>;
-    });
+    const {currentlySortedColumn, columns, construct} = this.state;
+    return construct.columns.map((column, index) => this.tableHeader(currentlySortedColumn, columns, column, index));
   }
 
   generateFieldFilter(column, classes) {

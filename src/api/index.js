@@ -41,7 +41,7 @@ class DCMTWebApi {
   }
 
   addUser(id, roles) {
-    return axios.post(`${API_ENDPOINT}/users`, { id, roles });
+    return axios.post(`${API_ENDPOINT}/users/add`, { id, roles });
   }
 
   deleteUser(id) {
@@ -75,7 +75,7 @@ class DCMTWebApi {
     startDate,
     estimatedEndDate
   }) {
-    return axios.post(`${API_ENDPOINT}/projects`, {
+    return axios.post(`${API_ENDPOINT}/projects/add`, {
       name,
       description,
       client,

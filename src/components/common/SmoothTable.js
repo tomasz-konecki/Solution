@@ -148,6 +148,7 @@ class SmoothTable extends Component {
     let {columnFilters, columnFiltersLoaders} = this.state;
 
     let value, offset = 1;
+
     switch(type){
       case "text": {
         value = event.target.value;
@@ -188,7 +189,7 @@ class SmoothTable extends Component {
   removeFilters() {
     let newState = this.initialState;
     newState.columnFilters = Object.assign({}, ...Object.keys(newState.columnFilters).map(k => ({[k]: ""})));
-    this.setState(this.initialState, () => {
+    this.setState(newState, () => {
       this.props.construct.pageChange(1, this.generateSettings());
     });
   }
@@ -248,12 +249,12 @@ class SmoothTable extends Component {
     switch(column.type){
       case "text": {
         return <input
-          type="text"
+          type={column.type}
           name={"__SEARCH_" + column.field}
           value={this.state.columnFilters[column.field]}
           placeholder={"Szukaj " + column.pretty}
           required
-          onChange={this.deepenFunction(this.handleColumnFilterChange, column, "text")}
+          onChange={this.deepenFunction(this.handleColumnFilterChange, column, column.type)}
           className={classes}
         />;
       }
@@ -261,7 +262,7 @@ class SmoothTable extends Component {
         return <select
           name={"__MULTISTATE_" + column.field}
           className="form-control form-control-sm manual-input"
-          onChange={this.deepenFunction(this.handleColumnFilterChange, column, "multiState")}
+          onChange={this.deepenFunction(this.handleColumnFilterChange, column, column.type)}
         >
           <option/>
           {
@@ -283,7 +284,7 @@ class SmoothTable extends Component {
           showYearDropdown
           dropdownMode="select"
           name={"__SEARCH_" + column.field}
-          onChange={this.deepenFunction(this.handleColumnFilterChange, column, "date")}
+          onChange={this.deepenFunction(this.handleColumnFilterChange, column, column.type)}
         />;
       }
     }
@@ -302,7 +303,7 @@ class SmoothTable extends Component {
             className="smooth-cell smooth-text-center-row"
             style={{ width: column.width + "%" }}
           >
-            {this.generateFieldFilter(column, inputClasses.concat([additionalClass]).join(" "))}
+            {this.generateFieldFilter(column, [...inputClasses, additionalClass].join(" "))}
           </td>
         );
       }

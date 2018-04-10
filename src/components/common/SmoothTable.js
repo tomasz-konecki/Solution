@@ -105,15 +105,17 @@ class SmoothTable extends Component {
 
   }
 
+  toolBoxButton(button, object) {
+    return <button
+      key={button.icon.icon}
+      onClick={this.deepenFunction(button.click, object)}
+    >
+      <Icon {...button.icon} />
+    </button>;
+  }
+
   generateToolBox(object, toolBoxColumn) {
-    return toolBoxColumn.toolBox.map((button, index) => (
-      <button
-        key={button.icon.icon}
-        onClick={this.deepenFunction(button.click, object)}
-      >
-        <Icon {...button.icon} />
-      </button>
-    ));
+    return toolBoxColumn.toolBox.map((button, index) => this.toolBoxButton(button, object));
   }
 
   handleQueryChange(event) {
@@ -146,6 +148,7 @@ class SmoothTable extends Component {
     let {columnFilters, columnFiltersLoaders} = this.state;
 
     let value, offset = 1;
+
     switch(type){
       case "text": {
         value = event.target.value;
@@ -186,9 +189,15 @@ class SmoothTable extends Component {
   removeFilters() {
     let newState = this.initialState;
     newState.columnFilters = Object.assign({}, ...Object.keys(newState.columnFilters).map(k => ({[k]: ""})));
-    this.setState(this.initialState, () => {
+    this.setState(newState, () => {
       this.props.construct.pageChange(1, this.generateSettings());
     });
+  }
+
+  operatorButton(index, operator) {
+    return <button key={index} onClick={this.deepenFunction(operator.click)}>
+      {operator.pretty}
+    </button>;
   }
 
   generateOperators() {
@@ -196,11 +205,7 @@ class SmoothTable extends Component {
     let inputClasses = ["form-control"];
     if(this.state.isQueryLoading) inputClasses.push('loading');
     this.state.construct.operators.map((operator, index) => (
-      operators.push(
-        <button key={index} onClick={this.deepenFunction(operator.click)}>
-          {operator.pretty}
-        </button>
-      )
+      operators.push(this.operatorButton(index, operator))
     ));
     operators.push(
       <input
@@ -227,27 +232,29 @@ class SmoothTable extends Component {
     return <span className="smooth-arrow-right"><Icon icon={ascending}/></span>;
   }
 
+  tableHeader(currentlySortedColumn, columns, column, index) {
+    if(currentlySortedColumn === column.field)
+      return <th onClick={this.deepenFunction(this.handleSortColumnClick, column.field)} key={column.field + index}>{column.pretty}
+      {this.generateSortingArrow(columns[currentlySortedColumn])}</th>;
+    else
+      return <th onClick={this.deepenFunction(this.handleSortColumnClick, column.field)} key={column.field + index}>{column.pretty}</th>;
+  }
+
   generateLegend() {
-    const {currentlySortedColumn, columns} = this.state;
-    return this.state.construct.columns.map((column, index) => {
-      if(currentlySortedColumn === column.field)
-        return <th onClick={this.deepenFunction(this.handleSortColumnClick, column.field)} key={column.field + index}>{column.pretty}
-        {this.generateSortingArrow(columns[currentlySortedColumn])}</th>;
-      else
-        return <th onClick={this.deepenFunction(this.handleSortColumnClick, column.field)} key={column.field + index}>{column.pretty}</th>;
-    });
+    const {currentlySortedColumn, columns, construct} = this.state;
+    return construct.columns.map((column, index) => this.tableHeader(currentlySortedColumn, columns, column, index));
   }
 
   generateFieldFilter(column, classes) {
     switch(column.type){
       case "text": {
         return <input
-          type="text"
+          type={column.type}
           name={"__SEARCH_" + column.field}
           value={this.state.columnFilters[column.field]}
           placeholder={"Szukaj " + column.pretty}
           required
-          onChange={this.deepenFunction(this.handleColumnFilterChange, column, "text")}
+          onChange={this.deepenFunction(this.handleColumnFilterChange, column, column.type)}
           className={classes}
         />;
       }
@@ -255,7 +262,7 @@ class SmoothTable extends Component {
         return <select
           name={"__MULTISTATE_" + column.field}
           className="form-control form-control-sm manual-input"
-          onChange={this.deepenFunction(this.handleColumnFilterChange, column, "multiState")}
+          onChange={this.deepenFunction(this.handleColumnFilterChange, column, column.type)}
         >
           <option/>
           {
@@ -277,7 +284,7 @@ class SmoothTable extends Component {
           showYearDropdown
           dropdownMode="select"
           name={"__SEARCH_" + column.field}
-          onChange={this.deepenFunction(this.handleColumnFilterChange, column, "date")}
+          onChange={this.deepenFunction(this.handleColumnFilterChange, column, column.type)}
         />;
       }
     }
@@ -296,7 +303,7 @@ class SmoothTable extends Component {
             className="smooth-cell smooth-text-center-row"
             style={{ width: column.width + "%" }}
           >
-            {this.generateFieldFilter(column, inputClasses.concat([additionalClass]).join(" "))}
+            {this.generateFieldFilter(column, [...inputClasses, additionalClass].join(" "))}
           </td>
         );
       }

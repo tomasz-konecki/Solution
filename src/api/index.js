@@ -165,13 +165,10 @@ class DCMTWebApi {
     return axios.get(`${API_ENDPOINT}/employees/${id}`);
   }
 
-  addEmployee(id, firstName, lastName, email, role, seniority) {
-    return axios.put(`${API_ENDPOINT}/employee`, {
+  addEmployee({ id, capacity, seniority }) {
+    return axios.put(`${API_ENDPOINT}/employees/add`, {
       id,
-      firstName,
-      lastName,
-      email,
-      role,
+      capacity,
       seniority
     });
   }

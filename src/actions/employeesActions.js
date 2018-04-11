@@ -1,31 +1,31 @@
-import { LOAD_USERS_SUCCESS, ASYNC_STARTED, ASYNC_ENDED } from "../constants";
+import {
+  LOAD_EMPLOYEES_SUCCESS,
+  ASYNC_STARTED,
+  ASYNC_ENDED
+} from "../constants";
 import axios from "axios";
 import DCMTWebApi from "../api";
 import { asyncStarted, asyncEnded } from "./asyncActions";
 
-export const loadUsersSuccess = users => {
+export const loadEmployeesSuccess = employees => {
   return {
-    type: LOAD_USERS_SUCCESS,
-    users
+    type: LOAD_EMPLOYEES_SUCCESS,
+    employees
   };
 };
 
-export const loadUsers = (page = 1, limit = 25, other = {}) => {
+export const loadEmployees = (page = 1, limit = 25, other = {}) => {
   return dispatch => {
     const settings = Object.assign(
       {},
-      {
-        Limit: limit,
-        PageNumber: page,
-        IsDeleted: false
-      },
+      { Limit: limit, PageNumber: page, IsDeleted: false },
       other
     );
 
     dispatch(asyncStarted());
-    DCMTWebApi.getUsers(settings)
+    DCMTWebApi.getEmployees(settings)
       .then(response => {
-        dispatch(loadUsersSuccess(response.data.dtoObject));
+        dispatch(loadEmployeesSuccess(response.data.dtoObject));
         dispatch(asyncEnded());
       })
       .catch(error => {

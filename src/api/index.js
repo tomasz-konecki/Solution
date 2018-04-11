@@ -157,9 +157,8 @@ class DCMTWebApi {
     return axios.delete(`${API_ENDPOINT}/assignments/${id}`);
   }
 
-  getEmployees(settings = null) {
-    if (settings === null) return axios.get(`${API_ENDPOINT}/employees`);
-    return axios.get(`${API_ENDPOINT}/employees`, { params: settings });
+  getEmployees(settings = {}) {
+    return axios.post(`${API_ENDPOINT}/employees`, settings);
   }
 
   getEmployee(id) {

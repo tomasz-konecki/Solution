@@ -53,7 +53,7 @@ class EmployeesContainer extends React.Component {
 function mapStateToProps(state) {
   return {
     employees: state.employeesReducer.employees,
-    totalPageCount: state.usersReducer.totalPageCount,
+    totalPageCount: state.employeesReducer.totalPageCount,
     loading: state.asyncReducer.loading,
     confirmed: state.asyncReducer.confirmed,
     toConfirm: state.asyncReducer.toConfirm,

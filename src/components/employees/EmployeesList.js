@@ -47,7 +47,7 @@ class EmployeesList extends Component {
         {
           width: 20,
           field: "title",
-          pretty: "Tytuł",
+          pretty: "Stanowisko",
           type: "text",
           filter: true
         },

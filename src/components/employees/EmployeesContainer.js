@@ -8,6 +8,7 @@ import * as asyncActions from "../../actions/asyncActions";
 import "../../scss/containers/UsersContainer.scss";
 import { ACTION_CONFIRMED } from "./../../constants";
 import DCMTWebApi from "../../api/";
+import EmployeesList from "./EmployeesList";
 
 class EmployeesContainer extends React.Component {
   constructor(props) {
@@ -38,9 +39,13 @@ class EmployeesContainer extends React.Component {
 
   render() {
     return (
-      <div>
-        <h2>Employees Container</h2>
-      </div>
+      <EmployeesList
+        employees={this.props.employees}
+        currentPage={this.state.currentPage}
+        totalPageCount={this.props.totalPageCount}
+        pageChange={this.pageChange}
+        loading={this.props.loading}
+      />
     );
   }
 }

@@ -2,9 +2,9 @@ import React, { Component } from "react";
 import Icon from "./Icon";
 import LoaderHorizontal from "./LoaderHorizontal";
 import ReactPaginate from "react-paginate";
-import Detail from './Detail';
-import DatePicker from 'react-datepicker';
-import moment from 'moment';
+import Detail from "./Detail";
+import DatePicker from "react-datepicker";
+import moment from "moment";
 
 class SmoothTable extends Component {
   constructor(props) {
@@ -26,7 +26,7 @@ class SmoothTable extends Component {
     };
 
     props.construct.columns.map((column, index) => {
-      if(column.field === undefined) return;
+      if (column.field === undefined) return;
 
       let newField = {};
       let newDateFilters = {};
@@ -38,7 +38,7 @@ class SmoothTable extends Component {
       newFilterField[column.field] = "";
       newFilterFieldLoaders[column.field] = false;
 
-      if(column.filterFieldOverride !== undefined) {
+      if (column.filterFieldOverride !== undefined) {
         newFilterFieldOverrides[column.field] = column.filterFieldOverride;
       }
 
@@ -47,7 +47,8 @@ class SmoothTable extends Component {
       Object.assign(this.state.filterFieldOverrides, newFilterFieldOverrides);
     });
 
-    this.state.columns[props.construct.defaultSortField] = props.construct.defaultSortAscending;
+    this.state.columns[props.construct.defaultSortField] =
+      props.construct.defaultSortAscending;
 
     this.handleSortColumnClick = this.handleSortColumnClick.bind(this);
     this.handlePageChange = this.handlePageChange.bind(this);
@@ -61,83 +62,102 @@ class SmoothTable extends Component {
   }
 
   deepenFunction(func, ...args) {
-    return (event) => func(...args, event);
+    return event => func(...args, event);
   }
 
   generateSettings() {
     let mainFilter = {};
-    if(this.state.searchQuery !== "") {
+    if (this.state.searchQuery !== "") {
       mainFilter["Query"] = this.state.searchQuery;
     }
-    if(Object.keys(this.state.columnFilters).length > 0){
+    if (Object.keys(this.state.columnFilters).length > 0) {
       mainFilter[this.props.construct.filterClass] = {};
       Object.entries(this.state.columnFilters).map((keyval, index) => {
         let fieldName = keyval[0];
-        if(this.state.filterFieldOverrides[fieldName] !== undefined) fieldName = this.state.filterFieldOverrides[fieldName];
-        if(keyval[1] !== "") mainFilter[this.props.construct.filterClass][fieldName] = keyval[1];
+        if (this.state.filterFieldOverrides[fieldName] !== undefined)
+          fieldName = this.state.filterFieldOverrides[fieldName];
+        if (keyval[1] !== "")
+          mainFilter[this.props.construct.filterClass][fieldName] = keyval[1];
       });
     }
     return Object.assign({}, this.state.sortingSettings, mainFilter);
   }
 
   handleSortColumnClick(field) {
-    if(field !== undefined){
+    if (field !== undefined) {
       let oldFields = this.state.columns;
       oldFields[field] = !oldFields[field];
-      this.setState({
-        columns: oldFields,
-        currentlySortedColumn: field,
-        sortingSettings: {
-          Sort: field,
-          Ascending: this.state.columns[field]
+      this.setState(
+        {
+          columns: oldFields,
+          currentlySortedColumn: field,
+          sortingSettings: {
+            Sort: field,
+            Ascending: this.state.columns[field]
+          }
+        },
+        () => {
+          this.props.construct.pageChange(
+            this.props.currentPage,
+            this.generateSettings()
+          );
         }
-      }, () => {
-        this.props.construct.pageChange(this.props.currentPage, this.generateSettings());
-      });
+      );
     }
   }
 
   handlePageChange(paginator) {
-    this.props.construct.pageChange(paginator.selected + 1, this.generateSettings());
+    this.props.construct.pageChange(
+      paginator.selected + 1,
+      this.generateSettings()
+    );
   }
 
-  handleFilterDateChange() {
-
-  }
+  handleFilterDateChange() {}
 
   toolBoxButton(button, object) {
-    return <button
-      key={button.icon.icon}
-      onClick={this.deepenFunction(button.click, object)}
-    >
-      <Icon {...button.icon} />
-    </button>;
+    return (
+      <button
+        key={button.icon.icon}
+        onClick={this.deepenFunction(button.click, object)}
+      >
+        <Icon {...button.icon} />
+      </button>
+    );
   }
 
   generateToolBox(object, toolBoxColumn) {
-    return toolBoxColumn.toolBox.map((button, index) => this.toolBoxButton(button, object));
+    return toolBoxColumn.toolBox.map((button, index) =>
+      this.toolBoxButton(button, object)
+    );
   }
 
   handleQueryChange(event) {
     let value = event.target.value;
-    this.setState({
-      searchQuery: event.target.value,
-      isQueryLoading: true
-    }, () => {
-      setTimeout(() => {
-        if((this.state.searchQuery === value && value !== "") || value === ""){
-          this.props.construct.pageChange(1, this.generateSettings());
-          this.setState({
-            isQueryLoading: false
-          });
-        }
-      }, 1000);
-    });
+    this.setState(
+      {
+        searchQuery: event.target.value,
+        isQueryLoading: true
+      },
+      () => {
+        setTimeout(() => {
+          if (
+            (this.state.searchQuery === value && value !== "") ||
+            value === ""
+          ) {
+            this.props.construct.pageChange(1, this.generateSettings());
+            this.setState({
+              isQueryLoading: false
+            });
+          }
+        }, 1000);
+      }
+    );
   }
 
   swapKeysForValues(object) {
     let payload = {};
-    for(let key in object){
+    for (let key in object) {
       payload[object[key]] = key;
     }
     return payload;
@@ -145,11 +165,12 @@ class SmoothTable extends Component {
 
   handleColumnFilterChange(column, type = "text", event) {
     let { field, multiState } = column;
-    let {columnFilters, columnFiltersLoaders} = this.state;
+    let { columnFilters, columnFiltersLoaders } = this.state;
 
-    let value, offset = 1;
+    let value,
+      offset = 1;
 
-    switch(type){
+    switch (type) {
       case "text": {
         value = event.target.value;
         offset = 2000;
@@ -169,44 +190,58 @@ class SmoothTable extends Component {
     columnFilters[field] = value;
     columnFiltersLoaders[field] = true;
 
-    this.setState({
-      columnFilters,
-      columnFiltersLoaders
-    }, () => {
-      setTimeout(() => {
-        if((this.state.columnFilters[field] === value && value !== "") || value === ""){
-          columnFiltersLoaders[field] = false;
-          this.setState({
-            columnFiltersLoaders
-          }, () => {
-            this.props.construct.pageChange(1, this.generateSettings());
-          });
-        }
-      }, offset);
-    });
+    this.setState(
+      {
+        columnFilters,
+        columnFiltersLoaders
+      },
+      () => {
+        setTimeout(() => {
+          if (
+            (this.state.columnFilters[field] === value && value !== "") ||
+            value === ""
+          ) {
+            columnFiltersLoaders[field] = false;
+            this.setState(
+              {
+                columnFiltersLoaders
+              },
+              () => {
+                this.props.construct.pageChange(1, this.generateSettings());
+              }
+            );
+          }
+        }, offset);
+      }
+    );
   }
 
   removeFilters() {
     let newState = this.initialState;
-    newState.columnFilters = Object.assign({}, ...Object.keys(newState.columnFilters).map(k => ({[k]: ""})));
+    newState.columnFilters = Object.assign(
+      {},
+      ...Object.keys(newState.columnFilters).map(k => ({ [k]: "" }))
+    );
     this.setState(newState, () => {
       this.props.construct.pageChange(1, this.generateSettings());
     });
   }
 
   operatorButton(index, operator) {
-    return <button key={index} onClick={this.deepenFunction(operator.click)}>
-      {operator.pretty}
-    </button>;
+    return (
+      <button key={index} onClick={this.deepenFunction(operator.click)}>
+        {operator.pretty}
+      </button>
+    );
   }
 
   generateOperators() {
     let operators = [];
     let inputClasses = ["form-control"];
-    if(this.state.isQueryLoading) inputClasses.push('loading');
-    this.state.construct.operators.map((operator, index) => (
+    if (this.state.isQueryLoading) inputClasses.push("loading");
+    this.state.construct.operators.map((operator, index) =>
       operators.push(this.operatorButton(index, operator))
-    ));
+    );
     operators.push(
       <input
         key={-1}
@@ -227,65 +262,107 @@ class SmoothTable extends Component {
     return operators;
   }
 
-  generateSortingArrow(asc){
+  generateSortingArrow(asc) {
     const ascending = asc ? "arrow-down" : "arrow-up";
-    return <span className="smooth-arrow-right"><Icon icon={ascending}/></span>;
+    return (
+      <span className="smooth-arrow-right">
+        <Icon icon={ascending} />
+      </span>
+    );
   }
 
   tableHeader(currentlySortedColumn, columns, column, index) {
-    if(currentlySortedColumn === column.field)
-      return <th onClick={this.deepenFunction(this.handleSortColumnClick, column.field)} key={column.field + index}>{column.pretty}
-      {this.generateSortingArrow(columns[currentlySortedColumn])}</th>;
+    if (currentlySortedColumn === column.field)
+      return (
+        <th
+          onClick={this.deepenFunction(
+            this.handleSortColumnClick,
+            column.field
+          )}
+          key={column.field + index}
+        >
+          {column.pretty}
+          {this.generateSortingArrow(columns[currentlySortedColumn])}
+        </th>
+      );
     else
-      return <th onClick={this.deepenFunction(this.handleSortColumnClick, column.field)} key={column.field + index}>{column.pretty}</th>;
+      return (
+        <th
+          onClick={this.deepenFunction(
+            this.handleSortColumnClick,
+            column.field
+          )}
+          key={column.field + index}
+        >
+          {column.pretty}
+        </th>
+      );
   }
 
   generateLegend() {
-    const {currentlySortedColumn, columns, construct} = this.state;
-    return construct.columns.map((column, index) => this.tableHeader(currentlySortedColumn, columns, column, index));
+    const { currentlySortedColumn, columns, construct } = this.state;
+    return construct.columns.map((column, index) =>
+      this.tableHeader(currentlySortedColumn, columns, column, index)
+    );
   }
 
   generateFieldFilter(column, classes) {
-    switch(column.type){
+    switch (column.type) {
       case "text": {
-        return <input
-          type={column.type}
-          name={"__SEARCH_" + column.field}
-          value={this.state.columnFilters[column.field]}
-          placeholder={"Szukaj " + column.pretty}
-          required
-          onChange={this.deepenFunction(this.handleColumnFilterChange, column, column.type)}
-          className={classes}
-        />;
+        return (
+          <input
+            type={column.type}
+            name={"__SEARCH_" + column.field}
+            value={this.state.columnFilters[column.field]}
+            placeholder={"Szukaj " + column.pretty}
+            required
+            onChange={this.deepenFunction(
+              this.handleColumnFilterChange,
+              column,
+              column.type
+            )}
+            className={classes}
+          />
+        );
       }
       case "multiState": {
-        return <select
-          name={"__MULTISTATE_" + column.field}
-          className="form-control form-control-sm manual-input"
-          onChange={this.deepenFunction(this.handleColumnFilterChange, column, column.type)}
-        >
-          <option/>
-          {
-            Object.values(column.multiState).map((stateValue, index) => {
+        return (
+          <select
+            name={"__MULTISTATE_" + column.field}
+            className="form-control form-control-sm manual-input"
+            onChange={this.deepenFunction(
+              this.handleColumnFilterChange,
+              column,
+              column.type
+            )}
+          >
+            <option />
+            {Object.values(column.multiState).map((stateValue, index) => {
               return <option key={index}>{stateValue}</option>;
-            })
-          }
-        </select>;
+            })}
+          </select>
+        );
       }
       case "date": {
-        return <DatePicker
-          selectsStart
-          locale="pl"
-          className="form-control form-control-sm manual-input"
-          dateFormat="YYYY-MM-DD"
-          todayButton={"Dzisiaj"}
-          peekNextMonth
-          showMonthDropdown
-          showYearDropdown
-          dropdownMode="select"
-          name={"__SEARCH_" + column.field}
-          onChange={this.deepenFunction(this.handleColumnFilterChange, column, column.type)}
-        />;
+        return (
+          <DatePicker
+            selectsStart
+            locale="pl"
+            className="form-control form-control-sm manual-input"
+            dateFormat="YYYY-MM-DD"
+            todayButton={"Dzisiaj"}
+            peekNextMonth
+            showMonthDropdown
+            showYearDropdown
+            dropdownMode="select"
+            name={"__SEARCH_" + column.field}
+            onChange={this.deepenFunction(
+              this.handleColumnFilterChange,
+              column,
+              column.type
+            )}
+          />
+        );
       }
     }
   }
@@ -295,31 +372,39 @@ class SmoothTable extends Component {
     let inputClasses = ["form-control", "form-control-sm"];
     let loaderClass = "loading";
     this.props.construct.columns.map((column, index) => {
-      if (column.field !== undefined && column.type !== undefined && column.filter){
-        let additionalClass = this.state.columnFiltersLoaders[column.field] ? loaderClass : "";
+      if (
+        column.field !== undefined &&
+        column.type !== undefined &&
+        column.filter
+      ) {
+        let additionalClass = this.state.columnFiltersLoaders[column.field]
+          ? loaderClass
+          : "";
         columns.push(
           <td
             key={"__SEARCH_" + column.field}
             className="smooth-cell smooth-text-center-row"
             style={{ width: column.width + "%" }}
           >
-            {this.generateFieldFilter(column, [...inputClasses, additionalClass].join(" "))}
+            {this.generateFieldFilter(
+              column,
+              [...inputClasses, additionalClass].join(" ")
+            )}
           </td>
         );
-      }
-      else columns.push(<td key={index}/>);
+      } else columns.push(<td key={index} />);
     });
     return <tr key="__FILTER_ROW">{columns}</tr>;
   }
 
   generateCell(column, object) {
-    switch(column.type){
+    switch (column.type) {
       case "text":
         return object[column.field];
       case "multiState":
         return column.multiState[object[column.field]];
       case "date":
-        return moment(object[column.field]).format('YYYY-MM-DD');
+        return moment(object[column.field]).format("YYYY-MM-DD");
     }
   }
 
@@ -334,7 +419,7 @@ class SmoothTable extends Component {
         }
       >
         {construct.columns.map((column, index) => {
-          if (column.field !== undefined){
+          if (column.field !== undefined) {
             return (
               <td
                 key={column.field}
@@ -344,8 +429,7 @@ class SmoothTable extends Component {
                 {this.generateCell(column, object)}
               </td>
             );
-          }
-          else if (column.toolBox !== undefined)
+          } else if (column.toolBox !== undefined)
             return (
               <td
                 key="____toolBox"
@@ -366,7 +450,9 @@ class SmoothTable extends Component {
       empty = false;
     list.push(this.generateFieldSearchRow());
     if (this.props.data !== undefined && this.props.data[0] !== undefined) {
-      list = list.concat(this.props.data.map((object, index) => this.generateRow(object)));
+      list = list.concat(
+        this.props.data.map((object, index) => this.generateRow(object))
+      );
     } else {
       empty = true;
     }
@@ -387,30 +473,31 @@ class SmoothTable extends Component {
           <tbody>{list}</tbody>
         </table>
         {empty && <div className="smooth-footer">Brak danych bądź wyników</div>}
-        {(this.props.construct.pageChange !== undefined && 1 !== this.props.totalPageCount) && (
-          <ReactPaginate
-            previousLabel={
-              <span className="smooth-navigator">
-                <Icon icon="arrow-left" />
-              </span>
-            }
-            nextLabel={
-              <span className="smooth-navigator">
-                <Icon icon="arrow-right" />
-              </span>
-            }
-            breakLabel={<a href="">...</a>}
-            breakClassName={"break-me"}
-            forcePage={this.props.currentPage - 1}
-            pageCount={this.props.totalPageCount}
-            marginPagesDisplayed={2}
-            pageRangeDisplayed={5}
-            onPageChange={this.handlePageChange}
-            containerClassName={"smooth-paginator"}
-            subContainerClassName={"pages pagination"}
-            activeClassName={"active"}
-          />
-        )}
+        {this.props.construct.pageChange !== undefined &&
+          1 !== this.props.totalPageCount && (
+            <ReactPaginate
+              previousLabel={
+                <span className="smooth-navigator">
+                  <Icon icon="arrow-left" />
+                </span>
+              }
+              nextLabel={
+                <span className="smooth-navigator">
+                  <Icon icon="arrow-right" />
+                </span>
+              }
+              breakLabel={<a href="">...</a>}
+              breakClassName={"break-me"}
+              forcePage={this.props.currentPage - 1}
+              pageCount={this.props.totalPageCount}
+              marginPagesDisplayed={2}
+              pageRangeDisplayed={5}
+              onPageChange={this.handlePageChange}
+              containerClassName={"smooth-paginator"}
+              subContainerClassName={"pages pagination"}
+              activeClassName={"active"}
+            />
+          )}
         <div className="smooth-loader-bottom">
           {this.props.loading && <LoaderHorizontal />}
         </div>

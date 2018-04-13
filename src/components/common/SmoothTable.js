@@ -17,6 +17,7 @@ class SmoothTable extends Component {
       columnFilters: {},
       columnFiltersLoaders: {},
       filterFieldOverrides: {},
+      rowUnfurls: {},
       isQueryLoading: false,
       searchQuery: "",
       sortingSettings: {
@@ -57,6 +58,7 @@ class SmoothTable extends Component {
     this.generateSettings = this.generateSettings.bind(this);
     this.handleQueryChange = this.handleQueryChange.bind(this);
     this.handleColumnFilterChange = this.handleColumnFilterChange.bind(this);
+    this.handleRowClick = this.handleRowClick.bind(this);
 
     this.initialState = Object.assign({}, this.state);
   }
@@ -214,6 +216,21 @@ class SmoothTable extends Component {
         }, offset);
       }
     );
+  }
+
+  handleRowClick(object, event) {
+    const { keyField } = this.props.construct;
+    const { rowUnfurls } = this.state;
+
+    if(rowUnfurls[object[keyField]] === undefined){
+      rowUnfurls[object[keyField]] = true;
+    } else {
+      rowUnfurls[object[keyField]] = !rowUnfurls[object[keyField]];
+    }
+
+    this.setState({
+      rowUnfurls
+    });
   }
 
   removeFilters() {
@@ -410,13 +427,20 @@ class SmoothTable extends Component {
 
   generateRow(object) {
     const { construct } = this.state;
+    let classes = ['smooth-row'];
+    let unfurled = false;
+    if(this.state.rowUnfurls[object[construct.keyField]] === true){
+      classes.push('smooth-unfurled');
+      unfurled = true;
+    }
+    if(construct.rowClass !== undefined){
+      classes.push(construct.rowClass);
+    }
     return (
       <tr
         key={object[construct.keyField]}
-        className={
-          "smooth-row" +
-          (construct.rowClass !== undefined ? " " + construct.rowClass : "")
-        }
+        className={classes.join(' ')}
+        onClick={this.deepenFunction(this.handleRowClick, object)}
       >
         {construct.columns.map((column, index) => {
           if (column.field !== undefined) {
@@ -427,6 +451,18 @@ class SmoothTable extends Component {
                 style={{ width: column.width + "%" }}
               >
                 {this.generateCell(column, object)}
+                {
+                  (index === 0 && unfurled) ?
+                  <span className="smooth-unfurl-content">
+                    {
+                      Object.entries(object).map(([key, value], index) => {
+                        return <Detail key={index} editable={false} value={value.toString()}/>;
+                      })
+                    }
+                  </span>
+                  :
+                  null
+                }
               </td>
             );
           } else if (column.toolBox !== undefined)

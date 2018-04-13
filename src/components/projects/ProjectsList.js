@@ -55,6 +55,7 @@ class ProjectsList extends Component {
       defaultSortField: "name",
       defaultSortAscending: true,
       filterClass: "ProjectFilter",
+      rowDetailUnfurl: true,
       operators: [
         {
           pretty: "DODAJ",

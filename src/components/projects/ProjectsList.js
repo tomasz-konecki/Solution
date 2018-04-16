@@ -8,6 +8,7 @@ import EditProjectDetails from "../projects/modals/EditProjectDetails";
 import DCMTWebApi from "../../api";
 import "react-datepicker/dist/react-datepicker.css";
 import DatePicker from "react-datepicker";
+import ProjectRowUnfurl from './ProjectRowUnfurl';
 
 class ProjectsList extends Component {
   constructor(props) {
@@ -56,6 +57,7 @@ class ProjectsList extends Component {
       defaultSortAscending: true,
       filterClass: "ProjectFilter",
       rowDetailUnfurl: true,
+      unfurler: ProjectRowUnfurl,
       operators: [
         {
           pretty: "DODAJ",

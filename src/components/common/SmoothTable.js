@@ -109,10 +109,14 @@ class SmoothTable extends Component {
   }
 
   handlePageChange(paginator) {
-    this.props.construct.pageChange(
-      paginator.selected + 1,
-      this.generateSettings()
-    );
+    this.setState({
+      rowUnfurls: {}
+    }, () => {
+      this.props.construct.pageChange(
+        paginator.selected + 1,
+        this.generateSettings()
+      );
+    });
   }
 
   handleFilterDateChange() {}
@@ -218,14 +222,14 @@ class SmoothTable extends Component {
     );
   }
 
-  handleRowClick(object, event) {
+  handleRowClick(object, index, event) {
     const { keyField } = this.props.construct;
     const { rowUnfurls } = this.state;
 
-    if(rowUnfurls[object[keyField]] === undefined){
-      rowUnfurls[object[keyField]] = true;
+    if(rowUnfurls[index] === undefined){
+      rowUnfurls[index] = true;
     } else {
-      rowUnfurls[object[keyField]] = !rowUnfurls[object[keyField]];
+      rowUnfurls[index] = !rowUnfurls[index];
     }
 
     this.setState({
@@ -425,59 +429,69 @@ class SmoothTable extends Component {
     }
   }
 
-  generateRow(object) {
+  generateRow(object, index) {
     const { construct } = this.state;
+
     let classes = ['smooth-row'];
-    let unfurled = false;
-    if(this.state.rowUnfurls[object[construct.keyField]] === true){
-      classes.push('smooth-unfurled');
-      unfurled = true;
-    }
+    let unfurled = this.state.rowUnfurls[index];
+    let unfurl = construct.rowDetailUnfurl;
+
+    let payload = [];
+
+
     if(construct.rowClass !== undefined){
       classes.push(construct.rowClass);
     }
-    return (
-      <tr
-        key={object[construct.keyField]}
-        className={classes.join(' ')}
-        onClick={this.deepenFunction(this.handleRowClick, object)}
-      >
-        {construct.columns.map((column, index) => {
-          if (column.field !== undefined) {
-            return (
-              <td
-                key={column.field}
-                className="smooth-cell"
-                style={{ width: column.width + "%" }}
-              >
-                {this.generateCell(column, object)}
-                {
-                  (index === 0 && unfurled) ?
-                  <span className="smooth-unfurl-content">
-                    {
-                      Object.entries(object).map(([key, value], index) => {
-                        return <Detail key={index} editable={false} value={value.toString()}/>;
-                      })
-                    }
-                  </span>
-                  :
-                  null
-                }
-              </td>
-            );
-          } else if (column.toolBox !== undefined)
-            return (
-              <td
-                key="____toolBox"
-                className="smooth-cell smooth-text-center"
-                style={{ width: column.width + "%" }}
-              >
-                {this.generateToolBox(object, column)}
-              </td>
-            );
-        })}
-      </tr>
-    );
+
+    payload.push(<tr
+      key={object[construct.keyField]}
+      className={classes.join(' ')}
+      onClick={this.deepenFunction(this.handleRowClick, object, index)}
+    >
+      {construct.columns.map((column, index) => {
+        if (column.field !== undefined) {
+          return (
+            <td
+              key={column.field}
+              className="smooth-cell"
+              style={{ width: column.width + "%" }}
+            >
+              {this.generateCell(column, object)}
+            </td>
+          );
+        } else if (column.toolBox !== undefined)
+          return (
+            <td
+              key="____toolBox"
+              className="smooth-cell smooth-text-center"
+              style={{ width: column.width + "%" }}
+            >
+              {this.generateToolBox(object, column)}
+            </td>
+          );
+      })}
+    </tr>);
+
+    if(unfurl) payload.push(<tr
+      key={index}
+      onClick={this.deepenFunction(this.handleRowClick, object, -1)}
+    >
+      {
+        (unfurled) ?
+        <td colSpan={this.props.construct.columns.length} className="smooth-unfurl-content">
+          {
+            React.createElement(this.props.construct.unfurler, {
+              toUnfurl: object,
+              key: index
+            })
+          }
+        </td>
+        :
+        null
+      }
+    </tr>);
+
+    return payload;
   }
 
   render() {
@@ -487,7 +501,7 @@ class SmoothTable extends Component {
     list.push(this.generateFieldSearchRow());
     if (this.props.data !== undefined && this.props.data[0] !== undefined) {
       list = list.concat(
-        this.props.data.map((object, index) => this.generateRow(object))
+        this.props.data.map((object, index) => this.generateRow(object, index))
       );
     } else {
       empty = true;

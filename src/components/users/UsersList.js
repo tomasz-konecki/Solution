@@ -105,7 +105,7 @@ class UsersList extends Component {
         { width: 20, field: "firstName", pretty: "Imię", type: "text", filter: true },
         { width: 30, field: "lastName", pretty: "Nazwisko", type: "text", filter: true },
         { width: 30, field: "email", pretty: "Email", type: "text", filter: true },
-        { width: 19, field: "phoneNumber", pretty: "Telefon", type: "text", filter: false },
+        { width: 19, field: "phoneNumber", pretty: "Telefon", type: "text", filter: true },
         {
           width: 1,
           toolBox: [

@@ -1,8 +1,11 @@
-input[type="text"], input[type="password"], .manual-input {
+input[type="text"],
+input[type="password"],
+.manual-input {
   display: inline-block;
   padding: 0 10px;
   border: none;
-  height: 2.5em;
+  // height: 2.5em;
+  height: calc(1.3525rem + 2px) !important;
   outline: none;
   border: 1.2px solid gray;
   font-family: "Roboto Condensed", sans-serif;
@@ -26,13 +29,13 @@ input[type="text"], input[type="password"], .manual-input {
 
   @media only screen and (max-width: 1366px) {
     & {
-      font-size: 100%;
+      font-size: 80%;
     }
   }
 
   @media only screen and (max-width: 1000px) {
     & {
-      //
+      font-size: 14px;
     }
   }
 }

@@ -41,7 +41,7 @@ class DCMTWebApi {
   }
 
   addUser(id, roles) {
-    return axios.post(`${API_ENDPOINT}/users`, { id, roles });
+    return axios.post(`${API_ENDPOINT}/users/add`, { id, roles });
   }
 
   deleteUser(id) {
@@ -75,7 +75,7 @@ class DCMTWebApi {
     startDate,
     estimatedEndDate
   }) {
-    return axios.post(`${API_ENDPOINT}/projects`, {
+    return axios.post(`${API_ENDPOINT}/projects/add`, {
       name,
       description,
       client,
@@ -157,22 +157,18 @@ class DCMTWebApi {
     return axios.delete(`${API_ENDPOINT}/assignments/${id}`);
   }
 
-  getEmployees(settings = null) {
-    if (settings === null) return axios.get(`${API_ENDPOINT}/employees`);
-    return axios.get(`${API_ENDPOINT}/employees`, { params: settings });
+  getEmployees(settings = {}) {
+    return axios.post(`${API_ENDPOINT}/employees`, settings);
   }
 
   getEmployee(id) {
     return axios.get(`${API_ENDPOINT}/employees/${id}`);
   }
 
-  addEmployee(id, firstName, lastName, email, role, seniority) {
-    return axios.put(`${API_ENDPOINT}/employee`, {
+  addEmployee({ id, capacity, seniority }) {
+    return axios.put(`${API_ENDPOINT}/employees/add`, {
       id,
-      firstName,
-      lastName,
-      email,
-      role,
+      capacity,
       seniority
     });
   }

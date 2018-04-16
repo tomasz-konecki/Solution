@@ -474,7 +474,6 @@ class SmoothTable extends Component {
 
     if(unfurl) payload.push(<tr
       key={index}
-      onClick={this.deepenFunction(this.handleRowClick, object, -1)}
     >
       {
         (unfurled) ?

@@ -1,9 +1,83 @@
-$textColor: teal;
+@import "3rd/Reset.scss";
+@import "ColorSchema.scss";
+@import "./components/common/Button";
+@import "./components/common/Input";
+@import "./components/table/SmoothTable";
+@import "./components/common/Logo";
+@import "./components/common/modals/ResultModal";
+@import "./components/projects/Skill";
 
 body {
-  background: skyblue;
+  font-family: "Roboto Condensed", sans-serif;
+  min-height: 100vh;
+  background: $content-background;
 }
 
-h2, h3 {
-  color: $textColor
+::selection {
+  background: #ffb97c; /* WebKit/Blink Browsers */
+}
+
+.text-right {
+  text-align: right;
+}
+
+a,
+a:visited {
+  text-decoration: none;
+  color: darken(rgb(103, 163, 181), 18%);
+}
+
+.result-block {
+  width: 100%;
+  display: inline-block;
+  text-align: center;
+}
+.result-success {
+  color: darkgreen;
+}
+.result-failure {
+  color: $button-element-background;
+}
+
+.Modal {
+  height: 450px;
+  width: 600px;
+  background-color: #eee;
+  box-shadow: 5px 10px 10px #888888;
+
+  svg {
+    z-index: 2;
+  }
+
+  header {
+    height: 30px;
+    vertical-align: middle;
+    margin-bottom: 10px;
+    padding-left: 5px;
+    h3 {
+      line-height: 30px;
+      font-size: 1.1em;
+      color: gray;
+      font-variant: small-caps;
+      letter-spacing: 0.7px;
+    }
+
+    .close-button {
+      margin-left: 83%;
+      &:hover {
+        cursor: pointer;
+      }
+    }
+  }
+}
+
+.Modal-users {
+  height: 400px;
+}
+
+.Modal-projects {
+  height: 510px;
+  @media (max-width: 575px) {
+    height: 900px;
+  }
 }

@@ -1,0 +1,90 @@
+@import "../../../ColorSchema";
+.project-details-block {
+  .project-details-container {
+    border: none;
+
+    form {
+      .result-block {
+        text-align: left;
+        line-height: 100%;
+      }
+      p {
+        display: none;
+      }
+
+      p.invalid {
+        display: block;
+        margin: 10px 0 5px;
+        color: crimson;
+        font-size: 0.68em;
+        opacity: 0.8;
+      }
+
+      p.project-name.invalid {
+        margin: 10px 0 5px 150px;
+      }
+
+      .form-group {
+        margin-bottom: 5px;
+
+        label {
+          font-size: 14px;
+          @media only screen and (max-width: 460px) {
+            margin-bottom: 5px;
+            font-size: 14px;
+          }
+        }
+
+        input,
+        .react-datepicker-wrapper .react-datepicker__input-container input {
+          margin: 0;
+          border-color: gray;
+          &:focus {
+            border-color: $button-element-background;
+          }
+        }
+
+        .react-datepicker-wrapper .react-datepicker__input-container input {
+          border-radius: 0.25rem;
+        }
+
+        textarea {
+          resize: none;
+          height: 100px;
+          display: inline-block;
+          padding: 8px 10px;
+          border: none;
+          outline: none;
+          border: 1.2px solid gray;
+          font-family: "Roboto Condensed", sans-serif;
+          margin: 0;
+          box-sizing: border-box;
+          &:focus {
+            border-color: $button-element-background;
+          }
+        }
+      }
+
+      .date-picker-container {
+        label {
+        }
+
+        .date-picker {
+        }
+      }
+
+      .edit-project-button-container {
+        padding: 7px 0 0;
+        margin-top: 10px;
+        width: 100%;
+        .project-button-inactive {
+          background-color: lightgray;
+          &:hover {
+            border: none;
+            cursor: default;
+          }
+        }
+      }
+    }
+  }
+}

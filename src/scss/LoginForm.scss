@@ -1,0 +1,144 @@
+@import "./3rd/Loader";
+@import "./ColorSchema";
+
+.login-screen {
+  background: $main-color;
+}
+
+.logo {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  text-align: center;
+  filter: invert(1);
+  height: 40%;
+}
+
+// @media only screen and (max-width: 1000px) {
+//   .logo {
+//     top: 20px;
+//     left: 32%;
+//     width: 35%;
+//     height: 100px;
+//     background-size: contain !important;
+//   }
+// }
+
+body {
+  background: $left-menu-li-border-bottom-color;
+}
+
+.login-wrapper {
+  position: absolute;
+  top: 35%;
+  width: 100%;
+  text-align: center;
+  .login-form {
+    margin: auto;
+    width: 15%;
+    min-width: 300px;
+    background: $wrapper-background !important;
+
+    @media only screen and (max-width: 1000px) {
+      font-size: 180%;
+      width: 50%;
+      // height: 300px;
+    }
+
+    input {
+      width: 100%;
+      caret-color: transparent;
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: 0.3em;
+      &:focus {
+        caret-color: black;
+      }
+    }
+
+    ::-webkit-input-placeholder {
+      text-align: center;
+      font-weight: 200;
+    }
+
+    :-moz-placeholder {
+      text-align: center;
+      font-weight: 200;
+    }
+  }
+
+  .container {
+    padding: 0.5em;
+    overflow: hidden;
+    white-space: nowrap;
+    clear: both;
+
+    a {
+      text-decoration: none;
+    }
+    button {
+      width: 100%;
+      font-family: "Roboto Condensed", sans-serif;
+    }
+    .context-container {
+      height: 10px;
+      .loader {
+        padding-top: 5px;
+      }
+    }
+
+    .centric-container {
+      text-align: center;
+      button {
+        display: inline-block;
+      }
+    }
+
+    .checkbox-container {
+      padding: 0.5em;
+    }
+
+    .user-container,
+    .password-container {
+      width: 100%;
+      overflow: hidden;
+      white-space: nowrap;
+      text-align: center;
+
+      label {
+        display: inline-block;
+        padding: 0.5em;
+        width: 30%;
+      }
+      input {
+        display: inline-block;
+        padding: 0.5em;
+        outline: none;
+        font-family: "Roboto Condensed", sans-serif;
+        font-weight: 700;
+        text-align: center;
+        width: 100%;
+        caret-color: transparent;
+        margin: 0;
+        margin-bottom: 0.5em;
+        box-sizing: border-box;
+      }
+      input:focus {
+        transition: all 0.5s;
+        caret-color: black;
+      }
+      input:focus::-webkit-input-placeholder {
+        color: transparent;
+        transition: all 0.2s;
+      }
+      input:focus::-moz-placeholder {
+        color: transparent;
+        transition: all 0.2s;
+      }
+    }
+
+    .psw {
+      display: inline-block;
+    }
+  }
+}

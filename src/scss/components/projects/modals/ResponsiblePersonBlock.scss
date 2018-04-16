@@ -1,0 +1,14 @@
+.responsible-person-container {
+  .responsible-person-left {
+    padding-right: 5px;
+    @media (max-width: 575px) {
+      padding: 15px;
+    }
+  }
+  .responsible-person-right {
+    padding-left: 5px;
+    @media (max-width: 575px) {
+      padding: 15px;
+    }
+  }
+}

@@ -1,9 +1,16 @@
-import React from 'react'
-import ReactDOM from 'react-dom'
-import '../scss/App.scss'
-import Box from '../components/Box'
+import React from "react";
+import "bootstrap/dist/css/bootstrap.css";
 
+import { Route, Switch, BrowserRouter } from "react-router";
+import { PrivateRoute, Login, Home } from "../creators";
 
-const App = <Box text='Box' />
+import "../scss/App.scss";
 
-export default App
+const App = props => (
+  <Switch>
+    <Route exact path="/" component={Login} />
+    <PrivateRoute path="/main" component={Home} history={props.history} />
+  </Switch>
+);
+
+export default App;

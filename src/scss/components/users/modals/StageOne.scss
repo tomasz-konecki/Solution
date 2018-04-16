@@ -1,0 +1,27 @@
+.stage-one-container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+
+  header {
+    border: none;
+  }
+
+  .search-container {
+    width: 100%;
+    margin-top: 20px;
+
+    .forward-button-container {
+      text-align: right;
+      margin-top: 205px;
+      padding-right: 10px;
+
+      button {
+        width: 80px;
+      }
+    }
+  }
+  .error-block-container {
+    height: 15px;
+  }
+}

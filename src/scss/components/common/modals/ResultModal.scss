@@ -1,0 +1,35 @@
+.result-modal-container{
+  text-align: center;
+  position: relative;
+  height: 100%;
+  .result-about-to {
+
+  }
+  .result-string {
+    padding: 3em;
+    font-weight: bold;
+  }
+  .result-confirmation {
+
+  }
+  .result-confirm-button {
+    position: absolute;
+    width: 20%;
+    left: 40%;
+    bottom: 0;
+  }
+  .result-loader-container {
+    position: absolute;
+    bottom: 4em;
+    width: 100%;
+  }
+}
+.result-block-container {
+  height: 100%;
+  position: relative;
+  & > span {
+    position: absolute;
+    top: 45%;
+    width: 100%;
+  }
+}

@@ -1,0 +1,58 @@
+.dcmt-button {
+  width: 100px;
+  outline: none !important;
+  height: 2.5em;
+  line-height: 2.1em;
+  vertical-align: baseline;
+  display: inline-block;
+  transition: all 0.5s;
+  background: $button-element-background;
+  color: $menu-element-text-color;
+  vertical-align: baseline;
+  border: 1.2px solid transparent;
+  padding: 0 10px;
+  box-sizing: border-box;
+  vertical-align: top;
+
+  @media only screen and (max-width: 1366px) {
+    & {
+      font-size: 100%;
+    }
+  }
+
+  i {
+    padding-right: 5px;
+  }
+
+  &.button-disabled {
+    background: #333;
+    &:hover {
+      background: #222;
+    }
+  }
+
+  &.submitter {
+    margin-top: 2em;
+  }
+  &:hover {
+    background-color: $button-element-hover-background;
+    border: 1.2px solid lighten($button-element-hover-background, 5%);
+    color: lighten($menu-element-icon-hover-color, 55%);
+    cursor: pointer;
+  }
+  &.nav-compact {
+    border: 0;
+    min-width: 100px;
+    user-select: none;
+    border-radius: 6px;
+    cursor: pointer;
+    height: unset;
+    padding: 5px;
+
+    box-shadow: 0 0 2px rgba(35, 31, 32, 0.3);
+
+    i {
+      padding-left: 10px;
+    }
+  }
+}

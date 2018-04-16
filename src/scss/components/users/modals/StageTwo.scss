@@ -1,0 +1,76 @@
+$stage-two-container-height: 18em;
+
+.stage-two-container {
+  padding: 15px;
+  height: 300px;
+
+  .form-container {
+    header {
+      border-bottom: 1px solid lightgray;
+    }
+    .edit-user-button-container {
+      margin-top: 10px;
+    }
+    .form-navigation {
+      padding-top: 1.5em;
+      display: flex;
+      justify-content: space-between;
+
+      .submit-button-container,
+      .button-back-container {
+        button {
+          width: 6em;
+        }
+      }
+      .add-user-result {
+        padding-top: 7px;
+      }
+      .success {
+        color: green;
+      }
+      .failure {
+        color: red;
+      }
+    }
+  }
+  .user-details-container {
+    padding-bottom: 1.5em;
+    border-bottom: 1px solid lightgray;
+
+    .form-group {
+      margin: 0;
+      label {
+        padding: 0;
+      }
+    }
+
+    label {
+      display: inline-block;
+      font-size: 15px;
+      width: 20%;
+    }
+    span {
+      font-weight: 700;
+      font-size: 15px;
+      margin-left: 0.5em;
+    }
+    input {
+      margin: 0;
+      height: 1.7em;
+    }
+  }
+
+  .roles-container {
+    padding-top: 0.7em;
+
+    .check-box-container {
+      span {
+        font-size: 15px;
+      }
+    }
+  }
+
+  .stage-two-loader-container {
+    margin-top: 0.5em;
+  }
+}

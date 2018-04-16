@@ -12,60 +12,60 @@ Tech: JWToken
     - Main Application
 
     Store:
-    - History + Thunk Middleware
+    - Middleware: History + Thunk
     - PersistedReducer
     	- PersistConfig
     	- Combine: All stock reducers, Router reducer, Form reducer
     - ComposeEnhancers: Redux DEV tools || compose
     
-    Store: PersistedReducer + ComposeEnhancers
-    Persistor: persistStore(store)
+    Store: PersistedReducer + ComposeEnhancers(Middleware)
+    Persistor: persistStore(Store)
     
 #### Folder structure
 
-	./actions
-    	Redux actions
+	  ./actions
+    Redux actions
     ./api
-    	API implementation and mocks
+    API implementation and mocks
     ./auth
-    	Authentication-related scripts
+    Authentication-related scripts
     ./components
-    	React components
-        	/common
-                Generic components, reusable
-            /<NAME>
-            	Components related to specific functionality or view
+    React components
+      /common
+        Generic components, reusable
+      /<NAME>
+        Components related to specific functionality or view
     ./containers
-    	Containers for React logic and components
-        	/login
-            	Login system
-            /main
-            	Main application
-                	/header
-                    	Top-side of the application content
-                    /menu
-                    	Left-side of the application content
-	./creators
-    	Wrappers for secured components(private)
+    Containers for React logic and components
+      /login
+      Login system
+      /main
+      Main application
+        /header
+        Top-side of the application content
+        /menu
+        Left-side of the application content
+    ./creators
+    Wrappers for secured components(private)
     ./reducers
-    	React reducers
+    React reducers
     ./scss
-    	SCSS styles
+    SCSS styles
     ./store
-    	Store creator(index)
+    Store creator(index)
                     
                     
    #### Main application classes highlight
    
-   	./src/index.js
-    	Application entry-point (main render)
-    ./src/constants.js
-    	Text constants for React action labels
-    ./src/containers/App.js
-    	Main application router (login or main)
-    ./src/containers/PrivateRouteContainer.js
-    	Wrapper for secure path location
-    ./src/containers/MainContainer.js
-    	Main application wrapper (header plus content area)
-    ./src/containers/Content.js
-    	Contains all main decentralized routing and a generic confirmation modal window
+   	  ./src/index.js
+    Application entry-point (main render)
+      ./src/constants.js
+    Text constants for React action labels
+      ./src/containers/App.js
+    Main application router (login or main)
+      ./src/containers/PrivateRouteContainer.js
+    Wrapper for secure path location
+      ./src/containers/MainContainer.js
+    Main application wrapper (header plus content area)
+      ./src/containers/Content.js
+    Contains all main decentralized routing and a generic confirmation modal window

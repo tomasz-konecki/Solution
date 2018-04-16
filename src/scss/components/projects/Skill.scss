@@ -10,15 +10,14 @@ $emblem-width: 20%;
   box-sizing: border-box;
   width: $width;
   height: 32px;
-  vertical-align: top;
-  margin: 10px;
+  margin: 1px;
   background: rgb(115, 140, 140);
 
   .project-skill-name {
     display: inline-block;
     background: $main-color;
     color: white;
-    vertical-align: middle;
+    vertical-align: top;
     text-align: center;
     padding: 7px;
     min-width: $emblem-width;
@@ -30,7 +29,7 @@ $emblem-width: 20%;
     line-height: 32px;
     width: $width - $emblem-width;
     height: 32px;
-    vertical-align: middle;
+    vertical-align: top;
   }
   .skill-level-1 {
     text-align: center;

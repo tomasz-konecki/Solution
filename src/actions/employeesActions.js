@@ -30,7 +30,8 @@ export const loadEmployees = (page = 1, limit = 25, other = {}) => {
       })
       .catch(error => {
         dispatch(asyncEnded());
-        throw error;
+        console.error(error);
+        alert("Wystąpił błąd: " + error.toString());
       });
   };
 };

@@ -1,2 +1,4 @@
-# Solution
-Solution
+# DCMT
+Obłożenie projektów - FrontEnd
+
+Framework: ReactJS

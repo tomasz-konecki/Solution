@@ -23,7 +23,7 @@ Tech: JWToken
     
 #### Folder structure
 
-	  ./actions
+  ./actions
     Redux actions
     ./api
     API implementation and mocks

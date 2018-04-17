@@ -1,0 +1,30 @@
+.project-owner {
+  background: slategray;
+  color: white;
+  display: inline-block;
+  vertical-align: middle;
+  margin: 5px 4px;
+  box-sizing: border-box;
+  user-select: none;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  .project-owner-name {
+    padding-top: 4px;
+    padding-bottom: 4px;
+    padding-left: 16px;
+    padding-right: 6px;
+  }
+  .project-owner-delete {
+    padding-top: 4px;
+    background: rgba(255, 0, 0, 0.4);
+    padding-bottom: 4px;
+    padding-right: 10px;
+    padding-left: 10px;
+    text-align: center;
+    cursor: pointer;
+    &:hover {
+      transition: all 0.5s;
+      background: rgba(255, 0, 0, 0.6);
+    }
+  }
+}

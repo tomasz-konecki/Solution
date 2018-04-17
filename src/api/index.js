@@ -122,6 +122,14 @@ class DCMTWebApi {
     return axios.put(`${API_ENDPOINT}/projects/${id}/reactivate`);
   }
 
+  deleteProjectOwner(ownerId, projectId) {
+    return axios.delete(`${API_ENDPOINT}/projects/${projectId}/owner`, {
+      data: {
+        userId: ownerId
+      }
+    });
+  }
+
   getAssignmentsForEmployee(id) {
     return axios.get(`${API_ENDPOINT}/assignments/employee/${id}`);
   }

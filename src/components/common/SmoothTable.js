@@ -490,7 +490,8 @@ class SmoothTable extends Component {
           {
             React.createElement(this.props.construct.unfurler, {
               toUnfurl: object,
-              key: index
+              key: index,
+              handles: this.props.construct.handles
             })
           }
         </td>

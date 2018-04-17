@@ -58,6 +58,19 @@ class ProjectsList extends Component {
       filterClass: "ProjectFilter",
       rowDetailUnfurl: true,
       unfurler: ProjectRowUnfurl,
+      handles: {
+        ownerDelete: (ownerId, projectId) => {
+          this.props.dispatch(
+            setActionConfirmation(true, {
+              key: "deleteProjectOwner",
+              string: `Usunąć ${ownerId} jako właściciela projektu o numerze ${projectId}`,
+              ownerId,
+              projectId,
+              successMessage: "Właściciel został zamknięty"
+            })
+          );
+        }
+      },
       operators: [
         {
           pretty: "DODAJ",

@@ -31,7 +31,7 @@ class ProjectsContainer extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (this.validatePropsForProjectDeletion(nextProps)) {
+    if (this.validatePropsForAction(nextProps, "deleteProject")) {
       this.props.async.setActionConfirmationProgress(true);
       DCMTWebApi.deleteProject(this.props.toConfirm.id)
         .then(response => {
@@ -44,7 +44,7 @@ class ProjectsContainer extends React.Component {
           this.props.async.setActionConfirmationResult(error);
         });
     }
-    if (this.validatePropsForProjectClosing(nextProps)) {
+    if (this.validatePropsForAction(nextProps, "closeProject")) {
       this.props.async.setActionConfirmationProgress(true);
       DCMTWebApi.closeProject(this.props.toConfirm.id)
         .then(response => {
@@ -57,7 +57,7 @@ class ProjectsContainer extends React.Component {
           this.props.async.setActionConfirmationResult(error);
         });
     }
-    if (this.validatePropsForProjectReactivation(nextProps)) {
+    if (this.validatePropsForAction(nextProps, "reactivateProject")) {
       this.props.async.setActionConfirmationProgress(true);
       DCMTWebApi.reactivateProject(this.props.toConfirm.id)
         .then(response => {
@@ -70,32 +70,28 @@ class ProjectsContainer extends React.Component {
           this.props.async.setActionConfirmationResult(error);
         });
     }
+    if (this.validatePropsForAction(nextProps, "deleteProjectOwner")) {
+      this.props.async.setActionConfirmationProgress(true);
+      const { ownerId, projectId } = this.props.toConfirm;
+      DCMTWebApi.deleteProjectOwner(ownerId, projectId)
+        .then(response => {
+          this.props.async.setActionConfirmationResult({
+            response
+          });
+          this.pageChange(this.state.currentPage);
+        })
+        .catch(error => {
+          this.props.async.setActionConfirmationResult(error);
+        });
+    }
   }
 
-  validatePropsForProjectDeletion(nextProps) {
+  validatePropsForAction(nextProps, action) {
     return (
       nextProps.confirmed &&
       !nextProps.isWorking &&
       nextProps.type === ACTION_CONFIRMED &&
-      nextProps.toConfirm.key === "deleteProject"
-    );
-  }
-
-  validatePropsForProjectClosing(nextProps) {
-    return (
-      nextProps.confirmed &&
-      !nextProps.isWorking &&
-      nextProps.type === ACTION_CONFIRMED &&
-      nextProps.toConfirm.key === "closeProject"
-    );
-  }
-
-  validatePropsForProjectReactivation(nextProps) {
-    return (
-      nextProps.confirmed &&
-      !nextProps.isWorking &&
-      nextProps.type === ACTION_CONFIRMED &&
-      nextProps.toConfirm.key === "reactivateProject"
+      nextProps.toConfirm.key === action
     );
   }
 

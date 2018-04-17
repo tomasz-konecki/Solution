@@ -50,6 +50,10 @@ $default-color: white;
   position: relative;
   min-height: 78.9vh;
 
+  tr {
+    word-break: break-all;
+  }
+
   .smooth-paginator {
     height: 3rem;
     padding-right: 4vh;
@@ -261,7 +265,7 @@ $default-color: white;
     width: 100%;
     overflow-y: auto;
     padding: 1.4vw;
-    background: darken($default-color, 7%);
+    // background: darken($default-color, 7%);
   }
   .smooth-unfurled {
     height: 13rem;

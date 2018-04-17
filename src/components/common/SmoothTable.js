@@ -64,7 +64,12 @@ class SmoothTable extends Component {
   }
 
   deepenFunction(func, ...args) {
-    return event => func(...args, event);
+    return event => {
+      event.preventDefault();
+      event.stopPropagation();
+      event.nativeEvent.stopImmediatePropagation();
+      return func(...args, event);
+    };
   }
 
   generateSettings() {
@@ -96,7 +101,8 @@ class SmoothTable extends Component {
           sortingSettings: {
             Sort: field,
             Ascending: this.state.columns[field]
-          }
+          },
+          rowUnfurls: {}
         },
         () => {
           this.props.construct.pageChange(
@@ -133,9 +139,11 @@ class SmoothTable extends Component {
   }
 
   generateToolBox(object, toolBoxColumn) {
-    return toolBoxColumn.toolBox.map((button, index) =>
-      this.toolBoxButton(button, object)
-    );
+    return toolBoxColumn.toolBox.map((button, index) => {
+      if(button.comparator === undefined || button.comparator(object)){
+        return this.toolBoxButton(button, object);
+      }
+    });
   }
 
   handleQueryChange(event) {
@@ -199,7 +207,8 @@ class SmoothTable extends Component {
     this.setState(
       {
         columnFilters,
-        columnFiltersLoaders
+        columnFiltersLoaders,
+        rowUnfurls: {}
       },
       () => {
         setTimeout(() => {

@@ -93,7 +93,22 @@ class ProjectsList extends Component {
                     successMessage: "Projekt został zamknięty"
                   })
                 );
-              }
+              },
+              comparator: object => object.isActive
+            },
+            {
+              icon: { icon: "angle-double-up", iconType: "fas" },
+              click: object => {
+                this.props.dispatch(
+                  setActionConfirmation(true, {
+                    key: "reactivateProject",
+                    string: `Reaktywować projekt ${object.name}`,
+                    id: object.id,
+                    successMessage: "Projekt został reaktywowany"
+                  })
+                );
+              },
+              comparator: object => !object.isActive
             },
             {
               icon: { icon: "times" },

@@ -58,6 +58,20 @@ $emblem-width: 20%;
   }
 }
 
+.project-skill-cut {
+  width: 100%;
+  .project-skill-name {
+    width: 100%;
+  }
+}
+
+.project-skill-duplicate {
+  width: 100%;
+  .project-skill-name {
+    background: white !important;
+  }
+}
+
 .project-skill-editable {
   overflow: hidden;
   white-space: nowrap;

@@ -55,17 +55,31 @@ class ProjectSkill extends Component {
   }
 
   render() {
-    const { editable, skillObject } = this.props;
+    const { editable, skillObject, cut = false, duplicate = false } = this.props;
+    let classes = ["project-skill"];
+
+    if(cut) {
+      classes.push('project-skill-cut');
+    }
+
+    if(duplicate) {
+      classes.push('project-skill-duplicate');
+    }
 
     const stylingRules = {
       background: hexToRGB(stringToColour(skillObject.skillName), 0.4)
     };
     if(!editable) return (
-      <div className="project-skill">
+      <div className={classes.join(' ')}>
         <span style={stylingRules} className="project-skill-name">{skillObject.skillName}</span>
-        <span className={"project-skill-level skill-level-" + skillObject.skillLevel}>
-          {skillObject.skillLevel}
-        </span>
+        {
+          (!cut) ?
+          <span className={"project-skill-level skill-level-" + skillObject.skillLevel}>
+            {skillObject.skillLevel}
+          </span>
+          :
+          null
+        }
       </div>
     );
     else return (

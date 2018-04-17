@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import ProjectSkill from './ProjectSkill';
 import ProjectOwner from './ProjectOwner';
 import * as _ from 'lodash';
+import Modal from 'react-responsive-modal';
+import SkillsSelect from './../skills/SkillsSelect';
 
 class ProjectRowUnfurl extends Component {
   constructor(props) {
@@ -9,13 +11,17 @@ class ProjectRowUnfurl extends Component {
     this.state = {
       editable: false,
       toUnfurl: this.props.toUnfurl,
-      changesMade: false
+      changesMade: false,
+      showModal: false
     };
     this.originalSkills = this.props.toUnfurl.skills;
     this.handleEditButton = this.handleEditButton.bind(this);
     this.handleSaveButton = this.handleSaveButton.bind(this);
     this.handleSkillEdit = this.handleSkillEdit.bind(this);
     this.haveSkillsChanged = this.haveSkillsChanged.bind(this);
+    this.handleCloseModal = this.handleCloseModal.bind(this);
+    this.handleOpenModal = this.handleOpenModal.bind(this);
+    this.handleSkillSelection = this.handleSkillSelection.bind(this);
   }
 
   mapSkills(skills, editable = false) {
@@ -66,6 +72,32 @@ class ProjectRowUnfurl extends Component {
     }
   }
 
+  handleOpenModal() {
+    this.setState({ showModal: true });
+  }
+
+  handleCloseModal() {
+    this.setState({ showModal: false });
+  }
+
+  handleSkillSelection(newSkill) {
+    let duplicate = false;
+    this.state.toUnfurl.skills.map((skill, index) => {
+      if(skill.skillId === newSkill.skillId) duplicate = true;
+    });
+
+    if(duplicate) return false;
+
+    let copy = this.state.toUnfurl;
+    copy.skills.push(newSkill);
+    this.setState({
+      toUnfurl: copy,
+      changesMade: true
+    });
+
+    return true;
+  }
+
   render() {
     const { handles } = this.props;
     const { toUnfurl } = this.state;
@@ -75,6 +107,14 @@ class ProjectRowUnfurl extends Component {
     };
     return (
       <div>
+        <Modal
+          open={this.state.showModal}
+          classNames={{ modal: "Modal Modal-skills" }}
+          contentLabel="Skills modal"
+          onClose={this.handleCloseModal}
+        >
+          <SkillsSelect alreadySelected={toUnfurl.skills} skillSelected={this.handleSkillSelection} />
+        </Modal>
         <div className="row">
           <span className="col-sm-9">Lista właścicieli: {this.mapOwners(toUnfurl.owners, handles.ownerDelete, toUnfurl.id)}</span>
           <span className="col-sm-3">ID Projektu: <b>{toUnfurl.id}</b></span>
@@ -90,6 +130,12 @@ class ProjectRowUnfurl extends Component {
           </div>
           <div className="col-sm-6">
             <button style={optionalEditStyling} onClick={this.handleEditButton} className="dcmt-button">Edytuj umiejętności</button>
+            {
+              this.state.editable ?
+              <button onClick={this.handleOpenModal} className="dcmt-button button-success">Dodaj</button>
+              :
+              null
+            }
             {
               this.haveSkillsChanged() ?
               <button onClick={this.handleSaveButton} className="dcmt-button">Zapisz</button>

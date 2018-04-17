@@ -30,6 +30,15 @@
     }
   }
 
+  &.button-success {
+    background: rgb(23, 142, 25);
+    border: 1.2px solid lighten(rgb(23, 142, 25), 5%);
+    &:hover {
+      background: rgb(17, 98, 19);
+      border: 1.2px solid lighten(rgb(17, 98, 19), 5%);
+    }
+  }
+
   &.submitter {
     margin-top: 2em;
   }

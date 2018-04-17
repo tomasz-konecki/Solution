@@ -66,7 +66,18 @@ class ProjectsList extends Component {
               string: `Usunąć ${ownerId} jako właściciela projektu o numerze ${projectId}`,
               ownerId,
               projectId,
-              successMessage: "Właściciel został zamknięty"
+              successMessage: "Właściciel został usunięty"
+            })
+          );
+        },
+        putSkills: (projectId, skillsArray) => {
+          this.props.dispatch(
+            setActionConfirmation(true, {
+              key: "putProjectSkills",
+              string: `Zmienić ustawienia umiejętności projektu o numerze ${projectId}`,
+              skillsArray,
+              projectId,
+              successMessage: "Ustawienia zostały zapisane"
             })
           );
         }

@@ -57,3 +57,69 @@ $emblem-width: 20%;
     background: $prog-color;
   }
 }
+
+.project-skill-editable {
+  overflow: hidden;
+  white-space: nowrap;
+  display: inline-block;
+  box-sizing: border-box;
+  width: $width;
+  height: 32px;
+  margin: 1px;
+  background: slategray;
+
+  .project-skill-delete-block {
+    display: inline-block;
+    color: white;
+    background: rgba(142, 0, 0, 0.855);
+    vertical-align: top;
+    text-align: center;
+    padding: 7px;
+    width: 5%;
+    height: 32px;
+    text-align: center;
+    box-sizing: border-box;
+    user-select: none;
+    cursor: pointer;
+  }
+
+  .project-skill-name {
+    display: inline-block;
+    color: white;
+    vertical-align: top;
+    text-align: center;
+    padding: 7px;
+    min-width: 15%;
+    height: 32px;
+    text-align: center;
+    box-sizing: border-box;
+  }
+  .project-skill-level-block {
+    display: inline-block;
+    line-height: 32px;
+    color: white;
+    text-align: center;
+    border-right: 2px solid darken(slategray, 10%);
+    width: 16%;
+    height: 32px;
+    vertical-align: top;
+    user-select: none;
+    cursor: pointer;
+
+    &:nth-of-type(3):hover {
+      background: darkgreen;
+    }
+    &:nth-of-type(4):hover {
+      background: green;
+    }
+    &:nth-of-type(5):hover {
+      background: rgb(174, 174, 38);
+    }
+    &:nth-of-type(6):hover {
+      background: orange;
+    }
+    &:nth-of-type(7):hover {
+      background: orangered;
+    }
+  }
+}

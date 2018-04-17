@@ -84,6 +84,20 @@ class ProjectsContainer extends React.Component {
           this.props.async.setActionConfirmationResult(error);
         });
     }
+    if (this.validatePropsForAction(nextProps, "putProjectSkills")) {
+      this.props.async.setActionConfirmationProgress(true);
+      const { projectId, skillsArray } = this.props.toConfirm;
+      DCMTWebApi.putProjectSkills(projectId, skillsArray)
+        .then(response => {
+          this.props.async.setActionConfirmationResult({
+            response
+          });
+          this.pageChange(this.state.currentPage);
+        })
+        .catch(error => {
+          this.props.async.setActionConfirmationResult(error);
+        });
+    }
   }
 
   validatePropsForAction(nextProps, action) {

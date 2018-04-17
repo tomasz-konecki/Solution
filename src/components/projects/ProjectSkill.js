@@ -21,18 +21,64 @@ const hexToRGB = (hex, alpha) => {
   return alpha ? "rgba(" + r + ", " + g + ", " + b + ", " + alpha + ")" : "rgb(" + r + ", " + g + ", " + b + ")";
 };
 
-const ProjectSkill = ({skillObject}) => {
-  const stylingRules = {
-    background: hexToRGB(stringToColour(skillObject.skillName), 0.4)
-  };
-  return (
-    <div className="project-skill">
-      <span style={stylingRules} className="project-skill-name">{skillObject.skillName}</span>
-      <span className={"project-skill-level skill-level-" + skillObject.skillLevel}>
-        {skillObject.skillLevel}
-      </span>
-    </div>
-  );
-};
+class ProjectSkill extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {};
+
+    this.levelBlock = this.levelBlock.bind(this);
+    this.handleLevelBlockClick = this.handleLevelBlockClick.bind(this);
+  }
+
+  isHighLit(skillLevel, level) {
+    return skillLevel === level;
+  }
+
+  handleLevelBlockClick(skillObject, level, deletion = false) {
+    return (event) => {
+      if(this.props.skillEdited !== undefined)
+      skillObject.skillLevel = level;
+      this.props.skillEdited(skillObject, deletion);
+    };
+  }
+
+  levelBlock(skillObject, level) {
+    const lit = this.isHighLit(skillObject.skillLevel, level);
+    let stylingRules = {};
+    if(lit){
+      stylingRules = {
+        color: "yellow",
+        background: "black"
+      };
+    }
+    return <span onClick={this.handleLevelBlockClick(skillObject, level)} key={level} style={stylingRules} className={"project-skill-level-block"}>{level}</span>;
+  }
+
+  render() {
+    const { editable, skillObject } = this.props;
+
+    const stylingRules = {
+      background: hexToRGB(stringToColour(skillObject.skillName), 0.4)
+    };
+    if(!editable) return (
+      <div className="project-skill">
+        <span style={stylingRules} className="project-skill-name">{skillObject.skillName}</span>
+        <span className={"project-skill-level skill-level-" + skillObject.skillLevel}>
+          {skillObject.skillLevel}
+        </span>
+      </div>
+    );
+    else return (
+      <div className="project-skill-editable">
+        <span
+          className="project-skill-delete-block"
+          onClick={this.handleLevelBlockClick(skillObject, 0, true)}
+        >X</span>
+        <span style={stylingRules} className="project-skill-name">{skillObject.skillName}</span>
+        {[1,2,3,4,5].map((level) => this.levelBlock(skillObject, level))}
+      </div>
+    );
+  }
+}
 
 export default ProjectSkill;

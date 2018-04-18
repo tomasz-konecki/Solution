@@ -65,7 +65,6 @@ class SmoothTable extends Component {
 
   deepenFunction(func, ...args) {
     return event => {
-      event.preventDefault();
       event.stopPropagation();
       event.nativeEvent.stopImmediatePropagation();
       return func(...args, event);

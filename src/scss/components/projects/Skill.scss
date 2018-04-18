@@ -87,6 +87,8 @@ $emblem-width: 20%;
   .project-skill-name {
     background: white !important;
     color: black !important;
+    border: 2px solid darkgray;
+    box-sizing: border-box;
   }
 }
 

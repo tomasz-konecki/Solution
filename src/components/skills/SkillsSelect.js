@@ -64,7 +64,6 @@ class SkillsSelect extends Component {
       <input value={this.state.search} onChange={this.handleSearchChange} type="text" className="form-control form-control-sm skills-input-filter"/>
       {
         Object.entries(this.props.skills).map(([id, skill], index) => {
-          console.log(skill.name.toLowerCase().indexOf(this.state.search), skill.name.toLowerCase(), this.state.search);
           if(this.state.search !== "" && skill.name.toLowerCase().indexOf(this.state.search) < 0) return null;
           const skillObject = {
             skillId: id - 0,

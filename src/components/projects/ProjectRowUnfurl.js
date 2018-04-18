@@ -12,7 +12,8 @@ class ProjectRowUnfurl extends Component {
       editable: false,
       toUnfurl: this.props.toUnfurl,
       changesMade: false,
-      showModal: false
+      showModal: false,
+      showAddOwner: false
     };
     this.originalSkills = this.props.toUnfurl.skills;
     this.handleEditButton = this.handleEditButton.bind(this);
@@ -21,7 +22,11 @@ class ProjectRowUnfurl extends Component {
     this.haveSkillsChanged = this.haveSkillsChanged.bind(this);
     this.handleCloseModal = this.handleCloseModal.bind(this);
     this.handleOpenModal = this.handleOpenModal.bind(this);
+    this.handleOpenAddOwner = this.handleOpenAddOwner.bind(this);
+    this.handleCloseAddOwner = this.handleCloseAddOwner.bind(this);
     this.handleSkillSelection = this.handleSkillSelection.bind(this);
+
+    this.settingsCache = [];
   }
 
   mapSkills(skills, editable = false) {
@@ -59,6 +64,17 @@ class ProjectRowUnfurl extends Component {
   handleEditButton() {
     this.setState({
       editable: !this.state.editable
+    }, () => {
+      if(this.state.editable === false && this.state.changesMade){
+        let toUnfurl = this.state.toUnfurl;
+        toUnfurl.skills = this.settingsCache;
+        this.setState({
+          toUnfurl,
+          changesMade: false
+        });
+      } else {
+        this.settingsCache = this.state.toUnfurl.skills.slice();
+      }
     });
   }
 
@@ -78,6 +94,14 @@ class ProjectRowUnfurl extends Component {
 
   handleCloseModal() {
     this.setState({ showModal: false });
+  }
+
+  handleOpenAddOwner() {
+    this.setState({ showAddOwner: true });
+  }
+
+  handleCloseAddOwner() {
+    this.setState({ showAddOwner: false });
   }
 
   handleSkillSelection(newSkill) {
@@ -115,8 +139,24 @@ class ProjectRowUnfurl extends Component {
         >
           <SkillsSelect alreadySelected={toUnfurl.skills} skillSelected={this.handleSkillSelection} />
         </Modal>
+        <Modal
+          open={this.state.showAddOwner}
+          classNames={{ modal: "Modal Modal-add-owner" }}
+          contentLabel="Add owner modal"
+          onClose={this.handleCloseAddOwner}
+        >
+          <header>
+            <h3 className="section-heading">Dodaj właściciela</h3>
+          </header>
+        </Modal>
         <div className="row">
-          <span className="col-sm-9">Lista właścicieli: {this.mapOwners(toUnfurl.owners, handles.ownerDelete, toUnfurl.id)}</span>
+          <span className="col-sm-9">
+            Lista właścicieli:
+            {this.mapOwners(toUnfurl.owners, handles.ownerDelete, toUnfurl.id)}
+            <div className="project-owner">
+              <span onClick={this.handleOpenAddOwner} className="project-owner-add"/>
+            </div>
+          </span>
           <span className="col-sm-3">ID Projektu: <b>{toUnfurl.id}</b></span>
         </div>
         <hr/>

@@ -14,6 +14,18 @@
     padding-left: 16px;
     padding-right: 6px;
   }
+  .project-owner-add {
+    padding-top: 4px;
+    padding-bottom: 4px;
+    padding-left: 10px;
+    padding-right: 10px;
+    text-align: center;
+    cursor: pointer;
+    background: rgba(0, 255, 17, 0.4);
+    &:after {
+      content: '+';
+    }
+  }
   .project-owner-delete {
     padding-top: 4px;
     background: rgba(255, 0, 0, 0.4);

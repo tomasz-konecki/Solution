@@ -249,7 +249,7 @@ class SmoothTable extends Component {
     let newState = this.initialState;
     newState.columnFilters = Object.assign(
       {},
-      ...Object.keys(newState.columnFilters).map(k => ({ [k]: "" }))
+      ...Object.keys(newState.columnFilters).map(k => ({ [k] : "" }))
     );
     this.setState(newState, () => {
       this.props.construct.pageChange(1, this.generateSettings());

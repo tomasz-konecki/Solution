@@ -19,7 +19,6 @@ class StageOne extends Component {
   }
 
   handleChange = value => {
-    console.log(value);
     this.setState({
       value
     });

@@ -2,6 +2,21 @@ $width: 100%;
 $main-color: rgb(149, 0, 157);
 $prog-color: rgb(255, 166, 0);
 $emblem-width: 20%;
+.skills-select {
+  height: 100%;
+}
+.skills-input-filter {
+  position: absolute;
+  top: 5px;
+  width: 88%;
+}
+.skills-list {
+  position: relative;
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-top: 36px;
+}
 
 .project-skill {
   overflow: hidden;
@@ -12,6 +27,8 @@ $emblem-width: 20%;
   height: 32px;
   margin: 1px;
   background: rgb(115, 140, 140);
+  cursor: pointer;
+  user-select: none;
 
   .project-skill-name {
     display: inline-block;
@@ -69,6 +86,7 @@ $emblem-width: 20%;
   width: 100%;
   .project-skill-name {
     background: white !important;
+    color: black !important;
   }
 }
 

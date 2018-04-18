@@ -261,6 +261,9 @@ $default-color: white;
     @media (max-width: 1000px) {
     }
   }
+  .smooth-row-disabled {
+    background: rgb(226, 226, 226);
+  }
   .smooth-unfurl-content {
     width: 100%;
     overflow-y: auto;
@@ -282,6 +285,10 @@ $default-color: white;
 
 .smooth-text-center {
   text-align: center;
+}
+
+.smooth-text-right {
+  text-align: right;
 }
 
 .smooth-footer {

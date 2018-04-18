@@ -126,7 +126,8 @@ class ProjectRowUnfurl extends Component {
         <hr/>
         <div className="row">
           <div className="col-sm-6">
-            {this.mapSkills(toUnfurl.skills, this.state.editable)}
+            { this.mapSkills(toUnfurl.skills, this.state.editable) }
+            { toUnfurl.skills.length === 0 ? "Obecnie brak przypisanych umiejętności" : null }
           </div>
           <div className="col-sm-6">
             <button style={optionalEditStyling} onClick={this.handleEditButton} className="dcmt-button">Edytuj umiejętności</button>

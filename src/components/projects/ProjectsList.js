@@ -58,6 +58,9 @@ class ProjectsList extends Component {
       filterClass: "ProjectFilter",
       rowDetailUnfurl: true,
       unfurler: ProjectRowUnfurl,
+      disabledRowComparator: (object) => {
+        return object.isDeleted;
+      },
       handles: {
         ownerDelete: (ownerId, projectId) => {
           this.props.dispatch(
@@ -145,7 +148,8 @@ class ProjectsList extends Component {
                     successMessage: "Projekt został usunięty"
                   })
                 );
-              }
+              },
+              comparator: object => !object.isDeleted
             },
             {
               icon: { icon: "edit", iconType: "far" },

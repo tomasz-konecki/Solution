@@ -447,6 +447,10 @@ class SmoothTable extends Component {
 
     let payload = [];
 
+    if(this.props.construct.disabledRowComparator !== undefined){
+      const isDisabled = this.props.construct.disabledRowComparator(object);
+      if(isDisabled) classes.push('smooth-row-disabled');
+    }
 
     if(construct.rowClass !== undefined){
       classes.push(construct.rowClass);
@@ -468,16 +472,17 @@ class SmoothTable extends Component {
               {this.generateCell(column, object)}
             </td>
           );
-        } else if (column.toolBox !== undefined)
+        } else if (column.toolBox !== undefined){
           return (
             <td
               key="____toolBox"
-              className="smooth-cell smooth-text-center"
+              className="smooth-cell smooth-text-right"
               style={{ width: column.width + "%" }}
             >
               {this.generateToolBox(object, column)}
             </td>
           );
+        }
       })}
     </tr>);
 

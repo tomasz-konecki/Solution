@@ -201,8 +201,8 @@ class DCMTWebApi {
     return axios.patch(`${API_ENDPOINT}/employees/${id}`, { seniority, role });
   }
 
-  addSkill(name, level) {
-    return axios.post(`${API_ENDPOINT}/skills`, { name, level });
+  addSkill(name) {
+    return axios.post(`${API_ENDPOINT}/skills`, { name });
   }
 
   getSkills() {

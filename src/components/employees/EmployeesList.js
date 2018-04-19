@@ -6,6 +6,7 @@ import Confirmation from "../common/modals/Confirmation";
 import { setActionConfirmation } from "../../actions/asyncActions";
 import Modal from "react-responsive-modal";
 import DCMTWebApi from "../../api";
+import EmployeesRowUnfurl from './EmployeesRowUnfurl';
 
 class EmployeesList extends Component {
   constructor(props) {
@@ -21,14 +22,9 @@ class EmployeesList extends Component {
       defaultSortField: "lastName",
       defaultSortAscending: true,
       filterClass: "EmployeeFilter",
-      operators: [
-        // {
-        //   pretty: "DODAJ",
-        //   click: () => {
-        //     this.props.openAddUserModal();
-        //   }
-        // }
-      ],
+      rowDetailUnfurl: true,
+      unfurler: EmployeesRowUnfurl,
+      operators: [],
       columns: [
         {
           width: 20,
@@ -66,33 +62,6 @@ class EmployeesList extends Component {
           type: "multiState",
           filter: true
         }
-        // {
-        //   width: 1,
-        //   toolBox: [
-        //     {
-        //       icon: { icon: "times" },
-        //       click: object => {
-        //         this.props.dispatch(
-        //           setActionConfirmation(true, {
-        //             key: "deleteUser",
-        //             string: `Usunąć użytkownika ${object.firstName} ${
-        //               object.lastName
-        //             }`,
-        //             id: object.id,
-        //             successMessage: "Użytkownik został usunięty"
-        //           })
-        //         );
-        //       }
-        //     },
-        //     {
-        //       icon: { icon: "edit", iconType: "far" },
-        //       click: object => {
-        //         this.handleGetUser(object);
-        //       }
-        //     }
-        //   ],
-        //   pretty: "Usuń/Edytuj"
-        // }
       ]
     };
     return (

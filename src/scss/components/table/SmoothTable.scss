@@ -165,6 +165,7 @@ $default-color: white;
         font-size: 16px;
         border-bottom: 1px solid darken($default-color, 15%);
         padding: 0 15px;
+        min-width: 110px;
 
         &:first-of-type {
           padding-left: 2vh;

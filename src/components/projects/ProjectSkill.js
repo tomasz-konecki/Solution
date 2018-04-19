@@ -37,7 +37,7 @@ class ProjectSkill extends Component {
   handleLevelBlockClick(skillObject, level, deletion = false) {
     return (event) => {
       if(this.props.skillEdited !== undefined)
-      skillObject.skillLevel = level;
+        skillObject.skillLevel = level;
       this.props.skillEdited(skillObject, deletion);
     };
   }
@@ -86,7 +86,7 @@ class ProjectSkill extends Component {
       <div className="project-skill-editable">
         <span
           className="project-skill-delete-block"
-          onClick={this.handleLevelBlockClick(skillObject, 0, true)}
+          onClick={this.handleLevelBlockClick(skillObject, skillObject.skillLevel, true)}
         >X</span>
         <span style={stylingRules} className="project-skill-name">{skillObject.skillName}</span>
         {[1,2,3,4,5].map((level) => this.levelBlock(skillObject, level))}

@@ -45,6 +45,10 @@ class ProjectRowUnfurl extends Component {
     return this.state.changesMade;
   }
 
+  deepCopy(object) {
+    return JSON.parse(JSON.stringify(object));
+  }
+
   handleSkillEdit(updatedSkillObject, deletion = false) {
     let { toUnfurl } = this.state;
     toUnfurl.skills.forEach((skill, index) => {
@@ -66,14 +70,14 @@ class ProjectRowUnfurl extends Component {
       editable: !this.state.editable
     }, () => {
       if(this.state.editable === false && this.state.changesMade){
-        let toUnfurl = this.state.toUnfurl;
-        toUnfurl.skills = this.settingsCache;
+        let { toUnfurl } = this.state;
+        toUnfurl.skills = this.deepCopy(this.settingsCache);
         this.setState({
           toUnfurl,
           changesMade: false
         });
       } else {
-        this.settingsCache = this.state.toUnfurl.skills.slice();
+        this.settingsCache = this.deepCopy(this.state.toUnfurl.skills);
       }
     });
   }

@@ -21,7 +21,8 @@ const mapStateToProps = state => {
 };
 
 LoggedInUser.propTypes = {
-  user: PropTypes.string
+  firstName: PropTypes.string.isRequired,
+  lastName: PropTypes.string.isRequired
 };
 
 export default connect(mapStateToProps)(LoggedInUser);

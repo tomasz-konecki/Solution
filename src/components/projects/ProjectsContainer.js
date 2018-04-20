@@ -143,7 +143,6 @@ class ProjectsContainer extends React.Component {
           loading={this.props.loading}
           projectActions={this.props.projectActions}
           limit={this.state.limit}
-          currentPage={this.state.currentPage}
         />
         <Modal
           open={this.state.showModal}
@@ -181,5 +180,17 @@ function mapDispatchToProps(dispatch) {
     async: bindActionCreators(asyncActions, dispatch)
   };
 }
+
+ProjectsContainer.propTypes = {
+  async: PropTypes.shape({
+    setActionConfirmationResult: PropTypes.func,
+    setActionConfirmationProgress: PropTypes.func
+  }),
+  toConfirm: PropTypes.object,
+  projectActions: PropTypes.object,
+  projects: PropTypes.arrayOf(PropTypes.object),
+  totalPageCount: PropTypes.number.isRequired,
+  loading: PropTypes.number.isRequired
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProjectsContainer);

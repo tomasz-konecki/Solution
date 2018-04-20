@@ -4,7 +4,6 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import * as employeesActions from "../../actions/employeesActions";
 import * as asyncActions from "../../actions/asyncActions";
-
 import "../../scss/containers/UsersContainer.scss";
 import { ACTION_CONFIRMED } from "./../../constants";
 import DCMTWebApi from "../../api/";
@@ -17,6 +16,10 @@ class EmployeesContainer extends React.Component {
       currentPage: 1,
       limit: 15
     };
+  }
+
+  componentDidMount() {
+    this.pageChange(this.state.currentPage);
   }
 
   pageChange = (page, other) => {
@@ -32,10 +35,6 @@ class EmployeesContainer extends React.Component {
         )
     );
   };
-
-  componentDidMount() {
-    this.pageChange(this.state.currentPage);
-  }
 
   render() {
     return (
@@ -68,5 +67,12 @@ function mapDispatchToProps(dispatch) {
     async: bindActionCreators(asyncActions, dispatch)
   };
 }
+
+EmployeesContainer.propTypes = {
+  employeeActions: PropTypes.object,
+  totalPageCount: PropTypes.number,
+  loading: PropTypes.bool,
+  employees: PropTypes.array
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(EmployeesContainer);

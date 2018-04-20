@@ -9,6 +9,7 @@ import DCMTWebApi from "../../api";
 import "react-datepicker/dist/react-datepicker.css";
 import DatePicker from "react-datepicker";
 import ProjectRowUnfurl from './ProjectRowUnfurl';
+import PropTypes from 'prop-types';
 
 class ProjectsList extends Component {
   constructor(props) {
@@ -192,5 +193,16 @@ class ProjectsList extends Component {
     );
   }
 }
+
+ProjectsList.propTypes = {
+  pageChange: PropTypes.func.isRequired,
+  dispatch: PropTypes.func,
+  openAddProjectModal: PropTypes.func.isRequired,
+  currentPage: PropTypes.number.isRequired,
+  totalPageCount: PropTypes.number.isRequired,
+  loading: PropTypes.bool.isRequired,
+  projects: PropTypes.arrayOf(PropTypes.object),
+  projectActions: PropTypes.object
+};
 
 export default connect()(ProjectsList);

@@ -6,6 +6,7 @@ import UserDetailsBlock from "./UserDetailsBlock";
 import UserRoleAssigner from "./UserRoleAssigner";
 import LoaderHorizontal from "../../../components/common/LoaderHorizontal";
 import ResultBlock from "../../common/ResultBlock";
+import PropTypes from 'prop-types';
 
 class StageTwo extends Component {
   constructor() {
@@ -113,5 +114,12 @@ class StageTwo extends Component {
     );
   }
 }
+
+StageTwo.propTypes = {
+  selectedUser: PropTypes.object.isRequired,
+  resetState: PropTypes.func.isRequired,
+  doAddUser: PropTypes.func.isRequired,
+  errorBlock: PropTypes.object
+};
 
 export default StageTwo;

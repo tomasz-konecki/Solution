@@ -5,8 +5,8 @@ import { bindActionCreators } from "redux";
 import * as asyncActions from "./../../../actions/asyncActions";
 import LoaderHorizontal from "./../LoaderHorizontal";
 import ResultBlock from "../ResultBlock";
-import { SET_ACTION_CONFIRMATION_RESULT } from "../../../constants";
-import { SET_ACTION_CONFIRMATION } from "./../../../constants";
+import { SET_ACTION_CONFIRMATION_RESULT, SET_ACTION_CONFIRMATION } from "../../../constants";
+import PropTypes from 'prop-types';
 
 class Confirmation extends Component {
   constructor(props) {
@@ -19,6 +19,7 @@ class Confirmation extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
+    /* eslint-disable react/no-direct-mutation-state */
     if (nextProps.type === SET_ACTION_CONFIRMATION_RESULT) {
       this.state.resultBlock = nextProps.resultBlock;
       this.hideAfterSuccess();
@@ -30,6 +31,7 @@ class Confirmation extends Component {
     if (nextProps.type === SET_ACTION_CONFIRMATION && nextProps.shown) {
       this.state.toConfirm = nextProps.toConfirm;
     }
+    /* eslint-enable */
   }
 
   invalidate = () => {
@@ -111,5 +113,14 @@ function mapDispatchToProps(dispatch) {
     async: bindActionCreators(asyncActions, dispatch)
   };
 }
+
+Confirmation.propTypes = {
+  type: PropTypes.string,
+  resultBlock: PropTypes.object,
+  shown: PropTypes.bool,
+  toConfirm: PropTypes.object,
+  isWorking: PropTypes.bool,
+  async: PropTypes.object
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(Confirmation);

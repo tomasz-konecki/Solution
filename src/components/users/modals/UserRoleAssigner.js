@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import DCMTWebApi from "../../../api";
 import CheckBox from "../../common/CheckBox";
+import PropTypes from 'prop-types';
 
 class UserRoleAssigner extends Component {
   constructor(props) {
@@ -63,5 +64,10 @@ class UserRoleAssigner extends Component {
     );
   }
 }
+
+UserRoleAssigner.propTypes = {
+  roles: PropTypes.arrayOf(PropTypes.string).isRequired,
+  handleRoleChange: PropTypes.func.isRequired
+};
 
 export default UserRoleAssigner;

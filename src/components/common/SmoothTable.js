@@ -5,6 +5,7 @@ import ReactPaginate from "react-paginate";
 import Detail from "./Detail";
 import DatePicker from "react-datepicker";
 import moment from "moment";
+import PropTypes from 'prop-types';
 
 class SmoothTable extends Component {
   constructor(props) {
@@ -568,5 +569,44 @@ class SmoothTable extends Component {
     );
   }
 }
+
+SmoothTable.propTypes = {
+  construct: PropTypes.shape({
+    rowClass: PropTypes.string.isRequired,
+    tableClass: PropTypes.string.isRequired,
+    keyField: PropTypes.string.isRequired,
+    pageChange: PropTypes.func.isRequired,
+    defaultSortField: PropTypes.string.isRequired,
+    defaultSortAscending: PropTypes.bool.isRequired,
+    filterClass: PropTypes.string,
+    rowDetailUnfurl: PropTypes.bool,
+    unfurler: PropTypes.func,
+    disabledRowComparator: PropTypes.func,
+    handles: PropTypes.objectOf(PropTypes.func),
+    operators: PropTypes.arrayOf(PropTypes.shape({
+      pretty: PropTypes.string.isRequired,
+      click: PropTypes.func
+    })),
+    columns: PropTypes.arrayOf(PropTypes.shape({
+      width: PropTypes.number.isRequired,
+      field: PropTypes.string,
+      pretty: PropTypes.string.isRequired,
+      type: PropTypes.string,
+      filter: PropTypes.bool,
+      filterFieldOverride: PropTypes.string,
+      multiState: PropTypes.object,
+      toolBox: PropTypes.arrayOf(PropTypes.shape({
+        icon: PropTypes.object.isRequired,
+        click: PropTypes.func.isRequired,
+        comparator: PropTypes.func
+      }))
+    }))
+  }),
+  dispatch: PropTypes.func,
+  currentPage: PropTypes.number.isRequired,
+  totalPageCount: PropTypes.number.isRequired,
+  data: PropTypes.arrayOf(PropTypes.object),
+  loading: PropTypes.bool.isRequired
+};
 
 export default SmoothTable;

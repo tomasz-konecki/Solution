@@ -3,6 +3,7 @@ import UserDetailsBlock from "./UserDetailsBlock";
 import UserRoleAssigner from "./UserRoleAssigner";
 import LoaderHorizontal from "./../../common/LoaderHorizontal";
 import ResultBlock from "./../../common/ResultBlock";
+import PropTypes from 'prop-types';
 
 class EditUserDetails extends Component {
   constructor(props) {
@@ -44,5 +45,13 @@ class EditUserDetails extends Component {
     );
   }
 }
+
+EditUserDetails.propTypes = {
+  user: PropTypes.object.isRequired,
+  handleRoleChange: PropTypes.func.isRequired,
+  changeUserRoles: PropTypes.func.isRequired,
+  responseBlock: PropTypes.object,
+  loading: PropTypes.bool
+};
 
 export default EditUserDetails;

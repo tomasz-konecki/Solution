@@ -7,6 +7,7 @@ import { setActionConfirmation } from "../../actions/asyncActions";
 import Modal from "react-responsive-modal";
 import DCMTWebApi from "../../api";
 import EmployeesRowUnfurl from './EmployeesRowUnfurl';
+import PropTypes from 'prop-types';
 
 class EmployeesList extends Component {
   constructor(props) {
@@ -77,5 +78,13 @@ class EmployeesList extends Component {
     );
   }
 }
+
+EmployeesList.propTypes = {
+  pageChange: PropTypes.func.isRequired,
+  currentPage: PropTypes.number.isRequired,
+  totalPageCount: PropTypes.number.isRequired,
+  loading: PropTypes.bool.isRequired,
+  employees: PropTypes.array
+};
 
 export default EmployeesList;

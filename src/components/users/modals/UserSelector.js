@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import StageOne from "./StageOne";
 import StageTwo from "./StageTwo";
 import DCMTWebApi from "../../../api";
+import PropTypes from 'prop-types';
 
 const initialState = {
   selectedUser: {},
@@ -93,5 +94,9 @@ class UserSelector extends Component {
     );
   }
 }
+
+UserSelector.propTypes = {
+  closeModal: PropTypes.func.isRequired
+};
 
 export default UserSelector;

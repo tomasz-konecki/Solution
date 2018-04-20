@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from 'prop-types';
 import "bootstrap/dist/css/bootstrap.css";
 
 import { Route, Switch, BrowserRouter } from "react-router";
@@ -12,5 +13,9 @@ const App = props => (
     <PrivateRoute path="/main" component={Home} history={props.history} />
   </Switch>
 );
+
+App.propTypes = {
+  history: PropTypes.object.isRequired
+};
 
 export default App;

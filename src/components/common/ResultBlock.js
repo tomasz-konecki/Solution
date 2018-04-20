@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from 'prop-types';
 
 const shouldRender = (errorOnly, errorStatus) => {
   if (errorOnly && errorStatus === false) return false;
@@ -108,6 +109,14 @@ const ResultBlock = ({
       )}
     </span>
   );
+};
+
+ResultBlock.propTypes = {
+  errorBlock: PropTypes.object,
+  errorOnly: PropTypes.bool,
+  successMessage: PropTypes.string,
+  successCallback: PropTypes.func,
+  customErrors: PropTypes.object
 };
 
 export default ResultBlock;

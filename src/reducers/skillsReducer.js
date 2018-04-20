@@ -1,5 +1,4 @@
-import { LOAD_SKILLS_SUCCESS } from "../constants";
-import { SKILL_ADDED } from './../constants';
+import { LOAD_SKILLS_SUCCESS, SKILL_ADDED } from "../constants";
 
 const initialState = {
   skills: []

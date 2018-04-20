@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import Detail from "../../common/Detail";
+import PropTypes from 'prop-types';
 
 const emptyField = "<brak>";
 
@@ -73,5 +74,10 @@ class UserDetailsBlock extends Component {
     );
   }
 }
+
+UserDetailsBlock.propTypes = {
+  user: PropTypes.object.isRequired,
+  editable: PropTypes.bool
+};
 
 export default UserDetailsBlock;

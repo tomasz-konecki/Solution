@@ -7,6 +7,7 @@ import { setActionConfirmation } from "../../actions/asyncActions";
 import Modal from "react-responsive-modal";
 import EditUserDetails from "../users/modals/EditUserDetails";
 import DCMTWebApi from "../../api";
+import PropTypes from 'prop-types';
 
 class UsersList extends Component {
   constructor(props) {
@@ -164,5 +165,15 @@ class UsersList extends Component {
     );
   }
 }
+
+UsersList.propTypes = {
+  pageChange: PropTypes.func.isRequired,
+  openAddUserModal: PropTypes.func.isRequired,
+  dispatch: PropTypes.func.isRequired,
+  currentPage: PropTypes.number.isRequired,
+  totalPageCount: PropTypes.number.isRequired,
+  loading: PropTypes.bool.isRequired,
+  users: PropTypes.arrayOf(PropTypes.object).isRequired
+};
 
 export default connect()(UsersList);

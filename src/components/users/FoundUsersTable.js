@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import "../../scss/components/users/FoundUsersTable.scss";
+import PropTypes from 'prop-types';
 
 class FoundUsersTable extends Component {
   constructor(props) {
@@ -34,5 +35,13 @@ class FoundUsersTable extends Component {
     );
   }
 }
+
+FoundUsersTable.propTypes = {
+  setSelectedUser: PropTypes.func.isRequired,
+  foundUsers: PropTypes.arrayOf(PropTypes.shape({
+    firstName: PropTypes.string,
+    lastName: PropTypes.string
+  }))
+};
 
 export default FoundUsersTable;

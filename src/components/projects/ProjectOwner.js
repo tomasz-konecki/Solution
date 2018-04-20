@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 const stringToColour = function(str) {
   let hash = 0;
@@ -31,6 +32,11 @@ const ProjectOwner = ({ownerName, clickAction}) => {
       <span onClick={clickAction} className="project-owner-delete">X</span>
     </div>
   );
+};
+
+ProjectOwner.propTypes = {
+  ownerName: PropTypes.string.isRequired,
+  clickAction: PropTypes.func.isRequired
 };
 
 export default ProjectOwner;

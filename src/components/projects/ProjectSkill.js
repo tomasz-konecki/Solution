@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 const stringToColour = function(str) {
   let hash = 0;
@@ -94,5 +95,13 @@ class ProjectSkill extends Component {
     );
   }
 }
+
+ProjectSkill.propTypes = {
+  skillEdited: PropTypes.func,
+  editable: PropTypes.bool,
+  skillObject: PropTypes.object,
+  cut: PropTypes.bool,
+  duplicate: PropTypes.bool
+};
 
 export default ProjectSkill;

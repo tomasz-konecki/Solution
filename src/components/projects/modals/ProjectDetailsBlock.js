@@ -7,6 +7,7 @@ import "../../../scss/components/projects/modals/ProjectDetailsBlock.scss";
 import "react-datepicker/dist/react-datepicker.css";
 import ResponsiblePersonBlock from "./ResponsiblePersonBlock";
 import constraints from "../../../constraints";
+import PropTypes from 'prop-types';
 
 const emptyField = "<brak>";
 const active = "Aktywny";
@@ -46,6 +47,28 @@ class ProjectDetailsBlock extends Component {
         phoneNumberValid: true
       }
     };
+  }
+
+  componentDidMount() {
+    const {
+      id,
+      name,
+      client,
+      description,
+      responsiblePerson,
+      startDate,
+      estimatedEndDate
+    } = this.props.project;
+
+    this.setState({
+      id,
+      name,
+      client,
+      description,
+      responsiblePerson,
+      startDate: moment(startDate),
+      estimatedEndDate: moment(estimatedEndDate)
+    });
   }
 
   handleChange = event => {
@@ -164,28 +187,6 @@ class ProjectDetailsBlock extends Component {
       this.checkAllFields(fieldName, test)
     );
   };
-
-  componentDidMount() {
-    const {
-      id,
-      name,
-      client,
-      description,
-      responsiblePerson,
-      startDate,
-      estimatedEndDate
-    } = this.props.project;
-
-    this.setState({
-      id,
-      name,
-      client,
-      description,
-      responsiblePerson,
-      startDate: moment(startDate),
-      estimatedEndDate: moment(estimatedEndDate)
-    });
-  }
 
   render() {
     const editable = this.props.editable;
@@ -328,5 +329,19 @@ class ProjectDetailsBlock extends Component {
     );
   }
 }
+
+ProjectDetailsBlock.propTypes = {
+  project: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    client: PropTypes.string.isRequired,
+    description: PropTypes.string.isRequired,
+    responsiblePerson: PropTypes.string.isRequired,
+    startDate: PropTypes.string.isRequired,
+    estimatedEndDate: PropTypes.string.isRequired,
+  }),
+  editable: PropTypes.bool,
+  editProject: PropTypes.func.isRequired
+};
 
 export default ProjectDetailsBlock;

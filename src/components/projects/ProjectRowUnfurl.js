@@ -6,6 +6,7 @@ import Modal from 'react-responsive-modal';
 import SkillsSelect from './../skills/SkillsSelect';
 import defaultShouldAsyncValidate from './../../../dist/app.bundle';
 import AddProjectOwner from './modals/AddProjectOwner';
+import PropTypes from 'prop-types';
 
 class ProjectRowUnfurl extends Component {
   constructor(props) {
@@ -193,5 +194,15 @@ class ProjectRowUnfurl extends Component {
     );
   }
 }
+
+ProjectRowUnfurl.propTypes = {
+  toUnfurl: PropTypes.shape({
+    skills: PropTypes.arrayOf(PropTypes.object).isRequired
+  }),
+  handles: PropTypes.shape({
+    putSkills: PropTypes.func.isRequired,
+    ownerDelete: PropTypes.func.isRequired
+  })
+};
 
 export default ProjectRowUnfurl;

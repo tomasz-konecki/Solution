@@ -74,7 +74,8 @@ class LeftMenu extends React.Component {
 
 LeftMenu.propTypes = {
   match: PropTypes.object,
-  extended: PropTypes.bool
+  extended: PropTypes.bool,
+  close: PropTypes.func.isRequired
 };
 
 export default withRouter(LeftMenu);

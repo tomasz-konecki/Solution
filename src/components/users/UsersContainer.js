@@ -103,8 +103,12 @@ class UsersContainer extends React.Component {
 }
 
 UsersContainer.propTypes = {
-  // dispatch: PropTypes.function,
-  users: PropTypes.array
+  users: PropTypes.array,
+  async: PropTypes.object,
+  toConfirm: PropTypes.object,
+  userActions: PropTypes.object,
+  totalPageCount: PropTypes.number,
+  loading: PropTypes.bool
 };
 
 function mapStateToProps(state) {

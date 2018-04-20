@@ -6,6 +6,7 @@ import ResultBlock from "../../common/ResultBlock";
 import Select from "react-select";
 import "react-select/dist/react-select.css";
 import DCMTWebApi from "../../../api";
+import PropTypes from 'prop-types';
 
 class StageOne extends Component {
   constructor() {
@@ -95,5 +96,11 @@ class StageOne extends Component {
     );
   }
 }
+
+StageOne.propTypes = {
+  getUsers: PropTypes.func.isRequired,
+  setSelectedUser: PropTypes.func.isRequired,
+  errorBlock: PropTypes.object
+};
 
 export default StageOne;

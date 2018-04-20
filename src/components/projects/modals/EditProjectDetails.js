@@ -3,6 +3,7 @@ import LoaderHorizontal from "./../../common/LoaderHorizontal";
 import ResultBlock from "./../../common/ResultBlock";
 import ProjectDetailsBlock from "./ProjectDetailsBlock";
 import DCMTWebApi from "../../../api";
+import PropTypes from 'prop-types';
 
 class EditProjectDetails extends Component {
   constructor(props) {
@@ -39,7 +40,7 @@ class EditProjectDetails extends Component {
       <div>
         <ProjectDetailsBlock
           project={this.props.project}
-          editable={true}
+          editable
           projectActions={this.props.projectActions}
           limit={this.state.limit}
           currentPage={this.state.currentPage}
@@ -57,5 +58,13 @@ class EditProjectDetails extends Component {
     );
   }
 }
+
+EditProjectDetails.propTypes = {
+  projectActions: PropTypes.object,
+  currentPage: PropTypes.number.isRequired,
+  limit: PropTypes.number.isRequired,
+  closeModal: PropTypes.func.isRequired,
+  project: PropTypes.object
+};
 
 export default EditProjectDetails;

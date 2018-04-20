@@ -8,6 +8,7 @@ import DCMTWebApi from "../../../api";
 import ResultBlock from "./../../common/ResultBlock";
 import ResponsiblePersonBlock from "./ResponsiblePersonBlock";
 import constraints from "../../../constraints";
+import PropTypes from 'prop-types';
 
 class AddProjectScreen extends Component {
   constructor(props) {
@@ -274,7 +275,6 @@ class AddProjectScreen extends Component {
             >
               Osoba do kontaktu:
             </label>
-
             <ResponsiblePersonBlock
               setResponsiblePerson={this.setResponsiblePerson}
               responsiblePerson={responsiblePerson}
@@ -357,5 +357,12 @@ class AddProjectScreen extends Component {
     );
   }
 }
+
+AddProjectScreen.propTypes = {
+  projectActions: PropTypes.object,
+  currentPage: PropTypes.number.isRequired,
+  limit: PropTypes.number.isRequired,
+  closeModal: PropTypes.func.isRequired
+};
 
 export default AddProjectScreen;

@@ -4,6 +4,7 @@ import { bindActionCreators } from 'redux';
 import * as skillsActions from "../../actions/skillsActions";
 import * as asyncActions from "../../actions/asyncActions";
 import ProjectSkill from './../projects/ProjectSkill';
+import PropTypes from 'prop-types';
 
 class SkillsSelect extends Component {
   constructor(props) {
@@ -110,5 +111,14 @@ function mapDispatchToProps(dispatch) {
     async: bindActionCreators(asyncActions, dispatch)
   };
 }
+
+SkillsSelect.propTypes = {
+  alreadySelected: PropTypes.array,
+  skillsAction: PropTypes.object,
+  skillSelected: PropTypes.func.isRequired,
+  skills: PropTypes.arrayOf(PropTypes.object),
+  success: PropTypes.bool,
+  loading: PropTypes.bool
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(SkillsSelect);

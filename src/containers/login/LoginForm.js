@@ -88,7 +88,10 @@ const Form = reduxForm({
 LoginForm.propTypes = {
   handleSubmit: PropTypes.func,
   error: PropTypes.string,
-  loading: PropTypes.bool
+  loading: PropTypes.bool,
+  isAuthenticated: PropTypes.bool,
+  tokenExpirationDate: PropTypes.string,
+  dispatch: PropTypes.func.isRequired
 };
 
 export default connect(mapStateToProps)(Form);

@@ -13,7 +13,6 @@ class LoginForm extends React.Component {
   }
 
   componentDidMount() {
-    console.log(this.props);
     if(this.props.isAuthenticated){
       if(new Date(this.props.tokenExpirationDate) > new Date()){
         this.props.dispatch(push("/main"));

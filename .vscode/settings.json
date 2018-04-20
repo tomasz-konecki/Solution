@@ -1,7 +1,5 @@
 {
   "files.associations": {
-    "**/components/*.*": "javascriptreact",
-    "**/containers/*.js": "javascriptreact",
-    "**/creators/*.js": "javascriptreact"
+    "*.js": "javascriptreact"
   }
 }

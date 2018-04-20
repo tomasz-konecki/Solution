@@ -5,10 +5,20 @@ import PropTypes from "prop-types";
 import submit from "../../auth/submit";
 import LoaderHorizontal from "../../components/common/LoaderHorizontal";
 import "../../scss/LoginForm.scss";
+import { push } from "react-router-redux";
 
 class LoginForm extends React.Component {
   constructor(props) {
     super(props);
+  }
+
+  componentDidMount() {
+    console.log(this.props);
+    if(this.props.isAuthenticated){
+      if(new Date(this.props.tokenExpirationDate) > new Date()){
+        this.props.dispatch(push("/main"));
+      }
+    }
   }
 
   render() {
@@ -65,7 +75,9 @@ class LoginForm extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    loading: state.authReducer.loading
+    loading: state.authReducer.loading,
+    isAuthenticated: state.authReducer.isAuthenticated,
+    tokenExpirationDate: state.authReducer.tokens.tokenExpirationDate
   };
 };
 

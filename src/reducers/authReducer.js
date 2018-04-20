@@ -2,7 +2,8 @@ import * as types from "../constants";
 
 const initialState = {
   isAuthenticated: false,
-  loading: false
+  loading: false,
+  tokens: {}
 };
 
 export const authReducer = (state = initialState, action) => {
@@ -27,7 +28,8 @@ export const authReducer = (state = initialState, action) => {
     case types.LOGOUT:
       return {
         isAuthenticated: false,
-        loading: false
+        loading: false,
+        tokens: {}
       };
     default:
       return state;

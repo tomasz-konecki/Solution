@@ -30,6 +30,7 @@ export const loadUsers = (page = 1, limit = 25, other = {}) => {
       })
       .catch(error => {
         dispatch(asyncEnded());
+        alert('Wystąpił błąd: ' + error.toString());
         throw error;
       });
   };

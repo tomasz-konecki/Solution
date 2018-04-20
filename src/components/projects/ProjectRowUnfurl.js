@@ -4,6 +4,8 @@ import ProjectOwner from './ProjectOwner';
 import * as _ from 'lodash';
 import Modal from 'react-responsive-modal';
 import SkillsSelect from './../skills/SkillsSelect';
+import defaultShouldAsyncValidate from './../../../dist/app.bundle';
+import AddProjectOwner from './modals/AddProjectOwner';
 
 class ProjectRowUnfurl extends Component {
   constructor(props) {
@@ -149,9 +151,7 @@ class ProjectRowUnfurl extends Component {
           contentLabel="Add owner modal"
           onClose={this.handleCloseAddOwner}
         >
-          <header>
-            <h3 className="section-heading">Dodaj właściciela</h3>
-          </header>
+          <AddProjectOwner/>
         </Modal>
         <div className="row">
           <span className="col-sm-9">

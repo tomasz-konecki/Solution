@@ -9,8 +9,13 @@ class AddProjectOwner extends Component {
     this.state = {
       backspaceRemoves: true,
       multi: true,
-      isLoading: false
+      isLoading: false,
+      value: []
     };
+  }
+
+  completeOwnersSelection = () => {
+
   }
 
   handleChange = value => {
@@ -31,7 +36,7 @@ class AddProjectOwner extends Component {
       Query: user
     })
       .then(response => {
-        return { options: response.data.dtoObjects };
+        return { options: response.data.dtoObject.results };
       })
       .then(
         this.setState({
@@ -77,10 +82,17 @@ class AddProjectOwner extends Component {
             autoload={false}
             isLoading={isLoading}
             onChange={this.handleChange}
-            labelKey="lastName"
+            labelKey="fullName"
             loadOptions={this.doSearch}
             backspaceRemoves={backspaceRemoves}
+            valueKey="id"
           />
+          <hr/>
+          {
+            this.state.value.length > 0 ?
+            <button onClick={this.completeOwnersSelection(this.state.value)} className="dcmt-button button-success">Dodaj</button>
+            : null
+          }
       </div>
     );
   }

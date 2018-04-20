@@ -109,7 +109,7 @@ class ProjectsContainer extends React.Component {
     );
   }
 
-  pageChange(page, other) {
+  pageChange(page = this.state.currentPage, other = {}) {
     this.setState(
       {
         currentPage: page
@@ -190,7 +190,7 @@ ProjectsContainer.propTypes = {
   projectActions: PropTypes.object,
   projects: PropTypes.arrayOf(PropTypes.object),
   totalPageCount: PropTypes.number.isRequired,
-  loading: PropTypes.number.isRequired
+  loading: PropTypes.bool.isRequired
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProjectsContainer);

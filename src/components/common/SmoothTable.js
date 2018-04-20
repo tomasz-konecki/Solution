@@ -24,7 +24,8 @@ class SmoothTable extends Component {
       sortingSettings: {
         Sort: props.construct.defaultSortField,
         Ascending: props.construct.defaultSortAscending
-      }
+      },
+      update: false
     };
 
     props.construct.columns.map((column, index) => {
@@ -495,8 +496,8 @@ class SmoothTable extends Component {
           {
             React.createElement(this.props.construct.unfurler, {
               toUnfurl: object,
-              key: index,
-              handles: this.props.construct.handles
+              handles: this.props.construct.handles,
+              update: this.forceAnUpdate
             })
           }
         </td>
@@ -506,6 +507,18 @@ class SmoothTable extends Component {
     </tr>);
 
     return payload;
+  }
+
+  forceAnUpdate = () => {
+    const unfurls = Object.assign({}, this.state.rowUnfurls);
+    this.setState({
+      update: !this.state.update,
+      rowUnfurls: {}
+    }, () => {
+      this.setState({
+        rowUnfurls: unfurls
+      });
+    });
   }
 
   render() {

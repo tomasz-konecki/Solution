@@ -104,9 +104,9 @@ class DCMTWebApi {
     });
   }
 
-  addOwner(projectId, ownerId) {
+  addOwners(projectId, ownersArray) {
     return axios.put(`${API_ENDPOINT}/projects/${projectId}/owner`, {
-      userId: ownerId
+      usersIds: ownersArray
     });
   }
 

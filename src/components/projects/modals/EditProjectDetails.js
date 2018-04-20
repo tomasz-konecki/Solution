@@ -61,8 +61,8 @@ class EditProjectDetails extends Component {
 
 EditProjectDetails.propTypes = {
   projectActions: PropTypes.object,
-  currentPage: PropTypes.number.isRequired,
-  limit: PropTypes.number.isRequired,
+  currentPage: PropTypes.number,
+  limit: PropTypes.number,
   closeModal: PropTypes.func.isRequired,
   project: PropTypes.object
 };

@@ -1,12 +1,16 @@
 import React, { Component } from 'react';
+import Modal from 'react-responsive-modal';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import ProjectSkill from './ProjectSkill';
 import ProjectOwner from './ProjectOwner';
-import * as _ from 'lodash';
-import Modal from 'react-responsive-modal';
 import SkillsSelect from './../skills/SkillsSelect';
 import defaultShouldAsyncValidate from './../../../dist/app.bundle';
 import AddProjectOwner from './modals/AddProjectOwner';
-import PropTypes from 'prop-types';
+import * as _ from 'lodash';
+import * as asyncActions from "../../actions/asyncActions";
+import { SET_ACTION_CONFIRMATION_RESULT, SET_ACTION_CONFIRMATION } from '../../constants';
 
 class ProjectRowUnfurl extends Component {
   constructor(props) {
@@ -28,8 +32,17 @@ class ProjectRowUnfurl extends Component {
     this.handleOpenAddOwner = this.handleOpenAddOwner.bind(this);
     this.handleCloseAddOwner = this.handleCloseAddOwner.bind(this);
     this.handleSkillSelection = this.handleSkillSelection.bind(this);
+    this.handleOwnerSelectionFinale = this.handleOwnerSelectionFinale.bind(this);
 
     this.settingsCache = [];
+    this.lastKnownConfirmationKey = "";
+    this.hasBeenInvalidated = false;
+  }
+
+  deleteOwner(ownerName, projectId) {
+    return (e) => {
+      this.props.handles.ownerDelete(ownerName, projectId, e);
+    };
   }
 
   mapSkills(skills, editable = false) {
@@ -38,9 +51,9 @@ class ProjectRowUnfurl extends Component {
     });
   }
 
-  mapOwners(owners, ownerDelete, projectId) {
+  mapOwners(owners, projectId) {
     return owners.map((ownerName, index) => {
-      return <ProjectOwner clickAction={(e) => ownerDelete(ownerName, projectId, e)} key={index} ownerName={ownerName}/>;
+      return <ProjectOwner clickAction={this.deleteOwner(ownerName, projectId)} key={index} ownerName={ownerName}/>;
     });
   }
 
@@ -129,6 +142,32 @@ class ProjectRowUnfurl extends Component {
     return true;
   }
 
+  handleOwnerSelectionFinale() {
+    this.props.handles.refresh();
+    setTimeout(() => {
+      this.handleCloseAddOwner();
+      this.props.update();
+    }, 500);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if(this.props.toConfirm.key !== undefined && this.props.toConfirm.key !== ""){
+      this.lastKnownConfirmationKey = this.props.toConfirm.key.toString();
+    }
+    if (
+      nextProps.confirmed &&
+      !nextProps.isWorking &&
+      nextProps.type === SET_ACTION_CONFIRMATION_RESULT &&
+      nextProps.resultBlock.response.status === 200 &&
+      this.lastKnownConfirmationKey === 'deleteProjectOwner'
+    ) {
+      if(!this.hasBeenInvalidated){
+        this.hasBeenInvalidated = true;
+        this.handleOwnerSelectionFinale();
+      }
+    }
+  }
+
   render() {
     const { handles } = this.props;
     const { toUnfurl } = this.state;
@@ -152,12 +191,12 @@ class ProjectRowUnfurl extends Component {
           contentLabel="Add owner modal"
           onClose={this.handleCloseAddOwner}
         >
-          <AddProjectOwner/>
+          <AddProjectOwner project={toUnfurl} completed={this.handleOwnerSelectionFinale}/>
         </Modal>
         <div className="row">
           <span className="col-sm-9">
             Lista właścicieli:
-            {this.mapOwners(toUnfurl.owners, handles.ownerDelete, toUnfurl.id)}
+            {this.mapOwners(toUnfurl.owners, toUnfurl.id)}
             <div className="project-owner">
               <span onClick={this.handleOpenAddOwner} className="project-owner-add"/>
             </div>
@@ -195,14 +234,33 @@ class ProjectRowUnfurl extends Component {
   }
 }
 
+function mapStateToProps(state) {
+  return {
+    loading: state.asyncReducer.loading,
+    confirmed: state.asyncReducer.confirmed,
+    toConfirm: state.asyncReducer.toConfirm,
+    isWorking: state.asyncReducer.isWorking,
+    resultBlock: state.asyncReducer.resultBlock,
+    type: state.asyncReducer.type
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    async: bindActionCreators(asyncActions, dispatch)
+  };
+}
+
 ProjectRowUnfurl.propTypes = {
   toUnfurl: PropTypes.shape({
     skills: PropTypes.arrayOf(PropTypes.object).isRequired
   }),
   handles: PropTypes.shape({
     putSkills: PropTypes.func.isRequired,
-    ownerDelete: PropTypes.func.isRequired
-  })
+    ownerDelete: PropTypes.func.isRequired,
+    refresh: PropTypes.func.isRequired
+  }),
+  update: PropTypes.func.isRequired
 };
 
-export default ProjectRowUnfurl;
+export default connect(mapStateToProps, mapDispatchToProps)(ProjectRowUnfurl);

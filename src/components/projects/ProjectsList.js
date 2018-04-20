@@ -63,6 +63,9 @@ class ProjectsList extends Component {
         return object.isDeleted;
       },
       handles: {
+        refresh: () => {
+          this.props.pageChange();
+        },
         ownerDelete: (ownerId, projectId) => {
           this.props.dispatch(
             setActionConfirmation(true, {

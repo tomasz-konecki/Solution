@@ -6,6 +6,12 @@ $default-color: white;
   height: 6vh;
   line-height: 6vh;
   padding-left: 0.5vh;
+  user-select: none;
+
+  .smooth-separator {
+    margin: 0 10px;
+    color: desaturate(lighten($button-element-background, 20%), 20%);
+  }
 
   button {
     background: $default-color;
@@ -25,12 +31,29 @@ $default-color: white;
     }
   }
 
-  input {
+  .smooth-show-deleted {
+    vertical-align: middle;
+    padding: 0 10px;
+  }
+
+  label {
+    color: lighten($button-element-background, 20%);
+    font-family: "Roboto";
+    font-weight: bold;
+    font-size: 1rem;
+  }
+
+  input[type="text"] {
     width: 40%;
     height: auto;
     margin: 0 1em;
     transition: none !important;
   }
+
+  input[type="checkbox"] {
+    margin: 0 5px;
+  }
+
   .loading {
     background-image: url("../../public/img/loader.gif");
     background-size: 16px 16px;
@@ -49,6 +72,10 @@ $default-color: white;
   display: table;
   position: relative;
   min-height: 78.9vh;
+
+  .fa-sync-alt {
+    font-size: 96% !important;
+  }
 
   tr {
     word-break: break-all;
@@ -165,7 +192,7 @@ $default-color: white;
         font-size: 16px;
         border-bottom: 1px solid darken($default-color, 15%);
         padding: 0 15px;
-        min-width: 110px;
+        min-width: 177px;
 
         &:first-of-type {
           padding-left: 2vh;

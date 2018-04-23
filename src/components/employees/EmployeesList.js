@@ -22,6 +22,7 @@ class EmployeesList extends Component {
       pageChange: this.props.pageChange,
       defaultSortField: "lastName",
       defaultSortAscending: true,
+      filtering: true,
       filterClass: "EmployeeFilter",
       rowDetailUnfurl: true,
       unfurler: EmployeesRowUnfurl,

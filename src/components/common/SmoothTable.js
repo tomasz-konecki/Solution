@@ -20,6 +20,7 @@ class SmoothTable extends Component {
       filterFieldOverrides: {},
       rowUnfurls: {},
       isQueryLoading: false,
+      isDeleted: false,
       searchQuery: "",
       sortingSettings: {
         Sort: props.construct.defaultSortField,
@@ -61,6 +62,7 @@ class SmoothTable extends Component {
     this.handleQueryChange = this.handleQueryChange.bind(this);
     this.handleColumnFilterChange = this.handleColumnFilterChange.bind(this);
     this.handleRowClick = this.handleRowClick.bind(this);
+    this.handleInputChange = this.handleInputChange.bind(this);
 
     this.initialState = Object.assign({}, this.state);
   }
@@ -73,10 +75,28 @@ class SmoothTable extends Component {
     };
   }
 
+  handleInputChange(event) {
+    const target = event.target;
+    const value = target.type === 'checkbox' ? target.checked : target.value;
+    const name = target.name;
+
+    this.setState({
+      [name]: value
+    }, () => {
+      this.props.construct.pageChange(
+        this.props.currentPage,
+        this.generateSettings()
+      );
+    });
+  }
+
   generateSettings() {
     let mainFilter = {};
     if (this.state.searchQuery !== "") {
       mainFilter["Query"] = this.state.searchQuery;
+    }
+    if (this.props.construct.showDeletedCheckbox) {
+      mainFilter["isDeleted"] = this.state.isDeleted;
     }
     if (Object.keys(this.state.columnFilters).length > 0) {
       mainFilter[this.props.construct.filterClass] = {};
@@ -273,23 +293,47 @@ class SmoothTable extends Component {
     this.state.construct.operators.map((operator, index) =>
       operators.push(this.operatorButton(index, operator))
     );
-    operators.push(
-      <input
-        key={-1}
-        type="text"
-        name="search"
-        value={this.state.searchQuery}
-        placeholder="Szukaj"
-        required
-        onChange={this.handleQueryChange}
-        className={inputClasses.join(" ")}
-      />
-    );
-    operators.push(
-      <button key={-2} onClick={this.removeFilters}>
-        USUŃ FILTRY
-      </button>
-    );
+
+    if(this.props.construct.filtering === true){
+      operators.push(
+        <span key={-1}>
+          <input
+            type="text"
+            name="search"
+            value={this.state.searchQuery}
+            placeholder="Szukaj"
+            required
+            onChange={this.handleQueryChange}
+            className={inputClasses.join(" ")}
+          />
+        </span>
+      );
+      operators.push(
+        <span key={-2}>
+          <button onClick={this.removeFilters}>
+            USUŃ FILTRY
+          </button>
+        </span>
+      );
+    }
+
+    if(this.props.construct.showDeletedCheckbox === true){
+      operators.push(
+        <span key={-3} className="smooth-separator">|</span>
+      );
+      operators.push(
+        <span key={-4} className="smooth-show-deleted">
+          <label>
+            POKAŻ USUNIĘTE:
+            <input
+              name="isDeleted"
+              type="checkbox"
+              checked={this.state.isGoing}
+              onChange={this.handleInputChange} />
+          </label>
+        </span>
+      );
+    }
     return operators;
   }
 
@@ -591,10 +635,12 @@ SmoothTable.propTypes = {
     pageChange: PropTypes.func.isRequired,
     defaultSortField: PropTypes.string.isRequired,
     defaultSortAscending: PropTypes.bool.isRequired,
+    filtering: PropTypes.bool.isRequired,
     filterClass: PropTypes.string,
     rowDetailUnfurl: PropTypes.bool,
     unfurler: PropTypes.func,
     disabledRowComparator: PropTypes.func,
+    showDeletedCheckbox: PropTypes.bool,
     handles: PropTypes.objectOf(PropTypes.func),
     operators: PropTypes.arrayOf(PropTypes.shape({
       pretty: PropTypes.string.isRequired,
@@ -610,6 +656,7 @@ SmoothTable.propTypes = {
       multiState: PropTypes.object,
       toolBox: PropTypes.arrayOf(PropTypes.shape({
         icon: PropTypes.object.isRequired,
+        title: PropTypes.string.isRequired,
         click: PropTypes.func.isRequired,
         comparator: PropTypes.func
       }))

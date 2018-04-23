@@ -13,8 +13,7 @@ export const loadProjectsSuccess = projects => {
 export const loadProjects = (page = 1, limit = 25, other = {}) => {
   const settings = Object.assign({}, {
     Limit: limit,
-    PageNumber: page,
-    IsDeleted: true
+    PageNumber: page
   }, other);
   return dispatch => {
     dispatch(asyncStarted());

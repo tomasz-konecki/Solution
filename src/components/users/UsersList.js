@@ -93,7 +93,12 @@ class UsersList extends Component {
       pageChange: this.props.pageChange,
       defaultSortField: "lastName",
       defaultSortAscending: true,
+      filtering: true,
       filterClass: "UserFilter",
+      showDeletedCheckbox: true,
+      disabledRowComparator: (object) => {
+        return object.isDeleted;
+      },
       operators: [
         {
           pretty: "DODAJ",
@@ -111,7 +116,25 @@ class UsersList extends Component {
           width: 1,
           toolBox: [
             {
+              icon: { icon: "sync-alt" },
+              title: "Reaktywuj użytkownika",
+              click: object => {
+                this.props.dispatch(
+                  setActionConfirmation(true, {
+                    key: "reactivateUser",
+                    string: `Reaktywować użytkownika ${object.firstName} ${
+                      object.lastName
+                    }`,
+                    id: object.id,
+                    successMessage: "Użytkownik został reaktywowany"
+                  })
+                );
+              },
+              comparator: object => object.isDeleted
+            },
+            {
               icon: { icon: "times" },
+              title: "Usuń użytkownika",
               click: object => {
                 this.props.dispatch(
                   setActionConfirmation(true, {
@@ -123,10 +146,12 @@ class UsersList extends Component {
                     successMessage: "Użytkownik został usunięty"
                   })
                 );
-              }
+              },
+              comparator: object => !object.isDeleted
             },
             {
               icon: { icon: "edit", iconType: "far" },
+              title: "Edytuj użytkownika",
               click: object => {
                 this.handleGetUser(object);
               }

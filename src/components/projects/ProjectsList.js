@@ -56,9 +56,11 @@ class ProjectsList extends Component {
       pageChange: this.props.pageChange,
       defaultSortField: "name",
       defaultSortAscending: true,
+      filtering: true,
       filterClass: "ProjectFilter",
       rowDetailUnfurl: true,
       unfurler: ProjectRowUnfurl,
+      showDeletedCheckbox: true,
       disabledRowComparator: (object) => {
         return object.isDeleted;
       },
@@ -115,6 +117,7 @@ class ProjectsList extends Component {
           toolBox: [
             {
               icon: { icon: "file-archive", iconType: "far" },
+              title: "Zamknij projekt",
               click: object => {
                 this.props.dispatch(
                   setActionConfirmation(true, {
@@ -129,6 +132,7 @@ class ProjectsList extends Component {
             },
             {
               icon: { icon: "angle-double-up", iconType: "fas" },
+              title: "Reaktywuj projekt",
               click: object => {
                 this.props.dispatch(
                   setActionConfirmation(true, {
@@ -143,6 +147,7 @@ class ProjectsList extends Component {
             },
             {
               icon: { icon: "times" },
+              title: "Usuń projekt",
               click: object => {
                 this.props.dispatch(
                   setActionConfirmation(true, {
@@ -157,6 +162,7 @@ class ProjectsList extends Component {
             },
             {
               icon: { icon: "edit", iconType: "far" },
+              title: "Edytuj projekt",
               click: object => {
                 this.handleGetProject(object);
               }

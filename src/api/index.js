@@ -52,6 +52,10 @@ class DCMTWebApi {
     return axios.get(`${API_ENDPOINT}/users/${id}`);
   }
 
+  reactivateUser(id) {
+    return axios.patch(`${API_ENDPOINT}/users/reactivate/${id}`);
+  }
+
   changeUserRole(id, roles) {
     return axios.patch(`${API_ENDPOINT}/users`, {
       id,

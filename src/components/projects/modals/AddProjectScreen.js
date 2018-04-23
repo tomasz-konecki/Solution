@@ -9,6 +9,7 @@ import ResultBlock from "./../../common/ResultBlock";
 import ResponsiblePersonBlock from "./ResponsiblePersonBlock";
 import constraints from "../../../constraints";
 import PropTypes from 'prop-types';
+import { translate } from 'react-translate';
 
 class AddProjectScreen extends Component {
   constructor(props) {
@@ -215,12 +216,14 @@ class AddProjectScreen extends Component {
       btnInactiveStyle
     } = this.state;
 
+    const { t } = this.props;
+
     return (
       <div className="add-project-screen">
         <form onSubmit={this.handleSubmit}>
           <div className="form-group row">
             <label htmlFor="projectName" className="col-sm-3 col-form-label">
-              Nazwa projektu:
+              {t("ProjectName")}:
             </label>
             <div className="col-sm-9">
               <input
@@ -233,13 +236,13 @@ class AddProjectScreen extends Component {
                 }}
               />
               <p className={validStyles.name}>
-                Nazwa projektu nie może zawierać znaków specjalnych.
+                {t("CannotContainSpecial")}.
               </p>
             </div>
           </div>
           <div className="form-group row">
             <label htmlFor="description" className="col-sm-3 col-form-label">
-              Opis:
+              {t("Opis")}:
             </label>
             <div className="col-sm-9">
               <textarea
@@ -254,7 +257,7 @@ class AddProjectScreen extends Component {
           </div>
           <div className="form-group row">
             <label htmlFor="client" className="col-sm-3 col-form-label">
-              Klient:
+              {t("Client")}:
             </label>
             <div className="col-sm-9">
               <input
@@ -273,7 +276,7 @@ class AddProjectScreen extends Component {
               htmlFor="responsiblePerson"
               className="col-sm-3 col-form-label"
             >
-              Osoba do kontaktu:
+              {t("ContactPerson")}:
             </label>
             <ResponsiblePersonBlock
               setResponsiblePerson={this.setResponsiblePerson}
@@ -289,7 +292,7 @@ class AddProjectScreen extends Component {
 
           <div className="form-group row">
             <label htmlFor="startDate" className="col-sm-3 col-form-label">
-              Data rozpoczęcia:
+              {t("StartDate")}:
             </label>
             <div className="col-sm-9">
               <DatePicker
@@ -311,7 +314,7 @@ class AddProjectScreen extends Component {
 
           <div className="form-group row">
             <label htmlFor="endDate" className="col-sm-3 col-form-label">
-              Data zakończenia:
+              {t("EndDate")}:
             </label>
             <div className="col-sm-9">
               <DatePicker
@@ -340,7 +343,7 @@ class AddProjectScreen extends Component {
               <ResultBlock
                 errorBlock={errorBlock}
                 errorOnly={false}
-                successMessage="Projekt dodano pomyślnie"
+                successMessage={t("ProjectAddedSuccessfully")}
               />
             </div>
             <div className="project-submit-container col-sm-3">
@@ -348,7 +351,7 @@ class AddProjectScreen extends Component {
                 disabled={btnDisabled}
                 className={["dcmt-button", btnInactiveStyle].join(" ")}
               >
-                Dodaj
+                {t("Add")}
               </button>
             </div>
           </div>
@@ -365,4 +368,4 @@ AddProjectScreen.propTypes = {
   closeModal: PropTypes.func.isRequired
 };
 
-export default AddProjectScreen;
+export default translate("AddProjectScreen")(AddProjectScreen);

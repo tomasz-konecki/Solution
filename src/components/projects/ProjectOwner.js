@@ -22,20 +22,20 @@ const hexToRGB = (hex, alpha) => {
   return alpha ? "rgba(" + r + ", " + g + ", " + b + ", " + alpha + ")" : "rgb(" + r + ", " + g + ", " + b + ")";
 };
 
-const ProjectOwner = ({ownerName, clickAction}) => {
+const ProjectOwner = ({owner, clickAction}) => {
   const stylingRules = {
-    background: hexToRGB(stringToColour(ownerName), 0.4)
+    background: hexToRGB(stringToColour(owner.id), 0.4)
   };
   return (
     <div className="project-owner">
-      <span style={stylingRules} className="project-owner-name">{ownerName}</span>
+      <span style={stylingRules} className="project-owner-name">{owner.fullName}</span>
       <span onClick={clickAction} className="project-owner-delete">X</span>
     </div>
   );
 };
 
 ProjectOwner.propTypes = {
-  ownerName: PropTypes.string.isRequired,
+  owner: PropTypes.object.isRequired,
   clickAction: PropTypes.func.isRequired
 };
 

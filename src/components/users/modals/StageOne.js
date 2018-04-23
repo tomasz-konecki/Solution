@@ -7,6 +7,7 @@ import Select from "react-select";
 import "react-select/dist/react-select.css";
 import DCMTWebApi from "../../../api";
 import PropTypes from 'prop-types';
+import { translate } from 'react-translate';
 
 class StageOne extends Component {
   constructor() {
@@ -51,6 +52,7 @@ class StageOne extends Component {
   };
 
   render() {
+    const { t } = this.props;
     const AsyncComponent = this.state.creatable
       ? Select.AsyncCreatable
       : Select.Async;
@@ -59,7 +61,7 @@ class StageOne extends Component {
     return (
       <div className="stage-one-container">
         <header>
-          <h3 className="section-heading">Wyszukaj użytkownika w AD</h3>
+          <h3 className="section-heading">{t("SearchAD")}</h3>
         </header>
 
         <div className="error-block-container">
@@ -87,7 +89,7 @@ class StageOne extends Component {
                 className="btn btn-primary dcmt-button"
                 onClick={this.handleClick}
               >
-                Dalej
+                {t("Next")}
               </button>
             </div>
           )}
@@ -103,4 +105,4 @@ StageOne.propTypes = {
   errorBlock: PropTypes.object
 };
 
-export default StageOne;
+export default translate("StageOne")(StageOne);

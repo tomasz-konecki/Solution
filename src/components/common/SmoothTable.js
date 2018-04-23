@@ -6,6 +6,7 @@ import Detail from "./Detail";
 import DatePicker from "react-datepicker";
 import moment from "moment";
 import PropTypes from 'prop-types';
+import { translate } from 'react-translate';
 
 class SmoothTable extends Component {
   constructor(props) {
@@ -301,7 +302,7 @@ class SmoothTable extends Component {
             type="text"
             name="search"
             value={this.state.searchQuery}
-            placeholder="Szukaj"
+            placeholder={this.props.t("Search")}
             required
             onChange={this.handleQueryChange}
             className={inputClasses.join(" ")}
@@ -311,7 +312,7 @@ class SmoothTable extends Component {
       operators.push(
         <span key={-2}>
           <button onClick={this.removeFilters}>
-            USUŃ FILTRY
+            {this.props.t("DeleteFilters")}
           </button>
         </span>
       );
@@ -324,7 +325,7 @@ class SmoothTable extends Component {
       operators.push(
         <span key={-4} className="smooth-show-deleted">
           <label>
-            POKAŻ USUNIĘTE:
+            {this.props.t("ShowDeleted")}:
             <input
               name="isDeleted"
               type="checkbox"
@@ -389,7 +390,7 @@ class SmoothTable extends Component {
             type={column.type}
             name={"__SEARCH_" + column.field}
             value={this.state.columnFilters[column.field]}
-            placeholder={"Szukaj " + column.pretty}
+            placeholder={this.props.t("Search") + " " + column.pretty}
             required
             onChange={this.deepenFunction(
               this.handleColumnFilterChange,
@@ -425,7 +426,7 @@ class SmoothTable extends Component {
             locale="pl"
             className="form-control form-control-sm manual-input"
             dateFormat="YYYY-MM-DD"
-            todayButton={"Dzisiaj"}
+            todayButton={this.props.t("Today")}
             peekNextMonth
             showMonthDropdown
             showYearDropdown
@@ -593,7 +594,7 @@ class SmoothTable extends Component {
           </thead>
           <tbody>{list}</tbody>
         </table>
-        {empty && <div className="smooth-footer">Brak danych bądź wyników</div>}
+        {empty && <div className="smooth-footer">{this.props.t("NoDataOrResults")}</div>}
         {this.props.construct.pageChange !== undefined &&
           1 !== this.props.totalPageCount && (
             <ReactPaginate
@@ -669,4 +670,5 @@ SmoothTable.propTypes = {
   loading: PropTypes.bool.isRequired
 };
 
-export default SmoothTable;
+// export default SmoothTable;
+export default translate("SmoothTable")(SmoothTable);

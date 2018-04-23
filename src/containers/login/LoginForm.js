@@ -6,6 +6,7 @@ import submit from "../../auth/submit";
 import LoaderHorizontal from "../../components/common/LoaderHorizontal";
 import "../../scss/LoginForm.scss";
 import { push } from "react-router-redux";
+import { translate } from "react-translate";
 
 class LoginForm extends React.Component {
   constructor(props) {
@@ -21,7 +22,7 @@ class LoginForm extends React.Component {
   }
 
   render() {
-    const { handleSubmit, error } = this.props;
+    const { handleSubmit, error, t } = this.props;
 
     return (
       <div className="login-wrapper">
@@ -32,7 +33,7 @@ class LoginForm extends React.Component {
                 <Field
                   component="input"
                   type="text"
-                  placeholder="Enter Username"
+                  placeholder={t("EnterUsername")}
                   name="username"
                   required
                 />
@@ -42,7 +43,7 @@ class LoginForm extends React.Component {
                 <Field
                   type="password"
                   component="input"
-                  placeholder="Enter Password"
+                  placeholder={t("EnterPassword")}
                   name="password"
                   required
                 />
@@ -55,14 +56,14 @@ class LoginForm extends React.Component {
 
               <div className="centric-container">
                 <button className="submitter dcmt-button" type="submit">
-                  Login
+                  {t("Login")}
                 </button>
               </div>
             </div>
 
             <div className="container">
               <span className="psw">
-                Forgot <a href="#">password?</a>
+                {t("Forgot")} <a href="#">{t("Password")}?</a>
               </span>
             </div>
           </form>
@@ -94,4 +95,4 @@ LoginForm.propTypes = {
   dispatch: PropTypes.func.isRequired
 };
 
-export default connect(mapStateToProps)(Form);
+export default connect(mapStateToProps)(translate("LoginForm")(Form));

@@ -3,6 +3,7 @@ import { withRouter } from "react-router-dom";
 import VerticalMenuElement from "./VerticalMenuElement";
 import Icon from "../../../components/common/Icon";
 import PropTypes from 'prop-types';
+import { translate } from 'react-translate';
 
 class LeftMenu extends React.Component {
   constructor(props) {
@@ -32,7 +33,7 @@ class LeftMenu extends React.Component {
   }
 
   render() {
-    const { match, extended } = this.props;
+    const { match, extended, t } = this.props;
     return (
       <ul ref={this.setMenuRef} onMouseEnter={this.handleExtend} onMouseLeave={this.handleExtend} className={"left-menu" + (extended ? " extended" : "")}>
         <VerticalMenuElement
@@ -41,7 +42,7 @@ class LeftMenu extends React.Component {
           path="/users"
           icon="user-circle"
           iconType="far"
-          title="Użytkownicy"
+          title={t("Users")}
         />
         <VerticalMenuElement
           match={match}
@@ -49,7 +50,7 @@ class LeftMenu extends React.Component {
           path="/employees"
           icon="user"
           iconType="fas"
-          title="Pracownicy"
+          title={t("Employees")}
         />
         <VerticalMenuElement
           match={match}
@@ -57,7 +58,7 @@ class LeftMenu extends React.Component {
           path="/projects"
           icon="briefcase"
           iconType="fas"
-          title="Projekty"
+          title={t("Projects")}
         />
         <VerticalMenuElement
           match={match}
@@ -65,7 +66,7 @@ class LeftMenu extends React.Component {
           path="/assign"
           icon="pencil-alt"
           iconType="fas"
-          title="Przypisz"
+          title={t("Assign")}
         />
       </ul>
     );
@@ -78,4 +79,4 @@ LeftMenu.propTypes = {
   close: PropTypes.func.isRequired
 };
 
-export default withRouter(LeftMenu);
+export default withRouter(translate("LeftMenu")(LeftMenu));

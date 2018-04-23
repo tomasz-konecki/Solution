@@ -1,12 +1,14 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
+import { translate } from 'react-translate';
 
 class LoggedInUser extends Component {
   render() {
+    const { t } = this.props;
     return (
       <span className="logged-in-user">
-        Zalogowany:{" "}
+        {t("LoggedIn") + ": "}
         <strong>{this.props.firstName + " " + this.props.lastName}</strong>
       </span>
     );
@@ -25,4 +27,4 @@ LoggedInUser.propTypes = {
   lastName: PropTypes.string.isRequired
 };
 
-export default connect(mapStateToProps)(LoggedInUser);
+export default connect(mapStateToProps)(translate("LoggedInUser")(LoggedInUser));

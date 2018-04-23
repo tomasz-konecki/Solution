@@ -7,6 +7,7 @@ import LoaderHorizontal from "./../LoaderHorizontal";
 import ResultBlock from "../ResultBlock";
 import { SET_ACTION_CONFIRMATION_RESULT, SET_ACTION_CONFIRMATION } from "../../../constants";
 import PropTypes from 'prop-types';
+import { translate } from 'react-translate';
 
 class Confirmation extends Component {
   constructor(props) {
@@ -54,6 +55,7 @@ class Confirmation extends Component {
   };
 
   render() {
+    const { t } = this.props;
     return (
       <div>
         <Modal
@@ -64,19 +66,19 @@ class Confirmation extends Component {
         >
           {!this.isCompleted() && (
             <div className="result-modal-container">
-              <div className="result-about-to">Właśnie chcesz:</div>
+              <div className="result-about-to">{t("YouAreAboutTo")}:</div>
               <div className="result-string">{this.state.toConfirm.string}</div>
               <div className="result-confirmation">
-                Jesteś pewien?
+                {t("AreYouSure")}
               </div>
               <div className="result-confirmation">
-                Cofnięcie tej akcji może być niemożliwe
+                {t("ActionRollbackWarning")}
               </div>
               <button
                 className="result-confirm-button dcmt-button"
                 onClick={this.confirm}
               >
-                Potwierdź
+                {t("Confirm")}
               </button>
               <div className="result-loader-container">
                 {this.props.isWorking && <LoaderHorizontal />}
@@ -123,4 +125,4 @@ Confirmation.propTypes = {
   async: PropTypes.object
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Confirmation);
+export default connect(mapStateToProps, mapDispatchToProps)(translate("Confirmation")(Confirmation));

@@ -5,6 +5,7 @@ import * as skillsActions from "../../actions/skillsActions";
 import * as asyncActions from "../../actions/asyncActions";
 import ProjectSkill from './../projects/ProjectSkill';
 import PropTypes from 'prop-types';
+import { translate } from 'react-translate';
 
 class SkillsSelect extends Component {
   constructor(props) {
@@ -60,6 +61,7 @@ class SkillsSelect extends Component {
   }
 
   render() {
+    const { t } = this.props;
     return <div className="row skills-select">
       <div className="skills-list col-sm-4">
       <input value={this.state.search} onChange={this.handleSearchChange} type="text" className="form-control form-control-sm skills-input-filter"/>
@@ -78,7 +80,7 @@ class SkillsSelect extends Component {
       }
       </div>
       <div className="col-sm-7">
-        Dodaj nowy:
+        {t("AddNew")}:
         <br/>
         <br/>
         <input value={this.state.newSkill} onChange={this.handleNewSkillChange} type="text" className="form-control form-control-sm"/>
@@ -86,9 +88,9 @@ class SkillsSelect extends Component {
         { this.state.adding ?
         <div>
           <hr/>
-          Dodawanie... {
+            {t("AddingEllipsis")}... {
             this.props.success === true ?
-            "OK" : "Błąd " + this.props.success
+            "OK" : t("Error") + " " + this.props.success
            }
         </div> : null
         }
@@ -121,4 +123,4 @@ SkillsSelect.propTypes = {
   loading: PropTypes.bool
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(SkillsSelect);
+export default connect(mapStateToProps, mapDispatchToProps)(translate("SkillsSelect")(SkillsSelect));

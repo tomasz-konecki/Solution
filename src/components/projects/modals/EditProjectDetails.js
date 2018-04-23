@@ -4,6 +4,7 @@ import ResultBlock from "./../../common/ResultBlock";
 import ProjectDetailsBlock from "./ProjectDetailsBlock";
 import DCMTWebApi from "../../../api";
 import PropTypes from 'prop-types';
+import { translate } from 'react-translate';
 
 class EditProjectDetails extends Component {
   constructor(props) {
@@ -36,6 +37,7 @@ class EditProjectDetails extends Component {
   };
 
   render() {
+    const { t } = this.props;
     return (
       <div>
         <ProjectDetailsBlock
@@ -49,7 +51,7 @@ class EditProjectDetails extends Component {
 
         <ResultBlock
           errorOnly={false}
-          successMessage="Projekt edytowano pomyślnie"
+          successMessage={t("ProjectSuccessfullyEdited")}
           errorBlock={this.state.errorBlock}
         />
 
@@ -67,4 +69,4 @@ EditProjectDetails.propTypes = {
   project: PropTypes.object
 };
 
-export default EditProjectDetails;
+export default translate("EditProjectDetails")(EditProjectDetails);

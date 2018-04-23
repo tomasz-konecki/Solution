@@ -8,6 +8,7 @@ import Modal from "react-responsive-modal";
 import DCMTWebApi from "../../api";
 import EmployeesRowUnfurl from './EmployeesRowUnfurl';
 import PropTypes from 'prop-types';
+import { translate } from 'react-translate';
 
 class EmployeesList extends Component {
   constructor(props) {
@@ -15,6 +16,7 @@ class EmployeesList extends Component {
     this.state = {};
   }
   render() {
+    const { t } = this.props;
     const construct = {
       rowClass: "employee-block",
       tableClass: "employees-list-container",
@@ -31,36 +33,36 @@ class EmployeesList extends Component {
         {
           width: 20,
           field: "firstName",
-          pretty: "Imię",
+          pretty: t("Name"),
           type: "text",
           filter: true
         },
         {
           width: 20,
           field: "lastName",
-          pretty: "Nazwisko",
+          pretty: t("Surname"),
           type: "text",
           filter: true
         },
         {
           width: 20,
           field: "title",
-          pretty: "Stanowisko",
+          pretty: t("Position"),
           type: "text",
           filter: true
         },
         {
           width: 20,
           field: "localization",
-          pretty: "Lokalizacja",
+          pretty: t("Location"),
           type: "text",
           filter: true
         },
         {
           width: 10,
           field: "hasAccount",
-          pretty: "Status",
-          multiState: { true: "Konto aktywne", false: "Konto nieaktywne" },
+          pretty: t("Status"),
+          multiState: { true: t("AccountActive"), false: t("AccountInactive") },
           type: "multiState",
           filter: true
         }
@@ -88,4 +90,4 @@ EmployeesList.propTypes = {
   employees: PropTypes.array
 };
 
-export default EmployeesList;
+export default translate("EmployeesList")(EmployeesList);

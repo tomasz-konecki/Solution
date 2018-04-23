@@ -8,6 +8,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import ResponsiblePersonBlock from "./ResponsiblePersonBlock";
 import constraints from "../../../constraints";
 import PropTypes from 'prop-types';
+import { translate } from 'react-translate';
 
 const emptyField = "<brak>";
 const active = "Aktywny";
@@ -202,10 +203,12 @@ class ProjectDetailsBlock extends Component {
       btnInactiveStyle
     } = this.state;
 
+    const { t } = this.props;
+
     return (
       <div className="project-details-block">
         <header>
-          <h3>Edycja danych projektu</h3>
+          <h3>{t("EditProjectData")}</h3>
         </header>
         <div className="project-details-container">
           <form onSubmit={this.handleSubmit}>
@@ -213,7 +216,7 @@ class ProjectDetailsBlock extends Component {
               type="text"
               editable={editable}
               name="name"
-              pretty="Nazwa projektu"
+              pretty={t("ProjectName")}
               reuired
               value={name}
               handleChange={e => {
@@ -222,14 +225,14 @@ class ProjectDetailsBlock extends Component {
               }}
             />
             <p className={["project-name", validStyles.name].join(" ")}>
-              Nazwa projektu nie może zawierać znaków specjalnych.
+              {t("CannotContainSpecial")}
             </p>
 
             <Detail
               type="textarea"
               editable={editable}
               name="description"
-              pretty="Opis"
+              pretty={t("Description")}
               reuired
               rows={3}
               cols={30}
@@ -243,7 +246,7 @@ class ProjectDetailsBlock extends Component {
               type="text"
               editable={editable}
               name="client"
-              pretty="Klient"
+              pretty={t("Client")}
               reuired
               value={client}
               handleChange={e => {
@@ -256,7 +259,7 @@ class ProjectDetailsBlock extends Component {
                 htmlFor="responsiblePerson"
                 className="col-sm-3 col-form-label"
               >
-                Osoba do kontaktu:
+                {t("ContactPerson")}:
               </label>
 
               <ResponsiblePersonBlock
@@ -273,7 +276,7 @@ class ProjectDetailsBlock extends Component {
 
             <div className="form-group row">
               <label className="col-sm-3 col-form-label">
-                Data rozpoczęcia:
+                {t("StartDate")}:
               </label>
               <div className="date-picker col-sm-9">
                 <DatePicker
@@ -295,7 +298,7 @@ class ProjectDetailsBlock extends Component {
 
             <div className="form-group row">
               <label htmlFor="endDate" className="col-sm-3 col-form-label">
-                Data zakończenia:
+                {t("EndDate")}:
               </label>
               <div className="date-picker col-sm-9">
                 <DatePicker
@@ -306,7 +309,7 @@ class ProjectDetailsBlock extends Component {
                   onChange={this.handleEndDate}
                   locale="pl"
                   dateFormat="DD/MM/YYYY"
-                  todayButton={"Dzisiaj"}
+                  todayButton={t("Today")}
                   peekNextMonth
                   showMonthDropdown
                   showYearDropdown
@@ -320,7 +323,7 @@ class ProjectDetailsBlock extends Component {
                 disabled={btnDisabled}
                 className={["dcmt-button", btnInactiveStyle].join(" ")}
               >
-                Potwierdź
+                {t("Confirm")}
               </button>
             </div>
           </form>
@@ -344,4 +347,4 @@ ProjectDetailsBlock.propTypes = {
   editProject: PropTypes.func.isRequired
 };
 
-export default ProjectDetailsBlock;
+export default translate("ProjectDetailsBlock")(ProjectDetailsBlock);

@@ -10,6 +10,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import DatePicker from "react-datepicker";
 import ProjectRowUnfurl from './ProjectRowUnfurl';
 import PropTypes from 'prop-types';
+import { translate } from 'react-translate';
 
 class ProjectsList extends Component {
   constructor(props) {
@@ -49,6 +50,7 @@ class ProjectsList extends Component {
   };
 
   render() {
+    const { t } = this.props;
     const construct = {
       rowClass: "project-block",
       tableClass: "projects-list-container",
@@ -72,10 +74,10 @@ class ProjectsList extends Component {
           this.props.dispatch(
             setActionConfirmation(true, {
               key: "deleteProjectOwner",
-              string: `Usunąć ${ownerId} jako właściciela projektu o numerze ${projectId}`,
+              string: t("DeleteOwnerFuture", { ownerId, projectId }),
               ownerId,
               projectId,
-              successMessage: "Właściciel został usunięty"
+              successMessage: t("OwnerHasBeenDeleted")
             })
           );
         },
@@ -83,32 +85,32 @@ class ProjectsList extends Component {
           this.props.dispatch(
             setActionConfirmation(true, {
               key: "putProjectSkills",
-              string: `Zmienić ustawienia umiejętności projektu o numerze ${projectId}`,
+              string: t("ChangeSkillSettingsFuture", { projectId }),
               skillsArray,
               projectId,
-              successMessage: "Ustawienia zostały zapisane"
+              successMessage: t("SettingsHaveBeenSaved")
             })
           );
         }
       },
       operators: [
         {
-          pretty: "DODAJ",
+          pretty: t("Add"),
           click: () => {
             this.props.openAddProjectModal();
           }
         }
       ],
       columns: [
-        { width: 20, field: "name", pretty: "Nazwa projektu", type: "text", filter: true },
-        { width: 20, field: "client", pretty: "Klient", type: "text", filter: true },
-        { width: 20, field: "startDate", pretty: "Data rozpoczęcia", type: "date", filter: true, filterFieldOverride: "fromDate" },
-        { width: 20, field: "endDate", pretty: "Data zakończenia", type: "date", filter: true, filterFieldOverride: "toDate" },
+        { width: 20, field: "name", pretty: t("ProjectName"), type: "text", filter: true },
+        { width: 20, field: "client", pretty: t("Client"), type: "text", filter: true },
+        { width: 20, field: "startDate", pretty: t("StartDate"), type: "date", filter: true, filterFieldOverride: "fromDate" },
+        { width: 20, field: "endDate", pretty: t("EndDate"), type: "date", filter: true, filterFieldOverride: "toDate" },
         {
           width: 10,
           field: "isActive",
-          pretty: "Status",
-          multiState: { true: "Aktywny", false: "Zakończony" },
+          pretty: t("Status"),
+          multiState: { true: t("Active"), false: t("Closed") },
           type: "multiState",
           filter: true
         },
@@ -117,14 +119,14 @@ class ProjectsList extends Component {
           toolBox: [
             {
               icon: { icon: "file-archive", iconType: "far" },
-              title: "Zamknij projekt",
+              title: t("CloseProjectImperativus"),
               click: object => {
                 this.props.dispatch(
                   setActionConfirmation(true, {
                     key: "closeProject",
-                    string: `Zamknąć projekt ${object.name}`,
+                    string: `${t("CloseProjectInfinitive")} ${object.name}`,
                     id: object.id,
-                    successMessage: "Projekt został zamknięty"
+                    successMessage: t("ProjectClosed")
                   })
                 );
               },
@@ -132,14 +134,14 @@ class ProjectsList extends Component {
             },
             {
               icon: { icon: "angle-double-up", iconType: "fas" },
-              title: "Reaktywuj projekt",
+              title: t("CloseProjectImperativus"),
               click: object => {
                 this.props.dispatch(
                   setActionConfirmation(true, {
                     key: "reactivateProject",
-                    string: `Reaktywować projekt ${object.name}`,
+                    string: `${t("ReactivateProjectInfinitive")} ${object.name}`,
                     id: object.id,
-                    successMessage: "Projekt został reaktywowany"
+                    successMessage: t("ProjectReactivated")
                   })
                 );
               },
@@ -147,14 +149,14 @@ class ProjectsList extends Component {
             },
             {
               icon: { icon: "times" },
-              title: "Usuń projekt",
+              title: t("DeleteProjectImperativus"),
               click: object => {
                 this.props.dispatch(
                   setActionConfirmation(true, {
                     key: "deleteProject",
-                    string: `Usunąć projekt ${object.name}`,
+                    string: `${t("DeleteProjectInfinitive")} ${object.name}`,
                     id: object.id,
-                    successMessage: "Projekt został usunięty"
+                    successMessage: t("ProjectDeleted")
                   })
                 );
               },
@@ -162,13 +164,13 @@ class ProjectsList extends Component {
             },
             {
               icon: { icon: "edit", iconType: "far" },
-              title: "Edytuj projekt",
+              title: t("EditProject"),
               click: object => {
                 this.handleGetProject(object);
               }
             }
           ],
-          pretty: "Deaktywuj/Usuń/Edytuj"
+          pretty: t("DeactivateDeleteEdit")
         }
       ]
     };
@@ -214,4 +216,4 @@ ProjectsList.propTypes = {
   projectActions: PropTypes.object
 };
 
-export default connect()(ProjectsList);
+export default connect()(translate("ProjectsList")(ProjectsList));

@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import "../../../scss/components/projects/modals/ResponsiblePersonBlock.scss";
+import { translate } from 'react-translate';
 
-const ResponsiblePersonBlock = project => {
+const ResponsiblePersonBlock = ({project, t}) => {
   return (
     <div className="responsible-person-container col-sm-9">
       <div className="form-group row">
@@ -14,7 +15,7 @@ const ResponsiblePersonBlock = project => {
             onChange={project.handleChange}
           />
           <p className={project.styles.firstName}>
-            Imię nie może zawierać znaków specjalnych ani cyfr.
+            {t("NameNoSpecial")}
           </p>
         </div>
         <div className="col-sm-6 responsible-person-right">
@@ -26,7 +27,7 @@ const ResponsiblePersonBlock = project => {
             onChange={project.handleChange}
           />
           <p className={project.styles.lastName}>
-            Nazwisko nie może zawierać znaków specjalnych ani cyfr.
+            {t("SurnameNoSpecial")}
           </p>
         </div>
       </div>
@@ -41,7 +42,7 @@ const ResponsiblePersonBlock = project => {
             onChange={project.handleChange}
           />
           <p className={project.styles.email}>
-            Adres email powinien mieć odpowiednią strukturę, np. me@mydomain.com
+            {t("EmailToBeValid")}
           </p>
         </div>
         <div className="col-sm-6 responsible-person-right">
@@ -54,7 +55,7 @@ const ResponsiblePersonBlock = project => {
             onChange={project.handleChange}
           />
           <p className={project.styles.phoneNumber}>
-            Numer telefonu powinien zawierać od 9 do 11 cyfr
+            {t("NumberValid")}
           </p>
         </div>
       </div>
@@ -62,4 +63,4 @@ const ResponsiblePersonBlock = project => {
   );
 };
 
-export default ResponsiblePersonBlock;
+export default translate("ResponsiblePersonBlock")(ResponsiblePersonBlock);

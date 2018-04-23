@@ -8,6 +8,7 @@ import Modal from "react-responsive-modal";
 import EditUserDetails from "../users/modals/EditUserDetails";
 import DCMTWebApi from "../../api";
 import PropTypes from 'prop-types';
+import { translate } from 'react-translate';
 
 class UsersList extends Component {
   constructor(props) {
@@ -86,6 +87,7 @@ class UsersList extends Component {
   };
 
   render() {
+    const { t } = this.props;
     const construct = {
       rowClass: "user-block",
       tableClass: "users-list-container",
@@ -101,32 +103,32 @@ class UsersList extends Component {
       },
       operators: [
         {
-          pretty: "DODAJ",
+          pretty: t("Add"),
           click: () => {
             this.props.openAddUserModal();
           }
         }
       ],
       columns: [
-        { width: 20, field: "firstName", pretty: "Imię", type: "text", filter: true },
-        { width: 30, field: "lastName", pretty: "Nazwisko", type: "text", filter: true },
-        { width: 30, field: "email", pretty: "Email", type: "text", filter: true },
-        { width: 19, field: "phoneNumber", pretty: "Telefon", type: "text", filter: true },
+        { width: 20, field: "firstName", pretty: t("Name"), type: "text", filter: true },
+        { width: 30, field: "lastName", pretty: t("Surname"), type: "text", filter: true },
+        { width: 30, field: "email", pretty: t("Email"), type: "text", filter: true },
+        { width: 19, field: "phoneNumber", pretty: t("Phone"), type: "text", filter: true },
         {
           width: 1,
           toolBox: [
             {
               icon: { icon: "sync-alt" },
-              title: "Reaktywuj użytkownika",
+              title: t("ReactivateUserImperativus"),
               click: object => {
                 this.props.dispatch(
                   setActionConfirmation(true, {
                     key: "reactivateUser",
-                    string: `Reaktywować użytkownika ${object.firstName} ${
+                    string: `${t("ReactivateUserInfinitive")} ${object.firstName} ${
                       object.lastName
                     }`,
                     id: object.id,
-                    successMessage: "Użytkownik został reaktywowany"
+                    successMessage: t("UserReactivated")
                   })
                 );
               },
@@ -134,16 +136,16 @@ class UsersList extends Component {
             },
             {
               icon: { icon: "times" },
-              title: "Usuń użytkownika",
+              title: t("DeleteUserImperativus"),
               click: object => {
                 this.props.dispatch(
                   setActionConfirmation(true, {
                     key: "deleteUser",
-                    string: `Usunąć użytkownika ${object.firstName} ${
+                    string: `${t("DeleteUserInfinitive")} ${object.firstName} ${
                       object.lastName
                     }`,
                     id: object.id,
-                    successMessage: "Użytkownik został usunięty"
+                    successMessage: t("UserDeleted")
                   })
                 );
               },
@@ -151,13 +153,13 @@ class UsersList extends Component {
             },
             {
               icon: { icon: "edit", iconType: "far" },
-              title: "Edytuj użytkownika",
+              title: t("EditUserImperativus"),
               click: object => {
                 this.handleGetUser(object);
               }
             }
           ],
-          pretty: "Usuń/Edytuj"
+          pretty: t("DeleteEdit")
         }
       ]
     };
@@ -201,4 +203,4 @@ UsersList.propTypes = {
   users: PropTypes.arrayOf(PropTypes.object).isRequired
 };
 
-export default connect()(UsersList);
+export default connect()(translate("UsersList")(UsersList));

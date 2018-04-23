@@ -11,6 +11,7 @@ import AddProjectOwner from './modals/AddProjectOwner';
 import * as _ from 'lodash';
 import * as asyncActions from "../../actions/asyncActions";
 import { SET_ACTION_CONFIRMATION_RESULT, SET_ACTION_CONFIRMATION } from '../../constants';
+import { translate } from 'react-translate';
 
 class ProjectRowUnfurl extends Component {
   constructor(props) {
@@ -39,9 +40,9 @@ class ProjectRowUnfurl extends Component {
     this.hasBeenInvalidated = false;
   }
 
-  deleteOwner(ownerName, projectId) {
+  deleteOwner(owner, projectId) {
     return (e) => {
-      this.props.handles.ownerDelete(ownerName, projectId, e);
+      this.props.handles.ownerDelete(owner.id, projectId, e);
     };
   }
 
@@ -52,8 +53,8 @@ class ProjectRowUnfurl extends Component {
   }
 
   mapOwners(owners, projectId) {
-    return owners.map((ownerName, index) => {
-      return <ProjectOwner clickAction={this.deleteOwner(ownerName, projectId)} key={index} ownerName={ownerName}/>;
+    return owners.map((owner, index) => {
+      return <ProjectOwner clickAction={this.deleteOwner(owner, projectId)} key={index} owner={owner}/>;
     });
   }
 
@@ -169,7 +170,7 @@ class ProjectRowUnfurl extends Component {
   }
 
   render() {
-    const { handles } = this.props;
+    const { handles, t } = this.props;
     const { toUnfurl } = this.state;
     let optionalEditStyling = {};
     if(this.state.editable) optionalEditStyling = {
@@ -195,35 +196,35 @@ class ProjectRowUnfurl extends Component {
         </Modal>
         <div className="row">
           <span className="col-sm-9">
-            Lista właścicieli:
+            {t("OwnersList")}:
             {this.mapOwners(toUnfurl.owners, toUnfurl.id)}
             <div className="project-owner">
               <span onClick={this.handleOpenAddOwner} className="project-owner-add"/>
             </div>
           </span>
-          <span className="col-sm-3">ID Projektu: <b>{toUnfurl.id}</b></span>
+          <span className="col-sm-3">{t("ProjectId")}: <b>{toUnfurl.id}</b></span>
         </div>
         <hr/>
         <div className="row">
-          <span className="col-sm-12">Opis: <b>{toUnfurl.description}</b></span>
+          <span className="col-sm-12">{t("Description")}: <b>{toUnfurl.description}</b></span>
         </div>
         <hr/>
         <div className="row">
           <div className="col-sm-6">
             { this.mapSkills(toUnfurl.skills, this.state.editable) }
-            { toUnfurl.skills.length === 0 ? "Obecnie brak przypisanych umiejętności" : null }
+            { toUnfurl.skills.length === 0 ? t("CurrentlyNoSkillsAssigned") : null }
           </div>
           <div className="col-sm-6">
-            <button style={optionalEditStyling} onClick={this.handleEditButton} className="dcmt-button">Edytuj umiejętności</button>
+            <button style={optionalEditStyling} onClick={this.handleEditButton} className="dcmt-button">{t("EditSkills")}</button>
             {
               this.state.editable ?
-              <button onClick={this.handleOpenModal} className="dcmt-button button-success">Dodaj</button>
+              <button onClick={this.handleOpenModal} className="dcmt-button button-success">{t("Add")}</button>
               :
               null
             }
             {
               this.haveSkillsChanged() ?
-              <button onClick={this.handleSaveButton} className="dcmt-button">Zapisz</button>
+              <button onClick={this.handleSaveButton} className="dcmt-button">{t("Save")}</button>
               :
               null
             }
@@ -263,4 +264,4 @@ ProjectRowUnfurl.propTypes = {
   update: PropTypes.func.isRequired
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(ProjectRowUnfurl);
+export default connect(mapStateToProps, mapDispatchToProps)(translate("ProjectRowUnfurl")(ProjectRowUnfurl));

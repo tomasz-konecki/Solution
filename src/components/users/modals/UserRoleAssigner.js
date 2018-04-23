@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import DCMTWebApi from "../../../api";
 import CheckBox from "../../common/CheckBox";
 import PropTypes from 'prop-types';
+import { translate } from 'react-translate';
 
 class UserRoleAssigner extends Component {
   constructor(props) {
@@ -19,12 +20,13 @@ class UserRoleAssigner extends Component {
   };
 
   render() {
+    const { t } = this.props;
     return (
       <div className="roles-container">
         <CheckBox
           type="checkbox"
           name="role"
-          value="Developer"
+          value={t("Developer")}
           onChange={this.handleSelectRole}
           checked={this.props.roles.indexOf("Developer") !== -1}
         />
@@ -32,7 +34,7 @@ class UserRoleAssigner extends Component {
         <CheckBox
           type="checkbox"
           name="role"
-          value="Team Leader"
+          value={t("TeamLeader")}
           onChange={this.handleSelectRole}
           checked={this.props.roles.indexOf("Team Leader") !== -1}
         />
@@ -40,7 +42,7 @@ class UserRoleAssigner extends Component {
         <CheckBox
           type="checkbox"
           name="role"
-          value="Human Resources"
+          value={t("HumanResources")}
           onChange={this.handleSelectRole}
           checked={this.props.roles.indexOf("Human Resources") !== -1}
         />
@@ -48,7 +50,7 @@ class UserRoleAssigner extends Component {
         <CheckBox
           type="checkbox"
           name="role"
-          value="Tradesman"
+          value={t("Tradesman")}
           onChange={this.handleSelectRole}
           checked={this.props.roles.indexOf("Tradesman") !== -1}
         />
@@ -56,7 +58,7 @@ class UserRoleAssigner extends Component {
         <CheckBox
           type="checkbox"
           name="role"
-          value="Administrator"
+          value={t("Administrator")}
           onChange={this.handleSelectRole}
           checked={this.props.roles.indexOf("Administrator") !== -1}
         />
@@ -70,4 +72,4 @@ UserRoleAssigner.propTypes = {
   handleRoleChange: PropTypes.func.isRequired
 };
 
-export default UserRoleAssigner;
+export default translate("UserRoleAssigner")(UserRoleAssigner);

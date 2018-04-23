@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { translate } from 'react-translate';
 
 class EmployeesRowUnfurl extends Component {
   constructor(props) {
@@ -6,15 +7,16 @@ class EmployeesRowUnfurl extends Component {
     this.state = {};
   }
   render() {
+    const { t } = this.props;
     return (
       <div className="row">
         <div className="col-sm-9"/>
         <div className="col-sm-3">
-          <button className="dcmt-button button-success">Aktywuj pracownika</button>
+          <button className="dcmt-button button-success">{t("ActivateEmployee")}</button>
         </div>
       </div>
     );
   }
 }
 
-export default EmployeesRowUnfurl;
+export default translate("EmployeesRowUnfurl")(EmployeesRowUnfurl);

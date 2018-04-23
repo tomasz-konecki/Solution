@@ -7,6 +7,7 @@ import UserRoleAssigner from "./UserRoleAssigner";
 import LoaderHorizontal from "../../../components/common/LoaderHorizontal";
 import ResultBlock from "../../common/ResultBlock";
 import PropTypes from 'prop-types';
+import { translate } from 'react-translate';
 
 class StageTwo extends Component {
   constructor() {
@@ -57,7 +58,7 @@ class StageTwo extends Component {
     event.preventDefault();
 
     if (this.state.roles.length === 0) {
-      alert("Dodaj role!");
+      alert(this.props.t("AddRoles"));
     } else {
       this.setState({ isLoading: true });
       this.props.doAddUser(this.state);
@@ -69,6 +70,7 @@ class StageTwo extends Component {
   };
 
   render() {
+    const { t } = this.props;
     return (
       <div className="stage-two-container">
         <div className="form-container">
@@ -85,14 +87,14 @@ class StageTwo extends Component {
           <div className="form-navigation">
             <div className="button-back-container">
               <button className="dcmt-button" onClick={this.handleBack}>
-                Powrót
+                {t("Back")}
               </button>
             </div>
             <div>
               <ResultBlock
                 errorBlock={this.props.errorBlock}
                 errorOnly={false}
-                successMessage={"Użytkownik dodany pomyślnie"}
+                successMessage={t("UserAddedSuccessfully")}
               />
             </div>
             <div className="submit-button-container">
@@ -101,7 +103,7 @@ class StageTwo extends Component {
                 type="submit"
                 onClick={this.handleSubmit}
               >
-                Dodaj
+                {t("Add")}
               </button>
             </div>
           </div>
@@ -122,4 +124,4 @@ StageTwo.propTypes = {
   errorBlock: PropTypes.object
 };
 
-export default StageTwo;
+export default translate("StageTwo")(StageTwo);

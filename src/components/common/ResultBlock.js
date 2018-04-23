@@ -1,5 +1,6 @@
 import React from "react";
 import PropTypes from 'prop-types';
+import { translate } from 'react-translate';
 
 const shouldRender = (errorOnly, errorStatus) => {
   if (errorOnly && errorStatus === false) return false;
@@ -7,9 +8,10 @@ const shouldRender = (errorOnly, errorStatus) => {
 };
 
 const ResultBlock = ({
+  t,
   errorBlock,
   errorOnly = true,
-  successMessage = "Operacja wykonana pomyślnie",
+  successMessage = t("OperationSuccessful"),
   successCallback,
   customErrors = {}
 }) => {
@@ -24,7 +26,7 @@ const ResultBlock = ({
 
   const { status } = response;
 
-  const defaultServerError = "Wewnętrzny błąd serwera";
+  const defaultServerError = t("InternalServerError");
 
   const statusHasErrorToClass = {
     true: "result-failure",
@@ -34,16 +36,16 @@ const ResultBlock = ({
   let errorStatus = true;
 
   const {
-    _400 = "Nieprawidłowe dane",
-    _401 = "Błąd autoryzacji",
-    _403 = "Brak dostępu",
-    _404 = "Nie znaleziono ścieżki!",
-    _406 = "Nieakceptowalne dane",
+    _400 = t("BadRequest"),
+    _401 = t("Unauthorized"),
+    _403 = t("Forbidden"),
+    _404 = t("NotFound"),
+    _406 = t("NotAcceptable"),
     _500 = defaultServerError,
-    _501 = "Funkcjonalność jeszcze nie istnieje",
+    _501 = t("NotImplemented"),
     _502 = defaultServerError,
-    _503 = "Serwer niedostępny",
-    _504 = "Brak odpowiedzi"
+    _503 = t("ServiceUnavailable"),
+    _504 = t("GatewayTimeout")
   } = customErrors;
 
   switch (true) {
@@ -82,7 +84,7 @@ const ResultBlock = ({
       message = _504;
       break;
     default:
-      message = "Nieoczekiwany błąd";
+      message = t("UnexpectedError");
       break;
   }
 
@@ -119,4 +121,4 @@ ResultBlock.propTypes = {
   customErrors: PropTypes.object
 };
 
-export default ResultBlock;
+export default translate("ResultBlock")(ResultBlock);

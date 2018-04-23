@@ -4,6 +4,7 @@ import Select from "react-select";
 import "react-select/dist/react-select.css";
 import ResultBlock from './../../common/ResultBlock';
 import PropTypes from 'prop-types';
+import { translate } from 'react-translate';
 
 class AddProjectOwner extends Component {
   constructor(props) {
@@ -88,6 +89,7 @@ class AddProjectOwner extends Component {
   };
 
   render() {
+    const { t } = this.props;
     const AsyncComponent = this.state.creatable
       ? Select.AsyncCreatable
       : Select.Async;
@@ -95,7 +97,7 @@ class AddProjectOwner extends Component {
     return (
       <div>
         <header>
-          <h3 className="section-heading">Dodaj właściciela</h3>
+          <h3 className="section-heading">{t("AddOwner")}</h3>
         </header>
         <hr/>
         <AsyncComponent
@@ -115,13 +117,13 @@ class AddProjectOwner extends Component {
               <ResultBlock
                 errorBlock={this.state.errorBlock}
                 errorOnly={false}
-                successMessage="Właścicieli dodano pomyślnie"
+                successMessage={t("OwnersAddedSuccessfully")}
               />
             </div>
             <div className="col-sm-2">
             {
               this.state.value.length > 0 ?
-              <button onClick={this.completeOwnersSelection(this.state.value)} className="dcmt-button button-success">Dodaj</button>
+              <button onClick={this.completeOwnersSelection(this.state.value)} className="dcmt-button button-success">{t("Add")}</button>
               : null
             }
             </div>
@@ -136,4 +138,4 @@ AddProjectOwner.propTypes = {
   completed: PropTypes.func.isRequired
 };
 
-export default AddProjectOwner;
+export default translate("AddProjectOwner")(AddProjectOwner);

@@ -4,6 +4,7 @@ import UserRoleAssigner from "./UserRoleAssigner";
 import LoaderHorizontal from "./../../common/LoaderHorizontal";
 import ResultBlock from "./../../common/ResultBlock";
 import PropTypes from 'prop-types';
+import { translate } from 'react-translate';
 
 class EditUserDetails extends Component {
   constructor(props) {
@@ -14,6 +15,7 @@ class EditUserDetails extends Component {
   }
 
   render() {
+    const { t } = this.props;
     return (
       <div className="stage-two-container">
         <div className="form-container">
@@ -27,13 +29,13 @@ class EditUserDetails extends Component {
               className="dcmt-button"
               onClick={this.props.changeUserRoles}
             >
-              Potwierdź
+              {t("Confirm")}
             </button>
           </div>
           <div>
             <ResultBlock
               errorOnly={false}
-              successMessage="Role edytowano pomyślnie"
+              successMessage={t("RolesSuccessfullyEdited")}
               errorBlock={this.props.responseBlock}
             />
           </div>
@@ -54,4 +56,4 @@ EditUserDetails.propTypes = {
   loading: PropTypes.bool
 };
 
-export default EditUserDetails;
+export default translate("EditUserDetails")(EditUserDetails);

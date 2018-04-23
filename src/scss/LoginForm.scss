@@ -61,6 +61,7 @@ body {
     overflow: hidden;
     white-space: nowrap;
     clear: both;
+    text-align: left;
 
     a {
       text-decoration: none;
@@ -129,6 +130,9 @@ body {
 
     .psw {
       display: inline-block;
+    }
+    .psr {
+      float: right;
     }
   }
 }

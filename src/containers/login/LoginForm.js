@@ -11,6 +11,8 @@ import { translate } from "react-translate";
 class LoginForm extends React.Component {
   constructor(props) {
     super(props);
+
+    console.log('loginform props', props);
   }
 
   componentDidMount() {
@@ -19,6 +21,13 @@ class LoginForm extends React.Component {
         this.props.dispatch(push("/main"));
       }
     }
+  }
+
+  languageSwitch(language) {
+    return (event) => {
+      this.props.languageSwitch(language);
+      this.forceUpdate();
+    };
   }
 
   render() {
@@ -64,6 +73,10 @@ class LoginForm extends React.Component {
             <div className="container">
               <span className="psw">
                 {t("Forgot")} <a href="#">{t("Password")}?</a>
+              </span>
+              <span className="psr">
+                <span onClick={this.languageSwitch("pl")} className="flag-pol"/>
+                <span onClick={this.languageSwitch("en")} className="flag-gbr"/>
               </span>
             </div>
           </form>

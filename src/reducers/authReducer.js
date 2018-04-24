@@ -3,7 +3,8 @@ import * as types from "../constants";
 const initialState = {
   isAuthenticated: false,
   loading: false,
-  tokens: {}
+  tokens: {},
+  language: "pl"
 };
 
 export const authReducer = (state = initialState, action) => {
@@ -29,7 +30,8 @@ export const authReducer = (state = initialState, action) => {
       return {
         isAuthenticated: false,
         loading: false,
-        tokens: {}
+        tokens: {},
+        language: "pl"
       };
     default:
       return state;

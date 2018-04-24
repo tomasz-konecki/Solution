@@ -1,18 +1,18 @@
 import React from "react";
 import { connect } from "react-redux";
 import { Field, reduxForm } from "redux-form";
+import * as languageActions from "../../actions/languageActions";
 import PropTypes from "prop-types";
 import submit from "../../auth/submit";
 import LoaderHorizontal from "../../components/common/LoaderHorizontal";
 import "../../scss/LoginForm.scss";
 import { push } from "react-router-redux";
 import { translate } from "react-translate";
+import { bindActionCreators } from 'redux';
 
 class LoginForm extends React.Component {
   constructor(props) {
     super(props);
-
-    console.log('loginform props', props);
   }
 
   componentDidMount() {
@@ -25,8 +25,7 @@ class LoginForm extends React.Component {
 
   languageSwitch(language) {
     return (event) => {
-      this.props.languageSwitch(language);
-      this.forceUpdate();
+      this.props.lang.languageChange(language);
     };
   }
 
@@ -94,6 +93,12 @@ const mapStateToProps = state => {
   };
 };
 
+const mapDispatchToProps = (dispatch) => {
+  return {
+    lang: bindActionCreators(languageActions, dispatch)
+  };
+};
+
 const Form = reduxForm({
   form: "login",
   onSubmit: submit
@@ -108,4 +113,4 @@ LoginForm.propTypes = {
   dispatch: PropTypes.func.isRequired
 };
 
-export default connect(mapStateToProps)(translate("LoginForm")(Form));
+export default connect(mapStateToProps, mapDispatchToProps)(translate("LoginForm")(Form));

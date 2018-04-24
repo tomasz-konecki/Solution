@@ -6,6 +6,7 @@ import Logo from "../../components/common/Logo";
 import { connect } from "react-redux";
 import { push } from "react-router-redux";
 import { authSuccess } from "../../actions/authActions";
+import { withRouter } from 'react-router-dom';
 
 class LoginScreen extends React.Component {
   constructor(props) {
@@ -35,4 +36,4 @@ export default connect(null, dispatch => ({
     dispatch(authSuccess());
     dispatch(push("/main"));
   }
-}))(LoginScreen);
+}))(withRouter(LoginScreen));

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import "bootstrap/dist/css/bootstrap.css";
+import * as languageActions from "../actions/languageActions";
 
 import { Route, Switch, BrowserRouter } from "react-router";
 import { PrivateRoute, Home } from "../creators";
@@ -10,23 +11,37 @@ import "../scss/App.scss";
 
 import en from '../translations/en';
 import pl from '../translations/pl';
+
 import LoginScreen from './login/LoginScreen';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { LANGUAGE_CHANGE } from '../constants';
+import { withRouter } from 'react-router-dom';
 
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      language: "pl"
+      language: this.props.language || "pl"
     };
 
     this.returnLanguage = this.returnLanguage.bind(this);
     this.changeLanguage = this.changeLanguage.bind(this);
-    this.languageReadyLogin = this.languageReadyLogin.bind(this);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if(nextProps.type === LANGUAGE_CHANGE){
+      this.changeLanguage(nextProps.language);
+    }
   }
 
   changeLanguage(language) {
     this.setState({
       language
+    }, () => {
+      setTimeout(() => {
+        window.location.reload();
+      }, 100);
     });
   }
 
@@ -37,19 +52,15 @@ class App extends Component {
       case "en":
         return en;
       default:
-        return en;
+        return pl;
     }
-  }
-
-  languageReadyLogin() {
-    return (props) => <LoginScreen {...props} languageSwitch={this.changeLanguage}/>;
   }
 
   render() {
     return (
       <TranslatorProvider translations={this.returnLanguage()}>
         <Switch>
-          <Route exact path="/" render={this.languageReadyLogin()} />
+          <Route exact path="/" component={LoginScreen} />
           <PrivateRoute path="/main" component={Home} history={this.props.history} />
         </Switch>
       </TranslatorProvider>
@@ -57,8 +68,21 @@ class App extends Component {
   }
 }
 
+function mapStateToProps(state) {
+  return {
+    language: state.languageReducer.language,
+    type: state.languageReducer.type
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    lang: bindActionCreators(languageActions, dispatch)
+  };
+}
+
 App.propTypes = {
   history: PropTypes.object.isRequired
 };
 
-export default App;
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(App));

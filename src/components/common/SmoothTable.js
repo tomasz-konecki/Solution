@@ -27,7 +27,8 @@ class SmoothTable extends Component {
         Sort: props.construct.defaultSortField,
         Ascending: props.construct.defaultSortAscending
       },
-      update: false
+      update: false,
+      unfurl: props.construct.rowDetailUnfurl
     };
 
     props.construct.columns.map((column, index) => {
@@ -485,11 +486,10 @@ class SmoothTable extends Component {
   }
 
   generateRow(object, index) {
-    const { construct } = this.state;
+    const { construct, unfurl } = this.state;
 
     let classes = ['smooth-row'];
     let unfurled = this.state.rowUnfurls[index];
-    let unfurl = construct.rowDetailUnfurl;
 
     let payload = [];
 
@@ -532,7 +532,7 @@ class SmoothTable extends Component {
       })}
     </tr>);
 
-    if(unfurl) payload.push(<tr
+    if(unfurl  && !this.state.update) payload.push(<tr
       key={index}
     >
       {
@@ -555,13 +555,17 @@ class SmoothTable extends Component {
   }
 
   forceAnUpdate = () => {
-    const unfurls = Object.assign({}, this.state.rowUnfurls);
+    console.log('focing update');
+    const unfurls = JSON.parse(JSON.stringify(this.state.rowUnfurls));
     this.setState({
       update: !this.state.update,
-      rowUnfurls: {}
+      rowUnfurls: {},
+      unfurl: false
     }, () => {
       this.setState({
-        rowUnfurls: unfurls
+        rowUnfurls: unfurls,
+        update: !this.state.update,
+        unfurl: true
       });
     });
   }

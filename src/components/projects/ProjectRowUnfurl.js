@@ -48,7 +48,10 @@ class ProjectRowUnfurl extends Component {
 
   mapSkills(skills, editable = false) {
     return skills.map((skillObject, index) => {
-      return <ProjectSkill skillEdited={this.handleSkillEdit} editable={editable} key={index} skillObject={skillObject}/>;
+      return <div key={index} className="col-sm-3 skill-hr">
+        <ProjectSkill skillEdited={this.handleSkillEdit} editable={editable} skillObject={skillObject}/>
+        <hr/>
+      </div>;
     });
   }
 
@@ -210,11 +213,13 @@ class ProjectRowUnfurl extends Component {
         </div>
         <hr/>
         <div className="row">
-          <div className="col-sm-6">
-            { this.mapSkills(toUnfurl.skills, this.state.editable) }
+          <div className="col-sm-9">
+            <div className="row">
+              { this.mapSkills(toUnfurl.skills, this.state.editable) }
+            </div>
             { toUnfurl.skills.length === 0 ? t("CurrentlyNoSkillsAssigned") : null }
           </div>
-          <div className="col-sm-6">
+          <div className="col-sm-3">
             <button style={optionalEditStyling} onClick={this.handleEditButton} className="dcmt-button">{t("EditSkills")}</button>
             {
               this.state.editable ?

@@ -17,15 +17,22 @@ const errorHandler = dispatch => error => {
       _error: errors[Object.keys(errors)[0]]
     });
   }
-  switch (error.response.status) {
-    case 401:
-      throw new SubmissionError({
-        _error: "Nieprawidłowe dane"
-      });
-    default:
-      throw new SubmissionError({
-        _error: "Nieoczekiwany błąd"
-      });
+  else if(error.response !== undefined){
+    switch (error.response.status) {
+      case 401:
+        throw new SubmissionError({
+          _error: "Nieprawidłowe dane"
+        });
+      default:
+        throw new SubmissionError({
+          _error: "Nieoczekiwany błąd"
+        });
+    }
+  }
+  else {
+    throw new SubmissionError({
+      _error: "Nieoczekiwany błąd"
+    });
   }
 };
 

@@ -2,6 +2,12 @@ $width: 100%;
 $main-color: rgb(149, 0, 157);
 $prog-color: rgb(255, 166, 0);
 $emblem-width: 20%;
+.skill-hr {
+  hr {
+    margin-top: 0.7rem;
+    margin-bottom: 0.7rem;
+  }
+}
 .skills-select {
   height: 100%;
 }
@@ -18,23 +24,24 @@ $emblem-width: 20%;
   padding-top: 36px;
 }
 
+.project-skill-wrapper {
+  background: #484848;
+}
+
 .project-skill {
   overflow: hidden;
   white-space: nowrap;
   display: inline-block;
   box-sizing: border-box;
   width: $width;
-  height: 32px;
-  margin: 1px;
   background: rgb(115, 140, 140);
   cursor: pointer;
   user-select: none;
 
   .project-skill-name {
-    display: inline-block;
+    display: block;
     background: $main-color;
     color: white;
-    vertical-align: top;
     text-align: center;
     padding: 7px;
     min-width: $emblem-width;
@@ -42,36 +49,36 @@ $emblem-width: 20%;
     text-align: center;
   }
   .project-skill-level {
-    display: inline-block;
+    display: block;
     line-height: 32px;
-    width: $width - $emblem-width;
+    width: 100%;
     height: 32px;
-    vertical-align: top;
+    color: white;
   }
   .skill-level-1 {
     text-align: center;
-    width: 10%;
-    background: $prog-color;
+    width: 20%;
+    background: rgb(0, 99, 35);
   }
   .skill-level-2 {
     text-align: center;
-    width: 20%;
-    background: $prog-color;
+    width: 40%;
+    background: rgb(0, 99, 35);
   }
   .skill-level-3 {
     text-align: center;
-    width: 60% - $emblem-width;
-    background: $prog-color;
+    width: 60%;
+    background: rgb(0, 99, 35);
   }
   .skill-level-4 {
     text-align: center;
-    width: 80% - $emblem-width;
-    background: $prog-color;
+    width: 80%;
+    background: rgb(0, 99, 35);
   }
   .skill-level-5 {
     text-align: center;
-    width: 100% - $emblem-width;
-    background: $prog-color;
+    width: 100%;
+    background: rgb(0, 99, 35);
   }
 }
 
@@ -99,60 +106,68 @@ $emblem-width: 20%;
   box-sizing: border-box;
   width: $width;
   height: 32px;
-  margin: 1px;
   background: slategray;
+  vertical-align: top;
 
   .project-skill-delete-block {
     display: inline-block;
     color: white;
     background: rgba(142, 0, 0, 0.855);
-    vertical-align: top;
     text-align: center;
     padding: 7px;
-    width: 5%;
+    width: 20%;
     height: 32px;
     text-align: center;
     box-sizing: border-box;
     user-select: none;
     cursor: pointer;
+    vertical-align: top;
   }
 
   .project-skill-name {
     display: inline-block;
     color: white;
-    vertical-align: top;
     text-align: center;
     padding: 7px;
-    min-width: 15%;
+    width: 80%;
+    overflow: hidden;
     height: 32px;
     text-align: center;
     box-sizing: border-box;
+    vertical-align: top;
   }
+}
+
+.project-skill-level-blocks {
+  display: block;
+  width: 100%;
+  background: slategray;
+  box-sizing: border-box;
+  margin-top: 0.3px;
   .project-skill-level-block {
     display: inline-block;
     line-height: 32px;
     color: white;
     text-align: center;
-    border-right: 2px solid darken(slategray, 10%);
-    width: 16%;
-    height: 32px;
-    vertical-align: top;
+    //border-right: 2px solid darken(slategray, 10%);
+    width: 20%;
     user-select: none;
     cursor: pointer;
+    box-sizing: border-box;
 
-    &:nth-of-type(3):hover {
+    &:nth-of-type(1):hover {
       background: darkgreen;
     }
-    &:nth-of-type(4):hover {
+    &:nth-of-type(2):hover {
       background: green;
     }
-    &:nth-of-type(5):hover {
+    &:nth-of-type(3):hover {
       background: rgb(174, 174, 38);
     }
-    &:nth-of-type(6):hover {
+    &:nth-of-type(4):hover {
       background: orange;
     }
-    &:nth-of-type(7):hover {
+    &:nth-of-type(5):hover {
       background: orangered;
     }
   }

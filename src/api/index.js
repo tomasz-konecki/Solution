@@ -193,6 +193,14 @@ class DCMTWebApi {
     });
   }
 
+  getEmploSkills(employeeId) {
+    return axios.get(`${API_ENDPOINT}/employees/BillenniumEmploSkills`, {
+      params: {
+        employeeId
+      }
+    });
+  }
+
   overrideSkillsOnEmployee(id, skillsArray) {
     return axios.put(`${API_ENDPOINT}/employee/${id}`, skillsArray);
   }

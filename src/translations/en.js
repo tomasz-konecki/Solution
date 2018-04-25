@@ -92,7 +92,9 @@ const translations = {
     UnexpectedError: "Unexpected error occured"
   },
   EmployeesRowUnfurl: {
-    ActivateEmployee: "Activate employee"
+    ActivateEmployee: "Activate employee",
+    Confirm: "Confirm",
+    Cancel: "Cancel"
   },
   AddProjectOwner: {
     AddOwner: "Add owner",

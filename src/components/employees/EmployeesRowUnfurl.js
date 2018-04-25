@@ -4,6 +4,8 @@ import DCMTWebApi from '../../api';
 import ResultBlock from '../common/ResultBlock';
 import ProjectSkill from './../projects/ProjectSkill';
 import LoaderHorizontal from './../common/LoaderHorizontal';
+import SeniorityBlock from './SeniorityBlock';
+import CapacityBlock from './CapacityBlock';
 
 class EmployeesRowUnfurl extends Component {
   constructor(props) {
@@ -14,11 +16,17 @@ class EmployeesRowUnfurl extends Component {
       skills: [],
       loadingSkills: true,
       changesMade: false,
-      value: 0
+      value: 0,
+      seniorityLevel: 1,
+      capacityLevel: 1,
+      confirmed: false
     };
 
     this.handleSkillEdit = this.handleSkillEdit.bind(this);
     this.getYearsOfExperience = this.getYearsOfExperience.bind(this);
+    this.handleSeniorityChange = this.handleSeniorityChange.bind(this);
+    this.handleCapacityChange = this.handleCapacityChange.bind(this);
+    this.finishUp = this.finishUp.bind(this);
   }
 
   componentDidMount() {
@@ -40,6 +48,56 @@ class EmployeesRowUnfurl extends Component {
       });
   }
 
+  finishUp() {
+    this.setState({
+      loadingSkills: true
+    });
+    let { skills } = this.state;
+    let newSkills = [];
+    skills.forEach((skill, index) => {
+      if(skill.skillName === undefined){
+        skill = {
+          skillName: skill.name,
+          skillId: skill.id
+        };
+      }
+      newSkills.push(skill);
+    });
+    DCMTWebApi
+      .addEmployee(
+        this.state.toUnfurl.id,
+        this.state.capacityLevel,
+        this.state.seniorityLevel,
+        newSkills
+      )
+      .then((confirmation) => {
+        this.setState({
+          errorBlock: {
+            result: confirmation
+          },
+          loadingSkills: false
+        });
+      })
+      .catch((error) => {
+        this.setState({
+          errorBlock: error,
+          loadingSkills: false
+        });
+      });
+  }
+
+  handleSeniorityChange(seniorityLevel) {
+    this.setState({
+      seniorityLevel
+    });
+  }
+
+  handleCapacityChange(capacityLevel) {
+    this.setState({
+      capacityLevel
+    });
+  }
+
   handleSkillEdit(updatedSkillObject, deletion = false) {
     let { skills } = this.state;
     skills.forEach((skill, index) => {
@@ -57,14 +115,13 @@ class EmployeesRowUnfurl extends Component {
         this.setState({
           skills,
           changesMade: true
-        }, () => console.log(this.state.skills));
+        });
       }
     });
   }
 
   handleRangeChange(skillObject) {
     return (event) => {
-      console.log(skillObject, event.target.value);
       let { skills } = this.state;
       skills.forEach((skill, index) => {
         // backend fixes!
@@ -97,24 +154,41 @@ class EmployeesRowUnfurl extends Component {
     else return 0;
   }
 
+  confirm = () => {
+    this.setState({
+      confirmed: true
+    });
+    console.log(this.state);
+  }
+
+  cancel = () => {
+    this.setState({
+      confirmed: false
+    });
+  }
+
   mapSkills(skills, editable = false) {
     return skills.map((skillObject, index) => {
       return (
         <div className="col-sm-4" key={index}>
-          <ProjectSkill skillEdited={this.handleSkillEdit} editable skillObject={skillObject}/>
-          <div className="form-group">
+          <ProjectSkill skillEdited={this.handleSkillEdit} editable={!this.state.confirmed} skillObject={skillObject}/>
+          <div className="form-group skill-yoe-block">
             Years of experience: {this.getYearsOfExperience(index)}
             <br/>
-            <input
-              type="range"
-              className="form-control-range"
-              id="formControlRange"
-              min="0"
-              max="30"
-              step="1"
-              value={this.getYearsOfExperience(index)}
-              onChange={this.handleRangeChange(skillObject)}
-            />
+            {
+              this.state.confirmed === false ?
+                <input
+                type="range"
+                className="form-control-range"
+                id="formControlRange"
+                min="0"
+                max="30"
+                step="1"
+                value={this.getYearsOfExperience(index)}
+                onChange={this.handleRangeChange(skillObject)}
+              />
+              : null
+            }
           </div>
           <hr/>
         </div>
@@ -128,17 +202,36 @@ class EmployeesRowUnfurl extends Component {
       <div className="row">
         <div className="col-sm-10">
           <div className="row">
+            <div className="col-sm-6">
+              <SeniorityBlock seniorityChanged={this.handleSeniorityChange} seniorityLevel={this.state.seniorityLevel} editable={!this.state.confirmed}/>
+            </div>
+            <div className="col-sm-6">
+              <CapacityBlock capacityChanged={this.handleCapacityChange} capacityLevel={this.state.capacityLevel} editable={!this.state.confirmed}/>
+            </div>
+          </div>
+          <hr/>
+          {this.state.loadingSkills ? <LoaderHorizontal/> : null}
+          <div className="row">
             {this.mapSkills(this.state.skills)}
           </div>
-          {this.state.loadingSkills ? <LoaderHorizontal/> : null}
+          <hr/>
+        </div>
+        <div className="col-sm-2 full-width-button">
+          {
+            this.state.confirmed === true ?
+            <div>
+              <button onClick={this.cancel} className="dcmt-button">{t("Cancel")}</button>
+              <hr/>
+              <button onClick={this.finishUp} className="dcmt-button button-success">{t("ActivateEmployee")}</button>
+            </div>
+            :
+            <button onClick={this.confirm} className="dcmt-button">{t("Confirm")}</button>
+          }
           <hr/>
           <ResultBlock
-            errorBlock={this.errorBlock}
+            errorBlock={this.state.errorBlock}
             errorOnly={false}
           />
-        </div>
-        <div className="col-sm-2">
-          <button className="dcmt-button button-success">{t("ActivateEmployee")}</button>
         </div>
       </div>
     );

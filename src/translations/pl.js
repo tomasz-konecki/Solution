@@ -92,7 +92,9 @@ const translations = {
     UnexpectedError: "Nieoczekiwany błąd"
   },
   EmployeesRowUnfurl: {
-    ActivateEmployee: "Aktywuj pracownika"
+    ActivateEmployee: "Aktywuj pracownika",
+    Confirm: "Potwierdź",
+    Cancel: "Anuluj"
   },
   AddProjectOwner: {
     AddOwner: "Dodaj właściciela",

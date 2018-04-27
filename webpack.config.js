@@ -34,7 +34,7 @@ module.exports = {
     rules: [
       {
         test: /\.(js|jsx)$/,
-        exclude: /node_modules/,
+        exclude: /(node_modules|dist)/,
         use: {
           loader: "babel-loader",
           options: {
@@ -74,6 +74,7 @@ module.exports = {
       },
       {
         test: /\.js$/,
+        exclude: /dist/,
         use: ["source-map-loader"],
         enforce: "pre"
       }
@@ -85,5 +86,5 @@ module.exports = {
       index:'/'
     }
   },
-  devtool:'source-map',
+  devtool:'cheap-source-map',
 };

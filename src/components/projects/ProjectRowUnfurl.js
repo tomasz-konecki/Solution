@@ -6,7 +6,6 @@ import { bindActionCreators } from 'redux';
 import ProjectSkill from './ProjectSkill';
 import ProjectOwner from './ProjectOwner';
 import SkillsSelect from './../skills/SkillsSelect';
-import defaultShouldAsyncValidate from './../../../dist/app.bundle';
 import AddProjectOwner from './modals/AddProjectOwner';
 import * as _ from 'lodash';
 import * as asyncActions from "../../actions/asyncActions";

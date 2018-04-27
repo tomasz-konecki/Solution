@@ -101,7 +101,7 @@ class ProjectSkill extends Component {
           >X</span>
           <span style={stylingRules} className="project-skill-name">{skillObject.skillName}</span>
         </div>
-        <div className="project-skill-level-blocks">
+        <div className="project-skill-level-blocks test">
           {[1,2,3,4,5].map((level) => this.levelBlock(skillObject, level))}
         </div>
       </div>

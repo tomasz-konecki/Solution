@@ -194,6 +194,21 @@ class DCMTWebApi {
     });
   }
 
+  editEmployee(id, seniority, capacity) {
+    return axios.patch(`${API_ENDPOINT}/employees/${id}`, {
+      params: {
+        seniority,
+        capacity
+      }
+    });
+  }
+
+  editEmployeeSkills(id, skillsArray) {
+    return axios.put(`${API_ENDPOINT}/employees/${id}`, {
+      skills: skillsArray
+    });
+  }
+
   getEmploSkills(employeeId) {
     return axios.get(`${API_ENDPOINT}/employees/BillenniumEmploSkills`, {
       params: {

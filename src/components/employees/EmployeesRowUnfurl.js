@@ -20,7 +20,8 @@ class EmployeesRowUnfurl extends Component {
       seniorityLevel: 1,
       capacityLevel: 1,
       confirmed: false,
-      invalidated: false
+      invalidated: false,
+      employee: {}
     };
 
     this.handleSkillEdit = this.handleSkillEdit.bind(this);
@@ -109,6 +110,57 @@ class EmployeesRowUnfurl extends Component {
           loadingSkills: false,
           confirmed: true,
           invalidated: true
+        });
+      });
+  }
+
+  saveSettings() {
+    this.setState({
+      loadingSkills: true
+    });
+    let { skills } = this.state;
+    let newSkills = [];
+    skills.forEach((skill, index) => {
+      if(skill.skillName === undefined){
+        skill = {
+          skillName: skill.name,
+          skillId: skill.id,
+          skillLevel: skill.level,
+          yearsOfExperience: skill.yearsOfExperience
+        };
+      }
+      newSkills.push(skill);
+    });
+    DCMTWebApi
+      .editEmployee(
+        this.state.toUnfurl.id,
+        this.capacityLevelToFraction(this.state.capacityLevel),
+        this.seniorityLevelToString(this.state.seniorityLevel),
+        newSkills
+      )
+      .then((confirmation) => {
+        this.setState({
+          errorBlock: {
+            result: confirmation
+          },
+          loadingSkills: true
+        });
+      })
+      .then(DCMTWebApi.editEmployeeSkills(this.state.toUnfurl.id, newSkills))
+      .then((result) => {
+        this.setState({
+          errorBlock: {
+            result
+          },
+          loadingSkills: false
+        }, () => {
+          this.props.handles.refresh();
+        });
+      })
+      .catch((error) => {
+        this.setState({
+          errorBlock: error,
+          loadingSkills: false
         });
       });
   }
@@ -270,14 +322,17 @@ class EmployeesRowUnfurl extends Component {
     return (
       <div className="row">
         <div className="col-sm-10">
-          <div className="row">
-            <div className="col-sm-6">
-              <SeniorityBlock seniorityChanged={this.handleSeniorityChange} seniorityLevel={this.state.seniorityLevel} editable={!this.state.confirmed}/>
-            </div>
-            <div className="col-sm-6">
-              <CapacityBlock capacityChanged={this.handleCapacityChange} capacityLevel={this.state.capacityLevel} editable={!this.state.confirmed}/>
-            </div>
-          </div>
+            {
+              this.state.invalidated === false ? <div className="row">
+                <div className="col-sm-6">
+                  <SeniorityBlock seniorityChanged={this.handleSeniorityChange} seniorityLevel={this.state.seniorityLevel} editable={!this.state.confirmed}/>
+                </div>
+                <div className="col-sm-6">
+                  <CapacityBlock capacityChanged={this.handleCapacityChange} capacityLevel={this.state.capacityLevel} editable={!this.state.confirmed}/>
+                </div>
+              </div>
+              : "Brak danych"
+            }
           <hr/>
           {this.state.loadingSkills ? <LoaderHorizontal/> : null}
           <div className="row">
@@ -287,17 +342,26 @@ class EmployeesRowUnfurl extends Component {
         </div>
         <div className="col-sm-2 full-width-button">
           {
-            this.state.confirmed === true && (!this.state.invalidated) ?
-            <div>
-              <button onClick={this.cancel} className="dcmt-button">{t("Cancel")}</button>
-              <hr/>
-              <button onClick={this.finishUp} className="dcmt-button button-success">{t("ActivateEmployee")}</button>
-            </div>
-            :
-            this.state.invalidated ?
-            "Brak danych"
-            : <button onClick={this.confirm} className="dcmt-button">{t("Confirm")}</button>
-          }
+            this.state.employee.seniority === undefined ?
+              this.state.confirmed === true && (!this.state.invalidated) ?
+              <div>
+                <button onClick={this.cancel} className="dcmt-button">{t("Cancel")}</button>
+                <hr/>
+                <button onClick={this.finishUp} className="dcmt-button button-success">{t("ActivateEmployee")}</button>
+              </div>
+              :
+              this.state.invalidated ?
+              "Brak danych"
+              : <button onClick={this.confirm} className="dcmt-button">{t("Confirm")}</button>
+
+              :
+
+              <div>
+                <button onClick={this.cancel} className="dcmt-button">{t("Edit")}</button>
+                <hr/>
+                <button onClick={this.finishUp} className="dcmt-button button-success">{t("Save")}</button>
+              </div>
+            }
           <hr/>
           <ResultBlock
             errorBlock={this.state.errorBlock}

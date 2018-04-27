@@ -47,7 +47,8 @@ module.exports = {
                 }
               ],
               require.resolve("babel-preset-stage-0")
-            ]
+            ],
+            compact: true
           }
         }
       },

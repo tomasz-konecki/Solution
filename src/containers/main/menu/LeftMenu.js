@@ -41,14 +41,14 @@ class LeftMenu extends React.Component {
           extended={extended}
           path="/users"
           icon="user-circle"
-          iconType="far"
+          iconType="fas"
           title={t("Users")}
         />
         <VerticalMenuElement
           match={match}
           extended={extended}
           path="/employees"
-          icon="user"
+          icon="address-card"
           iconType="fas"
           title={t("Employees")}
         />

@@ -19,17 +19,57 @@ class EmployeesRowUnfurl extends Component {
       value: 0,
       seniorityLevel: 1,
       capacityLevel: 1,
-      confirmed: false
+      confirmed: false,
+      invalidated: false
     };
 
     this.handleSkillEdit = this.handleSkillEdit.bind(this);
     this.getYearsOfExperience = this.getYearsOfExperience.bind(this);
     this.handleSeniorityChange = this.handleSeniorityChange.bind(this);
     this.handleCapacityChange = this.handleCapacityChange.bind(this);
+    this.getEmploSkills = this.getEmploSkills.bind(this);
+    this.getEmployee = this.getEmployee.bind(this);
     this.finishUp = this.finishUp.bind(this);
   }
 
   componentDidMount() {
+    if(this.state.toUnfurl.hasAccount) this.getEmployee(this.state.toUnfurl.id);
+    else this.getEmploSkills();
+  }
+
+  capacityLevelToFraction(level, reverse = false) {
+    if(reverse) switch(level){
+      case 0.2: return 1;
+      case 0.25: return 2;
+      case 0.5: return 3;
+      case 0.75: return 4;
+      case 1: return 5;
+    }
+    switch(level){
+      case 1: return 0.2;
+      case 2: return 0.25;
+      case 3: return 0.5;
+      case 4: return 0.75;
+      case 5: return 1;
+    }
+  }
+
+  seniorityLevelToString(level, reverse = false) {
+    if(reverse) switch(level){
+      case "Junior": return 1;
+      case "Pro": return 2;
+      case "Senior": return 3;
+      case "Lead": return 4;
+    }
+    switch(level){
+      case 1: return "Junior";
+      case 2: return "Pro";
+      case 3: return "Senior";
+      case 4: return "Lead";
+    }
+  }
+
+  getEmploSkills() {
     DCMTWebApi.getEmploSkills(this.state.toUnfurl.id)
       .then((emploSkills) => {
         this.setState({
@@ -48,6 +88,31 @@ class EmployeesRowUnfurl extends Component {
       });
   }
 
+  getEmployee(id) {
+    DCMTWebApi.getEmployee(this.state.toUnfurl.id)
+      .then((result) => {
+        this.setState({
+          errorBlock: {
+            result
+          },
+          skills: result.data.dtoObject.skills,
+          loadingSkills: false,
+          confirmed: true,
+          employee: result.data.dtoObject,
+          capacityLevel: this.capacityLevelToFraction(result.data.dtoObject.baseCapacity, true),
+          seniorityLevel: this.seniorityLevelToString(result.data.dtoObject.seniority, true)
+        });
+      })
+      .catch((error) => {
+        this.setState({
+          errorBlock: error,
+          loadingSkills: false,
+          confirmed: true,
+          invalidated: true
+        });
+      });
+  }
+
   finishUp() {
     this.setState({
       loadingSkills: true
@@ -58,7 +123,9 @@ class EmployeesRowUnfurl extends Component {
       if(skill.skillName === undefined){
         skill = {
           skillName: skill.name,
-          skillId: skill.id
+          skillId: skill.id,
+          skillLevel: skill.level,
+          yearsOfExperience: skill.yearsOfExperience
         };
       }
       newSkills.push(skill);
@@ -66,8 +133,8 @@ class EmployeesRowUnfurl extends Component {
     DCMTWebApi
       .addEmployee(
         this.state.toUnfurl.id,
-        this.state.capacityLevel,
-        this.state.seniorityLevel,
+        this.capacityLevelToFraction(this.state.capacityLevel),
+        this.seniorityLevelToString(this.state.seniorityLevel),
         newSkills
       )
       .then((confirmation) => {
@@ -76,6 +143,8 @@ class EmployeesRowUnfurl extends Component {
             result: confirmation
           },
           loadingSkills: false
+        }, () => {
+          this.props.handles.refresh();
         });
       })
       .catch((error) => {
@@ -218,19 +287,22 @@ class EmployeesRowUnfurl extends Component {
         </div>
         <div className="col-sm-2 full-width-button">
           {
-            this.state.confirmed === true ?
+            this.state.confirmed === true && (!this.state.invalidated) ?
             <div>
               <button onClick={this.cancel} className="dcmt-button">{t("Cancel")}</button>
               <hr/>
               <button onClick={this.finishUp} className="dcmt-button button-success">{t("ActivateEmployee")}</button>
             </div>
             :
-            <button onClick={this.confirm} className="dcmt-button">{t("Confirm")}</button>
+            this.state.invalidated ?
+            "Brak danych"
+            : <button onClick={this.confirm} className="dcmt-button">{t("Confirm")}</button>
           }
           <hr/>
           <ResultBlock
             errorBlock={this.state.errorBlock}
             errorOnly={false}
+            successMessage="Aktywowano"
           />
         </div>
       </div>

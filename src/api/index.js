@@ -186,7 +186,7 @@ class DCMTWebApi {
   }
 
   addEmployee(id, capacity, seniority, skillsArray) {
-    return axios.put(`${API_ENDPOINT}/employees/add`, {
+    return axios.post(`${API_ENDPOINT}/employees/add`, {
       id,
       capacity,
       seniority,

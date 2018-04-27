@@ -28,6 +28,11 @@ class EmployeesList extends Component {
       filterClass: "EmployeeFilter",
       rowDetailUnfurl: true,
       unfurler: EmployeesRowUnfurl,
+      handles: {
+        refresh: () => {
+          this.props.pageChange();
+        }
+      },
       operators: [],
       columns: [
         {

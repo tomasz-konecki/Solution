@@ -353,9 +353,7 @@ class EmployeesRowUnfurl extends Component {
               this.state.invalidated ?
               "Brak danych"
               : <button onClick={this.confirm} className="dcmt-button">{t("Confirm")}</button>
-
               :
-
               <div>
                 <button onClick={this.cancel} className="dcmt-button">{t("Edit")}</button>
                 <hr/>

@@ -75,8 +75,8 @@ class ProjectSkill extends Component {
     if(duplicate) {
       classes.push('project-skill-duplicate');
     }
-
-    const stylingRules = {
+    let stylingRules = {};
+    if(skillObject.skillName !== undefined) stylingRules = {
       background: hexToRGB(stringToColour(skillObject.skillName), 0.5)
     };
     if(!editable) return (

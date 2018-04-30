@@ -49,7 +49,7 @@ const ResultBlock = ({
   } = customErrors;
 
   switch (true) {
-    case status > 199 && status < 300:
+    case (status > 199) && (status < 300):
       message = successMessage;
       errorStatus = false;
       break;

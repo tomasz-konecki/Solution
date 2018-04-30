@@ -17,7 +17,9 @@ class SkillsSelect extends Component {
       adding: false
     };
 
-    this.props.alreadySelected.map((skill) => {
+    if(this.props.alreadySelected !== null
+      && this.props.alreadySelected[0] !== undefined
+    ) this.props.alreadySelected.map((skill) => {
       this.state.alreadyAdded[skill.skillId] = true;
     });
 

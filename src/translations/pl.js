@@ -94,7 +94,10 @@ const translations = {
   EmployeesRowUnfurl: {
     ActivateEmployee: "Aktywuj pracownika",
     Confirm: "Potwierdź",
-    Cancel: "Anuluj"
+    Cancel: "Anuluj",
+    Edit: "Edytuj",
+    Save: "Zapisz",
+    Add: "Dodaj"
   },
   AddProjectOwner: {
     AddOwner: "Dodaj właściciela",

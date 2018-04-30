@@ -1,3 +1,5 @@
+$height: 32px;
+$padding: 5px;
 .project-owner {
   background: #498a3c;
   color: white;
@@ -6,12 +8,12 @@
   margin: 5px 4px;
   box-sizing: border-box;
   user-select: none;
-  height: 24px;
+  height: $height;
   .project-owner-name {
     display: inline-block;
-    height: 24px;
-    padding: 2px;
-    line-height: 24px;
+    height: $height;
+    padding: $padding;
+    line-height: $height;
   }
   .project-owner-add {
     text-align: center;
@@ -21,18 +23,18 @@
     &:after {
       content: '+';
     }
-    height: 24px;
-    padding: 2px;
-    line-height: 24px;
+    height: $height;
+    padding: $padding;
+    line-height: $height;
   }
   .project-owner-delete {
-    height: 24px;
+    height: $height;
     background: rgba(255, 0, 0, 0.4);
     text-align: center;
     display: inline-block;
     cursor: pointer;
-    padding: 2px;
-    line-height: 24px;
+    padding: $padding;
+    line-height: $height;
     &:hover {
       transition: all 0.5s;
       background: rgba(255, 0, 0, 0.6);

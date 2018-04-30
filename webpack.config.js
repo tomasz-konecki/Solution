@@ -86,5 +86,5 @@ module.exports = {
       index:'/'
     }
   },
-  devtool:'cheap-source-map',
+  devtool:'source-map',
 };

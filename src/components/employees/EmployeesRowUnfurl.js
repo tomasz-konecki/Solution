@@ -6,6 +6,8 @@ import ProjectSkill from './../projects/ProjectSkill';
 import LoaderHorizontal from './../common/LoaderHorizontal';
 import SeniorityBlock from './SeniorityBlock';
 import CapacityBlock from './CapacityBlock';
+import Modal from 'react-responsive-modal';
+import SkillsSelect from '../skills/SkillsSelect';
 
 class EmployeesRowUnfurl extends Component {
   constructor(props) {
@@ -21,7 +23,9 @@ class EmployeesRowUnfurl extends Component {
       capacityLevel: 1,
       confirmed: false,
       invalidated: false,
-      employee: {}
+      employee: {},
+      edit: false,
+      showModal: false
     };
 
     this.handleSkillEdit = this.handleSkillEdit.bind(this);
@@ -121,21 +125,22 @@ class EmployeesRowUnfurl extends Component {
     let { skills } = this.state;
     let newSkills = [];
     skills.forEach((skill, index) => {
-      if(skill.skillName === undefined){
+      if(skill.skillId === undefined){
         skill = {
-          skillName: skill.name,
           skillId: skill.id,
           skillLevel: skill.level,
           yearsOfExperience: skill.yearsOfExperience
         };
       }
+      delete skill.skillName;
+      delete skill.name;
       newSkills.push(skill);
     });
     DCMTWebApi
       .editEmployee(
         this.state.toUnfurl.id,
-        this.capacityLevelToFraction(this.state.capacityLevel),
         this.seniorityLevelToString(this.state.seniorityLevel),
+        this.capacityLevelToFraction(this.state.capacityLevel),
         newSkills
       )
       .then((confirmation) => {
@@ -275,16 +280,42 @@ class EmployeesRowUnfurl extends Component {
     else return 0;
   }
 
+  add = () => {
+    this.setState({ showModal: true });
+  }
+
   confirm = () => {
     this.setState({
       confirmed: true
     });
-    console.log(this.state);
   }
 
   cancel = () => {
     this.setState({
       confirmed: false
+    });
+  }
+
+  reset = () => {
+    this.setState({
+      confirmed: true,
+      edit: false
+    });
+  }
+
+  edit = () => {
+    this.setState({
+      confirmed: false,
+      edit: true
+    });
+  }
+
+  save = () => {
+    this.setState({
+      confirmed: true,
+      edit: false
+    }, () => {
+      this.saveSettings();
     });
   }
 
@@ -317,10 +348,40 @@ class EmployeesRowUnfurl extends Component {
     });
   }
 
+  handleSkillSelection = (newSkill) => {
+    let duplicate = false;
+    this.state.skills.map((skill, index) => {
+      if(skill.skillId === newSkill.skillId) duplicate = true;
+    });
+
+    if(duplicate) return false;
+
+    let copy = this.state.skills;
+    copy.push(newSkill);
+    this.setState({
+      skills: copy,
+      changesMade: true
+    });
+
+    return true;
+  }
+
+  handleCloseModal = () => {
+    this.setState({ showModal: false });
+  }
+
   render() {
     const { t } = this.props;
     return (
       <div className="row">
+        <Modal
+            open={this.state.showModal}
+            classNames={{ modal: "Modal Modal-skills" }}
+            contentLabel="Skills modal"
+            onClose={this.handleCloseModal}
+          >
+          <SkillsSelect alreadySelected={this.state.toUnfurl.skills} skillSelected={this.handleSkillSelection} />
+        </Modal>
         <div className="col-sm-10">
             {
               this.state.invalidated === false ? <div className="row">
@@ -352,12 +413,31 @@ class EmployeesRowUnfurl extends Component {
               :
               this.state.invalidated ?
               "Brak danych"
-              : <button onClick={this.confirm} className="dcmt-button">{t("Confirm")}</button>
-              :
+              : <div>
+                  <button onClick={this.confirm} className="dcmt-button">{t("Confirm")}</button>
+                  <hr/>
+                  <button onClick={this.add} className="dcmt-button button-success">{t("Add")}</button>
+                </div>
+            :
               <div>
-                <button onClick={this.cancel} className="dcmt-button">{t("Edit")}</button>
+                {
+                  this.state.edit ?
+                  <button onClick={this.reset} className="dcmt-button">{t("Cancel")}</button>
+                  :
+                  <button onClick={this.edit} className="dcmt-button">{t("Edit")}</button>
+                }
                 <hr/>
-                <button onClick={this.finishUp} className="dcmt-button button-success">{t("Save")}</button>
+                {
+                  this.state.edit ?
+                  <div>
+                    <button onClick={this.save} className="dcmt-button button-success">{t("Save")}</button>
+                    <hr/>
+                    <button onClick={this.add} className="dcmt-button button-success">{t("Add")}</button>
+                  </div>
+                  : this.state.confirmed === false ?
+                    <button onClick={this.add} className="dcmt-button button-success">{t("Add")}</button>
+                    : null
+                }
               </div>
             }
           <hr/>

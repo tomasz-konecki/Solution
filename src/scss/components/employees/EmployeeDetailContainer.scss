@@ -1,0 +1,22 @@
+@import "../../ColorSchema.scss";
+
+.employee-detail-container {
+  .employee-id-block {
+    hr {
+      background-image: linear-gradient(90deg, rgba($main-color, 0.5), transparent);
+      height: 0.1px;
+      margin: 0;
+      border: 0;
+    }
+    i {
+      display: inline-block;
+      vertical-align: top;
+    }
+    h1 {
+      display: inline-block;
+      padding: 12px;
+      vertical-align: top;
+      font-size: 140%;
+    }
+  }
+}

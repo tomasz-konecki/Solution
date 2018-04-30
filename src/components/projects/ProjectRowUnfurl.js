@@ -11,6 +11,7 @@ import * as _ from 'lodash';
 import * as asyncActions from "../../actions/asyncActions";
 import { SET_ACTION_CONFIRMATION_RESULT, SET_ACTION_CONFIRMATION } from '../../constants';
 import { translate } from 'react-translate';
+import SkillRow from './../skills/SkillRow';
 
 class ProjectRowUnfurl extends Component {
   constructor(props) {
@@ -47,10 +48,12 @@ class ProjectRowUnfurl extends Component {
 
   mapSkills(skills, editable = false) {
     return skills.map((skillObject, index) => {
-      return <div key={index} className="col-sm-3 skill-hr">
-        <ProjectSkill skillEdited={this.handleSkillEdit} editable={editable} skillObject={skillObject}/>
-        <hr/>
-      </div>;
+      return <SkillRow
+        key={index}
+        skill={skillObject}
+        handleSkillEdit={this.handleSkillEdit}
+        editable={editable}
+      />;
     });
   }
 
@@ -76,6 +79,7 @@ class ProjectRowUnfurl extends Component {
           toUnfurl.skills.splice(index, 1);
         else
           toUnfurl.skills[index].skillLevel = updatedSkillObject.skillLevel;
+          toUnfurl.skills[index].yearsOfExperience = updatedSkillObject.yearsOfExperience;
         this.setState({
           toUnfurl,
           changesMade: true

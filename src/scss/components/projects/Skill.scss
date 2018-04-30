@@ -41,22 +41,19 @@ $emblem-width: 20%;
   display: inline-block;
   box-sizing: border-box;
   width: $width;
-  background: rgb(115, 140, 140);
   cursor: pointer;
   user-select: none;
 
   .project-skill-name {
-    display: block;
-    background: $main-color;
+    display: inline-block;
     color: white;
     text-align: center;
     padding: 7px;
-    min-width: $emblem-width;
     height: 32px;
     text-align: center;
   }
   .project-skill-level {
-    display: block;
+    display: inline-block;
     line-height: 32px;
     width: 100%;
     height: 32px;

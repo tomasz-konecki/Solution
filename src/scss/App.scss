@@ -2,14 +2,17 @@
 @import "ColorSchema.scss";
 @import "./components/common/Button";
 @import "./components/common/Input";
+@import "./components/common/ContentContainer";
 @import "./components/table/SmoothTable";
 @import "./components/common/Logo";
 @import "./components/common/Flags";
 @import "./components/common/modals/ResultModal";
 @import "./components/projects/Skill";
+@import "./components/projects/SkillRow";
 @import "./components/projects/Owner";
 @import "./components/employees/SeniorityBlock";
 @import "./components/employees/CapacityBlock";
+@import "./components/employees/EmployeeDetailContainer";
 
 body {
   font-family: "Roboto Condensed", sans-serif;

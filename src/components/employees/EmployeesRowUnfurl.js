@@ -8,6 +8,7 @@ import SeniorityBlock from './SeniorityBlock';
 import CapacityBlock from './CapacityBlock';
 import Modal from 'react-responsive-modal';
 import SkillsSelect from '../skills/SkillsSelect';
+import SkillRow from './../skills/SkillRow';
 
 class EmployeesRowUnfurl extends Component {
   constructor(props) {
@@ -238,6 +239,7 @@ class EmployeesRowUnfurl extends Component {
           skills.splice(index, 1);
         else
           skills[index].skillLevel = updatedSkillObject.skillLevel;
+          skills[index].yearsOfExperience = updatedSkillObject.yearsOfExperience;
         this.setState({
           skills,
           changesMade: true
@@ -322,28 +324,12 @@ class EmployeesRowUnfurl extends Component {
   mapSkills(skills, editable = false) {
     return skills.map((skillObject, index) => {
       return (
-        <div className="col-sm-4" key={index}>
-          <ProjectSkill skillEdited={this.handleSkillEdit} editable={!this.state.confirmed} skillObject={skillObject}/>
-          <div className="form-group skill-yoe-block">
-            Years of experience: {this.getYearsOfExperience(index)}
-            <br/>
-            {
-              this.state.confirmed === false ?
-                <input
-                type="range"
-                className="form-control-range"
-                id="formControlRange"
-                min="0"
-                max="30"
-                step="1"
-                value={this.getYearsOfExperience(index)}
-                onChange={this.handleRangeChange(skillObject)}
-              />
-              : null
-            }
-          </div>
-          <hr/>
-        </div>
+        <SkillRow
+          key={index}
+          skill={skillObject}
+          handleSkillEdit={this.handleSkillEdit}
+          editable={!this.state.confirmed}
+        />
       );
     });
   }

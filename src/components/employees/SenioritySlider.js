@@ -49,7 +49,8 @@ class SenioritySlider extends Component {
 
   render() {
     let { editable, seniorityLevel } = this.props;
-    if(!editable) return (
+
+    return (
       <div className="seniority-slider-wrapper">
         <div className="seniority-slider">
           <span className={"seniority-slider-level seniority-slider-" + seniorityLevel}>
@@ -59,18 +60,6 @@ class SenioritySlider extends Component {
             <span/>
           </span>
           <span className="seniority-slider-name">{this.seniorityLevelToString(seniorityLevel)}</span>
-        </div>
-      </div>
-    );
-    else return (
-      <div className="seniority-slider-wrapper">
-        <div className="seniority-slider">
-          <div className="seniority-slider-editable">
-            <span className="seniority-slider-name">seniority</span>
-          </div>
-          <div className="seniority-slider-level-blocks">
-            {[1,2,3,4,5].map((level) => this.levelBlock(level))}
-          </div>
         </div>
       </div>
     );

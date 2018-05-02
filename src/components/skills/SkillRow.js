@@ -27,16 +27,26 @@ class SkillRow extends Component {
     this.state = {
       skill: this.standardiseSkill(this.props.skill)
     };
+
+    this.announceChange();
+  }
+
+  componentWillReceiveProps(newProps) {
+    this.setState({
+      skill: this.standardiseSkill(newProps.skill)
+    });
   }
 
   standardiseSkill(object) {
     let skill = {};
 
     object.skillName === undefined ? skill.skillName = object.name : skill.skillName = object.skillName;
-    object.skillLevel === undefined ? skill.skillLevel = object.level : skill.skillLevel = object.skillLevel;
+    object.skillLevel === undefined ?
+      object.level !== undefined ? skill.skillLevel = object.level : skill.skillLevel = 1
+    : skill.skillLevel = object.skillLevel;
     object.skillId === undefined ? skill.skillId = object.id : skill.skillId = object.skillId;
     object.yearsOfExperience === undefined ?
-       skill.yearsOfExperience = 0
+       skill.yearsOfExperience = 1
      : skill.yearsOfExperience = object.yearsOfExperience;
 
     return skill;
@@ -68,7 +78,7 @@ class SkillRow extends Component {
 
   handleLevelChange = (event) => {
     let { skill } = this.state;
-    skill.skillLevel = event.target.value;
+    skill.skillLevel = event.target.value - 0;
     this.setState({
       skill
     }, () => {

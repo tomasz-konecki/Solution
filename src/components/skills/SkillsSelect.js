@@ -117,10 +117,9 @@ function mapDispatchToProps(dispatch) {
 }
 
 SkillsSelect.propTypes = {
-  alreadySelected: PropTypes.array,
+  alreadySelected: PropTypes.arrayOf(PropTypes.object),
   skillsAction: PropTypes.object,
   skillSelected: PropTypes.func.isRequired,
-  skills: PropTypes.arrayOf(PropTypes.object),
   success: PropTypes.bool,
   loading: PropTypes.bool
 };

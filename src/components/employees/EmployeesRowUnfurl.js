@@ -24,8 +24,8 @@ class EmployeesRowUnfurl extends Component {
       loadingSkills: true,
       changesMade: false,
       value: 0,
-      seniorityLevel: 1,
-      capacityLevel: 1,
+      seniorityLevel: undefined,
+      capacityLevel: undefined,
       confirmed: false,
       invalidated: false,
       employee: {},
@@ -33,13 +33,8 @@ class EmployeesRowUnfurl extends Component {
       showModal: false
     };
 
-    this.handleSkillEdit = this.handleSkillEdit.bind(this);
-    this.getYearsOfExperience = this.getYearsOfExperience.bind(this);
-    this.handleSeniorityChange = this.handleSeniorityChange.bind(this);
-    this.handleCapacityChange = this.handleCapacityChange.bind(this);
     this.getEmploSkills = this.getEmploSkills.bind(this);
     this.getEmployee = this.getEmployee.bind(this);
-    this.finishUp = this.finishUp.bind(this);
   }
 
   componentDidMount() {
@@ -123,206 +118,10 @@ class EmployeesRowUnfurl extends Component {
       });
   }
 
-  saveSettings() {
-    this.setState({
-      loadingSkills: true
-    });
-    let { skills } = this.state;
-    let newSkills = [];
-    skills.forEach((skill, index) => {
-      if(skill.skillId === undefined){
-        skill = {
-          skillId: skill.id,
-          skillLevel: skill.level,
-          yearsOfExperience: skill.yearsOfExperience
-        };
-      }
-      delete skill.skillName;
-      delete skill.name;
-      newSkills.push(skill);
-    });
-    DCMTWebApi
-      .editEmployee(
-        this.state.toUnfurl.id,
-        this.seniorityLevelToString(this.state.seniorityLevel),
-        this.capacityLevelToFraction(this.state.capacityLevel),
-        newSkills
-      )
-      .then((confirmation) => {
-        this.setState({
-          errorBlock: {
-            result: confirmation
-          },
-          loadingSkills: true
-        });
-      })
-      .then(DCMTWebApi.editEmployeeSkills(this.state.toUnfurl.id, newSkills))
-      .then((result) => {
-        this.setState({
-          errorBlock: {
-            result
-          },
-          loadingSkills: false
-        }, () => {
-          this.props.handles.refresh();
-        });
-      })
-      .catch((error) => {
-        this.setState({
-          errorBlock: error,
-          loadingSkills: false
-        });
-      });
-  }
-
-  finishUp() {
-    this.setState({
-      loadingSkills: true
-    });
-    let { skills } = this.state;
-    let newSkills = [];
-    skills.forEach((skill, index) => {
-      if(skill.skillName === undefined){
-        skill = {
-          skillName: skill.name,
-          skillId: skill.id,
-          skillLevel: skill.level,
-          yearsOfExperience: skill.yearsOfExperience
-        };
-      }
-      newSkills.push(skill);
-    });
-    DCMTWebApi
-      .addEmployee(
-        this.state.toUnfurl.id,
-        this.capacityLevelToFraction(this.state.capacityLevel),
-        this.seniorityLevelToString(this.state.seniorityLevel),
-        newSkills
-      )
-      .then((confirmation) => {
-        this.setState({
-          errorBlock: {
-            result: confirmation
-          },
-          loadingSkills: false
-        }, () => {
-          this.props.handles.refresh();
-        });
-      })
-      .catch((error) => {
-        this.setState({
-          errorBlock: error,
-          loadingSkills: false
-        });
-      });
-  }
-
-  handleSeniorityChange(seniorityLevel) {
-    this.setState({
-      seniorityLevel
-    });
-  }
-
-  handleCapacityChange(capacityLevel) {
-    this.setState({
-      capacityLevel
-    });
-  }
-
-  handleSkillEdit(updatedSkillObject, deletion = false) {
-    let { skills } = this.state;
-    skills.forEach((skill, index) => {
-      if(skill.skillName === undefined){
-        skill = {
-          skillName: skill.name,
-          skillId: skill.id
-        };
-      }
-      if(skill.skillId === updatedSkillObject.skillId){
-        if(deletion)
-          skills.splice(index, 1);
-        else
-          skills[index].skillLevel = updatedSkillObject.skillLevel;
-          skills[index].yearsOfExperience = updatedSkillObject.yearsOfExperience;
-        this.setState({
-          skills,
-          changesMade: true
-        });
-      }
-    });
-  }
-
-  handleRangeChange(skillObject) {
-    return (event) => {
-      let { skills } = this.state;
-      skills.forEach((skill, index) => {
-        // backend fixes!
-        if(skill.skillName === undefined){
-          skill = {
-            skillName: skill.name,
-            skillId: skill.id
-          };
-        }
-        if(skillObject.skillName === undefined){
-          skillObject = {
-            skillName: skillObject.name,
-            skillId: skillObject.id
-          };
-        }
-        if(skill.skillId === skillObject.skillId){
-          skills[index].yearsOfExperience = event.target.value - 0;
-          this.setState({
-            skills,
-            changesMade: true
-          });
-        }
-      });
-    };
-  }
-
   getYearsOfExperience(index){
     if(this.state.skills[index].yearsOfExperience !== undefined)
       return this.state.skills[index].yearsOfExperience;
     else return 0;
-  }
-
-  add = () => {
-    this.setState({ showModal: true });
-  }
-
-  confirm = () => {
-    this.setState({
-      confirmed: true
-    });
-  }
-
-  cancel = () => {
-    this.setState({
-      confirmed: false
-    });
-  }
-
-  reset = () => {
-    this.setState({
-      confirmed: true,
-      edit: false
-    });
-  }
-
-  edit = () => {
-    this.setState({
-      confirmed: false,
-      edit: true
-    });
-  }
-
-  save = () => {
-    this.setState({
-      confirmed: true,
-      edit: false
-    }, () => {
-      this.saveSettings();
-    });
   }
 
   mapSkills(skills, editable = false) {
@@ -331,33 +130,11 @@ class EmployeesRowUnfurl extends Component {
         <SkillRow
           key={index}
           skill={skillObject}
-          handleSkillEdit={this.handleSkillEdit}
+          handleSkillEdit={() => {}}
           editable={false}
         />
       );
     });
-  }
-
-  handleSkillSelection = (newSkill) => {
-    let duplicate = false;
-    this.state.skills.map((skill, index) => {
-      if(skill.skillId === newSkill.skillId) duplicate = true;
-    });
-
-    if(duplicate) return false;
-
-    let copy = this.state.skills;
-    copy.push(newSkill);
-    this.setState({
-      skills: copy,
-      changesMade: true
-    });
-
-    return true;
-  }
-
-  handleCloseModal = () => {
-    this.setState({ showModal: false });
   }
 
   goToEmployeeMoreDetails = (id) => {
@@ -370,20 +147,14 @@ class EmployeesRowUnfurl extends Component {
     const { t } = this.props;
     return (
       <div className="row">
-        <Modal
-            open={this.state.showModal}
-            classNames={{ modal: "Modal Modal-skills" }}
-            contentLabel="Skills modal"
-            onClose={this.handleCloseModal}
-          >
-          <SkillsSelect alreadySelected={this.state.toUnfurl.skills} skillSelected={this.handleSkillSelection} />
-        </Modal>
         <div className="col-sm-10">
           {this.state.loadingSkills ? <LoaderHorizontal/> : null}
           <div className="row">
             <div className="col-sm-7">
             {
-              this.state.skills !== undefined ? this.mapSkills(this.state.skills)
+              this.state.skills !== undefined ?
+              this.state.skills.length > 0 ? this.mapSkills(this.state.skills)
+              : "Brak umiejętności na koncie Emplo"
               : "Brak danych"
             }
             </div>

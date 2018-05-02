@@ -33,7 +33,7 @@ class CapacitySlider extends Component {
       width: percentageLeft + '%'
     };
 
-    if(!editable) return (
+    return (
       <div className="capacity-slider-wrapper">
         <div className="capacity-slider">
           <span className="capacity-absolute-slider-caption">
@@ -56,18 +56,6 @@ class CapacitySlider extends Component {
           <span className="capacity-slider-name">
             Current: {this.capacityLevelToString(capacityLevel)} | Left: {this.capacityLevelToString(capacityLeft)}
           </span>
-        </div>
-      </div>
-    );
-    else return (
-      <div className="capacity-slider-wrapper">
-        <div className="capacity-slider">
-          <div className="capacity-slider-editable">
-            <span className="capacity-slider-name">Capacity</span>
-          </div>
-          <div className="capacity-slider-level-blocks">
-            {[1,2,3,4,5].map((level) => this.levelBlock(level))}
-          </div>
         </div>
       </div>
     );

@@ -9,6 +9,10 @@ import CapacityBlock from './CapacityBlock';
 import Modal from 'react-responsive-modal';
 import SkillsSelect from '../skills/SkillsSelect';
 import SkillRow from './../skills/SkillRow';
+import SenioritySlider from './SenioritySlider';
+import CapacitySlider from './CapacitySlider';
+import { connect } from 'react-redux';
+import { push } from 'react-router-redux';
 
 class EmployeesRowUnfurl extends Component {
   constructor(props) {
@@ -328,7 +332,7 @@ class EmployeesRowUnfurl extends Component {
           key={index}
           skill={skillObject}
           handleSkillEdit={this.handleSkillEdit}
-          editable={!this.state.confirmed}
+          editable={false}
         />
       );
     });
@@ -356,6 +360,12 @@ class EmployeesRowUnfurl extends Component {
     this.setState({ showModal: false });
   }
 
+  goToEmployeeMoreDetails = (id) => {
+    return (event) => {
+      this.props.dispatch(push(`/main/employee/${id}`));
+    };
+  }
+
   render() {
     const { t } = this.props;
     return (
@@ -369,63 +379,32 @@ class EmployeesRowUnfurl extends Component {
           <SkillsSelect alreadySelected={this.state.toUnfurl.skills} skillSelected={this.handleSkillSelection} />
         </Modal>
         <div className="col-sm-10">
+          {this.state.loadingSkills ? <LoaderHorizontal/> : null}
+          <div className="row">
+            <div className="col-sm-7">
             {
-              this.state.invalidated === false ? <div className="row">
-                <div className="col-sm-6">
-                  <SeniorityBlock seniorityChanged={this.handleSeniorityChange} seniorityLevel={this.state.seniorityLevel} editable={!this.state.confirmed}/>
+              this.state.skills !== undefined ? this.mapSkills(this.state.skills)
+              : "Brak danych"
+            }
+            </div>
+            <div className="col-sm-5">
+            {
+              this.state.seniorityLevel !== undefined ? <div className="row">
+                <div className="col-sm-4">
+                  <SenioritySlider seniorityLevel={this.state.seniorityLevel} editable={false}/>
                 </div>
-                <div className="col-sm-6">
-                  <CapacityBlock capacityChanged={this.handleCapacityChange} capacityLevel={this.state.capacityLevel} editable={!this.state.confirmed}/>
+                <div className="col-sm-8">
+                  <CapacitySlider capacityLeft={this.state.capacityLevel} capacityLevel={this.state.capacityLevel} editable={false}/>
                 </div>
               </div>
               : "Brak danych"
             }
-          <hr/>
-          {this.state.loadingSkills ? <LoaderHorizontal/> : null}
-          <div className="row">
-            {this.mapSkills(this.state.skills)}
+            </div>
           </div>
           <hr/>
         </div>
         <div className="col-sm-2 full-width-button">
-          {
-            this.state.employee.seniority === undefined ?
-              this.state.confirmed === true && (!this.state.invalidated) ?
-              <div>
-                <button onClick={this.cancel} className="dcmt-button">{t("Cancel")}</button>
-                <hr/>
-                <button onClick={this.finishUp} className="dcmt-button button-success">{t("ActivateEmployee")}</button>
-              </div>
-              :
-              this.state.invalidated ?
-              "Brak danych"
-              : <div>
-                  <button onClick={this.confirm} className="dcmt-button">{t("Confirm")}</button>
-                  <hr/>
-                  <button onClick={this.add} className="dcmt-button button-success">{t("Add")}</button>
-                </div>
-            :
-              <div>
-                {
-                  this.state.edit ?
-                  <button onClick={this.reset} className="dcmt-button">{t("Cancel")}</button>
-                  :
-                  <button onClick={this.edit} className="dcmt-button">{t("Edit")}</button>
-                }
-                <hr/>
-                {
-                  this.state.edit ?
-                  <div>
-                    <button onClick={this.save} className="dcmt-button button-success">{t("Save")}</button>
-                    <hr/>
-                    <button onClick={this.add} className="dcmt-button button-success">{t("Add")}</button>
-                  </div>
-                  : this.state.confirmed === false ?
-                    <button onClick={this.add} className="dcmt-button button-success">{t("Add")}</button>
-                    : null
-                }
-              </div>
-            }
+          <button onClick={this.goToEmployeeMoreDetails(this.state.toUnfurl.id)} className="dcmt-button">Więcej</button>
           <hr/>
           <ResultBlock
             errorBlock={this.state.errorBlock}
@@ -438,4 +417,4 @@ class EmployeesRowUnfurl extends Component {
   }
 }
 
-export default translate("EmployeesRowUnfurl")(EmployeesRowUnfurl);
+export default connect()(translate("EmployeesRowUnfurl")(EmployeesRowUnfurl));

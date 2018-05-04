@@ -42,4 +42,13 @@
   .dcmt-button {
     margin-bottom: 15px;
   }
+  .edc-selectors {
+    label {
+      min-width: 50px;
+      padding: 10px;
+    }
+    select {
+      min-width: 200px;
+    }
+  }
 }

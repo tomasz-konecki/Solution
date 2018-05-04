@@ -32,14 +32,14 @@ class EmployeeDetailContainer extends Component {
   }
 
   capacityLevelToFraction(level, reverse = false) {
-    if(reverse) switch(level){
+    if(reverse) switch(level - 0){
       case 0.2: return 1;
       case 0.25: return 2;
       case 0.5: return 3;
       case 0.75: return 4;
       case 1: return 5;
     }
-    switch(level){
+    switch(level - 0){
       case 1: return 0.2;
       case 2: return 0.25;
       case 3: return 0.5;
@@ -145,6 +145,8 @@ class EmployeeDetailContainer extends Component {
           },
           loading: false,
           edit: false
+        }, () => {
+          window.location.reload();
         });
       })
       .catch((error) => {
@@ -287,15 +289,15 @@ class EmployeeDetailContainer extends Component {
     else return 0;
   }
 
-  handleSeniorityChange = (seniorityLevel) => {
+  handleSeniorityChange = (event) => {
     this.setState({
-      seniorityLevel
+      seniorityLevel: event.target.value - 0
     });
   }
 
-  handleCapacityChange = (capacityLevel) => {
+  handleCapacityChange = (event) => {
     this.setState({
-      capacityLevel
+      capacityLevel: this.capacityLevelToFraction(event.target.value, true)
     });
   }
 
@@ -357,7 +359,7 @@ class EmployeeDetailContainer extends Component {
     });
   }
 
-  pullModal = () => {
+  pullModalDOM = () => {
     return <Modal
         open={this.state.showModal}
         classNames={{ modal: "Modal Modal-skills" }}
@@ -368,7 +370,7 @@ class EmployeeDetailContainer extends Component {
     </Modal>;
   }
 
-  pullEmployeeIdBlock = () => {
+  pullEmployeeIdBlockDOM = () => {
     const { employee } = this.state;
     return <div className="col-sm-4 employee-id-block">
       <Icon icon="address-card" iconSize="2x"/>
@@ -390,22 +392,55 @@ class EmployeeDetailContainer extends Component {
         <DetailCascade lKey={'Telefon'} rVal={employee.phoneNumber} lColSize={4} rColSize={7} defVal="<brak>"/>
       </div>
       <hr className="sharp"/>
-      <div className="row employee-headway">
-        <div className="col-sm-3">
-          <SenioritySlider seniorityLevel={this.state.seniorityLevel} editable={this.state.edit}/>
-        </div>
-        <div className="col-sm-9">
-          <CapacitySlider
-            capacityLevel={this.capacityLevelToFraction(employee.baseCapacity, true)}
-            capacityLeft={this.capacityLevelToFraction(employee.capacityLeft, true)}
-            editable={this.state.edit}
-          />
-        </div>
+      {this.state.edit === false ? this.pullInfoBlocksDOM() : null}
+    </div>;
+  }
+
+  pullInfoBlocksDOM = () => {
+    const { employee } = this.state;
+    return <div className="row employee-headway">
+      <div className="col-sm-3">
+        <SenioritySlider seniorityLevel={this.state.seniorityLevel} editable={this.state.edit}/>
+      </div>
+      <div className="col-sm-9">
+        <CapacitySlider
+          capacityLevel={employee.baseCapacity}
+          capacityLeft={employee.capacityLeft}
+          editable={this.state.edit}
+        />
       </div>
     </div>;
   }
 
-  pullEditToolbar = () => {
+  pullEmployeeSettingsEditorDOM = () => {
+    return <div className="row edc-selectors">
+      <div className="col-sm-6">
+        <label htmlFor="capacity-select">
+          Capacity
+        </label>
+        <select onChange={this.handleCapacityChange} name="capacity-select">
+          <option value="0.2">1/5</option>
+          <option value="0.25">1/4</option>
+          <option value="0.5">1/2</option>
+          <option value="0.75">3/4</option>
+          <option value="1">FT</option>
+        </select>
+      </div>
+      <div className="col-sm-6">
+        <label htmlFor="seniority-select">
+          Seniority
+        </label>
+        <select onChange={this.handleSeniorityChange} name="seniority-select">
+          <option value="1">Junior</option>
+          <option value="2">Pro</option>
+          <option value="3">Senior</option>
+          <option value="4">Lead</option>
+        </select>
+      </div>
+    </div>;
+  }
+
+  pullEditToolbarDOM = () => {
     return <div>
       {
         this.state.employeeActive ?
@@ -433,8 +468,9 @@ class EmployeeDetailContainer extends Component {
   pullDOM = () => {
     const { employee } = this.state;
     return <div className="row">
-      { this.state.employeeLoadedSuccessfully ? this.pullEmployeeIdBlock() : null }
+      { this.state.employeeLoadedSuccessfully ? this.pullEmployeeIdBlockDOM() : null }
       <div className="col-sm-7 employee-headway">
+        {this.state.edit ? this.pullEmployeeSettingsEditorDOM() : null}
         {this.mapSkills(this.state.skills)}
       </div>
       <div className="col-sm-1 employee-headway full-width-button">
@@ -444,7 +480,7 @@ class EmployeeDetailContainer extends Component {
             Edit
           </button>
           :
-          this.pullEditToolbar()
+          this.pullEditToolbarDOM()
         }
       </div>
     </div>;
@@ -453,7 +489,7 @@ class EmployeeDetailContainer extends Component {
   render() {
     return (
       <div className="content-container employee-detail-container">
-        { this.pullModal() }
+        { this.pullModalDOM() }
         { this.state.loading ? <LoaderCircular/> : this.pullDOM() }
       </div>
     );

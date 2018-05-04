@@ -24,10 +24,30 @@ class CapacitySlider extends Component {
     }
   }
 
+  capacityLevelToFraction(level, reverse = false) {
+    if(reverse) switch(level){
+      case 0.2: return 1;
+      case 0.25: return 2;
+      case 0.5: return 3;
+      case 0.75: return 4;
+      case 1: return 5;
+    }
+    switch(level){
+      case 1: return 0.2;
+      case 2: return 0.25;
+      case 3: return 0.5;
+      case 4: return 0.75;
+      case 5: return 1;
+    }
+  }
+
   render() {
     let { editable, capacityLevel, capacityLeft } = this.props;
 
     let percentageLeft = 100 - (capacityLeft / capacityLevel * 100);
+
+    let nCapacityLeft = this.capacityLevelToFraction(capacityLeft, true);
+    let nCapacityLevel = this.capacityLevelToFraction(capacityLevel, true);
 
     let leftStyling = {
       width: percentageLeft + '%'
@@ -43,18 +63,18 @@ class CapacitySlider extends Component {
           <span className="capacity-absolute-slider-level">
             <span/>
           </span>
-          <span className={"capacity-slider-level capacity-slider-" + capacityLevel}>
+          <span className={"capacity-slider-level capacity-slider-" + nCapacityLevel}>
             <span/>
             <span/>
             <span/>
             <span/>
             <span/>
-          </span>
-          <span className={"capacity-left-slider-level capacity-left-slider-" + capacityLeft}>
-            <span style={leftStyling}/>
+            <span className={"capacity-left-slider-level capacity-left-slider-" + nCapacityLeft}>
+              <span style={leftStyling}/>
+            </span>
           </span>
           <span className="capacity-slider-name">
-            Current: {this.capacityLevelToString(capacityLevel)} | Left: {this.capacityLevelToString(capacityLeft)}
+            Current: {this.capacityLevelToString(nCapacityLevel)} | Left: {this.capacityLevelToString(nCapacityLeft)}
           </span>
         </div>
       </div>

@@ -28,6 +28,18 @@ class ProjectDetailContainer extends Component {
       seniorityLevel: 1,
       project: {}
     };
+
+
+
+    window.conductTest = () => {
+      DCMTWebApi.getProject(130)
+      .then((response) => {
+        console.log('PROJECT', response.data.dtoObject);
+      })
+      .catch((error) => {
+
+      });
+    };
   }
 
   componentDidMount() {

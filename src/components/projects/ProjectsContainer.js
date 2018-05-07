@@ -12,7 +12,7 @@ import ProjectDetailContainer from "./ProjectDetailContainer";
 
 import "../../scss/containers/ProjectsContainer.scss";
 import { ACTION_CONFIRMED } from "./../../constants";
-import { Route, Switch } from 'react-router-dom';
+import { Route, Switch, withRouter } from 'react-router-dom';
 
 class ProjectsContainer extends React.Component {
   constructor(props) {
@@ -20,7 +20,8 @@ class ProjectsContainer extends React.Component {
     this.state = {
       showModal: false,
       currentPage: 1,
-      limit: 15
+      limit: 15,
+      init: false
     };
 
     this.handleOpenModal = this.handleOpenModal.bind(this);
@@ -29,7 +30,7 @@ class ProjectsContainer extends React.Component {
   }
 
   componentDidMount() {
-    this.pageChange(this.state.currentPage);
+
   }
 
   componentWillReceiveProps(nextProps) {
@@ -134,6 +135,11 @@ class ProjectsContainer extends React.Component {
   }
 
   pullDOM = () => {
+    if(!this.state.init){
+      this.setState({
+        init: true
+      }, this.pageChange(this.state.currentPage));
+    }
     return <div>
       <ProjectsList
         openAddProjectModal={this.handleOpenModal}
@@ -205,4 +211,4 @@ ProjectsContainer.propTypes = {
   loading: PropTypes.bool.isRequired
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(ProjectsContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(ProjectsContainer));

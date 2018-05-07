@@ -8,9 +8,11 @@ import Modal from "react-responsive-modal";
 import AddProjectScreen from "../../components/projects/modals/AddProjectScreen";
 import ProjectsList from "../../components/projects/ProjectsList";
 import DCMTWebApi from "../../api/";
+import ProjectDetailContainer from "./ProjectDetailContainer";
 
 import "../../scss/containers/ProjectsContainer.scss";
 import { ACTION_CONFIRMED } from "./../../constants";
+import { Route, Switch } from 'react-router-dom';
 
 class ProjectsContainer extends React.Component {
   constructor(props) {
@@ -131,33 +133,43 @@ class ProjectsContainer extends React.Component {
     this.setState({ showModal: false });
   }
 
-  render() {
-    return (
-      <div>
-        <ProjectsList
-          openAddProjectModal={this.handleOpenModal}
-          projects={this.props.projects}
-          currentPage={this.state.currentPage}
-          totalPageCount={this.props.totalPageCount}
-          pageChange={this.pageChange}
-          loading={this.props.loading}
+  pullDOM = () => {
+    return <div>
+      <ProjectsList
+        openAddProjectModal={this.handleOpenModal}
+        projects={this.props.projects}
+        currentPage={this.state.currentPage}
+        totalPageCount={this.props.totalPageCount}
+        pageChange={this.pageChange}
+        loading={this.props.loading}
+        projectActions={this.props.projectActions}
+        limit={this.state.limit}
+      />
+      <Modal
+        open={this.state.showModal}
+        classNames={{ modal: "Modal Modal-projects" }}
+        contentLabel="Projects test modal"
+        onClose={this.handleCloseModal}
+      >
+        <AddProjectScreen
           projectActions={this.props.projectActions}
           limit={this.state.limit}
+          currentPage={this.state.currentPage}
+          closeModal={this.handleCloseModal}
         />
-        <Modal
-          open={this.state.showModal}
-          classNames={{ modal: "Modal Modal-projects" }}
-          contentLabel="Projects test modal"
-          onClose={this.handleCloseModal}
-        >
-          <AddProjectScreen
-            projectActions={this.props.projectActions}
-            limit={this.state.limit}
-            currentPage={this.state.currentPage}
-            closeModal={this.handleCloseModal}
-          />
-        </Modal>
-      </div>
+      </Modal>
+    </div>;
+  }
+
+  render() {
+    const { match } = this.props;
+
+    return (
+      <Switch>
+        <Route exact path={match.url + ""} component={this.pullDOM} />
+        <Route path={match.url + "/:id"} component={ProjectDetailContainer} />
+      </Switch>
+
     );
   }
 }

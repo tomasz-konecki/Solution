@@ -8,6 +8,10 @@ import "../../scss/containers/UsersContainer.scss";
 import { ACTION_CONFIRMED } from "./../../constants";
 import DCMTWebApi from "../../api/";
 import EmployeesList from "./EmployeesList";
+import { Switch } from 'react-router';
+import { withRouter } from 'react-router-dom';
+import EmployeeDetailContainer from "./EmployeeDetailContainer";
+import { Route } from 'react-router-dom';
 
 class EmployeesContainer extends React.Component {
   constructor(props) {
@@ -37,14 +41,18 @@ class EmployeesContainer extends React.Component {
   };
 
   render() {
+    const { match } = this.props;
     return (
-      <EmployeesList
-        employees={this.props.employees}
-        currentPage={this.state.currentPage}
-        totalPageCount={this.props.totalPageCount}
-        pageChange={this.pageChange}
-        loading={this.props.loading}
-      />
+      <Switch>
+        <Route exact path={match.url + ""} render={() => <EmployeesList
+          employees={this.props.employees}
+          currentPage={this.state.currentPage}
+          totalPageCount={this.props.totalPageCount}
+          pageChange={this.pageChange}
+          loading={this.props.loading}
+        />} />
+        <Route path={match.url + "/:id"} component={EmployeeDetailContainer} />
+      </Switch>
     );
   }
 }
@@ -75,4 +83,4 @@ EmployeesContainer.propTypes = {
   employees: PropTypes.array
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(EmployeesContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(EmployeesContainer));

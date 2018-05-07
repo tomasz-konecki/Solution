@@ -139,7 +139,7 @@ class EmployeesRowUnfurl extends Component {
 
   goToEmployeeMoreDetails = (id) => {
     return (event) => {
-      this.props.dispatch(push(`/main/employee/${id}`));
+      this.props.dispatch(push(`/main/employees/${id}`));
     };
   }
 

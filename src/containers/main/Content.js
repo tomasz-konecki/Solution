@@ -23,7 +23,6 @@ class Content extends React.Component {
         <Route path={match.url + "/users"} component={UsersContainer} />
 
         <Route path={match.url + "/employees"} component={EmployeesContainer} />
-        <Route path={match.url + "/employee/:id"} component={EmployeeDetailContainer} />
 
         <Route path={match.url + "/projects"} component={ProjectsContainer} />
         <Route path={match.url + "/assign"} component={Assign} />

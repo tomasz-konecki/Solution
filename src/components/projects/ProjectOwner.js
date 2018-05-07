@@ -28,8 +28,12 @@ const ProjectOwner = ({owner, clickAction}) => {
   };
   return (
     <div className="project-owner">
-      <span style={stylingRules} className="project-owner-name">{owner.fullName}</span>
-      <span onClick={clickAction} className="project-owner-delete">X</span>
+      <span style={stylingRules} className="project-owner-name">
+        <span>{owner.fullName}</span>
+      </span>
+      <span onClick={clickAction} className="project-owner-delete">
+        <span>X</span>
+      </span>
     </div>
   );
 };

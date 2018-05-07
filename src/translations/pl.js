@@ -40,7 +40,7 @@ const translations = {
   },
   ProjectsList: {
     Add: "Dodaj",
-    DeleteOwnerFuture: "Usunąć {{ownerId}} jako właściciela projektu o numerze {{projectId}}",
+    DeleteOwnerFuture: "Usunąć {{ownerFullName}} jako właściciela projektu o numerze {{projectName}}",
     OwnerHasBeenDeleted: "Właściciel został usunięty",
     ChangeSkillSettingsFuture: "Zmienić ustawienia umiejętności projektu o numerze {{projectId}}",
     SettingsHaveBeenSaved: "Ustawienia zostały zapisane",

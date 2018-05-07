@@ -1,7 +1,7 @@
-$height: 32px;
+$height: 24px;
 $padding: 5px;
 .project-owner {
-  background: #498a3c;
+  background: #a46ea0;
   color: white;
   display: inline-block;
   vertical-align: middle;
@@ -14,6 +14,10 @@ $padding: 5px;
     height: $height;
     padding: $padding;
     line-height: $height;
+    span {
+      position: relative;
+      top: -4px;
+    }
   }
   .project-owner-add {
     text-align: center;
@@ -38,6 +42,10 @@ $padding: 5px;
     &:hover {
       transition: all 0.5s;
       background: rgba(255, 0, 0, 0.6);
+    }
+    span {
+      position: relative;
+      top: -4px;
     }
   }
 }

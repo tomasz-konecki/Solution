@@ -11,6 +11,9 @@ import ProjectOwner from './ProjectOwner';
 import { setActionConfirmation } from './../../actions/asyncActions';
 import { connect } from 'react-redux';
 import { translate } from 'react-translate';
+import EditProjectDetails from './modals/EditProjectDetails';
+import { bindActionCreators } from 'redux';
+import * as projectsActions from "../../actions/projectsActions";
 
 class ProjectDetailContainer extends Component {
   constructor(props) {
@@ -26,7 +29,8 @@ class ProjectDetailContainer extends Component {
       showModal: false,
       capacityLevel: 1,
       seniorityLevel: 1,
-      project: {}
+      project: {},
+      showEditProjectModal: false
     };
 
 
@@ -62,15 +66,15 @@ class ProjectDetailContainer extends Component {
       });
   }
 
-  deleteProjectOwner = (ownerId, projectId) => {
+  deleteProjectOwner = (owner, project) => {
     return (e) => {
       const { t, dispatch } = this.props;
       dispatch(
         setActionConfirmation(true, {
           key: "deleteProjectOwner",
-          string: t("DeleteOwnerFuture", { ownerId, projectId }),
-          ownerId,
-          projectId,
+          string: t("DeleteOwnerFuture", { ownerFullName: owner.fullName, projectName: project.name }),
+          ownerId: owner.id,
+          projectId: project.name,
           successMessage: t("OwnerHasBeenDeleted")
         })
       );
@@ -174,6 +178,10 @@ class ProjectDetailContainer extends Component {
     this.setState({ showModal: false });
   }
 
+  handleEditProjectCloseModal = () => {
+    this.setState({ showEditProjectModal: false });
+  }
+
   add = () => {
     this.setState({ showModal: true });
   }
@@ -184,6 +192,12 @@ class ProjectDetailContainer extends Component {
 
   confirm = () => {
     this.saveSettings();
+  }
+
+  changeSettings = () => {
+    this.setState({
+      showEditProjectModal: true
+    });
   }
 
   cancel = () => {
@@ -212,10 +226,29 @@ class ProjectDetailContainer extends Component {
     });
   }
 
-  mapOwners(owners, projectId) {
+  mapOwners(owners, project) {
     return owners.map((owner, index) => {
-      return <ProjectOwner clickAction={this.deleteProjectOwner(owner, projectId)} key={index} owner={owner}/>;
+      return <ProjectOwner clickAction={this.deleteProjectOwner(owner, project)} key={index} owner={owner}/>;
     });
+  }
+
+  pullProjectEditModalDOM = () => {
+    return <Modal
+      open={this.state.showEditProjectModal}
+      classNames={{ modal: "Modal Modal-projects" }}
+      contentLabel="Edit projects details"
+      onClose={this.handleEditProjectCloseModal}
+    >
+      <EditProjectDetails
+        closeModal={this.handleEditProjectCloseModal}
+        project={this.state.project}
+        responseBlock={this.state.responseBlock}
+        loading={this.state.loading}
+        projectActions={this.props.projectActions}
+        limit={this.state.limit}
+        currentPage={this.state.currentPage}
+      />
+    </Modal>;
   }
 
   pullModalDOM = () => {
@@ -240,14 +273,17 @@ class ProjectDetailContainer extends Component {
         : <h3 className="project-inactive">Nieaktywny</h3>
       }
       <hr className="sharp"/>
+      <button onClick={this.changeSettings} className="project-headway dcmt-button">Edytuj projekt</button>
+      <hr/>
       <div className="project-headway">
+        <div className="project-headway project-bold">Podstawowe informacje</div>
         <DetailCascade lKey={'Klient'} rVal={project.client} lColSize={4} rColSize={8} />
         <DetailCascade lKey={'Usunięty'} rVal={project.isDeleted ? "Tak" : "Nie"} lColSize={4} rColSize={8} />
         <DetailCascade lKey={'Aktywny'} rVal={project.isActive ? "Tak" : "Nie"} lColSize={4} rColSize={8} />
         <DetailCascade lKey={'Data rozpoczęcia'} rVal={project.startDate} lColSize={4} rColSize={8} />
         <DetailCascade lKey={'Przewidywana data zakończenia'} rVal={project.estimatedEndDate} lColSize={4} rColSize={8} />
       </div>
-      <hr className="sharp"/>
+      <hr/>
       <div className="project-headway project-text-justified">
         <div className="project-headway project-bold">Osoba odpowiedzialna</div>
         <DetailCascade lKey={'Imię'} rVal={project.responsiblePerson.firstName} lColSize={4} rColSize={8} />
@@ -289,7 +325,7 @@ class ProjectDetailContainer extends Component {
     return <div className="row">
       { this.state.projectLoadedSuccessfully ? this.pullEmployeeIdBlockDOM() : null }
       <div className="col-sm-7 project-headway">
-        {this.mapOwners(this.state.project.owners)}
+        {this.mapOwners(this.state.project.owners, this.state.project)}
         <hr className="sharp"/>
         {this.mapSkills(this.state.skills)}
       </div>
@@ -310,10 +346,17 @@ class ProjectDetailContainer extends Component {
     return (
       <div className="content-container project-detail-container">
         { this.pullModalDOM() }
+        { this.pullProjectEditModalDOM() }
         { this.state.loading ? <LoaderCircular/> : this.pullDOM() }
       </div>
     );
   }
 }
 
-export default connect()(withRouter(translate("ProjectsList")(ProjectDetailContainer)));
+function mapDispatchToProps(dispatch) {
+  return {
+    projectActions: bindActionCreators(projectsActions, dispatch)
+  };
+}
+
+export default connect(mapDispatchToProps)(withRouter(translate("ProjectsList")(ProjectDetailContainer)));

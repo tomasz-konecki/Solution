@@ -50,7 +50,7 @@ class CapacitySlider extends Component {
     let nCapacityLevel = this.capacityLevelToFraction(capacityLevel, true);
 
     let leftStyling = {
-      width: percentageLeft + '%'
+      width: percentageLeft * 5 + '%'
     };
 
     return (

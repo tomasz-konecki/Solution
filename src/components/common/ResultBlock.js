@@ -48,6 +48,8 @@ const ResultBlock = ({
     _504 = t("GatewayTimeout")
   } = customErrors;
 
+  console.log('(status > 199) && (status < 300)', (status > 199) && (status < 300));
+
   switch (true) {
     case (status > 199) && (status < 300):
       message = successMessage;

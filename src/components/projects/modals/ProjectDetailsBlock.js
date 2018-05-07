@@ -263,7 +263,7 @@ class ProjectDetailsBlock extends Component {
               </label>
 
               <ResponsiblePersonBlock
-                responsiblePerson={responsiblePerson}
+                responsiblePerson={this.state.responsiblePerson}
                 setResponsiblePerson={this.setResponsiblePerson}
                 styles={validStyles}
                 validate={this.validate}

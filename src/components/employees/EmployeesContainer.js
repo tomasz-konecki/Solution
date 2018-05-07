@@ -18,12 +18,13 @@ class EmployeesContainer extends React.Component {
     super(props);
     this.state = {
       currentPage: 1,
-      limit: 15
+      limit: 15,
+      init: false
     };
   }
 
   componentDidMount() {
-    this.pageChange(this.state.currentPage);
+
   }
 
   pageChange = (page, other) => {
@@ -40,17 +41,26 @@ class EmployeesContainer extends React.Component {
     );
   };
 
+  pullEmployeesList = () => {
+    if(!this.state.init){
+      this.setState({
+        init: true
+      }, this.pageChange(this.state.currentPage));
+    }
+    return <EmployeesList
+      employees={this.props.employees}
+      currentPage={this.state.currentPage}
+      totalPageCount={this.props.totalPageCount}
+      pageChange={this.pageChange}
+      loading={this.props.loading}
+    />;
+  }
+
   render() {
     const { match } = this.props;
     return (
       <Switch>
-        <Route exact path={match.url + ""} render={() => <EmployeesList
-          employees={this.props.employees}
-          currentPage={this.state.currentPage}
-          totalPageCount={this.props.totalPageCount}
-          pageChange={this.pageChange}
-          loading={this.props.loading}
-        />} />
+        <Route exact path={match.url + ""} render={this.pullEmployeesList} />
         <Route path={match.url + "/:id"} component={EmployeeDetailContainer} />
       </Switch>
     );

@@ -68,7 +68,7 @@ class SkillsSelect extends Component {
       <div className="skills-list col-sm-4">
       <input value={this.state.search} onChange={this.handleSearchChange} type="text" className="form-control form-control-sm skills-input-filter"/>
       {
-        Object.entries(this.props.skills).map(([id, skill], index) => {
+        this.props.skills !== undefined ? Object.entries(this.props.skills).map(([id, skill], index) => {
           if(this.state.search !== "" && skill.name.toLowerCase().indexOf(this.state.search) < 0) return null;
           const skillObject = {
             skillId: id - 0,
@@ -78,7 +78,7 @@ class SkillsSelect extends Component {
           return <div onClick={this.handleSkillSelect(skillObject)} key={index}>
             <ProjectSkill duplicate={this.state.alreadyAdded[skillObject.skillId]} cut editable={false} skillObject={skillObject} />
           </div>;
-        })
+        }) : null
       }
       </div>
       <div className="col-sm-7">

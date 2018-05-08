@@ -55,9 +55,12 @@ const ResultBlock = ({
       message = successMessage;
       errorStatus = false;
       break;
-    case status === 400:
-      message = _400;
+    case status === 400: {
+      let _keys = Object.keys(response.data.errors);
+
+      message = response.data.errors[_keys[0]];
       break;
+    }
     case status === 401:
       message = _401;
       break;

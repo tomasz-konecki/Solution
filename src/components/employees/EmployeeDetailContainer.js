@@ -168,13 +168,19 @@ class EmployeeDetailContainer extends Component {
           errorBlock: {
             result
           },
-          skills: result.data.dtoObject.skills,
-          loading: false,
+          skills: result.data.dtoObject.skills === null ? [] : result.data.dtoObject.skills,
+          loading: !result.data.dtoObject.hasAccount,
           employeeLoadedSuccessfully: true,
-          employeeActive: true,
+          employeeActive: result.data.dtoObject.hasAccount,
           employee: result.data.dtoObject,
           capacityLevel: this.capacityLevelToFraction(result.data.dtoObject.baseCapacity, true),
-          seniorityLevel: this.seniorityLevelToString(result.data.dtoObject.seniority, true)
+          seniorityLevel: this.seniorityLevelToString(result.data.dtoObject.seniority, true),
+          edit: !result.data.dtoObject.hasAccount
+        }, () => {
+          if(!this.state.employee.hasAccount){
+            this.getEmploSkills();
+            return;
+          }
         });
       })
       .catch((error) => {
@@ -199,8 +205,6 @@ class EmployeeDetailContainer extends Component {
           },
           skills: emploSkills.data.dtoObjects,
           loading: false,
-          employeeLoadedSuccessfully: false,
-          employeeActive: false,
           edit: true
         });
       })
@@ -347,6 +351,10 @@ class EmployeeDetailContainer extends Component {
   }
 
   mapSkills = (skills, editable = false) => {
+    if(skills === undefined || skills === null){
+      return "Wystąpił błąd, umiejętności nie zostały przesłane";
+    }
+    if(skills.length < 1) return "Brak umiejętności";
     return skills.map((skillObject, index) => {
       return (
         <SkillRow

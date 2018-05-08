@@ -78,6 +78,11 @@ $left-color: rgb(120, 101, 171);
       top: 0px;
     }
   }
+  .capacity-left-slider-negative {
+    span {
+      background: rgb(139, 0, 0) !important;
+    }
+  }
   .capacity-slider-name {
     display: block;
     text-align: center;

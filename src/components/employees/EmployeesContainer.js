@@ -8,10 +8,8 @@ import "../../scss/containers/UsersContainer.scss";
 import { ACTION_CONFIRMED } from "./../../constants";
 import DCMTWebApi from "../../api/";
 import EmployeesList from "./EmployeesList";
-import { Switch } from 'react-router';
-import { withRouter } from 'react-router-dom';
 import EmployeeDetailContainer from "./EmployeeDetailContainer";
-import { Route } from 'react-router-dom';
+import { withRouter, Switch, Route } from 'react-router-dom';
 
 class EmployeesContainer extends React.Component {
   constructor(props) {

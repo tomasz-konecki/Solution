@@ -1,10 +1,21 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import Fraction from 'fraction.js';
 
 class CapacitySlider extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      negative: false
+    };
+    if(this.props.capacityLeft < 0) {
+      this.state.negative = true;
+    }
+  }
+
+  toFraction = (decimal) => {
+    if(decimal === 1) return 'FT';
+    return new Fraction(decimal).toFraction(true);
   }
 
   capacityLevelToString(level) {
@@ -24,13 +35,16 @@ class CapacitySlider extends Component {
     }
   }
 
-  capacityLevelToFraction(level, reverse = false) {
+  capacityLevelToFraction = (level, reverse = false) => {
     if(reverse) switch(level){
       case 0.2: return 1;
       case 0.25: return 2;
       case 0.5: return 3;
       case 0.75: return 4;
       case 1: return 5;
+      default: {
+        return this.toFraction(level);
+      }
     }
     switch(level){
       case 1: return 0.2;
@@ -48,6 +62,14 @@ class CapacitySlider extends Component {
 
     let nCapacityLeft = this.capacityLevelToFraction(capacityLeft, true);
     let nCapacityLevel = this.capacityLevelToFraction(capacityLevel, true);
+
+    let leftClasses = ["capacity-left-slider-level", "capacity-left-slider"];
+
+    if(this.state.negative){
+      percentageLeft = 100;
+      nCapacityLeft = capacityLeft;
+      leftClasses.push('capacity-left-slider-negative');
+    }
 
     let leftStyling = {
       width: percentageLeft * 5 + '%'
@@ -69,12 +91,12 @@ class CapacitySlider extends Component {
             <span/>
             <span/>
             <span/>
-            <span className={"capacity-left-slider-level capacity-left-slider-" + nCapacityLeft}>
+            <span className={leftClasses.join(' ')}>
               <span style={leftStyling}/>
             </span>
           </span>
           <span className="capacity-slider-name">
-            Current: {this.capacityLevelToString(nCapacityLevel)} | Left: {this.capacityLevelToString(nCapacityLeft)}
+            Current: {this.toFraction(capacityLevel)} | Left: {this.toFraction(nCapacityLeft)}
           </span>
         </div>
       </div>

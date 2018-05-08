@@ -14,6 +14,7 @@ import { translate } from 'react-translate';
 import EditProjectDetails from './modals/EditProjectDetails';
 import { bindActionCreators } from 'redux';
 import * as projectsActions from "../../actions/projectsActions";
+import TeamMember from './TeamMember';
 
 class ProjectDetailContainer extends Component {
   constructor(props) {
@@ -30,19 +31,8 @@ class ProjectDetailContainer extends Component {
       capacityLevel: 1,
       seniorityLevel: 1,
       project: {},
-      showEditProjectModal: false
-    };
-
-
-
-    window.conductTest = () => {
-      DCMTWebApi.getProject(130)
-      .then((response) => {
-        console.log('PROJECT', response.data.dtoObject);
-      })
-      .catch((error) => {
-
-      });
+      showEditProjectModal: false,
+      pps_rb: {}
     };
   }
 
@@ -58,7 +48,10 @@ class ProjectDetailContainer extends Component {
           project: response.data.dtoObject,
           loading: false,
           projectLoadedSuccessfully: true,
-          projectActive: response.data.dtoObject.isActive
+          projectActive: response.data.dtoObject.isActive,
+          skills: response.data.dtoObject.skills,
+          team: (response.data.dtoObject.team !== undefined ?
+            response.data.dtoObject.team : [])
         });
       })
       .catch((error) => {
@@ -74,7 +67,7 @@ class ProjectDetailContainer extends Component {
           key: "deleteProjectOwner",
           string: t("DeleteOwnerFuture", { ownerFullName: owner.fullName, projectName: project.name }),
           ownerId: owner.id,
-          projectId: project.name,
+          projectId: project.id,
           successMessage: t("OwnerHasBeenDeleted")
         })
       );
@@ -82,18 +75,24 @@ class ProjectDetailContainer extends Component {
   }
 
   saveSettings = () => {
+    this.setState({
+      loading: true
+    });
     DCMTWebApi.putProjectSkills(this.props.match.params.id, this.state.skills)
       .then((response) => {
-        console.log('PROJECT', response.data.dtoObject);
         this.setState({
-          project: response.data.dtoObject,
           loading: false,
-          projectLoadedSuccessfully: true,
-          projectActive: response.data.dtoObject.isActive
+          pps_rb: {
+            response
+          },
+          edit: false
         });
       })
       .catch((error) => {
-
+        this.setState({
+          loading: false,
+          pps_rb: error
+        });
       });
   }
 
@@ -226,6 +225,14 @@ class ProjectDetailContainer extends Component {
     });
   }
 
+  mapTeam = (team) => {
+    return team.map((teamAssignment, index) => {
+      return (
+        <TeamMember key={index} assignment={teamAssignment}/>
+      );
+    });
+  }
+
   mapOwners(owners, project) {
     return owners.map((owner, index) => {
       return <ProjectOwner clickAction={this.deleteProjectOwner(owner, project)} key={index} owner={owner}/>;
@@ -293,6 +300,10 @@ class ProjectDetailContainer extends Component {
         <DetailCascade lKey={'Klient'} rVal={project.responsiblePerson.client} lColSize={4} rColSize={8} />
       </div>
       <hr/>
+      <div className="project-headway">
+        <div className="project-headway project-bold">Właściciele</div>
+        {this.mapOwners(this.state.project.owners, this.state.project)}
+      </div>
       <div className="project-headway project-text-justified">
         <div className="project-headway project-bold">Opis</div>
         <div>
@@ -325,8 +336,8 @@ class ProjectDetailContainer extends Component {
     return <div className="row">
       { this.state.projectLoadedSuccessfully ? this.pullEmployeeIdBlockDOM() : null }
       <div className="col-sm-7 project-headway">
-        {this.mapOwners(this.state.project.owners, this.state.project)}
-        <hr className="sharp"/>
+        {this.mapTeam(this.state.team)}
+        <hr/>
         {this.mapSkills(this.state.skills)}
       </div>
       <div className="col-sm-1 project-headway full-width-button">

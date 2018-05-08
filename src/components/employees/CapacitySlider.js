@@ -96,7 +96,7 @@ class CapacitySlider extends Component {
             </span>
           </span>
           <span className="capacity-slider-name">
-            Current: {this.toFraction(capacityLevel)} | Left: {this.toFraction(nCapacityLeft)}
+            Current: {this.toFraction(capacityLevel)} | Left: {this.toFraction(capacityLeft)}
           </span>
         </div>
       </div>

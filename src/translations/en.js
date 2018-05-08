@@ -181,6 +181,40 @@ const translations = {
   },
   LoggedInUser: {
     LoggedIn: "Logged in"
+  },
+  ProjectDetailContainer: {
+    Active: "Active",
+    Inactive: "Inactive",
+    EditProject: "Edit project",
+    Overview: "Overview",
+    Client: "Client",
+    Deleted: "Deleted",
+    StartDate: "Start date",
+    EstimatedEndDate: "Estimated end date",
+    Name: "Name",
+    Surname: "Surname",
+    PhoneNumber: "Phone #",
+    Email: "Email",
+    Owners: "Owners",
+    Description: "Description",
+    Cancel: "Cancel",
+    Add: "Add",
+    Save: "Save",
+    Edit: "Edit",
+    DeleteOwnerFuture: "Delete {{ownerFullName}} as owner of project {{projectName}}",
+    OwnerHasBeenDeleted: "Owner has been deleted",
+    ResponsiblePerson: "Responsible person",
+    Yes: "Yes",
+    No: "No"
+  },
+  TeamMember: {
+    AssignedCapacity: "Assigned capacity",
+    ProjectRole: "Project role",
+    Seniority: "Seniority",
+    AddedBy: "Added by",
+    ResponsibleFor: "Responsible for",
+    Begun: "Begun",
+    Ends: "Ends"
   }
 };
 

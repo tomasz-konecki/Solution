@@ -270,42 +270,43 @@ class ProjectDetailContainer extends Component {
   }
 
   pullEmployeeIdBlockDOM = () => {
+    const { t } = this.props;
     const { project } = this.state;
     return <div className="col-sm-4 project-id-block">
       <Icon icon="briefcase" iconSize="2x"/>
       <h1>{project.name}</h1>
       {
         this.state.projectActive ?
-          <h3 className="project-active">Aktywny</h3>
-        : <h3 className="project-inactive">Nieaktywny</h3>
+          <h3 className="project-active">{t("Active")}</h3>
+        : <h3 className="project-inactive">{t("Inactive")}</h3>
       }
       <hr className="sharp"/>
-      <button onClick={this.changeSettings} className="project-headway dcmt-button">Edytuj projekt</button>
+      <button onClick={this.changeSettings} className="project-headway dcmt-button">{t("EditProject")}</button>
       <hr/>
       <div className="project-headway">
-        <div className="project-headway project-bold">Podstawowe informacje</div>
-        <DetailCascade lKey={'Klient'} rVal={project.client} lColSize={4} rColSize={8} />
-        <DetailCascade lKey={'Usunięty'} rVal={project.isDeleted ? "Tak" : "Nie"} lColSize={4} rColSize={8} />
-        <DetailCascade lKey={'Aktywny'} rVal={project.isActive ? "Tak" : "Nie"} lColSize={4} rColSize={8} />
-        <DetailCascade lKey={'Data rozpoczęcia'} rVal={project.startDate} lColSize={4} rColSize={8} />
-        <DetailCascade lKey={'Przewidywana data zakończenia'} rVal={project.estimatedEndDate} lColSize={4} rColSize={8} />
+        <div className="project-headway project-bold">{t("Overview")}</div>
+        <DetailCascade lKey={t("Client")} rVal={project.client} lColSize={4} rColSize={8} />
+        <DetailCascade lKey={t("Deleted")} rVal={project.isDeleted ? t("Yes") : t("No")} lColSize={4} rColSize={8} />
+        <DetailCascade lKey={t("Active")} rVal={project.isActive ? t("Yes") : t("No")} lColSize={4} rColSize={8} />
+        <DetailCascade lKey={t("StartDate")} rVal={project.startDate} lColSize={4} rColSize={8} />
+        <DetailCascade lKey={t("EstimatedEndDate")} rVal={project.estimatedEndDate} lColSize={4} rColSize={8} />
       </div>
       <hr/>
       <div className="project-headway project-text-justified">
-        <div className="project-headway project-bold">Osoba odpowiedzialna</div>
-        <DetailCascade lKey={'Imię'} rVal={project.responsiblePerson.firstName} lColSize={4} rColSize={8} />
-        <DetailCascade lKey={'Nazwisko'} rVal={project.responsiblePerson.lastName} lColSize={4} rColSize={8} />
-        <DetailCascade lKey={'Nr. telefonu'} rVal={project.responsiblePerson.phoneNumber} lColSize={4} rColSize={8} />
-        <DetailCascade lKey={'Email'} rVal={project.responsiblePerson.email} lColSize={4} rColSize={8} />
-        <DetailCascade lKey={'Klient'} rVal={project.responsiblePerson.client} lColSize={4} rColSize={8} />
+        <div className="project-headway project-bold">{t("ResponsiblePerson")}</div>
+        <DetailCascade lKey={t("Name")} rVal={project.responsiblePerson.firstName} lColSize={4} rColSize={8} />
+        <DetailCascade lKey={t("Surname")} rVal={project.responsiblePerson.lastName} lColSize={4} rColSize={8} />
+        <DetailCascade lKey={t("PhoneNumber")} rVal={project.responsiblePerson.phoneNumber} lColSize={4} rColSize={8} />
+        <DetailCascade lKey={t("Email")} rVal={project.responsiblePerson.email} lColSize={4} rColSize={8} />
+        <DetailCascade lKey={t("Client")} rVal={project.responsiblePerson.client} lColSize={4} rColSize={8} />
       </div>
       <hr/>
       <div className="project-headway">
-        <div className="project-headway project-bold">Właściciele</div>
+        <div className="project-headway project-bold">{t("Owners")}</div>
         {this.mapOwners(this.state.project.owners, this.state.project)}
       </div>
       <div className="project-headway project-text-justified">
-        <div className="project-headway project-bold">Opis</div>
+        <div className="project-headway project-bold">{t("Description")}</div>
         <div>
           {project.description}
         </div>
@@ -314,25 +315,27 @@ class ProjectDetailContainer extends Component {
   }
 
   pullEditToolbarDOM = () => {
+    const { t } = this.props;
     return <div>
       {
         this.state.employeeActive ?
         <button onClick={this.cancel} className="dcmt-button">
-          Cancel
+          {t("Cancel")}
         </button>
         : null
       }
       <button onClick={this.add} className="dcmt-button button-success">
-        Add
+        {t("Add")}
       </button>
       <button onClick={this.save} className="dcmt-button button-success">
-        Save
+        {t("Save")}
       </button>
     </div>;
   }
 
   pullDOM = () => {
     const { project } = this.state;
+    const { t } = this.props;
     return <div className="row">
       { this.state.projectLoadedSuccessfully ? this.pullEmployeeIdBlockDOM() : null }
       <div className="col-sm-7 project-headway">
@@ -344,7 +347,7 @@ class ProjectDetailContainer extends Component {
         {
           this.state.edit === false ?
           <button onClick={this.edit} className="dcmt-button">
-            Edit
+            {t("Edit")}
           </button>
           :
           this.pullEditToolbarDOM()
@@ -370,4 +373,4 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(mapDispatchToProps)(withRouter(translate("ProjectsList")(ProjectDetailContainer)));
+export default connect(mapDispatchToProps)(withRouter(translate("ProjectDetailContainer")(ProjectDetailContainer)));

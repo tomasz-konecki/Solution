@@ -4,6 +4,7 @@ import TimeAgo from 'javascript-time-ago';
 import en from 'javascript-time-ago/locale/en';
 import pl from 'javascript-time-ago/locale/pl';
 import { connect } from 'react-redux';
+import { translate } from 'react-translate';
 
 class TeamMember extends Component {
   constructor(props) {
@@ -39,7 +40,7 @@ class TeamMember extends Component {
   }
 
   render() {
-    const { assignment } = this.props;
+    const { assignment, t } = this.props;
     return (
       <div className="team-member-block row">
         <div className="team-member-left col-sm-6">
@@ -48,37 +49,37 @@ class TeamMember extends Component {
           <div className="team-job-title">___</div>
           <hr/>
           <div className="row">
-            <span className="col-sm-6">Przypisany na etat:</span>
+            <span className="col-sm-6">{t('AssignedCapacity')}:</span>
             <span className="col-sm-6 team-member-text-bold">
               {this.capacityToPrimitiveFraction(assignment.assignedCapacity)}
             </span>
           </div>
           <div className="row">
-            <span className="col-sm-6">Rola w projekcie:</span>
+            <span className="col-sm-6">{t('ProjectRole')}:</span>
             <span className="col-sm-6 team-member-text-bold">___</span>
           </div>
           <div className="row">
-            <span className="col-sm-6">Poziom pracownika:</span>
+            <span className="col-sm-6">{t('Seniority')}:</span>
             <span className="col-sm-6 team-member-text-bold">
               {assignment.seniority}
             </span>
           </div>
           <hr/>
-          Dodany przez: ___ { this.timeAgo.format(new Date(assignment.startDate)) }
+          {t('AddedBy')}: ___ { this.timeAgo.format(new Date(assignment.startDate)) }
         </div>
         <div className="team-member-right col-sm-6">
           <div className="team-member-backway">
             <div className="team-member-text-bold">
-              Odpowiedzialny za:
+            {t('ResponsibleFor')}:
             </div>
             <div className="team-member-headway">
               <div>- ___</div>
             </div>
           </div>
           <div className="team-member-headway team-member-workdates team-member-text-right">
-            <div>Rozpoczął: { this.timeAgo.format(new Date(assignment.startDate)) } {this.timeStampToDate(assignment.startDate)}
+            <div>{t('Begun')}: { this.timeAgo.format(new Date(assignment.startDate)) } {this.timeStampToDate(assignment.startDate)}
             </div>
-            <div>Zakończy: {this.timeStampToDate(assignment.endDate)}</div>
+            <div>{t('Ends')}: {this.timeStampToDate(assignment.endDate)}</div>
           </div>
         </div>
       </div>
@@ -92,4 +93,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps)(TeamMember);
+export default connect(mapStateToProps)(translate('TeamMember')(TeamMember));

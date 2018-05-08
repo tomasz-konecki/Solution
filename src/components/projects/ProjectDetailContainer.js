@@ -220,6 +220,7 @@ class ProjectDetailContainer extends Component {
           skill={skillObject}
           handleSkillEdit={this.handleSkillEdit}
           editable={this.state.edit}
+          showYoe={false}
         />
       );
     });

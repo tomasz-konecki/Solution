@@ -215,6 +215,23 @@ const translations = {
     ResponsibleFor: "Odpowiedzialny za",
     Begun: "Rozpoczął",
     Ends: "Zakończy"
+  },
+  EmployeeDetailContainer: {
+    ErrorOccuredSHNBS: "Wystąpił błąd, umiejętności nie zostały przesłane",
+    NoSkills: "Brak umiejętności",
+    Active: "Aktywny",
+    Inactive: "Nieaktywny",
+    Title: "Stanowisko",
+    Seniority: "Stopień",
+    Localization: "Lokalizacja",
+    Email: "Email",
+    Phone: "Telefon",
+    Capacity: "Staż",
+    Cancel: "Anuluj",
+    Add: "Dodaj",
+    Save: "Zapisz",
+    Activate: "Aktywuj",
+    Edit: "Edytuj"
   }
 };
 

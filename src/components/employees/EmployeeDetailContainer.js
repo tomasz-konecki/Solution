@@ -9,6 +9,7 @@ import CapacitySlider from './CapacitySlider';
 import SenioritySlider from './SenioritySlider';
 import Modal from 'react-responsive-modal';
 import SkillsSelect from './../skills/SkillsSelect';
+import { translate } from 'react-translate';
 
 class EmployeeDetailContainer extends Component {
   constructor(props) {
@@ -351,10 +352,11 @@ class EmployeeDetailContainer extends Component {
   }
 
   mapSkills = (skills, editable = false) => {
+    const { t } = this.props;
     if(skills === undefined || skills === null){
-      return "Wystąpił błąd, umiejętności nie zostały przesłane";
+      return t("ErrorOccuredSHNBS");
     }
-    if(skills.length < 1) return "Brak umiejętności";
+    if(skills.length < 1) return t("NoSkills");
     return skills.map((skillObject, index) => {
       return (
         <SkillRow
@@ -379,25 +381,26 @@ class EmployeeDetailContainer extends Component {
   }
 
   pullEmployeeIdBlockDOM = () => {
+    const { t } = this.props;
     const { employee } = this.state;
     return <div className="col-sm-4 employee-id-block">
       <Icon icon="address-card" iconSize="2x"/>
       <h1>{employee.firstName} {employee.lastName}</h1>
       {
         this.state.employeeActive ?
-          <h3 className="employee-active">Aktywny</h3>
-        : <h3 className="employee-inactive">Nieaktywny</h3>
+          <h3 className="employee-active">{t("Active")}</h3>
+        : <h3 className="employee-inactive">{t("Inactive")}</h3>
       }
       <hr className="sharp"/>
       <div className="employee-headway">
-        <DetailCascade lKey={'Stanowisko'} rVal={employee.title} lColSize={4} rColSize={7} />
-        <DetailCascade lKey={'Stopień'} rVal={employee.seniority} lColSize={4} rColSize={7} />
+        <DetailCascade lKey={t("Title")} rVal={employee.title} lColSize={4} rColSize={7} />
+        <DetailCascade lKey={t("Seniority")} rVal={employee.seniority} lColSize={4} rColSize={7} />
       </div>
       <hr className="sharp"/>
       <div className="employee-headway">
-        <DetailCascade lKey={'Lokalizacja'} rVal={employee.localization} lColSize={4} rColSize={7} />
-        <DetailCascade lKey={'Email'} rVal={employee.email} lColSize={4} rColSize={7} />
-        <DetailCascade lKey={'Telefon'} rVal={employee.phoneNumber} lColSize={4} rColSize={7} defVal="<brak>"/>
+        <DetailCascade lKey={t("Localization")} rVal={employee.localization} lColSize={4} rColSize={7} />
+        <DetailCascade lKey={t("Email")} rVal={employee.email} lColSize={4} rColSize={7} />
+        <DetailCascade lKey={t("Phone")} rVal={employee.phoneNumber} lColSize={4} rColSize={7} defVal="<brak>"/>
       </div>
       <hr className="sharp"/>
       {this.state.edit === false ? this.pullInfoBlocksDOM() : null}
@@ -421,10 +424,11 @@ class EmployeeDetailContainer extends Component {
   }
 
   pullEmployeeSettingsEditorDOM = () => {
+    const { t } = this.props;
     return <div className="row edc-selectors">
       <div className="col-sm-6">
         <label htmlFor="capacity-select">
-          Capacity
+          {t("Capacity")}
         </label>
         <select onChange={this.handleCapacityChange} name="capacity-select">
           <option value="0.2">1/5</option>
@@ -436,7 +440,7 @@ class EmployeeDetailContainer extends Component {
       </div>
       <div className="col-sm-6">
         <label htmlFor="seniority-select">
-          Seniority
+          {t("Seniority")}
         </label>
         <select onChange={this.handleSeniorityChange} name="seniority-select">
           <option value="1">Junior</option>
@@ -449,31 +453,33 @@ class EmployeeDetailContainer extends Component {
   }
 
   pullEditToolbarDOM = () => {
+    const { t } = this.props;
     return <div>
       {
         this.state.employeeActive ?
         <button onClick={this.cancel} className="dcmt-button">
-          Cancel
+          {t("Cancel")}
         </button>
         : null
       }
       <button onClick={this.add} className="dcmt-button button-success">
-        Add
+          {t("Add")}
       </button>
       {
         this.state.employeeActive ?
         <button onClick={this.confirm} className="dcmt-button button-success">
-          Save
+          {t("Save")}
         </button>
         :
         <button onClick={this.activate} className="dcmt-button button-success">
-          Activate
+          {t("Activate")}
         </button>
       }
     </div>;
   }
 
   pullDOM = () => {
+    const { t } = this.props;
     const { employee } = this.state;
     return <div className="row">
       { this.state.employeeLoadedSuccessfully ? this.pullEmployeeIdBlockDOM() : null }
@@ -485,7 +491,7 @@ class EmployeeDetailContainer extends Component {
         {
           this.state.edit === false ?
           <button onClick={this.edit} className="dcmt-button">
-            Edit
+            {t("Edit")}
           </button>
           :
           this.pullEditToolbarDOM()
@@ -504,4 +510,4 @@ class EmployeeDetailContainer extends Component {
   }
 }
 
-export default withRouter(EmployeeDetailContainer);
+export default withRouter(translate("EmployeeDetailContainer")(EmployeeDetailContainer));

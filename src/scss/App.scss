@@ -28,6 +28,12 @@ body {
   background: #ffb97c; /* WebKit/Blink Browsers */
 }
 
+.button-group {
+  button {
+    margin-right: 15px;
+  }
+}
+
 .text-just {
   display: block;
   text-align: justify;

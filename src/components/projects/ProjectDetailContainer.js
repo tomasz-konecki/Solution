@@ -366,7 +366,7 @@ class ProjectDetailContainer extends Component {
   pullEmployeeIdBlockDOM = () => {
     const { t } = this.props;
     const { project } = this.state;
-    return <div className="col-sm-4 project-id-block">
+    return <div className="col-sm-4 project-id-block button-group">
       <Icon icon="briefcase" iconSize="2x"/>
       <h1>{project.name}</h1>
       {
@@ -375,16 +375,16 @@ class ProjectDetailContainer extends Component {
         : <h3 className="project-inactive">{t("Inactive")}</h3>
       }
       <hr className="sharp"/>
-      <button onClick={this.changeSettings} className="project-headway dcmt-button">{t("EditProject")}</button>
+      <button onClick={this.changeSettings} className="project-headway dcmt-button button-success">{t("EditProject")}</button>
       {
         this.state.project.isActive ?
-        <button onClick={this.closeProject} title={t("Close")} className="project-headway dcmt-button">{t("Close")}</button>
-        : <button onClick={this.reactivateProject} title={t("Reactivate")} className="project-headway dcmt-button">{t("Reactivate")}</button>
+        <button onClick={this.closeProject} title={t("Close")} className="project-headway dcmt-button button-lowkey">{t("Close")}</button>
+        : <button onClick={this.reactivateProject} title={t("Reactivate")} className="project-headway dcmt-button button-success">{t("Reactivate")}</button>
       }
       {
         this.state.project.isDeleted ?
         null
-        : <button onClick={this.deleteProject} title={t("Delete")} className="project-headway dcmt-button">{t("Delete")}</button>
+        : <button onClick={this.deleteProject} title={t("Delete")} className="project-headway dcmt-button button-lowkey">{t("Delete")}</button>
       }
       <hr/>
       <div className="project-headway">

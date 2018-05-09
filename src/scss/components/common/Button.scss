@@ -44,6 +44,15 @@
     }
   }
 
+  &.button-lowkey {
+    background: rgb(106, 106, 106);
+    border: 1.2px solid lighten(rgb(106, 106, 106), 5%);
+    &:hover {
+      background: lighten(rgb(106, 106, 106), 5%);
+      border: 1.2px solid lighten(rgb(106, 106, 106), 10%);
+    }
+  }
+
   &.submitter {
     margin-top: 2em;
   }

@@ -154,6 +154,7 @@ class SmoothTable extends Component {
     return (
       <button
         key={button.icon.icon}
+        title={button.title}
         onClick={this.deepenFunction(button.click, object)}
       >
         <Icon {...button.icon} />

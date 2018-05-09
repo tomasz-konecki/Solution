@@ -206,7 +206,17 @@ const translations = {
     OwnerHasBeenDeleted: "Owner has been deleted",
     ResponsiblePerson: "Responsible person",
     Yes: "Yes",
-    No: "No"
+    No: "No",
+    Deactivate: "Deactivate",
+    Delete: "Delete",
+    Close: "Close",
+    Reactivate: "Reactivate",
+    CloseProjectInfinitive: "Close project",
+    ProjectClosed: "Project has been closed",
+    DeleteProjectInfinitive: "Delete project",
+    ProjectDeleted: "Project has been deleted",
+    ReactivateProjectInfinitive: "Reactivate project",
+    ProjectReactivated: "Project has been reactivated"
   },
   TeamMember: {
     AssignedCapacity: "Assigned capacity",

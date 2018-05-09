@@ -206,7 +206,17 @@ const translations = {
     OwnerHasBeenDeleted: "Właściciel został usunięty",
     ResponsiblePerson: "Osoba odpowiedzialna",
     Yes: "Tak",
-    No: "Nie"
+    No: "Nie",
+    Deactivate: "Deaktywuj",
+    Delete: "Usuń",
+    Close: "Zamknij",
+    Reactivate: "Reaktywuj",
+    CloseProjectInfinitive: "Zamknąć projekt",
+    ProjectClosed: "Projekt został zamknięty",
+    DeleteProjectInfinitive: "Usunąć projekt",
+    ProjectDeleted: "Projekt został usunięty",
+	ReactivateProjectInfinitive: "Reaktywować projekt",
+    ProjectReactivated: "Projekt został reaktywowany"
   },
   TeamMember: {
     AssignedCapacity: "Przypisany na etat",

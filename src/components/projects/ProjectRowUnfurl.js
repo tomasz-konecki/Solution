@@ -76,36 +76,24 @@ class ProjectRowUnfurl extends Component {
 
     return (
       <div>
-        <Modal
-          open={this.state.showModal}
-          classNames={{ modal: "Modal Modal-skills" }}
-          contentLabel="Skills modal"
-          onClose={this.handleCloseModal}
-        >
-          <SkillsSelect alreadySelected={toUnfurl.skills} skillSelected={this.handleSkillSelection} />
-        </Modal>
         <div className="row">
-          <span className="col-sm-9">
+          <span className="col-sm-11">
             {t("OwnersList")}:
             {this.mapOwners(toUnfurl.owners, toUnfurl.id)}
           </span>
-          <span className="col-sm-3">{t("ProjectId")}: <b>{toUnfurl.id}</b></span>
-        </div>
-        <hr/>
-        <div className="row">
-          <span className="col-sm-12">{t("Description")}: <b>{toUnfurl.description}</b></span>
-        </div>
-        <hr/>
-        <div className="row">
-          <div className="col-sm-9">
-            <div className="row">
-              { this.mapSkills(toUnfurl.skills, this.state.editable) }
-            </div>
-            { toUnfurl.skills.length === 0 ? t("CurrentlyNoSkillsAssigned") : null }
-          </div>
-          <div className="col-sm-3">
+          <span className="col-sm-1 text-right">
             <button onClick={this.goDetails(toUnfurl.id)} className="dcmt-button">{t("More")}</button>
-          </div>
+          </span>
+        </div>
+        <hr/>
+        <div className="row">
+          <span className="col-sm-7">
+            { this.mapSkills(toUnfurl.skills, this.state.editable) }
+            { toUnfurl.skills.length === 0 ? t("CurrentlyNoSkillsAssigned") : null }
+          </span>
+          <span className="col-sm-5">
+            {t("Description")}: <span className="text-just">{toUnfurl.description}</span>
+          </span>
         </div>
       </div>
     );

@@ -16,16 +16,18 @@ class EditProjectDetails extends Component {
     this.setState({ loading: true });
     DCMTWebApi.editProject(project)
       .then(response => {
-        this.props.projectActions.loadProjects(
-          this.props.currentPage,
-          this.props.limit
-        );
+        if(this.props.updateProjectsOnSuccess){
+          this.props.projectActions.loadProjects(
+            this.props.currentPage,
+            this.props.limit
+          );
+        }
         this.setState({
           errorBlock: { response },
           loading: false
         });
         setTimeout(() => {
-          this.props.closeModal();
+          this.props.closeModal(true);
         }, 500);
       })
       .catch(errorBlock => {
@@ -66,7 +68,8 @@ EditProjectDetails.propTypes = {
   currentPage: PropTypes.number,
   limit: PropTypes.number,
   closeModal: PropTypes.func.isRequired,
-  project: PropTypes.object
+  project: PropTypes.object,
+  updateProjectsOnSuccess: PropTypes.bool
 };
 
 export default translate("EditProjectDetails")(EditProjectDetails);

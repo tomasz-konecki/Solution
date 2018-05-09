@@ -16,6 +16,7 @@ import { bindActionCreators } from 'redux';
 import * as projectsActions from "../../actions/projectsActions";
 import TeamMember from './TeamMember';
 import AddProjectOwner from './modals/AddProjectOwner';
+import { SET_ACTION_CONFIRMATION_RESULT } from '../../constants';
 
 class ProjectDetailContainer extends Component {
   constructor(props) {
@@ -34,12 +35,29 @@ class ProjectDetailContainer extends Component {
       project: {},
       showEditProjectModal: false,
       pps_rb: {},
-      showAddOwner: false
+      showAddOwner: false,
+      projectActions: bindActionCreators(projectsActions, this.props.dispatch)
     };
   }
 
   componentDidMount() {
     this.getProject(this.props.match.params.id);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    let acceptableKeys = [
+      'deleteProjectOwner',
+      'closeProject',
+      'reactivateProject',
+      'deleteProject'
+    ];
+    if(nextProps.type === SET_ACTION_CONFIRMATION_RESULT){
+      if(acceptableKeys.indexOf(this.props.toConfirm.key) >= 0){
+        setTimeout(() => {
+          window.location.reload();
+        }, 500);
+      }
+    }
   }
 
   getProject = (id) => {
@@ -179,8 +197,10 @@ class ProjectDetailContainer extends Component {
     this.setState({ showModal: false });
   }
 
-  handleEditProjectCloseModal = () => {
-    this.setState({ showEditProjectModal: false });
+  handleEditProjectCloseModal = (success = false) => {
+    this.setState({ showEditProjectModal: false }, () => {
+      if(success) window.location.reload();
+    });
   }
 
   add = () => {
@@ -218,8 +238,12 @@ class ProjectDetailContainer extends Component {
     this.setState({ showAddOwner: true });
   }
 
-  handleCloseAddOwner = () => {
-    this.setState({ showAddOwner: false });
+  handleCloseAddOwner = (success = false) => {
+    this.setState({ showAddOwner: false }, () => {
+      if(success) setTimeout(() => {
+        window.location.reload();
+      });
+    });
   }
 
   mapSkills = (skills, editable = false) => {
@@ -257,8 +281,44 @@ class ProjectDetailContainer extends Component {
     ];
   }
 
-  handleOwnerSelectionFinale = () => {
-    this.handleCloseAddOwner();
+  handleOwnerSelectionFinale = (success) => {
+    this.handleCloseAddOwner(success);
+  }
+
+  reactivateProject = () => {
+    const { t, dispatch } = this.props;
+    dispatch(
+      setActionConfirmation(true, {
+        key: "reactivateProject",
+        string: `${t("ReactivateProjectInfinitive")} ${this.state.project.name}`,
+        id: this.state.project.id,
+        successMessage: t("ProjectReactivated")
+      })
+    );
+  }
+
+  deleteProject = () => {
+    const { t, dispatch } = this.props;
+    dispatch(
+      setActionConfirmation(true, {
+        key: "deleteProject",
+        string: `${t("DeleteProjectInfinitive")} ${this.state.project.name}`,
+        id: this.state.project.id,
+        successMessage: t("ProjectDeleted")
+      })
+    );
+  }
+
+  closeProject = () => {
+    const { t, dispatch } = this.props;
+    dispatch(
+      setActionConfirmation(true, {
+        key: "closeProject",
+        string: `${t("CloseProjectInfinitive")} ${this.state.project.name}`,
+        id: this.state.project.id,
+        successMessage: t("ProjectClosed")
+      })
+    );
   }
 
   pullProjectEditModalDOM = () => {
@@ -276,6 +336,7 @@ class ProjectDetailContainer extends Component {
         projectActions={this.props.projectActions}
         limit={this.state.limit}
         currentPage={this.state.currentPage}
+        updateProjectsOnSuccess={false}
       />
     </Modal>;
   }
@@ -315,6 +376,16 @@ class ProjectDetailContainer extends Component {
       }
       <hr className="sharp"/>
       <button onClick={this.changeSettings} className="project-headway dcmt-button">{t("EditProject")}</button>
+      {
+        this.state.project.isActive ?
+        <button onClick={this.closeProject} title={t("Close")} className="project-headway dcmt-button">{t("Close")}</button>
+        : <button onClick={this.reactivateProject} title={t("Reactivate")} className="project-headway dcmt-button">{t("Reactivate")}</button>
+      }
+      {
+        this.state.project.isDeleted ?
+        null
+        : <button onClick={this.deleteProject} title={t("Delete")} className="project-headway dcmt-button">{t("Delete")}</button>
+      }
       <hr/>
       <div className="project-headway">
         <div className="project-headway project-bold">{t("Overview")}</div>
@@ -401,10 +472,15 @@ class ProjectDetailContainer extends Component {
   }
 }
 
-function mapDispatchToProps(dispatch) {
+function mapStateToProps(state) {
   return {
-    projectActions: bindActionCreators(projectsActions, dispatch)
+    loading: state.asyncReducer.loading,
+    confirmed: state.asyncReducer.confirmed,
+    toConfirm: state.asyncReducer.toConfirm,
+    isWorking: state.asyncReducer.isWorking,
+    resultBlock: state.asyncReducer.resultBlock,
+    type: state.asyncReducer.type
   };
 }
 
-export default connect(mapDispatchToProps)(withRouter(translate("ProjectDetailContainer")(ProjectDetailContainer)));
+export default connect(mapStateToProps)(withRouter(translate("ProjectDetailContainer")(ProjectDetailContainer)));

@@ -335,11 +335,11 @@ class ProjectDetailsBlock extends Component {
 
 ProjectDetailsBlock.propTypes = {
   project: PropTypes.shape({
-    id: PropTypes.string.isRequired,
+    id: PropTypes.number.isRequired,
     name: PropTypes.string.isRequired,
     client: PropTypes.string.isRequired,
     description: PropTypes.string.isRequired,
-    responsiblePerson: PropTypes.string.isRequired,
+    responsiblePerson: PropTypes.object.isRequired,
     startDate: PropTypes.string.isRequired,
     estimatedEndDate: PropTypes.string.isRequired,
   }),

@@ -11,6 +11,7 @@ import DatePicker from "react-datepicker";
 import ProjectRowUnfurl from './ProjectRowUnfurl';
 import PropTypes from 'prop-types';
 import { translate } from 'react-translate';
+import { push } from 'react-router-redux';
 
 class ProjectsList extends Component {
   constructor(props) {
@@ -168,9 +169,18 @@ class ProjectsList extends Component {
               click: object => {
                 this.handleGetProject(object);
               }
+            },
+            {
+              icon: { icon: "arrow-right", iconType: "fas" },
+              title: t("SeeMore"),
+              click: object => {
+                this.props.dispatch(
+                  push(`/main/projects/${object.id}`)
+                );
+              }
             }
           ],
-          pretty: t("DeactivateDeleteEdit")
+          pretty: ''
         }
       ]
     };

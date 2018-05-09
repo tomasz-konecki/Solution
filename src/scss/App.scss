@@ -28,8 +28,17 @@ body {
   background: #ffb97c; /* WebKit/Blink Browsers */
 }
 
+.text-just {
+  display: block;
+  text-align: justify;
+}
+
 .text-right {
   text-align: right;
+}
+
+.text-bold {
+  font-weight: 900;
 }
 
 a,

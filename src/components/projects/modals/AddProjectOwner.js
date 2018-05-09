@@ -34,7 +34,7 @@ class AddProjectOwner extends Component {
             response
           }
         });
-        this.props.completed();
+        this.props.completed(true);
       })
       .catch(errorBlock => {
         this.setState({ errorBlock });

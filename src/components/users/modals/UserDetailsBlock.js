@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import Detail from "../../common/Detail";
+import PropTypes from 'prop-types';
+import { translate } from 'react-translate';
 
 const emptyField = "<brak>";
 
@@ -24,16 +26,17 @@ class UserDetailsBlock extends Component {
   };
 
   render() {
+    const { t } = this.props;
     return (
       <div>
         <header>
-          <h3>Edycja danych użytkownika</h3>
+          <h3>{t("EditUsersData")}</h3>
         </header>
         <div className="user-details-container">
           <Detail
             type="text"
             editable={this.props.editable}
-            pretty="Imię"
+            pretty={t("Name")}
             required
             value={this.props.user.firstName}
           />
@@ -41,7 +44,7 @@ class UserDetailsBlock extends Component {
           <Detail
             type="text"
             editable={this.props.editable}
-            pretty="Nazwisko"
+            pretty={t("Surname")}
             required
             value={this.props.user.lastName}
           />
@@ -49,7 +52,7 @@ class UserDetailsBlock extends Component {
           <Detail
             type="text"
             editable={this.props.editable}
-            pretty="Email"
+            pretty={t("Email")}
             required
             value={this.props.user.email}
           />
@@ -57,7 +60,7 @@ class UserDetailsBlock extends Component {
           <Detail
             type="text"
             editable={this.props.editable}
-            pretty="Telefon"
+            pretty={t("Phone")}
             required
             value={this.parsePhoneNumber()}
           />
@@ -65,7 +68,7 @@ class UserDetailsBlock extends Component {
           <Detail
             type="text"
             editable={false}
-            pretty="Role"
+            pretty={t("Roles")}
             value={this.parseRoles()}
           />
         </div>
@@ -74,4 +77,9 @@ class UserDetailsBlock extends Component {
   }
 }
 
-export default UserDetailsBlock;
+UserDetailsBlock.propTypes = {
+  user: PropTypes.object.isRequired,
+  editable: PropTypes.bool
+};
+
+export default translate("UserDetailsBlock")(UserDetailsBlock);

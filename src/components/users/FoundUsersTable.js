@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import "../../scss/components/users/FoundUsersTable.scss";
+import PropTypes from 'prop-types';
+import { translate } from 'react-translate';
 
 class FoundUsersTable extends Component {
   constructor(props) {
@@ -12,6 +14,8 @@ class FoundUsersTable extends Component {
   }
 
   render() {
+    const { t } = this.props;
+
     const tableData = this.props.foundUsers.map((item, index) => (
       <tr key={item.id} onClick={event => this.handleOnClick(item, event)}>
         <td id={item.id}>{item.firstName}</td>
@@ -35,4 +39,12 @@ class FoundUsersTable extends Component {
   }
 }
 
-export default FoundUsersTable;
+FoundUsersTable.propTypes = {
+  setSelectedUser: PropTypes.func.isRequired,
+  foundUsers: PropTypes.arrayOf(PropTypes.shape({
+    firstName: PropTypes.string,
+    lastName: PropTypes.string
+  }))
+};
+
+export default translate("FoundUsersTable")(FoundUsersTable);

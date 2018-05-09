@@ -60,7 +60,7 @@ class Header extends React.Component {
 }
 
 Header.propTypes = {
-  logout: PropTypes.func
+  history: PropTypes.object.isRequired
 };
 
 export default withRouter(Header);

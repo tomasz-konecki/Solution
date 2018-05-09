@@ -1,0 +1,41 @@
+.team-member-block {
+  width: 100%;
+  border: 1px solid rgba(0, 96, 100, 0.3);
+  padding: 5px;
+  box-sizing: border-box;
+  margin-bottom: 15px;
+
+  .team-member-text-right {
+    text-align: right;
+  }
+
+  .team-member-text-bold {
+    font-weight: 900;
+  }
+
+  .team-member-headway {
+    margin-top: 15px;
+  }
+
+  .team-member-backway {
+    margin-bottom: 15px;
+  }
+
+  .team-member-left {
+    i {
+      display: inline-block;
+      margin-right: 5px;
+    }
+    h4 {
+      display: inline-block;
+      font-size: 105%;
+      font-weight: 900;
+    }
+    .team-job-title {
+      margin-left: 21px;
+    }
+    div {
+      min-width: 100px;
+    }
+  }
+}

@@ -6,6 +6,9 @@ import Confirmation from "../common/modals/Confirmation";
 import { setActionConfirmation } from "../../actions/asyncActions";
 import Modal from "react-responsive-modal";
 import DCMTWebApi from "../../api";
+import EmployeesRowUnfurl from './EmployeesRowUnfurl';
+import PropTypes from 'prop-types';
+import { translate } from 'react-translate';
 
 class EmployeesList extends Component {
   constructor(props) {
@@ -13,6 +16,7 @@ class EmployeesList extends Component {
     this.state = {};
   }
   render() {
+    const { t } = this.props;
     const construct = {
       rowClass: "employee-block",
       tableClass: "employees-list-container",
@@ -20,79 +24,53 @@ class EmployeesList extends Component {
       pageChange: this.props.pageChange,
       defaultSortField: "lastName",
       defaultSortAscending: true,
+      filtering: true,
       filterClass: "EmployeeFilter",
-      operators: [
-        // {
-        //   pretty: "DODAJ",
-        //   click: () => {
-        //     this.props.openAddUserModal();
-        //   }
-        // }
-      ],
+      rowDetailUnfurl: true,
+      unfurler: EmployeesRowUnfurl,
+      handles: {
+        refresh: () => {
+          this.props.pageChange();
+        }
+      },
+      operators: [],
       columns: [
         {
           width: 20,
           field: "firstName",
-          pretty: "Imię",
+          pretty: t("Name"),
           type: "text",
           filter: true
         },
         {
           width: 20,
           field: "lastName",
-          pretty: "Nazwisko",
+          pretty: t("Surname"),
           type: "text",
           filter: true
         },
         {
           width: 20,
           field: "title",
-          pretty: "Stanowisko",
+          pretty: t("Position"),
           type: "text",
           filter: true
         },
         {
           width: 20,
           field: "localization",
-          pretty: "Lokalizacja",
+          pretty: t("Location"),
           type: "text",
           filter: true
         },
         {
           width: 10,
           field: "hasAccount",
-          pretty: "Status",
-          multiState: { true: "Konto aktywne", false: "Konto nieaktywne" },
+          pretty: t("Status"),
+          multiState: { true: t("AccountActive"), false: t("AccountInactive") },
           type: "multiState",
           filter: true
         }
-        // {
-        //   width: 1,
-        //   toolBox: [
-        //     {
-        //       icon: { icon: "times" },
-        //       click: object => {
-        //         this.props.dispatch(
-        //           setActionConfirmation(true, {
-        //             key: "deleteUser",
-        //             string: `Usunąć użytkownika ${object.firstName} ${
-        //               object.lastName
-        //             }`,
-        //             id: object.id,
-        //             successMessage: "Użytkownik został usunięty"
-        //           })
-        //         );
-        //       }
-        //     },
-        //     {
-        //       icon: { icon: "edit", iconType: "far" },
-        //       click: object => {
-        //         this.handleGetUser(object);
-        //       }
-        //     }
-        //   ],
-        //   pretty: "Usuń/Edytuj"
-        // }
       ]
     };
     return (
@@ -109,4 +87,12 @@ class EmployeesList extends Component {
   }
 }
 
-export default EmployeesList;
+EmployeesList.propTypes = {
+  pageChange: PropTypes.func.isRequired,
+  currentPage: PropTypes.number.isRequired,
+  totalPageCount: PropTypes.number.isRequired,
+  loading: PropTypes.bool.isRequired,
+  employees: PropTypes.array
+};
+
+export default translate("EmployeesList")(EmployeesList);

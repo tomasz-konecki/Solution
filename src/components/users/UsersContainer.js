@@ -18,7 +18,8 @@ class UsersContainer extends React.Component {
     this.state = {
       currentPage: 1,
       limit: 15,
-      showModal: false
+      showModal: false,
+      passedSettings: {}
     };
 
     this.handleOpenModal = this.handleOpenModal.bind(this);
@@ -45,6 +46,20 @@ class UsersContainer extends React.Component {
           this.props.async.setActionConfirmationResult(error);
         });
     }
+    if (this.validatePropsForUserReactivation(nextProps)) {
+      this.props.async.setActionConfirmationProgress(true);
+
+      DCMTWebApi.reactivateUser(this.props.toConfirm.id)
+        .then(response => {
+          this.props.async.setActionConfirmationResult({
+            response
+          });
+          this.pageChange(this.state.currentPage);
+        })
+        .catch(error => {
+          this.props.async.setActionConfirmationResult(error);
+        });
+    }
   }
 
   validatePropsForUserDeletion(nextProps) {
@@ -53,6 +68,15 @@ class UsersContainer extends React.Component {
       !nextProps.isWorking &&
       nextProps.type === ACTION_CONFIRMED &&
       nextProps.toConfirm.key === "deleteUser"
+    );
+  }
+
+  validatePropsForUserReactivation(nextProps) {
+    return (
+      nextProps.confirmed &&
+      !nextProps.isWorking &&
+      nextProps.type === ACTION_CONFIRMED &&
+      nextProps.toConfirm.key === "reactivateUser"
     );
   }
 
@@ -103,8 +127,12 @@ class UsersContainer extends React.Component {
 }
 
 UsersContainer.propTypes = {
-  // dispatch: PropTypes.function,
-  users: PropTypes.array
+  users: PropTypes.array,
+  async: PropTypes.object,
+  toConfirm: PropTypes.object,
+  userActions: PropTypes.object,
+  totalPageCount: PropTypes.number,
+  loading: PropTypes.bool
 };
 
 function mapStateToProps(state) {

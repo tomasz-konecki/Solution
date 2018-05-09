@@ -3,6 +3,8 @@ import LoaderHorizontal from "./../../common/LoaderHorizontal";
 import ResultBlock from "./../../common/ResultBlock";
 import ProjectDetailsBlock from "./ProjectDetailsBlock";
 import DCMTWebApi from "../../../api";
+import PropTypes from 'prop-types';
+import { translate } from 'react-translate';
 
 class EditProjectDetails extends Component {
   constructor(props) {
@@ -14,16 +16,18 @@ class EditProjectDetails extends Component {
     this.setState({ loading: true });
     DCMTWebApi.editProject(project)
       .then(response => {
-        this.props.projectActions.loadProjects(
-          this.props.currentPage,
-          this.props.limit
-        );
+        if(this.props.updateProjectsOnSuccess){
+          this.props.projectActions.loadProjects(
+            this.props.currentPage,
+            this.props.limit
+          );
+        }
         this.setState({
           errorBlock: { response },
           loading: false
         });
         setTimeout(() => {
-          this.props.closeModal();
+          this.props.closeModal(true);
         }, 500);
       })
       .catch(errorBlock => {
@@ -35,11 +39,12 @@ class EditProjectDetails extends Component {
   };
 
   render() {
+    const { t } = this.props;
     return (
       <div>
         <ProjectDetailsBlock
           project={this.props.project}
-          editable={true}
+          editable
           projectActions={this.props.projectActions}
           limit={this.state.limit}
           currentPage={this.state.currentPage}
@@ -48,7 +53,7 @@ class EditProjectDetails extends Component {
 
         <ResultBlock
           errorOnly={false}
-          successMessage="Projekt edytowano pomyślnie"
+          successMessage={t("ProjectSuccessfullyEdited")}
           errorBlock={this.state.errorBlock}
         />
 
@@ -58,4 +63,13 @@ class EditProjectDetails extends Component {
   }
 }
 
-export default EditProjectDetails;
+EditProjectDetails.propTypes = {
+  projectActions: PropTypes.object,
+  currentPage: PropTypes.number,
+  limit: PropTypes.number,
+  closeModal: PropTypes.func.isRequired,
+  project: PropTypes.object,
+  updateProjectsOnSuccess: PropTypes.bool
+};
+
+export default translate("EditProjectDetails")(EditProjectDetails);

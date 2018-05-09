@@ -3,8 +3,49 @@
 <head>
   <meta charset="utf-8">
   <title>DCMT</title>
+  <style>
+    * {
+      padding: 0;
+      margin: 0;
+    }
+    .no-script-block {
+      text-align: center;
+      height: 100vh;
+      width: 100vw;
+      color: white;
+      font-family: monospace;
+      background: rgb(0, 96, 100);
+      user-select: none;
+    }
+    .no-script-content {
+      padding-top: 10%;
+    }
+    .no-script-footer {
+      display: block;
+      margin-top: 20px;
+    }
+    .no-script-t {
+      padding-top: 25px;
+    }
+    .no-script-b {
+      width: 200px;
+      height: 200px;
+      font-size: 12em;
+      border: 0.12em solid white;
+      margin: auto;
+    }
+  </style>
 </head>
 <body>
+  <noscript>
+    <div class="no-script-block">
+      <div class="no-script-content">
+        <div class="no-script-b">B</div>
+        <h3 class="no-script-t">Obsługa JavaScript jest wymagana do poprawnego korzystania z DCMT</h3>
+        <span class="no-script-footer">Billennium 2018</span>
+      </div>
+    </div>
+  </noscript>
   <div id="app"></div>
 </body>
 </html>

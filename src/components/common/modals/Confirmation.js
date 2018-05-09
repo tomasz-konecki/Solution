@@ -5,8 +5,9 @@ import { bindActionCreators } from "redux";
 import * as asyncActions from "./../../../actions/asyncActions";
 import LoaderHorizontal from "./../LoaderHorizontal";
 import ResultBlock from "../ResultBlock";
-import { SET_ACTION_CONFIRMATION_RESULT } from "../../../constants";
-import { SET_ACTION_CONFIRMATION } from "./../../../constants";
+import { SET_ACTION_CONFIRMATION_RESULT, SET_ACTION_CONFIRMATION } from "../../../constants";
+import PropTypes from 'prop-types';
+import { translate } from 'react-translate';
 
 class Confirmation extends Component {
   constructor(props) {
@@ -19,6 +20,7 @@ class Confirmation extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
+    /* eslint-disable react/no-direct-mutation-state */
     if (nextProps.type === SET_ACTION_CONFIRMATION_RESULT) {
       this.state.resultBlock = nextProps.resultBlock;
       this.hideAfterSuccess();
@@ -30,6 +32,7 @@ class Confirmation extends Component {
     if (nextProps.type === SET_ACTION_CONFIRMATION && nextProps.shown) {
       this.state.toConfirm = nextProps.toConfirm;
     }
+    /* eslint-enable */
   }
 
   invalidate = () => {
@@ -52,6 +55,7 @@ class Confirmation extends Component {
   };
 
   render() {
+    const { t } = this.props;
     return (
       <div>
         <Modal
@@ -62,19 +66,19 @@ class Confirmation extends Component {
         >
           {!this.isCompleted() && (
             <div className="result-modal-container">
-              <div className="result-about-to">Właśnie chcesz:</div>
+              <div className="result-about-to">{t("YouAreAboutTo")}:</div>
               <div className="result-string">{this.state.toConfirm.string}</div>
               <div className="result-confirmation">
-                Jesteś pewien?
+                {t("AreYouSure")}
               </div>
               <div className="result-confirmation">
-                Cofnięcie tej akcji może być niemożliwe
+                {t("ActionRollbackWarning")}
               </div>
               <button
                 className="result-confirm-button dcmt-button"
                 onClick={this.confirm}
               >
-                Potwierdź
+                {t("Confirm")}
               </button>
               <div className="result-loader-container">
                 {this.props.isWorking && <LoaderHorizontal />}
@@ -112,4 +116,13 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Confirmation);
+Confirmation.propTypes = {
+  type: PropTypes.string,
+  resultBlock: PropTypes.object,
+  shown: PropTypes.bool,
+  toConfirm: PropTypes.object,
+  isWorking: PropTypes.bool,
+  async: PropTypes.object
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(translate("Confirmation")(Confirmation));

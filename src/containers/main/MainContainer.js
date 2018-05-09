@@ -28,7 +28,8 @@ class MainContainer extends React.Component {
 }
 
 MainContainer.propTypes = {
-  match: PropTypes.object
+  match: PropTypes.object.isRequired,
+  history: PropTypes.object.isRequired
 };
 
 export default MainContainer;

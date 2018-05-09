@@ -2,10 +2,21 @@
 @import "ColorSchema.scss";
 @import "./components/common/Button";
 @import "./components/common/Input";
+@import "./components/common/ContentContainer";
 @import "./components/table/SmoothTable";
 @import "./components/common/Logo";
+@import "./components/common/Flags";
 @import "./components/common/modals/ResultModal";
 @import "./components/projects/Skill";
+@import "./components/projects/SkillRow";
+@import "./components/projects/Owner";
+@import "./components/employees/SeniorityBlock";
+@import "./components/employees/CapacityBlock";
+@import "./components/employees/CapacitySlider";
+@import "./components/employees/SenioritySlider";
+@import "./components/employees/EmployeeDetailContainer";
+@import "./components/projects/ProjectDetailContainer";
+@import "./components/projects/TeamMemberBlock";
 
 body {
   font-family: "Roboto Condensed", sans-serif;
@@ -17,8 +28,23 @@ body {
   background: #ffb97c; /* WebKit/Blink Browsers */
 }
 
+.button-group {
+  button {
+    margin-right: 15px;
+  }
+}
+
+.text-just {
+  display: block;
+  text-align: justify;
+}
+
 .text-right {
   text-align: right;
+}
+
+.text-bold {
+  font-weight: 900;
 }
 
 a,

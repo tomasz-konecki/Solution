@@ -1,0 +1,55 @@
+$height: 24px;
+$padding: 5px;
+.project-owner {
+  background: #a46ea0;
+  color: white;
+  display: inline-block;
+  vertical-align: middle;
+  margin: 5px 4px;
+  box-sizing: border-box;
+  user-select: none;
+  height: $height;
+  .project-owner-name {
+    display: inline-block;
+    height: $height;
+    padding: $padding;
+    line-height: $height;
+    span {
+      position: relative;
+      top: -4px;
+    }
+  }
+  .project-owner-add {
+    text-align: center;
+    display: inline-block;
+    cursor: pointer;
+    background: rgba(0, 255, 17, 0.4);
+    height: $height;
+    padding: $padding;
+    line-height: $height;
+    span {
+      position: relative;
+      top: -4px;
+      &:after {
+        content: '+';
+      }
+    }
+  }
+  .project-owner-delete {
+    height: $height;
+    background: rgba(255, 0, 0, 0.4);
+    text-align: center;
+    display: inline-block;
+    cursor: pointer;
+    padding: $padding;
+    line-height: $height;
+    &:hover {
+      transition: all 0.5s;
+      background: rgba(255, 0, 0, 0.6);
+    }
+    span {
+      position: relative;
+      top: -4px;
+    }
+  }
+}

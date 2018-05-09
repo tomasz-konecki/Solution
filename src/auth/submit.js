@@ -11,21 +11,28 @@ const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 
 const errorHandler = dispatch => error => {
   dispatch(authStop());
-  if (error.response.data.errorOccured === true) {
+  if (error.response !== undefined && error.response.data.errorOccured === true) {
     const { errors } = error.response.data;
     throw new SubmissionError({
       _error: errors[Object.keys(errors)[0]]
     });
   }
-  switch (error.response.status) {
-    case 401:
-      throw new SubmissionError({
-        _error: "Nieprawidłowe dane"
-      });
-    default:
-      throw new SubmissionError({
-        _error: "Nieoczekiwany błąd"
-      });
+  else if(error.response !== undefined){
+    switch (error.response.status) {
+      case 401:
+        throw new SubmissionError({
+          _error: "Nieprawidłowe dane"
+        });
+      default:
+        throw new SubmissionError({
+          _error: "Nieoczekiwany błąd"
+        });
+    }
+  }
+  else {
+    throw new SubmissionError({
+      _error: "Nieoczekiwany błąd"
+    });
   }
 };
 

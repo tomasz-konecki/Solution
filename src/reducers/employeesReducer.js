@@ -6,7 +6,7 @@ const initialState = {
   totalPageCount: 1
 };
 
-export const employeesReducer = (state = "", action) => {
+export const employeesReducer = (state = initialState, action) => {
   switch (action.type) {
     case LOAD_EMPLOYEES_SUCCESS:
       return {

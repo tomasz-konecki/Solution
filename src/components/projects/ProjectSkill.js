@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 const stringToColour = function(str) {
   let hash = 0;
@@ -21,18 +22,107 @@ const hexToRGB = (hex, alpha) => {
   return alpha ? "rgba(" + r + ", " + g + ", " + b + ", " + alpha + ")" : "rgb(" + r + ", " + g + ", " + b + ")";
 };
 
-const ProjectSkill = ({skillObject}) => {
-  const stylingRules = {
-    background: hexToRGB(stringToColour(skillObject.skillName), 0.4)
-  };
-  return (
-    <div className="project-skill">
-      <span style={stylingRules} className="project-skill-name">{skillObject.skillName}</span>
-      <span className={"project-skill-level skill-level-" + skillObject.skillLevel}>
-        {skillObject.skillLevel}
-      </span>
-    </div>
-  );
+class ProjectSkill extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {};
+
+    this.levelBlock = this.levelBlock.bind(this);
+    this.handleLevelBlockClick = this.handleLevelBlockClick.bind(this);
+  }
+
+  isHighLit(skillLevel, level) {
+    return skillLevel === level;
+  }
+
+  handleLevelBlockClick(skillObject, level, deletion = false) {
+    return (event) => {
+      if(this.props.skillEdited !== undefined)
+        skillObject.skillLevel = level;
+      this.props.skillEdited(skillObject, deletion);
+    };
+  }
+
+  levelBlock(skillObject, level) {
+    const lit = this.isHighLit(skillObject.skillLevel, level);
+    let stylingRules = {};
+    if(lit){
+      stylingRules = {
+        color: "yellow",
+        background: "black"
+      };
+    }
+    return <span onClick={this.handleLevelBlockClick(skillObject, level)} key={level} style={stylingRules} className={"project-skill-level-block"}>{level}</span>;
+  }
+
+  render() {
+    let { editable, skillObject, cut = false, duplicate = false } = this.props;
+    // dirty fix, waiting for backend
+    if(skillObject.skillName === undefined){
+      if(skillObject.skillLevel === undefined) skillObject.skillLevel = 1;
+      skillObject = {
+        skillName: skillObject.name,
+        skillId: skillObject.id,
+        skillLevel: skillObject.skillLevel
+      };
+    }
+    let classes = ["project-skill"];
+
+    if(cut) {
+      classes.push('project-skill-cut');
+    }
+
+    if(duplicate) {
+      classes.push('project-skill-duplicate');
+    }
+    let stylingRules = {};
+    if(skillObject.skillName !== undefined){
+      if(cut){
+        stylingRules = {
+          background: hexToRGB(stringToColour(skillObject.skillName), 0.8)
+        };
+      } else {
+        stylingRules = {
+          background: hexToRGB(stringToColour(skillObject.skillName), 0.5)
+        };
+      }
+    }
+    if(!editable) return (
+      <div className={classes.join(' ')}>
+        <span style={stylingRules} className="project-skill-name">{skillObject.skillName}</span>
+        {
+          (!cut) ?
+          <span className={"project-skill-level skill-level-" + skillObject.skillLevel}>
+            {skillObject.skillLevel}
+          </span>
+          :
+          null
+        }
+      </div>
+    );
+    else return (
+      <div className="project-skill-wrapper">
+        <div className="project-skill-editable">
+          <span
+            className="project-skill-delete-block"
+            onClick={this.handleLevelBlockClick(skillObject, skillObject.skillLevel, true)}
+          >X</span>
+          <span style={stylingRules} className="project-skill-name">{skillObject.skillName}</span>
+        </div>
+        <div className="project-skill-level-blocks test">
+          {[1,2,3,4,5].map((level) => this.levelBlock(skillObject, level))}
+        </div>
+      </div>
+    );
+  }
+}
+
+ProjectSkill.propTypes = {
+  skillEdited: PropTypes.func,
+  editable: PropTypes.bool,
+  skillObject: PropTypes.object,
+  cut: PropTypes.bool,
+  duplicate: PropTypes.bool
 };
 
 export default ProjectSkill;

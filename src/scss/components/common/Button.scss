@@ -1,5 +1,9 @@
+.full-width-button {
+  button {
+    width: 100%;
+  }
+}
 .dcmt-button {
-  width: 100px;
   outline: none !important;
   height: 2.5em;
   line-height: 2.1em;
@@ -28,6 +32,24 @@
     background: #333;
     &:hover {
       background: #222;
+    }
+  }
+
+  &.button-success {
+    background: rgb(23, 142, 25);
+    border: 1.2px solid lighten(rgb(23, 142, 25), 5%);
+    &:hover {
+      background: rgb(17, 98, 19);
+      border: 1.2px solid lighten(rgb(17, 98, 19), 5%);
+    }
+  }
+
+  &.button-lowkey {
+    background: rgb(106, 106, 106);
+    border: 1.2px solid lighten(rgb(106, 106, 106), 5%);
+    &:hover {
+      background: lighten(rgb(106, 106, 106), 5%);
+      border: 1.2px solid lighten(rgb(106, 106, 106), 10%);
     }
   }
 

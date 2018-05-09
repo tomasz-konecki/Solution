@@ -9,6 +9,9 @@ import DCMTWebApi from "../../api";
 import "react-datepicker/dist/react-datepicker.css";
 import DatePicker from "react-datepicker";
 import ProjectRowUnfurl from './ProjectRowUnfurl';
+import PropTypes from 'prop-types';
+import { translate } from 'react-translate';
+import { push } from 'react-router-redux';
 
 class ProjectsList extends Component {
   constructor(props) {
@@ -48,6 +51,7 @@ class ProjectsList extends Component {
   };
 
   render() {
+    const { t } = this.props;
     const construct = {
       rowClass: "project-block",
       tableClass: "projects-list-container",
@@ -55,27 +59,59 @@ class ProjectsList extends Component {
       pageChange: this.props.pageChange,
       defaultSortField: "name",
       defaultSortAscending: true,
+      filtering: true,
       filterClass: "ProjectFilter",
       rowDetailUnfurl: true,
       unfurler: ProjectRowUnfurl,
+      showDeletedCheckbox: true,
+      disabledRowComparator: (object) => {
+        return object.isDeleted;
+      },
+      handles: {
+        refresh: () => {
+          this.props.pageChange();
+        },
+        ownerDelete: (ownerId, projectId) => {
+          this.props.dispatch(
+            setActionConfirmation(true, {
+              key: "deleteProjectOwner",
+              string: t("DeleteOwnerFuture", { ownerId, projectId }),
+              ownerId,
+              projectId,
+              successMessage: t("OwnerHasBeenDeleted")
+            })
+          );
+        },
+        putSkills: (projectId, skillsArray) => {
+          this.props.dispatch(
+            setActionConfirmation(true, {
+              key: "putProjectSkills",
+              string: t("ChangeSkillSettingsFuture", { projectId }),
+              skillsArray,
+              projectId,
+              successMessage: t("SettingsHaveBeenSaved")
+            })
+          );
+        }
+      },
       operators: [
         {
-          pretty: "DODAJ",
+          pretty: t("Add"),
           click: () => {
             this.props.openAddProjectModal();
           }
         }
       ],
       columns: [
-        { width: 20, field: "name", pretty: "Nazwa projektu", type: "text", filter: true },
-        { width: 20, field: "client", pretty: "Klient", type: "text", filter: true },
-        { width: 20, field: "startDate", pretty: "Data rozpoczęcia", type: "date", filter: true, filterFieldOverride: "fromDate" },
-        { width: 20, field: "endDate", pretty: "Data zakończenia", type: "date", filter: true, filterFieldOverride: "toDate" },
+        { width: 20, field: "name", pretty: t("ProjectName"), type: "text", filter: true },
+        { width: 20, field: "client", pretty: t("Client"), type: "text", filter: true },
+        { width: 20, field: "startDate", pretty: t("StartDate"), type: "date", filter: true, filterFieldOverride: "fromDate" },
+        { width: 20, field: "endDate", pretty: t("EndDate"), type: "date", filter: true, filterFieldOverride: "toDate" },
         {
           width: 10,
           field: "isActive",
-          pretty: "Status",
-          multiState: { true: "Aktywny", false: "Zakończony" },
+          pretty: t("Status"),
+          multiState: { true: t("Active"), false: t("Closed") },
           type: "multiState",
           filter: true
         },
@@ -84,13 +120,14 @@ class ProjectsList extends Component {
           toolBox: [
             {
               icon: { icon: "file-archive", iconType: "far" },
+              title: t("CloseProjectImperativus"),
               click: object => {
                 this.props.dispatch(
                   setActionConfirmation(true, {
                     key: "closeProject",
-                    string: `Zamknąć projekt ${object.name}`,
+                    string: `${t("CloseProjectInfinitive")} ${object.name}`,
                     id: object.id,
-                    successMessage: "Projekt został zamknięty"
+                    successMessage: t("ProjectClosed")
                   })
                 );
               },
@@ -98,13 +135,14 @@ class ProjectsList extends Component {
             },
             {
               icon: { icon: "angle-double-up", iconType: "fas" },
+              title: t("CloseProjectImperativus"),
               click: object => {
                 this.props.dispatch(
                   setActionConfirmation(true, {
                     key: "reactivateProject",
-                    string: `Reaktywować projekt ${object.name}`,
+                    string: `${t("ReactivateProjectInfinitive")} ${object.name}`,
                     id: object.id,
-                    successMessage: "Projekt został reaktywowany"
+                    successMessage: t("ProjectReactivated")
                   })
                 );
               },
@@ -112,25 +150,37 @@ class ProjectsList extends Component {
             },
             {
               icon: { icon: "times" },
+              title: t("DeleteProjectImperativus"),
               click: object => {
                 this.props.dispatch(
                   setActionConfirmation(true, {
                     key: "deleteProject",
-                    string: `Usunąć projekt ${object.name}`,
+                    string: `${t("DeleteProjectInfinitive")} ${object.name}`,
                     id: object.id,
-                    successMessage: "Projekt został usunięty"
+                    successMessage: t("ProjectDeleted")
                   })
                 );
-              }
+              },
+              comparator: object => !object.isDeleted
             },
             {
               icon: { icon: "edit", iconType: "far" },
+              title: t("EditProject"),
               click: object => {
                 this.handleGetProject(object);
               }
+            },
+            {
+              icon: { icon: "arrow-right", iconType: "fas" },
+              title: t("SeeMore"),
+              click: object => {
+                this.props.dispatch(
+                  push(`/main/projects/${object.id}`)
+                );
+              }
             }
           ],
-          pretty: "Deaktywuj/Usuń/Edytuj"
+          pretty: ''
         }
       ]
     };
@@ -165,4 +215,15 @@ class ProjectsList extends Component {
   }
 }
 
-export default connect()(ProjectsList);
+ProjectsList.propTypes = {
+  pageChange: PropTypes.func.isRequired,
+  dispatch: PropTypes.func,
+  openAddProjectModal: PropTypes.func.isRequired,
+  currentPage: PropTypes.number.isRequired,
+  totalPageCount: PropTypes.number.isRequired,
+  loading: PropTypes.bool.isRequired,
+  projects: PropTypes.arrayOf(PropTypes.object),
+  projectActions: PropTypes.object
+};
+
+export default connect()(translate("ProjectsList")(ProjectsList));

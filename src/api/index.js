@@ -52,6 +52,10 @@ class DCMTWebApi {
     return axios.get(`${API_ENDPOINT}/users/${id}`);
   }
 
+  reactivateUser(id) {
+    return axios.patch(`${API_ENDPOINT}/users/reactivate/${id}`);
+  }
+
   changeUserRole(id, roles) {
     return axios.patch(`${API_ENDPOINT}/users`, {
       id,
@@ -104,9 +108,9 @@ class DCMTWebApi {
     });
   }
 
-  addOwner(projectId, ownerId) {
+  addOwners(projectId, ownersArray) {
     return axios.put(`${API_ENDPOINT}/projects/${projectId}/owner`, {
-      userId: ownerId
+      usersIds: ownersArray
     });
   }
 
@@ -120,6 +124,18 @@ class DCMTWebApi {
 
   reactivateProject(id) {
     return axios.put(`${API_ENDPOINT}/projects/${id}/reactivate`);
+  }
+
+  putProjectSkills(id, skillsArray) {
+    return axios.put(`${API_ENDPOINT}/projects/${id}/skills`, skillsArray);
+  }
+
+  deleteProjectOwner(ownerId, projectId) {
+    return axios.delete(`${API_ENDPOINT}/projects/${projectId}/owner`, {
+      data: {
+        userId: ownerId
+      }
+    });
   }
 
   getAssignmentsForEmployee(id) {
@@ -169,11 +185,31 @@ class DCMTWebApi {
     return axios.get(`${API_ENDPOINT}/employees/${id}`);
   }
 
-  addEmployee({ id, capacity, seniority }) {
-    return axios.put(`${API_ENDPOINT}/employees/add`, {
+  addEmployee(id, capacity, seniority, skillsArray) {
+    return axios.post(`${API_ENDPOINT}/employees/add`, {
       id,
       capacity,
-      seniority
+      seniority,
+      skills: skillsArray
+    });
+  }
+
+  editEmployee(id, seniority, capacity) {
+    return axios.patch(`${API_ENDPOINT}/employees/${id}`, {
+      seniority,
+      capacity
+    });
+  }
+
+  editEmployeeSkills(id, skillsArray) {
+    return axios.put(`${API_ENDPOINT}/employees/${id}/skills`, skillsArray);
+  }
+
+  getEmploSkills(employeeId) {
+    return axios.get(`${API_ENDPOINT}/employees/BillenniumEmploSkills`, {
+      params: {
+        employeeId
+      }
     });
   }
 
@@ -189,8 +225,8 @@ class DCMTWebApi {
     return axios.patch(`${API_ENDPOINT}/employees/${id}`, { seniority, role });
   }
 
-  addSkill(name, level) {
-    return axios.post(`${API_ENDPOINT}/skills`, { name, level });
+  addSkill(name) {
+    return axios.post(`${API_ENDPOINT}/skills`, { name });
   }
 
   getSkills() {

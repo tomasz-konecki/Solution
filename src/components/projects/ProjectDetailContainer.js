@@ -15,6 +15,7 @@ import EditProjectDetails from './modals/EditProjectDetails';
 import { bindActionCreators } from 'redux';
 import * as projectsActions from "../../actions/projectsActions";
 import TeamMember from './TeamMember';
+import AddProjectOwner from './modals/AddProjectOwner';
 
 class ProjectDetailContainer extends Component {
   constructor(props) {
@@ -32,7 +33,8 @@ class ProjectDetailContainer extends Component {
       seniorityLevel: 1,
       project: {},
       showEditProjectModal: false,
-      pps_rb: {}
+      pps_rb: {},
+      showAddOwner: false
     };
   }
 
@@ -212,6 +214,14 @@ class ProjectDetailContainer extends Component {
     });
   }
 
+  handleOpenAddOwner = () => {
+    this.setState({ showAddOwner: true });
+  }
+
+  handleCloseAddOwner = () => {
+    this.setState({ showAddOwner: false });
+  }
+
   mapSkills = (skills, editable = false) => {
     return skills.map((skillObject, index) => {
       return (
@@ -234,10 +244,21 @@ class ProjectDetailContainer extends Component {
     });
   }
 
-  mapOwners(owners, project) {
-    return owners.map((owner, index) => {
-      return <ProjectOwner clickAction={this.deleteProjectOwner(owner, project)} key={index} owner={owner}/>;
-    });
+  mapOwners = (owners, project) => {
+    return [
+      ... owners.map((owner, index) => {
+        return <ProjectOwner clickAction={this.deleteProjectOwner(owner, project)} key={index} owner={owner}/>;
+      }),
+      <div key={-1} className="project-owner">
+        <span onClick={this.handleOpenAddOwner} className="project-owner-add">
+          <span/>
+        </span>
+      </div>
+    ];
+  }
+
+  handleOwnerSelectionFinale = () => {
+    this.handleCloseAddOwner();
   }
 
   pullProjectEditModalDOM = () => {
@@ -256,6 +277,17 @@ class ProjectDetailContainer extends Component {
         limit={this.state.limit}
         currentPage={this.state.currentPage}
       />
+    </Modal>;
+  }
+
+  pullAddOwnerModalDOM = () => {
+    return <Modal
+      open={this.state.showAddOwner}
+      classNames={{ modal: "Modal Modal-add-owner" }}
+      contentLabel="Add owner modal"
+      onClose={this.handleCloseAddOwner}
+    >
+      <AddProjectOwner project={this.state.project} completed={this.handleOwnerSelectionFinale}/>
     </Modal>;
   }
 
@@ -362,6 +394,7 @@ class ProjectDetailContainer extends Component {
       <div className="content-container project-detail-container">
         { this.pullModalDOM() }
         { this.pullProjectEditModalDOM() }
+        { this.pullAddOwnerModalDOM() }
         { this.state.loading ? <LoaderCircular/> : this.pullDOM() }
       </div>
     );

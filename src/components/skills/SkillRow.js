@@ -106,15 +106,18 @@ class SkillRow extends Component {
   }
 
   announceChange = () => {
-    this.props.handleSkillEdit(this.state.skill, false);
+    if(this.props.handleSkillEdit !== undefined)
+      this.props.handleSkillEdit(this.state.skill, false);
   }
 
   announceDeletion = () => {
-    this.props.handleSkillEdit(this.state.skill, true);
+    if(this.props.handleSkillEdit !== undefined)
+      this.props.handleSkillEdit(this.state.skill, true);
   }
 
   pullYoeDOM = (skill) => {
-    return <div>
+    return <span>
+      <div className="skill-row-separator">EXP:</div>
       <div className="skill-row-yoe">{ this.years(skill.yearsOfExperience) }</div>
         { this.props.editable ?
             <div className="skill-row-yoe-range">
@@ -130,7 +133,7 @@ class SkillRow extends Component {
             :
             null
         }
-    </div>;
+    </span>;
   }
 
   render() {
@@ -153,7 +156,7 @@ class SkillRow extends Component {
           : this.rowLevels(skill.skillLevel)
         }
         <div style={lCBlock} className="skill-row-cblock"/>
-        <div className="skill-row-separator">EXP</div>
+        <div className="skill-row-separator">{skill.skillLevel}</div>
         { this.props.showYoe === false ? null : this.pullYoeDOM(skill) }
         { this.props.editable ? <div onClick={this.announceDeletion} className="skill-row-delete"/> : null }
       </div>

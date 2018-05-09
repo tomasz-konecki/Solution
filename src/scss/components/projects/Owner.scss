@@ -24,12 +24,16 @@ $padding: 5px;
     display: inline-block;
     cursor: pointer;
     background: rgba(0, 255, 17, 0.4);
-    &:after {
-      content: '+';
-    }
     height: $height;
     padding: $padding;
     line-height: $height;
+    span {
+      position: relative;
+      top: -4px;
+      &:after {
+        content: '+';
+      }
+    }
   }
   .project-owner-delete {
     height: $height;

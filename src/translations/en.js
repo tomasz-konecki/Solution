@@ -143,7 +143,8 @@ const translations = {
     CurrentlyNoSkillsAssigned: "Currently no skills assigned",
     EditSkills: "Edit skills",
     Add: "Add",
-    Save: "Save"
+    Save: "Save",
+    More: "More"
   },
   SkillsSelect: {
     AddNew: "Add new",

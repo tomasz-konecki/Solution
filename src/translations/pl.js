@@ -143,7 +143,8 @@ const translations = {
     CurrentlyNoSkillsAssigned: "Obecnie brak przypisanych umiejętności",
     EditSkills: "Edytuj umiejętności",
     Add: "Dodaj",
-    Save: "Zapisz"
+    Save: "Zapisz",
+    More: "Więcej"
   },
   SkillsSelect: {
     AddNew: "Dodaj nowy",

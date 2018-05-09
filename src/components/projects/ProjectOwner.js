@@ -26,21 +26,25 @@ const ProjectOwner = ({owner, clickAction}) => {
   const stylingRules = {
     background: hexToRGB(stringToColour(owner.id), 0.4)
   };
+
   return (
     <div className="project-owner">
       <span style={stylingRules} className="project-owner-name">
         <span>{owner.fullName}</span>
       </span>
-      <span onClick={clickAction} className="project-owner-delete">
-        <span>X</span>
-      </span>
+      {
+        clickAction === undefined ? null :
+        <span onClick={clickAction} className="project-owner-delete">
+          <span>X</span>
+        </span>
+      }
     </div>
   );
 };
 
 ProjectOwner.propTypes = {
   owner: PropTypes.object.isRequired,
-  clickAction: PropTypes.func.isRequired
+  clickAction: PropTypes.func
 };
 
 export default ProjectOwner;

@@ -78,10 +78,6 @@ class CapacitySlider extends Component {
     return (
       <div className="capacity-slider-wrapper">
         <div className="capacity-slider">
-          <span className="capacity-absolute-slider-caption">
-            Reference FT
-          <span/>
-          </span>
           <span className="capacity-absolute-slider-level">
             <span/>
           </span>

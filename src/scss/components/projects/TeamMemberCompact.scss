@@ -1,0 +1,19 @@
+.team-member-compact-table {
+  width: 100%;
+  border: 1px solid rgba(0, 96, 100, 0.3);
+  background: rgba(0, 96, 100, 0.3);
+  color: rgb(48, 42, 42);
+  border-collapse: separate;
+  border-spacing: 5px 5px;
+
+  .team-member-cell, th {
+    padding: 7px;
+  }
+  th {
+    background: rgba(0, 96, 100, 0.6);
+    color: white;
+  }
+  td {
+    border-bottom: 1px solid rgba(0, 96, 100, 0.3);
+  }
+}

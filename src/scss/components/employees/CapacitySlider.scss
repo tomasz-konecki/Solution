@@ -7,16 +7,7 @@ $left-color: rgb(120, 101, 171);
 }
 
 .capacity-slider {
-  height: 117px;
   position: relative;
-  .capacity-absolute-slider-caption {
-    position: absolute;
-    top: 10px;
-    height: 20px;
-    width: 100%;
-    text-align: center;
-    font-size: 58%;
-  }
   .capacity-slider-level {
     width: 100%;
     display: block;
@@ -25,11 +16,13 @@ $left-color: rgb(120, 101, 171);
 
     span {
       width: 20%;
-      height: 18px;
+      height: 32px;
       display: inline-block;
       background: transparent;
       position: absolute;
-      top: 36px;
+      top: 0px;
+      box-sizing: border-box;
+      border: 3px solid white;
 
       &:nth-child(1) {
         left: 0%;
@@ -56,11 +49,11 @@ $left-color: rgb(120, 101, 171);
 
     span {
       width: 100%;
-      height: 18px;
+      height: 32px;
       display: inline-block;
       background: $pending-color;
       position: absolute;
-      top: 36px;
+      top: 0px;
     }
   }
   .capacity-left-slider-level {
@@ -71,7 +64,7 @@ $left-color: rgb(120, 101, 171);
 
     span {
       width: 100%;
-      height: 18px;
+      height: 32px;
       display: inline-block;
       background: $left-color !important;
       position: absolute;

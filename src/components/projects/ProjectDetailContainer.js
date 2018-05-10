@@ -36,7 +36,8 @@ class ProjectDetailContainer extends Component {
       showEditProjectModal: false,
       pps_rb: {},
       showAddOwner: false,
-      projectActions: bindActionCreators(projectsActions, this.props.dispatch)
+      projectActions: bindActionCreators(projectsActions, this.props.dispatch),
+      rowUnfurls: {}
     };
   }
 
@@ -260,10 +261,31 @@ class ProjectDetailContainer extends Component {
     });
   }
 
+  handleRowClick = (object, index) => {
+    return (e) => {
+      console.log('row click', object, index);
+      const { rowUnfurls } = this.state;
+
+      if(rowUnfurls[index] === undefined){
+        rowUnfurls[index] = true;
+      } else {
+        rowUnfurls[index] = !rowUnfurls[index];
+      }
+
+      this.setState({
+        rowUnfurls
+      });
+    };
+  }
+
   mapTeam = (team) => {
     return team.map((teamAssignment, index) => {
+      let unfurled = this.state.rowUnfurls[index];
       return (
-        <TeamMember key={index} assignment={teamAssignment}/>
+        [
+          <TeamMember onClick={this.handleRowClick(teamAssignment, index)} compact key={teamAssignment.id} assignment={teamAssignment}/>,
+          unfurled ? <TeamMember onClick={this.handleRowClick(teamAssignment, index)} key={index} assignment={teamAssignment}/> : null
+        ]
       );
     });
   }
@@ -366,7 +388,7 @@ class ProjectDetailContainer extends Component {
   pullEmployeeIdBlockDOM = () => {
     const { t } = this.props;
     const { project } = this.state;
-    return <div className="col-sm-4 project-id-block button-group">
+    return <div className="col-xl-4 col-sm-12 project-id-block button-group">
       <Icon icon="briefcase" iconSize="2x"/>
       <h1>{project.name}</h1>
       {
@@ -442,20 +464,43 @@ class ProjectDetailContainer extends Component {
     const { t } = this.props;
     return <div className="row">
       { this.state.projectLoadedSuccessfully ? this.pullEmployeeIdBlockDOM() : null }
-      <div className="col-sm-7 project-headway">
-        {this.mapTeam(this.state.team)}
+      <div className="col-xl-7 col-sm-12 project-headway">
+        <div className="row">
+          <div className="col-sm-12">
+            <table className="team-member-compact-table">
+              <thead>
+                <tr>
+                  <th></th>
+                  <th>Name</th>
+                  <th>Capacity</th>
+                  <th>Role</th>
+                  <th>Seniority</th>
+                  <th>Position</th>
+                  <th>Ends</th>
+                </tr>
+              </thead>
+              <tbody>
+                {this.mapTeam(this.state.team)}
+              </tbody>
+            </table>
+          </div>
+        </div>
         <hr/>
-        {this.mapSkills(this.state.skills)}
-      </div>
-      <div className="col-sm-1 project-headway full-width-button">
-        {
-          this.state.edit === false ?
-          <button onClick={this.edit} className="dcmt-button">
-            {t("Edit")}
-          </button>
-          :
-          this.pullEditToolbarDOM()
-        }
+        <div className="row">
+          <div className="col-xl-10 col-sm-12">
+            {this.mapSkills(this.state.skills)}
+          </div>
+          <div className="col-xl-2 col-sm-12 full-width-button">
+          {
+            this.state.edit === false ?
+            <button onClick={this.edit} className="dcmt-button">
+              {t("Edit")}
+            </button>
+            :
+            this.pullEditToolbarDOM()
+          }
+          </div>
+        </div>
       </div>
     </div>;
   };

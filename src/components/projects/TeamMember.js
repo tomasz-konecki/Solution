@@ -5,6 +5,8 @@ import en from 'javascript-time-ago/locale/en';
 import pl from 'javascript-time-ago/locale/pl';
 import { connect } from 'react-redux';
 import { translate } from 'react-translate';
+import CapacitySlider from './../employees/CapacitySlider';
+import { push } from 'react-router-redux';
 
 class TeamMember extends Component {
   constructor(props) {
@@ -39,6 +41,12 @@ class TeamMember extends Component {
     return (new Date(ts)).toLocaleDateString();
   }
 
+  goToEmployeeMoreDetails = (id) => {
+    return (event) => {
+      this.props.dispatch(push(`/main/employees/${id}`));
+    };
+  }
+
   pullCompactDOM = () => {
     const { assignment, t } = this.props;
     return <tr className="team-member-compact" onClick={this.props.onClick}>
@@ -46,7 +54,7 @@ class TeamMember extends Component {
         <Icon icon="address-card"/>
       </td>
       <td className="team-member-cell">
-        {assignment.firstName + ' ' + assignment.lastName}
+        <a target="_blank" href={`/main/employees/${assignment.id}`}>{assignment.firstName + ' ' + assignment.lastName}</a>
       </td>
       <td className="team-member-cell team-member-text-bold">
         {this.capacityToPrimitiveFraction(assignment.assignedCapacity)}

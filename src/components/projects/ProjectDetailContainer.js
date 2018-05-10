@@ -464,7 +464,7 @@ class ProjectDetailContainer extends Component {
     const { t } = this.props;
     return <div className="row">
       { this.state.projectLoadedSuccessfully ? this.pullEmployeeIdBlockDOM() : null }
-      <div className="col-xl-7 col-sm-12 project-headway">
+      <div className="col-xl-8 col-sm-12 project-headway">
         <div className="row">
           <div className="col-sm-12">
             <table className="team-member-compact-table">

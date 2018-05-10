@@ -104,7 +104,8 @@ class EmployeesRowUnfurl extends Component {
           loadingSkills: false,
           confirmed: true,
           employee: result.data.dtoObject,
-          capacityLevel: this.capacityLevelToFraction(result.data.dtoObject.baseCapacity, true),
+          capacityLevel: result.data.dtoObject.baseCapacity,
+          capacityLeft: result.data.dtoObject.capacityLeft,
           seniorityLevel: this.seniorityLevelToString(result.data.dtoObject.seniority, true)
         });
       })

@@ -49,6 +49,7 @@ class TeamMember extends Component {
 
   pullCompactDOM = () => {
     const { assignment, t } = this.props;
+
     return <tr className="team-member-compact" onClick={this.props.onClick}>
       <td className="team-member-cell">
         <Icon icon="address-card"/>
@@ -70,6 +71,9 @@ class TeamMember extends Component {
       </td>
       <td className="team-member-cell">
         {(new Date(assignment.endDate)).toLocaleDateString()}
+      </td>
+      <td className="team-member-cell" onClick={this.props.delete(assignment)}>
+        <Icon icon="times"/>
       </td>
     </tr>;
   }

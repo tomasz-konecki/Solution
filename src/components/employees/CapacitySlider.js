@@ -65,7 +65,7 @@ class CapacitySlider extends Component {
     let nCapacityLeft = this.capacityLevelToFraction(capacityLeft, true);
     let nCapacityLevel = this.capacityLevelToFraction(capacityLevel, true);
 
-    let cLeft = capacityLevel - capacityLeft;
+    let cLeft = capacityLevel;
 
     let mainClasses = ["capacity-slider-wrapper"];
     let leftClasses = ["capacity-left-slider-level", "capacity-left-slider"];
@@ -73,6 +73,7 @@ class CapacitySlider extends Component {
     if(this.state.negative){
       percentageLeft = 100 - percentageIn - (capacityLevel/(-(capacityLeft)) * 100);
       nCapacityLeft = capacityLeft;
+      cLeft = capacityLeft;
       leftClasses.push('capacity-left-slider-negative');
       mainClasses.push('capacity-slider-negative');
     }

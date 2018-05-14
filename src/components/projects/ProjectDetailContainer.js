@@ -8,7 +8,7 @@ import Modal from 'react-responsive-modal';
 import SkillsSelect from './../skills/SkillsSelect';
 import DetailCascade from './../employees/DetailCascade';
 import ProjectOwner from './ProjectOwner';
-import { setActionConfirmation } from './../../actions/asyncActions';
+import { setActionConfirmation, setActionConfirmationProgress, setActionConfirmationResult } from './../../actions/asyncActions';
 import { connect } from 'react-redux';
 import { translate } from 'react-translate';
 import EditProjectDetails from './modals/EditProjectDetails';
@@ -16,7 +16,7 @@ import { bindActionCreators } from 'redux';
 import * as projectsActions from "../../actions/projectsActions";
 import TeamMember from './TeamMember';
 import AddProjectOwner from './modals/AddProjectOwner';
-import { SET_ACTION_CONFIRMATION_RESULT } from '../../constants';
+import { SET_ACTION_CONFIRMATION_RESULT, ACTION_CONFIRMED } from '../../constants';
 
 class ProjectDetailContainer extends Component {
   constructor(props) {
@@ -50,8 +50,22 @@ class ProjectDetailContainer extends Component {
       'deleteProjectOwner',
       'closeProject',
       'reactivateProject',
-      'deleteProject'
+      'deleteProject',
+      'deleteProjectMember'
     ];
+    if (this.validatePropsForAction(nextProps, "deleteProjectMember")) {
+      this.props.dispatch(setActionConfirmationProgress(true));
+      const { assignmentId } = this.props.toConfirm;
+      DCMTWebApi.deleteAssignment(assignmentId)
+        .then(response => {
+          this.props.dispatch(setActionConfirmationResult({
+            response
+          }));
+        })
+        .catch(error => {
+          this.props.dispatch(setActionConfirmationResult(error));
+        });
+    }
     if(nextProps.type === SET_ACTION_CONFIRMATION_RESULT){
       if(acceptableKeys.indexOf(this.props.toConfirm.key) >= 0){
         setTimeout(() => {
@@ -59,6 +73,15 @@ class ProjectDetailContainer extends Component {
         }, 500);
       }
     }
+  }
+
+  validatePropsForAction(nextProps, action) {
+    return (
+      nextProps.confirmed &&
+      !nextProps.isWorking &&
+      nextProps.type === ACTION_CONFIRMED &&
+      nextProps.toConfirm.key === action
+    );
   }
 
   getProject = (id) => {
@@ -278,13 +301,38 @@ class ProjectDetailContainer extends Component {
     };
   }
 
+  deleteMember = (assignment) => (e) => {
+    e.stopPropagation();
+    e.nativeEvent.stopImmediatePropagation();
+    console.log(assignment);
+
+    this.props.dispatch(
+      setActionConfirmation(true, {
+        key: "deleteProjectMember",
+        string: `Chcesz wypisać ${assignment.firstName} ${assignment.lastName} z projektu '[funkcjonalność niedostępna]'`,
+        assignmentId: assignment.employeeId,
+        successMessage: "Wypisano pracownika"
+      })
+    );
+  }
+
   mapTeam = (team) => {
     return team.map((teamAssignment, index) => {
       let unfurled = this.state.rowUnfurls[index];
       return (
         [
-          <TeamMember onClick={this.handleRowClick(teamAssignment, index)} compact key={teamAssignment.id} assignment={teamAssignment}/>,
-          unfurled ? <TeamMember onClick={this.handleRowClick(teamAssignment, index)} key={index} assignment={teamAssignment}/> : null
+          <TeamMember
+            onClick={this.handleRowClick(teamAssignment, index)}
+            compact
+            key={teamAssignment.id}
+            assignment={teamAssignment}
+            delete={this.deleteMember}
+          />,
+          unfurled ? <TeamMember
+            onClick={this.handleRowClick(teamAssignment, index)}
+            key={index}
+            assignment={teamAssignment}
+          /> : null
         ]
       );
     });
@@ -477,6 +525,7 @@ class ProjectDetailContainer extends Component {
                   <th>Seniority</th>
                   <th>Position</th>
                   <th>Ends</th>
+                  <th>!</th>
                 </tr>
               </thead>
               <tbody>

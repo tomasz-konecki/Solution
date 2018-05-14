@@ -146,7 +146,13 @@ class SkillRow extends Component {
     if(skill.skillLevel !== undefined) lCBlock = {
       background: hexToRGB(this.leveltoRGGradient(skill.skillLevel), 0.5)
     };
-    return (
+    if(this.props.micro === true) return (
+      <div className="skill-row skill-row-inb">
+        <div style={nCBlock} className="skill-row-cblock" title={skill.skillName}/>
+        <div className="skill-row-separator">{skill.skillLevel}</div>
+      </div>
+    );
+    else return (
       <div className="skill-row">
         <div style={nCBlock} className="skill-row-cblock"/>
         <div className="skill-row-name">{ skill.skillName }</div>

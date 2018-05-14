@@ -1,6 +1,10 @@
 $border-color: black;
 $block-color: #ababab;
 
+.skill-row-inb {
+  display: inline-block;
+}
+
 .skill-row {
   box-sizing: border-box;
   height: 24px;

@@ -98,7 +98,7 @@ class CapacitySlider extends Component {
             <span>FT</span>
           </span>
           <span className={leftClasses.join(' ')}>
-              <span style={leftStyling}>{this.toFraction(capacityLeft)}</span>
+              <span style={leftStyling}>{this.toFraction(capacityLevel - capacityLeft)}</span>
           </span>
         </div>
       </div>

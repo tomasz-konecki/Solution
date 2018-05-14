@@ -196,7 +196,8 @@ class DCMTWebApi {
     startDate,
     endDate,
     role,
-    assignedCapacity
+    assignedCapacity,
+    responsibilitiesArray
   ) {
     return axios.post(`${API_ENDPOINT}/assignments`, {
       employeeId,
@@ -204,7 +205,8 @@ class DCMTWebApi {
       startDate,
       endDate,
       role,
-      assignedCapacity
+      assignedCapacity,
+      responsibilities: responsibilitiesArray
     })
       .catch(response => authValidator(response));
   }

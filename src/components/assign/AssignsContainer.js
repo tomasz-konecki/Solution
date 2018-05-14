@@ -3,11 +3,23 @@ import DCMTWebApi from '../../api';
 import CapacitySlider from './../employees/CapacitySlider';
 import SenioritySlider from './../employees/SenioritySlider';
 import LoaderCircular from './../common/LoaderCircular';
+import SkillRow from './../skills/SkillRow';
+import AssignDropTypes from './AssignDropTypes';
 
+import { DragDropContext } from 'react-dnd';
+import HTML5Backend, { NativeTypes } from 'react-dnd-html5-backend';
+import AssignProjectBlock from './AssignProjectBlock';
+import AssignEmployeeBlock from './AssignEmployeeBlock';
+import Modal from 'react-responsive-modal';
+import AssignmentModal from './AssignmentModal';
+
+@DragDropContext(HTML5Backend)
 class AssignsContainer extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      showAssignmentModal: false
+    };
   }
 
   componentDidMount() {
@@ -64,62 +76,74 @@ class AssignsContainer extends Component {
       });
   }
 
-  seniorityLevelToString(level, reverse = false) {
-    if(reverse) switch(level){
-      case "Junior": return 1;
-      case "Pro": return 2;
-      case "Senior": return 3;
-      case "Lead": return 4;
-    }
-    switch(level){
-      case 1: return "Junior";
-      case 2: return "Pro";
-      case 3: return "Senior";
-      case 4: return "Lead";
-    }
+  onEmployeeDrop = (project, index) => {
+    return (employee) => {
+      this.handleOpenAssigmentModal(employee, project);
+    };
+  }
+
+  handleCloseAssigmentModal = () => {
+    this.setState({
+      showAssignmentModal: false
+    });
+  }
+
+  handleOpenAssigmentModal = (employee, project) => {
+    this.setState({
+      showAssignmentModal: true,
+      employeeForModal: employee,
+      projectForModal: project
+    });
+  }
+
+  pullAssignmentDOM = () => {
+    return <Modal
+        open={this.state.showAssignmentModal}
+        classNames={{ modal: "Modal Modal-assignment" }}
+        contentLabel="Assign"
+        onClose={this.handleCloseAssigmentModal}
+      >
+      <AssignmentModal
+        employee={this.state.employeeForModal}
+        project={this.state.projectForModal}
+      />
+    </Modal>;
   }
 
   render() {
     return (
       <div className="row assign-container">
+        { this.pullAssignmentDOM() }
         <div className="col-lg-6">
-          <div className="content-container">
-            {
-              this.state.employees !== undefined ?
-              this.state.employees.map((employee, index) => {
-                return <div key={index} className="row assign-container-left-row">
-                  <div className="col-lg-6">
-                    <a target="_blank" href={`/main/employees/${employee.id}`}>
-                      {employee.firstName} {employee.lastName}
-                    </a>
-                  </div>
-                  <div className="col-lg-6">
-                    <SenioritySlider
-                      seniorityLevel={this.seniorityLevelToString(employee.seniority, true)}
-                      showText={false}
-                    />
-                    <CapacitySlider
-                      capacityLevel={employee.baseCapacity}
-                      capacityLeft={employee.capacityLeft}
-                    />
-                  </div>
-                </div>;
-              }) : <LoaderCircular />
-            }
+          <div className="content-container scroll-container">
+            <div className="scroll-container">
+              {
+                this.state.employees !== undefined ?
+                this.state.employees.map((employee, index) => {
+                  return <AssignEmployeeBlock
+                    key={index}
+                    employee={employee}
+                    name={employee.lastName}
+                    type={AssignDropTypes.EMPLOYEE}
+                  />;
+                }) : <LoaderCircular />
+              }
+            </div>
           </div>
         </div>
         <div className="col-lg-6">
           <div className="content-container">
-            {
-              this.state.projects !== undefined ?
-              this.state.projects.map((project, index) => {
-                return <div key={index} className="row assign-container-right-row">
-                  <div className="col-lg-8">{project.name}</div>
-                  <div className="col-lg-4">
-                  </div>
-                </div>;
-              }) : <LoaderCircular />
-            }
+          {
+            this.state.projects !== undefined ?
+            this.state.projects.map((project, index) => {
+              return <AssignProjectBlock
+                key={index}
+                accepts={[AssignDropTypes.EMPLOYEE]}
+                onDrop={this.onEmployeeDrop(project, index)}
+                project={project}
+              />;
+            }) : <LoaderCircular />
+          }
           </div>
         </div>
       </div>

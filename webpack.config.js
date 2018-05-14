@@ -48,6 +48,7 @@ module.exports = {
               ],
               require.resolve("babel-preset-stage-0")
             ],
+            plugins: ["transform-decorators-legacy"],
             compact: true
           }
         }

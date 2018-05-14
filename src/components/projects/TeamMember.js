@@ -54,7 +54,7 @@ class TeamMember extends Component {
         <Icon icon="address-card"/>
       </td>
       <td className="team-member-cell">
-        <a target="_blank" href={`/main/employees/${assignment.id}`}>{assignment.firstName + ' ' + assignment.lastName}</a>
+        <a target="_blank" href={`/main/employees/${assignment.employeeId}`}>{assignment.firstName + ' ' + assignment.lastName}</a>
       </td>
       <td className="team-member-cell team-member-text-bold">
         {this.capacityToPrimitiveFraction(assignment.assignedCapacity)}

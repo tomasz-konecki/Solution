@@ -431,6 +431,7 @@ class EmployeeDetailContainer extends Component {
           {t("Capacity")}
         </label>
         <select onChange={this.handleCapacityChange} name="capacity-select">
+          <option/>
           <option value="0.2">1/5</option>
           <option value="0.25">1/4</option>
           <option value="0.5">1/2</option>
@@ -443,6 +444,7 @@ class EmployeeDetailContainer extends Component {
           {t("Seniority")}
         </label>
         <select onChange={this.handleSeniorityChange} name="seniority-select">
+          <option/>
           <option value="1">Junior</option>
           <option value="2">Pro</option>
           <option value="3">Senior</option>

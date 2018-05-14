@@ -14,6 +14,7 @@ class CapacitySlider extends Component {
   }
 
   toFraction = (decimal) => {
+    if(decimal === 0) return 'FT';
     if(decimal === 1) return 'FT';
     return new Fraction(decimal).toFraction(true);
   }
@@ -59,16 +60,18 @@ class CapacitySlider extends Component {
     let { editable, capacityLevel, capacityLeft } = this.props;
 
     let percentageIn = (capacityLevel * 100);
-    let percentageLeft = 100 - (capacityLeft / capacityLevel * 100);
+    let percentageLeft = 100 - (capacityLeft * 100);
 
     let nCapacityLeft = this.capacityLevelToFraction(capacityLeft, true);
     let nCapacityLevel = this.capacityLevelToFraction(capacityLevel, true);
+
+    let cLeft = capacityLevel - capacityLeft;
 
     let mainClasses = ["capacity-slider-wrapper"];
     let leftClasses = ["capacity-left-slider-level", "capacity-left-slider"];
 
     if(this.state.negative){
-      percentageLeft = 100 - (capacityLevel/(-(capacityLeft)) * 100);
+      percentageLeft = 100 - percentageIn - (capacityLevel/(-(capacityLeft)) * 100);
       nCapacityLeft = capacityLeft;
       leftClasses.push('capacity-left-slider-negative');
       mainClasses.push('capacity-slider-negative');
@@ -98,7 +101,7 @@ class CapacitySlider extends Component {
             <span>FT</span>
           </span>
           <span className={leftClasses.join(' ')}>
-              <span style={leftStyling}>{this.toFraction(capacityLevel - capacityLeft)}</span>
+              <span style={leftStyling}>{this.toFraction(cLeft)}</span>
           </span>
         </div>
       </div>

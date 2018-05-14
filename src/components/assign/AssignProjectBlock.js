@@ -25,7 +25,7 @@ class AssignProjectBlock extends Component {
 
 		let backgroundColor = 'initial';
 		if (isActive) {
-			backgroundColor = 'green';
+			backgroundColor = 'rgba(0, 151, 233, 0.19)';
 		} else if (canDrop) {
 			backgroundColor = 'rgba(255, 0, 204, 0.13)';
     }

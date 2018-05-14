@@ -59,7 +59,11 @@ class SenioritySlider extends Component {
             <span/>
             <span/>
           </span>
-          <span className="seniority-slider-name">{this.seniorityLevelToString(seniorityLevel)}</span>
+          {
+            this.props.showText === false ?
+            null :
+            <span className="seniority-slider-name">{this.seniorityLevelToString(seniorityLevel)}</span>
+          }
         </div>
       </div>
     );

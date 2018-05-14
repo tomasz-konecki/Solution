@@ -63,7 +63,7 @@ class LeftMenu extends React.Component {
         <VerticalMenuElement
           match={match}
           extended={extended}
-          path="/assign"
+          path="/assigns"
           icon="pencil-alt"
           iconType="fas"
           title={t("Assign")}

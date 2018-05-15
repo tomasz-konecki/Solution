@@ -36,7 +36,7 @@ export const addSkill = (name) => {
     dispatch(asyncStarted());
     DCMTWebApi.addSkill(name)
       .then(response => {
-        const success = response.data.dtoObject === null && (!response.data.errorOccured);
+        const success = response.data.dtoObject === null && (!response.data.errorOccurred);
         dispatch(addSkillSuccess(success));
         if(success) dispatch(loadSkills());
         dispatch(asyncEnded());

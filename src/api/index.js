@@ -318,7 +318,7 @@ class DCMTMockApi extends DCMTWebApi {
     return {
       data: {
         dtoObject,
-        errorOccured: simulateError,
+        errorOccurred: simulateError,
         errors: {}
       },
       status,

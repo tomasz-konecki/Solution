@@ -91,7 +91,7 @@ const ResultBlock = ({
       break;
   }
 
-  if (response.data !== undefined && response.data.errorOccured === true) {
+  if (response.data !== undefined && response.data.errorOccurred === true) {
     const { errors } = response.data;
     message = errors[Object.keys(errors)[0]];
     errorStatus = true;

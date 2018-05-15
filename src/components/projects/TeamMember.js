@@ -47,15 +47,26 @@ class TeamMember extends Component {
     };
   }
 
+  isActive(assignment) {
+    if(assignment.isActive !== undefined) return assignment.isActive;
+    else return false;
+  }
+
   pullCompactDOM = () => {
-    const { assignment, t } = this.props;
+    const { assignment, t, projectFlavor } = this.props;
 
     return <tr className="team-member-compact" onClick={this.props.onClick}>
       <td className="team-member-cell">
-        <Icon icon="address-card"/>
+        {
+          this.isActive(assignment) ? <Icon icon="address-card"/> : <Icon icon="arrow-down"/>
+        }
       </td>
       <td className="team-member-cell">
-        <a target="_blank" href={`/main/employees/${assignment.employeeId}`}>{assignment.firstName + ' ' + assignment.lastName}</a>
+        {
+          projectFlavor === true ?
+          <a target="_blank" href={`/main/projects/${assignment.projectId}`}>{assignment.projectName}</a>
+          : <a target="_blank" href={`/main/employees/${assignment.employeeId}`}>{assignment.firstName + ' ' + assignment.lastName}</a>
+        }
       </td>
       <td className="team-member-cell team-member-text-bold">
         {this.capacityToPrimitiveFraction(assignment.assignedCapacity)}

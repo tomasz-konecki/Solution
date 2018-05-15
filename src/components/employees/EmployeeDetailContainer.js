@@ -10,6 +10,10 @@ import SenioritySlider from './SenioritySlider';
 import Modal from 'react-responsive-modal';
 import SkillsSelect from './../skills/SkillsSelect';
 import { translate } from 'react-translate';
+import TeamMember from './../projects/TeamMember';
+import { setActionConfirmation, setActionConfirmationProgress, setActionConfirmationResult } from './../../actions/asyncActions';
+import { ACTION_CONFIRMED } from './../../constants';
+import { connect } from 'react-redux';
 
 class EmployeeDetailContainer extends Component {
   constructor(props) {
@@ -24,12 +28,40 @@ class EmployeeDetailContainer extends Component {
       skills: [],
       showModal: false,
       capacityLevel: 1,
-      seniorityLevel: 1
+      seniorityLevel: 1,
+      rowUnfurls: {},
+      team: []
     };
   }
 
   componentDidMount() {
     this.getEmployee();
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (this.validatePropsForAction(nextProps, "deleteProjectMember")) {
+      this.props.dispatch(setActionConfirmationProgress(true));
+      const { assignmentId } = this.props.toConfirm;
+      DCMTWebApi.deleteAssignment(assignmentId)
+        .then(response => {
+          this.props.dispatch(setActionConfirmationResult({
+            response
+          }));
+          this.getAssignments();
+        })
+        .catch(error => {
+          this.props.dispatch(setActionConfirmationResult(error));
+        });
+    }
+  }
+
+  validatePropsForAction(nextProps, action) {
+    return (
+      nextProps.confirmed &&
+      !nextProps.isWorking &&
+      nextProps.type === ACTION_CONFIRMED &&
+      nextProps.toConfirm.key === action
+    );
   }
 
   capacityLevelToFraction(level, reverse = false) {
@@ -144,10 +176,9 @@ class EmployeeDetailContainer extends Component {
           errorBlock: {
             result
           },
-          loading: false,
           edit: false
         }, () => {
-          window.location.reload();
+          this.getEmployee();
         });
       })
       .catch((error) => {
@@ -158,13 +189,35 @@ class EmployeeDetailContainer extends Component {
       });
   }
 
+  getAssignments = () => {
+    this.setState({
+      loading: true
+    }, () => {
+      DCMTWebApi.getAssignmentsForEmployee(this.props.match.params.id)
+      .then((result) => {
+        this.setState({
+          errorBlock: {
+            result
+          },
+          team: result.data.dtoObjects,
+          loading: false
+        });
+      })
+      .catch((error) => {
+        this.setState({
+          errorBlock: error,
+          loading: false
+        });
+      });
+    });
+  }
+
   getEmployee() {
     this.setState({
       loading: true
     }, () => {
       DCMTWebApi.getEmployee(this.props.match.params.id)
       .then((result) => {
-        console.log('EMPLOYEE', result.data.dtoObject);
         this.setState({
           errorBlock: {
             result
@@ -180,6 +233,10 @@ class EmployeeDetailContainer extends Component {
         }, () => {
           if(!this.state.employee.hasAccount){
             this.getEmploSkills();
+            return;
+          }
+          else {
+            this.getAssignments();
             return;
           }
         });
@@ -480,12 +537,83 @@ class EmployeeDetailContainer extends Component {
     </div>;
   }
 
+  handleRowClick = (object, index) => {
+    return (e) => {
+      const { rowUnfurls } = this.state;
+
+      if(rowUnfurls[index] === undefined){
+        rowUnfurls[index] = true;
+      } else {
+        rowUnfurls[index] = !rowUnfurls[index];
+      }
+
+      this.setState({
+        rowUnfurls
+      });
+    };
+  }
+
+  deleteMember = (assignment) => (e) => {
+    e.stopPropagation();
+    e.nativeEvent.stopImmediatePropagation();
+
+    this.props.dispatch(
+      setActionConfirmation(true, {
+        key: "deleteProjectMember",
+        string: `Wypisać ${assignment.firstName} ${assignment.lastName} z projektu ${assignment.projectName}`,
+        assignmentId: assignment.assignmentId,
+        successMessage: "Wypisano pracownika"
+      })
+    );
+  }
+
+  mapTeam = (team) => {
+    return team.map((teamAssignment, index) => {
+      let unfurled = this.state.rowUnfurls[index];
+      return (
+        [
+          <TeamMember
+            onClick={this.handleRowClick(teamAssignment, index)}
+            compact
+            projectFlavor
+            key={index}
+            assignment={Object.assign({}, teamAssignment, this.state.employee)}
+            delete={this.deleteMember}
+          />,
+          unfurled ? <TeamMember
+            onClick={this.handleRowClick(teamAssignment, index)}
+            projectFlavor
+            key={50000 - index}
+            assignment={Object.assign({}, teamAssignment, this.state.employee)}
+          /> : null
+        ]
+      );
+    });
+  }
+
   pullDOM = () => {
     const { t } = this.props;
     const { employee } = this.state;
     return <div className="row">
       { this.state.employeeLoadedSuccessfully ? this.pullEmployeeIdBlockDOM() : null }
       <div className="col-sm-7 employee-headway">
+        <table className="team-member-compact-table team-member-compact-project-flavor">
+          <thead>
+            <tr>
+              <th></th>
+              <th>Name</th>
+              <th>Capacity</th>
+              <th>Role</th>
+              <th>Seniority</th>
+              <th>Position</th>
+              <th>Ends</th>
+              <th>!</th>
+            </tr>
+          </thead>
+          <tbody>
+            {this.mapTeam(this.state.team)}
+          </tbody>
+        </table>
         {this.state.edit ? this.pullEmployeeSettingsEditorDOM() : null}
         {this.mapSkills(this.state.skills)}
       </div>
@@ -512,4 +640,15 @@ class EmployeeDetailContainer extends Component {
   }
 }
 
-export default withRouter(translate("EmployeeDetailContainer")(EmployeeDetailContainer));
+function mapStateToProps(state) {
+  return {
+    loading: state.asyncReducer.loading,
+    confirmed: state.asyncReducer.confirmed,
+    toConfirm: state.asyncReducer.toConfirm,
+    isWorking: state.asyncReducer.isWorking,
+    resultBlock: state.asyncReducer.resultBlock,
+    type: state.asyncReducer.type
+  };
+}
+
+export default connect(mapStateToProps)(withRouter(translate("EmployeeDetailContainer")(EmployeeDetailContainer)));

@@ -242,7 +242,7 @@ class AddProjectScreen extends Component {
           </div>
           <div className="form-group row">
             <label htmlFor="description" className="col-sm-3 col-form-label">
-              {t("Opis")}:
+              {t("Description")}:
             </label>
             <div className="col-sm-9">
               <textarea

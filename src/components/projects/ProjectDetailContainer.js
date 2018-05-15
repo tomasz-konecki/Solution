@@ -17,6 +17,8 @@ import * as projectsActions from "../../actions/projectsActions";
 import TeamMember from './TeamMember';
 import AddProjectOwner from './modals/AddProjectOwner';
 import { SET_ACTION_CONFIRMATION_RESULT, ACTION_CONFIRMED } from '../../constants';
+import AddEmployeeToProject from '../employees/modals/AddEmployeeToProject';
+import AssignmentModal from './../assign/AssignmentModal';
 
 class ProjectDetailContainer extends Component {
   constructor(props) {
@@ -34,6 +36,9 @@ class ProjectDetailContainer extends Component {
       seniorityLevel: 1,
       project: {},
       showEditProjectModal: false,
+      showAddEmployee: false,
+      addEmployeeStageTwo: false,
+      addEmployeeSelectionId: {},
       pps_rb: {},
       showAddOwner: false,
       projectActions: bindActionCreators(projectsActions, this.props.dispatch),
@@ -42,7 +47,7 @@ class ProjectDetailContainer extends Component {
   }
 
   componentDidMount() {
-    this.getProject(this.props.match.params.id);
+    this.refresh();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -50,8 +55,7 @@ class ProjectDetailContainer extends Component {
       'deleteProjectOwner',
       'closeProject',
       'reactivateProject',
-      'deleteProject',
-      'deleteProjectMember'
+      'deleteProject'
     ];
     if (this.validatePropsForAction(nextProps, "deleteProjectMember")) {
       this.props.dispatch(setActionConfirmationProgress(true));
@@ -61,6 +65,7 @@ class ProjectDetailContainer extends Component {
           this.props.dispatch(setActionConfirmationResult({
             response
           }));
+          this.refresh();
         })
         .catch(error => {
           this.props.dispatch(setActionConfirmationResult(error));
@@ -69,10 +74,14 @@ class ProjectDetailContainer extends Component {
     if(nextProps.type === SET_ACTION_CONFIRMATION_RESULT){
       if(acceptableKeys.indexOf(this.props.toConfirm.key) >= 0){
         setTimeout(() => {
-          window.location.reload();
-        }, 500);
+          this.refresh();
+        }, 400);
       }
     }
+  }
+
+  refresh = () => {
+    this.getProject(this.props.match.params.id);
   }
 
   validatePropsForAction(nextProps, action) {
@@ -223,7 +232,7 @@ class ProjectDetailContainer extends Component {
 
   handleEditProjectCloseModal = (success = false) => {
     this.setState({ showEditProjectModal: false }, () => {
-      if(success) window.location.reload();
+      if(success) this.refresh();
     });
   }
 
@@ -264,10 +273,16 @@ class ProjectDetailContainer extends Component {
 
   handleCloseAddOwner = (success = false) => {
     this.setState({ showAddOwner: false }, () => {
-      if(success) setTimeout(() => {
-        window.location.reload();
-      });
+      this.refresh();
     });
+  }
+
+  handleOpenAddEmployee = () => {
+    this.setState({ showAddEmployee: true, addEmployeeStageTwo: false, addEmployeeSelectionId: "" });
+  }
+
+  handleCloseAddEmployee = (success = false) => {
+    this.setState({ showAddEmployee: false, addEmployeeStageTwo: false });
   }
 
   mapSkills = (skills, editable = false) => {
@@ -286,7 +301,6 @@ class ProjectDetailContainer extends Component {
 
   handleRowClick = (object, index) => {
     return (e) => {
-      console.log('row click', object, index);
       const { rowUnfurls } = this.state;
 
       if(rowUnfurls[index] === undefined){
@@ -304,13 +318,12 @@ class ProjectDetailContainer extends Component {
   deleteMember = (assignment) => (e) => {
     e.stopPropagation();
     e.nativeEvent.stopImmediatePropagation();
-    console.log(assignment);
 
     this.props.dispatch(
       setActionConfirmation(true, {
         key: "deleteProjectMember",
-        string: `Chcesz wypisać ${assignment.firstName} ${assignment.lastName} z projektu '[funkcjonalność niedostępna]'`,
-        assignmentId: assignment.employeeId,
+        string: `Chcesz wypisać ${assignment.firstName} ${assignment.lastName} z projektu ${this.state.project.name}`,
+        assignmentId: assignment.assignmentId,
         successMessage: "Wypisano pracownika"
       })
     );
@@ -324,13 +337,13 @@ class ProjectDetailContainer extends Component {
           <TeamMember
             onClick={this.handleRowClick(teamAssignment, index)}
             compact
-            key={teamAssignment.id}
+            key={index}
             assignment={teamAssignment}
             delete={this.deleteMember}
           />,
           unfurled ? <TeamMember
             onClick={this.handleRowClick(teamAssignment, index)}
-            key={index}
+            key={50000 - index}
             assignment={teamAssignment}
           /> : null
         ]
@@ -391,6 +404,14 @@ class ProjectDetailContainer extends Component {
     );
   }
 
+  addEmployeeStageTwo = (employee) => {
+    console.log(employee);
+    this.setState({
+      addEmployeeStageTwo: true,
+      addEmployeeSelection: employee
+    });
+  }
+
   pullProjectEditModalDOM = () => {
     return <Modal
       open={this.state.showEditProjectModal}
@@ -419,6 +440,31 @@ class ProjectDetailContainer extends Component {
       onClose={this.handleCloseAddOwner}
     >
       <AddProjectOwner project={this.state.project} completed={this.handleOwnerSelectionFinale}/>
+    </Modal>;
+  }
+
+  pullAddEmployeeModalDOM = () => {
+    return <Modal
+      open={this.state.showAddEmployee}
+      classNames={{ modal: "Modal Modal-add-employee Modal-assignment" }}
+      contentLabel="Add employee modal"
+      onClose={this.handleCloseAddEmployee}
+    >
+      {
+        this.state.addEmployeeStageTwo ?
+        <AssignmentModal
+          employee={this.state.addEmployeeSelection}
+          project={this.state.project}
+          refresh={this.refresh}
+        />
+        :
+        <AddEmployeeToProject
+          aetpStageTwo={this.addEmployeeStageTwo}
+          project={this.state.project}
+          completed={this.handleOwnerSelectionFinale}
+        />
+      }
+
     </Modal>;
   }
 
@@ -515,6 +561,7 @@ class ProjectDetailContainer extends Component {
       <div className="col-xl-8 col-sm-12 project-headway">
         <div className="row">
           <div className="col-sm-12">
+            <div className="project-headway project-bold">{'Zespół'}</div>
             <table className="team-member-compact-table">
               <thead>
                 <tr>
@@ -534,7 +581,16 @@ class ProjectDetailContainer extends Component {
             </table>
           </div>
         </div>
+        <div className="row">
+          <div className="col-lg-10"/>
+          <div className="col-lg-2 full-width-button">
+            <button onClick={this.handleOpenAddEmployee} className="dcmt-button button-success project-headway">
+              {'Dodaj'}
+            </button>
+          </div>
+        </div>
         <hr/>
+        <div className="project-headway project-bold">{'Umiejętności powiązane'}</div>
         <div className="row">
           <div className="col-xl-10 col-sm-12">
             {this.mapSkills(this.state.skills)}
@@ -560,6 +616,7 @@ class ProjectDetailContainer extends Component {
         { this.pullModalDOM() }
         { this.pullProjectEditModalDOM() }
         { this.pullAddOwnerModalDOM() }
+        { this.pullAddEmployeeModalDOM() }
         { this.state.loading ? <LoaderCircular/> : this.pullDOM() }
       </div>
     );

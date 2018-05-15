@@ -28,11 +28,27 @@ class AssignsContainer extends Component {
   }
 
   componentDidMount() {
-    this.getEmployees();
-    this.getProjects();
+    this.refresh()();
+  }
+
+  refresh = (closeAssignmentsModal) => () => {
+    if(closeAssignmentsModal) {
+      setTimeout(() => {
+        this.handleCloseAssigmentModal();
+        this.getEmployees();
+        this.getProjects();
+      }, 500);
+    }
+    else {
+      this.getEmployees();
+      this.getProjects();
+    }
   }
 
   getProjects = () => {
+    this.setState({
+      projects: undefined
+    });
     DCMTWebApi.getProjects({
       page: 1,
       limit: 300,
@@ -58,6 +74,9 @@ class AssignsContainer extends Component {
   }
 
   getEmployees = () => {
+    this.setState({
+      employees: undefined
+    });
     DCMTWebApi.getEmployees({
       page: 1,
       limit: 300,
@@ -117,6 +136,7 @@ class AssignsContainer extends Component {
       <AssignmentModal
         employee={this.state.employeeForModal}
         project={this.state.projectForModal}
+        refresh={this.refresh(true)}
       />
     </Modal>;
   }

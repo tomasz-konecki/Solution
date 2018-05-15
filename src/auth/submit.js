@@ -11,7 +11,7 @@ const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 
 const errorHandler = dispatch => error => {
   dispatch(authStop());
-  if (error.response !== undefined && error.response.data.errorOccured === true) {
+  if (error.response !== undefined && error.response.data.errorOccurred === true) {
     const { errors } = error.response.data;
     throw new SubmissionError({
       _error: errors[Object.keys(errors)[0]]

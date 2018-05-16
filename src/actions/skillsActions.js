@@ -38,12 +38,10 @@ export const addSkill = (name) => {
       .then(response => {
         const success = response.data.dtoObject === null && (!response.data.errorOccurred);
         success ? dispatch(addSkillSuccess(success)) : dispatch(addSkillSuccess(Object.entries(response.data.errors)[0][1]));
-        console.log('success?', success, response);
         if(success) dispatch(loadSkills());
         dispatch(asyncEnded());
       })
       .catch(error => {
-        console.log('ERROR', error);
         const err = Object.entries(error.data.errors)[0][1];
         dispatch(addSkillSuccess(err));
         dispatch(asyncEnded());

@@ -508,8 +508,8 @@ class ProjectDetailContainer extends Component {
         <DetailCascade lKey={t("Client")} rVal={project.client} lColSize={4} rColSize={8} />
         <DetailCascade lKey={t("Deleted")} rVal={project.isDeleted ? t("Yes") : t("No")} lColSize={4} rColSize={8} />
         <DetailCascade lKey={t("Active")} rVal={project.isActive ? t("Yes") : t("No")} lColSize={4} rColSize={8} />
-        <DetailCascade lKey={t("StartDate")} rVal={project.startDate} lColSize={4} rColSize={8} />
-        <DetailCascade lKey={t("EstimatedEndDate")} rVal={project.estimatedEndDate} lColSize={4} rColSize={8} />
+        <DetailCascade lKey={t("StartDate")} rVal={(new Date(project.startDate).toLocaleDateString())} lColSize={4} rColSize={8} />
+        <DetailCascade lKey={t("EstimatedEndDate")} rVal={(new Date(project.estimatedEndDate).toLocaleDateString())} lColSize={4} rColSize={8} />
       </div>
       <hr/>
       <div className="project-headway project-text-justified">

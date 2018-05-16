@@ -210,8 +210,6 @@ class AssignmentModal extends Component {
                 <option value="0.5">1/2</option>
                 <option value="0.75">3/4</option>
                 <option value="1">FT</option>
-                <option value="1.25">FT + 1/4</option>
-                <option value="1.5">FT + 1/2</option>
               </select>
             </div>
           </div>

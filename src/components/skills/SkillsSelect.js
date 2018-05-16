@@ -120,7 +120,7 @@ SkillsSelect.propTypes = {
   alreadySelected: PropTypes.arrayOf(PropTypes.object),
   skillsAction: PropTypes.object,
   skillSelected: PropTypes.func.isRequired,
-  success: PropTypes.bool,
+  success: PropTypes.any,
   loading: PropTypes.bool
 };
 

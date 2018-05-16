@@ -597,23 +597,26 @@ class EmployeeDetailContainer extends Component {
     return <div className="row">
       { this.state.employeeLoadedSuccessfully ? this.pullEmployeeIdBlockDOM() : null }
       <div className="col-sm-7 employee-headway">
-        <table className="team-member-compact-table team-member-compact-project-flavor">
-          <thead>
-            <tr>
-              <th></th>
-              <th>Name</th>
-              <th>Capacity</th>
-              <th>Role</th>
-              <th>Seniority</th>
-              <th>Position</th>
-              <th>Ends</th>
-              <th>!</th>
-            </tr>
-          </thead>
-          <tbody>
-            {this.mapTeam(this.state.team)}
-          </tbody>
-        </table>
+        {
+          this.state.employee.hasAccount && this.state.team.length > 0 ?
+          <table className="team-member-compact-table team-member-compact-project-flavor">
+            <thead>
+              <tr>
+                <th></th>
+                <th>Name</th>
+                <th>Capacity</th>
+                <th>Role</th>
+                <th>Seniority</th>
+                <th>Position</th>
+                <th>Ends</th>
+                <th>!</th>
+              </tr>
+            </thead>
+            <tbody>
+              {this.mapTeam(this.state.team)}
+            </tbody>
+          </table> : null
+        }
         {this.state.edit ? this.pullEmployeeSettingsEditorDOM() : null}
         {this.mapSkills(this.state.skills)}
       </div>

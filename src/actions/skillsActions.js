@@ -37,12 +37,14 @@ export const addSkill = (name) => {
     DCMTWebApi.addSkill(name)
       .then(response => {
         const success = response.data.dtoObject === null && (!response.data.errorOccurred);
-        dispatch(addSkillSuccess(success));
+        success ? dispatch(addSkillSuccess(success)) : dispatch(addSkillSuccess(Object.entries(response.data.errors)[0][1]));
+        console.log('success?', success, response);
         if(success) dispatch(loadSkills());
         dispatch(asyncEnded());
       })
       .catch(error => {
-        const err = Object.entries(error.response.data.errors)[0][1];
+        console.log('ERROR', error);
+        const err = Object.entries(error.data.errors)[0][1];
         dispatch(addSkillSuccess(err));
         dispatch(asyncEnded());
       });

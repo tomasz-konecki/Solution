@@ -7,6 +7,7 @@ import redux from "redux";
 import storeCreator from "./../store";
 import storage from "redux-persist/lib/storage";
 import { push } from 'react-router-redux';
+import { logout } from './../actions/authActions';
 
 const { store } = storeCreator;
 
@@ -40,10 +41,10 @@ function listener() {
 
 const authValidator = (response) => {
   if(response.response.status === 401){
+    store.dispatch(logout());
     store.dispatch(push('/'));
-    throw response;
   }
-  return response;
+  throw response;
 };
 
 class DCMTWebApi {

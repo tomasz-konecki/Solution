@@ -136,7 +136,7 @@ class AssignsContainer extends Component {
       <AssignmentModal
         employee={this.state.employeeForModal}
         project={this.state.projectForModal}
-        refresh={this.refresh(true)}
+        refresh={this.refresh}
       />
     </Modal>;
   }

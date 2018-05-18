@@ -189,6 +189,29 @@ class EmployeeDetailContainer extends Component {
       });
   }
 
+  getContactInfo = () => {
+    this.setState({
+      loading: true
+    }, () => {
+      DCMTWebApi.getEmploContactInfo(this.props.match.params.id)
+      .then((result) => {
+        this.setState({
+          errorBlock: {
+            result
+          },
+          contactInfo: result.data.dtoObject,
+          loading: false
+        });
+      })
+      .catch((error) => {
+        this.setState({
+          errorBlock: error,
+          loading: false
+        });
+      });
+    });
+  }
+
   getAssignments = () => {
     this.setState({
       loading: true
@@ -199,9 +222,9 @@ class EmployeeDetailContainer extends Component {
           errorBlock: {
             result
           },
-          team: result.data.dtoObjects,
-          loading: false
+          team: result.data.dtoObjects
         });
+        this.getContactInfo();
       })
       .catch((error) => {
         this.setState({
@@ -262,9 +285,9 @@ class EmployeeDetailContainer extends Component {
             result: emploSkills
           },
           skills: emploSkills.data.dtoObjects,
-          loading: false,
           edit: true
         });
+        this.getContactInfo();
       })
       .catch((error) => {
         this.setState({
@@ -457,8 +480,22 @@ class EmployeeDetailContainer extends Component {
       <div className="employee-headway">
         <DetailCascade lKey={t("Localization")} rVal={employee.localization} lColSize={4} rColSize={7} />
         <DetailCascade lKey={t("Email")} rVal={employee.email} lColSize={4} rColSize={7} />
-        <DetailCascade lKey={t("Phone")} rVal={employee.phoneNumber} lColSize={4} rColSize={7} defVal="<brak>"/>
       </div>
+      {
+        this.state.contactInfo !== undefined ? <div>
+          <hr/>
+          <div className="employee-headway">
+            <DetailCascade lKey={'Skype'} defVal="<brak>" rVal={this.state.contactInfo.skypeID} lColSize={4} rColSize={7} />
+            <div className="text-bold employee-headway">Numery telefonu</div>
+            <DetailCascade lKey={'#'} rVal={employee.phoneNumber} lColSize={4} rColSize={7} defVal="<brak>"/>
+            {
+              this.state.contactInfo.telephoneNumber.map((number, index) => {
+                return <DetailCascade key={index} lKey={'#'} defVal="<brak>" rVal={number} lColSize={4} rColSize={7} />;
+              })
+            }
+          </div>
+        </div> : null
+      }
       <hr className="sharp"/>
       {this.state.edit === false ? this.pullInfoBlocksDOM() : null}
     </div>;

@@ -268,6 +268,15 @@ class DCMTWebApi {
       .catch(response => authValidator(response));
   }
 
+  getEmploContactInfo(employeeId) {
+    return axios.get(`${API_ENDPOINT}/employees/BillenniumEmploContact`, {
+      params: {
+        employeeId
+      }
+    })
+      .catch(response => authValidator(response));
+  }
+
   overrideSkillsOnEmployee(id, skillsArray) {
     return axios.put(`${API_ENDPOINT}/employee/${id}`, skillsArray)
       .catch(response => authValidator(response));

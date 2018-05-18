@@ -530,6 +530,17 @@ class SmoothTable extends Component {
             </td>
           );
         }
+        else if (column.manualResolver !== undefined) {
+          return (
+            <td
+              key={"____manualResolver_" + index}
+              className="smooth-cell smooth-text-right"
+              style={{ width: column.width + "%" }}
+            >
+              {column.manualResolver(object, column)}
+            </td>
+          );
+        }
       })}
     </tr>);
 

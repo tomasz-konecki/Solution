@@ -86,6 +86,24 @@ class UsersList extends Component {
     this.setState({ showModal: false });
   };
 
+  rolesArrayToSignificantSymbol(rolesArray) {
+    const symbol = [
+      '⬛', '⚫', '🔸', '🔹', '🔻', '💠'
+    ];
+    const roles = [
+      'Developer', 'Tradesman', 'Human Resources', 'Team Leader', 'Administrator', 'Manager'
+    ];
+    let symbols = [];
+
+    for(let i = 0; i < symbol.length; i++){
+      if(rolesArray.indexOf(roles[i]) >= 0) symbols.push(
+        <span title={roles[i]}>{symbol[i]}</span>
+      );
+    }
+
+    return symbols;
+  }
+
   render() {
     const { t } = this.props;
     const construct = {
@@ -110,6 +128,9 @@ class UsersList extends Component {
         }
       ],
       columns: [
+        { width: 1, pretty: "", manualResolver: (user, column) => {
+           return this.rolesArrayToSignificantSymbol(user.roles);
+        }},
         { width: 20, field: "firstName", pretty: t("Name"), type: "text", filter: true },
         { width: 30, field: "lastName", pretty: t("Surname"), type: "text", filter: true },
         { width: 30, field: "email", pretty: t("Email"), type: "text", filter: true },

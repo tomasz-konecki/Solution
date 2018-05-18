@@ -479,13 +479,13 @@ class EmployeeDetailContainer extends Component {
       <hr className="sharp"/>
       <div className="employee-headway">
         <DetailCascade lKey={t("Localization")} rVal={employee.localization} lColSize={4} rColSize={7} />
-        <DetailCascade lKey={t("Email")} rVal={employee.email} lColSize={4} rColSize={7} />
+        <DetailCascade dHref={`mailto:${employee.email}`} lKey={t("Email")} rVal={employee.email} lColSize={4} rColSize={7} />
       </div>
       {
         this.state.contactInfo !== undefined ? <div>
           <hr/>
           <div className="employee-headway">
-            <DetailCascade lKey={'Skype'} defVal="<brak>" rVal={this.state.contactInfo.skypeID} lColSize={4} rColSize={7} />
+            <DetailCascade dHref={`skype:${this.state.contactInfo.skypeID}?chat`} lKey={'Skype'} defVal="<brak>" rVal={this.state.contactInfo.skypeID} lColSize={4} rColSize={7} />
             <div className="text-bold employee-headway">Numery telefonu</div>
             <DetailCascade lKey={'#'} rVal={employee.phoneNumber} lColSize={4} rColSize={7} defVal="<brak>"/>
             {

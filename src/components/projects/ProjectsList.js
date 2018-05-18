@@ -135,7 +135,7 @@ class ProjectsList extends Component {
             },
             {
               icon: { icon: "angle-double-up", iconType: "fas" },
-              title: t("CloseProjectImperativus"),
+              title: t("ReactivateProjectImperativus"),
               click: object => {
                 this.props.dispatch(
                   setActionConfirmation(true, {

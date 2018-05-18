@@ -61,7 +61,8 @@ const translations = {
     DeleteProjectInfinitive: "Usunąć projekt",
     ProjectDeleted: "Projekt został usunięty",
     EditProject: "Edytuj projekt",
-    DeactivateDeleteEdit: "Deaktywuj/Usuń/Edytuj"
+    DeactivateDeleteEdit: "Deaktywuj/Usuń/Edytuj",
+    SeeMore: "Zobacz więcej"
   },
   EmployeesList: {
     Name: "Imię",

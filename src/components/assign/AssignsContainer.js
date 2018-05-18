@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import DCMTWebApi from '../../api';
+import ResponseParser from "../../api/responseParser";
 import CapacitySlider from './../employees/CapacitySlider';
 import SenioritySlider from './../employees/SenioritySlider';
 import LoaderCircular from './../common/LoaderCircular';
@@ -79,24 +80,26 @@ class AssignsContainer extends Component {
     });
     DCMTWebApi.getEmployees({
       page: 1,
-      limit: 300,
+      limit: 3000,
       employeeFilter: {
         hasAccount: true
       }
     })
       .then((employees) => {
-        this.setState({
-          employees: employees.data.dtoObject.results,
-          errorBlock: {
-            response: employees
-          }
-        });
+        window.testReply = employees;
+        // this.setState({
+        //   employees: employees.data.dtoObject.results,
+        //   errorBlock: {
+        //     response: employees
+        //   }
+        // });
       })
       .catch((error) => {
-        this.setState({
-          errorBlock: error,
-          loading: false
-        });
+        window.testReply = error;
+        // this.setState({
+        //   errorBlock: error,
+        //   loading: false
+        // });
       });
   }
 

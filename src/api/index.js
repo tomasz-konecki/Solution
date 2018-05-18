@@ -8,6 +8,7 @@ import storeCreator from "./../store";
 import storage from "redux-persist/lib/storage";
 import { push } from 'react-router-redux';
 import { logout } from './../actions/authActions';
+import ResponseParser from './responseParser';
 
 const { store } = storeCreator;
 
@@ -40,11 +41,28 @@ function listener() {
 }
 
 const authValidator = (response) => {
+  if(response.response === undefined) {
+    throw response;
+  }
   if(response.response.status === 401){
     store.dispatch(logout());
     store.dispatch(push('/'));
   }
   throw response;
+};
+
+const parseSuccess = (response) => {
+  let parser = new ResponseParser(response);
+  parser.parse();
+  return parser;
+};
+
+const parseFailure = (response) => {
+  if(response instanceof Error !== false) throw response;
+  let parser = new ResponseParser(response);
+  console.log('PARSER', parser);
+  parser.parse();
+  throw parser;
 };
 
 class DCMTWebApi {
@@ -229,7 +247,9 @@ class DCMTWebApi {
 
   getEmployees(settings = {}) {
     return axios.post(`${API_ENDPOINT}/employees`, settings)
-      .catch(response => authValidator(response));
+      .then(response => parseSuccess(response))
+      .catch(response => authValidator(response))
+      .catch(response => parseFailure(response));
   }
 
   getEmployee(id) {

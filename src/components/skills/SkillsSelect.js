@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as skillsActions from "../../actions/skillsActions";
 import * as asyncActions from "../../actions/asyncActions";
+import ResponseParser from "../../api/responseParser";
 import ProjectSkill from './../projects/ProjectSkill';
 import PropTypes from 'prop-types';
 import { translate } from 'react-translate';
@@ -64,6 +65,7 @@ class SkillsSelect extends Component {
 
   render() {
     const { t } = this.props;
+
     return <div className="row skills-select">
       <div className="skills-list col-sm-4">
       <input value={this.state.search} onChange={this.handleSearchChange} type="text" className="form-control form-control-sm skills-input-filter"/>

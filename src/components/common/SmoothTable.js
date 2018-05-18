@@ -556,7 +556,6 @@ class SmoothTable extends Component {
   }
 
   forceAnUpdate = () => {
-    console.log('focing update');
     const unfurls = JSON.parse(JSON.stringify(this.state.rowUnfurls));
     this.setState({
       update: !this.state.update,

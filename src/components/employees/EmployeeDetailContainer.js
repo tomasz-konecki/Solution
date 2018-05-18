@@ -32,6 +32,8 @@ class EmployeeDetailContainer extends Component {
       rowUnfurls: {},
       team: []
     };
+
+    this.skillsCache = {};
   }
 
   componentDidMount() {
@@ -299,6 +301,7 @@ class EmployeeDetailContainer extends Component {
 
   handleSkillSelection = (newSkill) => {
     let duplicate = false;
+    if(!this.state.changesMade) this.skillsCache = JSON.parse(JSON.stringify(this.state.skills));
     this.state.skills.map((skill, index) => {
       if(skill.skillId === newSkill.skillId) duplicate = true;
     });
@@ -317,6 +320,7 @@ class EmployeeDetailContainer extends Component {
 
   handleSkillEdit = (updatedSkillObject, deletion = false) => {
     let { skills } = this.state;
+    if(!this.state.changesMade) this.skillsCache = JSON.parse(JSON.stringify(skills));
     this.state.skills.forEach((skill, index) => {
       if(skill.skillName === undefined){
         skill = {
@@ -343,6 +347,7 @@ class EmployeeDetailContainer extends Component {
   handleRangeChange = (skillObject) => {
     return (event) => {
       let { skills } = this.state;
+      if(!this.state.changesMade) this.skillsCache = JSON.parse(JSON.stringify(skills));
       skills.forEach((skill, index) => {
         // backend fixes!
         if(skill.skillName === undefined){
@@ -404,7 +409,9 @@ class EmployeeDetailContainer extends Component {
 
   cancel = () => {
     this.setState({
-      edit: false
+      edit: false,
+      changesMade: false,
+      skills: this.skillsCache
     });
   }
 

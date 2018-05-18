@@ -91,7 +91,6 @@ const ResultBlock = ({
       break;
   }
 
-  console.log('RESPONSE', response, response.data);
   if (response.data !== undefined && response.data.errorOccurred === true) {
     const { errors } = response.data;
     message = errors[Object.keys(errors)[0]];

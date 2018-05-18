@@ -18,8 +18,7 @@ class StageTwo extends Component {
       email: "",
       phoneNumber: "",
       id: "",
-      roles: [],
-      isLoading: false
+      roles: []
     };
   }
 
@@ -60,13 +59,8 @@ class StageTwo extends Component {
     if (this.state.roles.length === 0) {
       alert(this.props.t("AddRoles"));
     } else {
-      this.setState({ isLoading: true });
       this.props.doAddUser(this.state);
     }
-  };
-
-  stopLoading = () => {
-    this.setState({ isLoading: false });
   };
 
   render() {
@@ -110,7 +104,7 @@ class StageTwo extends Component {
         </div>
 
         <div className="stage-two-loader-container">
-          {this.state.isLoading === true && <LoaderHorizontal />}
+          {this.props.isLoading === true && <LoaderHorizontal />}
         </div>
       </div>
     );

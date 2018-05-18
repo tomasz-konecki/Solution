@@ -14,8 +14,8 @@ class CapacitySlider extends Component {
   }
 
   toFraction = (decimal) => {
-    if(decimal === 0) return 'FT';
-    if(decimal === 1) return 'FT';
+    if(decimal === 0) return 'FTE';
+    if(decimal === 1) return 'FTE';
     return new Fraction(decimal).toFraction(true);
   }
 
@@ -32,7 +32,7 @@ class CapacitySlider extends Component {
       case 4:
         return "3/4";
       case 5:
-        return "FT";
+        return "FTE";
     }
   }
 
@@ -99,7 +99,7 @@ class CapacitySlider extends Component {
             <span style={curStyling}>{this.toFraction(capacityLevel)}</span>
           </span>
           <span className="capacity-absolute-slider-level">
-            <span>FT</span>
+            <span>FTE</span>
           </span>
           <span className={leftClasses.join(' ')}>
               <span style={leftStyling}>{this.toFraction(cLeft)}</span>

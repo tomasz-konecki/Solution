@@ -56,16 +56,18 @@ class UserSelector extends Component {
         this.setState({
           errorBlock: {
             response
-          }
+          },
+          loading: false
         });
-        this.refs.StageTwo.stopLoading();
         setTimeout(() => {
           this.props.closeModal();
         }, 500);
       })
       .catch(errorBlock => {
-        this.setState({ errorBlock });
-        this.refs.StageTwo.stopLoading();
+        this.setState({
+          errorBlock,
+          loading: false
+        });
       });
   };
 
@@ -88,6 +90,7 @@ class UserSelector extends Component {
             resetState={this.resetState}
             errorBlock={this.state.errorBlock}
             doAddUser={this.doAddUser}
+            isLoading={this.state.loading}
           />
         )}
       </div>

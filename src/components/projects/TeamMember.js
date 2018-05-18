@@ -33,7 +33,7 @@ class TeamMember extends Component {
       case 0.25: return '1/4';
       case 0.5: return '1/2';
       case 0.75: return '3/4';
-      case 1: return 'FT';
+      case 1: return 'FTE';
     }
   }
 

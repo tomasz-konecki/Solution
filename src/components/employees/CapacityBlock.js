@@ -21,7 +21,7 @@ class CapacityBlock extends Component {
       case 4:
         return "3/4";
       case 5:
-        return "FT";
+        return "FTE";
     }
   }
 

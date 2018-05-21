@@ -64,6 +64,8 @@ class ResponseParser {
     this.successMessage = successMessage;
     this.proper = false;
     this.parsed = false;
+
+    return this;
   }
   checkLevel = () => {
     if(this.replyBlock.response === undefined && this.replyBlock.request !== undefined && this.replyBlock.data === undefined) return this.responseLevel = -1;
@@ -109,14 +111,14 @@ class ResponseParser {
   getMostSignificantText = () => {
     if(this.responseLevel === -1) return this.original.message;
 
-    if(this.errorOccurred){
+    if(this.errorOccurred()){
       if(this._errors !== undefined) return this._errors[0][1];
       else throw 'An error occurred, but no error was present.';
     }
     else return this.successMessage;
   }
   getMostSignificantErrorText = () => {
-    if(!this.errorOccurred) throw "Tried to pull an error when no such occurred";
+    if(!this.errorOccurred()) throw "Tried to pull an error when no such occurred";
     if(this.responseLevel === -1) return this.original.message;
 
     return this._errors[0][1];
@@ -136,18 +138,18 @@ class ResponseParser {
     };
   }
   jsErrorString = () => {
-    if(!this.errorOccurred) throw "Tried to pull an error when no such occurred";
+    if(!this.errorOccurred()) throw "Tried to pull an error when no such occurred";
     return this.original.toString();
   }
   jsError = () => {
-    if(!this.errorOccurred) throw "Tried to pull an error when no such occurred";
+    if(!this.errorOccurred()) throw "Tried to pull an error when no such occurred";
     return this.original;
   }
   colorBlock = () => {
     return {
       color: this.errorOccurred() ? 'red': 'green',
       text: this.getMostSignificantText()
-    }
+    };
   }
   parse = () => {
     if(!this.parsed){

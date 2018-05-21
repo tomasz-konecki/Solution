@@ -54,16 +54,334 @@ const authValidator = (response) => {
 const parseSuccess = (response) => {
   let parser = new ResponseParser(response);
   parser.parse();
-  return parser;
+  return Promise.resolve(parser);
 };
 
 const parseFailure = (response) => {
-  if(response instanceof Error !== false) throw response;
+  if(response instanceof Error && response.request === undefined) throw response;
   let parser = new ResponseParser(response);
-  console.log('PARSER', parser);
   parser.parse();
   throw parser;
 };
+
+const params = (obj) => {
+  return {
+    params: obj
+  };
+};
+
+const WebAround = {
+  get: (path, payload) => {
+    return axios.post(path, payload)
+      .then(response => parseSuccess(response))
+      .catch(response => authValidator(response))
+      .catch(response => parseFailure(response));
+  },
+  post: (path, payload) => {
+    return axios.post(path, payload)
+      .then(response => parseSuccess(response))
+      .catch(response => authValidator(response))
+      .catch(response => parseFailure(response));
+  },
+  put: (path, payload) => {
+    return axios.put(path, payload)
+      .then(response => parseSuccess(response))
+      .catch(response => authValidator(response))
+      .catch(response => parseFailure(response));
+  },
+  delete: (path, payload) => {
+    return axios.delete(path, payload)
+      .then(response => parseSuccess(response))
+      .catch(response => authValidator(response))
+      .catch(response => parseFailure(response));
+  },
+  patch: (path, payload) => {
+    return axios.patch(path, payload)
+      .then(response => parseSuccess(response))
+      .catch(response => authValidator(response))
+      .catch(response => parseFailure(response));
+  }
+};
+
+const WebApi = {
+  assignments: {
+    get: {
+      byEmployee: (employeeId) => {
+        return WebAround.get(`${API_ENDPOINT}/assignments/employee/${employeeId}`);
+      },
+      byProject: (projectId) => {
+        return WebAround.get(`${API_ENDPOINT}/assignments/project/${projectId}`);
+      }
+    },
+    post: (assignmentModel) => {
+      return WebAround.post(`${API_ENDPOINT}/assignments/`, assignmentModel);
+    },
+    delete: (assignmentId) => {
+      return WebAround.delete(`${API_ENDPOINT}/assignments/${assignmentId}`);
+    },
+    put: (assignmentId, assignmentModel) => {
+      return WebAround.put(`${API_ENDPOINT}/assignments/${assignmentId}`, assignmentModel);
+    }
+  },
+  clients: {
+    get: {
+      all: () => {
+        return WebAround.get(`${API_ENDPOINT}/clients`);
+      },
+      byClientId: (clientId) => {
+        return WebAround.get(`${API_ENDPOINT}/clients/${clientId}`);
+      }
+    },
+    post: (client) => {
+      return WebAround.post(`${API_ENDPOINT}/clients/`, client);
+    },
+    delete: (clientId) => {
+      return WebAround.delete(`${API_ENDPOINT}/clients/${clientId}`);
+    },
+    put: {
+      info: (clientId, clientName) => {
+        return WebAround.put(`${API_ENDPOINT}/clients/${clientId}`, {
+          name: clientName
+        });
+      },
+      reactivate: (clientId) => {
+        return WebAround.put(`${API_ENDPOINT}/clients/${clientId}/reactivate`);
+      }
+    }
+  },
+  education: {
+    get: {
+      byEmployee: (employeeId) => {
+        return WebAround.get(`${API_ENDPOINT}/employees/${employeeId}`);
+      },
+      byEducation: (educationId) => {}
+    },
+    delete: (educationId) => {},
+    put: (educationId) => {},
+    post: () => {}
+  },
+  employees: {
+    get: {
+      byEmployee: (employeeId) => {
+        return WebAround.get(`${API_ENDPOINT}/employees/${employeeId}`);
+      },
+      capacity: (employeeId) => {
+        return WebAround.get(`${API_ENDPOINT}/employees/${employeeId}/capacity`);
+      },
+      capacityRefactor: (employeeId) => {
+        return WebAround.get(`${API_ENDPOINT}/employees/${employeeId}/capacityRefactor`);
+      },
+      emplo: {
+        contact: (employeeId) => {
+          return WebAround.get(`${API_ENDPOINT}/employees/billenniumemplocontact`, params({employeeId}));
+        },
+        skills: (employeeId) => {
+          return WebAround.get(`${API_ENDPOINT}/employees/billenniumemploskills`, params({employeeId}));
+        }
+      }
+    },
+    post: {
+      list: (settings = {}) => {
+        return WebAround.post(`${API_ENDPOINT}/employees/`, settings);
+      }
+    },
+    delete: (employeeId) => {
+      return WebAround.delete(`${API_ENDPOINT}/employees/${employeeId}`);
+    },
+    put: {
+      skills: (employeeId, skillsArray) => {
+        return WebAround.put(`${API_ENDPOINT}/employees/${employeeId}`, skillsArray);
+      },
+      foreignLanguages: (employeeId, languagesArray) => {
+        return WebAround.put(`${API_ENDPOINT}/employees/${employeeId}`, languagesArray);
+      }
+    },
+    patch: {
+      data: (employeeId, model) => {
+        return WebAround.patch(`${API_ENDPOINT}/employees/${employeeId}`, model);
+      },
+      reactivate: (employeeId) => {
+        return WebAround.patch(`${API_ENDPOINT}/employees/${employeeId}/reactivate`);
+      }
+    }
+  },
+  feedbacks: {
+    get: {
+      all: () => {},
+      byFeedback: (feedbackId) => {},
+      byAuthor: (authorId) => {},
+      byEmployee: (employeeId) => {},
+      byProject: (projectId) => {}
+    }
+  },
+  foreignLanguages: {
+    get: {
+      all: () => {},
+      byForeignLanguage: (foreignLanguageId) => {}
+    },
+    post: () => {},
+    delete: (foreignLanguageId) => {},
+    put: (foreignLanguageId) => {}
+  },
+  projects: {
+    get: (projectId) => {
+      return WebAround.get(`${API_ENDPOINT}/projects/${projectId}`);
+    },
+    post: {
+      list: (settings = {}) => {
+        return WebAround.post(`${API_ENDPOINT}/projects/`, settings);
+      },
+      add: (projectModel) => {
+        return WebAround.post(`${API_ENDPOINT}/projects/`, projectModel);
+      }
+    },
+    put: {
+      project: (projectId, projectModel) => {
+        return WebAround.put(`${API_ENDPOINT}/projects/${projectId}`, projectModel);
+      },
+      owner: (projectId, ownersIdsArray) => {
+        return WebAround.put(`${API_ENDPOINT}/projects/${projectId}/owner`, {
+          userIds: ownersIdsArray
+        });
+      },
+      close: (projectId) => {
+        return WebAround.put(`${API_ENDPOINT}/projects/${projectId}/close`);
+      },
+      reactivate: (projectId) => {
+        return WebAround.put(`${API_ENDPOINT}/projects/${projectId}/reactivate`);
+      },
+      skills: (projectId, skillsArray) => {
+        return WebAround.put(`${API_ENDPOINT}/projects/${projectId}/skills`, skillsArray);
+      }
+    },
+    delete: {
+      owner: (projectId, ownerId) => {
+        return WebAround.delete(`${API_ENDPOINT}/projects/${projectId}/owner`, {
+          userId: ownerId
+        });
+      },
+      project: (projectId) => {
+        return WebAround.delete(`${API_ENDPOINT}/projects/${projectId}/delete`);
+      }
+    }
+  },
+  reports: {
+    get: {
+      developers: (fileName) => {
+        return WebAround.get(`${API_ENDPOINT}/reports/developers`, params({fileName}));
+      },
+      cv: (employeeId) => {
+        return WebAround.get(`${API_ENDPOINT}/reports/cv/${employeeId}`);
+      },
+      teams: () => {
+        return WebAround.get(`${API_ENDPOINT}/reports/teams/`);
+      }
+    },
+    post: (reportDetails) => {
+      return WebAround.post(`${API_ENDPOINT}/reports/developers`, reportDetails);
+    }
+  },
+  responsiblePerson: {
+    get: {
+      byClient: (clientId) => {
+        return WebAround.get(`${API_ENDPOINT}/responsiblepersons/client/${clientId}`);
+      },
+      byResponsiblePerson: (responsiblePersonId) => {
+        return WebAround.get(`${API_ENDPOINT}/responsiblepersons/${responsiblePersonId}`);
+      }
+    },
+    post: (firstName, lastName, client, email, phoneNumber) => {
+      return WebAround.post(`${API_ENDPOINT}/responsiblepersons`, {
+        firstName, lastName, client, email, phoneNumber
+      });
+    },
+    delete: (responsiblePersonId) => {
+      return WebAround.delete(`${API_ENDPOINT}/responsiblepersons`, params({responsiblePersonId}));
+    }
+  },
+  skills: {
+    get: {
+      all: () => {
+        return WebAround.get(`${API_ENDPOINT}/skills`);
+      },
+      bySkill: (skillId) => {
+        return WebAround.get(`${API_ENDPOINT}/skills/${skillId}`);
+      }
+    },
+    post: (newName) => {
+      return WebAround.post(`${API_ENDPOINT}/skills`, newName);
+    },
+    delete: (skillId) => {
+      return WebAround.delete(`${API_ENDPOINT}/skills/${skillId}`);
+    },
+    put: (skillId, skillModel) => {
+      return WebAround.put(`${API_ENDPOINT}/skills/${skillId}`, skillModel);
+    }
+  },
+  users: {
+    get: {
+      byUser: (userId) => {
+        return WebAround.get(`${API_ENDPOINT}/users/${userId}`);
+      },
+      requests: () => {
+        return WebAround.get(`${API_ENDPOINT}/users/requests`);
+      },
+      adSearch: (query) => {
+        return WebAround.get(`${API_ENDPOINT}/users/searchAD/${query}`);
+      }
+    },
+    post: {
+      list: (settings = {}) => {
+        return WebAround.post(`${API_ENDPOINT}/users`, settings);
+      },
+      add: (userId, roles) => {
+        return WebAround.post(`${API_ENDPOINT}/users/add`, { id: userId, roles });
+      },
+      login: (login, password) => {
+        return axios
+          .post(`${API_ENDPOINT}/users/login`, { login, password })
+          .then(response => response.data.dtoObject);
+      },
+      logout: () => {
+        return axios
+          .post(`${API_ENDPOINT}/users/logout`);
+      },
+      token: (refreshToken) => {
+        return axios
+          .post(`${API_ENDPOINT}/users/login`, { refreshToken });
+      }
+    },
+    delete: {
+      user: (userId) => {
+        return WebAround.delete(`${API_ENDPOINT}/users/${userId}`);
+      },
+      request: (userId) => {
+        return WebAround.delete(`${API_ENDPOINT}/users/requests`, params({ userId }));
+      }
+    },
+    patch: {
+      roles: (userId, roles) => {
+        return WebAround.patch(`${API_ENDPOINT}/users`, {
+          id: userId,
+          roles
+        });
+      },
+      reactivate: (userId) => {
+        return WebAround.patch(`${API_ENDPOINT}/users/reactivate/${userId}`);
+      }
+    }
+  },
+  workExperience: {
+    get: {
+      byExperience: (workExperienceId) => {},
+      byEmployee: (employeeId) => {}
+    },
+    post: () => {},
+    delete: () => {},
+    put: () => {}
+  }
+};
+
 
 class DCMTWebApi {
   auth(login, password) {
@@ -434,4 +752,4 @@ class DCMTMockApi extends DCMTWebApi {
   }
 }
 
-export default new DCMTWebApi();
+export default WebApi;

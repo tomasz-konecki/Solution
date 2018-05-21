@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import DCMTWebApi from '../../api';
+import WebApi from '../../api';
 import ResponseParser from "../../api/responseParser";
 import CapacitySlider from './../employees/CapacitySlider';
 import SenioritySlider from './../employees/SenioritySlider';
@@ -50,7 +50,7 @@ class AssignsContainer extends Component {
     this.setState({
       projects: undefined
     });
-    DCMTWebApi.getProjects({
+    WebApi.projects.post.list({
       page: 1,
       limit: 300,
       projectFilter: {
@@ -60,15 +60,11 @@ class AssignsContainer extends Component {
     })
       .then((projects) => {
         this.setState({
-          projects: projects.data.dtoObject.results,
-          errorBlock: {
-            response: projects
-          }
+          projects: projects.extractData().results
         });
       })
       .catch((error) => {
         this.setState({
-          errorBlock: error,
           loading: false
         });
       });
@@ -78,7 +74,8 @@ class AssignsContainer extends Component {
     this.setState({
       employees: undefined
     });
-    DCMTWebApi.getEmployees({
+
+    WebApi.employees.post.list({
       page: 1,
       limit: 3000,
       employeeFilter: {
@@ -86,20 +83,14 @@ class AssignsContainer extends Component {
       }
     })
       .then((employees) => {
-        window.testReply = employees;
-        // this.setState({
-        //   employees: employees.data.dtoObject.results,
-        //   errorBlock: {
-        //     response: employees
-        //   }
-        // });
+        this.setState({
+          employees: employees.extractData().results
+        });
       })
       .catch((error) => {
-        window.testReply = error;
-        // this.setState({
-        //   errorBlock: error,
-        //   loading: false
-        // });
+        this.setState({
+          loading: false
+        });
       });
   }
 

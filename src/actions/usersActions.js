@@ -1,6 +1,6 @@
 import { LOAD_USERS_SUCCESS, ASYNC_STARTED, ASYNC_ENDED } from "../constants";
 import axios from "axios";
-import DCMTWebApi from "../api";
+import WebApi from "../api";
 import { asyncStarted, asyncEnded } from "./asyncActions";
 
 export const loadUsersSuccess = users => {
@@ -23,14 +23,15 @@ export const loadUsers = (page = 1, limit = 25, other = {}) => {
     );
 
     dispatch(asyncStarted());
-    DCMTWebApi.getUsers(settings)
+    WebApi.users.post.list(settings)
       .then(response => {
-        dispatch(loadUsersSuccess(response.data.dtoObject));
+        if(!response.errorOccurred()){
+          dispatch(loadUsersSuccess(response.extractData()));
+        }
         dispatch(asyncEnded());
       })
       .catch(error => {
         dispatch(asyncEnded());
-        alert('Wystąpił błąd: ' + error.toString());
         throw error;
       });
   };

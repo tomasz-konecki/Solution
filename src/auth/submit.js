@@ -5,7 +5,7 @@ import { push } from "react-router-redux";
 import axios from "axios";
 import * as jwtDecode from "jwt-decode";
 import * as Promise from "bluebird";
-import DCMTWebApi from "../api";
+import WebApi from "../api";
 
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 
@@ -39,7 +39,7 @@ const errorHandler = dispatch => error => {
 const submit = ({ username, password }, dispatch) => {
   return Promise.resolve()
     .then(() => dispatch(authStart()))
-    .then(() => DCMTWebApi.auth(username, password))
+    .then(() => WebApi.users.post.login(username, password))
     .then(userBlock => {
       dispatch(authSuccess(userBlock));
       dispatch(authStop());

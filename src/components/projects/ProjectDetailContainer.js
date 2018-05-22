@@ -106,7 +106,7 @@ class ProjectDetailContainer extends Component {
         });
       })
       .catch((error) => {
-
+        throw error;
       });
   }
 

@@ -35,7 +35,7 @@ class AddEmployeeToProject extends Component {
 
   getEmployees = employee => {
     return WebApi.employees.post.list({
-      Limit: 50,
+      Limit: 500,
       PageNumber: 1,
       IsDeleted: false,
       HasAccount: true,
@@ -44,11 +44,6 @@ class AddEmployeeToProject extends Component {
       .then(response => {
         return { options: response.extractData().results };
       })
-      .then(
-        this.setState({
-          errorBlock: null
-        })
-      )
       .catch(errorBlock => {
         this.setState({ errorBlock });
       });

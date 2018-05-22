@@ -72,9 +72,7 @@ class ProjectsContainer extends React.Component {
       const { ownerId, projectId } = this.props.toConfirm;
       WebApi.projects.delete.owner(projectId, ownerId)
         .then(response => {
-          this.props.async.setActionConfirmationResult({
-            response
-          });
+          this.props.async.setActionConfirmationResult(response);
           this.pageChange(this.state.currentPage);
         })
         .catch(error => {

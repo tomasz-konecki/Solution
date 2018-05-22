@@ -72,7 +72,7 @@ const params = (obj) => {
 
 const WebAround = {
   get: (path, payload) => {
-    return axios.post(path, payload)
+    return axios.get(path, payload)
       .then(response => parseSuccess(response))
       .catch(response => authValidator(response))
       .catch(response => parseFailure(response));
@@ -260,7 +260,9 @@ const WebApi = {
     delete: {
       owner: (projectId, ownerId) => {
         return WebAround.delete(`${API_ENDPOINT}/projects/${projectId}/owner`, {
-          userId: ownerId
+          data: {
+            userId: ownerId
+          }
         });
       },
       project: (projectId) => {

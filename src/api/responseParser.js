@@ -64,6 +64,7 @@ class ResponseParser {
     this.successMessage = successMessage;
     this.proper = false;
     this.parsed = false;
+    this._errors = [];
 
     return this;
   }
@@ -112,7 +113,7 @@ class ResponseParser {
     if(this.responseLevel === -1) return this.original.message;
 
     if(this.errorOccurred()){
-      if(this._errors !== undefined) return this._errors[0][1];
+      if(this._errors !== undefined) return this._errors[0]['message'];
       else throw 'An error occurred, but no error was present.';
     }
     else return this.successMessage;
@@ -121,7 +122,7 @@ class ResponseParser {
     if(!this.errorOccurred()) throw "Tried to pull an error when no such occurred";
     if(this.responseLevel === -1) return this.original.message;
 
-    return this._errors[0][1];
+    return this._errors[0]['message'];
   }
   errors = () => {
     return {
@@ -179,7 +180,11 @@ class ResponseParser {
           this.replyBlock = this.replyBlock;
           break;
         case 1:
-          this._errors = Object.entries(this.replyBlock.response.data.errors);
+          Object.entries(this.replyBlock.response.data.errorObjects).map(([index, modelEntry], _index) => {
+            Object.entries(modelEntry.errors).map(([code, message], index) => {
+              this._errors.push({code, message});
+            });
+          });
           this.replyBlock = this.replyBlock.response;
           break;
         case 2:

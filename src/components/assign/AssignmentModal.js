@@ -87,15 +87,15 @@ class AssignmentModal extends Component {
   };
 
   assignEmployeeToProject = () => {
-    WebApi.assignments.post(
-      this.props.employee.id,
-      this.props.project.id,
-      this.state.startDate,
-      this.state.estimatedEndDate,
-      this.state.projectRole,
-      this.state.assignedCapacity - 0,
-      Object.values(this.state.responsibilities)
-    )
+    WebApi.assignments.post({
+      employeeId: this.props.employee.id,
+      projectId: this.props.project.id,
+      startDate: this.state.startDate,
+      endDate: this.state.estimatedEndDate,
+      role: this.state.projectRole,
+      assignedCapacity: this.state.assignedCapacity - 0,
+      responsibilities: Object.values(this.state.responsibilities)
+    })
     .then(response => {
       this.setState({
         errorBlock: response

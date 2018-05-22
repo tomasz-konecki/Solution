@@ -5,7 +5,7 @@ import { setActionConfirmation } from "./../../actions/asyncActions";
 import { connect } from "react-redux";
 import Modal from "react-responsive-modal";
 import EditProjectDetails from "../projects/modals/EditProjectDetails";
-import DCMTWebApi from "../../api";
+import WebApi from "../../api";
 import "react-datepicker/dist/react-datepicker.css";
 import DatePicker from "react-datepicker";
 import ProjectRowUnfurl from './ProjectRowUnfurl';
@@ -25,14 +25,12 @@ class ProjectsList extends Component {
   }
 
   handleGetProject = object => {
-    DCMTWebApi.getProject(object.id)
+    WebApi.projects.get(object.id)
       .then(response => {
-        if (response.status === 200) {
-          this.setState({
-            project: response.data.dtoObject,
-            showModal: true
-          });
-        }
+        this.setState({
+          project: response.extractData(),
+          showModal: true
+        });
       })
       .catch(error => {
         this.setState({

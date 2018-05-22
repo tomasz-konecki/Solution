@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import DatePicker from 'react-datepicker';
 import moment from 'moment';
-import DCMTWebApi from '../../api';
+import WebApi from '../../api';
 import ResultBlock from '../common/ResultBlock';
 
 class AssignmentModal extends Component {
@@ -87,7 +87,7 @@ class AssignmentModal extends Component {
   };
 
   assignEmployeeToProject = () => {
-    DCMTWebApi.addAssignment(
+    WebApi.assignments.post(
       this.props.employee.id,
       this.props.project.id,
       this.state.startDate,

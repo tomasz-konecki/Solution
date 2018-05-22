@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import LoaderCircular from './../common/LoaderCircular';
 import Icon from './../common/Icon';
-import DCMTWebApi from '../../api';
+import WebApi from '../../api';
 import { withRouter } from 'react-router';
 import SkillRow from './../skills/SkillRow';
 import Modal from 'react-responsive-modal';
@@ -60,11 +60,9 @@ class ProjectDetailContainer extends Component {
     if (this.validatePropsForAction(nextProps, "deleteProjectMember")) {
       this.props.dispatch(setActionConfirmationProgress(true));
       const { assignmentId } = this.props.toConfirm;
-      DCMTWebApi.deleteAssignment(assignmentId)
+      WebApi.assignments.delete(assignmentId)
         .then(response => {
-          this.props.dispatch(setActionConfirmationResult({
-            response
-          }));
+          this.props.dispatch(setActionConfirmationResult(response));
           this.refresh();
         })
         .catch(error => {
@@ -94,17 +92,17 @@ class ProjectDetailContainer extends Component {
   }
 
   getProject = (id) => {
-    DCMTWebApi.getProject(id)
+    WebApi.projects.get(id)
       .then((response) => {
-        console.log('PROJECT', response.data.dtoObject);
+        let extract = response.extractData();
         this.setState({
-          project: response.data.dtoObject,
+          project: extract,
           loading: false,
           projectLoadedSuccessfully: true,
-          projectActive: response.data.dtoObject.isActive,
-          skills: response.data.dtoObject.skills,
-          team: (response.data.dtoObject.team !== undefined ?
-            response.data.dtoObject.team : [])
+          projectActive: extract.isActive,
+          skills: extract.skills,
+          team: (extract.team !== undefined ?
+            extract.team : [])
         });
       })
       .catch((error) => {
@@ -131,13 +129,11 @@ class ProjectDetailContainer extends Component {
     this.setState({
       loading: true
     });
-    DCMTWebApi.putProjectSkills(this.props.match.params.id, this.state.skills)
+    WebApi.projects.put.skills(this.props.match.params.id, this.state.skills)
       .then((response) => {
         this.setState({
           loading: false,
-          pps_rb: {
-            response
-          },
+          pps_rb: response,
           edit: false
         });
       })

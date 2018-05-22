@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import "../../../scss/components/users/modals/StageTwo.scss";
 import FoundUsersTable from "../FoundUsersTable";
-import DCMTWebApi from "../../../api";
 import UserDetailsBlock from "./UserDetailsBlock";
 import UserRoleAssigner from "./UserRoleAssigner";
 import LoaderHorizontal from "../../../components/common/LoaderHorizontal";

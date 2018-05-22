@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import LoaderCircular from './../common/LoaderCircular';
 import Icon from './../common/Icon';
-import DCMTWebApi from '../../api';
+import WebApi from '../../api';
 import { withRouter } from 'react-router';
 import DetailCascade from './DetailCascade';
 import SkillRow from './../skills/SkillRow';
@@ -44,11 +44,9 @@ class EmployeeDetailContainer extends Component {
     if (this.validatePropsForAction(nextProps, "deleteProjectMember")) {
       this.props.dispatch(setActionConfirmationProgress(true));
       const { assignmentId } = this.props.toConfirm;
-      DCMTWebApi.deleteAssignment(assignmentId)
+      WebApi.assignments.delete(assignmentId)
         .then(response => {
-          this.props.dispatch(setActionConfirmationResult({
-            response
-          }));
+          this.props.dispatch(setActionConfirmationResult(response));
           this.getAssignments();
         })
         .catch(error => {
@@ -115,18 +113,15 @@ class EmployeeDetailContainer extends Component {
       }
       newSkills.push(skill);
     });
-    DCMTWebApi
-      .addEmployee(
-        this.props.match.params.id,
-        this.capacityLevelToFraction(this.state.capacityLevel),
-        this.seniorityLevelToString(this.state.seniorityLevel),
-        newSkills
-      )
+    WebApi.employees.post.add({
+      id: this.props.match.params.id,
+      capacity: this.capacityLevelToFraction(this.state.capacityLevel),
+      seniority: this.seniorityLevelToString(this.state.seniorityLevel),
+      skills: newSkills
+    })
       .then((confirmation) => {
         this.setState({
-          errorBlock: {
-            result: confirmation
-          },
+          errorBlock: confirmation,
           edit: false
         });
         this.getEmployee();
@@ -158,26 +153,20 @@ class EmployeeDetailContainer extends Component {
       // delete skill.name;
       newSkills.push(skill);
     });
-    DCMTWebApi
-      .editEmployee(
-        this.props.match.params.id,
-        this.seniorityLevelToString(this.state.seniorityLevel),
-        this.capacityLevelToFraction(this.state.capacityLevel)
-      )
+    WebApi.employees.patch.data(this.props.match.params.id, {
+      seniority: this.seniorityLevelToString(this.state.seniorityLevel),
+      capacity: this.capacityLevelToFraction(this.state.capacityLevel)
+    })
       .then((confirmation) => {
         this.setState({
-          errorBlock: {
-            result: confirmation
-          },
+          errorBlock: confirmation,
           loading: true
         });
       })
-      .then(DCMTWebApi.editEmployeeSkills(this.props.match.params.id, newSkills))
+      .then(WebApi.employees.put.skills(this.props.match.params.id, newSkills))
       .then((result) => {
         this.setState({
-          errorBlock: {
-            result
-          },
+          errorBlock: result,
           edit: false
         }, () => {
           this.getEmployee();
@@ -195,13 +184,11 @@ class EmployeeDetailContainer extends Component {
     this.setState({
       loading: true
     }, () => {
-      DCMTWebApi.getEmploContactInfo(this.props.match.params.id)
+      WebApi.employees.get.emplo.contact(this.props.match.params.id)
       .then((result) => {
         this.setState({
-          errorBlock: {
-            result
-          },
-          contactInfo: result.data.dtoObject,
+          errorBlock: result,
+          contactInfo: result.extractData(),
           loading: false
         });
       })
@@ -218,13 +205,11 @@ class EmployeeDetailContainer extends Component {
     this.setState({
       loading: true
     }, () => {
-      DCMTWebApi.getAssignmentsForEmployee(this.props.match.params.id)
+      WebApi.assignments.get.byEmployee(this.props.match.params.id)
       .then((result) => {
         this.setState({
-          errorBlock: {
-            result
-          },
-          team: result.data.dtoObjects
+          errorBlock: result,
+          team: result.extractData()
         });
         this.getContactInfo();
       })
@@ -241,20 +226,19 @@ class EmployeeDetailContainer extends Component {
     this.setState({
       loading: true
     }, () => {
-      DCMTWebApi.getEmployee(this.props.match.params.id)
+      WebApi.employees.get.byEmployee(this.props.match.params.id)
       .then((result) => {
+        let extract = result.extractData();
         this.setState({
-          errorBlock: {
-            result
-          },
-          skills: result.data.dtoObject.skills === null ? [] : result.data.dtoObject.skills,
-          loading: !result.data.dtoObject.hasAccount,
+          errorBlock: result,
+          skills: extract.skills === null ? [] : extract.skills,
+          loading: !extract.hasAccount,
           employeeLoadedSuccessfully: true,
-          employeeActive: result.data.dtoObject.hasAccount,
-          employee: result.data.dtoObject,
-          capacityLevel: this.capacityLevelToFraction(result.data.dtoObject.baseCapacity, true),
-          seniorityLevel: this.seniorityLevelToString(result.data.dtoObject.seniority, true),
-          edit: !result.data.dtoObject.hasAccount
+          employeeActive: extract.hasAccount,
+          employee: extract,
+          capacityLevel: this.capacityLevelToFraction(extract.baseCapacity, true),
+          seniorityLevel: this.seniorityLevelToString(extract.seniority, true),
+          edit: !extract.hasAccount
         }, () => {
           if(!this.state.employee.hasAccount){
             this.getEmploSkills();
@@ -280,13 +264,11 @@ class EmployeeDetailContainer extends Component {
   }
 
   getEmploSkills = () => {
-    DCMTWebApi.getEmploSkills(this.props.match.params.id)
+    WebApi.employees.get.emplo.skills(this.props.match.params.id)
       .then((emploSkills) => {
         this.setState({
-          errorBlock: {
-            result: emploSkills
-          },
-          skills: emploSkills.data.dtoObjects,
+          errorBlock: emploSkills,
+          skills: emploSkills.extractData(),
           edit: true
         });
         this.getContactInfo();

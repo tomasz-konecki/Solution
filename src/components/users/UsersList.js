@@ -6,7 +6,7 @@ import Confirmation from "../common/modals/Confirmation";
 import { setActionConfirmation } from "../../actions/asyncActions";
 import Modal from "react-responsive-modal";
 import EditUserDetails from "../users/modals/EditUserDetails";
-import DCMTWebApi from "../../api";
+import WebApi from "../../api";
 import PropTypes from 'prop-types';
 import { translate } from 'react-translate';
 
@@ -56,12 +56,10 @@ class UsersList extends Component {
         loading: true
       },
       () => {
-        DCMTWebApi.changeUserRole(id, roles)
+        WebApi.users.patch.roles(id, roles)
           .then(response => {
             this.setState({
-              responseBlock: {
-                response
-              },
+              responseBlock: response,
               loading: false
             });
             setTimeout(() => {

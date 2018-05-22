@@ -12,7 +12,6 @@ import * as asyncActions from "../../actions/asyncActions";
 import { SET_ACTION_CONFIRMATION_RESULT, SET_ACTION_CONFIRMATION } from '../../constants';
 import { translate } from 'react-translate';
 import SkillRow from './../skills/SkillRow';
-import DCMTWebApi from '../../api/';
 import { push } from 'react-router-redux';
 
 class ProjectRowUnfurl extends Component {

@@ -183,6 +183,9 @@ const WebApi = {
     post: {
       list: (settings = {}) => {
         return WebAround.post(`${API_ENDPOINT}/employees/`, settings);
+      },
+      add: (employee) => {
+        return WebAround.post(`${API_ENDPOINT}/employees/add`, employee);
       }
     },
     delete: (employeeId) => {

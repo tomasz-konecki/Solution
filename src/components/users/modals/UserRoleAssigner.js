@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import DCMTWebApi from "../../../api";
 import CheckBox from "../../common/CheckBox";
 import PropTypes from 'prop-types';
 import { translate } from 'react-translate';

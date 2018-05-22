@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import LoaderHorizontal from "./../../common/LoaderHorizontal";
 import ResultBlock from "./../../common/ResultBlock";
 import ProjectDetailsBlock from "./ProjectDetailsBlock";
-import DCMTWebApi from "../../../api";
+import WebApi from "../../../api";
 import PropTypes from 'prop-types';
 import { translate } from 'react-translate';
 
@@ -14,7 +14,7 @@ class EditProjectDetails extends Component {
 
   editProject = project => {
     this.setState({ loading: true });
-    DCMTWebApi.editProject(project)
+    WebApi.projects.put.project(project)
       .then(response => {
         if(this.props.updateProjectsOnSuccess){
           this.props.projectActions.loadProjects(
@@ -23,7 +23,7 @@ class EditProjectDetails extends Component {
           );
         }
         this.setState({
-          errorBlock: { response },
+          errorBlock: response,
           loading: false
         });
         setTimeout(() => {

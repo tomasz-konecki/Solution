@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import DCMTWebApi from "../../../api";
+import WebApi from "../../../api";
 import Select from "react-select";
 import "react-select/dist/react-select.css";
 import ResultBlock from './../../common/ResultBlock';
@@ -34,7 +34,7 @@ class AddEmployeeToProject extends Component {
   };
 
   getEmployees = employee => {
-    return DCMTWebApi.getEmployees({
+    return WebApi.employees.post.list({
       Limit: 50,
       PageNumber: 1,
       IsDeleted: false,
@@ -42,7 +42,7 @@ class AddEmployeeToProject extends Component {
       Query: employee
     })
       .then(response => {
-        return { options: response.data.dtoObject.results };
+        return { options: response.extractData().results };
       })
       .then(
         this.setState({

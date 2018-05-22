@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import StageOne from "./StageOne";
 import StageTwo from "./StageTwo";
-import DCMTWebApi from "../../../api";
+import WebApi from "../../../api";
 import PropTypes from 'prop-types';
 
 const initialState = {
@@ -35,9 +35,9 @@ class UserSelector extends Component {
     // if (!user) {
     //   return Promise.resolve({ options: [] });
     // }
-    return DCMTWebApi.searchAD(user)
+    return WebApi.users.get.adSearch(user)
       .then(response => {
-        return { options: response.data.dtoObjects };
+        return { options: response.extractData() };
       })
       .then(
         this.setState({
@@ -51,12 +51,10 @@ class UserSelector extends Component {
   };
 
   doAddUser = newUser => {
-    DCMTWebApi.addUser(newUser.id, newUser.roles)
+    WebApi.users.post.add(newUser.id, newUser.roles)
       .then(response => {
         this.setState({
-          errorBlock: {
-            response
-          },
+          errorBlock: response,
           loading: false
         });
         setTimeout(() => {

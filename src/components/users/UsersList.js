@@ -9,6 +9,7 @@ import EditUserDetails from "../users/modals/EditUserDetails";
 import WebApi from "../../api";
 import PropTypes from 'prop-types';
 import { translate } from 'react-translate';
+import IntermediateBlock from './../common/IntermediateBlock';
 
 class UsersList extends Component {
   constructor(props) {
@@ -86,7 +87,7 @@ class UsersList extends Component {
 
   rolesArrayToSignificantSymbol(rolesArray) {
     const symbol = [
-      '⬛', '⚫', '🔸', '🔹', '🔻', '💠'
+      'D', 'S', 'H', 'T', 'A', 'M'
     ];
     const roles = [
       'Developer', 'Tradesman', 'Human Resources', 'Team Leader', 'Administrator', 'Manager'
@@ -95,8 +96,13 @@ class UsersList extends Component {
 
     for(let i = 0; i < symbol.length; i++){
       if(rolesArray.indexOf(roles[i]) >= 0) symbols.push(
-        <span title={roles[i]}>{symbol[i]}</span>
+        <span className={'user-role-symbol ' + roles[i]} key={i} title={roles[i]}>{symbol[i]}</span>
       );
+      else {
+        symbols.push(
+          <span className={'user-role-symbol'} key={i}/>
+        );
+      }
     }
 
     return symbols;
@@ -126,7 +132,7 @@ class UsersList extends Component {
         }
       ],
       columns: [
-        { width: 1, pretty: "", manualResolver: (user, column) => {
+        { width: 1, pretty: "Role", manualResolver: (user, column) => {
            return this.rolesArrayToSignificantSymbol(user.roles);
         }},
         { width: 20, field: "firstName", pretty: t("Name"), type: "text", filter: true },
@@ -183,32 +189,37 @@ class UsersList extends Component {
       ]
     };
 
-    return (
-      <div>
-        <SmoothTable
-          currentPage={this.props.currentPage}
-          totalPageCount={this.props.totalPageCount}
-          loading={this.props.loading}
-          data={this.props.users}
-          construct={construct}
-        />
-        <Modal
-          open={this.state.showModal}
-          classNames={{ modal: "Modal Modal-users" }}
-          contentLabel="Edit users details"
-          onClose={this.handleCloseModal}
-        >
-          <EditUserDetails
-            closeModal={this.handleCloseModal}
-            user={this.state.user}
-            handleRoleChange={this.handleRoleChange}
-            responseBlock={this.state.responseBlock}
-            loading={this.state.loading}
-            changeUserRoles={this.changeUserRoles}
-          />
-        </Modal>
-      </div>
-    );
+    let render = () => <div>
+    <SmoothTable
+      currentPage={this.props.currentPage}
+      totalPageCount={this.props.totalPageCount}
+      loading={this.props.loading}
+      data={this.props.users}
+      construct={construct}
+    />
+    <Modal
+      open={this.state.showModal}
+      classNames={{ modal: "Modal Modal-users" }}
+      contentLabel="Edit users details"
+      onClose={this.handleCloseModal}
+    >
+      <EditUserDetails
+        closeModal={this.handleCloseModal}
+        user={this.state.user}
+        handleRoleChange={this.handleRoleChange}
+        responseBlock={this.state.responseBlock}
+        loading={this.state.loading}
+        changeUserRoles={this.changeUserRoles}
+      />
+    </Modal>
+  </div>;
+
+    return <IntermediateBlock
+    loaded={!this.state.loading}
+    render={render}
+    resultBlock={this.props.resultBlock}
+    _className={'content-container'}
+    />;
   }
 }
 

@@ -100,7 +100,7 @@ class AssignmentModal extends Component {
       this.setState({
         errorBlock: response
       });
-      if(this.props.refresh !== undefined && response.data.errorOccurred === false){
+      if(this.props.refresh !== undefined && response.errorOccurred() === false){
         this.props.refresh(true)();
       }
     })

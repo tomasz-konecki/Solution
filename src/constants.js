@@ -4,6 +4,7 @@ export const AUTH_STOP = "AUTH_STOP";
 
 export const LOGOUT = "LOGOUT";
 
+export const LOAD_USERS_FAIL = "LOAD_USERS_FAIL";
 export const LOAD_USERS_SUCCESS = "LOAD_USERS_SUCCESS";
 export const LOAD_PROJECTS_SUCCESS = "LOAD_PROJECTS_SUCCESS";
 

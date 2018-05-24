@@ -16,7 +16,7 @@ const ResultBlock = ({
   customErrors = {}
 }) => {
 
-  if(errorBlock.original === undefined){
+  if(errorBlock === undefined || errorBlock.original === undefined){
     return null;
   }
 

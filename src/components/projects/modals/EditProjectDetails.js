@@ -14,7 +14,7 @@ class EditProjectDetails extends Component {
 
   editProject = project => {
     this.setState({ loading: true });
-    WebApi.projects.put.project(project)
+    WebApi.projects.put.project(project.id, project)
       .then(response => {
         if(this.props.updateProjectsOnSuccess){
           this.props.projectActions.loadProjects(

@@ -174,12 +174,6 @@ class EmployeesRowUnfurl extends Component {
         </div>
         <div className="col-sm-2 full-width-button">
           <button onClick={this.goToEmployeeMoreDetails(this.state.toUnfurl.id)} className="dcmt-button">Więcej</button>
-          <hr/>
-          <ResultBlock
-            errorBlock={this.state.errorBlock}
-            errorOnly={false}
-            successMessage="Aktywowano"
-          />
         </div>
       </div>
     );

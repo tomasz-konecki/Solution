@@ -108,6 +108,7 @@ class UsersContainer extends React.Component {
           totalPageCount={this.props.totalPageCount}
           pageChange={this.pageChange}
           loading={this.props.loading}
+          resultBlock={this.props.resultBlock}
         />
         <Modal
           open={this.state.showModal}
@@ -139,7 +140,8 @@ function mapStateToProps(state) {
     confirmed: state.asyncReducer.confirmed,
     toConfirm: state.asyncReducer.toConfirm,
     isWorking: state.asyncReducer.isWorking,
-    type: state.asyncReducer.type
+    type: state.asyncReducer.type,
+    resultBlock: state.usersReducer.resultBlock
   };
 }
 

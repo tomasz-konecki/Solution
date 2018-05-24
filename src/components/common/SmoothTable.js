@@ -357,7 +357,7 @@ class SmoothTable extends Component {
             this.handleSortColumnClick,
             column.field
           )}
-          key={column.field + index}
+          key={index}
         >
           {column.pretty}
           {this.generateSortingArrow(columns[currentlySortedColumn])}
@@ -370,7 +370,7 @@ class SmoothTable extends Component {
             this.handleSortColumnClick,
             column.field
           )}
-          key={column.field + index}
+          key={index}
         >
           {column.pretty}
         </th>
@@ -512,7 +512,7 @@ class SmoothTable extends Component {
         if (column.field !== undefined) {
           return (
             <td
-              key={column.field}
+              key={index + column.field}
               className="smooth-cell"
               style={{ width: column.width + "%" }}
             >
@@ -522,7 +522,7 @@ class SmoothTable extends Component {
         } else if (column.toolBox !== undefined){
           return (
             <td
-              key="____toolBox"
+              key={"____toolBox_" + index}
               className="smooth-cell smooth-text-right"
               style={{ width: column.width + "%" }}
             >
@@ -545,7 +545,7 @@ class SmoothTable extends Component {
     </tr>);
 
     if(unfurl  && !this.state.update) payload.push(<tr
-      key={index}
+      key={"____unfurl_" + index}
     >
       {
         (unfurled) ?

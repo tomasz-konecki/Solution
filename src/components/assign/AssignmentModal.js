@@ -83,6 +83,18 @@ class AssignmentModal extends Component {
     });
   }
 
+  remResponsibility = () => {
+    let responsibilities = this.state.responsibilities;
+    const len = Object.keys(responsibilities).length;
+    if(len === 1) return;
+
+    delete responsibilities[len - 1];
+
+    this.setState({
+      responsibilities
+    });
+  }
+
   handleSubmit = event => {
     event.preventDefault();
   };
@@ -149,8 +161,15 @@ class AssignmentModal extends Component {
             <div className="col-sm-8 assign-line-fix assign-responsibility-row">
               {this.mapResponsibilityFields()}
             </div>
-            <div className="col-sm-1 assign-line-fix assign-responsibility-row">
-              <button onClick={this.addResponsibility} className="dcmt-button button-success">+</button>
+            <div className="col-sm-1 assign-line-fix assign-responsibility-row full-width-button">
+            {
+              Object.keys(this.state.responsibilities).length !== 10 ?
+              <button style={{padding:0}} onClick={this.addResponsibility} className="dcmt-button button-success">+</button> : null
+            }
+            {
+              Object.keys(this.state.responsibilities).length !== 1 ?
+              <button style={{padding:0}} onClick={this.remResponsibility} className="dcmt-button button-fail">-</button> : null
+            }
             </div>
           </div>
           <hr/>

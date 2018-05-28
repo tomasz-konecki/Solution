@@ -8,9 +8,9 @@ class AssignmentModal extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      projectRole: "",
-      startDate: null,
-      estimatedEndDate: null,
+      projectRole: this.props.employee.title,
+      startDate: moment(this.props.project.startDate),
+      estimatedEndDate: moment(this.props.project.endDate),
       responsibilities: {
         0: ""
       },
@@ -74,6 +74,7 @@ class AssignmentModal extends Component {
   addResponsibility = () => {
     let responsibilities = this.state.responsibilities;
     const len = Object.keys(responsibilities).length;
+    if(len === 10) return;
 
     responsibilities[len] = "";
 
@@ -136,12 +137,13 @@ class AssignmentModal extends Component {
                 type="text"
                 className="form-control"
                 name="projectRole"
+                value={this.state.projectRole}
                 onChange={this.handleChange}
               />
             </div>
           </div>
           <div className="form-group row">
-            <label htmlFor="projectRole" className="col-sm-3 col-form-label">
+            <label htmlFor="responsibilities" className="col-sm-3 col-form-label">
               Odpowiedzialności:
             </label>
             <div className="col-sm-8 assign-line-fix assign-responsibility-row">
@@ -155,7 +157,7 @@ class AssignmentModal extends Component {
           <div className="form-group row">
             <div className="col-sm-6">
               <div className="row">
-                <label htmlFor="projectRole" className="col-sm-5 col-form-label">
+                <label htmlFor="startDate" className="col-sm-5 col-form-label">
                   Data startu:
                 </label>
                 <div className="col-sm-7 assign-line-fix">
@@ -179,7 +181,7 @@ class AssignmentModal extends Component {
             </div>
             <div className="col-sm-6">
               <div className="row">
-                <label htmlFor="projectRole" className="col-sm-5 col-form-label">
+                <label htmlFor="endDate" className="col-sm-5 col-form-label">
                   Kończy:
                 </label>
                 <div className="col-sm-7 assign-line-fix">

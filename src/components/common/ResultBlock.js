@@ -16,7 +16,7 @@ const ResultBlock = ({
   customErrors = {}
 }) => {
 
-  if(errorBlock === undefined || errorBlock.original === undefined){
+  if(errorBlock === undefined || errorBlock === null || errorBlock.original === undefined){
     return null;
   }
 
@@ -32,11 +32,10 @@ const ResultBlock = ({
     classes.push("result-success");
     colorBlock.text = successMessage;
   }
+
   let styleBlock = {
     color: colorBlock.color
   };
-
-  console.log('shouldRender', shouldRender(errorOnly, errorStatus), colorBlock, styleBlock);
 
   return (
     <span>

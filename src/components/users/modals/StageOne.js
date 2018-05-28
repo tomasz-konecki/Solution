@@ -48,6 +48,7 @@ class StageOne extends Component {
 
   handleClick = () => {
     this.props.setSelectedUser(this.state.value);
+    console.log('setSelected', this.state.value);
   };
 
   render() {

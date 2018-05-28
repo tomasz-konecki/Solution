@@ -93,8 +93,10 @@ class SkillsSelect extends Component {
         <div>
           <hr/>
             {t("AddingEllipsis")}... {
-            this.props.success === true ?
-            "OK" : t("Error") + " " + this.props.success
+            this.props.success.text !== undefined ?
+            <span>{" "}
+              <span style={{color: this.props.success.color}}>{this.props.success.text}</span>
+            </span> : null
            }
         </div> : null
         }

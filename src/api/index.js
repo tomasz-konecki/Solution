@@ -314,7 +314,7 @@ const WebApi = {
       }
     },
     post: (newName) => {
-      return WebAround.post(`${API_ENDPOINT}/skills`, newName);
+      return WebAround.post(`${API_ENDPOINT}/skills`, { name: newName });
     },
     delete: (skillId) => {
       return WebAround.delete(`${API_ENDPOINT}/skills/${skillId}`);

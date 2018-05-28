@@ -54,9 +54,8 @@ class AssignsContainer extends Component {
       page: 1,
       limit: 300,
       projectFilter: {
-        isDeleted: false,
-        isActive: true
-      }
+      },
+      isDeleted: true
     })
       .then((projects) => {
         this.setState({
@@ -229,18 +228,20 @@ class AssignsContainer extends Component {
           </div>
         </div>
         <div className="col-lg-4">
-          <div className="content-container">
-          {
-            this.state.projects !== undefined ?
-            this.state.projects.map((project, index) => {
-              return <AssignProjectBlock
-                key={index}
-                accepts={[AssignDropTypes.EMPLOYEE]}
-                onDrop={this.onEmployeeDrop(project, index)}
-                project={project}
-              />;
-            }) : <LoaderCircular />
-          }
+          <div className="content-container scroll-container">
+            <div className="scroll-container">
+              {
+                this.state.projects !== undefined ?
+                this.state.projects.map((project, index) => {
+                  return <AssignProjectBlock
+                    key={index}
+                    accepts={[AssignDropTypes.EMPLOYEE]}
+                    onDrop={this.onEmployeeDrop(project, index)}
+                    project={project}
+                  />;
+                }) : <LoaderCircular />
+              }
+            </div>
           </div>
         </div>
       </div>

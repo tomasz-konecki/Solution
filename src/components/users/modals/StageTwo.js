@@ -91,13 +91,17 @@ class StageTwo extends Component {
               />
             </div>
             <div className="submit-button-container">
-              <button
-                className="dcmt-button"
-                type="submit"
-                onClick={this.handleSubmit}
-              >
-                {t("Add")}
-              </button>
+              {
+                this.state.roles[0] !== undefined ?
+                <button
+                  className="dcmt-button"
+                  type="submit"
+                  onClick={this.handleSubmit}
+                >
+                  {t("Add")}
+                </button>
+                : null
+              }
             </div>
           </div>
         </div>

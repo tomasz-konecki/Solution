@@ -37,13 +37,14 @@ class UserSelector extends Component {
     // }
     return WebApi.users.get.adSearch(user)
       .then(response => {
+        this.setState({
+          errorBlock: response
+        });
+        return response;
+      })
+      .then(response => {
         return { options: response.extractData() };
       })
-      .then(
-        this.setState({
-          errorBlock: null
-        })
-      )
       .catch(errorBlock => {
         this.setState({ errorBlock });
         // this.refs.StageOne.stopLoading();

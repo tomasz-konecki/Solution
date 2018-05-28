@@ -39,13 +39,13 @@ export const addSkill = (name) => {
     WebApi.skills.post(name)
       .then(response => {
         if(!response.errorOccurred()){
-          dispatch(addSkillSuccess(response.parse().colorBlock()));
+          dispatch(addSkillSuccess(response.colorBlock()));
           dispatch(loadSkills());
         }
         dispatch(asyncEnded());
       })
       .catch(error => {
-        dispatch(addSkillSuccess(error.parse().colorBlock()));
+        dispatch(addSkillSuccess(error.colorBlock()));
         dispatch(asyncEnded());
       });
   };

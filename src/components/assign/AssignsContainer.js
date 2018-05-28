@@ -200,8 +200,8 @@ class AssignsContainer extends Component {
       <div className="row assign-container">
         { this.pullAssignmentDOM() }
         <div className="col-lg-2">
-          <div className="content-container">
-            <div className="row">
+          <div className="content-container scroll-container">
+            <div className="row scroll-container">
               <div className="col-lg-12">
                 <div className="form-group assign-search-form">
                   <hr/>

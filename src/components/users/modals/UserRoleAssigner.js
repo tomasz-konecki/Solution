@@ -25,7 +25,7 @@ class UserRoleAssigner extends Component {
         <CheckBox
           type="checkbox"
           name="role"
-          value={t("Developer")}
+          value="Developer"
           onChange={this.handleSelectRole}
           checked={this.props.roles.indexOf("Developer") !== -1}
         />
@@ -33,7 +33,7 @@ class UserRoleAssigner extends Component {
         <CheckBox
           type="checkbox"
           name="role"
-          value={t("TeamLeader")}
+          value="Team Leader"
           onChange={this.handleSelectRole}
           checked={this.props.roles.indexOf("Team Leader") !== -1}
         />
@@ -41,7 +41,7 @@ class UserRoleAssigner extends Component {
         <CheckBox
           type="checkbox"
           name="role"
-          value={t("HumanResources")}
+          value="Human Resources"
           onChange={this.handleSelectRole}
           checked={this.props.roles.indexOf("Human Resources") !== -1}
         />
@@ -49,7 +49,7 @@ class UserRoleAssigner extends Component {
         <CheckBox
           type="checkbox"
           name="role"
-          value={t("Tradesman")}
+          value="Tradesman"
           onChange={this.handleSelectRole}
           checked={this.props.roles.indexOf("Tradesman") !== -1}
         />
@@ -57,7 +57,15 @@ class UserRoleAssigner extends Component {
         <CheckBox
           type="checkbox"
           name="role"
-          value={t("Administrator")}
+          value="Manager"
+          onChange={this.handleSelectRole}
+          checked={this.props.roles.indexOf("Manager") !== -1}
+        />
+
+        <CheckBox
+          type="checkbox"
+          name="role"
+          value="Administrator"
           onChange={this.handleSelectRole}
           checked={this.props.roles.indexOf("Administrator") !== -1}
         />

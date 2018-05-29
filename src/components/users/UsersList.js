@@ -23,17 +23,6 @@ class UsersList extends Component {
   }
 
   handleGetUser = object => {
-    // DCMTWebApi.getUser(object.id)
-    //   .then(response => {
-    //     if (response.status === 200) {
-    //       this.setState({
-    //         user: response.data.dtoObject
-    //       });
-    //     }
-    //   })
-    //   .catch(error => {
-    //     throw error;
-    //   });
     this.setState({
       user: object
     });

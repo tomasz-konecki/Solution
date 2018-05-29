@@ -4,6 +4,8 @@ import VerticalMenuElement from "./VerticalMenuElement";
 import Icon from "../../../components/common/Icon";
 import PropTypes from 'prop-types';
 import { translate } from 'react-translate';
+import { connect } from 'react-redux';
+import binaryPermissioner from './../../../api/binaryPermissioner';
 
 class LeftMenu extends React.Component {
   constructor(props) {
@@ -36,6 +38,8 @@ class LeftMenu extends React.Component {
     const { match, extended, t } = this.props;
     return (
       <ul ref={this.setMenuRef} onMouseEnter={this.handleExtend} onMouseLeave={this.handleExtend} className={"left-menu" + (extended ? " extended" : "")}>
+        {
+        binaryPermissioner(0)(0)(0)(0)(1)(1)(this.props.binPem) ?
         <VerticalMenuElement
           match={match}
           extended={extended}
@@ -43,7 +47,10 @@ class LeftMenu extends React.Component {
           icon="user-circle"
           iconType="fas"
           title={t("Users")}
-        />
+        /> : null
+        }
+        {
+        binaryPermissioner(0)(1)(1)(1)(1)(1)(this.props.binPem) ?
         <VerticalMenuElement
           match={match}
           extended={extended}
@@ -51,7 +58,8 @@ class LeftMenu extends React.Component {
           icon="address-card"
           iconType="fas"
           title={t("Employees")}
-        />
+        /> : null
+        }
         <VerticalMenuElement
           match={match}
           extended={extended}
@@ -60,6 +68,8 @@ class LeftMenu extends React.Component {
           iconType="fas"
           title={t("Projects")}
         />
+        {
+        binaryPermissioner(0)(1)(0)(1)(1)(1)(this.props.binPem) ?
         <VerticalMenuElement
           match={match}
           extended={extended}
@@ -67,10 +77,18 @@ class LeftMenu extends React.Component {
           icon="pencil-alt"
           iconType="fas"
           title={t("Assign")}
-        />
+        /> : null
+        }
       </ul>
     );
   }
+}
+
+function mapStateToProps(state) {
+  return {
+    pem: state.authReducer.pem,
+    binPem: state.authReducer.binPem
+  };
 }
 
 LeftMenu.propTypes = {
@@ -79,4 +97,4 @@ LeftMenu.propTypes = {
   close: PropTypes.func.isRequired
 };
 
-export default withRouter(translate("LeftMenu")(LeftMenu));
+export default connect(mapStateToProps)(withRouter(translate("LeftMenu")(LeftMenu)));

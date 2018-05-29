@@ -243,30 +243,30 @@ const WebApi = {
         return WebAround.put(`${API_ENDPOINT}/projects/${projectId}`, projectModel);
       },
       owner: (projectId, ownersIdsArray) => {
-        return WebAround.put(`${API_ENDPOINT}/projects/${projectId}/owner`, {
+        return WebAround.put(`${API_ENDPOINT}/projects/owner/${projectId}`, {
           userIds: ownersIdsArray
         });
       },
       close: (projectId) => {
-        return WebAround.put(`${API_ENDPOINT}/projects/${projectId}/close`);
+        return WebAround.put(`${API_ENDPOINT}/projects/close/${projectId}`);
       },
       reactivate: (projectId) => {
-        return WebAround.put(`${API_ENDPOINT}/projects/${projectId}/reactivate`);
+        return WebAround.put(`${API_ENDPOINT}/projects/reactivate/${projectId}`);
       },
       skills: (projectId, skillsArray) => {
-        return WebAround.put(`${API_ENDPOINT}/projects/${projectId}/skills`, skillsArray);
+        return WebAround.put(`${API_ENDPOINT}/projects/skills/${projectId}`, skillsArray);
       }
     },
     delete: {
       owner: (projectId, ownerId) => {
-        return WebAround.delete(`${API_ENDPOINT}/projects/${projectId}/owner`, {
+        return WebAround.delete(`${API_ENDPOINT}/projects/owner/${projectId}`, {
           data: {
             userId: ownerId
           }
         });
       },
       project: (projectId) => {
-        return WebAround.delete(`${API_ENDPOINT}/projects/${projectId}/delete`);
+        return WebAround.delete(`${API_ENDPOINT}/projects/delete/${projectId}`);
       }
     }
   },

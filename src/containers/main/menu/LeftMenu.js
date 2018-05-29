@@ -97,4 +97,4 @@ LeftMenu.propTypes = {
   close: PropTypes.func.isRequired
 };
 
-export default connect(mapStateToProps)(withRouter(translate("LeftMenu")(LeftMenu)));
+export default withRouter(connect(mapStateToProps)(translate("LeftMenu")(LeftMenu)));

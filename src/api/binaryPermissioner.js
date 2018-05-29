@@ -22,8 +22,6 @@ const binaryPermissioner = strict => d => s => h => t => m => a => binPem => {
   else {
     let pem = false;
 
-    console.log(d, bin, bin[5]);
-
     if(d === 1 && bin[5] === '1') pem = true;
     if(s === 1 && bin[4] === '1') pem = true;
     if(h === 1 && bin[3] === '1') pem = true;

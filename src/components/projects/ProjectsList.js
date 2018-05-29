@@ -13,6 +13,7 @@ import PropTypes from 'prop-types';
 import { translate } from 'react-translate';
 import { push } from 'react-router-redux';
 import binaryPermissioner from './../../api/binaryPermissioner';
+import specialPermissioner from './../../api/specialPermissioner';
 
 class ProjectsList extends Component {
   constructor(props) {
@@ -131,7 +132,11 @@ class ProjectsList extends Component {
                   })
                 );
               },
-              comparator: object => object.isActive
+              comparator: (object) => {
+                return (specialPermissioner().projects.isOwner(object, this.props.login)
+                 || binaryPermissioner(false)(0)(0)(0)(0)(1)(1)(this.props.binPem))
+                 && object.isActive
+              }
             },
             {
               icon: { icon: "angle-double-up", iconType: "fas" },
@@ -146,7 +151,11 @@ class ProjectsList extends Component {
                   })
                 );
               },
-              comparator: object => !object.isActive
+              comparator: (object) => {
+                return (specialPermissioner().projects.isOwner(object, this.props.login)
+                 || binaryPermissioner(false)(0)(0)(0)(0)(1)(1)(this.props.binPem))
+                 && !object.isActive
+              }
             },
             {
               icon: { icon: "times" },
@@ -161,13 +170,21 @@ class ProjectsList extends Component {
                   })
                 );
               },
-              comparator: object => !object.isDeleted
+              comparator: (object) => {
+                return (specialPermissioner().projects.isOwner(object, this.props.login)
+                 || binaryPermissioner(false)(0)(0)(0)(0)(1)(1)(this.props.binPem))
+                 && !object.isDeleted
+              }
             },
             {
               icon: { icon: "edit", iconType: "far" },
               title: t("EditProject"),
               click: object => {
                 this.handleGetProject(object);
+              },
+              comparator: (object) => {
+                return specialPermissioner().projects.isOwner(object, this.props.login)
+                 || binaryPermissioner(false)(0)(0)(0)(0)(1)(1)(this.props.binPem)
               }
             },
             {
@@ -177,7 +194,8 @@ class ProjectsList extends Component {
                 this.props.dispatch(
                   push(`/main/projects/${object.id}`)
                 );
-              }
+              },
+              comparator: () => binaryPermissioner(false)(1)(1)(0)(0)(1)(1)(this.props.binPem)
             }
           ],
           pretty: ''
@@ -217,7 +235,8 @@ class ProjectsList extends Component {
 
 function mapStateToProps(state) {
   return {
-    binPem: state.authReducer.binPem
+    binPem: state.authReducer.binPem,
+    login: state.authReducer.login
   };
 }
 

@@ -14,6 +14,8 @@ import TeamMember from './../projects/TeamMember';
 import { setActionConfirmation, setActionConfirmationProgress, setActionConfirmationResult } from './../../actions/asyncActions';
 import { ACTION_CONFIRMED } from './../../constants';
 import { connect } from 'react-redux';
+import binaryPermissioner from './../../api/binaryPermissioner';
+import { push } from 'react-router-redux';
 
 class EmployeeDetailContainer extends Component {
   constructor(props) {
@@ -37,6 +39,8 @@ class EmployeeDetailContainer extends Component {
   }
 
   componentDidMount() {
+    if(!binaryPermissioner(false)(0)(1)(1)(1)(1)(1)(this.props.binPem))
+      return this.props.dispatch(push('/main'));
     this.getEmployee();
   }
 
@@ -676,7 +680,8 @@ function mapStateToProps(state) {
     toConfirm: state.asyncReducer.toConfirm,
     isWorking: state.asyncReducer.isWorking,
     resultBlock: state.asyncReducer.resultBlock,
-    type: state.asyncReducer.type
+    type: state.asyncReducer.type,
+    binPem: state.authReducer.binPem
   };
 }
 

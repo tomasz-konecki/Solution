@@ -12,6 +12,7 @@ import ProjectRowUnfurl from './ProjectRowUnfurl';
 import PropTypes from 'prop-types';
 import { translate } from 'react-translate';
 import { push } from 'react-router-redux';
+import binaryPermissioner from './../../api/binaryPermissioner';
 
 class ProjectsList extends Component {
   constructor(props) {
@@ -97,7 +98,8 @@ class ProjectsList extends Component {
           pretty: t("Add"),
           click: () => {
             this.props.openAddProjectModal();
-          }
+          },
+          comparator: () => binaryPermissioner(false)(0)(0)(0)(0)(1)(1)(this.props.binPem)
         }
       ],
       columns: [
@@ -213,6 +215,12 @@ class ProjectsList extends Component {
   }
 }
 
+function mapStateToProps(state) {
+  return {
+    binPem: state.authReducer.binPem
+  };
+}
+
 ProjectsList.propTypes = {
   pageChange: PropTypes.func.isRequired,
   dispatch: PropTypes.func,
@@ -224,4 +232,4 @@ ProjectsList.propTypes = {
   projectActions: PropTypes.object
 };
 
-export default connect()(translate("ProjectsList")(ProjectsList));
+export default connect(mapStateToProps)(translate("ProjectsList")(ProjectsList));

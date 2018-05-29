@@ -1,6 +1,9 @@
 const binaryPermissioner = strict => d => s => h => t => m => a => binPem => {
   if(binPem === undefined || binPem === null) return false;
   let bin = binPem.toString(2);
+  for(let i = 0; i < 6 - bin.length; i++) {
+    bin = "0" + bin;
+  }
   console.log(bin, binPem, strict);
   if(strict) {
     let noPem = false;

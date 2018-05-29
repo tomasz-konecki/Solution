@@ -39,7 +39,7 @@ class LeftMenu extends React.Component {
     return (
       <ul ref={this.setMenuRef} onMouseEnter={this.handleExtend} onMouseLeave={this.handleExtend} className={"left-menu" + (extended ? " extended" : "")}>
         {
-        binaryPermissioner(0)(0)(0)(0)(1)(1)(this.props.binPem) ?
+        binaryPermissioner(false)(0)(0)(0)(0)(1)(1)(this.props.binPem) ?
         <VerticalMenuElement
           match={match}
           extended={extended}
@@ -50,7 +50,7 @@ class LeftMenu extends React.Component {
         /> : null
         }
         {
-        binaryPermissioner(0)(1)(1)(1)(1)(1)(this.props.binPem) ?
+        binaryPermissioner(false)(0)(1)(1)(1)(1)(1)(this.props.binPem) ?
         <VerticalMenuElement
           match={match}
           extended={extended}
@@ -69,7 +69,7 @@ class LeftMenu extends React.Component {
           title={t("Projects")}
         />
         {
-        binaryPermissioner(0)(1)(0)(1)(1)(1)(this.props.binPem) ?
+        binaryPermissioner(false)(0)(1)(0)(1)(1)(1)(this.props.binPem) ?
         <VerticalMenuElement
           match={match}
           extended={extended}

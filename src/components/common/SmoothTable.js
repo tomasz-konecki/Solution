@@ -293,9 +293,9 @@ class SmoothTable extends Component {
     let operators = [];
     let inputClasses = ["form-control"];
     if (this.state.isQueryLoading) inputClasses.push("loading");
-    this.state.construct.operators.map((operator, index) =>
-      operators.push(this.operatorButton(index, operator))
-    );
+    this.state.construct.operators.map((operator, index) => {
+      if(operator.comparator === undefined || operator.comparator(operator)) operators.push(this.operatorButton(index, operator));
+    });
 
     if(this.props.construct.filtering === true){
       operators.push(
@@ -379,9 +379,10 @@ class SmoothTable extends Component {
 
   generateLegend() {
     const { currentlySortedColumn, columns, construct } = this.state;
-    return construct.columns.map((column, index) =>
-      this.tableHeader(currentlySortedColumn, columns, column, index)
-    );
+    return construct.columns.map((column, index) => {
+      if(column.comparator === undefined || column.comparator(column))
+        return this.tableHeader(currentlySortedColumn, columns, column, index);
+    });
   }
 
   generateFieldFilter(column, classes) {

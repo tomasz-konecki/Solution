@@ -10,6 +10,7 @@ import WebApi from "../../api";
 import PropTypes from 'prop-types';
 import { translate } from 'react-translate';
 import IntermediateBlock from './../common/IntermediateBlock';
+import binaryPermissioner from './../../api/binaryPermissioner';
 
 class UsersList extends Component {
   constructor(props) {
@@ -117,7 +118,8 @@ class UsersList extends Component {
           pretty: t("Add"),
           click: () => {
             this.props.openAddUserModal();
-          }
+          },
+          comparator: () => binaryPermissioner(false)(0)(0)(0)(0)(0)(1)(this.props.binPem)
         }
       ],
       columns: [
@@ -130,6 +132,7 @@ class UsersList extends Component {
         { width: 19, field: "phoneNumber", pretty: t("Phone"), type: "text", filter: true },
         {
           width: 1,
+          comparator: object => binaryPermissioner(false)(0)(0)(0)(0)(0)(1)(this.props.binPem),
           toolBox: [
             {
               icon: { icon: "sync-alt" },
@@ -146,7 +149,7 @@ class UsersList extends Component {
                   })
                 );
               },
-              comparator: object => object.isDeleted
+              comparator: object => object.isDeleted && binaryPermissioner(false)(0)(0)(0)(0)(0)(1)(this.props.binPem)
             },
             {
               icon: { icon: "times" },
@@ -163,14 +166,15 @@ class UsersList extends Component {
                   })
                 );
               },
-              comparator: object => !object.isDeleted
+              comparator: object => !object.isDeleted && binaryPermissioner(false)(0)(0)(0)(0)(0)(1)(this.props.binPem)
             },
             {
               icon: { icon: "edit", iconType: "far" },
               title: t("EditUserImperativus"),
               click: object => {
                 this.handleGetUser(object);
-              }
+              },
+              comparator: object => binaryPermissioner(false)(0)(0)(0)(0)(0)(1)(this.props.binPem)
             }
           ],
           pretty: t("DeleteEdit")
@@ -179,37 +183,43 @@ class UsersList extends Component {
     };
 
     let render = () => <div>
-    <SmoothTable
-      currentPage={this.props.currentPage}
-      totalPageCount={this.props.totalPageCount}
-      loading={this.props.loading}
-      data={this.props.users}
-      construct={construct}
-    />
-    <Modal
-      open={this.state.showModal}
-      classNames={{ modal: "Modal Modal-users" }}
-      contentLabel="Edit users details"
-      onClose={this.handleCloseModal}
-    >
-      <EditUserDetails
-        closeModal={this.handleCloseModal}
-        user={this.state.user}
-        handleRoleChange={this.handleRoleChange}
-        responseBlock={this.state.responseBlock}
-        loading={this.state.loading}
-        changeUserRoles={this.changeUserRoles}
+      <SmoothTable
+        currentPage={this.props.currentPage}
+        totalPageCount={this.props.totalPageCount}
+        loading={this.props.loading}
+        data={this.props.users}
+        construct={construct}
       />
-    </Modal>
-  </div>;
+      <Modal
+        open={this.state.showModal}
+        classNames={{ modal: "Modal Modal-users" }}
+        contentLabel="Edit users details"
+        onClose={this.handleCloseModal}
+      >
+        <EditUserDetails
+          closeModal={this.handleCloseModal}
+          user={this.state.user}
+          handleRoleChange={this.handleRoleChange}
+          responseBlock={this.state.responseBlock}
+          loading={this.state.loading}
+          changeUserRoles={this.changeUserRoles}
+        />
+      </Modal>
+    </div>;
 
     return <IntermediateBlock
-    loaded={!this.state.loading}
-    render={render}
-    resultBlock={this.props.resultBlock}
-    _className={'content-container'}
+      loaded={!this.state.loading}
+      render={render}
+      resultBlock={this.props.resultBlock}
+      _className={'content-container'}
     />;
   }
+}
+
+function mapStateToProps(state) {
+  return {
+    binPem: state.authReducer.binPem
+  };
 }
 
 UsersList.propTypes = {
@@ -222,4 +232,4 @@ UsersList.propTypes = {
   users: PropTypes.arrayOf(PropTypes.object).isRequired
 };
 
-export default connect()(translate("UsersList")(UsersList));
+export default connect(mapStateToProps)(translate("UsersList")(UsersList));

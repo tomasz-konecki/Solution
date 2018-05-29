@@ -229,7 +229,10 @@ UsersList.propTypes = {
   currentPage: PropTypes.number.isRequired,
   totalPageCount: PropTypes.number.isRequired,
   loading: PropTypes.bool.isRequired,
-  users: PropTypes.arrayOf(PropTypes.object).isRequired
+  users: PropTypes.arrayOf(PropTypes.object).isRequired,
+  binPem: PropTypes.number,
+  t: PropTypes.func,
+  resultBlock: PropTypes.object
 };
 
 export default connect(mapStateToProps)(translate("UsersList")(UsersList));

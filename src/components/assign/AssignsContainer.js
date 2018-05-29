@@ -75,7 +75,6 @@ class AssignsContainer extends Component {
     });
 
     WebApi.employees.post.list({
-      page: 1,
       limit: 3000,
       employeeFilter: {
         hasAccount: true
@@ -138,8 +137,8 @@ class AssignsContainer extends Component {
     if(needle === "") return true;
     if(stack === null) return false;
     if(stack === undefined) return false;
-    let val1 = stack.toLocaleLowerCase();
-    let val2 = needle.toLocaleLowerCase().trim();
+    let val1 = stack.toLowerCase();
+    let val2 = needle.toLowerCase().trim();
     return val1.indexOf(val2) >= 0;
   };
 
@@ -153,7 +152,7 @@ class AssignsContainer extends Component {
     let levels = true;
 
     if(employee.skills.length === 0) {
-      if(this.state.skillsSearch !== "" || this.state.minYoe !== "" || this.state.minSeniority !== undefined){
+      if(this.state.skillsSearch !== "" || this.state.minYoe !== "" || this.state.minSeniority !== ""){
         return false;
       }
     }
@@ -177,7 +176,9 @@ class AssignsContainer extends Component {
       allFound = allFound && findings;
     });
 
-    allFound = allFound && Object.keys(found).length === this.state.skillsSearch.split(',').length;
+    if(this.state.skillsSearch.split(',')[0] !== ""){
+      allFound = allFound && Object.keys(found).length === this.state.skillsSearch.split(',').length;
+    }
 
     return singleFields && allFound && yoe && levels;
   }

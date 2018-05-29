@@ -4,7 +4,26 @@ const initialState = {
   isAuthenticated: false,
   loading: false,
   tokens: {},
-  language: "pl"
+  language: "pl",
+  pem: {
+    hasDeveloperAccesss: false,
+    hasHumanResourcesAccess: false,
+    hasSalesmanAccess: false,
+    hasTeamLeaderAccess: false,
+    hasManagerAccess: false,
+    hasAdministrativeAccess: false
+  }
+};
+
+let pem = (userBlock) => {
+  return {
+    hasDeveloperAccesss: userBlock.roles.indexOf("Developer") >= 0,
+    hasHumanResourcesAccess: userBlock.roles.indexOf("Human Resources") >= 0,
+    hasSalesmanAccess: userBlock.roles.indexOf("Tradesman") >= 0,
+    hasTeamLeaderAccess: userBlock.roles.indexOf("Team Leader") >= 0,
+    hasManagerAccess: userBlock.roles.indexOf("Manager") >= 0,
+    hasAdministrativeAccess: userBlock.roles.indexOf("Administrator") >= 0
+  };
 };
 
 export const authReducer = (state = initialState, action) => {
@@ -14,7 +33,8 @@ export const authReducer = (state = initialState, action) => {
         ...state,
         isAuthenticated: true,
         loading: false,
-        ...action.userBlock
+        ...action.userBlock,
+        pem: pem(action.userBlock)
       };
     case types.AUTH_START:
       return {

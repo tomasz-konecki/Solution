@@ -33,7 +33,7 @@ class EmployeeDetailContainer extends Component {
       team: []
     };
 
-    this.skillsCache = {};
+    this.skillsCache = [];
   }
 
   componentDidMount() {

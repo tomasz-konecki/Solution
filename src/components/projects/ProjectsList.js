@@ -195,7 +195,10 @@ class ProjectsList extends Component {
                   push(`/main/projects/${object.id}`)
                 );
               },
-              comparator: () => binaryPermissioner(false)(1)(1)(0)(0)(1)(1)(this.props.binPem)
+              comparator: (object) => {
+                return specialPermissioner().projects.isOwner(object, this.props.login)
+                 || binaryPermissioner(false)(1)(0)(1)(0)(1)(1)(this.props.binPem);
+              }
             }
           ],
           pretty: ''

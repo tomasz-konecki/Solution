@@ -19,6 +19,8 @@ import AddProjectOwner from './modals/AddProjectOwner';
 import { SET_ACTION_CONFIRMATION_RESULT, ACTION_CONFIRMED } from '../../constants';
 import AddEmployeeToProject from '../employees/modals/AddEmployeeToProject';
 import AssignmentModal from './../assign/AssignmentModal';
+import binaryPermissioner from './../../api/binaryPermissioner';
+import specialPermissioner from './../../api/specialPermissioner';
 
 class ProjectDetailContainer extends Component {
   constructor(props) {
@@ -348,15 +350,20 @@ class ProjectDetailContainer extends Component {
   }
 
   mapOwners = (owners, project) => {
+    let allowed = specialPermissioner().projects.isOwner(project, this.props.login)
+    || binaryPermissioner(false)(0)(0)(0)(0)(1)(1)(this.props.binPem);
     return [
       ... owners.map((owner, index) => {
-        return <ProjectOwner clickAction={this.deleteProjectOwner(owner, project)} key={index} owner={owner}/>;
+        if(allowed){
+          return <ProjectOwner clickAction={this.deleteProjectOwner(owner, project)} key={index} owner={owner}/>;
+        }
+        else return <ProjectOwner key={index} owner={owner}/>;
       }),
-      <div key={-1} className="project-owner">
+      allowed ? <div key={-1} className="project-owner">
         <span onClick={this.handleOpenAddOwner} className="project-owner-add">
           <span/>
         </span>
-      </div>
+      </div> : null
     ];
   }
 
@@ -487,16 +494,24 @@ class ProjectDetailContainer extends Component {
         : <h3 className="project-inactive">{t("Inactive")}</h3>
       }
       <hr className="sharp"/>
-      <button onClick={this.changeSettings} className="project-headway dcmt-button button-success">{t("EditProject")}</button>
       {
-        this.state.project.isActive ?
-        <button onClick={this.closeProject} title={t("Close")} className="project-headway dcmt-button button-lowkey">{t("Close")}</button>
-        : <button onClick={this.reactivateProject} title={t("Reactivate")} className="project-headway dcmt-button button-success">{t("Reactivate")}</button>
+        specialPermissioner().projects.isOwner(project, this.props.login)
+        || binaryPermissioner(false)(0)(0)(0)(0)(1)(1)(this.props.binPem) ?
+        <button onClick={this.changeSettings} className="project-headway dcmt-button button-success">{t("EditProject")}</button>
+        : null
       }
       {
-        this.state.project.isDeleted ?
-        null
+        (specialPermissioner().projects.isOwner(project, this.props.login)
+        || binaryPermissioner(false)(0)(0)(0)(0)(1)(1)(this.props.binPem)) ? this.state.project.isActive ?
+        <button onClick={this.closeProject} title={t("Close")} className="project-headway dcmt-button button-lowkey">{t("Close")}</button>
+        : <button onClick={this.reactivateProject} title={t("Reactivate")} className="project-headway dcmt-button button-success">{t("Reactivate")}</button>
+        : null
+      }
+      {
+        (specialPermissioner().projects.isOwner(project, this.props.login)
+        || binaryPermissioner(false)(0)(0)(0)(0)(1)(1)(this.props.binPem)) ? this.state.project.isDeleted ? null
         : <button onClick={this.deleteProject} title={t("Delete")} className="project-headway dcmt-button button-lowkey">{t("Delete")}</button>
+        : null
       }
       <hr/>
       <div className="project-headway">
@@ -580,9 +595,12 @@ class ProjectDetailContainer extends Component {
         <div className="row">
           <div className="col-lg-10"/>
           <div className="col-lg-2 full-width-button">
+            {
+            binaryPermissioner(false)(0)(0)(1)(1)(1)(1)(this.props.binPem) ?
             <button onClick={this.handleOpenAddEmployee} className="dcmt-button button-success project-headway">
               {'Dodaj'}
-            </button>
+            </button> : null
+            }
           </div>
         </div>
         <hr/>
@@ -593,12 +611,15 @@ class ProjectDetailContainer extends Component {
           </div>
           <div className="col-xl-2 col-sm-12 full-width-button">
           {
-            this.state.edit === false ?
+            (specialPermissioner().projects.isOwner(project, this.props.login)
+            || binaryPermissioner(false)(0)(0)(0)(0)(1)(1)(this.props.binPem)) ? this.state.edit === false ?
             <button onClick={this.edit} className="dcmt-button">
               {t("Edit")}
             </button>
             :
             this.pullEditToolbarDOM()
+            :
+            null
           }
           </div>
         </div>
@@ -626,7 +647,9 @@ function mapStateToProps(state) {
     toConfirm: state.asyncReducer.toConfirm,
     isWorking: state.asyncReducer.isWorking,
     resultBlock: state.asyncReducer.resultBlock,
-    type: state.asyncReducer.type
+    type: state.asyncReducer.type,
+    binPem: state.authReducer.binPem,
+    login: state.authReducer.login
   };
 }
 

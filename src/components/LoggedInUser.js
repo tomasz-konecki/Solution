@@ -9,7 +9,9 @@ class LoggedInUser extends Component {
     return (
       <span className="logged-in-user">
         {t("LoggedIn") + ": "}
-        <strong>{this.props.firstName + " " + this.props.lastName}</strong>
+        <strong className="underline-anchors">
+          <a target="_blank" href={`/main/employees/${this.props.login}`}>{this.props.firstName + " " + this.props.lastName}</a>
+        </strong>
       </span>
     );
   }
@@ -18,7 +20,8 @@ class LoggedInUser extends Component {
 const mapStateToProps = state => {
   return {
     firstName: state.authReducer.firstName,
-    lastName: state.authReducer.lastName
+    lastName: state.authReducer.lastName,
+    login: state.authReducer.login
   };
 };
 

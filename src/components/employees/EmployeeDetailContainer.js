@@ -39,9 +39,12 @@ class EmployeeDetailContainer extends Component {
   }
 
   componentDidMount() {
-    if(!binaryPermissioner(false)(0)(1)(1)(1)(1)(1)(this.props.binPem))
-      return this.props.dispatch(push('/main'));
-    this.getEmployee();
+    if(
+      this.props.match.params.id === this.props.login ||
+      binaryPermissioner(false)(0)(1)(1)(1)(1)(1)(this.props.binPem)
+    ) return this.getEmployee();
+
+    this.props.dispatch(push('/main'));
   }
 
   componentWillReceiveProps(nextProps) {
@@ -681,7 +684,8 @@ function mapStateToProps(state) {
     isWorking: state.asyncReducer.isWorking,
     resultBlock: state.asyncReducer.resultBlock,
     type: state.asyncReducer.type,
-    binPem: state.authReducer.binPem
+    binPem: state.authReducer.binPem,
+    login: state.authReducer.login
   };
 }
 

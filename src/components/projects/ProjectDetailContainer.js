@@ -21,6 +21,7 @@ import AddEmployeeToProject from '../employees/modals/AddEmployeeToProject';
 import AssignmentModal from './../assign/AssignmentModal';
 import binaryPermissioner from './../../api/binaryPermissioner';
 import specialPermissioner from './../../api/specialPermissioner';
+import IntermediateBlock from './../common/IntermediateBlock';
 
 class ProjectDetailContainer extends Component {
   constructor(props) {
@@ -104,11 +105,14 @@ class ProjectDetailContainer extends Component {
           projectActive: extract.isActive,
           skills: extract.skills,
           team: (extract.team !== undefined ?
-            extract.team : [])
+            extract.team : []),
+          replyBlock: response
         });
       })
       .catch((error) => {
-        throw error;
+        this.setState({
+          replyBlock: error
+        });
       });
   }
 
@@ -634,7 +638,13 @@ class ProjectDetailContainer extends Component {
         { this.pullProjectEditModalDOM() }
         { this.pullAddOwnerModalDOM() }
         { this.pullAddEmployeeModalDOM() }
-        { this.state.loading ? <LoaderCircular/> : this.pullDOM() }
+        {
+          <IntermediateBlock
+            loaded={!this.state.loading}
+            render={this.pullDOM}
+            resultBlock={this.props.replyBlock}
+          />
+        }
       </div>
     );
   }

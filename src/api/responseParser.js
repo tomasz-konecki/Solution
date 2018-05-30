@@ -180,6 +180,15 @@ class ResponseParser {
           this.replyBlock = this.replyBlock;
           break;
         case 1:
+          if(
+            this.replyBlock.response === undefined
+            ||
+            this.replyBlock.response.data === undefined
+            ||
+            this.replyBlock.response.data.errorObjects === undefined) {
+            this.replyBlock = this.replyBlock.response;
+            break;
+          }
           Object.entries(this.replyBlock.response.data.errorObjects).map(([index, modelEntry], _index) => {
             Object.entries(modelEntry.errors).map(([code, message], index) => {
               this._errors.push({code, message});

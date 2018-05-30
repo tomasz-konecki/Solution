@@ -8,6 +8,7 @@ class LoggedInUser extends Component {
     const { t } = this.props;
     return (
       <span className="logged-in-user">
+        {t("LoggedIn") + ": "}
         <strong className="underline-anchors">
           <a target="_blank" href={`/main/employees/${this.props.login}`}>{this.props.firstName + " " + this.props.lastName}</a>
         </strong>

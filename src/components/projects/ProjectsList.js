@@ -120,7 +120,7 @@ class ProjectsList extends Component {
           width: 1,
           toolBox: [
             {
-              icon: { icon: "file-archive", iconType: "far" },
+              icon: { icon: "minus-square", iconType: "fas" },
               title: t("CloseProjectImperativus"),
               click: object => {
                 this.props.dispatch(
@@ -139,7 +139,7 @@ class ProjectsList extends Component {
               }
             },
             {
-              icon: { icon: "angle-double-up", iconType: "fas" },
+              icon: { icon: "eject", iconType: "fas" },
               title: t("ReactivateProjectImperativus"),
               click: object => {
                 this.props.dispatch(
@@ -177,7 +177,7 @@ class ProjectsList extends Component {
               }
             },
             {
-              icon: { icon: "edit", iconType: "far" },
+              icon: { icon: "pen-square", iconType: "fas" },
               title: t("EditProject"),
               click: object => {
                 this.handleGetProject(object);
@@ -188,7 +188,7 @@ class ProjectsList extends Component {
               }
             },
             {
-              icon: { icon: "arrow-right", iconType: "fas" },
+              icon: { icon: "sign-in-alt", iconType: "fas" },
               title: t("SeeMore"),
               click: object => {
                 this.props.dispatch(

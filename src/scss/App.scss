@@ -67,6 +67,14 @@ a:visited {
   }
 }
 
+.content-abs-footer {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  padding: 8px 16px 8px 8px;
+  color: darken($body-background, 0.1%);
+}
+
 .user-role-symbol {
   display: inline-block;
   width: 14px;

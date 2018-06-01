@@ -91,7 +91,9 @@ class ProjectRowUnfurl extends Component {
             { toUnfurl.skills.length === 0 ? t("CurrentlyNoSkillsAssigned") : null }
           </span>
           <span className="col-sm-5">
-            {t("Description")}: <span className="text-just">{toUnfurl.description}</span>
+            {t("Description")}:
+            <br/>
+            <span className="text-just">{toUnfurl.description}</span>
           </span>
         </div>
       </div>

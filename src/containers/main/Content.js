@@ -23,6 +23,9 @@ class Content extends React.Component {
         <Route path={match.url + "/employees"} component={EmployeesContainer} />
         <Route path={match.url + "/projects"} component={ProjectsContainer} />
         <Route path={match.url + "/assigns"} component={AssignsContainer} />
+        <div className="content-abs-footer">
+          Billennium 2018
+        </div>
       </div>
     );
   }

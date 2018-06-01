@@ -71,8 +71,10 @@ class SmoothTable extends Component {
 
   deepenFunction(func, ...args) {
     return event => {
-      event.stopPropagation();
-      event.nativeEvent.stopImmediatePropagation();
+      if(event.stopPropagation !== undefined){
+        event.stopPropagation();
+        event.nativeEvent.stopImmediatePropagation();
+      }
       return func(...args, event);
     };
   }
@@ -440,6 +442,11 @@ class SmoothTable extends Component {
               column,
               column.type
             )}
+            value={(
+              this.state.columnFilters[column.field] !== "" ?
+              new Date(this.state.columnFilters[column.field]).toLocaleDateString()
+              : ""
+            )}
           />
         );
       }
@@ -483,7 +490,7 @@ class SmoothTable extends Component {
       case "multiState":
         return column.multiState[object[column.field]];
       case "date":
-        return moment(object[column.field]).format("YYYY-MM-DD");
+        return new Date(object[column.field]).toLocaleDateString();
     }
   }
 

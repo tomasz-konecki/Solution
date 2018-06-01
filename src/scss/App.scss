@@ -57,12 +57,12 @@ a:visited {
 
 .underline-anchors {
   a, a:visited {
-    border-bottom: 1px dashed white;
+    border-bottom: 1px dashed darken($main-color, 5%);
     color: darken(white, 3%);
   }
   a:hover {
     text-decoration: none;
-    border-bottom: 1px dashed darken(white, 15%);
+    border-bottom: 1px dashed lighten($main-color, 5%);
     cursor: pointer;
   }
 }

@@ -135,7 +135,7 @@ class ProjectsList extends Component {
               comparator: (object) => {
                 return (specialPermissioner().projects.isOwner(object, this.props.login)
                  || binaryPermissioner(false)(0)(0)(0)(0)(1)(1)(this.props.binPem))
-                 && object.isActive
+                 && object.isActive;
               }
             },
             {
@@ -154,7 +154,7 @@ class ProjectsList extends Component {
               comparator: (object) => {
                 return (specialPermissioner().projects.isOwner(object, this.props.login)
                  || binaryPermissioner(false)(0)(0)(0)(0)(1)(1)(this.props.binPem))
-                 && !object.isActive
+                 && !object.isActive;
               }
             },
             {
@@ -173,7 +173,7 @@ class ProjectsList extends Component {
               comparator: (object) => {
                 return (specialPermissioner().projects.isOwner(object, this.props.login)
                  || binaryPermissioner(false)(0)(0)(0)(0)(1)(1)(this.props.binPem))
-                 && !object.isDeleted
+                 && !object.isDeleted;
               }
             },
             {

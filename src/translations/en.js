@@ -15,7 +15,8 @@ const translations = {
     Employees: "Employees",
     Projects: "Projects",
     Assign: "Assign",
-    Stats: "Statistics"
+    Stats: "Statistics",
+    Skills: "Skills"
   },
   SmoothTable: {
     Search: "Search",

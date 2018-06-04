@@ -90,6 +90,17 @@ class LeftMenu extends React.Component {
           title={t("Assign")}
         /> : null
         }
+        {
+        this.props.pem.hasAdministrativeAccess ?
+        <VerticalMenuElement
+          match={match}
+          extended={extended}
+          path="/skills"
+          icon="broom"
+          iconType="fas"
+          title={t("Skills")}
+        /> : null
+        }
       </ul>
     );
   }

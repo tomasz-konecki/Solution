@@ -129,6 +129,13 @@ class SkillRow extends Component {
                 value={skill.yearsOfExperience}
                 onChange={this.handleYOEChange}
               />
+              <input
+                type="number"
+                min="1"
+                max="30"
+                value={skill.yearsOfExperience}
+                onChange={this.handleYOEChange}
+              />
             </div>
             :
             null

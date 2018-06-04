@@ -244,6 +244,16 @@ const translations = {
     Save: "Save",
     Activate: "Activate",
     Edit: "Edit"
+  },
+  AssignsContainer: {
+    LastName: "Last/Name",
+    Position: "Position",
+    Skills: "Skills(comma-separated)",
+    MinLevelAbove: "Min level above:",
+    MinExperience: "Min. years of exp. of.",
+    Name: "Name",
+    Projects: "Projects",
+    Employees: "Employees"
   }
 };
 

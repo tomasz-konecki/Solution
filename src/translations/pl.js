@@ -238,12 +238,22 @@ const translations = {
     Localization: "Lokalizacja",
     Email: "Email",
     Phone: "Telefon",
-    Capacity: "Staż",
+    Capacity: "Capacity",
     Cancel: "Anuluj",
     Add: "Dodaj",
     Save: "Zapisz",
     Activate: "Aktywuj",
     Edit: "Edytuj"
+  },
+  AssignsContainer: {
+    LastName: "Imię/Nazwisko",
+    Position: "Stanowisko",
+    Skills: "Umiejętności(po przecinku)",
+    MinLevelAbove: "Minimalny poziom powyż.",
+    MinExperience: "Min. lat doświadczenia",
+    Name: "Nazwa",
+    Projects: "Projekty",
+    Employees: "Pracownicy"
   }
 };
 

@@ -13,6 +13,8 @@ import AssignProjectBlock from './AssignProjectBlock';
 import AssignEmployeeBlock from './AssignEmployeeBlock';
 import Modal from 'react-responsive-modal';
 import AssignmentModal from './AssignmentModal';
+import { translate } from 'react-translate';
+import Icon from './../common/Icon';
 
 @DragDropContext(HTML5Backend)
 class AssignsContainer extends Component {
@@ -24,7 +26,8 @@ class AssignsContainer extends Component {
       positionSearch: "",
       skillsSearch: "",
       minSeniority: "",
-      minYoe: ""
+      minYoe: "",
+      p_nameSearch: ""
     };
   }
 
@@ -54,8 +57,9 @@ class AssignsContainer extends Component {
       page: 1,
       limit: 300,
       projectFilter: {
+        isActive: true
       },
-      isDeleted: true
+      isDeleted: false
     })
       .then((projects) => {
         this.setState({
@@ -118,6 +122,17 @@ class AssignsContainer extends Component {
     });
   };
 
+  clearFilters = event => {
+    this.setState({
+      nameSearch: "",
+      positionSearch: "",
+      skillsSearch: "",
+      minSeniority: "",
+      minYoe: "",
+      p_nameSearch: ""
+    });
+  }
+
   pullAssignmentDOM = () => {
     return <Modal
         open={this.state.showAssignmentModal}
@@ -131,7 +146,7 @@ class AssignsContainer extends Component {
         refresh={this.refresh}
       />
     </Modal>;
-  }
+  };
 
   contains = stack => needle => {
     if(needle === "") return true;
@@ -183,6 +198,12 @@ class AssignsContainer extends Component {
     return singleFields && allFound && yoe && levels;
   }
 
+  p_searchFilter = (project) => {
+    let singleFields = this.contains(project.name)(this.state.p_nameSearch);
+
+    return singleFields;
+  }
+
   pullEmployeeBlocks = () => {
     return this.state.employees !== undefined ?
     this.state.employees.map((employee, index) => {
@@ -196,7 +217,21 @@ class AssignsContainer extends Component {
     }) : <LoaderCircular />;
   }
 
+  pullProjectBlocks = () => {
+    return this.state.projects !== undefined ?
+    this.state.projects.map((project, index) => {
+      if(!this.p_searchFilter(project)) return null;
+      return <AssignProjectBlock
+        key={index}
+        accepts={[AssignDropTypes.EMPLOYEE]}
+        onDrop={this.onEmployeeDrop(project, index)}
+        project={project}
+      />;
+    }) : <LoaderCircular />;
+  }
+
   render() {
+    const { t } = this.props;
     return (
       <div className="row assign-container">
         { this.pullAssignmentDOM() }
@@ -206,16 +241,23 @@ class AssignsContainer extends Component {
               <div className="col-lg-12">
                 <div className="form-group assign-search-form">
                   <hr/>
-                  <label htmlFor="nameSearch">Imię/Nazwisko</label>
-                  <input name="nameSearch" type="text" className="form-control" onChange={this.handleChange}/>
-                  <label htmlFor="positionSearch">Stanowisko</label>
-                  <input name="positionSearch" type="text" className="form-control" onChange={this.handleChange}/>
-                  <label htmlFor="skillsSearch">Umiejętności(po przecinku)</label>
-                  <input name="skillsSearch" type="text" className="form-control" onChange={this.handleChange}/>
-                  <label htmlFor="minSeniority">Minimalny poziom powyż.</label>
-                  <input name="minSeniority" type="text" className="form-control" onChange={this.handleChange}/>
-                  <label htmlFor="minYoe">Min. lat doświadczenia</label>
-                  <input name="minYoe" type="text" className="form-control" onChange={this.handleChange}/>
+                  <span>{t('Employees')}</span>
+                  <label htmlFor="nameSearch">{t('LastName')}</label>
+                  <input name="nameSearch" value={this.state.nameSearch} type="text" className="form-control" onChange={this.handleChange}/>
+                  <label htmlFor="positionSearch">{t('Position')}</label>
+                  <input name="positionSearch" value={this.state.positionSearch} type="text" className="form-control" onChange={this.handleChange}/>
+                  <label htmlFor="skillsSearch">{t('Skills')}</label>
+                  <input name="skillsSearch" value={this.state.skillsSearch} type="text" className="form-control" onChange={this.handleChange}/>
+                  <label htmlFor="minSeniority">{t('MinLevelAbove')}</label>
+                  <input name="minSeniority" value={this.state.minSeniority} type="text" className="form-control" onChange={this.handleChange}/>
+                  <label htmlFor="minYoe">{t('MinExperience')}</label>
+                  <input name="minYoe" value={this.state.minYoe} type="text" className="form-control" onChange={this.handleChange}/>
+                  <hr/>
+                  <span>{t('Projects')}</span>
+                  <label htmlFor="p_nameSearch">{t('Name')}</label>
+                  <input name="p_nameSearch" value={this.state.p_nameSearch} type="text" className="form-control" onChange={this.handleChange}/>
+                  <hr/>
+                  <button onClick={this.clearFilters} className="dcmt-button button-lowkey">Wyczyść filtry</button>
                 </div>
               </div>
             </div>
@@ -232,15 +274,7 @@ class AssignsContainer extends Component {
           <div className="content-container scroll-container">
             <div className="scroll-container">
               {
-                this.state.projects !== undefined ?
-                this.state.projects.map((project, index) => {
-                  return <AssignProjectBlock
-                    key={index}
-                    accepts={[AssignDropTypes.EMPLOYEE]}
-                    onDrop={this.onEmployeeDrop(project, index)}
-                    project={project}
-                  />;
-                }) : <LoaderCircular />
+                this.pullProjectBlocks()
               }
             </div>
           </div>
@@ -250,4 +284,4 @@ class AssignsContainer extends Component {
   }
 }
 
-export default AssignsContainer;
+export default translate("AssignsContainer")(AssignsContainer);

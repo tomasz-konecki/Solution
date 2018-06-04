@@ -69,7 +69,7 @@ class StatsContainer extends Component {
 
   createProjectsChart = () => {
     let cols = [];
-    this.state.stats.projects.map(({name, assignedEmployeesCount}, index) => {
+    this.state.stats.activeProjects.map(({name, assignedEmployeesCount}, index) => {
       cols.push([name, assignedEmployeesCount]);
     });
     const data = {

@@ -323,6 +323,13 @@ const WebApi = {
       return WebAround.put(`${API_ENDPOINT}/skills/${skillId}`, skillModel);
     }
   },
+  stats: {
+    get: {
+      basic: () => {
+        return WebAround.get(`${API_ENDPOINT}/stats/basic`);
+      }
+    }
+  },
   users: {
     get: {
       byUser: (userId) => {

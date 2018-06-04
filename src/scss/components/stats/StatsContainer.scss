@@ -1,0 +1,16 @@
+.stats-container {
+  .c3 {
+    display: inline-block;
+  }
+  .chart-container {
+    display: inline-block;
+    border: 1px dashed lightgray;
+    margin: 15px 5px 5px 5px;
+    padding: 5px;
+    span {
+      text-align: center;
+      display: block;
+      padding: 3px;
+    }
+  }
+}

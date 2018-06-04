@@ -8,6 +8,7 @@ import Confirmation from "./../../components/common/modals/Confirmation";
 import EmployeesContainer from "./../../components/employees/EmployeesContainer";
 import EmployeeDetailContainer from './../../components/employees/EmployeeDetailContainer';
 import AssignsContainer from './../../components/assign/AssignsContainer';
+import StatsContainer from "../../components/stats/StatsContainer";
 
 class Content extends React.Component {
   constructor(props) {
@@ -19,6 +20,7 @@ class Content extends React.Component {
     return (
       <div className="content">
         <Confirmation />
+        <Route exact path={match.url} component={StatsContainer} />
         <Route path={match.url + "/users"} component={UsersContainer} />
         <Route path={match.url + "/employees"} component={EmployeesContainer} />
         <Route path={match.url + "/projects"} component={ProjectsContainer} />

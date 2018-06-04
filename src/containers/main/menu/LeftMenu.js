@@ -39,6 +39,17 @@ class LeftMenu extends React.Component {
     return (
       <ul ref={this.setMenuRef} onMouseEnter={this.handleExtend} onMouseLeave={this.handleExtend} className={"left-menu" + (extended ? " extended" : "")}>
         {
+        binaryPermissioner(false)(0)(1)(1)(1)(1)(1)(this.props.binPem) ?
+        <VerticalMenuElement
+          match={match}
+          extended={extended}
+          path=""
+          icon="chart-pie"
+          iconType="fas"
+          title={t("Stats")}
+        /> : null
+        }
+        {
         binaryPermissioner(false)(0)(0)(0)(0)(1)(1)(this.props.binPem) ?
         <VerticalMenuElement
           match={match}

@@ -3,6 +3,7 @@
 @import "./components/common/Button";
 @import "./components/common/Input";
 @import "./components/common/ContentContainer";
+@import "./components/common/ContentContainer";
 @import "./components/table/SmoothTable";
 @import "./components/common/Logo";
 @import "./components/common/Flags";
@@ -19,6 +20,7 @@
 @import "./components/projects/TeamMemberBlock";
 @import "./components/projects/TeamMemberCompact";
 @import "./components/assigns/AssignContainer";
+@import "./components/stats/StatsContainer";
 
 body {
   font-family: "Roboto Condensed", sans-serif;

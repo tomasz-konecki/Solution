@@ -98,10 +98,74 @@ class StatsContainer extends Component {
     </span>;
   }
 
+  createEWPChart = () => {
+    let cols = [
+      ['BEZ', this.state.stats.employees.withoutProjects],
+      ['Z', this.state.stats.employees.withProjects]
+    ];
+    const data = {
+      type : 'pie',
+      columns: cols
+    };
+
+    const size = {
+      height: 240,
+      width: 480
+    };
+
+    const tooltip = {
+      format: {
+          value: function (value, ratio, id) {
+              return `${value}`;
+          }
+      }
+    };
+
+    return <span className="chart-container">
+      <span>
+        Pracownicy bez projektów
+      </span>
+      <C3Chart data={data} size={size} tooltip={tooltip} />
+    </span>;
+  }
+
+  createPAChart = () => {
+    let cols = [
+      ['Aktywne', this.state.stats.projects.active],
+      ['Archiwalne', this.state.stats.projects.inactive]
+    ];
+    const data = {
+      type : 'pie',
+      columns: cols
+    };
+
+    const size = {
+      height: 240,
+      width: 480
+    };
+
+    const tooltip = {
+      format: {
+          value: function (value, ratio, id) {
+              return `${value}`;
+          }
+      }
+    };
+
+    return <span className="chart-container">
+      <span>
+        Aktywne projekty
+      </span>
+      <C3Chart data={data} size={size} tooltip={tooltip} />
+    </span>;
+  }
+
   pullDOM = () => {
     return <div className="content-container stats-container">
       {this.createDevChart()}
       {this.createProjectsChart()}
+      {this.createEWPChart()}
+      {this.createPAChart()}
     </div>;
   }
 

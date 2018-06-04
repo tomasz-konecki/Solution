@@ -23,6 +23,10 @@ const errorHandler = dispatch => error => {
         throw new SubmissionError({
           _error: "Nieprawidłowe dane"
         });
+      case 503:
+        throw new SubmissionError({
+          _error: "Serwis niedostępny!"
+        });
       default:
         throw new SubmissionError({
           _error: "Nieoczekiwany błąd"

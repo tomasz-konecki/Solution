@@ -96,7 +96,7 @@ class LeftMenu extends React.Component {
           match={match}
           extended={extended}
           path="/skills"
-          icon="broom"
+          icon="crosshairs"
           iconType="fas"
           title={t("Skills")}
         /> : null

@@ -12,9 +12,9 @@ const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 const errorHandler = dispatch => error => {
   dispatch(authStop());
   if (error.response !== undefined && error.response.data.errorOccurred === true) {
-    const { errors } = error.response.data;
+    const { errorObjects } = error.response.data;
     throw new SubmissionError({
-      _error: errors[Object.keys(errors)[0]]
+      _error: errorObjects[0].errors[Object.keys(errorObjects[0].errors)[0]]
     });
   }
   else if(error.response !== undefined){
@@ -45,7 +45,7 @@ const submit = ({ username, password }, dispatch) => {
       dispatch(authStop());
       dispatch(push("/main"));
     })
-    .catch(errorHandler(dispatch));
+    .catch(e => errorHandler(dispatch)(e));
 };
 
 export default submit;

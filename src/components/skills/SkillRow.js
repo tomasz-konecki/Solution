@@ -159,7 +159,14 @@ class SkillRow extends Component {
         <div className="skill-row-separator">{skill.skillLevel}</div>
       </div>
     );
-    else return (
+    if(this.props.delo === true) return (
+      <div className="skill-row">
+        <div style={nCBlock} className="skill-row-cblock"/>
+        <div className="skill-row-name">{ skill.skillName }</div>
+        <div onClick={this.announceDeletion} className="skill-row-delete"/>
+      </div>
+    );
+    return (
       <div className="skill-row">
         <div style={nCBlock} className="skill-row-cblock"/>
         <div className="skill-row-name">{ skill.skillName }</div>

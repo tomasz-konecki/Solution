@@ -9,7 +9,8 @@ class SkillsContainer extends Component {
     super(props);
     this.state = {
       loaded: false,
-      replyBlock: {}
+      replyBlock: {},
+      search: ""
     };
   }
   componentDidMount() {
@@ -42,6 +43,12 @@ class SkillsContainer extends Component {
     }, 5000);
   }
 
+  onSearchChange = (e) => {
+    this.setState({
+      search: e.target.value
+    });
+  }
+
   skillEdit = (skillObject, deletion) => {
     if(deletion){
       this.setState({
@@ -71,10 +78,12 @@ class SkillsContainer extends Component {
 
   pullSkillsColumn = () => {
     return <div>
-      <input style={{marginTop: '10px'}} className="form-control" type="text"/>
+      <input onChange={this.onSearchChange} style={{marginTop: '10px'}} className="form-control" type="text"/>
       <div className="scroll-container">
       {
         Object.entries(this.state.skills).map(([id, skillObject], index) => {
+          if(this.state.search !== ""
+          && skillObject.name.toLocaleLowerCase().indexOf(this.state.search.toLocaleLowerCase()) === -1) return null;
           skillObject.skillId = id;
           return <SkillRow
             key={index}

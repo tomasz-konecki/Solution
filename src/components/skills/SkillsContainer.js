@@ -29,9 +29,17 @@ class SkillsContainer extends Component {
         this.setState({
           loaded: true,
           replyBlock: e,
-          message: e.getMostSignificantText()
+          message: `✖ ${e.getMostSignificantText()}`
         });
       });
+  }
+
+  removeMessage = () => {
+    setTimeout(() => {
+      this.setState({
+        message: ""
+      });
+    }, 5000);
   }
 
   skillEdit = (skillObject, deletion) => {
@@ -44,17 +52,19 @@ class SkillsContainer extends Component {
         delete skills[skillObject.skillId];
         this.setState({
           lastDeletedSkill: skillObject,
-          message: `Pomyślnie usunięto umiejętność '${skillObject.skillName}'`
-        }); //, () => this.loadSkills());
+          message: `✔ Pomyślnie usunięto umiejętność '${skillObject.skillName}'`,
+          loaded: true
+        }, () => this.loadSkills());
+        this.removeMessage();
       })
       .catch(e => {
         let msg = e.getMostSignificantText();
-        console.log(msg, e.diagnosis);
         this.setState({
           loaded: true,
           replyBlock: e,
-          message: msg === "" ? e.diagnosis : msg
+          message: `✖ ${msg === "" ? e.diagnosis : msg}`
         });
+        this.removeMessage();
       }));
     }
   }
@@ -89,6 +99,12 @@ class SkillsContainer extends Component {
           />
         </div>
         <div className="col-lg-9 internum">
+          <h2>Usuwanie</h2> <br/>
+          <p>
+            Usunięte umiejętności zostaną permanentnie usunięte z bazy oraz wszystich miejsc, <br/>
+            gdzie jest referencjowana. Odwrócenie tej akcji jest
+          </p>
+          <hr/>
           {this.state.message}
         </div>
       </div>

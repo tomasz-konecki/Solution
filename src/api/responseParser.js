@@ -105,7 +105,7 @@ class ResponseParser {
     if(this.responseLevel === 0) return false;
     if(this.responseLevel === -1) return true;
     if(this.proper && this.replyBlock.data !== undefined){
-      return this.replyBlock.data.ErrorOccurred;
+      return this.replyBlock.data.errorOccurred;
     }
     else throw "Tried to determine error status without a proper response block";
   }
@@ -113,9 +113,8 @@ class ResponseParser {
     if(this.responseLevel === -1) return this.original.message;
 
     if(this.errorOccurred()){
-      console.log(1, this.replyBlock.data.ErrorObjects[0]['Errors']);
-      if(this.replyBlock.data.ErrorObjects !== undefined)
-        return Object.entries(this.replyBlock.data.ErrorObjects[0]['Errors'])[0][1];
+      if(this.replyBlock.data.errorObjects !== undefined)
+        return Object.entries(this.replyBlock.data.errorObjects[0]["errors"])[0][1];
       else throw 'An error occurred, but no error was present.';
     }
     else return this.successMessage;

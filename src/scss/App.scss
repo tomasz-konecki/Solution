@@ -101,6 +101,15 @@ a:visited {
   }
 }
 
+.internum {
+  padding: 25px;
+}
+
+.scroll-container {
+  height: 73.3vh;
+  overflow-y: auto;
+}
+
 .result-block {
   width: 100%;
   display: inline-block;

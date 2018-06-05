@@ -67,37 +67,6 @@ class StatsContainer extends Component {
     </span>;
   }
 
-  createProjectsChart = () => {
-    let cols = [];
-    this.state.stats.activeProjects.map(({name, assignedEmployeesCount}, index) => {
-      cols.push([name, assignedEmployeesCount]);
-    });
-    const data = {
-      type : 'pie',
-      columns: cols
-    };
-
-    const size = {
-      height: 240,
-      width: 480
-    };
-
-    const tooltip = {
-      format: {
-          value: function (value, ratio, id) {
-              return `${value}`;
-          }
-      }
-    };
-
-    return <span className="chart-container">
-      <span>
-        Pracownicy w projektach
-      </span>
-      <C3Chart data={data} size={size} tooltip={tooltip} />
-    </span>;
-  }
-
   createEWPChart = () => {
     let cols = [
       ['BEZ', this.state.stats.employees.withoutProjects],
@@ -163,7 +132,6 @@ class StatsContainer extends Component {
   pullDOM = () => {
     return <div className="content-container stats-container">
       {this.createDevChart()}
-      {this.createProjectsChart()}
       {this.createEWPChart()}
       {this.createPAChart()}
     </div>;

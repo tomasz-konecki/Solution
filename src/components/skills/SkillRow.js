@@ -162,7 +162,7 @@ class SkillRow extends Component {
     if(this.props.delo === true) return (
       <div className="skill-row">
         <div style={nCBlock} className="skill-row-cblock"/>
-        <div className="skill-row-name">{ skill.skillName }</div>
+        <div className="skill-row-name" style={{width: '80%'}}>{ skill.skillName }</div>
         <div onClick={this.announceDeletion} className="skill-row-delete"/>
       </div>
     );

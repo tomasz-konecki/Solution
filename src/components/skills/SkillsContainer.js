@@ -3,6 +3,7 @@ import WebApi from './../../api/index';
 import IntermediateBlock from './../common/IntermediateBlock';
 import SkillRow from './SkillRow';
 import ResultBlock from './../common/ResultBlock';
+import { translate } from 'react-translate';
 
 class SkillsContainer extends Component {
   constructor(props) {
@@ -50,6 +51,7 @@ class SkillsContainer extends Component {
   }
 
   skillEdit = (skillObject, deletion) => {
+    const { t } = this.props;
     if(deletion){
       this.setState({
         loaded: false
@@ -59,7 +61,7 @@ class SkillsContainer extends Component {
         delete skills[skillObject.skillId];
         this.setState({
           lastDeletedSkill: skillObject,
-          message: `✔ Pomyślnie usunięto umiejętność '${skillObject.skillName}'`,
+          message: `✔ ${t("SuccessfullyDeleted")} '${skillObject.skillName}'`,
           loaded: true
         }, () => this.loadSkills());
         this.removeMessage();
@@ -98,6 +100,7 @@ class SkillsContainer extends Component {
   }
 
   pullDOM = () => {
+    const { t } = this.props;
     return <div className="content-container skills-container form-group row">
       <div className="row">
         <div className="col-lg-3">
@@ -108,10 +111,10 @@ class SkillsContainer extends Component {
           />
         </div>
         <div className="col-lg-9 internum">
-          <h2>Usuwanie</h2> <br/>
+          <h2>{t("Deletion")}</h2> <br/>
           <p>
-            Usunięte umiejętności zostaną permanentnie usunięte z bazy oraz wszystich miejsc, <br/>
-            gdzie jest referencjowana. Odwrócenie tej akcji jest
+            {t('Info1')} <br/>
+            {t('Info2')}>
           </p>
           <hr/>
           {this.state.message}
@@ -125,4 +128,4 @@ class SkillsContainer extends Component {
   }
 }
 
-export default SkillsContainer;
+export default translate("SkillsContainer")(SkillsContainer);

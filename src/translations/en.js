@@ -256,6 +256,12 @@ const translations = {
     Name: "Name",
     Projects: "Projects",
     Employees: "Employees"
+  },
+  SkillsContainer: {
+    Deletion: "Deletion",
+    Info1: "Deletion will be permanent, removing entries from the database and all places where referenced.",
+    Info2: "Rollback of this action is not available.",
+    SuccessfullyDeleted: "Successfully deleted skill"
   }
 };
 

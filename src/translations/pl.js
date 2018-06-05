@@ -256,6 +256,12 @@ const translations = {
     Name: "Nazwa",
     Projects: "Projekty",
     Employees: "Pracownicy"
+  },
+  SkillsContainer: {
+    Deletion: "Usuwanie",
+    Info1: "Ten proces jest permanentny. Usuwa wpis z bazy danych i wszystkich powiązanych miejsc.",
+    Info2: "Cofnięcie tej akcji jest niemożliwe.",
+    SuccessfullyDeleted: "Pomyślnie usunięto umiejętność"
   }
 };
 

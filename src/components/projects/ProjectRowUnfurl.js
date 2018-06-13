@@ -12,7 +12,6 @@ import * as asyncActions from "../../actions/asyncActions";
 import { SET_ACTION_CONFIRMATION_RESULT, SET_ACTION_CONFIRMATION } from '../../constants';
 import { translate } from 'react-translate';
 import SkillRow from './../skills/SkillRow';
-import DCMTWebApi from '../../api/';
 import { push } from 'react-router-redux';
 
 class ProjectRowUnfurl extends Component {
@@ -92,7 +91,9 @@ class ProjectRowUnfurl extends Component {
             { toUnfurl.skills.length === 0 ? t("CurrentlyNoSkillsAssigned") : null }
           </span>
           <span className="col-sm-5">
-            {t("Description")}: <span className="text-just">{toUnfurl.description}</span>
+            {t("Description")}:
+            <br/>
+            <span className="text-just">{toUnfurl.description}</span>
           </span>
         </div>
       </div>

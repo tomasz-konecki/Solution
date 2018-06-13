@@ -3,6 +3,7 @@
 @import "./components/common/Button";
 @import "./components/common/Input";
 @import "./components/common/ContentContainer";
+@import "./components/common/ContentContainer";
 @import "./components/table/SmoothTable";
 @import "./components/common/Logo";
 @import "./components/common/Flags";
@@ -17,6 +18,9 @@
 @import "./components/employees/EmployeeDetailContainer";
 @import "./components/projects/ProjectDetailContainer";
 @import "./components/projects/TeamMemberBlock";
+@import "./components/projects/TeamMemberCompact";
+@import "./components/assigns/AssignContainer";
+@import "./components/stats/StatsContainer";
 
 body {
   font-family: "Roboto Condensed", sans-serif;
@@ -51,6 +55,59 @@ a,
 a:visited {
   text-decoration: none;
   color: darken(rgb(103, 163, 181), 18%);
+}
+
+.underline-anchors {
+  a, a:visited {
+    border-bottom: 1px dashed darken($main-color, 5%);
+    color: darken(white, 3%);
+  }
+  a:hover {
+    text-decoration: none;
+    border-bottom: 1px dashed lighten($main-color, 5%);
+    cursor: pointer;
+  }
+}
+
+.content-abs-footer {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  padding: 8px 16px 8px 8px;
+  color: darken($body-background, 0.1%);
+}
+
+.user-role-symbol {
+  display: inline-block;
+  width: 14px;
+  margin: 0 5px;
+  &.Developer {
+    color: gray;
+  }
+  &.Tradesman {
+    color: rgb(98, 176, 132);
+  }
+  &.Human {
+    color: rgb(46, 125, 168)(98, 176, 132);
+  }
+  &.Team {
+    color: rgb(108, 178, 61);
+  }
+  &.Administrator {
+    color: rgb(150, 52, 52);
+  }
+  &.Manager {
+    color: rgb(166, 50, 147);
+  }
+}
+
+.internum {
+  padding: 25px;
+}
+
+.scroll-container {
+  height: 73.3vh;
+  overflow-y: auto;
 }
 
 .result-block {
@@ -106,4 +163,8 @@ a:visited {
   @media (max-width: 575px) {
     height: 900px;
   }
+}
+
+.Modal-assignment {
+  height: auto;
 }

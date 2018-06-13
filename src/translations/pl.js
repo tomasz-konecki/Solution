@@ -14,7 +14,9 @@ const translations = {
     Users: "Użytkownicy",
     Employees: "Pracownicy",
     Projects: "Projekty",
-    Assign: "Przypisz"
+    Assign: "Przypisz",
+    Stats: "Statystyki",
+    Skills: "Umiejętności"
   },
   SmoothTable: {
     Search: "Szukaj",
@@ -61,7 +63,8 @@ const translations = {
     DeleteProjectInfinitive: "Usunąć projekt",
     ProjectDeleted: "Projekt został usunięty",
     EditProject: "Edytuj projekt",
-    DeactivateDeleteEdit: "Deaktywuj/Usuń/Edytuj"
+    DeactivateDeleteEdit: "Deaktywuj/Usuń/Edytuj",
+    SeeMore: "Zobacz więcej"
   },
   EmployeesList: {
     Name: "Imię",
@@ -237,12 +240,28 @@ const translations = {
     Localization: "Lokalizacja",
     Email: "Email",
     Phone: "Telefon",
-    Capacity: "Staż",
+    Capacity: "Capacity",
     Cancel: "Anuluj",
     Add: "Dodaj",
     Save: "Zapisz",
     Activate: "Aktywuj",
     Edit: "Edytuj"
+  },
+  AssignsContainer: {
+    LastName: "Imię/Nazwisko",
+    Position: "Stanowisko",
+    Skills: "Umiejętności(po przecinku)",
+    MinLevelAbove: "Minimalny poziom powyż.",
+    MinExperience: "Min. lat doświadczenia",
+    Name: "Nazwa",
+    Projects: "Projekty",
+    Employees: "Pracownicy"
+  },
+  SkillsContainer: {
+    Deletion: "Usuwanie",
+    Info1: "Ten proces jest permanentny. Usuwa wpis z bazy danych i wszystkich powiązanych miejsc.",
+    Info2: "Cofnięcie tej akcji jest niemożliwe.",
+    SuccessfullyDeleted: "Pomyślnie usunięto umiejętność"
   }
 };
 

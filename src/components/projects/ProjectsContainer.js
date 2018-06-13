@@ -7,7 +7,7 @@ import * as asyncActions from "../../actions/asyncActions";
 import Modal from "react-responsive-modal";
 import AddProjectScreen from "../../components/projects/modals/AddProjectScreen";
 import ProjectsList from "../../components/projects/ProjectsList";
-import DCMTWebApi from "../../api/";
+import WebApi from "../../api/";
 import ProjectDetailContainer from "./ProjectDetailContainer";
 
 import "../../scss/containers/ProjectsContainer.scss";
@@ -36,11 +36,9 @@ class ProjectsContainer extends React.Component {
   componentWillReceiveProps(nextProps) {
     if (this.validatePropsForAction(nextProps, "deleteProject")) {
       this.props.async.setActionConfirmationProgress(true);
-      DCMTWebApi.deleteProject(this.props.toConfirm.id)
+      WebApi.projects.delete.project(this.props.toConfirm.id)
         .then(response => {
-          this.props.async.setActionConfirmationResult({
-            response
-          });
+          this.props.async.setActionConfirmationResult(response);
           this.pageChange(this.state.currentPage);
         })
         .catch(error => {
@@ -49,11 +47,9 @@ class ProjectsContainer extends React.Component {
     }
     if (this.validatePropsForAction(nextProps, "closeProject")) {
       this.props.async.setActionConfirmationProgress(true);
-      DCMTWebApi.closeProject(this.props.toConfirm.id)
+      WebApi.projects.put.close(this.props.toConfirm.id)
         .then(response => {
-          this.props.async.setActionConfirmationResult({
-            response
-          });
+          this.props.async.setActionConfirmationResult(response);
           this.pageChange(this.state.currentPage);
         })
         .catch(error => {
@@ -62,11 +58,9 @@ class ProjectsContainer extends React.Component {
     }
     if (this.validatePropsForAction(nextProps, "reactivateProject")) {
       this.props.async.setActionConfirmationProgress(true);
-      DCMTWebApi.reactivateProject(this.props.toConfirm.id)
+      WebApi.projects.put.reactivate(this.props.toConfirm.id)
         .then(response => {
-          this.props.async.setActionConfirmationResult({
-            response
-          });
+          this.props.async.setActionConfirmationResult(response);
           this.pageChange(this.state.currentPage);
         })
         .catch(error => {
@@ -76,11 +70,9 @@ class ProjectsContainer extends React.Component {
     if (this.validatePropsForAction(nextProps, "deleteProjectOwner")) {
       this.props.async.setActionConfirmationProgress(true);
       const { ownerId, projectId } = this.props.toConfirm;
-      DCMTWebApi.deleteProjectOwner(ownerId, projectId)
+      WebApi.projects.delete.owner(projectId, ownerId)
         .then(response => {
-          this.props.async.setActionConfirmationResult({
-            response
-          });
+          this.props.async.setActionConfirmationResult(response);
           this.pageChange(this.state.currentPage);
         })
         .catch(error => {
@@ -90,11 +82,9 @@ class ProjectsContainer extends React.Component {
     if (this.validatePropsForAction(nextProps, "putProjectSkills")) {
       this.props.async.setActionConfirmationProgress(true);
       const { projectId, skillsArray } = this.props.toConfirm;
-      DCMTWebApi.putProjectSkills(projectId, skillsArray)
+      WebApi.projects.put.skills(projectId, skillsArray)
         .then(response => {
-          this.props.async.setActionConfirmationResult({
-            response
-          });
+          this.props.async.setActionConfirmationResult(response);
           this.pageChange(this.state.currentPage);
         })
         .catch(error => {

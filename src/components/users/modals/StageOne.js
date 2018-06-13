@@ -5,7 +5,6 @@ import LoaderHorizontal from "../../../components/common/LoaderHorizontal";
 import ResultBlock from "../../common/ResultBlock";
 import Select from "react-select";
 import "react-select/dist/react-select.css";
-import DCMTWebApi from "../../../api";
 import PropTypes from 'prop-types';
 import { translate } from 'react-translate';
 
@@ -49,6 +48,7 @@ class StageOne extends Component {
 
   handleClick = () => {
     this.props.setSelectedUser(this.state.value);
+    console.log('setSelected', this.state.value);
   };
 
   render() {

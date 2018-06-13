@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import LoaderCircular from './../common/LoaderCircular';
 import Icon from './../common/Icon';
-import DCMTWebApi from '../../api';
+import WebApi from '../../api';
 import { withRouter } from 'react-router';
 import DetailCascade from './DetailCascade';
 import SkillRow from './../skills/SkillRow';
@@ -10,6 +10,12 @@ import SenioritySlider from './SenioritySlider';
 import Modal from 'react-responsive-modal';
 import SkillsSelect from './../skills/SkillsSelect';
 import { translate } from 'react-translate';
+import TeamMember from './../projects/TeamMember';
+import { setActionConfirmation, setActionConfirmationProgress, setActionConfirmationResult } from './../../actions/asyncActions';
+import { ACTION_CONFIRMED } from './../../constants';
+import { connect } from 'react-redux';
+import binaryPermissioner from './../../api/binaryPermissioner';
+import { push } from 'react-router-redux';
 
 class EmployeeDetailContainer extends Component {
   constructor(props) {
@@ -24,12 +30,45 @@ class EmployeeDetailContainer extends Component {
       skills: [],
       showModal: false,
       capacityLevel: 1,
-      seniorityLevel: 1
+      seniorityLevel: 1,
+      rowUnfurls: {},
+      team: []
     };
+
+    this.skillsCache = [];
   }
 
   componentDidMount() {
-    this.getEmployee();
+    if(
+      this.props.match.params.id === this.props.login ||
+      binaryPermissioner(false)(0)(1)(1)(1)(1)(1)(this.props.binPem)
+    ) return this.getEmployee();
+
+    this.props.dispatch(push('/main'));
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (this.validatePropsForAction(nextProps, "deleteProjectMember")) {
+      this.props.dispatch(setActionConfirmationProgress(true));
+      const { assignmentId } = this.props.toConfirm;
+      WebApi.assignments.delete(assignmentId)
+        .then(response => {
+          this.props.dispatch(setActionConfirmationResult(response));
+          this.getAssignments();
+        })
+        .catch(error => {
+          this.props.dispatch(setActionConfirmationResult(error));
+        });
+    }
+  }
+
+  validatePropsForAction(nextProps, action) {
+    return (
+      nextProps.confirmed &&
+      !nextProps.isWorking &&
+      nextProps.type === ACTION_CONFIRMED &&
+      nextProps.toConfirm.key === action
+    );
   }
 
   capacityLevelToFraction(level, reverse = false) {
@@ -81,18 +120,15 @@ class EmployeeDetailContainer extends Component {
       }
       newSkills.push(skill);
     });
-    DCMTWebApi
-      .addEmployee(
-        this.props.match.params.id,
-        this.capacityLevelToFraction(this.state.capacityLevel),
-        this.seniorityLevelToString(this.state.seniorityLevel),
-        newSkills
-      )
+    WebApi.employees.post.add({
+      id: this.props.match.params.id,
+      capacity: this.capacityLevelToFraction(this.state.capacityLevel),
+      seniority: this.seniorityLevelToString(this.state.seniorityLevel),
+      skills: newSkills
+    })
       .then((confirmation) => {
         this.setState({
-          errorBlock: {
-            result: confirmation
-          },
+          errorBlock: confirmation,
           edit: false
         });
         this.getEmployee();
@@ -124,30 +160,23 @@ class EmployeeDetailContainer extends Component {
       // delete skill.name;
       newSkills.push(skill);
     });
-    DCMTWebApi
-      .editEmployee(
-        this.props.match.params.id,
-        this.seniorityLevelToString(this.state.seniorityLevel),
-        this.capacityLevelToFraction(this.state.capacityLevel)
-      )
+    WebApi.employees.patch.data(this.props.match.params.id, {
+      seniority: this.seniorityLevelToString(this.state.seniorityLevel),
+      capacity: this.capacityLevelToFraction(this.state.capacityLevel)
+    })
       .then((confirmation) => {
         this.setState({
-          errorBlock: {
-            result: confirmation
-          },
+          errorBlock: confirmation,
           loading: true
         });
       })
-      .then(DCMTWebApi.editEmployeeSkills(this.props.match.params.id, newSkills))
+      .then(WebApi.employees.put.skills(this.props.match.params.id, newSkills))
       .then((result) => {
         this.setState({
-          errorBlock: {
-            result
-          },
-          loading: false,
+          errorBlock: result,
           edit: false
         }, () => {
-          window.location.reload();
+          this.getEmployee();
         });
       })
       .catch((error) => {
@@ -158,28 +187,72 @@ class EmployeeDetailContainer extends Component {
       });
   }
 
+  getContactInfo = () => {
+    this.setState({
+      loading: true
+    }, () => {
+      WebApi.employees.get.emplo.contact(this.props.match.params.id)
+      .then((result) => {
+        this.setState({
+          errorBlock: result,
+          contactInfo: result.extractData(),
+          loading: false
+        });
+      })
+      .catch((error) => {
+        this.setState({
+          errorBlock: error,
+          loading: false
+        });
+      });
+    });
+  }
+
+  getAssignments = () => {
+    this.setState({
+      loading: true
+    }, () => {
+      WebApi.assignments.get.byEmployee(this.props.match.params.id)
+      .then((result) => {
+        this.setState({
+          errorBlock: result,
+          team: result.extractData()
+        });
+        this.getContactInfo();
+      })
+      .catch((error) => {
+        this.setState({
+          errorBlock: error,
+          loading: false
+        });
+      });
+    });
+  }
+
   getEmployee() {
     this.setState({
       loading: true
     }, () => {
-      DCMTWebApi.getEmployee(this.props.match.params.id)
+      WebApi.employees.get.byEmployee(this.props.match.params.id)
       .then((result) => {
-        console.log('EMPLOYEE', result.data.dtoObject);
+        let extract = result.extractData();
         this.setState({
-          errorBlock: {
-            result
-          },
-          skills: result.data.dtoObject.skills === null ? [] : result.data.dtoObject.skills,
-          loading: !result.data.dtoObject.hasAccount,
+          errorBlock: result,
+          skills: extract.skills === null ? [] : extract.skills,
+          loading: !extract.hasAccount,
           employeeLoadedSuccessfully: true,
-          employeeActive: result.data.dtoObject.hasAccount,
-          employee: result.data.dtoObject,
-          capacityLevel: this.capacityLevelToFraction(result.data.dtoObject.baseCapacity, true),
-          seniorityLevel: this.seniorityLevelToString(result.data.dtoObject.seniority, true),
-          edit: !result.data.dtoObject.hasAccount
+          employeeActive: extract.hasAccount,
+          employee: extract,
+          capacityLevel: this.capacityLevelToFraction(extract.baseCapacity, true),
+          seniorityLevel: this.seniorityLevelToString(extract.seniority, true),
+          edit: !extract.hasAccount
         }, () => {
           if(!this.state.employee.hasAccount){
             this.getEmploSkills();
+            return;
+          }
+          else {
+            this.getAssignments();
             return;
           }
         });
@@ -198,16 +271,14 @@ class EmployeeDetailContainer extends Component {
   }
 
   getEmploSkills = () => {
-    DCMTWebApi.getEmploSkills(this.props.match.params.id)
+    WebApi.employees.get.emplo.skills(this.props.match.params.id)
       .then((emploSkills) => {
         this.setState({
-          errorBlock: {
-            result: emploSkills
-          },
-          skills: emploSkills.data.dtoObjects,
-          loading: false,
+          errorBlock: emploSkills,
+          skills: emploSkills.extractData(),
           edit: true
         });
+        this.getContactInfo();
       })
       .catch((error) => {
         this.setState({
@@ -219,6 +290,7 @@ class EmployeeDetailContainer extends Component {
 
   handleSkillSelection = (newSkill) => {
     let duplicate = false;
+    if(!this.state.changesMade) this.skillsCache = JSON.parse(JSON.stringify(this.state.skills));
     this.state.skills.map((skill, index) => {
       if(skill.skillId === newSkill.skillId) duplicate = true;
     });
@@ -237,6 +309,7 @@ class EmployeeDetailContainer extends Component {
 
   handleSkillEdit = (updatedSkillObject, deletion = false) => {
     let { skills } = this.state;
+    if(!this.state.changesMade) this.skillsCache = JSON.parse(JSON.stringify(skills));
     this.state.skills.forEach((skill, index) => {
       if(skill.skillName === undefined){
         skill = {
@@ -263,6 +336,7 @@ class EmployeeDetailContainer extends Component {
   handleRangeChange = (skillObject) => {
     return (event) => {
       let { skills } = this.state;
+      if(!this.state.changesMade) this.skillsCache = JSON.parse(JSON.stringify(skills));
       skills.forEach((skill, index) => {
         // backend fixes!
         if(skill.skillName === undefined){
@@ -324,7 +398,9 @@ class EmployeeDetailContainer extends Component {
 
   cancel = () => {
     this.setState({
-      edit: false
+      edit: false,
+      changesMade: false,
+      skills: this.skillsCache
     });
   }
 
@@ -399,9 +475,23 @@ class EmployeeDetailContainer extends Component {
       <hr className="sharp"/>
       <div className="employee-headway">
         <DetailCascade lKey={t("Localization")} rVal={employee.localization} lColSize={4} rColSize={7} />
-        <DetailCascade lKey={t("Email")} rVal={employee.email} lColSize={4} rColSize={7} />
-        <DetailCascade lKey={t("Phone")} rVal={employee.phoneNumber} lColSize={4} rColSize={7} defVal="<brak>"/>
+        <DetailCascade dHref={`mailto:${employee.email}`} lKey={t("Email")} rVal={employee.email} lColSize={4} rColSize={7} />
       </div>
+      {
+        this.state.contactInfo !== undefined ? <div>
+          <hr/>
+          <div className="employee-headway">
+            <DetailCascade dHref={`skype:${this.state.contactInfo.skypeID}?chat`} lKey={'Skype'} defVal="<brak>" rVal={this.state.contactInfo.skypeID} lColSize={4} rColSize={7} />
+            <div className="text-bold employee-headway">Numery telefonu</div>
+            <DetailCascade lKey={'#'} rVal={employee.phoneNumber} lColSize={4} rColSize={7} defVal="<brak>"/>
+            {
+              this.state.contactInfo.telephoneNumber.map((number, index) => {
+                return <DetailCascade key={index} lKey={'#'} defVal="<brak>" rVal={number} lColSize={4} rColSize={7} />;
+              })
+            }
+          </div>
+        </div> : null
+      }
       <hr className="sharp"/>
       {this.state.edit === false ? this.pullInfoBlocksDOM() : null}
     </div>;
@@ -431,11 +521,12 @@ class EmployeeDetailContainer extends Component {
           {t("Capacity")}
         </label>
         <select onChange={this.handleCapacityChange} name="capacity-select">
+          <option/>
           <option value="0.2">1/5</option>
           <option value="0.25">1/4</option>
           <option value="0.5">1/2</option>
           <option value="0.75">3/4</option>
-          <option value="1">FT</option>
+          <option value="1">FTE</option>
         </select>
       </div>
       <div className="col-sm-6">
@@ -443,6 +534,7 @@ class EmployeeDetailContainer extends Component {
           {t("Seniority")}
         </label>
         <select onChange={this.handleSeniorityChange} name="seniority-select">
+          <option/>
           <option value="1">Junior</option>
           <option value="2">Pro</option>
           <option value="3">Senior</option>
@@ -478,12 +570,86 @@ class EmployeeDetailContainer extends Component {
     </div>;
   }
 
+  handleRowClick = (object, index) => {
+    return (e) => {
+      const { rowUnfurls } = this.state;
+
+      if(rowUnfurls[index] === undefined){
+        rowUnfurls[index] = true;
+      } else {
+        rowUnfurls[index] = !rowUnfurls[index];
+      }
+
+      this.setState({
+        rowUnfurls
+      });
+    };
+  }
+
+  deleteMember = (assignment) => (e) => {
+    e.stopPropagation();
+    e.nativeEvent.stopImmediatePropagation();
+
+    this.props.dispatch(
+      setActionConfirmation(true, {
+        key: "deleteProjectMember",
+        string: `Wypisać ${assignment.firstName} ${assignment.lastName} z projektu ${assignment.projectName}`,
+        assignmentId: assignment.assignmentId,
+        successMessage: "Wypisano pracownika"
+      })
+    );
+  }
+
+  mapTeam = (team) => {
+    return team.map((teamAssignment, index) => {
+      let unfurled = this.state.rowUnfurls[index];
+      return (
+        [
+          <TeamMember
+            onClick={this.handleRowClick(teamAssignment, index)}
+            compact
+            projectFlavor
+            key={index}
+            assignment={Object.assign({}, teamAssignment, this.state.employee)}
+            delete={this.deleteMember}
+          />,
+          unfurled ? <TeamMember
+            onClick={this.handleRowClick(teamAssignment, index)}
+            projectFlavor
+            key={50000 - index}
+            assignment={Object.assign({}, teamAssignment, this.state.employee)}
+          /> : null
+        ]
+      );
+    });
+  }
+
   pullDOM = () => {
     const { t } = this.props;
     const { employee } = this.state;
     return <div className="row">
       { this.state.employeeLoadedSuccessfully ? this.pullEmployeeIdBlockDOM() : null }
       <div className="col-sm-7 employee-headway">
+        {
+          this.state.employee.hasAccount && this.state.team.length > 0 ?
+          <table className="team-member-compact-table team-member-compact-project-flavor">
+            <thead>
+              <tr>
+                <th></th>
+                <th>Name</th>
+                <th>Capacity</th>
+                <th>Role</th>
+                <th>Seniority</th>
+                <th>Position</th>
+                <th>Ends</th>
+                <th>!</th>
+              </tr>
+            </thead>
+            <tbody>
+              {this.mapTeam(this.state.team)}
+            </tbody>
+          </table> : null
+        }
         {this.state.edit ? this.pullEmployeeSettingsEditorDOM() : null}
         {this.mapSkills(this.state.skills)}
       </div>
@@ -510,4 +676,17 @@ class EmployeeDetailContainer extends Component {
   }
 }
 
-export default withRouter(translate("EmployeeDetailContainer")(EmployeeDetailContainer));
+function mapStateToProps(state) {
+  return {
+    loading: state.asyncReducer.loading,
+    confirmed: state.asyncReducer.confirmed,
+    toConfirm: state.asyncReducer.toConfirm,
+    isWorking: state.asyncReducer.isWorking,
+    resultBlock: state.asyncReducer.resultBlock,
+    type: state.asyncReducer.type,
+    binPem: state.authReducer.binPem,
+    login: state.authReducer.login
+  };
+}
+
+export default connect(mapStateToProps)(withRouter(translate("EmployeeDetailContainer")(EmployeeDetailContainer)));

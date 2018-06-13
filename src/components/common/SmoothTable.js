@@ -71,8 +71,10 @@ class SmoothTable extends Component {
 
   deepenFunction(func, ...args) {
     return event => {
-      event.stopPropagation();
-      event.nativeEvent.stopImmediatePropagation();
+      if(event.stopPropagation !== undefined){
+        event.stopPropagation();
+        event.nativeEvent.stopImmediatePropagation();
+      }
       return func(...args, event);
     };
   }
@@ -293,9 +295,9 @@ class SmoothTable extends Component {
     let operators = [];
     let inputClasses = ["form-control"];
     if (this.state.isQueryLoading) inputClasses.push("loading");
-    this.state.construct.operators.map((operator, index) =>
-      operators.push(this.operatorButton(index, operator))
-    );
+    this.state.construct.operators.map((operator, index) => {
+      if(operator.comparator === undefined || operator.comparator(operator)) operators.push(this.operatorButton(index, operator));
+    });
 
     if(this.props.construct.filtering === true){
       operators.push(
@@ -357,7 +359,7 @@ class SmoothTable extends Component {
             this.handleSortColumnClick,
             column.field
           )}
-          key={column.field + index}
+          key={index}
         >
           {column.pretty}
           {this.generateSortingArrow(columns[currentlySortedColumn])}
@@ -370,7 +372,7 @@ class SmoothTable extends Component {
             this.handleSortColumnClick,
             column.field
           )}
-          key={column.field + index}
+          key={index}
         >
           {column.pretty}
         </th>
@@ -379,9 +381,10 @@ class SmoothTable extends Component {
 
   generateLegend() {
     const { currentlySortedColumn, columns, construct } = this.state;
-    return construct.columns.map((column, index) =>
-      this.tableHeader(currentlySortedColumn, columns, column, index)
-    );
+    return construct.columns.map((column, index) => {
+      if(column.comparator === undefined || column.comparator(column))
+        return this.tableHeader(currentlySortedColumn, columns, column, index);
+    });
   }
 
   generateFieldFilter(column, classes) {
@@ -439,6 +442,11 @@ class SmoothTable extends Component {
               column,
               column.type
             )}
+            value={(
+              this.state.columnFilters[column.field] !== "" ?
+              new Date(this.state.columnFilters[column.field]).toLocaleDateString()
+              : ""
+            )}
           />
         );
       }
@@ -482,7 +490,7 @@ class SmoothTable extends Component {
       case "multiState":
         return column.multiState[object[column.field]];
       case "date":
-        return moment(object[column.field]).format("YYYY-MM-DD");
+        return new Date(object[column.field]).toLocaleDateString();
     }
   }
 
@@ -512,7 +520,7 @@ class SmoothTable extends Component {
         if (column.field !== undefined) {
           return (
             <td
-              key={column.field}
+              key={index + column.field}
               className="smooth-cell"
               style={{ width: column.width + "%" }}
             >
@@ -522,7 +530,7 @@ class SmoothTable extends Component {
         } else if (column.toolBox !== undefined){
           return (
             <td
-              key="____toolBox"
+              key={"____toolBox_" + index}
               className="smooth-cell smooth-text-right"
               style={{ width: column.width + "%" }}
             >
@@ -530,11 +538,22 @@ class SmoothTable extends Component {
             </td>
           );
         }
+        else if (column.manualResolver !== undefined) {
+          return (
+            <td
+              key={"____manualResolver_" + index}
+              className="smooth-cell smooth-text-right"
+              style={{ width: column.width + "%" }}
+            >
+              {column.manualResolver(object, column)}
+            </td>
+          );
+        }
       })}
     </tr>);
 
     if(unfurl  && !this.state.update) payload.push(<tr
-      key={index}
+      key={"____unfurl_" + index}
     >
       {
         (unfurled) ?
@@ -556,7 +575,6 @@ class SmoothTable extends Component {
   }
 
   forceAnUpdate = () => {
-    console.log('focing update');
     const unfurls = JSON.parse(JSON.stringify(this.state.rowUnfurls));
     this.setState({
       update: !this.state.update,

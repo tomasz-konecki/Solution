@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import "../../../scss/components/users/modals/StageTwo.scss";
 import FoundUsersTable from "../FoundUsersTable";
-import DCMTWebApi from "../../../api";
 import UserDetailsBlock from "./UserDetailsBlock";
 import UserRoleAssigner from "./UserRoleAssigner";
 import LoaderHorizontal from "../../../components/common/LoaderHorizontal";
@@ -18,8 +17,7 @@ class StageTwo extends Component {
       email: "",
       phoneNumber: "",
       id: "",
-      roles: [],
-      isLoading: false
+      roles: []
     };
   }
 
@@ -60,13 +58,8 @@ class StageTwo extends Component {
     if (this.state.roles.length === 0) {
       alert(this.props.t("AddRoles"));
     } else {
-      this.setState({ isLoading: true });
       this.props.doAddUser(this.state);
     }
-  };
-
-  stopLoading = () => {
-    this.setState({ isLoading: false });
   };
 
   render() {
@@ -98,19 +91,23 @@ class StageTwo extends Component {
               />
             </div>
             <div className="submit-button-container">
-              <button
-                className="dcmt-button"
-                type="submit"
-                onClick={this.handleSubmit}
-              >
-                {t("Add")}
-              </button>
+              {
+                this.state.roles[0] !== undefined ?
+                <button
+                  className="dcmt-button"
+                  type="submit"
+                  onClick={this.handleSubmit}
+                >
+                  {t("Add")}
+                </button>
+                : null
+              }
             </div>
           </div>
         </div>
 
         <div className="stage-two-loader-container">
-          {this.state.isLoading === true && <LoaderHorizontal />}
+          {this.props.isLoading === true && <LoaderHorizontal />}
         </div>
       </div>
     );

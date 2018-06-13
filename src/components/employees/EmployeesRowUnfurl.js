@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { translate } from 'react-translate';
-import DCMTWebApi from '../../api';
+import WebApi from '../../api';
 import ResultBlock from '../common/ResultBlock';
 import ProjectSkill from './../projects/ProjectSkill';
 import LoaderHorizontal from './../common/LoaderHorizontal';
@@ -75,13 +75,11 @@ class EmployeesRowUnfurl extends Component {
   }
 
   getEmploSkills() {
-    DCMTWebApi.getEmploSkills(this.state.toUnfurl.id)
+    WebApi.employees.get.emplo.skills(this.state.toUnfurl.id)
       .then((emploSkills) => {
         this.setState({
-          errorBlock: {
-            result: emploSkills
-          },
-          skills: emploSkills.data.dtoObjects,
+          errorBlock: emploSkills,
+          skills: emploSkills.extractData(),
           loadingSkills: false
         });
       })
@@ -94,18 +92,18 @@ class EmployeesRowUnfurl extends Component {
   }
 
   getEmployee(id) {
-    DCMTWebApi.getEmployee(this.state.toUnfurl.id)
+    WebApi.employees.get.byEmployee(this.state.toUnfurl.id)
       .then((result) => {
+        let extract = result.extractData();
         this.setState({
-          errorBlock: {
-            result
-          },
-          skills: result.data.dtoObject.skills,
+          errorBlock: result,
+          skills: extract.skills,
           loadingSkills: false,
           confirmed: true,
-          employee: result.data.dtoObject,
-          capacityLevel: this.capacityLevelToFraction(result.data.dtoObject.baseCapacity, true),
-          seniorityLevel: this.seniorityLevelToString(result.data.dtoObject.seniority, true)
+          employee: extract,
+          capacityLevel: extract.baseCapacity,
+          capacityLeft: extract.capacityLeft,
+          seniorityLevel: this.seniorityLevelToString(extract.seniority, true)
         });
       })
       .catch((error) => {
@@ -176,12 +174,6 @@ class EmployeesRowUnfurl extends Component {
         </div>
         <div className="col-sm-2 full-width-button">
           <button onClick={this.goToEmployeeMoreDetails(this.state.toUnfurl.id)} className="dcmt-button">Więcej</button>
-          <hr/>
-          <ResultBlock
-            errorBlock={this.state.errorBlock}
-            errorOnly={false}
-            successMessage="Aktywowano"
-          />
         </div>
       </div>
     );

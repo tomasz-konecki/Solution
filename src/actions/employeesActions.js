@@ -4,7 +4,7 @@ import {
   ASYNC_ENDED
 } from "../constants";
 import axios from "axios";
-import DCMTWebApi from "../api";
+import WebApi from "../api";
 import { asyncStarted, asyncEnded } from "./asyncActions";
 
 export const loadEmployeesSuccess = employees => {
@@ -23,14 +23,15 @@ export const loadEmployees = (page = 1, limit = 25, other = {}) => {
     );
 
     dispatch(asyncStarted());
-    DCMTWebApi.getEmployees(settings)
+    WebApi.employees.post.list(settings)
       .then(response => {
-        dispatch(loadEmployeesSuccess(response.data.dtoObject));
+        if(!response.errorOccurred()){
+          dispatch(loadEmployeesSuccess(response.extractData()));
+        }
         dispatch(asyncEnded());
       })
       .catch(error => {
         dispatch(asyncEnded());
-        alert("Wystąpił błąd: " + error.toString());
       });
   };
 };

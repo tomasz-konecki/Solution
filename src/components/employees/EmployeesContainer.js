@@ -6,7 +6,6 @@ import * as employeesActions from "../../actions/employeesActions";
 import * as asyncActions from "../../actions/asyncActions";
 import "../../scss/containers/UsersContainer.scss";
 import { ACTION_CONFIRMED } from "./../../constants";
-import DCMTWebApi from "../../api/";
 import EmployeesList from "./EmployeesList";
 import EmployeeDetailContainer from "./EmployeeDetailContainer";
 import { withRouter, Switch, Route } from 'react-router-dom';

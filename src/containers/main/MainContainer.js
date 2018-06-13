@@ -1,7 +1,6 @@
 import React from "react";
 import { Route, withRouter } from "react-router-dom";
 import Header from "./header/Header";
-import Footer from "./footer/Footer";
 import Content from "./Content";
 import "../../scss/containers/MainContainer.scss";
 import PropTypes from "prop-types";

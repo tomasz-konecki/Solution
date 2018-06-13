@@ -10,7 +10,7 @@ import Modal from "react-responsive-modal";
 import UserSelector from "../../components/users/modals/UserSelector";
 import UsersList from "../../components/users/UsersList";
 import { ACTION_CONFIRMED } from './../../constants';
-import DCMTWebApi from "../../api/";
+import WebApi from "../../api/";
 
 class UsersContainer extends React.Component {
   constructor(props) {
@@ -35,11 +35,9 @@ class UsersContainer extends React.Component {
     if (this.validatePropsForUserDeletion(nextProps)) {
       this.props.async.setActionConfirmationProgress(true);
 
-      DCMTWebApi.deleteUser(this.props.toConfirm.id)
+      WebApi.users.delete.user(this.props.toConfirm.id)
         .then(response => {
-          this.props.async.setActionConfirmationResult({
-            response
-          });
+          this.props.async.setActionConfirmationResult(response);
           this.pageChange(this.state.currentPage);
         })
         .catch(error => {
@@ -49,11 +47,9 @@ class UsersContainer extends React.Component {
     if (this.validatePropsForUserReactivation(nextProps)) {
       this.props.async.setActionConfirmationProgress(true);
 
-      DCMTWebApi.reactivateUser(this.props.toConfirm.id)
+      WebApi.users.patch.reactivate(this.props.toConfirm.id)
         .then(response => {
-          this.props.async.setActionConfirmationResult({
-            response
-          });
+          this.props.async.setActionConfirmationResult(response);
           this.pageChange(this.state.currentPage);
         })
         .catch(error => {
@@ -112,6 +108,7 @@ class UsersContainer extends React.Component {
           totalPageCount={this.props.totalPageCount}
           pageChange={this.pageChange}
           loading={this.props.loading}
+          resultBlock={this.props.resultBlock}
         />
         <Modal
           open={this.state.showModal}
@@ -143,7 +140,8 @@ function mapStateToProps(state) {
     confirmed: state.asyncReducer.confirmed,
     toConfirm: state.asyncReducer.toConfirm,
     isWorking: state.asyncReducer.isWorking,
-    type: state.asyncReducer.type
+    type: state.asyncReducer.type,
+    resultBlock: state.usersReducer.resultBlock
   };
 }
 

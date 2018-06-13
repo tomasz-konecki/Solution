@@ -25,12 +25,14 @@ class EditUserDetails extends Component {
             handleRoleChange={this.props.handleRoleChange}
           />
           <div className="edit-user-button-container">
-            <button
-              className="dcmt-button"
-              onClick={this.props.changeUserRoles}
-            >
-              {t("Confirm")}
-            </button>
+            {
+              this.props.user.roles[0] !== undefined ? <button
+                className="dcmt-button"
+                onClick={this.props.changeUserRoles}
+              >
+                {t("Confirm")}
+              </button> : null
+            }
           </div>
           <div>
             <ResultBlock

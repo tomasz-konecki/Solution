@@ -1,6 +1,6 @@
 import { LOAD_PROJECTS_SUCCESS, CHANGE_EDITED_PROJECT } from "../constants";
 import axios from "axios";
-import DCMTWebApi from "../api";
+import WebApi from "../api";
 import { asyncStarted, asyncEnded } from "./asyncActions";
 
 export const loadProjectsSuccess = projects => {
@@ -17,9 +17,11 @@ export const loadProjects = (page = 1, limit = 25, other = {}) => {
   }, other);
   return dispatch => {
     dispatch(asyncStarted());
-    DCMTWebApi.getProjects(settings)
+    WebApi.projects.post.list(settings)
       .then(response => {
-        dispatch(loadProjectsSuccess(response.data.dtoObject));
+        if(!response.errorOccurred()) {
+          dispatch(loadProjectsSuccess(response.extractData()));
+        }
         dispatch(asyncEnded());
       })
       .catch(error => {

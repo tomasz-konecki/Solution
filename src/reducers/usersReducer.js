@@ -1,4 +1,4 @@
-import { LOAD_USERS_SUCCESS, LOGOUT } from "../constants";
+import { LOAD_USERS_SUCCESS, LOAD_USERS_FAIL, LOGOUT } from "../constants";
 
 const initialState = {
   users: [],
@@ -13,6 +13,10 @@ export const usersReducer = (state = initialState, action) => {
         users: action.users.results,
         currentPage: action.users.currentPage,
         totalPageCount: action.users.totalPageCount
+      };
+    case LOAD_USERS_FAIL:
+      return {
+        resultBlock: action.resultBlock
       };
     case LOGOUT:
       return {

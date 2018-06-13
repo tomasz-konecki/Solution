@@ -1,6 +1,10 @@
 $border-color: black;
 $block-color: #ababab;
 
+.skill-row-inb {
+  display: inline-block;
+}
+
 .skill-row {
   box-sizing: border-box;
   height: 24px;
@@ -14,6 +18,8 @@ $block-color: #ababab;
     margin-right: 6px;
     margin-bottom: 7px;
     margin-top: 4.5px;
+
+    vertical-align: top;
   }
   .skill-row-name {
     box-sizing: border-box;
@@ -33,6 +39,8 @@ $block-color: #ababab;
     padding-left: 3px;
     overflow: hidden;
     white-space: nowrap;
+
+    vertical-align: top;
     input {
       height: 9px;
       width: 200px;
@@ -89,6 +97,8 @@ $block-color: #ababab;
     padding-left: 2px;
     overflow: hidden;
     white-space: nowrap;
+
+    vertical-align: top;
   }
   .skill-row-yoe {
     display: inline-block;
@@ -99,6 +109,8 @@ $block-color: #ababab;
     white-space: nowrap;
     font-weight: 900;
     width: 100px;
+
+    vertical-align: top;
   }
   .skill-row-yoe-range {
     display: inline-block;
@@ -107,8 +119,11 @@ $block-color: #ababab;
     padding-left: 3px;
     overflow: hidden;
     white-space: nowrap;
-    input {
-      height: 9px;
+    input[type="number"] {
+      height: 20px;
+      margin-top: 2px;
+      margin-left: 3px;
+      vertical-align: top;
     }
   }
   .skill-row-delete {

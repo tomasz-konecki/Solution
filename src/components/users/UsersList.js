@@ -6,9 +6,11 @@ import Confirmation from "../common/modals/Confirmation";
 import { setActionConfirmation } from "../../actions/asyncActions";
 import Modal from "react-responsive-modal";
 import EditUserDetails from "../users/modals/EditUserDetails";
-import DCMTWebApi from "../../api";
+import WebApi from "../../api";
 import PropTypes from 'prop-types';
 import { translate } from 'react-translate';
+import IntermediateBlock from './../common/IntermediateBlock';
+import binaryPermissioner from './../../api/binaryPermissioner';
 
 class UsersList extends Component {
   constructor(props) {
@@ -22,17 +24,6 @@ class UsersList extends Component {
   }
 
   handleGetUser = object => {
-    // DCMTWebApi.getUser(object.id)
-    //   .then(response => {
-    //     if (response.status === 200) {
-    //       this.setState({
-    //         user: response.data.dtoObject
-    //       });
-    //     }
-    //   })
-    //   .catch(error => {
-    //     throw error;
-    //   });
     this.setState({
       user: object
     });
@@ -56,12 +47,10 @@ class UsersList extends Component {
         loading: true
       },
       () => {
-        DCMTWebApi.changeUserRole(id, roles)
+        WebApi.users.patch.roles(id, roles)
           .then(response => {
             this.setState({
-              responseBlock: {
-                response
-              },
+              responseBlock: response,
               loading: false
             });
             setTimeout(() => {
@@ -86,6 +75,29 @@ class UsersList extends Component {
     this.setState({ showModal: false });
   };
 
+  rolesArrayToSignificantSymbol(rolesArray) {
+    const symbol = [
+      'D', 'S', 'H', 'T', 'A', 'M'
+    ];
+    const roles = [
+      'Developer', 'Tradesman', 'Human Resources', 'Team Leader', 'Administrator', 'Manager'
+    ];
+    let symbols = [];
+
+    for(let i = 0; i < symbol.length; i++){
+      if(rolesArray.indexOf(roles[i]) >= 0) symbols.push(
+        <span className={'user-role-symbol ' + roles[i]} key={i} title={roles[i]}>{symbol[i]}</span>
+      );
+      else {
+        symbols.push(
+          <span className={'user-role-symbol'} key={i}/>
+        );
+      }
+    }
+
+    return symbols;
+  }
+
   render() {
     const { t } = this.props;
     const construct = {
@@ -106,16 +118,21 @@ class UsersList extends Component {
           pretty: t("Add"),
           click: () => {
             this.props.openAddUserModal();
-          }
+          },
+          comparator: () => binaryPermissioner(false)(0)(0)(0)(0)(0)(1)(this.props.binPem)
         }
       ],
       columns: [
+        { width: 1, pretty: "Role", manualResolver: (user, column) => {
+           return this.rolesArrayToSignificantSymbol(user.roles);
+        }},
         { width: 20, field: "firstName", pretty: t("Name"), type: "text", filter: true },
         { width: 30, field: "lastName", pretty: t("Surname"), type: "text", filter: true },
         { width: 30, field: "email", pretty: t("Email"), type: "text", filter: true },
         { width: 19, field: "phoneNumber", pretty: t("Phone"), type: "text", filter: true },
         {
           width: 1,
+          comparator: object => binaryPermissioner(false)(0)(0)(0)(0)(0)(1)(this.props.binPem),
           toolBox: [
             {
               icon: { icon: "sync-alt" },
@@ -132,7 +149,7 @@ class UsersList extends Component {
                   })
                 );
               },
-              comparator: object => object.isDeleted
+              comparator: object => object.isDeleted && binaryPermissioner(false)(0)(0)(0)(0)(0)(1)(this.props.binPem)
             },
             {
               icon: { icon: "times" },
@@ -149,14 +166,15 @@ class UsersList extends Component {
                   })
                 );
               },
-              comparator: object => !object.isDeleted
+              comparator: object => !object.isDeleted && binaryPermissioner(false)(0)(0)(0)(0)(0)(1)(this.props.binPem)
             },
             {
               icon: { icon: "edit", iconType: "far" },
               title: t("EditUserImperativus"),
               click: object => {
                 this.handleGetUser(object);
-              }
+              },
+              comparator: object => binaryPermissioner(false)(0)(0)(0)(0)(0)(1)(this.props.binPem)
             }
           ],
           pretty: t("DeleteEdit")
@@ -164,33 +182,44 @@ class UsersList extends Component {
       ]
     };
 
-    return (
-      <div>
-        <SmoothTable
-          currentPage={this.props.currentPage}
-          totalPageCount={this.props.totalPageCount}
-          loading={this.props.loading}
-          data={this.props.users}
-          construct={construct}
+    let render = () => <div>
+      <SmoothTable
+        currentPage={this.props.currentPage}
+        totalPageCount={this.props.totalPageCount}
+        loading={this.props.loading}
+        data={this.props.users}
+        construct={construct}
+      />
+      <Modal
+        open={this.state.showModal}
+        classNames={{ modal: "Modal Modal-users" }}
+        contentLabel="Edit users details"
+        onClose={this.handleCloseModal}
+      >
+        <EditUserDetails
+          closeModal={this.handleCloseModal}
+          user={this.state.user}
+          handleRoleChange={this.handleRoleChange}
+          responseBlock={this.state.responseBlock}
+          loading={this.state.loading}
+          changeUserRoles={this.changeUserRoles}
         />
-        <Modal
-          open={this.state.showModal}
-          classNames={{ modal: "Modal Modal-users" }}
-          contentLabel="Edit users details"
-          onClose={this.handleCloseModal}
-        >
-          <EditUserDetails
-            closeModal={this.handleCloseModal}
-            user={this.state.user}
-            handleRoleChange={this.handleRoleChange}
-            responseBlock={this.state.responseBlock}
-            loading={this.state.loading}
-            changeUserRoles={this.changeUserRoles}
-          />
-        </Modal>
-      </div>
-    );
+      </Modal>
+    </div>;
+
+    return <IntermediateBlock
+      loaded={!this.state.loading}
+      render={render}
+      resultBlock={this.props.resultBlock}
+      _className={'content-container'}
+    />;
   }
+}
+
+function mapStateToProps(state) {
+  return {
+    binPem: state.authReducer.binPem
+  };
 }
 
 UsersList.propTypes = {
@@ -200,7 +229,10 @@ UsersList.propTypes = {
   currentPage: PropTypes.number.isRequired,
   totalPageCount: PropTypes.number.isRequired,
   loading: PropTypes.bool.isRequired,
-  users: PropTypes.arrayOf(PropTypes.object).isRequired
+  users: PropTypes.arrayOf(PropTypes.object).isRequired,
+  binPem: PropTypes.number,
+  t: PropTypes.func,
+  resultBlock: PropTypes.object
 };
 
-export default connect()(translate("UsersList")(UsersList));
+export default connect(mapStateToProps)(translate("UsersList")(UsersList));

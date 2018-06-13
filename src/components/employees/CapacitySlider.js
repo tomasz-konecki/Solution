@@ -14,7 +14,8 @@ class CapacitySlider extends Component {
   }
 
   toFraction = (decimal) => {
-    if(decimal === 1) return 'FT';
+    if(decimal === 0) return 'FTE';
+    if(decimal === 1) return 'FTE';
     return new Fraction(decimal).toFraction(true);
   }
 
@@ -31,7 +32,7 @@ class CapacitySlider extends Component {
       case 4:
         return "3/4";
       case 5:
-        return "FT";
+        return "FTE";
     }
   }
 
@@ -58,45 +59,50 @@ class CapacitySlider extends Component {
   render() {
     let { editable, capacityLevel, capacityLeft } = this.props;
 
-    let percentageLeft = 100 - (capacityLeft / capacityLevel * 100);
+    let percentageIn = (capacityLevel * 100);
+    let percentageLeft = 100 - (capacityLeft * 100);
 
     let nCapacityLeft = this.capacityLevelToFraction(capacityLeft, true);
     let nCapacityLevel = this.capacityLevelToFraction(capacityLevel, true);
 
+    let cLeft = capacityLevel;
+
+    let mainClasses = ["capacity-slider-wrapper"];
     let leftClasses = ["capacity-left-slider-level", "capacity-left-slider"];
 
     if(this.state.negative){
-      percentageLeft = 100;
+      percentageLeft = 100 - percentageIn - (capacityLevel/(-(capacityLeft)) * 100);
       nCapacityLeft = capacityLeft;
+      cLeft = capacityLeft;
       leftClasses.push('capacity-left-slider-negative');
+      mainClasses.push('capacity-slider-negative');
     }
 
-    let leftStyling = {
-      width: percentageLeft * 5 + '%'
+    let curStyling = {
+      width: percentageIn + '%'
     };
 
+    let leftStyling = {
+      width: percentageLeft + '%'
+    };
+
+    if(capacityLeft === capacityLevel){
+      Object.assign(leftStyling, {
+        display: "none"
+      });
+    }
+
     return (
-      <div className="capacity-slider-wrapper">
+      <div className={mainClasses.join(' ')}>
         <div className="capacity-slider">
-          <span className="capacity-absolute-slider-caption">
-            Reference FT
-          <span/>
+          <span className={"capacity-slider-level"}>
+            <span style={curStyling}>{this.toFraction(capacityLevel)}</span>
           </span>
           <span className="capacity-absolute-slider-level">
-            <span/>
+            <span>FTE</span>
           </span>
-          <span className={"capacity-slider-level capacity-slider-" + nCapacityLevel}>
-            <span/>
-            <span/>
-            <span/>
-            <span/>
-            <span/>
-            <span className={leftClasses.join(' ')}>
-              <span style={leftStyling}/>
-            </span>
-          </span>
-          <span className="capacity-slider-name">
-            Current: {this.toFraction(capacityLevel)} | Left: {this.toFraction(capacityLeft)}
+          <span className={leftClasses.join(' ')}>
+              <span style={leftStyling}>{this.toFraction(cLeft)}</span>
           </span>
         </div>
       </div>

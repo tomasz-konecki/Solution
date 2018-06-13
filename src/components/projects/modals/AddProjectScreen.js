@@ -4,7 +4,7 @@ import moment from "moment";
 import "../../../scss/components/projects/modals/AddProjectScreen.scss";
 import "react-datepicker/dist/react-datepicker.css";
 import LoaderHorizontal from "../../../components/common/LoaderHorizontal";
-import DCMTWebApi from "../../../api";
+import WebApi from "../../../api";
 import ResultBlock from "./../../common/ResultBlock";
 import ResponsiblePersonBlock from "./ResponsiblePersonBlock";
 import constraints from "../../../constraints";
@@ -74,14 +74,14 @@ class AddProjectScreen extends Component {
   };
 
   handleAddProject = newProject => {
-    DCMTWebApi.addProject(newProject)
+    WebApi.projects.post.add(newProject)
       .then(response => {
         this.props.projectActions.loadProjects(
           this.props.currentPage,
           this.props.limit
         );
         this.setState({
-          errorBlock: { response },
+          errorBlock: response,
           isLoading: false
         });
         setTimeout(() => {
@@ -242,7 +242,7 @@ class AddProjectScreen extends Component {
           </div>
           <div className="form-group row">
             <label htmlFor="description" className="col-sm-3 col-form-label">
-              {t("Opis")}:
+              {t("Description")}:
             </label>
             <div className="col-sm-9">
               <textarea

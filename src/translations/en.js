@@ -14,7 +14,9 @@ const translations = {
     Users: "Users",
     Employees: "Employees",
     Projects: "Projects",
-    Assign: "Assign"
+    Assign: "Assign",
+    Stats: "Statistics",
+    Skills: "Skills"
   },
   SmoothTable: {
     Search: "Search",
@@ -61,7 +63,8 @@ const translations = {
     DeleteProjectInfinitive: "Delete project",
     ProjectDeleted: "Project has been deleted",
     EditProject: "Edit project",
-    DeactivateDeleteEdit: "Deactivate/Delete/Edit"
+    DeactivateDeleteEdit: "Deactivate/Delete/Edit",
+    SeeMore: "See more"
   },
   EmployeesList: {
     Name: "Name",
@@ -243,6 +246,22 @@ const translations = {
     Save: "Save",
     Activate: "Activate",
     Edit: "Edit"
+  },
+  AssignsContainer: {
+    LastName: "Last/Name",
+    Position: "Position",
+    Skills: "Skills(comma-separated)",
+    MinLevelAbove: "Min level above:",
+    MinExperience: "Min. years of exp. of.",
+    Name: "Name",
+    Projects: "Projects",
+    Employees: "Employees"
+  },
+  SkillsContainer: {
+    Deletion: "Deletion",
+    Info1: "Deletion will be permanent, removing entries from the database and all places where referenced.",
+    Info2: "Rollback of this action is not available.",
+    SuccessfullyDeleted: "Successfully deleted skill"
   }
 };
 

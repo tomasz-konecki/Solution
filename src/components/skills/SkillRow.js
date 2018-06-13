@@ -129,6 +129,13 @@ class SkillRow extends Component {
                 value={skill.yearsOfExperience}
                 onChange={this.handleYOEChange}
               />
+              <input
+                type="number"
+                min="1"
+                max="30"
+                value={skill.yearsOfExperience}
+                onChange={this.handleYOEChange}
+              />
             </div>
             :
             null
@@ -146,6 +153,19 @@ class SkillRow extends Component {
     if(skill.skillLevel !== undefined) lCBlock = {
       background: hexToRGB(this.leveltoRGGradient(skill.skillLevel), 0.5)
     };
+    if(this.props.micro === true) return (
+      <div className="skill-row skill-row-inb">
+        <div style={nCBlock} className="skill-row-cblock" title={skill.skillName}/>
+        <div className="skill-row-separator">{skill.skillLevel}</div>
+      </div>
+    );
+    if(this.props.delo === true) return (
+      <div className="skill-row">
+        <div style={nCBlock} className="skill-row-cblock"/>
+        <div className="skill-row-name" style={{width: '80%'}}>{ skill.skillName }</div>
+        <div onClick={this.announceDeletion} className="skill-row-delete"/>
+      </div>
+    );
     return (
       <div className="skill-row">
         <div style={nCBlock} className="skill-row-cblock"/>

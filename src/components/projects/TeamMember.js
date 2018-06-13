@@ -5,6 +5,8 @@ import en from 'javascript-time-ago/locale/en';
 import pl from 'javascript-time-ago/locale/pl';
 import { connect } from 'react-redux';
 import { translate } from 'react-translate';
+import CapacitySlider from './../employees/CapacitySlider';
+import { push } from 'react-router-redux';
 
 class TeamMember extends Component {
   constructor(props) {
@@ -31,7 +33,7 @@ class TeamMember extends Component {
       case 0.25: return '1/4';
       case 0.5: return '1/2';
       case 0.75: return '3/4';
-      case 1: return 'FT';
+      case 1: return 'FTE';
     }
   }
 
@@ -39,51 +41,83 @@ class TeamMember extends Component {
     return (new Date(ts)).toLocaleDateString();
   }
 
-  render() {
+  goToEmployeeMoreDetails = (id) => {
+    return (event) => {
+      this.props.dispatch(push(`/main/employees/${id}`));
+    };
+  }
+
+  isActive(assignment) {
+    if(assignment.isActive !== undefined) return assignment.isActive;
+    else return false;
+  }
+
+  pullCompactDOM = () => {
+    const { assignment, t, projectFlavor } = this.props;
+
+    return <tr className="team-member-compact" onClick={this.props.onClick}>
+      <td className="team-member-cell">
+        {
+          this.isActive(assignment) ? <Icon icon="address-card"/> : <Icon icon="arrow-down"/>
+        }
+      </td>
+      <td className="team-member-cell">
+        {
+          projectFlavor === true ?
+          <a target="_blank" href={`/main/projects/${assignment.projectId}`}>{assignment.projectName}</a>
+          : <a target="_blank" href={`/main/employees/${assignment.employeeId}`}>{assignment.firstName + ' ' + assignment.lastName}</a>
+        }
+      </td>
+      <td className="team-member-cell team-member-text-bold">
+        {this.capacityToPrimitiveFraction(assignment.assignedCapacity)}
+      </td>
+      <td className="team-member-cell">
+        {assignment.role}
+      </td>
+      <td className="team-member-cell">
+        {assignment.seniority}
+      </td>
+      <td className="team-member-cell">
+        {assignment.title}
+      </td>
+      <td className="team-member-cell">
+        {(new Date(assignment.endDate)).toLocaleDateString()}
+      </td>
+      <td className="team-member-cell" onClick={this.props.delete(assignment)}>
+        <Icon icon="times"/>
+      </td>
+    </tr>;
+  }
+
+  pullFullDetailDOM = () => {
     const { assignment, t } = this.props;
     return (
-      <div className="team-member-block row">
-        <div className="team-member-left col-sm-6">
-          <Icon icon="address-card"/>
-          <h4>{assignment.firstName + ' ' + assignment.lastName}</h4>
-          <div className="team-job-title">___</div>
-          <hr/>
-          <div className="row">
-            <span className="col-sm-6">{t('AssignedCapacity')}:</span>
-            <span className="col-sm-6 team-member-text-bold">
-              {this.capacityToPrimitiveFraction(assignment.assignedCapacity)}
-            </span>
-          </div>
-          <div className="row">
-            <span className="col-sm-6">{t('ProjectRole')}:</span>
-            <span className="col-sm-6 team-member-text-bold">___</span>
-          </div>
-          <div className="row">
-            <span className="col-sm-6">{t('Seniority')}:</span>
-            <span className="col-sm-6 team-member-text-bold">
-              {assignment.seniority}
-            </span>
-          </div>
-          <hr/>
-          {t('AddedBy')}: ___ { this.timeAgo.format(new Date(assignment.startDate)) }
-        </div>
-        <div className="team-member-right col-sm-6">
-          <div className="team-member-backway">
-            <div className="team-member-text-bold">
+      <tr className="team-member-block">
+        <td colSpan={3} className="team-member-right">
+          <span className="team-member-backway">
+            <span className="team-member-text-bold">
             {t('ResponsibleFor')}:
-            </div>
-            <div className="team-member-headway">
-              <div>- ___</div>
-            </div>
-          </div>
-          <div className="team-member-headway team-member-workdates team-member-text-right">
-            <div>{t('Begun')}: { this.timeAgo.format(new Date(assignment.startDate)) } {this.timeStampToDate(assignment.startDate)}
-            </div>
-            <div>{t('Ends')}: {this.timeStampToDate(assignment.endDate)}</div>
-          </div>
-        </div>
-      </div>
+            </span>
+            <span className="team-member-headway">
+              {
+                assignment.responsibilities.map((responsibility, index) => {
+                  return <div key={index}>- {responsibility}</div>;
+                })
+              }
+            </span>
+          </span>
+        </td>
+        <td colSpan={4} className="team-member-left">
+          <div>{t('AddedBy')}: {assignment.createdBy} { this.timeAgo.format(new Date(assignment.createdAt)) }</div>
+          <div>{t('Begun')}: { this.timeAgo.format(new Date(assignment.startDate)) } {this.timeStampToDate(assignment.startDate)}</div>
+          <div>{t('Ends')}: {this.timeStampToDate(assignment.endDate)}</div>
+        </td>
+      </tr>
     );
+  }
+
+  render() {
+    return this.props.compact === true ? this.pullCompactDOM() : this.pullFullDetailDOM();
   }
 }
 

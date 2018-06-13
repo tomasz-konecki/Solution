@@ -5,13 +5,15 @@ import { setActionConfirmation } from "./../../actions/asyncActions";
 import { connect } from "react-redux";
 import Modal from "react-responsive-modal";
 import EditProjectDetails from "../projects/modals/EditProjectDetails";
-import DCMTWebApi from "../../api";
+import WebApi from "../../api";
 import "react-datepicker/dist/react-datepicker.css";
 import DatePicker from "react-datepicker";
 import ProjectRowUnfurl from './ProjectRowUnfurl';
 import PropTypes from 'prop-types';
 import { translate } from 'react-translate';
 import { push } from 'react-router-redux';
+import binaryPermissioner from './../../api/binaryPermissioner';
+import specialPermissioner from './../../api/specialPermissioner';
 
 class ProjectsList extends Component {
   constructor(props) {
@@ -25,14 +27,12 @@ class ProjectsList extends Component {
   }
 
   handleGetProject = object => {
-    DCMTWebApi.getProject(object.id)
+    WebApi.projects.get(object.id)
       .then(response => {
-        if (response.status === 200) {
-          this.setState({
-            project: response.data.dtoObject,
-            showModal: true
-          });
-        }
+        this.setState({
+          project: response.extractData(),
+          showModal: true
+        });
       })
       .catch(error => {
         this.setState({
@@ -99,7 +99,8 @@ class ProjectsList extends Component {
           pretty: t("Add"),
           click: () => {
             this.props.openAddProjectModal();
-          }
+          },
+          comparator: () => binaryPermissioner(false)(0)(0)(0)(0)(1)(1)(this.props.binPem)
         }
       ],
       columns: [
@@ -119,7 +120,7 @@ class ProjectsList extends Component {
           width: 1,
           toolBox: [
             {
-              icon: { icon: "file-archive", iconType: "far" },
+              icon: { icon: "minus-square", iconType: "fas" },
               title: t("CloseProjectImperativus"),
               click: object => {
                 this.props.dispatch(
@@ -131,11 +132,15 @@ class ProjectsList extends Component {
                   })
                 );
               },
-              comparator: object => object.isActive
+              comparator: (object) => {
+                return (specialPermissioner().projects.isOwner(object, this.props.login)
+                 || binaryPermissioner(false)(0)(0)(0)(0)(1)(1)(this.props.binPem))
+                 && object.isActive;
+              }
             },
             {
-              icon: { icon: "angle-double-up", iconType: "fas" },
-              title: t("CloseProjectImperativus"),
+              icon: { icon: "eject", iconType: "fas" },
+              title: t("ReactivateProjectImperativus"),
               click: object => {
                 this.props.dispatch(
                   setActionConfirmation(true, {
@@ -146,7 +151,11 @@ class ProjectsList extends Component {
                   })
                 );
               },
-              comparator: object => !object.isActive
+              comparator: (object) => {
+                return (specialPermissioner().projects.isOwner(object, this.props.login)
+                 || binaryPermissioner(false)(0)(0)(0)(0)(1)(1)(this.props.binPem))
+                 && !object.isActive;
+              }
             },
             {
               icon: { icon: "times" },
@@ -161,22 +170,34 @@ class ProjectsList extends Component {
                   })
                 );
               },
-              comparator: object => !object.isDeleted
-            },
-            {
-              icon: { icon: "edit", iconType: "far" },
-              title: t("EditProject"),
-              click: object => {
-                this.handleGetProject(object);
+              comparator: (object) => {
+                return (specialPermissioner().projects.isOwner(object, this.props.login)
+                 || binaryPermissioner(false)(0)(0)(0)(0)(1)(1)(this.props.binPem))
+                 && !object.isDeleted;
               }
             },
             {
-              icon: { icon: "arrow-right", iconType: "fas" },
+              icon: { icon: "pen-square", iconType: "fas" },
+              title: t("EditProject"),
+              click: object => {
+                this.handleGetProject(object);
+              },
+              comparator: (object) => {
+                return specialPermissioner().projects.isOwner(object, this.props.login)
+                 || binaryPermissioner(false)(0)(0)(0)(0)(1)(1)(this.props.binPem);
+              }
+            },
+            {
+              icon: { icon: "sign-in-alt", iconType: "fas" },
               title: t("SeeMore"),
               click: object => {
                 this.props.dispatch(
                   push(`/main/projects/${object.id}`)
                 );
+              },
+              comparator: (object) => {
+                return specialPermissioner().projects.isOwner(object, this.props.login)
+                 || binaryPermissioner(false)(1)(0)(1)(0)(1)(1)(this.props.binPem);
               }
             }
           ],
@@ -215,6 +236,13 @@ class ProjectsList extends Component {
   }
 }
 
+function mapStateToProps(state) {
+  return {
+    binPem: state.authReducer.binPem,
+    login: state.authReducer.login
+  };
+}
+
 ProjectsList.propTypes = {
   pageChange: PropTypes.func.isRequired,
   dispatch: PropTypes.func,
@@ -226,4 +254,4 @@ ProjectsList.propTypes = {
   projectActions: PropTypes.object
 };
 
-export default connect()(translate("ProjectsList")(ProjectsList));
+export default connect(mapStateToProps)(translate("ProjectsList")(ProjectsList));

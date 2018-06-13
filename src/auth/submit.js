@@ -5,16 +5,16 @@ import { push } from "react-router-redux";
 import axios from "axios";
 import * as jwtDecode from "jwt-decode";
 import * as Promise from "bluebird";
-import DCMTWebApi from "../api";
+import WebApi from "../api";
 
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 
 const errorHandler = dispatch => error => {
   dispatch(authStop());
-  if (error.response !== undefined && error.response.data.errorOccured === true) {
-    const { errors } = error.response.data;
+  if (error.response !== undefined && error.response.data.errorOccurred === true) {
+    const { errorObjects } = error.response.data;
     throw new SubmissionError({
-      _error: errors[Object.keys(errors)[0]]
+      _error: errorObjects[0].errors[Object.keys(errorObjects[0].errors)[0]]
     });
   }
   else if(error.response !== undefined){
@@ -22,6 +22,10 @@ const errorHandler = dispatch => error => {
       case 401:
         throw new SubmissionError({
           _error: "Nieprawidłowe dane"
+        });
+      case 503:
+        throw new SubmissionError({
+          _error: "Serwis niedostępny!"
         });
       default:
         throw new SubmissionError({
@@ -39,13 +43,13 @@ const errorHandler = dispatch => error => {
 const submit = ({ username, password }, dispatch) => {
   return Promise.resolve()
     .then(() => dispatch(authStart()))
-    .then(() => DCMTWebApi.auth(username, password))
+    .then(() => WebApi.users.post.login(username, password))
     .then(userBlock => {
       dispatch(authSuccess(userBlock));
       dispatch(authStop());
       dispatch(push("/main"));
     })
-    .catch(errorHandler(dispatch));
+    .catch(e => errorHandler(dispatch)(e));
 };
 
 export default submit;

@@ -19,29 +19,53 @@ export const loadUsersFail = (resultBlock) => {
 };
 
 export const loadUsers = (page = 1, limit = 25, other = {}) => {
-  return dispatch => {
-    const settings = Object.assign(
-      {},
-      {
-        Limit: limit,
-        PageNumber: page,
-        IsDeleted: false
-      },
-      other
-    );
-
-    dispatch(asyncStarted());
-    WebApi.users.post.list(settings)
-      .then(response => {
-        if(!response.errorOccurred()){
-          dispatch(loadUsersSuccess(response.extractData(), response));
-        }
-        dispatch(asyncEnded());
-      })
-      .catch(error => {
-        dispatch(loadUsersFail(error));
-        dispatch(asyncEnded());
-        throw error;
-      });
-  };
+  if("isNotActivated" in other){
+    return dispatch => {
+      dispatch(asyncStarted());
+      WebApi.users.get.requests()
+        .then(response =>{
+          if(!response.errorOccurred()){
+            let obj = {
+              currentPage: 1,
+              results: response.extractData(),
+              totalPageCount: 1,
+            };
+            dispatch(loadUsersSuccess(obj, response));
+          }
+          dispatch(asyncEnded());
+        })
+        .catch(error => {
+          dispatch(loadUsersFail(error));
+          dispatch(asyncEnded());
+          throw error;
+        });
+    };
+  }
+  else {
+    return dispatch => {
+      const settings = Object.assign(
+        {},
+        {
+          Limit: limit,
+          PageNumber: page,
+        },
+        other
+      );
+  
+      dispatch(asyncStarted());
+      WebApi.users.post.list(settings)
+        .then(response => {
+          if(!response.errorOccurred()){
+            dispatch(loadUsersSuccess(response.extractData(), response));
+          }
+          dispatch(asyncEnded());
+        })
+        .catch(error => {
+          dispatch(loadUsersFail(error));
+          dispatch(asyncEnded());
+          throw error;
+        });
+    };
+  }
+  
 };

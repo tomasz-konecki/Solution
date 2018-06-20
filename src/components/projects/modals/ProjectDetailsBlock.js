@@ -9,331 +9,225 @@ import ResponsiblePersonBlock from "./ResponsiblePersonBlock";
 import constraints from "../../../constraints";
 import PropTypes from 'prop-types';
 import { translate } from 'react-translate';
-
+import WebApi from "../../../api";
+import Form from '../../form/form';
+import { validateInput } from '../../../services/validation';
+import { mapObjectKeysToArrayByGivenIndexes } from '../../../services/methods';
+import ContactList from '../../common/contactList/contactList';
 const emptyField = "<brak>";
 const active = "Aktywny";
 const inActive = "Nieaktywny";
 
 class ProjectDetailsBlock extends Component {
-  constructor(props) {
-    super(props);
+      state = {
+        editProjectArray: [
+          {title: "Nazwa", type: "text", placeholder: "wprowadź nazwę projektu...", value: "", error: "", inputType: "name", minLength: 3, maxLength: 25, canBeNull: false},
+          {title: "Opis", type: "text", placeholder: "wprowadź opis projektu...", mode: "textarea", value: "", error: "", inputType: null, minLength: 3, maxLength: 1500, canBeNull: false},
+          {title: "Klient", type: "text", placeholder: "wprowadź klienta...", mode: "drop-down-with-data", value: "", error: "", inputType: "client", minLength: 3, maxLength: 100, canBeNull: false},
+          {title: "Data rozpoczęcia", name: "startDate", type: "text", placeholder: "wprowadź datę rozpoczęcia projektu...", mode: "date-picker", value: "", error: "", canBeBefore: true},
+          {title: "Data zakończenia ", name: "endDate", type: "text", placeholder: "wprowadź datę zakończenia projektu...", mode: "date-picker", value: "", error: "", canBeBefore: false},
+        ],
+        fetchedClients: [],
+        clientError: "",
+        clientsWhichMatch: [],
+        isAutocorrect: false,
+        fetchClientsError: "",
+        autoCorrect: true,
+        isLoading: true,
 
-    this.state = {
-      id: 0,
-      name: "",
-      client: "",
-      description: "",
-      responsiblePerson: {
-        firstName: "",
-        lastName: "",
-        email: "",
-        phoneNumber: ""
-      },
-      startDate: moment(),
-      estimatedEndDate: moment(),
-      btnDisabled: false,
-      btnInactiveStyle: "",
-      validStyles: {
-        name: "",
-        firstName: "",
-        lastName: "",
-        email: "",
-        phoneNumber: ""
-      },
-      fieldsValid: {
-        nameValid: true,
-        firstNameValid: true,
-        lastNameValid: true,
-        emailValid: true,
-        phoneNumberValid: true
+        responsiblePersons: [],
+
+        responsiblePersonArray: [
+          {title: "Email", type: "text", placeholder: "wprowadź adres email...", value: "", error: "", inputType: "email", minLength: 7, maxLength: 70, canBeNull: false},
+          {title: "Imię", type: "text", placeholder: "wprowadź imię...", value: "", error: "", inputType: "firstName", minLength: 3, maxLength: 30, canBeNull: false},
+          {title: "Nazwisko", type: "text", placeholder: "wprowadź nazwisko...", value: "", error: "", inputType: "lastName", minLength: 3, maxLength: 40, canBeNull: false},
+          {title: "Numer telefonu", type: "text", placeholder: "wprowadź numer telefonu...", value: "", inputType: "phoneNumber", error: "", canBeNull: false, 
+          minLength: 7, maxLength: 20}
+        ],
+
+        showContactForm: false,
+        selected: "Wybierz osoby do kontaktu",
+        editProjectResult: {content: "", status: null}
       }
-    };
-  }
-
+ 
   componentDidMount() {
-    const {
-      id,
-      name,
-      client,
-      description,
-      responsiblePerson,
-      startDate,
-      estimatedEndDate
-    } = this.props.project;
-
-    this.setState({
-      id,
-      name,
-      client,
-      description,
-      responsiblePerson,
-      startDate: moment(startDate),
-      estimatedEndDate: moment(estimatedEndDate)
+    WebApi.clients.get.all().then(response => {
+      this.setState({fetchedClients: response.replyBlock.data.dtoObjects, isLoading: false});
+      this.goForClient();
     });
+
+    const editProjectArray = [...this.state.editProjectArray];
+    const keys = mapObjectKeysToArrayByGivenIndexes(this.props.project, [1, 2, 3, 4, 5]);
+    for(let i = 0; i < keys.length; i++){
+      editProjectArray[i].value = this.props.project[keys[i]];
+    }
+    this.setState({editProjectArray: editProjectArray});
   }
 
-  handleChange = event => {
-    this.setState({
-      [event.target.name]: event.target.value
-    });
-  };
-
-  setResponsiblePerson = event => {
-    let person = {
-      [event.target.name]: event.target.value
-    };
-
-    this.setState({
-      responsiblePerson: {
-        ...this.state.responsiblePerson,
-        ...person
+  handleSubmit = () => {
+      this.setState({isLoading: true, 
+        editProjectResult: {content: "", status: null}});
+      const projectToSend = {
+        id: this.props.project.id,
+        name: this.state.editProjectArray[0].value,
+        description: this.state.editProjectArray[1].value,
+        client: this.state.editProjectArray[2].value,
+        responsiblePerson: {
+          firstName: this.state.responsiblePersonArray[1].value,
+          lastName: this.state.responsiblePersonArray[2].value,
+          email: this.state.responsiblePersonArray[0].value,
+          phoneNumber: this.state.responsiblePersonArray[3].value,
+        },
+        startDate: this.state.editProjectArray[3].value,
+        estimatedEndDate: this.state.editProjectArray[4].value
       }
-    });
-  };
 
-  handleStartDate = date => {
-    this.setState({
-      startDate: date
-    });
-  };
-
-  handleEndDate = date => {
-    const a = this.state.startDate;
-    const b = date;
-    let estimatedEndDate = moment();
-
-    a.diff(b) > 0
-      ? (estimatedEndDate = this.state.estimatedEndDate)
-      : (estimatedEndDate = date);
-
-    this.setState({
-      estimatedEndDate
-    });
-  };
-
-  handleSubmit = event => {
-    event.preventDefault();
-    const project = Object.assign(
-      {},
-      this.state,
-      { startDate: moment.utc(this.state.startDate) },
-      { estimatedEndDate: moment.utc(this.state.estimatedEndDate) }
-    );
-
-    this.props.editProject(project);
-  };
-
-  checkAllFields = (fieldName, test) => {
-    let field = fieldName + "Valid";
-    let object = {};
-
-    object[field] = test;
-
-    let fieldsValid = Object.assign({}, this.state.fieldsValid, object);
-
-    this.setState(
-      {
-        fieldsValid
-      },
-      () => {
-        this.validateForm();
-      }
-    );
-  };
-
-  validateForm = () => {
-    const {
-      nameValid,
-      firstNameValid,
-      lastNameValid,
-      emailValid,
-      phoneNumberValid
-    } = this.state.fieldsValid;
-
-    if (
-      nameValid &&
-      firstNameValid &&
-      lastNameValid &&
-      emailValid &&
-      phoneNumberValid
-    ) {
-      this.setState({
-        btnDisabled: false,
-        btnInactiveStyle: ""
+      WebApi.projects.put.project(this.props.project.id, projectToSend).then(response => {
+        this.setState({isLoading: false, editProjectResult: {content: "Edycja została przeprowadzona poprawnie", status: true}});
+      }).catch(error => {
+        this.setState({isLoading: false,
+          editProjectResult: {content: error.replyBlock.data.errorObjects[0].errors.dataInvalidError, status: false}});
       });
-    } else {
-      this.setState({
-        btnDisabled: true,
-        btnInactiveStyle: "project-button-inactive"
-      });
+  }
+  onChangeClient = event => {
+    const ClientId = 2;
+    const editProjectArray = [...this.state.editProjectArray];
+    editProjectArray[ClientId].value = event.target.value;
+    editProjectArray[ClientId].error = validateInput(event.target.value,
+      editProjectArray[ClientId].canBeNull, 
+      editProjectArray[ClientId].minLength,
+      editProjectArray[ClientId].maxLength,
+      editProjectArray[ClientId].inputType, 
+      editProjectArray[ClientId].title);
+    
+    const clientsWhichMatch = [];
+    if(this.state.fetchedClients.length > 0 && this.state.autoCorrect){
+      for(let key in this.state.fetchedClients){
+        if(this.state.fetchedClients[key].name.search(event.target.value) !== -1){
+          clientsWhichMatch.push(this.state.fetchedClients[key]);
+        }
+      }      
     }
-  };
+    this.setState({
+      editProjectArray: editProjectArray,
+      clientsWhichMatch: clientsWhichMatch,
+      clientError: editProjectArray[ClientId].error ? true : false
+    });
+     
+  }
+  
+  goForClient = () => {
+    const index = this.state.fetchedClients.findIndex(i => {
+      return i.name === this.state.editProjectArray[2].value;
+    });
+    if(index !== -1){
+      WebApi.responsiblePerson.get.byClient(this.state.fetchedClients[index].id).
+      then(response => {
+          if(response.replyBlock.data.dtoObjects.length > 0){
+            let responsiblePersons = [];
+        
+            responsiblePersons = responsiblePersons.concat(response.replyBlock.data.dtoObjects);
+            const responsiblePersonArray = [...this.state.responsiblePersonArray];
+            responsiblePersonArray[0].value = response.replyBlock.data.dtoObjects[0].email;
+            responsiblePersonArray[1].value = response.replyBlock.data.dtoObjects[0].firstName;
+            responsiblePersonArray[2].value = response.replyBlock.data.dtoObjects[0].lastName;
+            responsiblePersonArray[3].value = response.replyBlock.data.dtoObjects[0].phoneNumber;
+            
+            this.setState({
+              responsiblePersons: responsiblePersons,
+              responsiblePersonArray: responsiblePersonArray
+            });
+          }
+      }).catch(error => {
+        
+      })
+    }
+    
+  }
+  changeForm = () => {
+    this.setState({showContactForm: !this.state.showContactForm, 
+      editProjectResult: {content: "", status: null}});
+  }
 
-  validate = e => {
-    const patterns = constraints.projetctFormPattern;
-    let fieldName = e.target.name;
-    let fieldValue = e.target.value;
-    let styles = "";
-    let object = {};
-    let test = patterns[fieldName].test(fieldValue);
+  fetchContactDateByOtherClient = e => {
+    const index = this.state.responsiblePersons.findIndex(i => {
+      return i.firstName === e.target.value
+    });
+    const responsiblePersonArray = [...this.state.responsiblePersonArray];
+    responsiblePersonArray[0].value = this.state.responsiblePersons[index].email;
+    responsiblePersonArray[1].value = this.state.responsiblePersons[index].firstName;
+    responsiblePersonArray[2].value = this.state.responsiblePersons[index].lastName;
+    responsiblePersonArray[3].value = this.state.responsiblePersons[index].phoneNumber;
 
-    test ? (styles = "") : (styles = "invalid");
-
-    object[fieldName] = styles;
-
-    this.setState(
-      {
-        validStyles: object
-      },
-      this.checkAllFields(fieldName, test)
-    );
-  };
-
+    this.setState({responsiblePersonArray: responsiblePersonArray,
+      selected: this.state.responsiblePersons[index].firstName});
+  }
   render() {
     const editable = this.props.editable;
-    const {
-      name,
-      description,
-      client,
-      responsiblePerson,
-      startDate,
-      estimatedEndDate,
-      validStyles,
-      btnDisabled,
-      btnInactiveStyle
-    } = this.state;
-
     const { t } = this.props;
-
     return (
       <div className="project-details-block">
         <header>
           <h3>{t("EditProjectData")}</h3>
         </header>
-        <div className="project-details-container">
-          <form onSubmit={this.handleSubmit}>
-            <Detail
-              type="text"
-              editable={editable}
-              name="name"
-              pretty={t("ProjectName")}
-              reuired
-              value={name}
-              handleChange={e => {
-                this.handleChange(e);
-                this.validate(e);
-              }}
-            />
-            <p className={["project-name", validStyles.name].join(" ")}>
-              {t("CannotContainSpecial")}
-            </p>
 
-            <Detail
-              type="textarea"
-              editable={editable}
-              name="description"
-              pretty={t("Description")}
-              reuired
-              rows={3}
-              cols={30}
-              value={description}
-              handleChange={e => {
-                this.handleChange(e);
-              }}
-            />
+        {this.state.showContactForm ?
+          <Form btnTitle="Prześlij"
+          key={1}
+          shouldSubmit={true}
+          onSubmit={this.handleSubmit}
+          formItems={this.state.responsiblePersonArray} 
+          formTitle="Dane kontaktowe do klienta"
+          isLoading={this.state.isLoading}
+          submitResult={this.state.editProjectResult}>
 
-            <Detail
-              type="text"
-              editable={editable}
-              name="client"
-              pretty={t("Client")}
-              reuired
-              value={client}
-              handleChange={e => {
-                this.handleChange(e);
-                this.validate(e);
-              }}
-            />
-            <div className="form-group row">
-              <label
-                htmlFor="responsiblePerson"
-                className="col-sm-3 col-form-label"
-              >
-                {t("ContactPerson")}:
-              </label>
-
-              <ResponsiblePersonBlock
-                responsiblePerson={this.state.responsiblePerson}
-                setResponsiblePerson={this.setResponsiblePerson}
-                styles={validStyles}
-                validate={this.validate}
-                handleChange={e => {
-                  this.setResponsiblePerson(e);
-                  this.validate(e);
-                }}
-              />
-            </div>
-
-            <div className="form-group row">
-              <label className="col-sm-3 col-form-label">
-                {t("StartDate")}:
-              </label>
-              <div className="date-picker col-sm-9">
-                <DatePicker
-                  selected={startDate}
-                  selectsStart
-                  startDate={startDate}
-                  endDate={estimatedEndDate}
-                  onChange={this.handleStartDate}
-                  locale="pl"
-                  dateFormat="DD/MM/YYYY"
-                  todayButton={"Dzisiaj"}
-                  peekNextMonth
-                  showMonthDropdown
-                  showYearDropdown
-                  dropdownMode="select"
-                />
-              </div>
-            </div>
-
-            <div className="form-group row">
-              <label htmlFor="endDate" className="col-sm-3 col-form-label">
-                {t("EndDate")}:
-              </label>
-              <div className="date-picker col-sm-9">
-                <DatePicker
-                  selected={estimatedEndDate}
-                  selectsEnd
-                  startDate={startDate}
-                  endDate={estimatedEndDate}
-                  onChange={this.handleEndDate}
-                  locale="pl"
-                  dateFormat="DD/MM/YYYY"
-                  todayButton={t("Today")}
-                  peekNextMonth
-                  showMonthDropdown
-                  showYearDropdown
-                  dropdownMode="select"
-                />
-              </div>
-            </div>
-
-            <div className="edit-project-button-container">
-              <button
-                disabled={btnDisabled}
-                className={["dcmt-button", btnInactiveStyle].join(" ")}
-              >
-                {t("Confirm")}
+              <button onClick={this.changeForm} 
+                type="button" className="come-back-btn">
+                  Cofnij
               </button>
-            </div>
-          </form>
-        </div>
+              {this.state.responsiblePersons && 
+              this.state.responsiblePersons.length > 0 ? 
+              <ContactList 
+              selected={this.state.selected}
+              onChange={e => this.fetchContactDateByOtherClient(e)} 
+              items={this.state.responsiblePersons} 
+              /> 
+               
+              : null}
+          </Form>
+          
+          : 
+          
+          <Form 
+          error={this.state.clientError}
+          key={2}
+          dateIndexesToCompare={[3,4]}
+          onSubmit={this.changeForm}
+          shouldSubmit={false}
+          btnTitle="Dalej"
+          handleStartDate={(date, e) => this.handleStartDate(date, e)}
+          handleEndDate={(date, e) => this.handleEndDate(date, e)}
+          onChange={e => this.onChangeHandler(e)}
+          isLoading={this.state.isLoading}
+          endDate={this.props.estimatedEndDate}
+          formItems={this.state.editProjectArray} 
+          clientsWhichMatch={this.state.clientsWhichMatch}
+          onChangeClient={event => this.onChangeClient(event)}
+          onBlur={this.goForClient}
+          />
+        }
+        
+        
       </div>
     );
   }
 }
 
 ProjectDetailsBlock.propTypes = {
+  async: PropTypes.shape({
+    handleGetProject: PropTypes.func,
+  }),
+  projects: PropTypes.arrayOf(PropTypes.object),
   project: PropTypes.shape({
     id: PropTypes.number.isRequired,
     name: PropTypes.string.isRequired,
@@ -342,6 +236,7 @@ ProjectDetailsBlock.propTypes = {
     responsiblePerson: PropTypes.object.isRequired,
     startDate: PropTypes.string.isRequired,
     estimatedEndDate: PropTypes.string.isRequired,
+    projects: PropTypes.arrayOf(PropTypes.object)
   }),
   editable: PropTypes.bool,
   editProject: PropTypes.func.isRequired

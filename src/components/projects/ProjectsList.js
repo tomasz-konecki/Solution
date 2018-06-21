@@ -205,7 +205,7 @@ class ProjectsList extends Component {
         }
       ]
     };
-
+    
     return (
       <div>
         <SmoothTable
@@ -222,6 +222,8 @@ class ProjectsList extends Component {
           onClose={this.handleCloseModal}
         >
           <EditProjectDetails
+            handleGetProject={this.handleGetProject}
+            projects={this.props.projects}
             closeModal={this.handleCloseModal}
             project={this.state.project}
             responseBlock={this.state.responseBlock}
@@ -244,13 +246,13 @@ function mapStateToProps(state) {
 }
 
 ProjectsList.propTypes = {
+  projects: PropTypes.arrayOf(PropTypes.object),
   pageChange: PropTypes.func.isRequired,
   dispatch: PropTypes.func,
   openAddProjectModal: PropTypes.func.isRequired,
   currentPage: PropTypes.number.isRequired,
   totalPageCount: PropTypes.number.isRequired,
   loading: PropTypes.bool.isRequired,
-  projects: PropTypes.arrayOf(PropTypes.object),
   projectActions: PropTypes.object
 };
 

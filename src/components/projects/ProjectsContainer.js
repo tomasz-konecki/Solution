@@ -159,7 +159,6 @@ class ProjectsContainer extends React.Component {
 
   render() {
     const { match } = this.props;
-
     return (
       <Switch>
         <Route exact path={match.url + ""} component={this.pullDOM} />

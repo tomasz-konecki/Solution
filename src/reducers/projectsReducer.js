@@ -8,7 +8,8 @@ const initialState = {
   projects: [],
   currentPage: 1,
   totalPageCount: 1,
-  editedProjectId: null
+  editedProjectId: null,
+  clients: []
 };
 
 export const projectsReducer = (state = initialState, action) => {

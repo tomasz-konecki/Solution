@@ -38,13 +38,16 @@ class EditProjectDetails extends Component {
       });
   };
 
+
   render() {
     const { t } = this.props;
     return (
       <div>
         <ProjectDetailsBlock
+          projects={this.props.projects}
           project={this.props.project}
           editable
+          handleGetProject={this.props.handleGetProject}
           projectActions={this.props.projectActions}
           limit={this.state.limit}
           currentPage={this.state.currentPage}
@@ -64,12 +67,13 @@ class EditProjectDetails extends Component {
 }
 
 EditProjectDetails.propTypes = {
+  projects: PropTypes.arrayOf(PropTypes.object),
   projectActions: PropTypes.object,
   currentPage: PropTypes.number,
   limit: PropTypes.number,
   closeModal: PropTypes.func.isRequired,
   project: PropTypes.object,
-  updateProjectsOnSuccess: PropTypes.bool
+  updateProjectsOnSuccess: PropTypes.bool,
 };
 
 export default translate("EditProjectDetails")(EditProjectDetails);

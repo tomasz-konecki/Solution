@@ -19,7 +19,6 @@ export const loadProjects = (page = 1, limit = 25, other = {}) => {
     dispatch(asyncStarted());
     WebApi.projects.post.list(settings)
       .then(response => {
-        console.log(response.data);
         if(!response.errorOccurred()) {
           dispatch(loadProjectsSuccess(response.extractData()));
         }

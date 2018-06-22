@@ -97,19 +97,26 @@ class UsersContainer extends React.Component {
   handleCloseModal() {
     this.setState({ showModal: false });
   }
-
   render() {
+  let usersList;
+  if(this.props.users !== undefined && this.props.users !== null){
+    usersList = <UsersList
+        openAddUserModal={this.handleOpenModal}
+        users={this.props.users}
+        currentPage={this.state.currentPage}
+        totalPageCount={this.props.totalPageCount}
+        pageChange={this.pageChange}
+        loading={this.props.loading}
+        resultBlock={this.props.resultBlock}
+    />;
+  }
+  else{
+    usersList = <h2>Server Error</h2>;
+  }
+
     return (
       <div>
-        <UsersList
-          openAddUserModal={this.handleOpenModal}
-          users={this.props.users}
-          currentPage={this.state.currentPage}
-          totalPageCount={this.props.totalPageCount}
-          pageChange={this.pageChange}
-          loading={this.props.loading}
-          resultBlock={this.props.resultBlock}
-        />
+        {usersList}
         <Modal
           open={this.state.showModal}
           classNames={{ modal: "Modal Modal-users" }}

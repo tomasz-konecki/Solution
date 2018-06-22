@@ -10,20 +10,12 @@ const plugins = [
     template: "./public/index.ejs",
     filename: "index.html",
     inject: "body"
-  })
-];
-
-if (env === "production") {
-  plugins.push(
-    new webpack.optimize.UglifyJsPlugin(),
-    new OptimizeJsPlugin({
-      sourceMap: false
-    })
-  );
-}
+  }),
+    new webpack.optimize.UglifyJsPlugin()
+]
 
 module.exports = {
-  devtool: 'cheap-module-eval-source-map',
+  devtool: 'cheap-module-source-map',
   entry: ["react-hot-loader/patch", "./src/index.js"],
   output: {
     path: path.resolve(__dirname, "dist"),

@@ -12,7 +12,11 @@ import ResponseParser from './responseParser';
 
 const { store } = storeCreator;
 
-const API_ENDPOINT = "http://10.255.22.201";
+//const API_ENDPOINT = "http://10.255.22.201";
+
+const API_ENDPOINT = "http://10.255.20.193:84";
+
+
 
 store.subscribe(listener);``
 

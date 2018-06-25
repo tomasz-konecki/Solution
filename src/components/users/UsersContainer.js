@@ -44,6 +44,18 @@ class UsersContainer extends React.Component {
           this.props.async.setActionConfirmationResult(error);
         });
     }
+    if (this.validatePropsForUserRequestDeletion(nextProps)) {
+      this.props.async.setActionConfirmationProgress(true);
+
+      WebApi.users.delete.request(this.props.toConfirm.id)
+        .then(response => {
+          this.props.async.setActionConfirmationResult(response);
+          this.pageChange(this.state.currentPage);
+        })
+        .catch(error => {
+          this.props.async.setActionConfirmationResult(error);
+        });
+    }
     if (this.validatePropsForUserReactivation(nextProps)) {
       this.props.async.setActionConfirmationProgress(true);
 
@@ -73,6 +85,15 @@ class UsersContainer extends React.Component {
       !nextProps.isWorking &&
       nextProps.type === ACTION_CONFIRMED &&
       nextProps.toConfirm.key === "reactivateUser"
+    );
+  }
+
+  validatePropsForUserRequestDeletion(nextProps) {
+    return (
+      nextProps.confirmed &&
+      !nextProps.isWorking &&
+      nextProps.type === ACTION_CONFIRMED &&
+      nextProps.toConfirm.key === "deleteUserRequest"
     );
   }
 

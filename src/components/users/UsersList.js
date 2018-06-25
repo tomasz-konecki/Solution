@@ -114,7 +114,9 @@ class UsersList extends Component {
           defaultSortAscending: true,
           filtering: true,
           filterClass: "UserFilter",
-          showRadioButtons: true, 
+          showDeletedCheckbox: true,
+          showNotActivatedAccountsCheckbox: true,
+          showAllCheckbox: true,
           operators: [
             {
               pretty: t("Add"),
@@ -125,56 +127,37 @@ class UsersList extends Component {
             }
           ],
           columns: [
-            { width: 25, field: "date", pretty: t("Date"), type: "date", filter: true},
+            { width: 25, field: "dateOfRequest", pretty: t("Date"), type: "date", filter: true},
             { width: 74, field: "userId", pretty: t("userId"), type: "text", filter: true },
             {
               width: 1,
               comparator: object => binaryPermissioner(false)(0)(0)(0)(0)(0)(1)(this.props.binPem),
               toolBox: [
                 {
-                  icon: { icon: "sync-alt" },
-                  title: t("ReactivateUserImperativus"),
-                  click: object => {
-                    this.props.dispatch(
-                      setActionConfirmation(true, {
-                        key: "reactivateUser",
-                        string: `${t("ReactivateUserInfinitive")} ${object.firstName} ${
-                          object.lastName
-                        }`,
-                        id: object.id,
-                        successMessage: t("UserReactivated")
-                      })
-                    );
-                  },
-                  comparator: object => object.isDeleted && binaryPermissioner(false)(0)(0)(0)(0)(0)(1)(this.props.binPem)
-                },
-                {
                   icon: { icon: "times" },
-                  title: t("DeleteUserImperativus"),
+                  title: t("DeleteUserRequestImperativus"),
                   click: object => {
                     this.props.dispatch(
                       setActionConfirmation(true, {
-                        key: "deleteUser",
-                        string: `${t("DeleteUserInfinitive")} ${object.firstName} ${
-                          object.lastName
-                        }`,
-                        id: object.id,
-                        successMessage: t("UserDeleted")
+                        key: "deleteUserRequest",
+                        string: `${t("DeleteUserRequestInfinitive")} ${object.userId}`,
+                        id: object.userId,
+                        successMessage: t("UserRequestDeleted")
                       })
                     );
                   },
-                  comparator: object => !object.isDeleted && binaryPermissioner(false)(0)(0)(0)(0)(0)(1)(this.props.binPem)
+                  comparator: object => binaryPermissioner(false)(0)(0)(0)(0)(0)(1)(this.props.binPem)
                 },
                 {
-                  icon: { icon: "edit", iconType: "far" },
-                  title: t("EditUserImperativus"),
+                  icon: { icon: "plus"},
+                  title: t("AddUserWhenRequestImperativus"),
                   click: object => {
                     this.handleGetUser(object);
                   },
                   comparator: object => binaryPermissioner(false)(0)(0)(0)(0)(0)(1)(this.props.binPem)
                 }
               ],
-              pretty: t("DeleteEdit")
+              pretty: t("DeleteAdd")
             }
           ]
         };
@@ -189,7 +172,9 @@ class UsersList extends Component {
         defaultSortAscending: true,
         filtering: true,
         filterClass: "UserFilter",
-        showRadioButtons: true,
+        showDeletedCheckbox: true,
+        showNotActivatedAccountsCheckbox: true,
+        showAllCheckbox: true,
         disabledRowComparator: (object) => {
           return object.isDeleted;
         },

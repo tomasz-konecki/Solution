@@ -40,9 +40,15 @@ const translations = {
     UserReactivated: "User has been reactivated",
     DeleteUserImperativus: "Delete user",
     DeleteUserInfinitive: "Delete user",
+    DeleteUserRequestImperativus: "Delete user request",
+    DeleteUserRequestInfinitive: "Delete user request",
     UserDeleted: "User has been deleted",
+    UserRequestDeleted: "Account request has been deleted",
     EditUserImperativus: "Edit user",
-    DeleteEdit: "Delete/Edit"
+    DeleteEdit: "Delete/Edit",
+    DeleteAdd: "Delete/Add",
+    AddUserWhenRequestImperativus: "Add user",
+
   },
   ProjectsList: {
     Add: "Add",

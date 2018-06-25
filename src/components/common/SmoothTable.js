@@ -352,7 +352,7 @@ class SmoothTable extends Component {
       );
     }
 
-    if(this.props.construct.showRadioButtons){
+    if(this.props.construct.showDeletedCheckbox){
       operators.push(
         <span key={-3} className="smooth-separator">|</span>
       );
@@ -369,6 +369,8 @@ class SmoothTable extends Component {
           </label>
         </span>
       );
+    }
+    if(this.props.construct.showNotActivatedAccountsCheckbox){
       operators.push(
         <span key={-5} className="smooth-show-deleted">
           <label>
@@ -382,6 +384,8 @@ class SmoothTable extends Component {
           </label>
         </span>
       );
+    }
+    if(this.props.construct.showAllCheckbox){
       operators.push(
         <span key={-6} className="smooth-show-deleted">
           <label>
@@ -395,8 +399,8 @@ class SmoothTable extends Component {
           </label>
         </span>
       );
-      
     }
+
     return operators;
   }
 

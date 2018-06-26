@@ -9,10 +9,11 @@ import storage from "redux-persist/lib/storage";
 import { push } from 'react-router-redux';
 import { logout } from './../actions/authActions';
 import ResponseParser from './responseParser';
+import Config from "Config";
 
 const { store } = storeCreator;
 
-const API_ENDPOINT = "http://10.255.22.201";
+const API_ENDPOINT = Config.serverUrl;
 
 store.subscribe(listener);``
 

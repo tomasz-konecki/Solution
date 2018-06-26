@@ -1,8 +1,7 @@
 const webpack = require("webpack");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
-const UglifyJSPlugin = require("uglifyjs-webpack-plugin");
 const OptimizeJsPlugin = require("optimize-js-plugin");
-
+const path = require("path");
 const env = process.env.NODE_ENV || "development";
 
 const plugins = [
@@ -23,13 +22,20 @@ if (env === "production") {
 }
 
 module.exports = {
+  devtool: 'cheap-module-eval-source-map',
   entry: ["react-hot-loader/patch", "./src/index.js"],
   output: {
-    path: __dirname + "/dist",
+    path: path.resolve(__dirname, "dist"),
     filename: "app.bundle.js",
     publicPath: "/"
   },
-
+  resolve: {
+    extensions: ['.js', '.jsx'],
+    alias: {
+      Src: path.resolve(__dirname, 'src/')
+    },
+    modules: ['node_modules', 'src']
+  },
   module: {
     rules: [
       {
@@ -54,7 +60,7 @@ module.exports = {
         }
       },
       {
-        test: /\.(png|svg|gif)(\?v=\d+\.\d+\.\d+)?$/,
+        test: /\.(png|jpe?g|svg|gif)(\?v=\d+\.\d+\.\d+)?$/,
         loader: "url-loader?limit=50000&name=./public/img/[name].[ext]"
       },
       {
@@ -87,5 +93,11 @@ module.exports = {
       index:'/'
     }
   },
-  devtool:'source-map',
+  externals: {
+    'Config': JSON.stringify(process.env.NODE_ENV === 'production' ? {
+      serverUrl: "http://10.255.22.201"
+    } : {
+      serverUrl: "http://localhost:84"
+    })
+  }
 };

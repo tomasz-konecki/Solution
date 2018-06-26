@@ -95,7 +95,7 @@ module.exports = {
   },
   externals: {
     'Config': JSON.stringify(process.env.NODE_ENV === 'production' ? {
-      serverUrl: "http://10.255.22.201"
+      serverUrl: "http://10.255.20.241:321"
     } : {
       serverUrl: "http://localhost:84"
     })

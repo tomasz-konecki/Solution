@@ -15,7 +15,7 @@ const ResultBlock = ({
   successCallback,
   customErrors = {}
 }) => {
-
+  console.log(errorBlock);
   if(errorBlock === undefined || errorBlock === null || errorBlock.original === undefined){
     return null;
   }

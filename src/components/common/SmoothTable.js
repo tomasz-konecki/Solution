@@ -95,7 +95,7 @@ class SmoothTable extends Component {
         selectedOption: value
       }, () => {
         this.props.construct.pageChange(
-          this.props.currentPage,
+          1,
           this.generateSettings()
         );
       });

@@ -9,7 +9,7 @@ const IntermediateBlock = ({
   _className
 }) => {
 
-  if(resultBlock === undefined || resultBlock === null){
+  if(resultBlock === undefined || resultBlock === null || resultBlock.replyBlock.status === 200){
     if(loaded) return render();
   }
 

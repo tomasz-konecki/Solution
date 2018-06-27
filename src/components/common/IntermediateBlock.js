@@ -8,14 +8,15 @@ const IntermediateBlock = ({
   resultBlock,
   _className
 }) => {
-  if(resultBlock === undefined || resultBlock.errorOccurred === undefined){
+
+  if(resultBlock === undefined || resultBlock === null){
     if(loaded) return render();
   }
 
   return <div className="intermediate-block">
     {
       loaded ?
-      resultBlock.errorOccurred() ? <div className={_className}><ResultBlock errorBlock={resultBlock} /></div>
+      resultBlock.replyBlock.data.ErrorOccurred ? <div className={_className}><ResultBlock errorBlock={resultBlock} /></div>
       : render()
       : <div className={_className}><LoaderCircular /></div>
     }

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { translate } from 'react-translate';
 
 const shouldRender = (errorOnly, errorStatus) => {
+  console.log(errorOnly, errorStatus);
   if (errorOnly && errorStatus === false) return false;
   return true;
 };
@@ -21,28 +22,46 @@ const ResultBlock = ({
   }
 
   let classes = ["result-block"];
-  let errorStatus = errorBlock.errorOccurred();
-  let colorBlock = errorBlock.colorBlock();
+  let errorStatus = errorBlock.replyBlock.status;
+  let colorBlock = errorBlock.replyBlock.statusText;
 
-  if(errorStatus){
+  if(errorStatus !== null || errorStatus !== undefined){
     classes.push("result-error");
-    colorBlock.text = errorBlock.getMostSignificantErrorText();
   }
   else {
     classes.push("result-success");
-    colorBlock.text = successMessage;
   }
 
-  let styleBlock = {
-    color: colorBlock.color
-  };
-
+  let errorObjects = errorBlock.replyBlock.data.ErrorObjects.length > 0 ? 
+    errorBlock.replyBlock.data.ErrorObjects.map((error, i)  => {
+      return (
+        <li key={i}>
+          {error.Model} 
+          {error.Errors.serverError}
+          {/* <ul>
+            {error.Errors.map((childError, x) => {
+              return (
+                <li key={x}>
+                  {childError.serverError}
+                </li>
+              )
+            })}
+          </ul> */}
+        </li>)
+    })
+    : null;
+  
   return (
-    <span>
+    <div className="result-block">
       {shouldRender(errorOnly, errorStatus) && (
-        <span style={styleBlock} className={classes.join(" ")}>{colorBlock.text}</span>
+        <div>
+          <h1 className={classes.join(" ")}><b>{errorStatus}</b> {colorBlock}</h1>
+          <p>{errorBlock.message}</p>
+          <ul>{errorObjects}</ul>
+          <img src="https://starecat.com/content/wp-content/uploads/500-internal-server-error-meanwhile-frontend-developer-cutting-grass-not-worried-about-it.jpg"/>
+        </div>
       )}
-    </span>
+    </div>
   );
 };
 

@@ -11,6 +11,7 @@ import PropTypes from 'prop-types';
 import { translate } from 'react-translate';
 import IntermediateBlock from './../common/IntermediateBlock';
 import binaryPermissioner from './../../api/binaryPermissioner';
+import { runInThisContext } from "vm";
 
 
 class UsersList extends Component {
@@ -25,11 +26,20 @@ class UsersList extends Component {
   }
 
   handleGetUser = object => {
-    this.setState({
-      user: object
+    var self = this;
+    if(object.dateOfRequest !== undefined)
+    {
+        return new WebApi.users.get.adSearch(object.userId)
+          .then(result => self.setState({user: result.extractData()[0]}))
+          .then(function() {self.handleOpenModal()})
+          .catch(error => console.log(error))
+    }
+    else {
+      this.setState({
+        user: object
     });
-
-    this.handleOpenModal();
+      this.handleOpenModal();
+    }
   };
 
   handleRoleChange = roles => {
@@ -69,7 +79,7 @@ class UsersList extends Component {
   };
 
   handleOpenModal = () => {
-    this.setState({ showModal: true });
+   this.setState({ showModal: true });
   };
 
   handleCloseModal = () => {
@@ -103,7 +113,8 @@ class UsersList extends Component {
     const { t } = this.props;
     let construct = null;
     let tableContainer = null;
-    if(this.props.users.length > 0){
+    if(this.props.users !== undefined && this.props.users.length > 0){
+      console.log(this.props.users)
       if("dateOfRequest" in this.props.users[0]){
         construct = {
           rowClass: "user-block",
@@ -258,7 +269,6 @@ class UsersList extends Component {
         />
       )
     }
-      
     let render = () => <div>
       {tableContainer}
       <Modal
@@ -277,6 +287,9 @@ class UsersList extends Component {
         />
       </Modal>
     </div>;
+    console.log()
+    console.log("RESULT", this.props.resultBlock)
+    console.log("LOADING", this.state.loading)
 
     return <IntermediateBlock
       loaded={!this.state.loading}

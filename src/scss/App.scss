@@ -114,11 +114,27 @@ a:visited {
   width: 100%;
   display: inline-block;
   text-align: center;
+  padding: 20px 0;
+  
+  h1 {
+    font-size: 40px;
+  }
+
+  p {
+    padding: 10px;
+  }
+  
+  ul {
+    padding: 10px;
+  }
 }
 .result-success {
   color: darkgreen;
 }
 .result-failure {
+  color: $button-element-background;
+}
+.result-error {
   color: $button-element-background;
 }
 

@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { translate } from 'react-translate';
 
 const shouldRender = (errorOnly, errorStatus) => {
-  console.log(errorOnly, errorStatus);
   if (errorOnly && errorStatus === false) return false;
   return true;
 };

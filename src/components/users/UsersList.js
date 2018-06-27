@@ -114,7 +114,6 @@ class UsersList extends Component {
     let construct = null;
     let tableContainer = null;
     if(this.props.users !== undefined && this.props.users.length > 0){
-      console.log(this.props.users)
       if("dateOfRequest" in this.props.users[0]){
         construct = {
           rowClass: "user-block",
@@ -287,9 +286,6 @@ class UsersList extends Component {
         />
       </Modal>
     </div>;
-    console.log()
-    console.log("RESULT", this.props.resultBlock)
-    console.log("LOADING", this.state.loading)
 
     return <IntermediateBlock
       loaded={!this.state.loading}

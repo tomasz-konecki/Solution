@@ -12,8 +12,7 @@ import ResponseParser from './responseParser';
 
 const { store } = storeCreator;
 
-const API_ENDPOINT = "http://10.255.22.201";
-
+const API_ENDPOINT = "http://10.255.20.241:321";
 store.subscribe(listener);
 
 const select = state =>
@@ -210,11 +209,18 @@ const WebApi = {
   },
   feedbacks: {
     get: {
-      all: () => {},
+      all: () => {
+        return WebAround.get(`${API_ENDPOINT}/feedbacks`);
+      },
       byFeedback: (feedbackId) => {},
       byAuthor: (authorId) => {},
       byEmployee: (employeeId) => {},
       byProject: (projectId) => {}
+    },
+    post: {
+      employeeOpinion: feedback => {
+        return WebAround.post(`${API_ENDPOINT}/feedbacks`, feedback);
+      }
     }
   },
   foreignLanguages: {

@@ -263,6 +263,7 @@ const translations = {
     Info2: "Cofnięcie tej akcji jest niemożliwe.",
     SuccessfullyDeleted: "Pomyślnie usunięto umiejętność"
   }
+ 
 };
 
 export default translations;

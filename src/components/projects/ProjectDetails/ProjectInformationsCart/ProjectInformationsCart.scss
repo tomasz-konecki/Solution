@@ -1,0 +1,35 @@
+.project-details{
+    width: 34%;
+    padding: 10px;
+    box-sizing: border-box;
+    border-right: 1px solid #f98c56;
+    font-size: 1rem;
+    
+    h4{
+        text-align: center;
+        font-weight: bold;
+        margin: 10px 0;
+        color: #493da8;
+    }
+    .project-overview{
+        margin: 0;
+        padding: 0;
+    }
+    .project-overview li {
+        margin: 10px 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .project-overview li span{
+        font-weight: normal;
+    }
+    .project-overview li b{
+        font-weight: bold;
+        word-break: break-all;
+    }
+    article{
+        padding: 15px;
+        box-sizing: border-box;;
+    }
+}

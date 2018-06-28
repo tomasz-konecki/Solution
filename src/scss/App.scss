@@ -116,8 +116,12 @@ a:visited {
   text-align: center;
   padding: 20px 0;
   
-  h1 {
-    font-size: 40px;
+  img {
+    width: 100%;
+  }
+
+  b {
+    font-weight: bold
   }
 
   p {
@@ -136,6 +140,10 @@ a:visited {
 }
 .result-error {
   color: $button-element-background;
+
+  h1 {
+    font-size: 40px;
+  }
 }
 
 .Modal {

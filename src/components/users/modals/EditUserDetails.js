@@ -15,7 +15,6 @@ class EditUserDetails extends Component {
   }
 
   render() {
-    console.log(this.props);
     const { t } = this.props;
     return (
       <div className="stage-two-container">

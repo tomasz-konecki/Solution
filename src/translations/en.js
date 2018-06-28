@@ -23,7 +23,7 @@ const translations = {
     DeleteFilters: "Delete filters",
     ShowDeleted: "Show deleted",
     ShowNotActivated: "Show not activated",
-    ShowAll: "Show all",
+    ShowActivated: "Show activated",
     Today: "Today",
     NoDataOrResults: "No data or results given"
   },
@@ -102,7 +102,10 @@ const translations = {
     NotImplemented: "Functionality not implemented yet",
     ServiceUnavailable: "Service is currently unavailable",
     GatewayTimeout: "Timeout",
-    UnexpectedError: "Unexpected error occured"
+    UnexpectedError: "Unexpected error occured",
+    ErrorModel: "Error Model",
+    Error: "Error",
+    OK: "",
   },
   EmployeesRowUnfurl: {
     ActivateEmployee: "Activate employee",

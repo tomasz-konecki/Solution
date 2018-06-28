@@ -40,17 +40,16 @@ class UsersContainer extends React.Component {
           this.props.async.setActionConfirmationResult(response);
           this.pageChange(this.state.currentPage);
         })
-        .catch(error => {
+        .catch(error => { 
           this.props.async.setActionConfirmationResult(error);
         });
     }
     if (this.validatePropsForUserRequestDeletion(nextProps)) {
       this.props.async.setActionConfirmationProgress(true);
-
       WebApi.users.delete.request(this.props.toConfirm.id)
         .then(response => {
           this.props.async.setActionConfirmationResult(response);
-          this.pageChange(this.state.currentPage);
+          this.pageChange(this.state.currentPage, Object.assign({isDeleted: false}));
         })
         .catch(error => {
           this.props.async.setActionConfirmationResult(error);
@@ -62,7 +61,7 @@ class UsersContainer extends React.Component {
       WebApi.users.patch.reactivate(this.props.toConfirm.id)
         .then(response => {
           this.props.async.setActionConfirmationResult(response);
-          this.pageChange(this.state.currentPage);
+          this.pageChange(this.state.currentPage, Object.assign({isDeleted: true}));
         })
         .catch(error => {
           this.props.async.setActionConfirmationResult(error);
@@ -128,7 +127,6 @@ class UsersContainer extends React.Component {
         loading={this.props.loading}
         resultBlock={this.props.resultBlock}
     />;
-
     return (
       <div>
         {usersList}

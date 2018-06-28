@@ -23,7 +23,7 @@ const translations = {
     DeleteFilters: "Usuń filtry",
     ShowDeleted: "Pokaż usunięte",
     ShowNotActivated: "Pokaż nieaktywowane",
-    ShowAll: "Pokaż wszystkie",
+    ShowActivated: "Pokaż aktywne",
     Today: "Dzisiaj",
     NoDataOrResults: "Brak danych bądź wyników"
   },
@@ -102,7 +102,10 @@ const translations = {
     NotImplemented: "Funkcjonalność jeszcze nie istnieje",
     ServiceUnavailable: "Serwer niedostępny",
     GatewayTimeout: "Brak odpowiedzi",
-    UnexpectedError: "Nieoczekiwany błąd"
+    UnexpectedError: "Nieoczekiwany błąd",
+    ErrorModel: "Model błędu",
+    Error: "Błąd",
+    OK: "",
   },
   EmployeesRowUnfurl: {
     ActivateEmployee: "Aktywuj pracownika",

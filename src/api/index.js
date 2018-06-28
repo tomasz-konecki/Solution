@@ -339,9 +339,6 @@ const WebApi = {
       byUser: (userId) => {
         return WebAround.get(`${API_ENDPOINT}/users/${userId}`);
       },
-      requests: () => {
-        return WebAround.get(`${API_ENDPOINT}/users/requests`);
-      },
       adSearch: (query) => {
         return WebAround.get(`${API_ENDPOINT}/users/searchAD/${query}`);
       }
@@ -349,6 +346,9 @@ const WebApi = {
     post: {
       list: (settings = {}) => {
         return WebAround.post(`${API_ENDPOINT}/users`, settings);
+      },
+      listOfRequests: (settings = {}) => {
+        return WebAround.post(`${API_ENDPOINT}/users/requests`, settings);
       },
       add: (userId, roles) => {
         return WebAround.post(`${API_ENDPOINT}/users/add`, { id: userId, roles });

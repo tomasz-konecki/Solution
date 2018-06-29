@@ -1,0 +1,42 @@
+.operation-prompt{
+    z-index: 1200;
+    text-align: center;
+    width: 100%;
+    font-size: 20px;
+    position: fixed;
+    top: 0;
+    border: 1px solid transparent;
+    left: 0;
+    transition: 0.5s all linear;
+    margin: 0 auto;
+    right: 0;
+    animation: 0.5s animate-prompt-in linear forwards;
+}
+@keyframes animate-prompt-in{
+    0%{
+        width: 5%;
+        top: 15px;
+        padding: 0;
+        height: 5%;
+    }
+    50%{
+        top: 0;
+        width: 50%;
+    }
+    100%{
+        width: 100%;
+        padding: 15px;
+        height: 52px;
+    }
+}
+.operation-ok{
+    color: #3c763d;
+    background-color: #dff0d8;
+    border-color: #d6e9c6;
+}   
+
+.operation-false{
+    color: #a94442;
+    background-color: #f2dede;
+    border-color: #ebccd1;
+}

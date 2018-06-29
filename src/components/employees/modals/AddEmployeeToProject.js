@@ -3,9 +3,9 @@ import WebApi from "../../../api";
 import Select from "react-select";
 import "react-select/dist/react-select.css";
 import ResultBlock from './../../common/ResultBlock';
-import PropTypes from 'prop-types';
 import { translate } from 'react-translate';
-
+import SpinnerButton from '../../form/spinner-btn/spinner-btn';
+import './AddEmployeeToProject.scss';
 class AddEmployeeToProject extends Component {
   constructor(props) {
     super(props);
@@ -15,7 +15,9 @@ class AddEmployeeToProject extends Component {
       isLoading: false,
       value: '',
       errorBlock: null,
-      ok: false
+      ok: false,
+      btnLoading: false,
+      submitResult: null
     };
   }
 
@@ -28,7 +30,24 @@ class AddEmployeeToProject extends Component {
       value
     });
   };
-
+  addEmployeeToProject = () => {
+    this.setState({btnLoading: true, submitResult: null});
+    const objectToSend = {
+      employeeId: this.state.value.id,
+      projectId: this.props.projectId,
+      startDate: this.props.startDate,
+      endDate: this.props.endDate,
+      role: this.props.role,
+      assignedCapacity: this.props.assignedCapacity,
+      responsibilities: this.props.responsibilities
+    }
+    WebApi.assignments.post(objectToSend).then(response => {
+        this.setState({btnLoading: false, 
+          submitResult: {status: true, content: "Pomyślnie dodano użytkownika do projektu"}});
+    }).catch(error => {
+        this.setState({btnLoading: false, submitResult: {status: false, content: "Błąd serwera"}});
+    })
+}
   checkLength = input => {
     return input.length >= 3;
   };
@@ -73,11 +92,7 @@ class AddEmployeeToProject extends Component {
       : Select.Async;
     const { multi, value, backspaceRemoves, isLoading } = this.state;
     return (
-      <div>
-        <header>
-          <h3 className="section-heading">Dodaj pracownika do projektu</h3>
-        </header>
-        <hr/>
+      <div className="add-employe-container">
         <AsyncComponent
             multi={multi}
             value={value}
@@ -88,28 +103,14 @@ class AddEmployeeToProject extends Component {
             loadOptions={this.doSearch}
             backspaceRemoves={backspaceRemoves}
             valueKey="id"
-          />
-          <hr/>
-          <div className="row">
-            <div className="col-sm-10">
-              Pamiętaj, że pracownik wymaga aktywnego konta by być przypisanym do projektu
-            </div>
-            <div className="col-sm-2">
-            {
-              this.state.value !== '' ?
-              <button onClick={this.completeProjectSelection(this.state.value)} className="dcmt-button button-success">Przypisz</button>
-              : null
-            }
-            </div>
-          </div>
+        />
+
+        
+     
       </div>
     );
   }
 }
 
-AddEmployeeToProject.propTypes = {
-  project: PropTypes.object.isRequired,
-  completed: PropTypes.func.isRequired
-};
 
 export default translate("AddProjectOwner")(AddEmployeeToProject);

@@ -1,0 +1,110 @@
+.submit-btn{
+    margin: 25px auto;
+    padding: 15px;
+    border-radius: 5px;
+    transition: 0.5s all ease-in-out;
+    border: none;
+    -webkit-box-shadow: -1px 1px 38px -2px rgba(0,0,0,0.42);
+    -moz-box-shadow: -1px 1px 38px -2px rgba(0,0,0,0.42);
+    box-shadow: -1px 1px 38px -2px rgba(0,0,0,0.42);
+    background-color: mediumseagreen;
+    width: 175px;
+    font-size: 16px;
+    left: 0;
+    right: 0;
+    cursor: pointer;
+    bottom: 0;
+    color: white;
+    position: absolute;
+}
+.submit-btn:focus{
+    outline: none;
+}
+.submit-btn-dis{
+    color: lightblue !important;
+    background-color: transparent !important;
+    cursor: not-allowed !important;
+}
+.submit-btn-cor:hover{
+    background-color: lightseagreen;
+    color: black;
+}
+.spinner-btn{
+    height: 45px;
+    position: absolute;
+    width: 45px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 50%;
+    margin: 10px auto 20px auto;
+    border: none;
+    cursor: initial;
+    background-color: transparent;
+    transition: 0.2s all linear;
+    animation: 1s animate-btn linear infinite;
+}
+.spinner-btn:focus{
+    outline: none;
+}
+.spinner-btn::after,
+.spinner-btn::before{
+    content: '';
+    position: absolute;
+    width: 15px;
+    height: 15px;
+    background-color: lightblue;
+    border-radius: 50%;
+}
+.spinner-btn::before{
+    bottom: 7.5px;
+    right: 7.5px;
+}
+.spinner-btn::after{
+    top: 7.5px;
+    left: 7.5px;
+}
+@keyframes animate-btn{
+    0%{
+        transform: rotate(0);
+    }
+    25%{
+        transform: rotate(90deg);
+    }
+    50%{
+        transform: rotate(180deg);
+    }
+    75%{
+        transform: rotate(270deg);
+    }
+    100%{
+        transform: rotate(360deg);
+    }
+}
+
+.correct-status, 
+.incorrect-status
+{
+    position: absolute;
+    bottom: 100px;
+    text-align: center;
+    width: 100%;
+    margin: 0 auto;
+    left: 0;
+    animation: 1s status-animate-in ease-in-out forwards;
+    right: 0;
+}
+@keyframes status-animate-in {
+    0%{
+        opacity: 0;
+    }
+    100%{
+        opacity: 1;
+    }
+}
+.correct-status{
+    color: lightgreen;
+}
+.incorrect-status{
+    color: rgb(203, 50, 50);
+}

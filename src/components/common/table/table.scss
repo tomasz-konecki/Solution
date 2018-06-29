@@ -1,0 +1,177 @@
+.table-container{
+    width: 100%;
+    position: relative;
+    display: flex;
+    flex-flow: column;
+    height: 100%;
+    align-items: center;
+    table {
+        font-family: arial, sans-serif;
+        border-collapse: collapse;
+        width: 100%;
+        transition: 0.5 all ease-in-out;
+        position: relative;
+        
+        .detail-table-header{
+            color: white;
+            padding: 15px;
+        }
+        .detail-table-header td{
+            position: absolute;
+            min-height: 150px;
+            background-color: #d8d8d8 !important;
+            transition: 0.5s all ease-in-out;
+            z-index: 100;
+            color: black;
+            animation: 0.5s header-anim linear forwards;
+            .option-btn{
+                bottom: 2.5px;
+                right: 10px;
+                color: white;
+                position: absolute;
+            }
+           
+        }
+        @keyframes header-anim {
+            0%{
+                width: 0%;
+                opacity: 0;
+            }
+            100%{
+                opacity: 1;
+                width: 100%;
+            }
+        }
+        @keyframes content-anim {
+            0%{
+                opacity: 0;
+            }
+            100%{
+                opacity: 1;
+            }
+        }
+        .detail-table-header:hover{
+            background-color: lightcoral !important;
+        }
+        
+        .detail-team-list{
+            position: relative;
+            padding-top: 30px;
+            animation: 1.5s content-anim ease-in-out forwards;
+        }
+        .detail-team-list h5{
+            position: absolute;
+            top: 0;
+            padding: 5px;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 1px solid grey;
+            b{
+                display: inherit;
+                #str-date{
+                    color: green;
+                    margin-right: 10px;
+                }
+              
+                #ed-date{
+                    color: lightcoral;
+                }
+            }
+            
+        }
+        .detail-team-list li:nth-of-type(1){
+            width: 100%;
+            text-align: center;
+    
+            padding: 0 10px;
+            box-sizing: border-box;
+            border: 1px solid transparent;
+            b{
+                color: tomato;
+            }
+        }
+        .detail-team-list li:nth-of-type(2){
+            width: 100%;
+            padding: 10px;
+            box-sizing: border-box;
+            i {
+                color: white;
+                padding: 5px;
+                background-color: darkcyan;
+                border-radius: 5px;
+            }
+        }
+        .detail-team-list p{
+            padding: 5px;
+            color: darkcyan;
+            font-size: 14px;
+        }
+        .moment-date{
+            color: darkcyan;
+        }
+        tr:hover{
+            background-color: rgba(0,0,0,0.2);
+        }
+        tr{
+            cursor: pointer;
+        }
+        th{
+            font-weight: bold;
+            color: #493da8;
+        }
+        td, th {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 10px;
+        }
+        
+        tr:nth-child(even) {
+            background-color: #dddddd;
+        }
+    
+    }
+
+    .empty-project-squad{
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0,0,0,0.2);
+        border-radius: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        div{
+            position: relative;
+        }        
+        .fa-user-plus{
+            bottom: -45px;
+            cursor: pointer;
+            left: 0;
+            width: 32px;
+            right: 0;
+            margin: 0 auto;
+            font-size: 32px;
+            position: absolute;
+            color: #988C98;
+        }
+        
+    }
+   
+}
+
+
+.add-programmer-btn{
+    padding: 10px;
+    border-radius: 5px;
+    margin: 15px 0;
+    font-size: 0.8rem;
+    cursor: pointer;
+    background-color: #883e4a;
+    color: white;
+    width: 100px;
+    transition: 0.5s all ease-in-out;
+    border: none;
+}
+.add-programmer-btn:hover{
+    background-color: #994f5b;
+}   

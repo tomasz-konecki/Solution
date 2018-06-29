@@ -64,7 +64,6 @@ class ProjectsList extends Component {
       rowDetailUnfurl: true,
       unfurler: ProjectRowUnfurl,
       showDeletedCheckbox: true,
-      showRadioButtons: true,
       disabledRowComparator: (object) => {
         return object.isDeleted;
       },

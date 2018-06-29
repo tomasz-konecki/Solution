@@ -21,7 +21,7 @@ class SmoothTable extends Component {
       filterFieldOverrides: {},
       rowUnfurls: {},
       isQueryLoading: false,
-      selectedOption: "showAll",
+      selectedOption: "showActivated",
       searchQuery: "",
       sortingSettings: {
         Sort: props.construct.defaultSortField,
@@ -95,7 +95,7 @@ class SmoothTable extends Component {
         selectedOption: value
       }, () => {
         this.props.construct.pageChange(
-          this.props.currentPage,
+          1,
           this.generateSettings()
         );
       });
@@ -114,7 +114,6 @@ class SmoothTable extends Component {
   }
 
   generateSettings() {
-
     let mainFilter = {};
     if (this.state.searchQuery !== "") {
       mainFilter["Query"] = this.state.searchQuery;
@@ -126,8 +125,8 @@ class SmoothTable extends Component {
       case "isNotActivated":
         mainFilter["isNotActivated"] = true;
       break;
-      case "showAll":
-        mainFilter["isDeleted"] = null;
+      case "showActivated":
+        mainFilter["isDeleted"] = false;
       break;
       default:
       break;
@@ -352,7 +351,7 @@ class SmoothTable extends Component {
       );
     }
 
-    if(this.props.construct.showRadioButtons){
+    if(this.props.construct.showDeletedCheckbox){
       operators.push(
         <span key={-3} className="smooth-separator">|</span>
       );
@@ -369,6 +368,8 @@ class SmoothTable extends Component {
           </label>
         </span>
       );
+    }
+    if(this.props.construct.showNotActivatedAccountsCheckbox){
       operators.push(
         <span key={-5} className="smooth-show-deleted">
           <label>
@@ -382,21 +383,23 @@ class SmoothTable extends Component {
           </label>
         </span>
       );
+    }
+    if(this.props.construct.showActivatedCheckbox){
       operators.push(
         <span key={-6} className="smooth-show-deleted">
           <label>
-            {this.props.t("ShowAll")}:
+            {this.props.t("ShowActivated")}:
             <input
               name="radioButtons"
               type="radio"
-              value="showAll"
-              checked={this.state.selectedOption === "showAll"}
+              value="showActivated"
+              checked={this.state.selectedOption === "showActivated"}
               onChange={this.handleInputChange} />
           </label>
         </span>
       );
-      
     }
+
     return operators;
   }
 

@@ -40,6 +40,17 @@ class UsersContainer extends React.Component {
           this.props.async.setActionConfirmationResult(response);
           this.pageChange(this.state.currentPage);
         })
+        .catch(error => { 
+          this.props.async.setActionConfirmationResult(error);
+        });
+    }
+    if (this.validatePropsForUserRequestDeletion(nextProps)) {
+      this.props.async.setActionConfirmationProgress(true);
+      WebApi.users.delete.request(this.props.toConfirm.id)
+        .then(response => {
+          this.props.async.setActionConfirmationResult(response);
+          this.pageChange(this.state.currentPage, Object.assign({isDeleted: false}));
+        })
         .catch(error => {
           this.props.async.setActionConfirmationResult(error);
         });
@@ -50,7 +61,7 @@ class UsersContainer extends React.Component {
       WebApi.users.patch.reactivate(this.props.toConfirm.id)
         .then(response => {
           this.props.async.setActionConfirmationResult(response);
-          this.pageChange(this.state.currentPage);
+          this.pageChange(this.state.currentPage, Object.assign({isDeleted: true}));
         })
         .catch(error => {
           this.props.async.setActionConfirmationResult(error);
@@ -76,6 +87,15 @@ class UsersContainer extends React.Component {
     );
   }
 
+  validatePropsForUserRequestDeletion(nextProps) {
+    return (
+      nextProps.confirmed &&
+      !nextProps.isWorking &&
+      nextProps.type === ACTION_CONFIRMED &&
+      nextProps.toConfirm.key === "deleteUserRequest"
+    );
+  }
+
   pageChange(page, other) {
     this.setState(
       {
@@ -98,22 +118,15 @@ class UsersContainer extends React.Component {
     this.setState({ showModal: false });
   }
   render() {
-  let usersList;
-  if(this.props.users !== undefined && this.props.users !== null){
-    usersList = <UsersList
+    let usersList = <UsersList
         openAddUserModal={this.handleOpenModal}
         users={this.props.users}
-        currentPage={this.state.currentPage}
-        totalPageCount={this.props.totalPageCount}
+        currentPage={(this.state.currentPage !== undefined)? this.state.currentPage: 1} 
+        totalPageCount={(this.props.totalPageCount !== undefined)? this.props.totalPageCount: 1}
         pageChange={this.pageChange}
         loading={this.props.loading}
         resultBlock={this.props.resultBlock}
     />;
-  }
-  else{
-    usersList = <h2>Server Error</h2>;
-  }
-
     return (
       <div>
         {usersList}

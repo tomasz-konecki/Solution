@@ -64,12 +64,6 @@ class StageOne extends Component {
           <h3 className="section-heading">{t("SearchAD")}</h3>
         </header>
 
-        <div className="error-block-container">
-          {this.props.errorBlock !== null && (
-            <ResultBlock errorBlock={this.props.errorBlock} />
-          )}
-        </div>
-
         <div className="search-container">
           <AsyncComponent
             multi={multi}
@@ -92,6 +86,12 @@ class StageOne extends Component {
                 {t("Next")}
               </button>
             </div>
+          )}
+        </div>
+
+        <div className="error-block-container">
+          {this.props.errorBlock !== null && (
+            <ResultBlock errorBlock={this.props.errorBlock} />
           )}
         </div>
       </div>

@@ -23,7 +23,7 @@ const translations = {
     DeleteFilters: "Delete filters",
     ShowDeleted: "Show deleted",
     ShowNotActivated: "Show not activated",
-    ShowAll: "Show all",
+    ShowActivated: "Show activated",
     Today: "Today",
     NoDataOrResults: "No data or results given"
   },
@@ -40,9 +40,15 @@ const translations = {
     UserReactivated: "User has been reactivated",
     DeleteUserImperativus: "Delete user",
     DeleteUserInfinitive: "Delete user",
+    DeleteUserRequestImperativus: "Delete user request",
+    DeleteUserRequestInfinitive: "Delete user request",
     UserDeleted: "User has been deleted",
+    UserRequestDeleted: "Account request has been deleted",
     EditUserImperativus: "Edit user",
-    DeleteEdit: "Delete/Edit"
+    DeleteEdit: "Delete/Edit",
+    DeleteAdd: "Delete/Add",
+    AddUserWhenRequestImperativus: "Add user",
+
   },
   ProjectsList: {
     Add: "Add",
@@ -96,7 +102,10 @@ const translations = {
     NotImplemented: "Functionality not implemented yet",
     ServiceUnavailable: "Service is currently unavailable",
     GatewayTimeout: "Timeout",
-    UnexpectedError: "Unexpected error occured"
+    UnexpectedError: "Unexpected error occured",
+    ErrorModel: "Error Model",
+    Error: "Error",
+    OK: "",
   },
   EmployeesRowUnfurl: {
     ActivateEmployee: "Activate employee",

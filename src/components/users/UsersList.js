@@ -12,7 +12,6 @@ import { translate } from 'react-translate';
 import IntermediateBlock from './../common/IntermediateBlock';
 import binaryPermissioner from './../../api/binaryPermissioner';
 
-
 class UsersList extends Component {
   constructor(props) {
     super(props);
@@ -25,11 +24,11 @@ class UsersList extends Component {
   }
 
   handleGetUser = object => {
-    this.setState({
-      user: object
+    var self = this;
+      this.setState({
+        user: object
     });
-
-    this.handleOpenModal();
+      this.handleOpenModal();
   };
 
   handleRoleChange = roles => {
@@ -59,6 +58,19 @@ class UsersList extends Component {
             }, 500);
           })
           .catch(error => {
+            if('userNotFoundError' in error.replyBlock.data.errorObjects[0].errors){
+              WebApi.users.post.add(id, roles)
+              .then(response => {
+                this.setState({
+                  responseBlock: response,
+                  loading: false
+                });
+                setTimeout(() => {
+                  this.handleCloseModal();
+                }, 500);
+              })
+            }
+            console.log(error);
             this.setState({
               responseBlock: error,
               loading: false
@@ -69,14 +81,14 @@ class UsersList extends Component {
   };
 
   handleOpenModal = () => {
-    this.setState({ showModal: true });
+   this.setState({ showModal: true });
   };
 
   handleCloseModal = () => {
     this.setState({ showModal: false });
   };
 
-  rolesArrayToSignificantSymbol(rolesArray) {
+  rolesArrayToSignificantSymbol (rolesArray)  {
     const symbol = [
       'D', 'S', 'H', 'T', 'A', 'M'
     ];
@@ -101,181 +113,130 @@ class UsersList extends Component {
 
   render() {  
     const { t } = this.props;
-    let construct = null;
-    let tableContainer = null;
-    if(this.props.users.length > 0){
-      if("dateOfRequest" in this.props.users[0]){
-        construct = {
-          rowClass: "user-block",
-          tableClass: "users-list-container",
-          keyField: "userId",
-          pageChange: this.props.pageChange,
-          defaultSortField: "userId",
-          defaultSortAscending: true,
-          filtering: true,
-          filterClass: "UserFilter",
-          showRadioButtons: true, 
-          operators: [
+
+    let construct = {
+      rowClass: "user-block",
+      tableClass: "users-list-container",
+      keyField: "id",
+      pageChange: this.props.pageChange,
+      defaultSortField: "lastName",
+      defaultSortAscending: true,
+      filtering: true,
+      filterClass: "UserFilter",
+      showDeletedCheckbox: true,
+      showNotActivatedAccountsCheckbox: true,
+      showActivatedCheckbox: true,
+      disabledRowComparator: (object) => {
+        return object.isDeleted;
+      },
+      operators: [
+        {
+          pretty: t("Add"),
+          click: () => {
+            this.props.openAddUserModal();
+          },
+          comparator: () => binaryPermissioner(false)(0)(0)(0)(0)(0)(1)(this.props.binPem)
+        }
+      ],
+      columns: [
+        { width: 1, pretty: "Role", manualResolver: (user, column) => {
+            return this.rolesArrayToSignificantSymbol(user.roles);
+        }},
+        { width: 20, field: "firstName", pretty: t("Name"), type: "text", filter: true },
+        { width: 30, field: "lastName", pretty: t("Surname"), type: "text", filter: true },
+        { width: 30, field: "email", pretty: t("Email"), type: "text", filter: true },
+        { width: 19, field: "phoneNumber", pretty: t("Phone"), type: "text", filter: true },
+        {
+          width: 1,
+          comparator: object => binaryPermissioner(false)(0)(0)(0)(0)(0)(1)(this.props.binPem),
+          toolBox: [
             {
-              pretty: t("Add"),
-              click: () => {
-                this.props.openAddUserModal();
+              icon: { icon: "sync-alt" },
+              title: t("ReactivateUserImperativus"),
+              click: object => {
+                this.props.dispatch(
+                  setActionConfirmation(true, {
+                    key: "reactivateUser",
+                    string: `${t("ReactivateUserInfinitive")} ${object.firstName} ${
+                      object.lastName
+                    }`,
+                    id: object.id,
+                    successMessage: t("UserReactivated")
+                  })
+                );
               },
-              comparator: () => binaryPermissioner(false)(0)(0)(0)(0)(0)(1)(this.props.binPem)
+              comparator: object => object.isDeleted && binaryPermissioner(false)(0)(0)(0)(0)(0)(1)(this.props.binPem)
+            },
+            {
+              icon: { icon: "times" },
+              title: t("DeleteUserImperativus"),
+              click: object => {
+                this.props.dispatch(
+                  setActionConfirmation(true, {
+                    key: "deleteUser",
+                    string: `${t("DeleteUserInfinitive")} ${object.firstName} ${
+                      object.lastName
+                    }`,
+                    id: object.id,
+                    successMessage: t("UserDeleted")
+                  })
+                );
+              },
+              comparator: object => !object.isDeleted && binaryPermissioner(false)(0)(0)(0)(0)(0)(1)(this.props.binPem)
+            },
+            {
+              icon: { icon: "edit", iconType: "far" },
+              title: t("EditUserImperativus"),
+              click: object => {
+                this.handleGetUser(object);
+              },
+              comparator: object => binaryPermissioner(false)(0)(0)(0)(0)(0)(1)(this.props.binPem)
             }
           ],
-          columns: [
-            { width: 25, field: "date", pretty: t("Date"), type: "date", filter: true},
-            { width: 74, field: "userId", pretty: t("userId"), type: "text", filter: true },
-            {
-              width: 1,
-              comparator: object => binaryPermissioner(false)(0)(0)(0)(0)(0)(1)(this.props.binPem),
-              toolBox: [
-                {
-                  icon: { icon: "sync-alt" },
-                  title: t("ReactivateUserImperativus"),
-                  click: object => {
-                    this.props.dispatch(
-                      setActionConfirmation(true, {
-                        key: "reactivateUser",
-                        string: `${t("ReactivateUserInfinitive")} ${object.firstName} ${
-                          object.lastName
-                        }`,
-                        id: object.id,
-                        successMessage: t("UserReactivated")
-                      })
-                    );
-                  },
-                  comparator: object => object.isDeleted && binaryPermissioner(false)(0)(0)(0)(0)(0)(1)(this.props.binPem)
-                },
+          pretty: t("DeleteEdit")
+        }
+      ]
+    };
+        
+    if(this.props.users !== undefined && this.props.users.length > 0){
+      if("dateOfRequest" in this.props.users[0]){
+        construct.columns[0] = { width: 25, field: "dateOfRequest", pretty: t("Date"), type: "date", filter: true};
+        construct.columns[5].toolBox = [
                 {
                   icon: { icon: "times" },
-                  title: t("DeleteUserImperativus"),
+                  title: t("DeleteUserRequestImperativus"),
                   click: object => {
                     this.props.dispatch(
                       setActionConfirmation(true, {
-                        key: "deleteUser",
-                        string: `${t("DeleteUserInfinitive")} ${object.firstName} ${
-                          object.lastName
-                        }`,
+                        key: "deleteUserRequest",
+                        string: `${t("DeleteUserRequestInfinitive")} ${object.id}`,
                         id: object.id,
-                        successMessage: t("UserDeleted")
+                        successMessage: t("UserRequestDeleted")
                       })
                     );
                   },
-                  comparator: object => !object.isDeleted && binaryPermissioner(false)(0)(0)(0)(0)(0)(1)(this.props.binPem)
+                  comparator: object => binaryPermissioner(false)(0)(0)(0)(0)(0)(1)(this.props.binPem)
                 },
                 {
-                  icon: { icon: "edit", iconType: "far" },
-                  title: t("EditUserImperativus"),
+                  icon: { icon: "plus"},
+                  title: t("AddUserWhenRequestImperativus"),
                   click: object => {
                     this.handleGetUser(object);
                   },
                   comparator: object => binaryPermissioner(false)(0)(0)(0)(0)(0)(1)(this.props.binPem)
                 }
-              ],
-              pretty: t("DeleteEdit")
-            }
-          ]
-        };
+              ];
       }
-      else {
-        construct = {
-        rowClass: "user-block",
-        tableClass: "users-list-container",
-        keyField: "id",
-        pageChange: this.props.pageChange,
-        defaultSortField: "lastName",
-        defaultSortAscending: true,
-        filtering: true,
-        filterClass: "UserFilter",
-        showRadioButtons: true,
-        disabledRowComparator: (object) => {
-          return object.isDeleted;
-        },
-        operators: [
-          {
-            pretty: t("Add"),
-            click: () => {
-              this.props.openAddUserModal();
-            },
-            comparator: () => binaryPermissioner(false)(0)(0)(0)(0)(0)(1)(this.props.binPem)
-          }
-        ],
-        columns: [
-          { width: 1, pretty: "Role", manualResolver: (user, column) => {
-            return this.rolesArrayToSignificantSymbol(user.roles);
-
-          }},
-          { width: 20, field: "firstName", pretty: t("Name"), type: "text", filter: true },
-          { width: 30, field: "lastName", pretty: t("Surname"), type: "text", filter: true },
-          { width: 30, field: "email", pretty: t("Email"), type: "text", filter: true },
-          { width: 19, field: "phoneNumber", pretty: t("Phone"), type: "text", filter: true },
-          {
-            width: 1,
-            comparator: object => binaryPermissioner(false)(0)(0)(0)(0)(0)(1)(this.props.binPem),
-            toolBox: [
-              {
-                icon: { icon: "sync-alt" },
-                title: t("ReactivateUserImperativus"),
-                click: object => {
-                  this.props.dispatch(
-                    setActionConfirmation(true, {
-                      key: "reactivateUser",
-                      string: `${t("ReactivateUserInfinitive")} ${object.firstName} ${
-                        object.lastName
-                      }`,
-                      id: object.id,
-                      successMessage: t("UserReactivated")
-                    })
-                  );
-                },
-                comparator: object => object.isDeleted && binaryPermissioner(false)(0)(0)(0)(0)(0)(1)(this.props.binPem)
-              },
-              {
-                icon: { icon: "times" },
-                title: t("DeleteUserImperativus"),
-                click: object => {
-                  this.props.dispatch(
-                    setActionConfirmation(true, {
-                      key: "deleteUser",
-                      string: `${t("DeleteUserInfinitive")} ${object.firstName} ${
-                        object.lastName
-                      }`,
-                      id: object.id,
-                      successMessage: t("UserDeleted")
-                    })
-                  );
-                },
-                comparator: object => !object.isDeleted && binaryPermissioner(false)(0)(0)(0)(0)(0)(1)(this.props.binPem)
-              },
-              {
-                icon: { icon: "edit", iconType: "far" },
-                title: t("EditUserImperativus"),
-                click: object => {
-                  this.handleGetUser(object);
-                },
-                comparator: object => binaryPermissioner(false)(0)(0)(0)(0)(0)(1)(this.props.binPem)
-              }
-            ],
-            pretty: t("DeleteEdit")
-          }
-        ]
-          };
-        }
-      tableContainer = (
-        <SmoothTable
-          currentPage={this.props.currentPage}
-          totalPageCount={this.props.totalPageCount}
-          loading={this.props.loading}
-          data={this.props.users}
-          construct={construct}
-        />
-      )
     }
-      
+
     let render = () => <div>
-      {tableContainer}
+      <SmoothTable
+        currentPage={this.props.currentPage}
+        totalPageCount={this.props.totalPageCount}
+        loading={this.props.loading}
+        data={this.props.users}
+        construct={construct}
+      />
       <Modal
         open={this.state.showModal}
         classNames={{ modal: "Modal Modal-users" }}
@@ -292,7 +253,6 @@ class UsersList extends Component {
         />
       </Modal>
     </div>;
-
     return <IntermediateBlock
       loaded={!this.state.loading}
       render={render}
@@ -315,7 +275,7 @@ UsersList.propTypes = {
   currentPage: PropTypes.number.isRequired,
   totalPageCount: PropTypes.number.isRequired,
   loading: PropTypes.bool.isRequired,
-  users: PropTypes.arrayOf(PropTypes.object).isRequired,
+  users: PropTypes.arrayOf(PropTypes.object),
   binPem: PropTypes.number,
   t: PropTypes.func,
   resultBlock: PropTypes.object

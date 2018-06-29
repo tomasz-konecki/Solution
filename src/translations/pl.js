@@ -23,7 +23,7 @@ const translations = {
     DeleteFilters: "Usuń filtry",
     ShowDeleted: "Pokaż usunięte",
     ShowNotActivated: "Pokaż nieaktywowane",
-    ShowAll: "Pokaż wszystkie",
+    ShowActivated: "Pokaż aktywne",
     Today: "Dzisiaj",
     NoDataOrResults: "Brak danych bądź wyników"
   },
@@ -40,9 +40,15 @@ const translations = {
     UserReactivated: "Użytkownik został reaktywowany",
     DeleteUserImperativus: "Usuń użytkownika",
     DeleteUserInfinitive: "Usunąć użytkownika",
+    DeleteUserRequestImperativus: "Usuń prośbę o utworzenie konta",
+    DeleteUserRequestInfinitive: "Usunąć prośbę o utworzenie konta",
     UserDeleted: "Użytkownik został usunięty",
+    UserRequestDeleted: "Prośba o utworzenie konta użytkownika została usunięta",
     EditUserImperativus: "Edytuj użytkownika",
-    DeleteEdit: "Usuń/Edytuj"
+    DeleteEdit: "Usuń/Edytuj",
+    DeleteAdd: "Usuń/Dodaj",
+    AddUserWhenRequestImperativus: "Dodaj użytkownika",
+
   },
   ProjectsList: {
     Add: "Dodaj",
@@ -96,7 +102,10 @@ const translations = {
     NotImplemented: "Funkcjonalność jeszcze nie istnieje",
     ServiceUnavailable: "Serwer niedostępny",
     GatewayTimeout: "Brak odpowiedzi",
-    UnexpectedError: "Nieoczekiwany błąd"
+    UnexpectedError: "Nieoczekiwany błąd",
+    ErrorModel: "Model błędu",
+    Error: "Błąd",
+    OK: "",
   },
   EmployeesRowUnfurl: {
     ActivateEmployee: "Aktywuj pracownika",

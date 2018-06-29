@@ -14,9 +14,9 @@ class UserDetailsBlock extends Component {
   }
 
   parseRoles = () => {
-    return this.props.user.roles.length !== 0
+    return this.props.user.roles !==  undefined ? this.props.user.roles.length !== 0
       ? this.props.user.roles.join(", ")
-      : emptyField;
+      : emptyField : null;
   };
 
   parsePhoneNumber = () => {
@@ -27,6 +27,15 @@ class UserDetailsBlock extends Component {
 
   render() {
     const { t } = this.props;
+    let rolesDetails = this.props.user.roles !== undefined ? (
+      <Detail
+        type="text"
+        editable={false}
+        pretty={t("Roles")}
+        value={this.parseRoles()}
+       />
+    ): null;
+    
     return (
       <div>
         <header>
@@ -65,12 +74,7 @@ class UserDetailsBlock extends Component {
             value={this.parsePhoneNumber()}
           />
 
-          <Detail
-            type="text"
-            editable={false}
-            pretty={t("Roles")}
-            value={this.parseRoles()}
-          />
+          {rolesDetails}
         </div>
       </div>
     );

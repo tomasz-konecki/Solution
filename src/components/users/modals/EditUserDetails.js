@@ -19,19 +19,19 @@ class EditUserDetails extends Component {
     return (
       <div className="stage-two-container">
         <div className="form-container">
-          <UserDetailsBlock editable={false} user={this.props.user} />
+          <UserDetailsBlock editable={false} user={this.props.user} /> 
           <UserRoleAssigner
-            roles={this.props.user.roles}
+            roles={this.props.user.roles !== undefined ? this.props.user.roles : []}
             handleRoleChange={this.props.handleRoleChange}
           />
           <div className="edit-user-button-container">
             {
-              this.props.user.roles[0] !== undefined ? <button
+              this.props.user.roles !== undefined ? this.props.user.roles[0] !== undefined ? <button
                 className="dcmt-button"
                 onClick={this.props.changeUserRoles}
               >
                 {t("Confirm")}
-              </button> : null
+              </button> : null : null
             }
           </div>
           <div>

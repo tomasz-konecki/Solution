@@ -21,7 +21,7 @@ class SmoothTable extends Component {
       filterFieldOverrides: {},
       rowUnfurls: {},
       isQueryLoading: false,
-      isDeleted: false,
+      selectedOption: "showAll",
       searchQuery: "",
       sortingSettings: {
         Sort: props.construct.defaultSortField,
@@ -69,6 +69,12 @@ class SmoothTable extends Component {
     this.initialState = Object.assign({}, this.state);
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.construct !== this.state.construct) {
+      this.setState({ construct: nextProps.construct });
+    }
+  }
+
   deepenFunction(func, ...args) {
     return event => {
       if(event.stopPropagation !== undefined){
@@ -84,23 +90,47 @@ class SmoothTable extends Component {
     const value = target.type === 'checkbox' ? target.checked : target.value;
     const name = target.name;
 
-    this.setState({
-      [name]: value
-    }, () => {
-      this.props.construct.pageChange(
-        this.props.currentPage,
-        this.generateSettings()
-      );
-    });
+    if(target.type === "radio"){
+      this.setState({
+        selectedOption: value
+      }, () => {
+        this.props.construct.pageChange(
+          this.props.currentPage,
+          this.generateSettings()
+        );
+      });
+    }
+    else {
+      this.setState({
+        [name]: value
+      }, () => {
+        this.props.construct.pageChange(
+          this.props.currentPage,
+          this.generateSettings()
+        );
+      });
+    }
+
   }
 
   generateSettings() {
+
     let mainFilter = {};
     if (this.state.searchQuery !== "") {
       mainFilter["Query"] = this.state.searchQuery;
     }
-    if (this.props.construct.showDeletedCheckbox) {
-      mainFilter["isDeleted"] = this.state.isDeleted;
+    switch(this.state.selectedOption){
+      case "isDeleted":
+        mainFilter["isDeleted"] = true;
+      break;
+      case "isNotActivated":
+        mainFilter["isNotActivated"] = true;
+      break;
+      case "showAll":
+        mainFilter["isDeleted"] = null;
+      break;
+      default:
+      break;
     }
     if (Object.keys(this.state.columnFilters).length > 0) {
       mainFilter[this.props.construct.filterClass] = {};
@@ -299,7 +329,7 @@ class SmoothTable extends Component {
       if(operator.comparator === undefined || operator.comparator(operator)) operators.push(this.operatorButton(index, operator));
     });
 
-    if(this.props.construct.filtering === true){
+    if(this.props.construct.filtering){
       operators.push(
         <span key={-1}>
           <input
@@ -322,7 +352,7 @@ class SmoothTable extends Component {
       );
     }
 
-    if(this.props.construct.showDeletedCheckbox === true){
+    if(this.props.construct.showRadioButtons){
       operators.push(
         <span key={-3} className="smooth-separator">|</span>
       );
@@ -331,13 +361,41 @@ class SmoothTable extends Component {
           <label>
             {this.props.t("ShowDeleted")}:
             <input
-              name="isDeleted"
-              type="checkbox"
-              checked={this.state.isGoing}
+              name="radioButtons"
+              type="radio"
+              value="isDeleted"
+              checked={this.state.selectedOption === "isDeleted"}
               onChange={this.handleInputChange} />
           </label>
         </span>
       );
+      operators.push(
+        <span key={-5} className="smooth-show-deleted">
+          <label>
+            {this.props.t("ShowNotActivated")}:
+            <input
+              name="radioButtons"
+              type="radio"
+              value="isNotActivated"
+              checked={this.state.selectedOption === "isNotActivated"}
+              onChange={this.handleInputChange} />
+          </label>
+        </span>
+      );
+      operators.push(
+        <span key={-6} className="smooth-show-deleted">
+          <label>
+            {this.props.t("ShowAll")}:
+            <input
+              name="radioButtons"
+              type="radio"
+              value="showAll"
+              checked={this.state.selectedOption === "showAll"}
+              onChange={this.handleInputChange} />
+          </label>
+        </span>
+      );
+      
     }
     return operators;
   }
@@ -592,7 +650,7 @@ class SmoothTable extends Component {
   render() {
     const { construct } = this.state;
     let list = [],
-      empty = false;
+    empty = false;
     list.push(this.generateFieldSearchRow());
     if (this.props.data !== undefined && this.props.data[0] !== undefined) {
       list = list.concat(
@@ -664,7 +722,7 @@ SmoothTable.propTypes = {
     rowDetailUnfurl: PropTypes.bool,
     unfurler: PropTypes.func,
     disabledRowComparator: PropTypes.func,
-    showDeletedCheckbox: PropTypes.bool,
+    showRadioButtons: PropTypes.bool,
     handles: PropTypes.objectOf(PropTypes.func),
     operators: PropTypes.arrayOf(PropTypes.shape({
       pretty: PropTypes.string.isRequired,
@@ -693,5 +751,4 @@ SmoothTable.propTypes = {
   loading: PropTypes.bool.isRequired
 };
 
-// export default SmoothTable;
 export default translate("SmoothTable")(SmoothTable);

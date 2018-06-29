@@ -9,11 +9,13 @@ import storage from "redux-persist/lib/storage";
 import { push } from 'react-router-redux';
 import { logout } from './../actions/authActions';
 import ResponseParser from './responseParser';
+import Config from "Config";
 
 const { store } = storeCreator;
 
-const API_ENDPOINT = "http://10.255.20.241:321";
-store.subscribe(listener);
+const API_ENDPOINT = Config.serverUrl;
+
+store.subscribe(listener);``
 
 const select = state =>
   state.authReducer.tokens !== undefined ? state.authReducer.tokens.token : "";
@@ -209,18 +211,11 @@ const WebApi = {
   },
   feedbacks: {
     get: {
-      all: () => {
-        return WebAround.get(`${API_ENDPOINT}/feedbacks`);
-      },
+      all: () => {},
       byFeedback: (feedbackId) => {},
       byAuthor: (authorId) => {},
       byEmployee: (employeeId) => {},
       byProject: (projectId) => {}
-    },
-    post: {
-      employeeOpinion: feedback => {
-        return WebAround.post(`${API_ENDPOINT}/feedbacks`, feedback);
-      }
     }
   },
   foreignLanguages: {

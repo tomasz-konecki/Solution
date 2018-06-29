@@ -22,6 +22,8 @@ const translations = {
     Search: "Szukaj",
     DeleteFilters: "Usuń filtry",
     ShowDeleted: "Pokaż usunięte",
+    ShowNotActivated: "Pokaż nieaktywowane",
+    ShowAll: "Pokaż wszystkie",
     Today: "Dzisiaj",
     NoDataOrResults: "Brak danych bądź wyników"
   },
@@ -31,6 +33,8 @@ const translations = {
     Surname: "Nazwisko",
     Email: "Email",
     Phone: "Telefon",
+    Date: "Data",
+    userId: "Id Użytkownika",
     ReactivateUserImperativus: "Reaktywuj użytkownika",
     ReactivateUserInfinitive: "Reaktywować użytkownika",
     UserReactivated: "Użytkownik został reaktywowany",

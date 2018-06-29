@@ -22,7 +22,7 @@ if (env === "production") {
 }
 
 module.exports = {
-  devtool: 'cheap-module-eval-source-map',
+  devtool: 'source-map',
   entry: ["react-hot-loader/patch", "./src/index.js"],
   output: {
     path: path.resolve(__dirname, "dist"),
@@ -97,7 +97,7 @@ module.exports = {
     'Config': JSON.stringify(process.env.NODE_ENV === 'production' ? {
       serverUrl: "http://10.255.20.241:321"
     } : {
-      serverUrl: "http://localhost:84"
+      serverUrl: "http://10.255.20.241:321"
     })
   }
 };

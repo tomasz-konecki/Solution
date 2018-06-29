@@ -8,7 +8,9 @@ import {
   DELETE_PROJECT,
   CLOSE_PROJECT,
   REACTIVATE_PROJECT, 
-  CHANGE_PROJECT_SKILL
+  CHANGE_PROJECT_SKILL,
+  ADD_FEEDBACK,
+  GET_FEEDBACKS
 } from "../constants";
 import { updateObject } from '../services/methods';
 const initialState = {
@@ -42,9 +44,16 @@ const initialState = {
   reactivateProjectErrors: [],
 
   changeProjectSkillStatus: null,
-  changeProjectSkillErrors: []
+  changeProjectSkillErrors: [],
+  
+  addFeedbackStatus: null,
+  addFeedbackErrors: [],
+
+  loadedFeedbacks: [],
+  loadFeedbackStatus: null,
+  loadFeedbackErrors: []
 };
-//
+
 export const projectsReducer = (state = initialState, action) => {
   switch (action.type) {
     case LOAD_PROJECTS_SUCCESS:
@@ -85,6 +94,14 @@ export const projectsReducer = (state = initialState, action) => {
     case CHANGE_PROJECT_SKILL:
       return updateObject(state, { changeProjectSkillStatus: action.changeProjectSkillStatus, 
         changeProjectSkillErrors: action.changeProjectSkillErrors})
+    
+    case ADD_FEEDBACK:
+      return updateObject(state, { addFeedbackStatus: action.addFeedbackStatus, 
+        addFeedbackErrors: action.addFeedbackErrors})
+
+    case GET_FEEDBACKS:
+      return updateObject(state, { loadedFeedbacks: action.loadedFeedbacks, 
+        loadFeedbackStatus: action.loadFeedbackStatus, loadFeedbackErrors: action.loadFeedbackErrors})
     default:
       return state;
   }

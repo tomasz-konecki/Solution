@@ -14,7 +14,7 @@ import Form from '../../form/form';
 import { validateInput } from '../../../services/validation';
 import { mapObjectKeysToArrayByGivenIndexes } from '../../../services/methods';
 import ContactList from '../../common/contactList/contactList';
-
+import {errorCatcher} from '../../../services/errorsHandler';
 const emptyField = "<brak>";
 const active = "Aktywny";
 const inActive = "Nieaktywny";
@@ -34,7 +34,7 @@ class ProjectDetailsBlock extends Component {
         isAutocorrect: false,
         fetchClientsError: "",
         autoCorrect: true,
-        isLoading: true,
+        isLoading: false,
 
         responsiblePersons: [],
 
@@ -53,8 +53,7 @@ class ProjectDetailsBlock extends Component {
  
   componentDidMount() {
     WebApi.clients.get.all().then(response => {
-      console.log(response);
-      this.setState({fetchedClients: response.replyBlock.data.dtoObjects, isLoading: false});
+      this.setState({fetchedClients: response.replyBlock.data.dtoObjects});
       this.goForClient();
     });
 
@@ -90,8 +89,7 @@ class ProjectDetailsBlock extends Component {
           this.props.additionalOperation();
         }
       }).catch(error => {
-        this.setState({isLoading: false,
-          editProjectResult: {content: error.replyBlock.data.errorObjects[0].errors.dataInvalidError, status: false}});
+        this.setState({isLoading: false, editProjectResult: {content: errorCatcher(error), status: false}});
       });
   }
   onChangeClient = event => {
@@ -168,7 +166,6 @@ class ProjectDetailsBlock extends Component {
       selected: this.state.responsiblePersons[index].firstName});
   }
   render() {
-    console.log(this.props.estimatedEndDate);
     const editable = this.props.editable;
     const { t } = this.props;
     return (

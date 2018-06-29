@@ -24,6 +24,9 @@
             z-index: 100;
             color: black;
             animation: 0.5s header-anim linear forwards;
+            .option-btn:last-of-type{
+                right: 120px;
+            }
             .option-btn{
                 bottom: 2.5px;
                 right: 10px;
@@ -175,3 +178,66 @@
 .add-programmer-btn:hover{
     background-color: #994f5b;
 }   
+
+
+.opinion-container{
+    width: 100%;
+    height: 100%;
+    position: relative;
+    .add-opinion-container{
+        .input-container{
+            height: 150px;
+
+            textarea{
+                height: 200px;
+            }
+        }
+    }
+    .show-opinions-btn{
+        position: absolute;
+        background-color: transparent;
+        border: none;
+        padding: 5px 0;
+        cursor: pointer;
+        color: blue;
+        bottom: 0;
+        left: 15px;
+    }
+    .show-opinions-btn:focus{
+        outline: none;
+    }
+    .opinion-list-container{
+        width: 100%;
+        height: 80%;
+        overflow-y: auto;
+        box-sizing: border-box;
+
+        ul{
+          li{
+              p{
+                  margin: 5px 0;
+              }
+              p:first-of-type{
+                  color: lightseagreen;
+                  font-size: 14px;
+              }
+              p:last-of-type{
+                  padding: 10px;
+                  box-sizing: border-box;
+
+              }
+          }
+        }
+    }
+    
+    
+}
+
+.empty-list-err{
+    color: tomato;
+    text-align: center;
+    position: absolute;
+    top: 48%;
+    width: 100%;
+
+}

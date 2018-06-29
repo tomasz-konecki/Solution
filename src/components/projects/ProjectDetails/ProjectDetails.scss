@@ -94,7 +94,6 @@
         flex-flow: column;
         font-size: 0.8rem;
         h3{
-            text-align: center;
             margin: 10px 0 30px 0;
             font-weight: bold;
         }
@@ -136,10 +135,11 @@
     margin-right: auto;
 }
 .option-btn:hover{
-    width: 115px;
+    transform: scale(1.05);
 }
 .green-btn{
-    background-color: seagreen;
+    background-color: #1C7744;
+    color: white;
 }
 
 .normal-btn{

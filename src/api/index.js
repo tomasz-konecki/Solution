@@ -214,8 +214,16 @@ const WebApi = {
       all: () => {},
       byFeedback: (feedbackId) => {},
       byAuthor: (authorId) => {},
-      byEmployee: (employeeId) => {},
+      byEmployee: (employeeId) => {
+        return WebAround.get(`${API_ENDPOINT}/feedbacks/employee/${employeeId}`);
+      },
       byProject: (projectId) => {}
+    },
+    post: {
+      feedback: (model) => {
+        return WebAround.post(`${API_ENDPOINT}/feedbacks`, model);
+      }
+      
     }
   },
   foreignLanguages: {

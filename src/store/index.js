@@ -12,7 +12,7 @@ const history = createHistory();
 const persistConfig = {
   key: "root",
   storage,
-  blacklist: ["form", "asyncReducer"],
+  blacklist: ["form", "asyncReducer", "projectsReducer"],
   migrate: state => {
     if (state !== undefined && state.authReducer !== undefined)
       state.authReducer.loading = false;

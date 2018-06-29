@@ -14,6 +14,7 @@ import Form from '../../form/form';
 import { validateInput } from '../../../services/validation';
 import { mapObjectKeysToArrayByGivenIndexes } from '../../../services/methods';
 import ContactList from '../../common/contactList/contactList';
+
 const emptyField = "<brak>";
 const active = "Aktywny";
 const inActive = "Nieaktywny";
@@ -52,6 +53,7 @@ class ProjectDetailsBlock extends Component {
  
   componentDidMount() {
     WebApi.clients.get.all().then(response => {
+      console.log(response);
       this.setState({fetchedClients: response.replyBlock.data.dtoObjects, isLoading: false});
       this.goForClient();
     });
@@ -84,6 +86,9 @@ class ProjectDetailsBlock extends Component {
 
       WebApi.projects.put.project(this.props.project.id, projectToSend).then(response => {
         this.setState({isLoading: false, editProjectResult: {content: "Edycja została przeprowadzona poprawnie", status: true}});
+        if(this.props.additionalOperation){
+          this.props.additionalOperation();
+        }
       }).catch(error => {
         this.setState({isLoading: false,
           editProjectResult: {content: error.replyBlock.data.errorObjects[0].errors.dataInvalidError, status: false}});
@@ -163,6 +168,7 @@ class ProjectDetailsBlock extends Component {
       selected: this.state.responsiblePersons[index].firstName});
   }
   render() {
+    console.log(this.props.estimatedEndDate);
     const editable = this.props.editable;
     const { t } = this.props;
     return (
@@ -205,9 +211,6 @@ class ProjectDetailsBlock extends Component {
           onSubmit={this.changeForm}
           shouldSubmit={false}
           btnTitle="Dalej"
-          handleStartDate={(date, e) => this.handleStartDate(date, e)}
-          handleEndDate={(date, e) => this.handleEndDate(date, e)}
-          onChange={e => this.onChangeHandler(e)}
           isLoading={this.state.isLoading}
           endDate={this.props.estimatedEndDate}
           formItems={this.state.editProjectArray} 
@@ -222,24 +225,4 @@ class ProjectDetailsBlock extends Component {
     );
   }
 }
-
-ProjectDetailsBlock.propTypes = {
-  async: PropTypes.shape({
-    handleGetProject: PropTypes.func,
-  }),
-  projects: PropTypes.arrayOf(PropTypes.object),
-  project: PropTypes.shape({
-    id: PropTypes.number.isRequired,
-    name: PropTypes.string.isRequired,
-    client: PropTypes.string.isRequired,
-    description: PropTypes.string.isRequired,
-    responsiblePerson: PropTypes.object.isRequired,
-    startDate: PropTypes.string.isRequired,
-    estimatedEndDate: PropTypes.string.isRequired,
-    projects: PropTypes.arrayOf(PropTypes.object)
-  }),
-  editable: PropTypes.bool,
-  editProject: PropTypes.func.isRequired
-};
-
 export default translate("ProjectDetailsBlock")(ProjectDetailsBlock);

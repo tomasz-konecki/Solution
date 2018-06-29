@@ -13,7 +13,7 @@ import ProjectDetailContainer from "./ProjectDetailContainer";
 import "../../scss/containers/ProjectsContainer.scss";
 import { ACTION_CONFIRMED } from "./../../constants";
 import { Route, Switch, withRouter } from 'react-router-dom';
-
+import ProjectDetails from './ProjectDetails/ProjectDetails';
 class ProjectsContainer extends React.Component {
   constructor(props) {
     super(props);
@@ -29,9 +29,7 @@ class ProjectsContainer extends React.Component {
     this.pageChange = this.pageChange.bind(this);
   }
 
-  componentDidMount() {
 
-  }
 
   componentWillReceiveProps(nextProps) {
     if (this.validatePropsForAction(nextProps, "deleteProject")) {
@@ -162,7 +160,7 @@ class ProjectsContainer extends React.Component {
     return (
       <Switch>
         <Route exact path={match.url + ""} component={this.pullDOM} />
-        <Route path={match.url + "/:id"} component={ProjectDetailContainer} />
+        <Route exact path={match.url + "/:id"} component={ProjectDetails} />
       </Switch>
 
     );

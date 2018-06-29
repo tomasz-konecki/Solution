@@ -9,6 +9,7 @@ const shouldRender = (errorOnly, errorStatus) => {
 
 const ResultBlock = ({
   t,
+  type,
   errorBlock,
   errorOnly = true,
   successMessage = t("OperationSuccessful"),
@@ -20,12 +21,17 @@ const ResultBlock = ({
     return null;
   }
 
+  let modalClasses = ["result-block"];
   let classes = ["result-block"];
+
+  if(type === "modalInParent"){
+    modalClasses = ['result-block-modal-in-parent'];
+  }
+
   let errorStatus = errorBlock.replyBlock.status;
   let colorBlock = errorBlock.replyBlock.statusText.replace(/ /g,'');
   let errorImg = null;
   let errorStatusContent = null;
-
 
 let errorObjects = (errorBlock.replyBlock.data.ErrorObjects !== undefined && 
                   errorBlock.replyBlock.data.ErrorObjects !== null) ? 
@@ -73,7 +79,7 @@ let errorObjects = (errorBlock.replyBlock.data.ErrorObjects !== undefined &&
     }
 
   return (
-    <div className="result-block">
+    <div className={modalClasses.join(" ")}>
       {shouldRender(errorOnly, errorStatus) && (
         errorStatusContent
       )}

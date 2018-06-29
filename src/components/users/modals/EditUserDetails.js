@@ -34,14 +34,12 @@ class EditUserDetails extends Component {
               </button> : null : null
             }
           </div>
-          <div>
             <ResultBlock
+              type="modalInParent"
               errorOnly={false}
               successMessage={t("RolesSuccessfullyEdited")}
               errorBlock={this.props.responseBlock}
             />
-          </div>
-
           <br />
           <div>{this.props.loading && <LoaderHorizontal />}</div>
         </div>

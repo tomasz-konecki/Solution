@@ -24,7 +24,6 @@ class UsersList extends Component {
   }
 
   handleGetUser = object => {
-    var self = this;
       this.setState({
         user: object
     });
@@ -44,18 +43,18 @@ class UsersList extends Component {
     const { id, roles } = this.state.user;
     this.setState(
       {
-        loading: true
+        // loading: true
       },
       () => {
         WebApi.users.patch.roles(id, roles)
           .then(response => {
             this.setState({
               responseBlock: response,
-              loading: false
+              // loading: false
             });
             setTimeout(() => {
-              this.handleCloseModal();
-            }, 500);
+              //this.handleCloseModal();
+            }, 1500);
           })
           .catch(error => {
             if('userNotFoundError' in error.replyBlock.data.errorObjects[0].errors){
@@ -70,7 +69,6 @@ class UsersList extends Component {
                 }, 500);
               })
             }
-            console.log(error);
             this.setState({
               responseBlock: error,
               loading: false
@@ -190,7 +188,7 @@ class UsersList extends Component {
               click: object => {
                 this.handleGetUser(object);
               },
-              comparator: object => binaryPermissioner(false)(0)(0)(0)(0)(0)(1)(this.props.binPem)
+              comparator: object => !object.isDeleted && binaryPermissioner(false)(0)(0)(0)(0)(0)(1)(this.props.binPem)
             }
           ],
           pretty: t("DeleteEdit")

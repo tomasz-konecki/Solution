@@ -41,6 +41,7 @@ class SmoothTable extends Component {
       let newFilterFieldOverrides = {};
 
       newField[column.field] = true;
+      newDateFilters[column.field] = "";
       newFilterField[column.field] = "";
       newFilterFieldLoaders[column.field] = false;
 
@@ -179,7 +180,9 @@ class SmoothTable extends Component {
     });
   }
 
-  handleFilterDateChange() {}
+  handleFilterDateChange() {
+    console.log("test");
+  }
 
   toolBoxButton(button, object) {
     return (
@@ -255,7 +258,7 @@ class SmoothTable extends Component {
         break;
       }
     }
-
+    
     columnFilters[field] = value;
     columnFiltersLoaders[field] = true;
 
@@ -287,6 +290,7 @@ class SmoothTable extends Component {
   }
 
   handleRowClick(object, index, event) {
+    console.log("TO DO")
     const { keyField } = this.props.construct;
     const { rowUnfurls } = this.state;
 
@@ -492,6 +496,7 @@ class SmoothTable extends Component {
             locale="pl"
             className="form-control form-control-sm manual-input"
             dateFormat="YYYY-MM-DD"
+            placeholderText={this.props.t("Search") + " " + column.pretty}
             todayButton={this.props.t("Today")}
             peekNextMonth
             showMonthDropdown
@@ -631,7 +636,6 @@ class SmoothTable extends Component {
         null
       }
     </tr>);
-
     return payload;
   }
 

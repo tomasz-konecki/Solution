@@ -109,7 +109,15 @@ a:visited {
   height: 73.3vh;
   overflow-y: auto;
 }
-
+.result-block-modal-in-parent{
+  position: absolute;
+  top: 0;
+  width: 100%;
+  background: green;
+  left: 0;
+  transition-timing-function: ease-in;
+  transition-timing-function: cubic-bezier(0.42, 0, 1, 1);
+}
 .result-block {
   width: 100%;
   display: inline-block;

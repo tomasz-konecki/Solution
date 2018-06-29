@@ -1,6 +1,5 @@
 const webpack = require("webpack");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
-const UglifyJSPlugin = require("uglifyjs-webpack-plugin");
 const OptimizeJsPlugin = require("optimize-js-plugin");
 const path = require("path");
 const env = process.env.NODE_ENV || "development";
@@ -94,4 +93,11 @@ module.exports = {
       index:'/'
     }
   },
+  externals: {
+    'Config': JSON.stringify(process.env.NODE_ENV === 'production' ? {
+      serverUrl: "http://10.255.20.241:321"
+    } : {
+      serverUrl: "http://10.255.20.241:321"
+    })
+  }
 };

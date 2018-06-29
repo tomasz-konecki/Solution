@@ -33,11 +33,9 @@ const ResultBlock = ({
   let errorImg = null;
   let errorStatusContent = null;
 
-let errorObjects = (errorBlock.replyBlock.data.ErrorObjects !== undefined && 
-                  errorBlock.replyBlock.data.ErrorObjects !== null) ? 
+let errorObjects = (errorBlock.replyBlock.data.ErrorObjects !== undefined && errorBlock.replyBlock.data.ErrorObjects !== null) ? 
                   errorBlock.replyBlock.data.ErrorObjects : 
-                    (errorBlock.replyBlock.data.errorObjects !== undefined && 
-                      errorBlock.replyBlock.data.errorObjects !== null) ?
+                    (errorBlock.replyBlock.data.errorObjects !== undefined && errorBlock.replyBlock.data.errorObjects !== null) ?
                       errorBlock.replyBlock.data.errorObjects : [];
 
   let errorObjectsList = errorObjects.length > 0 ? 

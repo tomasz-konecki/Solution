@@ -39,45 +39,6 @@ class UsersList extends Component {
     });
   };
 
-  changeUserRoles = () => {
-    const { id, roles } = this.state.user;
-    this.setState(
-      {
-        // loading: true
-      },
-      () => {
-        WebApi.users.patch.roles(id, roles)
-          .then(response => {
-            this.setState({
-              responseBlock: response,
-              // loading: false
-            });
-            setTimeout(() => {
-              //this.handleCloseModal();
-            }, 1500);
-          })
-          .catch(error => {
-            if('userNotFoundError' in error.replyBlock.data.errorObjects[0].errors){
-              WebApi.users.post.add(id, roles)
-              .then(response => {
-                this.setState({
-                  responseBlock: response,
-                  loading: false
-                });
-                setTimeout(() => {
-                  this.handleCloseModal();
-                }, 500);
-              })
-            }
-            this.setState({
-              responseBlock: error,
-              loading: false
-            });
-          });
-      }
-    );
-  };
-
   handleOpenModal = () => {
    this.setState({ showModal: true });
   };
@@ -242,7 +203,7 @@ class UsersList extends Component {
         onClose={this.handleCloseModal}
       >
         <EditUserDetails
-          closeModal={this.handleCloseModal}
+          handleCloseModal={this.handleCloseModal}
           user={this.state.user}
           handleRoleChange={this.handleRoleChange}
           responseBlock={this.state.responseBlock}

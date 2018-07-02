@@ -31,7 +31,6 @@ export const loadUsers = (page = 1, limit = 25, other = {isDeleted: false}) => {
       dispatch(asyncStarted());   
       WebApi.users.post[("isNotActivated" in other ? ["listOfRequests"] : ["list"])](settings)
         .then(response => {
-          console.log(response);
           if(!response.errorOccurred()){
             dispatch(loadUsersSuccess(response.extractData(), response));
           }

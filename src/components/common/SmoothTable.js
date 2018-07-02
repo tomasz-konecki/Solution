@@ -31,31 +31,36 @@ class SmoothTable extends Component {
       unfurl: props.construct.rowDetailUnfurl
     };
 
-    props.construct.columns.map((column, index) => {
-      if (column.field === undefined) return;
-
-      let newField = {};
-      let newDateFilters = {};
-      let newFilterField = {};
-      let newFilterFieldLoaders = {};
-      let newFilterFieldOverrides = {};
-
-      newField[column.field] = true;
-      newDateFilters[column.field] = "";
-      newFilterField[column.field] = "";
-      newFilterFieldLoaders[column.field] = false;
-
-      if (column.filterFieldOverride !== undefined) {
-        newFilterFieldOverrides[column.field] = column.filterFieldOverride;
-      }
-
-      Object.assign(this.state.columns, newField);
-      Object.assign(this.state.columnFilters, newFilterField);
-      Object.assign(this.state.filterFieldOverrides, newFilterFieldOverrides);
-    });
-
     this.state.columns[props.construct.defaultSortField] =
       props.construct.defaultSortAscending;
+
+      this.props.construct.columns.map((column, index) => {
+        if (column.field === undefined) return;
+    
+        let newField = {};
+        let newDateFilters = {};
+        let newFilterField = {};
+        let newFilterFieldLoaders = {};
+        let newFilterFieldOverrides = {};
+    
+        newField[column.field] = true;
+        newDateFilters[column.field] = "";
+        newFilterField[column.field] = "";
+        newFilterFieldLoaders[column.field] = false;
+    
+        if (column.filterFieldOverride !== undefined) {
+          newFilterFieldOverrides[column.field] = column.filterFieldOverride;
+        }
+    
+        this.setState({
+          columns: newField,
+          columnFilters: newFilterField,
+          filterFieldOverrides: newFilterFieldOverrides,
+        })
+        // Object.assign(this.state.columns, newField);
+        // Object.assign(this.state.columnFilters, newFilterField);
+        // Object.assign(this.state.filterFieldOverrides, newFilterFieldOverrides);
+      });
 
     this.handleSortColumnClick = this.handleSortColumnClick.bind(this);
     this.handlePageChange = this.handlePageChange.bind(this);
@@ -70,11 +75,46 @@ class SmoothTable extends Component {
     this.initialState = Object.assign({}, this.state);
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps(prevPros, nextProps) {
+    console.log(prevPros, nextProps);
     if (nextProps.construct !== this.state.construct) {
       this.setState({ construct: nextProps.construct });
     }
   }
+
+  componentWillMount(){
+    this.generateFiltersColumns();
+  }
+
+generateFiltersColumns = () => {
+  this.props.construct.columns.map((column, index) => {
+    if (column.field === undefined) return;
+
+    let newField = {};
+    let newDateFilters = {};
+    let newFilterField = {};
+    let newFilterFieldLoaders = {};
+    let newFilterFieldOverrides = {};
+
+    newField[column.field] = true;
+    newDateFilters[column.field] = "";
+    newFilterField[column.field] = "";
+    newFilterFieldLoaders[column.field] = false;
+
+    if (column.filterFieldOverride !== undefined) {
+      newFilterFieldOverrides[column.field] = column.filterFieldOverride;
+    }
+
+    this.setState({
+      columns: newField,
+      columnFilters: newFilterField,
+      filterFieldOverrides: newFilterFieldOverrides,
+    })
+    // Object.assign(this.state.columns, newField);
+    // Object.assign(this.state.columnFilters, newFilterField);
+    // Object.assign(this.state.filterFieldOverrides, newFilterFieldOverrides);
+  });
+}
 
   deepenFunction(func, ...args) {
     return event => {
@@ -254,7 +294,7 @@ class SmoothTable extends Component {
         break;
       }
       case "date": {
-        value = event.format("YYYY-MM-DDTHH:mm:ss.SSS");
+        value = event.target.value ? event.format("YYYY-MM-DDTHH:mm:ss.SSS") : null;
         break;
       }
     }

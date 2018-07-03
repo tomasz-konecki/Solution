@@ -64,6 +64,7 @@ class ProjectsList extends Component {
       rowDetailUnfurl: true,
       unfurler: ProjectRowUnfurl,
       showDeletedCheckbox: true,
+      showAllCheckbox: true,
       disabledRowComparator: (object) => {
         return object.isDeleted;
       },
@@ -110,9 +111,9 @@ class ProjectsList extends Component {
         { width: 20, field: "endDate", pretty: t("EndDate"), type: "date", filter: true, filterFieldOverride: "toDate" },
         {
           width: 10,
-          field: "isActive",
+          field: "status",
           pretty: t("Status"),
-          multiState: { true: t("Active"), false: t("Closed") },
+          multiState: { null: t("ShowAll"), 0: t("Activated"), 1: t("NotActivated"), 2: t("Closed") },
           type: "multiState",
           filter: true
         },
@@ -133,9 +134,10 @@ class ProjectsList extends Component {
                 );
               },
               comparator: (object) => {
+                console.log(object);
                 return (specialPermissioner().projects.isOwner(object, this.props.login)
                  || binaryPermissioner(false)(0)(0)(0)(0)(1)(1)(this.props.binPem))
-                 && object.isActive;
+                 && object.status === 0;
               }
             },
             {
@@ -154,7 +156,7 @@ class ProjectsList extends Component {
               comparator: (object) => {
                 return (specialPermissioner().projects.isOwner(object, this.props.login)
                  || binaryPermissioner(false)(0)(0)(0)(0)(1)(1)(this.props.binPem))
-                 && !object.isActive;
+                 && object.isDeleted;
               }
             },
             {

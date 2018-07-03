@@ -14,7 +14,7 @@ export const loadProjectsSuccess = projects => {
   };
 };
 
-export const loadProjects = (page = 1, limit = 25, other = {}) => {
+export const loadProjects = (page = 1, limit = 15, other = {isDeleted: null}) => {
   const settings = Object.assign({}, {
     Limit: limit,
     PageNumber: page

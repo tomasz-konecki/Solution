@@ -24,6 +24,7 @@ const translations = {
     ShowDeleted: "Show deleted",
     ShowNotActivated: "Show not activated",
     ShowActivated: "Show activated",
+    ShowAll: "Show All",
     Today: "Today",
     NoDataOrResults: "No data or results given"
   },
@@ -61,7 +62,8 @@ const translations = {
     StartDate: "Start date",
     EndDate: "End date",
     Status: "Status",
-    Active: "Active",
+    Activated: "Active",
+    NotActivated: "Not activated",
     Closed: "Closed",
     CloseProjectImperativus: "Close project",
     CloseProjectInfinitive: "Close project",

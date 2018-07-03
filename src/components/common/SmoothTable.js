@@ -21,7 +21,7 @@ class SmoothTable extends Component {
       filterFieldOverrides: {},
       rowUnfurls: {},
       isQueryLoading: false,
-      selectedOption: "showActivated",
+      selectedOption: props.construct.showAllCheckbox ? "showAll" : "showActivated",
       searchQuery: "",
       sortingSettings: {
         Sort: props.construct.defaultSortField,
@@ -77,7 +77,7 @@ class SmoothTable extends Component {
 
   deepenFunction(func, ...args) {
     return event => {
-      if(event.stopPropagation !== undefined){
+      if (event.stopPropagation !== undefined) {
         event.stopPropagation();
         event.nativeEvent.stopImmediatePropagation();
       }
@@ -90,7 +90,7 @@ class SmoothTable extends Component {
     const value = target.type === 'checkbox' ? target.checked : target.value;
     const name = target.name;
 
-    if(target.type === "radio"){
+    if (target.type === "radio") {
       this.setState({
         selectedOption: value
       }, () => {
@@ -118,18 +118,21 @@ class SmoothTable extends Component {
     if (this.state.searchQuery !== "") {
       mainFilter["Query"] = this.state.searchQuery;
     }
-    switch(this.state.selectedOption){
+    switch (this.state.selectedOption) {
       case "isDeleted":
         mainFilter["isDeleted"] = true;
-      break;
+        break;
       case "isNotActivated":
         mainFilter["isNotActivated"] = true;
-      break;
+        break;
       case "showActivated":
         mainFilter["isDeleted"] = false;
-      break;
+        break;
+      case "showAll":
+        mainFilter["isDeleted"] = null;
+        break;
       default:
-      break;
+        break;
     }
     if (Object.keys(this.state.columnFilters).length > 0) {
       mainFilter[this.props.construct.filterClass] = {};
@@ -179,7 +182,7 @@ class SmoothTable extends Component {
     });
   }
 
-  handleFilterDateChange() {}
+  handleFilterDateChange() { }
 
   toolBoxButton(button, object) {
     return (
@@ -195,7 +198,7 @@ class SmoothTable extends Component {
 
   generateToolBox(object, toolBoxColumn) {
     return toolBoxColumn.toolBox.map((button, index) => {
-      if(button.comparator === undefined || button.comparator(object)){
+      if (button.comparator === undefined || button.comparator(object)) {
         return this.toolBoxButton(button, object);
       }
     });
@@ -247,7 +250,10 @@ class SmoothTable extends Component {
       }
       case "multiState": {
         let rotated = this.swapKeysForValues(multiState);
+        console.log(rotated);
+        console.log(event.target.value);
         value = rotated[event.target.value];
+        console.log(value)
         break;
       }
       case "date": {
@@ -290,7 +296,7 @@ class SmoothTable extends Component {
     const { keyField } = this.props.construct;
     const { rowUnfurls } = this.state;
 
-    if(rowUnfurls[index] === undefined){
+    if (rowUnfurls[index] === undefined) {
       rowUnfurls[index] = true;
     } else {
       rowUnfurls[index] = !rowUnfurls[index];
@@ -305,7 +311,7 @@ class SmoothTable extends Component {
     let newState = this.initialState;
     newState.columnFilters = Object.assign(
       {},
-      ...Object.keys(newState.columnFilters).map(k => ({ [k] : "" }))
+      ...Object.keys(newState.columnFilters).map(k => ({ [k]: "" }))
     );
     this.setState(newState, () => {
       this.props.construct.pageChange(1, this.generateSettings());
@@ -325,10 +331,10 @@ class SmoothTable extends Component {
     let inputClasses = ["form-control"];
     if (this.state.isQueryLoading) inputClasses.push("loading");
     this.state.construct.operators.map((operator, index) => {
-      if(operator.comparator === undefined || operator.comparator(operator)) operators.push(this.operatorButton(index, operator));
+      if (operator.comparator === undefined || operator.comparator(operator)) operators.push(this.operatorButton(index, operator));
     });
 
-    if(this.props.construct.filtering){
+    if (this.props.construct.filtering) {
       operators.push(
         <span key={-1}>
           <input
@@ -351,7 +357,7 @@ class SmoothTable extends Component {
       );
     }
 
-    if(this.props.construct.showDeletedCheckbox){
+    if (this.props.construct.showDeletedCheckbox) {
       operators.push(
         <span key={-3} className="smooth-separator">|</span>
       );
@@ -369,7 +375,7 @@ class SmoothTable extends Component {
         </span>
       );
     }
-    if(this.props.construct.showNotActivatedAccountsCheckbox){
+    if (this.props.construct.showNotActivatedAccountsCheckbox) {
       operators.push(
         <span key={-5} className="smooth-show-deleted">
           <label>
@@ -384,7 +390,7 @@ class SmoothTable extends Component {
         </span>
       );
     }
-    if(this.props.construct.showActivatedCheckbox){
+    if (this.props.construct.showActivatedCheckbox) {
       operators.push(
         <span key={-6} className="smooth-show-deleted">
           <label>
@@ -399,6 +405,22 @@ class SmoothTable extends Component {
         </span>
       );
     }
+    if (this.props.construct.showAllCheckbox) {
+      operators.push(
+        <span key={-7} className="smooth-show-deleted">
+          <label>
+            {this.props.t("ShowAll")}:
+              <input
+              name="radioButtons"
+              type="radio"
+              value="showAll"
+              checked={this.state.selectedOption === "showAll"}
+              onChange={this.handleInputChange} />
+          </label>
+        </span>
+      );
+    }
+
 
     return operators;
   }
@@ -443,7 +465,7 @@ class SmoothTable extends Component {
   generateLegend() {
     const { currentlySortedColumn, columns, construct } = this.state;
     return construct.columns.map((column, index) => {
-      if(column.comparator === undefined || column.comparator(column))
+      if (column.comparator === undefined || column.comparator(column))
         return this.tableHeader(currentlySortedColumn, columns, column, index);
     });
   }
@@ -506,8 +528,8 @@ class SmoothTable extends Component {
             )}
             value={(
               this.state.columnFilters[column.field] !== "" ?
-              new Date(this.state.columnFilters[column.field]).toLocaleDateString()
-              : ""
+                new Date(this.state.columnFilters[column.field]).toLocaleDateString()
+                : ""
             )}
           />
         );
@@ -564,12 +586,12 @@ class SmoothTable extends Component {
 
     let payload = [];
 
-    if(this.props.construct.disabledRowComparator !== undefined){
+    if (this.props.construct.disabledRowComparator !== undefined) {
       const isDisabled = this.props.construct.disabledRowComparator(object);
-      if(isDisabled) classes.push('smooth-row-disabled');
+      if (isDisabled) classes.push('smooth-row-disabled');
     }
 
-    if(construct.rowClass !== undefined){
+    if (construct.rowClass !== undefined) {
       classes.push(construct.rowClass);
     }
 
@@ -589,7 +611,7 @@ class SmoothTable extends Component {
               {this.generateCell(column, object)}
             </td>
           );
-        } else if (column.toolBox !== undefined){
+        } else if (column.toolBox !== undefined) {
           return (
             <td
               key={"____toolBox_" + index}
@@ -614,22 +636,22 @@ class SmoothTable extends Component {
       })}
     </tr>);
 
-    if(unfurl  && !this.state.update) payload.push(<tr
+    if (unfurl && !this.state.update) payload.push(<tr
       key={"____unfurl_" + index}
     >
       {
         (unfurled) ?
-        <td colSpan={this.props.construct.columns.length} className="smooth-unfurl-content">
-          {
-            React.createElement(this.props.construct.unfurler, {
-              toUnfurl: object,
-              handles: this.props.construct.handles,
-              update: this.forceAnUpdate
-            })
-          }
-        </td>
-        :
-        null
+          <td colSpan={this.props.construct.columns.length} className="smooth-unfurl-content">
+            {
+              React.createElement(this.props.construct.unfurler, {
+                toUnfurl: object,
+                handles: this.props.construct.handles,
+                update: this.forceAnUpdate
+              })
+            }
+          </td>
+          :
+          null
       }
     </tr>);
 
@@ -654,7 +676,7 @@ class SmoothTable extends Component {
   render() {
     const { construct } = this.state;
     let list = [],
-    empty = false;
+      empty = false;
     list.push(this.generateFieldSearchRow());
     if (this.props.data !== undefined && this.props.data[0] !== undefined) {
       list = list.concat(

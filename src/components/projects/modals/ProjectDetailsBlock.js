@@ -70,7 +70,6 @@ class ProjectDetailsBlock extends Component {
       this.setState({isLoading: true, 
         editProjectResult: {content: "", status: null}});
       const projectToSend = {
-        id: this.props.project.id,
         name: this.state.editProjectArray[0].value,
         description: this.state.editProjectArray[1].value,
         client: this.state.editProjectArray[2].value,
@@ -85,6 +84,7 @@ class ProjectDetailsBlock extends Component {
       }
 
       WebApi.projects.put.project(this.props.project.id, projectToSend).then(response => {
+        console.log(response);
         this.setState({isLoading: false, editProjectResult: {content: "Edycja została przeprowadzona poprawnie", status: true}});
         if(this.props.additionalOperation){
           this.props.additionalOperation();

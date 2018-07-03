@@ -119,6 +119,7 @@ class UsersContainer extends React.Component {
   }
   render() {
     let usersList = <UsersList
+        show={this.props.show}
         openAddUserModal={this.handleOpenModal}
         users={this.props.users}
         currentPage={(this.state.currentPage !== undefined)? this.state.currentPage: 1} 
@@ -161,7 +162,8 @@ function mapStateToProps(state) {
     toConfirm: state.asyncReducer.toConfirm,
     isWorking: state.asyncReducer.isWorking,
     type: state.asyncReducer.type,
-    resultBlock: state.usersReducer.resultBlock
+    resultBlock: state.usersReducer.resultBlock,
+    show: state.usersReducer.show
   };
 }
 

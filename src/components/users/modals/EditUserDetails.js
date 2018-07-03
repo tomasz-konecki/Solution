@@ -43,13 +43,19 @@ class EditUserDetails extends Component {
                   loading: !this.state.loading
                 });
                 setTimeout(() => {
-                  this.props.handleCloseModal();
+                  this.props.handleCloseModal({afterClose: "reloadList"});
                 }, 1500);
+              })
+              .catch(errorResponse => {
+                this.setState({
+                  responseBlock: errorResponse,
+                  loading: !this.state.loading
+                });
               })
             }
             this.setState({
               responseBlock: error,
-              loading: false
+              loading: !this.state.loading
             });
           });
       }
@@ -57,7 +63,6 @@ class EditUserDetails extends Component {
   };
 
   render() {
-    console.log(this.state.disabledButton);
     const { t } = this.props;
     return (
       <div className="stage-two-container">

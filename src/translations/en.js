@@ -173,7 +173,9 @@ const translations = {
   },
   StageOne: {
     SearchAD: "Search Active Directory",
-    Next: "Next"
+    UserNotFoundInAD: "User not found in AD",
+    Next: "Next",
+    HasAccount: "Account already exists for that User",
   },
   StageTwo: {
     AddRoles: "Add roles!",

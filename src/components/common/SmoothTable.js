@@ -28,41 +28,12 @@ class SmoothTable extends Component {
         Ascending: props.construct.defaultSortAscending
       },
       update: false,
-      unfurl: props.construct.rowDetailUnfurl
+      unfurl: props.construct.rowDetailUnfurl,
     };
-
+    this.constructingTableColumns();
     this.state.columns[props.construct.defaultSortField] =
       props.construct.defaultSortAscending;
 
-      this.props.construct.columns.map((column, index) => {
-        if (column.field === undefined) return;
-    
-        let newField = {};
-        let newDateFilters = {};
-        let newFilterField = {};
-        let newFilterFieldLoaders = {};
-        let newFilterFieldOverrides = {};
-    
-        newField[column.field] = true;
-        newDateFilters[column.field] = "";
-        newFilterField[column.field] = "";
-        newFilterFieldLoaders[column.field] = false;
-    
-        if (column.filterFieldOverride !== undefined) {
-          newFilterFieldOverrides[column.field] = column.filterFieldOverride;
-        }
-    
-        this.setState({
-          columns: newField,
-          columnFilters: newFilterField,
-          filterFieldOverrides: newFilterFieldOverrides,
-        })
-        // Object.assign(this.state.columns, newField);
-        // Object.assign(this.state.columnFilters, newFilterField);
-        // Object.assign(this.state.filterFieldOverrides, newFilterFieldOverrides);
-      });
-
-    this.handleSortColumnClick = this.handleSortColumnClick.bind(this);
     this.handlePageChange = this.handlePageChange.bind(this);
     this.removeFilters = this.removeFilters.bind(this);
     this.generateOperators = this.generateOperators.bind(this);
@@ -75,46 +46,34 @@ class SmoothTable extends Component {
     this.initialState = Object.assign({}, this.state);
   }
 
-  componentWillReceiveProps(prevPros, nextProps) {
-    console.log(prevPros, nextProps);
-    if (nextProps.construct !== this.state.construct) {
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.construct.columns !== this.state.construct.columns) {
+      "dateOfRequest" in this.state.columns ? null : this.constructingTableColumns();
       this.setState({ construct: nextProps.construct });
     }
   }
 
-  componentWillMount(){
-    this.generateFiltersColumns();
+  constructingTableColumns() {
+    this.props.construct.columns.map((column, index) => {
+      if (column.field === undefined) return;
+
+      let newField = {};
+      let newFilterField = {};
+      let newFilterFieldLoaders = {};
+      let newFilterFieldOverrides = {};
+
+      newField[column.field] = true;
+      newFilterField[column.field] = "";
+      newFilterFieldLoaders[column.field] = false;
+
+      if (column.filterFieldOverride !== undefined) {
+        newFilterFieldOverrides[column.field] = column.filterFieldOverride;
+      }
+      Object.assign(this.state.columns, newField);
+      Object.assign(this.state.columnFilters, newFilterField);
+      Object.assign(this.state.filterFieldOverrides, newFilterFieldOverrides);
+    });
   }
-
-generateFiltersColumns = () => {
-  this.props.construct.columns.map((column, index) => {
-    if (column.field === undefined) return;
-
-    let newField = {};
-    let newDateFilters = {};
-    let newFilterField = {};
-    let newFilterFieldLoaders = {};
-    let newFilterFieldOverrides = {};
-
-    newField[column.field] = true;
-    newDateFilters[column.field] = "";
-    newFilterField[column.field] = "";
-    newFilterFieldLoaders[column.field] = false;
-
-    if (column.filterFieldOverride !== undefined) {
-      newFilterFieldOverrides[column.field] = column.filterFieldOverride;
-    }
-
-    this.setState({
-      columns: newField,
-      columnFilters: newFilterField,
-      filterFieldOverrides: newFilterFieldOverrides,
-    })
-    // Object.assign(this.state.columns, newField);
-    // Object.assign(this.state.columnFilters, newFilterField);
-    // Object.assign(this.state.filterFieldOverrides, newFilterFieldOverrides);
-  });
-}
 
   deepenFunction(func, ...args) {
     return event => {
@@ -185,7 +144,7 @@ generateFiltersColumns = () => {
     return Object.assign({}, this.state.sortingSettings, mainFilter);
   }
 
-  handleSortColumnClick(field) {
+  handleSortColumnClick = (field) => {
     if (field !== undefined) {
       let oldFields = this.state.columns;
       oldFields[field] = !oldFields[field];
@@ -195,7 +154,7 @@ generateFiltersColumns = () => {
           currentlySortedColumn: field,
           sortingSettings: {
             Sort: field,
-            Ascending: this.state.columns[field]
+            Ascending: oldFields[field]
           },
           rowUnfurls: {}
         },
@@ -220,9 +179,7 @@ generateFiltersColumns = () => {
     });
   }
 
-  handleFilterDateChange() {
-    console.log("test");
-  }
+  handleFilterDateChange() {}
 
   toolBoxButton(button, object) {
     return (
@@ -294,11 +251,11 @@ generateFiltersColumns = () => {
         break;
       }
       case "date": {
-        value = event.target.value ? event.format("YYYY-MM-DDTHH:mm:ss.SSS") : null;
+        value = event.format("YYYY-MM-DDTHH:mm:ss.SSS");
         break;
       }
     }
-    
+
     columnFilters[field] = value;
     columnFiltersLoaders[field] = true;
 
@@ -330,7 +287,6 @@ generateFiltersColumns = () => {
   }
 
   handleRowClick(object, index, event) {
-    console.log("TO DO")
     const { keyField } = this.props.construct;
     const { rowUnfurls } = this.state;
 
@@ -676,6 +632,7 @@ generateFiltersColumns = () => {
         null
       }
     </tr>);
+
     return payload;
   }
 

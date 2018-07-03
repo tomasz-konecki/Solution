@@ -7,6 +7,7 @@ import Select from "react-select";
 import "react-select/dist/react-select.css";
 import PropTypes from 'prop-types';
 import { translate } from 'react-translate';
+import WebApi from "../../../api";
 
 class StageOne extends Component {
   constructor() {
@@ -15,14 +16,26 @@ class StageOne extends Component {
     this.state = {
       backspaceRemoves: true,
       multi: false,
-      isLoading: false
+      isLoading: false,
+      userExists: false
     };
   }
 
   handleChange = value => {
-    this.setState({
-      value
-    });
+    !value && this.setState({ value: null });
+    value && WebApi.users.get.byUser(value.id)
+      .then(
+        this.setState({
+          userExists: true,
+        })
+      )
+      .catch(error => {
+        this.setState({
+          value,
+          userExists: false,
+        });
+      })
+
   };
 
   checkLength = input => {
@@ -39,16 +52,15 @@ class StageOne extends Component {
 
     return this.checkLength(input)
       ? this.props.getUsers(input).then(
-          this.setState({
-            isLoading: false
-          })
-        )
+        this.setState({
+          isLoading: false
+        })
+      )
       : Promise.resolve({ options: [] });
   };
 
-  handleClick = () => {
+  handleClick = (value) => {
     this.props.setSelectedUser(this.state.value);
-    console.log('setSelected', this.state.value);
   };
 
   render() {
@@ -57,7 +69,6 @@ class StageOne extends Component {
       ? Select.AsyncCreatable
       : Select.Async;
     const { multi, value, backspaceRemoves, isLoading } = this.state;
-
     return (
       <div className="stage-one-container">
         <header>
@@ -75,6 +86,8 @@ class StageOne extends Component {
             labelKey="fullName"
             loadOptions={this.getUsers}
             backspaceRemoves={backspaceRemoves}
+            clearable={true}
+            clearValueText={t("Remove")}
           />
 
           {this.state.value && (
@@ -89,11 +102,21 @@ class StageOne extends Component {
           )}
         </div>
 
-        <div className="error-block-container">
-          {this.props.errorBlock !== null && (
-            <ResultBlock errorBlock={this.props.errorBlock} />
+        {this.state.userExists && (
+          <p style={{width: '100%', textAlign: 'center', color: 'red', lineHeight: '100px'}}>{t("HasAccount")}</p>
+        )}
+
+        {this.props.errorBlock &&
+          this.props.errorBlock.replyBlock.status !== 200 && (
+            <div className="error-block-container">
+              {this.props.errorBlock !== null && (
+                <ResultBlock
+                  errorBlock={this.props.errorBlock}
+                  errorMessage={t("UserNotFoundInAD")}
+                />
+              )}
+            </div>
           )}
-        </div>
       </div>
     );
   }

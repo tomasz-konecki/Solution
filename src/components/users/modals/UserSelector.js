@@ -37,6 +37,7 @@ class UserSelector extends Component {
     // }
     return WebApi.users.get.adSearch(user)
       .then(response => {
+        console.log(response);
         this.setState({
           errorBlock: response
         });

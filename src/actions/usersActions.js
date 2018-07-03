@@ -3,11 +3,12 @@ import axios from "axios";
 import WebApi from "../api";
 import { asyncStarted, asyncEnded } from "./asyncActions";
 
-export const loadUsersSuccess = (users, resultBlock) => {
+export const loadUsersSuccess = (users, resultBlock, show) => {
   return {
     type: LOAD_USERS_SUCCESS,
     users,
-    resultBlock
+    resultBlock,
+    show
   };
 };
 
@@ -32,7 +33,12 @@ export const loadUsers = (page = 1, limit = 25, other = {isDeleted: false}) => {
       WebApi.users.post[("isNotActivated" in other ? ["listOfRequests"] : ["list"])](settings)
         .then(response => {
           if(!response.errorOccurred()){
-            dispatch(loadUsersSuccess(response.extractData(), response));
+            if ("isNotActivated" in other) {
+              dispatch(loadUsersSuccess(response.extractData(), response, "isNotActivated"));
+            }
+            else {
+              dispatch(loadUsersSuccess(response.extractData(), response, "isActivated"));
+            }
           }
           dispatch(asyncEnded());
         })

@@ -5,8 +5,8 @@ import LoaderHorizontal from "../../../components/common/LoaderHorizontal";
 import ResultBlock from "../../common/ResultBlock";
 import Select from "react-select";
 import "react-select/dist/react-select.css";
-import PropTypes from 'prop-types';
-import { translate } from 'react-translate';
+import PropTypes from "prop-types";
+import { translate } from "react-translate";
 import WebApi from "../../../api";
 
 class StageOne extends Component {
@@ -23,19 +23,20 @@ class StageOne extends Component {
 
   handleChange = value => {
     !value && this.setState({ value: null });
-    value && WebApi.users.get.byUser(value.id)
-      .then(
-        this.setState({
-          userExists: true,
+    value &&
+      WebApi.users.get
+        .byUser(value.id)
+        .then(response => {
+          this.setState({
+            userExists: true
+          });
         })
-      )
-      .catch(error => {
-        this.setState({
-          value,
-          userExists: false,
+        .catch(error => {
+          this.setState({
+            value,
+            userExists: false
+          });
         });
-      })
-
   };
 
   checkLength = input => {
@@ -52,14 +53,14 @@ class StageOne extends Component {
 
     return this.checkLength(input)
       ? this.props.getUsers(input).then(
-        this.setState({
-          isLoading: false
-        })
-      )
+          this.setState({
+            isLoading: false
+          })
+        )
       : Promise.resolve({ options: [] });
   };
 
-  handleClick = (value) => {
+  handleClick = value => {
     this.props.setSelectedUser(this.state.value);
   };
 
@@ -74,7 +75,6 @@ class StageOne extends Component {
         <header>
           <h3 className="section-heading">{t("SearchAD")}</h3>
         </header>
-
         <div className="search-container">
           <AsyncComponent
             multi={multi}
@@ -84,6 +84,7 @@ class StageOne extends Component {
             onChange={this.handleChange}
             // valueKey="lastName"
             labelKey="fullName"
+            placeholder={t("SelectUser")}
             loadOptions={this.getUsers}
             backspaceRemoves={backspaceRemoves}
             clearable={true}
@@ -101,12 +102,21 @@ class StageOne extends Component {
             </div>
           )}
         </div>
-
         {this.state.userExists && (
-          <p style={{width: '100%', textAlign: 'center', color: 'red', lineHeight: '100px'}}>{t("HasAccount")}</p>
+          <p
+            style={{
+              width: "100%",
+              textAlign: "center",
+              color: "red",
+              lineHeight: "100px"
+            }}
+          >
+            {t("HasAccount")}
+          </p>
         )}
 
         {this.props.errorBlock &&
+          this.props.errorBlock.replyBlock !== undefined &&
           this.props.errorBlock.replyBlock.status !== 200 && (
             <div className="error-block-container">
               {this.props.errorBlock !== null && (

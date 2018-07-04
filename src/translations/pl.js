@@ -44,18 +44,20 @@ const translations = {
     DeleteUserRequestImperativus: "Usuń prośbę o utworzenie konta",
     DeleteUserRequestInfinitive: "Usunąć prośbę o utworzenie konta",
     UserDeleted: "Użytkownik został usunięty",
-    UserRequestDeleted: "Prośba o utworzenie konta użytkownika została usunięta",
+    UserRequestDeleted:
+      "Prośba o utworzenie konta użytkownika została usunięta",
     EditUserImperativus: "Edytuj użytkownika",
     DeleteEdit: "Usuń/Edytuj",
     DeleteAdd: "Usuń/Dodaj",
-    AddUserWhenRequestImperativus: "Dodaj użytkownika",
-
+    AddUserWhenRequestImperativus: "Dodaj użytkownika"
   },
   ProjectsList: {
     Add: "Dodaj",
-    DeleteOwnerFuture: "Usunąć {{ownerFullName}} jako właściciela projektu o numerze {{projectName}}",
+    DeleteOwnerFuture:
+      "Usunąć {{ownerFullName}} jako właściciela projektu o numerze {{projectName}}",
     OwnerHasBeenDeleted: "Właściciel został usunięty",
-    ChangeSkillSettingsFuture: "Zmienić ustawienia umiejętności projektu o numerze {{projectId}}",
+    ChangeSkillSettingsFuture:
+      "Zmienić ustawienia umiejętności projektu o numerze {{projectId}}",
     SettingsHaveBeenSaved: "Ustawienia zostały zapisane",
     ProjectName: "Nazwa projektu",
     Client: "Klient",
@@ -65,6 +67,7 @@ const translations = {
     Activated: "Aktywny",
     NotActivated: "Nieaktywny",
     Closed: "Zamknięty",
+    SelectStatus: "Wybierz status...",
     CloseProjectImperativus: "Zamknij projekt",
     CloseProjectInfinitive: "Zamknąć projekt",
     ProjectClosed: "Projekt został zamknięty",
@@ -107,7 +110,7 @@ const translations = {
     UnexpectedError: "Nieoczekiwany błąd",
     ErrorModel: "Model błędu",
     Error: "Błąd",
-    OK: "",
+    OK: ""
   },
   EmployeesRowUnfurl: {
     ActivateEmployee: "Aktywuj pracownika",
@@ -151,7 +154,8 @@ const translations = {
   ResponsiblePersonBlock: {
     NameNoSpecial: "Imię nie może zawierać znaków specjalnych ani cyfr.",
     SurnameNoSpecial: "Nazwisko nie może zawierać znaków specjalnych ani cyfr.",
-    EmailToBeValid: "Adres email powinien mieć odpowiednią strukturę, np. me@mydomain.com.",
+    EmailToBeValid:
+      "Adres email powinien mieć odpowiednią strukturę, np. me@mydomain.com.",
     NumberValid: "Numer telefonu powinien zawierać od 9 do 11 cyfr."
   },
   ProjectRowUnfurl: {
@@ -178,6 +182,7 @@ const translations = {
     UserNotFoundInAD: "Nie znaleziono użytkownika w AD",
     Next: "Dalej",
     HasAccount: "Ten użytkownik posiada już konto w serwisie",
+    SelectUser: "Wybierz użytkownika"
   },
   StageTwo: {
     AddRoles: "Dodaj role!",
@@ -222,7 +227,8 @@ const translations = {
     Add: "Dodaj",
     Save: "Zapisz",
     Edit: "Edytuj",
-    DeleteOwnerFuture: "Usunąć {{ownerFullName}} jako właściciela projektu o nazwie {{projectName}}",
+    DeleteOwnerFuture:
+      "Usunąć {{ownerFullName}} jako właściciela projektu o nazwie {{projectName}}",
     OwnerHasBeenDeleted: "Właściciel został usunięty",
     ResponsiblePerson: "Osoba odpowiedzialna",
     Yes: "Tak",
@@ -235,7 +241,7 @@ const translations = {
     ProjectClosed: "Projekt został zamknięty",
     DeleteProjectInfinitive: "Usunąć projekt",
     ProjectDeleted: "Projekt został usunięty",
-	ReactivateProjectInfinitive: "Reaktywować projekt",
+    ReactivateProjectInfinitive: "Reaktywować projekt",
     ProjectReactivated: "Projekt został reaktywowany"
   },
   TeamMember: {
@@ -276,11 +282,11 @@ const translations = {
   },
   SkillsContainer: {
     Deletion: "Usuwanie",
-    Info1: "Ten proces jest permanentny. Usuwa wpis z bazy danych i wszystkich powiązanych miejsc.",
+    Info1:
+      "Ten proces jest permanentny. Usuwa wpis z bazy danych i wszystkich powiązanych miejsc.",
     Info2: "Cofnięcie tej akcji jest niemożliwe.",
     SuccessfullyDeleted: "Pomyślnie usunięto umiejętność"
   }
- 
 };
 
 export default translations;

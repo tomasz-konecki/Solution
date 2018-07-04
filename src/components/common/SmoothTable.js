@@ -5,8 +5,8 @@ import ReactPaginate from "react-paginate";
 import Detail from "./Detail";
 import DatePicker from "react-datepicker";
 import moment from "moment";
-import PropTypes from 'prop-types';
-import { translate } from 'react-translate';
+import PropTypes from "prop-types";
+import { translate } from "react-translate";
 
 class SmoothTable extends Component {
   constructor(props) {
@@ -21,14 +21,16 @@ class SmoothTable extends Component {
       filterFieldOverrides: {},
       rowUnfurls: {},
       isQueryLoading: false,
-      selectedOption: props.construct.showAllCheckbox ? "showAll" : "showActivated",
+      selectedOption: props.construct.showAllCheckbox
+        ? "showAll"
+        : "showActivated",
       searchQuery: "",
       sortingSettings: {
         Sort: props.construct.defaultSortField,
         Ascending: props.construct.defaultSortAscending
       },
       update: false,
-      unfurl: props.construct.rowDetailUnfurl,
+      unfurl: props.construct.rowDetailUnfurl
     };
     this.constructingTableColumns();
     this.state.columns[props.construct.defaultSortField] =
@@ -48,7 +50,6 @@ class SmoothTable extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.construct.columns !== this.state.construct.columns) {
-      "dateOfRequest" in this.state.columns ? null : this.constructingTableColumns();
       this.setState({ construct: nextProps.construct });
     }
   }
@@ -69,6 +70,7 @@ class SmoothTable extends Component {
       if (column.filterFieldOverride !== undefined) {
         newFilterFieldOverrides[column.field] = column.filterFieldOverride;
       }
+
       Object.assign(this.state.columns, newField);
       Object.assign(this.state.columnFilters, newFilterField);
       Object.assign(this.state.filterFieldOverrides, newFilterFieldOverrides);
@@ -87,30 +89,31 @@ class SmoothTable extends Component {
 
   handleInputChange(event) {
     const target = event.target;
-    const value = target.type === 'checkbox' ? target.checked : target.value;
+    const value = target.type === "checkbox" ? target.checked : target.value;
     const name = target.name;
 
     if (target.type === "radio") {
-      this.setState({
-        selectedOption: value
-      }, () => {
-        this.props.construct.pageChange(
-          1,
-          this.generateSettings()
-        );
-      });
+      this.setState(
+        {
+          selectedOption: value
+        },
+        () => {
+          this.props.construct.pageChange(1, this.generateSettings());
+        }
+      );
+    } else {
+      this.setState(
+        {
+          [name]: value
+        },
+        () => {
+          this.props.construct.pageChange(
+            this.props.currentPage,
+            this.generateSettings()
+          );
+        }
+      );
     }
-    else {
-      this.setState({
-        [name]: value
-      }, () => {
-        this.props.construct.pageChange(
-          this.props.currentPage,
-          this.generateSettings()
-        );
-      });
-    }
-
   }
 
   generateSettings() {
@@ -147,7 +150,7 @@ class SmoothTable extends Component {
     return Object.assign({}, this.state.sortingSettings, mainFilter);
   }
 
-  handleSortColumnClick = (field) => {
+  handleSortColumnClick = field => {
     if (field !== undefined) {
       let oldFields = this.state.columns;
       oldFields[field] = !oldFields[field];
@@ -169,20 +172,23 @@ class SmoothTable extends Component {
         }
       );
     }
-  }
+  };
 
   handlePageChange(paginator) {
-    this.setState({
-      rowUnfurls: {}
-    }, () => {
-      this.props.construct.pageChange(
-        paginator.selected + 1,
-        this.generateSettings()
-      );
-    });
+    this.setState(
+      {
+        rowUnfurls: {}
+      },
+      () => {
+        this.props.construct.pageChange(
+          paginator.selected + 1,
+          this.generateSettings()
+        );
+      }
+    );
   }
 
-  handleFilterDateChange() { }
+  handleFilterDateChange() {}
 
   toolBoxButton(button, object) {
     return (
@@ -238,7 +244,6 @@ class SmoothTable extends Component {
   handleColumnFilterChange(column, type = "text", event) {
     let { field, multiState } = column;
     let { columnFilters, columnFiltersLoaders } = this.state;
-
     let value,
       offset = 1;
 
@@ -250,10 +255,7 @@ class SmoothTable extends Component {
       }
       case "multiState": {
         let rotated = this.swapKeysForValues(multiState);
-        console.log(rotated);
-        console.log(event.target.value);
         value = rotated[event.target.value];
-        console.log(value)
         break;
       }
       case "date": {
@@ -331,7 +333,8 @@ class SmoothTable extends Component {
     let inputClasses = ["form-control"];
     if (this.state.isQueryLoading) inputClasses.push("loading");
     this.state.construct.operators.map((operator, index) => {
-      if (operator.comparator === undefined || operator.comparator(operator)) operators.push(this.operatorButton(index, operator));
+      if (operator.comparator === undefined || operator.comparator(operator))
+        operators.push(this.operatorButton(index, operator));
     });
 
     if (this.props.construct.filtering) {
@@ -359,7 +362,9 @@ class SmoothTable extends Component {
 
     if (this.props.construct.showDeletedCheckbox) {
       operators.push(
-        <span key={-3} className="smooth-separator">|</span>
+        <span key={-3} className="smooth-separator">
+          |
+        </span>
       );
       operators.push(
         <span key={-4} className="smooth-show-deleted">
@@ -370,7 +375,8 @@ class SmoothTable extends Component {
               type="radio"
               value="isDeleted"
               checked={this.state.selectedOption === "isDeleted"}
-              onChange={this.handleInputChange} />
+              onChange={this.handleInputChange}
+            />
           </label>
         </span>
       );
@@ -385,7 +391,8 @@ class SmoothTable extends Component {
               type="radio"
               value="isNotActivated"
               checked={this.state.selectedOption === "isNotActivated"}
-              onChange={this.handleInputChange} />
+              onChange={this.handleInputChange}
+            />
           </label>
         </span>
       );
@@ -400,7 +407,8 @@ class SmoothTable extends Component {
               type="radio"
               value="showActivated"
               checked={this.state.selectedOption === "showActivated"}
-              onChange={this.handleInputChange} />
+              onChange={this.handleInputChange}
+            />
           </label>
         </span>
       );
@@ -410,17 +418,17 @@ class SmoothTable extends Component {
         <span key={-7} className="smooth-show-deleted">
           <label>
             {this.props.t("ShowAll")}:
-              <input
+            <input
               name="radioButtons"
               type="radio"
               value="showAll"
               checked={this.state.selectedOption === "showAll"}
-              onChange={this.handleInputChange} />
+              onChange={this.handleInputChange}
+            />
           </label>
         </span>
       );
     }
-
 
     return operators;
   }
@@ -500,10 +508,11 @@ class SmoothTable extends Component {
               column.type
             )}
           >
-            <option />
-            {Object.values(column.multiState).map((stateValue, index) => {
-              return <option key={index}>{stateValue}</option>;
-            })}
+            {Object.values(column.multiState)
+              .reverse()
+              .map((stateValue, index) => {
+                return <option key={index}>{stateValue}</option>;
+              })}
           </select>
         );
       }
@@ -526,11 +535,13 @@ class SmoothTable extends Component {
               column,
               column.type
             )}
-            value={(
-              this.state.columnFilters[column.field] !== "" ?
-                new Date(this.state.columnFilters[column.field]).toLocaleDateString()
+            value={
+              this.state.columnFilters[column.field] !== ""
+                ? new Date(
+                    this.state.columnFilters[column.field]
+                  ).toLocaleDateString()
                 : ""
-            )}
+            }
           />
         );
       }
@@ -581,97 +592,100 @@ class SmoothTable extends Component {
   generateRow(object, index) {
     const { construct, unfurl } = this.state;
 
-    let classes = ['smooth-row'];
+    let classes = ["smooth-row"];
     let unfurled = this.state.rowUnfurls[index];
 
     let payload = [];
 
     if (this.props.construct.disabledRowComparator !== undefined) {
       const isDisabled = this.props.construct.disabledRowComparator(object);
-      if (isDisabled) classes.push('smooth-row-disabled');
+      if (isDisabled) classes.push("smooth-row-disabled");
     }
 
     if (construct.rowClass !== undefined) {
       classes.push(construct.rowClass);
     }
 
-    payload.push(<tr
-      key={object[construct.keyField]}
-      className={classes.join(' ')}
-      onClick={this.deepenFunction(this.handleRowClick, object, index)}
-    >
-      {construct.columns.map((column, index) => {
-        if (column.field !== undefined) {
-          return (
-            <td
-              key={index + column.field}
-              className="smooth-cell"
-              style={{ width: column.width + "%" }}
-            >
-              {this.generateCell(column, object)}
-            </td>
-          );
-        } else if (column.toolBox !== undefined) {
-          return (
-            <td
-              key={"____toolBox_" + index}
-              className="smooth-cell smooth-text-right"
-              style={{ width: column.width + "%" }}
-            >
-              {this.generateToolBox(object, column)}
-            </td>
-          );
-        }
-        else if (column.manualResolver !== undefined) {
-          return (
-            <td
-              key={"____manualResolver_" + index}
-              className="smooth-cell smooth-text-right"
-              style={{ width: column.width + "%" }}
-            >
-              {column.manualResolver(object, column)}
-            </td>
-          );
-        }
-      })}
-    </tr>);
+    payload.push(
+      <tr
+        key={object[construct.keyField]}
+        className={classes.join(" ")}
+        onClick={this.deepenFunction(this.handleRowClick, object, index)}
+      >
+        {construct.columns.map((column, index) => {
+          if (column.field !== undefined) {
+            return (
+              <td
+                key={index + column.field}
+                className="smooth-cell"
+                style={{ width: column.width + "%" }}
+              >
+                {this.generateCell(column, object)}
+              </td>
+            );
+          } else if (column.toolBox !== undefined) {
+            return (
+              <td
+                key={"____toolBox_" + index}
+                className="smooth-cell smooth-text-right"
+                style={{ width: column.width + "%" }}
+              >
+                {this.generateToolBox(object, column)}
+              </td>
+            );
+          } else if (column.manualResolver !== undefined) {
+            return (
+              <td
+                key={"____manualResolver_" + index}
+                className="smooth-cell smooth-text-right"
+                style={{ width: column.width + "%" }}
+              >
+                {column.manualResolver(object, column)}
+              </td>
+            );
+          }
+        })}
+      </tr>
+    );
 
-    if (unfurl && !this.state.update) payload.push(<tr
-      key={"____unfurl_" + index}
-    >
-      {
-        (unfurled) ?
-          <td colSpan={this.props.construct.columns.length} className="smooth-unfurl-content">
-            {
-              React.createElement(this.props.construct.unfurler, {
+    if (unfurl && !this.state.update)
+      payload.push(
+        <tr key={"____unfurl_" + index}>
+          {unfurled ? (
+            <td
+              colSpan={this.props.construct.columns.length}
+              className="smooth-unfurl-content"
+            >
+              {React.createElement(this.props.construct.unfurler, {
                 toUnfurl: object,
                 handles: this.props.construct.handles,
                 update: this.forceAnUpdate
-              })
-            }
-          </td>
-          :
-          null
-      }
-    </tr>);
+              })}
+            </td>
+          ) : null}
+        </tr>
+      );
 
     return payload;
   }
 
   forceAnUpdate = () => {
     const unfurls = JSON.parse(JSON.stringify(this.state.rowUnfurls));
-    this.setState({
-      update: !this.state.update,
-      rowUnfurls: {},
-      unfurl: false
-    }, () => {
-      this.setState({
-        rowUnfurls: unfurls,
+    this.setState(
+      {
         update: !this.state.update,
-        unfurl: true
-      });
-    });
-  }
+        rowUnfurls: {},
+        unfurl: false
+      },
+      () => {
+        this.setState({
+          rowUnfurls: unfurls,
+          update: !this.state.update,
+          unfurl: true
+        });
+      }
+    );
+  };
 
   render() {
     const { construct } = this.state;
@@ -701,7 +715,9 @@ class SmoothTable extends Component {
           </thead>
           <tbody>{list}</tbody>
         </table>
-        {empty && <div className="smooth-footer">{this.props.t("NoDataOrResults")}</div>}
+        {empty && (
+          <div className="smooth-footer">{this.props.t("NoDataOrResults")}</div>
+        )}
         {this.props.construct.pageChange !== undefined &&
           1 !== this.props.totalPageCount && (
             <ReactPaginate
@@ -750,25 +766,31 @@ SmoothTable.propTypes = {
     disabledRowComparator: PropTypes.func,
     showRadioButtons: PropTypes.bool,
     handles: PropTypes.objectOf(PropTypes.func),
-    operators: PropTypes.arrayOf(PropTypes.shape({
-      pretty: PropTypes.string.isRequired,
-      click: PropTypes.func
-    })),
-    columns: PropTypes.arrayOf(PropTypes.shape({
-      width: PropTypes.number.isRequired,
-      field: PropTypes.string,
-      pretty: PropTypes.string.isRequired,
-      type: PropTypes.string,
-      filter: PropTypes.bool,
-      filterFieldOverride: PropTypes.string,
-      multiState: PropTypes.object,
-      toolBox: PropTypes.arrayOf(PropTypes.shape({
-        icon: PropTypes.object.isRequired,
-        title: PropTypes.string.isRequired,
-        click: PropTypes.func.isRequired,
-        comparator: PropTypes.func
-      }))
-    }))
+    operators: PropTypes.arrayOf(
+      PropTypes.shape({
+        pretty: PropTypes.string.isRequired,
+        click: PropTypes.func
+      })
+    ),
+    columns: PropTypes.arrayOf(
+      PropTypes.shape({
+        width: PropTypes.number.isRequired,
+        field: PropTypes.string,
+        pretty: PropTypes.string.isRequired,
+        type: PropTypes.string,
+        filter: PropTypes.bool,
+        filterFieldOverride: PropTypes.string,
+        multiState: PropTypes.object,
+        toolBox: PropTypes.arrayOf(
+          PropTypes.shape({
+            icon: PropTypes.object.isRequired,
+            title: PropTypes.string.isRequired,
+            click: PropTypes.func.isRequired,
+            comparator: PropTypes.func
+          })
+        )
+      })
+    )
   }),
   dispatch: PropTypes.func,
   currentPage: PropTypes.number.isRequired,

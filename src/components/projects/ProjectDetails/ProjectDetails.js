@@ -15,7 +15,6 @@ import moment from 'moment';
 import Form from '../../form/form';
 import ProgressPicker from '../../common/progressPicker/progressPicker';
 import { validateInput } from '../../../services/validation';
-import SpinnerButton from '../../form/spinner-btn/spinner-btn';
 import { errorCatcher } from '../../../services/errorsHandler';
 import OperationStatusPrompt from '../../form/operationStatusPrompt/operationStatusPrompt';
 import { connect } from 'react-redux';

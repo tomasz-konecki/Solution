@@ -102,12 +102,13 @@ class ProjectDetailsBlock extends Component {
       editProjectArray[ClientId].maxLength,
       editProjectArray[ClientId].inputType, 
       editProjectArray[ClientId].title);
-    
     const clientsWhichMatch = [];
     if(this.state.fetchedClients.length > 0 && this.state.autoCorrect){
       for(let key in this.state.fetchedClients){
-        if(this.state.fetchedClients[key].name.search(event.target.value) !== -1){
-          clientsWhichMatch.push(this.state.fetchedClients[key]);
+        if(this.state.fetchedClients[key].name){
+          if(this.state.fetchedClients[key].name.search(event.target.value) !== -1){
+            clientsWhichMatch.push(this.state.fetchedClients[key]);
+          }
         }
       }      
     }

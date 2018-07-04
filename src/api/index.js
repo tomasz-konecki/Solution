@@ -289,10 +289,23 @@ const WebApi = {
       },
       teams: () => {
         return WebAround.get(`${API_ENDPOINT}/reports/teams/`);
+      },
+      report: (fileName) => {
+        return WebAround.get(`${API_ENDPOINT}/reports/developers?fileName=${fileName}`);
       }
     },
-    post: (reportDetails) => {
-      return WebAround.post(`${API_ENDPOINT}/reports/developers`, reportDetails);
+    post: {
+      report: (model, param) => {
+        return WebAround.post(`${API_ENDPOINT}/reports/developers`, model);
+      }
+    }
+      
+  },
+  gDrive: {
+    get: {
+      login: () => {
+        return WebAround.get(`${API_ENDPOINT}/gdrive/Login`);
+      }
     }
   },
   responsiblePerson: {

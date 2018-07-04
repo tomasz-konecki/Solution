@@ -10,7 +10,7 @@ import EmployeeDetailContainer from './../../components/employees/EmployeeDetail
 import AssignsContainer from './../../components/assign/AssignsContainer';
 import StatsContainer from "../../components/stats/StatsContainer";
 import SkillsContainer from "../../components/skills/SkillsContainer";
-
+import ReportsContainer from '../../components/reports/ReportsContainer';
 class Content extends React.Component {
   constructor(props) {
     super(props);
@@ -27,6 +27,7 @@ class Content extends React.Component {
         <Route path={match.url + "/projects"} component={ProjectsContainer} />
         <Route path={match.url + "/assigns"} component={AssignsContainer} />
         <Route path={match.url + "/skills"} component={SkillsContainer} />
+        <Route path={match.url + "/reports"} component={ReportsContainer} />
         <div className="content-abs-footer">
           Billennium 2018
         </div>

@@ -10,13 +10,10 @@ import {
   googleDriveLogIn
 } from "../../actions/reportsActions";
 import Spinner from "../common/spinner/spinner";
-import Modal from "react-responsive-modal";
-import SpinnerButton from "../form/spinner-btn/spinner-btn";
 import { validateReportPages } from "services/validation";
-import OperationStatusPrompt from "../form/operationStatusPrompt/operationStatusPrompt";
 import Navigation from "./navigation/navigation";
-import StatusPrompt from "../common/statusPrompt/statusPrompt";
-import Button from "../common/button/button";
+import AddCloudModal from './modals/addCloud';
+import GenerateReportModal from './modals/genReport';
 class ReportsContainer extends Component {
   state = {
     spinner: true,
@@ -30,7 +27,8 @@ class ReportsContainer extends Component {
     generateLink: true,
     isDownloading: false,
 
-    valueToSearch: ""
+    valueToSearch: "",
+    addCloudModal: false
   };
   componentDidMount() {
     this.props.getTeams();
@@ -139,7 +137,8 @@ class ReportsContainer extends Component {
       didPagesHasIncorrectValues: didPagesHasIncorrectValues
     });
   };
-  onChangeReportPages = (e, index) => {
+  onChangeReportPages = e => {
+    const index = Number(e.target.id);
     const pagesList = [...this.state.pagesList];
     if (e.target.value.length >= 1) {
       const convertedValue = Number(e.target.value);
@@ -181,11 +180,14 @@ class ReportsContainer extends Component {
     this.setState({ isDownloading: true });
     this.props.getReport(this.props.genReportResp);
   };
+
+
   render() {
     return (
       <div className="reports-container">
         {this.state.spinner || (
           <Navigation
+            addCloud={() => this.setState({addCloudModal: true})}
             addListLength={this.state.addList.length}
             baseListLength={this.state.baseList.length}
             searchInTeamList={e => this.searchInTeamList(e)}
@@ -216,91 +218,36 @@ class ReportsContainer extends Component {
             </div>
           </div>
         ) : (
-          <p>{this.props.loadTeamsErrors[0]}</p>
+          <p className="server-error">{this.props.loadTeamsErrors[0]}</p>
         )}
         {this.state.reportModal && (
-          <Modal
-            key={1}
-            open={this.state.reportModal}
-            classNames={{ modal: "Modal Modal-report-modal" }}
-            contentLabel="Generate report modal"
-            onClose={this.closeReportModal}
-          >
-            <h3>Wybierz numery stron dla poszczególnych raportów</h3>
-            <ul className="reports-items-list">
-              {this.state.addList.map((i, index) => {
-                return (
-                  <li
-                    className={
-                      this.state.pagesList[index].error ? "inc-list-item" : null
-                    }
-                    key={index}
-                  >
-                    <b>{i.name}</b>
-                    <i
-                      onClick={() => this.deleteTeamFromResultList(index)}
-                      className="fa fa-minus"
-                    />
-                    <input
-                      value={this.state.pagesList[index].value}
-                      type="text"
-                      onChange={e => this.onChangeReportPages(e, index)}
-                    />
-                  </li>
-                );
-              })}
-            </ul>
-            {!this.props.genReportStatus && (
-              <div className="checkbox-container">
-                <label>Generować link do pobrania?</label>
-                <input
-                  name="isGoing"
-                  type="checkbox"
-                  checked={this.state.generateLink}
-                  onChange={this.handleCheckboxChange}
-                />
-              </div>
-            )}
-            {!this.props.gDriveRedirectLink ? (
-              <SpinnerButton
-                validationResult={this.state.didPagesHasIncorrectValues.status}
-                onClickHandler={this.generateReport}
-                isLoading={this.state.isGenReport}
-                shouldSubmit={false}
-                btnTitle="Generuj"
-                submitResult={{
-                  status: this.props.genReportStatus,
-                  content: this.props.genReportStatus
-                    ? "Raport został wygenerowany"
-                    : this.props.genReportErrors[0]
-                }}
-              />
-            ) : (
-              <Button
-                onClick={() => {
-                  window.open(this.props.gDriveRedirectLink);
-                }}
-                mainClass="log-in-btn"
-                title="Przejdź do logowania"
-              />
-            )}
-
-            {this.props.genReportStatus && (
-              <Button
-                onClick={this.downloadReport}
-                mainClass="download-report-btn"
-                title="Pobierz raport"
-              />
-            )}
-
-            {this.props.gDriveLoginResult !== null && (
-              <StatusPrompt
-                error={this.props.gDriveLoginErrors[0]}
-                result={this.props.gDriveLoginResult}
-              />
-            )}
-          </Modal>
+          <GenerateReportModal
+          shouldOpenModal={this.state.reportModal}
+          closeModal={this.closeReportModal} 
+          addList={this.state.addList}
+          pagesList={this.state.pagesList}
+          deleteTeamFromResultList={this.deleteTeamFromResultList}
+          onChangeReportPages={e => this.onChangeReportPages(e)}
+          genReportStatus={this.props.genReportStatus}
+          generateLink={this.state.generateLink}
+          handleCheckboxChange={this.handleCheckboxChange}
+          gDriveRedirectLink={this.props.gDriveRedirectLink}
+          didPagesHasIncorrectValues={this.state.didPagesHasIncorrectValues.status}
+          generateReport={this.generateReport}
+          isGenReport={this.state.isGenReport}
+          genReportStatus={this.props.genReportStatus}
+          genReportErrors={this.props.genReportErrors}
+          gDriveRedirectLink={this.props.gDriveRedirectLink}
+          downloadReport={this.downloadReport}
+          gDriveLoginResult={this.props.gDriveLoginResult}
+          gDriveLoginErrors={this.props.gDriveLoginErrors}
+          />
         )}
+
+        <AddCloudModal 
+        closeModal={() => this.setState({addCloudModal: false})} 
+        shouldOpenModal={this.state.addCloudModal}/>
+              
       </div>
     );
   }

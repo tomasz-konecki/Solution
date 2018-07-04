@@ -1,0 +1,17 @@
+
+.small-operation-prompt {
+    position: absolute;
+    bottom: 110px;
+    width: 100%;
+    font-weight: bold;
+    text-align: center;
+    left: 0;
+    right: 0;
+  }
+  .prompt-succ {
+    color: green;
+  }
+  .prompt-fail {
+    color: tomato;
+  }
+  

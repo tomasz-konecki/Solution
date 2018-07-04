@@ -48,3 +48,4 @@ export const GET_TEAMS = "GET_TEAMS";
 export const GENERATE_DEVS_REPORT = "GENERATE_DEVS_REPORT";
 export const GET_REPORT = "GET_REPORT";
 export const GOOGLE_DRIVE_LOG_IN = "GOOGLE_DRIVE_LOG_IN";
+export const GET_USER_CV = "GET_USER_CV";

@@ -171,7 +171,7 @@ class UsersList extends Component {
               icon: { icon: "times" },
               title: t("DeleteUserImperativus"),
               click: object => {
-                this.props.dispatch(
+                this.props.getCV(
                   setActionConfirmation(true, {
                     key: "deleteUser",
                     string: `${t("DeleteUserInfinitive")} ${object.firstName} ${
@@ -191,7 +191,15 @@ class UsersList extends Component {
                 this.handleGetUser(object);
               },
               comparator: object => binaryPermissioner(false)(0)(0)(0)(0)(0)(1)(this.props.binPem)
-            }
+            },
+            {
+              icon: { icon: "download" },
+              title: t("DownloadCV"),
+              click: object => {
+                this.props.getCV(object.id)
+              },
+              comparator: object => !object.isDeleted && binaryPermissioner(false)(0)(0)(0)(0)(0)(1)(this.props.binPem)
+            },
           ],
           pretty: t("DeleteEdit")
         }
@@ -269,6 +277,7 @@ function mapStateToProps(state) {
 }
 
 UsersList.propTypes = {
+  getCV: PropTypes.func,
   pageChange: PropTypes.func.isRequired,
   openAddUserModal: PropTypes.func.isRequired,
   dispatch: PropTypes.func.isRequired,

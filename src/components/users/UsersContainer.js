@@ -4,14 +4,14 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import * as usersActions from "../../actions/usersActions";
 import * as asyncActions from "../../actions/asyncActions";
-
+import { getUserCVACreator, getUserCv } from '../../actions/reportsActions';
 import "../../scss/containers/UsersContainer.scss";
 import Modal from "react-responsive-modal";
 import UserSelector from "../../components/users/modals/UserSelector";
 import UsersList from "../../components/users/UsersList";
 import { ACTION_CONFIRMED } from './../../constants';
 import WebApi from "../../api/";
-
+import OperationLoader from '../common/operationLoader/operationLoader';
 class UsersContainer extends React.Component {
   constructor(props) {
     super(props);
@@ -67,8 +67,14 @@ class UsersContainer extends React.Component {
           this.props.async.setActionConfirmationResult(error);
         });
     }
+    
   }
-
+  componentDidUpdate(){
+    if(this.props.userDownloadCVLink && this.props.getUserCVStatus){
+      window.location.href = this.props.userDownloadCVLink;
+      this.props.getUserCVClear("", null, []);
+    }
+  }
   validatePropsForUserDeletion(nextProps) {
     return (
       nextProps.confirmed &&
@@ -117,8 +123,12 @@ class UsersContainer extends React.Component {
   handleCloseModal() {
     this.setState({ showModal: false });
   }
+  getCV = userId => {
+    this.props.getUserCV(userId);
+  }
   render() {
     let usersList = <UsersList
+        getCV={this.getCV}
         openAddUserModal={this.handleOpenModal}
         users={this.props.users}
         currentPage={(this.state.currentPage !== undefined)? this.state.currentPage: 1} 
@@ -129,6 +139,11 @@ class UsersContainer extends React.Component {
     />;
     return (
       <div>
+        {this.props.getUserCVStatus === false && 
+          <OperationLoader 
+          operationError={this.props.getUserCVErrors[0]}
+          close={() => this.props.getUserCVClear("", null, [])} />
+        }
         {usersList}
         <Modal
           open={this.state.showModal}
@@ -149,7 +164,12 @@ UsersContainer.propTypes = {
   toConfirm: PropTypes.object,
   userActions: PropTypes.object,
   totalPageCount: PropTypes.number,
-  loading: PropTypes.bool
+  loading: PropTypes.bool,
+  userDownloadCVLink: PropTypes.string,
+  getUserCVStatus: PropTypes.bool,
+  getUserCVErrors: PropTypes.array,
+  getUserCV: PropTypes.func,
+  getUserCVClear: PropTypes.func
 };
 
 function mapStateToProps(state) {
@@ -161,14 +181,20 @@ function mapStateToProps(state) {
     toConfirm: state.asyncReducer.toConfirm,
     isWorking: state.asyncReducer.isWorking,
     type: state.asyncReducer.type,
-    resultBlock: state.usersReducer.resultBlock
+    resultBlock: state.usersReducer.resultBlock,
+
+    userDownloadCVLink: state.reportsReducer.userDownloadCVLink,
+    getUserCVStatus: state.reportsReducer.getUserCVStatus,
+    getUserCVErrors: state.reportsReducer.getUserCVErrors
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
     userActions: bindActionCreators(usersActions, dispatch),
-    async: bindActionCreators(asyncActions, dispatch)
+    async: bindActionCreators(asyncActions, dispatch),
+    getUserCV: (userId) => dispatch(getUserCVACreator(userId)),
+    getUserCVClear: (link, status, errors) => dispatch(getUserCv(link, status, errors)) 
   };
 }
 

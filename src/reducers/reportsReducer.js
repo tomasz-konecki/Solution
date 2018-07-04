@@ -1,4 +1,4 @@
-import { GET_TEAMS, GENERATE_DEVS_REPORT, GOOGLE_DRIVE_LOG_IN, GET_REPORT  } from "../constants";
+import { GET_TEAMS, GENERATE_DEVS_REPORT, GOOGLE_DRIVE_LOG_IN, GET_REPORT, GET_USER_CV  } from "../constants";
 import { updateObject } from '../services/methods';
 
 const initialState = {
@@ -16,7 +16,11 @@ const initialState = {
 
   gDriveRedirectLink: "",
   gDriveLoginResult: null,
-  gDriveLoginErrors: []
+  gDriveLoginErrors: [],
+
+  userDownloadCVLink: "",
+  getUserCVStatus: null,
+  getUserCVErrors: []
 };
 
 export const reportsReducer = (state = initialState, action) => {
@@ -35,6 +39,11 @@ export const reportsReducer = (state = initialState, action) => {
     case GOOGLE_DRIVE_LOG_IN:
         return updateObject(state, { gDriveRedirectLink: action.gDriveRedirectLink,
           gDriveLoginResult: action.gDriveLoginResult, gDriveLoginErrors: action.gDriveLoginErrors})
+    case GET_USER_CV:
+        return updateObject(state, { userDownloadCVLink: action.userDownloadCVLink,
+          getUserCVStatus: action.getUserCVStatus, 
+          getUserCVErrors: action.getUserCVErrors})
+
     default:
       return state;
   }

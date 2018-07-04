@@ -134,5 +134,11 @@ body {
     .psr {
       float: right;
     }
+    @media only screen and (max-width: 768px) {
+      input {
+        height: 50px !important;
+        font-size: 20px;
+      }
+    }
   }
 }

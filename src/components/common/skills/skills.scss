@@ -4,23 +4,6 @@
     h3{
         position: relative;
         padding: 15px 0;
-        .small-spiner{
-            top: 0;
-            animation: 1s left-right linear infinite;
-        }
-        @keyframes left-right {
-            0%{
-                right: 0;
-                transform: rotate(0deg);
-            }
-            50%{
-                right: 25px;
-            }
-            100%{
-                right: 0;
-                transform: rotate(360deg);
-            }
-        }
         span{
             display: block;
             position: absolute;
@@ -33,9 +16,9 @@
        
     }
     .progress-bar-container{
-        height: 20px;
+        height: 35px;
         margin: 2px;
-        width: 310px;
+        width: 400px;
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -47,35 +30,39 @@
         }
         .progress-btns{
             position: relative;
-            width: 200px;
+            width: 300px;
             background-color: rgba(0,0,0,0.2);
             display: flex;
             justify-content: flex-start;
-            height: 12px;
+            height: 16px;
         }
         .progress-btns span{
             cursor: pointer;
-            width: 45px;
+            width: 60px;
             margin: 0;
             position: relative;
             display: block;
-            height: 12px;
+            height: 16px;
         }
         .progress-btns span i{
-            font-size: 8px;
+            font-size: 10px;
             position: absolute;
             display: block;
             right: 0;
-            text-align: center;
-            padding-top: 6px;
-            top: -5px;
-            width: 20px;
-            height: 20px;
+            top: -15px;
             animation: 0.5s animate-cas ease-in-out forwards;
         }
         
         .progress-btns span:hover{
             background-color: rgba(0,0,0,0.3) !important;
         }
+    }
+
+    .option-btn{
+        margin: 15px auto;
+        left: 0;
+        right: 0;
+        position: absolute;
+        
     }
 }

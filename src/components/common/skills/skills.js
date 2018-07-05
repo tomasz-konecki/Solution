@@ -35,7 +35,7 @@ class Skills extends Component{
             btnsArray.push(<span style={{backgroundColor: i+1 <= startVal ? `${color}` : null}} 
             onClick={e => this.changeSkill(i, index)} 
                 key={i}>
-                {i+1 === startVal ? <i style={{backgroundColor: `${color}`}}>{startVal/5 * 100}%</i> : null}
+                {i+1 === startVal ? <i>{startVal/5 * 100}%</i> : null}
             </span>);
         }
         return btnsArray;
@@ -44,9 +44,6 @@ class Skills extends Component{
         return(
         <div className="progress-bars-container">
             <h3>{this.props.title}
-                {this.state.isChanging && 
-                    <SmallSpinner />
-                }
                 {this.props.status === false && 
                 <span>{this.props.errors[0]}</span>}
             </h3>
@@ -58,11 +55,12 @@ class Skills extends Component{
                         <ProgressPicker 
                             createResult={this.createProgressBtns(5, i.color, i.startValue, index)}
                         />
-                        
-                        
                     </div>
                 )
             })}
+            <button className="option-btn green-btn">
+                Zapisz zmiany
+            </button>
         </div>
         );
     }

@@ -3,7 +3,7 @@ import './ProjectDetails.scss';
 import WebApi from '../../../api/index';
 import Aux from '../../../services/auxilary';
 import ProjectInformationsCart from './ProjectInformationsCart/ProjectInformationsCart';
-import { cutNotNeededKeysFromArray, getRandomColor, populateFormArrayWithValues } from '../../../services/methods';
+import { cutNotNeededKeysFromArray, populateFormArrayWithValues } from '../../../services/methods';
 import Spinner from '../../common/spinner/spinner';
 import Modal from 'react-responsive-modal';
 import Table from '../../common/table/table';
@@ -15,7 +15,6 @@ import moment from 'moment';
 import Form from '../../form/form';
 import ProgressPicker from '../../common/progressPicker/progressPicker';
 import { validateInput } from '../../../services/validation';
-import SpinnerButton from '../../form/spinner-btn/spinner-btn';
 import { errorCatcher } from '../../../services/errorsHandler';
 import OperationStatusPrompt from '../../form/operationStatusPrompt/operationStatusPrompt';
 import { connect } from 'react-redux';
@@ -105,7 +104,7 @@ class ProjectDetails extends Component{
             spansArray.push(<span style={{backgroundColor: i <= this.state.lteVal ? 'lightseagreen' : null}} 
                 key={i}
                 onClick={() => this.setState({lteVal: i})}>
-                {i === this.state.lteVal ? <i style={{backgroundColor: `lightseagreen`, color: 'black', fontSize: '10px'}}>{this.state.lteVal/range * 100}%</i> : null}
+                {i === this.state.lteVal ? <i>{this.state.lteVal/range * 100}%</i> : null}
             </span>);
         }
         return spansArray;
@@ -209,6 +208,7 @@ class ProjectDetails extends Component{
 
                         <div className="right-project-spec">
                             <Table 
+                                projectId={this.props.project.id}
                                 items={this.props.project.team} 
                                 title="Zespół projektowy"
                                 thds={workerNames}
@@ -216,17 +216,13 @@ class ProjectDetails extends Component{
                                 togleAddEmployeeModal={() => this.setState({addEmployeModal: !this.state.addEmployeModal})}
                                 />
                                 
-                            {this.props.project.skills.length > 0 ? 
+                            {this.props.project.skills.length > 0 &&
                                 <Skills 
                                 status={this.props.changeProjectSkillStatus}
                                 errors={this.props.changeProjectSkillErrors}
                                 finalFunction={this.changeSkills}
                                 title="Umiejętności na potrzeby projektu"
                                 items={this.props.project.skills} />
-                                : 
-                                <button className="add-abilites">
-                                    Dodaj umiejętności
-                                </button>
                             }       
                         </div>
                     </main>
@@ -279,7 +275,6 @@ class ProjectDetails extends Component{
                         shouldSubmit={false}
                         dateIndexesToCompare={[0,1]}
                         onSubmit={this.addEmployeeToProject}
-                        error={this.state.addEmployeError}
                         isLoading={this.state.addEmployeSpinner}
                         formItems={this.state.addEmployeToProjectFormItems} 
                         shouldCancelInputList={true}

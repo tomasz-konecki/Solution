@@ -12,9 +12,9 @@ const spinnerBtn = props => (
 
 
 <button 
-    disabled={(props.validationResult === false || props.error || props.transactionEnd) ? true : false}
+    disabled={(props.validationResult === false || props.transactionEnd) ? true : false}
     onClick={props.onClickHandler} 
-    className={!props.isLoading ? `submit-btn ${(props.validationResult === false || props.error || props.transactionEnd) ? 
+    className={!props.isLoading ? `submit-btn ${(props.validationResult === false || props.transactionEnd) ? 
         "submit-btn-dis" : "submit-btn-cor"}` : "spinner-btn"} 
         type={props.shouldSubmit ? "submit" : "button"}>
 

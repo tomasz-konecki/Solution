@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import StageOne from "./StageOne";
 import StageTwo from "./StageTwo";
 import WebApi from "../../../api";
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 
 const initialState = {
   selectedUser: {},
@@ -35,15 +35,22 @@ class UserSelector extends Component {
     // if (!user) {
     //   return Promise.resolve({ options: [] });
     // }
-    return WebApi.users.get.adSearch(user)
+    return WebApi.users.get
+      .adSearch(user)
       .then(response => {
         this.setState({
           errorBlock: response
         });
         return response;
       })
-      .then(response => {
-        return { options: response.extractData() };
+      .then(responsex => {
+        let usersRequest = responsex.extractData();
+        let usersList = [];
+        usersRequest.map((i, index) => {
+          let OneUser = Object.assign(i, i.hasAccount && { disabled: true });
+          usersList.push(OneUser);
+        });
+        return { options: usersList };
       })
       .catch(errorBlock => {
         this.setState({ errorBlock });
@@ -52,7 +59,8 @@ class UserSelector extends Component {
   };
 
   doAddUser = newUser => {
-    WebApi.users.post.add(newUser.id, newUser.roles)
+    WebApi.users.post
+      .add(newUser.id, newUser.roles)
       .then(response => {
         this.setState({
           errorBlock: response,

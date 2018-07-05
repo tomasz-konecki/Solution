@@ -22,7 +22,7 @@ if (env === "production") {
 }
 
 module.exports = {
-  devtool: 'source-map',
+  devtool: "source-map",
   entry: ["react-hot-loader/patch", "./src/index.js"],
   output: {
     path: path.resolve(__dirname, "dist"),
@@ -30,11 +30,11 @@ module.exports = {
     publicPath: "/"
   },
   resolve: {
-    extensions: ['.js', '.jsx'],
+    extensions: [".js", ".jsx"],
     alias: {
-      Src: path.resolve(__dirname, 'src/')
+      Src: path.resolve(__dirname, "src/")
     },
-    modules: ['node_modules', 'src']
+    modules: ["node_modules", "src"]
   },
   module: {
     rules: [
@@ -90,10 +90,11 @@ module.exports = {
   plugins: plugins,
   devServer: {
     historyApiFallback: {
-      index:'/'
+      index: "/"
     }
   },
   externals: {
+
     'Config': JSON.stringify(process.env.NODE_ENV === 'production' ? {
       serverUrl: "http://10.255.20.241"
     } : {

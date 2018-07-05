@@ -58,7 +58,8 @@ a:visited {
 }
 
 .underline-anchors {
-  a, a:visited {
+  a,
+  a:visited {
     border-bottom: 1px dashed darken($main-color, 5%);
     color: darken(white, 3%);
   }
@@ -77,6 +78,14 @@ a:visited {
   color: darken($body-background, 0.1%);
 }
 
+@media screen and (max-width: 420px) {
+  .content-abs-footer {
+    font-size: 20px;
+    width: 100%;
+    text-align: center;
+  }
+}
+
 .user-role-symbol {
   display: inline-block;
   width: 14px;
@@ -88,7 +97,7 @@ a:visited {
     color: rgb(98, 176, 132);
   }
   &.Human {
-    color: rgb(46, 125, 168)(98, 176, 132);
+    color: rgb(46, 125, 168) (98, 176, 132);
   }
   &.Team {
     color: rgb(108, 178, 61);
@@ -115,19 +124,19 @@ a:visited {
   display: inline-block;
   text-align: center;
   padding: 20px 0;
-  
+
   img {
     width: 100%;
   }
 
   b {
-    font-weight: bold
+    font-weight: bold;
   }
 
   p {
     padding: 10px;
   }
-  
+
   ul {
     padding: 10px;
   }

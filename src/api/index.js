@@ -244,7 +244,7 @@ const WebApi = {
         return WebAround.post(`${API_ENDPOINT}/projects/`, settings);
       },
       add: (projectModel) => {
-        return WebAround.post(`${API_ENDPOINT}/projects/`, projectModel);
+        return WebAround.post(`${API_ENDPOINT}/projects/add`, projectModel);
       }
     },
     put: {

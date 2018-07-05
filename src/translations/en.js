@@ -24,6 +24,7 @@ const translations = {
     ShowDeleted: "Show deleted",
     ShowNotActivated: "Show not activated",
     ShowActivated: "Show activated",
+    ShowAll: "Show All",
     Today: "Today",
     NoDataOrResults: "No data or results given"
   },
@@ -48,22 +49,25 @@ const translations = {
     EditUserImperativus: "Edit user",
     DeleteEdit: "Delete/Edit",
     DeleteAdd: "Delete/Add",
-    AddUserWhenRequestImperativus: "Add user",
-
+    AddUserWhenRequestImperativus: "Add user"
   },
   ProjectsList: {
     Add: "Add",
-    DeleteOwnerFuture: "Delete {{ownerFullName}} as owner of project {{projectName}}",
+    DeleteOwnerFuture:
+      "Delete {{ownerFullName}} as owner of project {{projectName}}",
     OwnerHasBeenDeleted: "Owner has been deleted",
-    ChangeSkillSettingsFuture: "Change skill settings of project #{{projectId}}",
+    ChangeSkillSettingsFuture:
+      "Change skill settings of project #{{projectId}}",
     SettingsHaveBeenSaved: "Settings have been saved",
     ProjectName: "Project name",
     Client: "Client",
     StartDate: "Start date",
     EndDate: "End date",
     Status: "Status",
-    Active: "Active",
+    Activated: "Active",
+    NotActivated: "Not activated",
     Closed: "Closed",
+    SelectStatus: "Select status...",
     CloseProjectImperativus: "Close project",
     CloseProjectInfinitive: "Close project",
     ProjectClosed: "Project has been closed",
@@ -106,7 +110,7 @@ const translations = {
     UnexpectedError: "Unexpected error occured",
     ErrorModel: "Error Model",
     Error: "Error",
-    OK: "",
+    OK: ""
   },
   EmployeesRowUnfurl: {
     ActivateEmployee: "Activate employee",
@@ -149,8 +153,10 @@ const translations = {
   },
   ResponsiblePersonBlock: {
     NameNoSpecial: "Name cannot contain either special characters or digits.",
-    SurnameNoSpecial: "Surname cannot contain either special characters or digits.",
-    EmailToBeValid: "Email address should have the appropriate structure ie. someone@something.com",
+    SurnameNoSpecial:
+      "Surname cannot contain either special characters or digits.",
+    EmailToBeValid:
+      "Email address should have the appropriate structure ie. someone@something.com",
     NumberValid: "Phone number must contain 9 to 11 digits"
   },
   ProjectRowUnfurl: {
@@ -174,7 +180,10 @@ const translations = {
   },
   StageOne: {
     SearchAD: "Search Active Directory",
-    Next: "Next"
+    UserNotFoundInAD: "User not found in AD",
+    Next: "Next",
+    HasAccount: "Account already exists for that User",
+    SelectUser: "Select User"
   },
   StageTwo: {
     AddRoles: "Add roles!",
@@ -219,7 +228,8 @@ const translations = {
     Add: "Add",
     Save: "Save",
     Edit: "Edit",
-    DeleteOwnerFuture: "Delete {{ownerFullName}} as owner of project {{projectName}}",
+    DeleteOwnerFuture:
+      "Delete {{ownerFullName}} as owner of project {{projectName}}",
     OwnerHasBeenDeleted: "Owner has been deleted",
     ResponsiblePerson: "Responsible person",
     Yes: "Yes",
@@ -273,7 +283,8 @@ const translations = {
   },
   SkillsContainer: {
     Deletion: "Deletion",
-    Info1: "Deletion will be permanent, removing entries from the database and all places where referenced.",
+    Info1:
+      "Deletion will be permanent, removing entries from the database and all places where referenced.",
     Info2: "Rollback of this action is not available.",
     SuccessfullyDeleted: "Successfully deleted skill"
   }

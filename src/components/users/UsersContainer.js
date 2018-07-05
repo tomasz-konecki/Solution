@@ -38,7 +38,7 @@ class UsersContainer extends React.Component {
       WebApi.users.delete.user(this.props.toConfirm.id)
         .then(response => {
           this.props.async.setActionConfirmationResult(response);
-          this.pageChange(this.state.currentPage);
+          this.pageChange(this.state.currentPage, Object.assign({isDeleted: false}));
         })
         .catch(error => { 
           this.props.async.setActionConfirmationResult(error);
@@ -49,7 +49,7 @@ class UsersContainer extends React.Component {
       WebApi.users.delete.request(this.props.toConfirm.id)
         .then(response => {
           this.props.async.setActionConfirmationResult(response);
-          this.pageChange(this.state.currentPage, Object.assign({isDeleted: false}));
+          this.pageChange(this.state.currentPage, Object.assign({isNotActivated: true}));
         })
         .catch(error => {
           this.props.async.setActionConfirmationResult(error);
@@ -128,6 +128,7 @@ class UsersContainer extends React.Component {
   }
   render() {
     let usersList = <UsersList
+        show={this.props.show}
         getCV={this.getCV}
         openAddUserModal={this.handleOpenModal}
         users={this.props.users}
@@ -182,7 +183,7 @@ function mapStateToProps(state) {
     isWorking: state.asyncReducer.isWorking,
     type: state.asyncReducer.type,
     resultBlock: state.usersReducer.resultBlock,
-
+    show: state.usersReducer.show
     userDownloadCVLink: state.reportsReducer.userDownloadCVLink,
     getUserCVStatus: state.reportsReducer.getUserCVStatus,
     getUserCVErrors: state.reportsReducer.getUserCVErrors

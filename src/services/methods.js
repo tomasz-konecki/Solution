@@ -42,8 +42,3 @@ export const updateObject = (oldObject, updatedValues) => {
       ...updatedValues
   }
 }
-
-
-export const populateFormArrayWithValues = (arrayToPopulate, objectData) => {
-
-}

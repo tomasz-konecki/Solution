@@ -16,7 +16,8 @@ const translations = {
     Projects: "Projekty",
     Assign: "Przypisz",
     Stats: "Statystyki",
-    Skills: "Umiejętności"
+    Skills: "Umiejętności",
+    Reports: "Raporty"
   },
   SmoothTable: {
     Search: "Szukaj",
@@ -40,6 +41,7 @@ const translations = {
     ReactivateUserInfinitive: "Reaktywować użytkownika",
     UserReactivated: "Użytkownik został reaktywowany",
     DeleteUserImperativus: "Usuń użytkownika",
+    DownloadCV: "Pobierz CV",
     DeleteUserInfinitive: "Usunąć użytkownika",
     DeleteUserRequestImperativus: "Usuń prośbę o utworzenie konta",
     DeleteUserRequestInfinitive: "Usunąć prośbę o utworzenie konta",

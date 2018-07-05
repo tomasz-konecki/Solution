@@ -193,7 +193,7 @@ class Table extends Component{
                     <div className="opinion-container">
                         <header>
                             <h3 className="section-heading">{this.state.modalType ? 
-                            `Dodaj opinie o pracowniku ${this.props.items[this.state.currentOpenedRowId].employeeId}` : "Lista opini o pracowniku"}</h3>
+                            "Dodaj opinie o pracowniku" : "Lista opini o pracowniku"}</h3>
                         </header>
                         
                         {this.state.modalType ? 

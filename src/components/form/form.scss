@@ -6,15 +6,17 @@
     padding: 10px 0;
     .input-container{
         width: 100%;
+        position: relative;
         display: flex;
         justify-content: space-between;
     }
     label{
-        margin: 5px 0;
+        margin: 3px 0;
         width: 30%;
         font-size: 14px;
         text-align: center;
     }
+   
     .right-form-container{
         width: 68%;
     }
@@ -100,7 +102,19 @@
         }
         
     }
-    
+    @media(max-width: 450px){
+        padding: 0;
+        .input-container{
+            flex-flow: column;
+        }
+        label{
+            display: none;
+        }
+
+        .right-form-container{
+            width: 100%;
+        }
+    }
 }
 
 .responsibilites-list{

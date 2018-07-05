@@ -412,7 +412,6 @@ class ProjectDetailContainer extends Component {
   }
 
   addEmployeeStageTwo = (employee) => {
-    console.log(employee);
     this.setState({
       addEmployeeStageTwo: true,
       addEmployeeSelection: employee

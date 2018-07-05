@@ -9,12 +9,13 @@ import storage from "redux-persist/lib/storage";
 import { push } from 'react-router-redux';
 import { logout } from './../actions/authActions';
 import ResponseParser from './responseParser';
+import Config from "Config";
 
 const { store } = storeCreator;
 
-const API_ENDPOINT = "http://10.255.22.201";
+const API_ENDPOINT = Config.serverUrl;
 
-store.subscribe(listener);
+store.subscribe(listener);``
 
 const select = state =>
   state.authReducer.tokens !== undefined ? state.authReducer.tokens.token : "";
@@ -213,8 +214,16 @@ const WebApi = {
       all: () => {},
       byFeedback: (feedbackId) => {},
       byAuthor: (authorId) => {},
-      byEmployee: (employeeId) => {},
+      byEmployee: (employeeId) => {
+        return WebAround.get(`${API_ENDPOINT}/feedbacks/employee/${employeeId}`);
+      },
       byProject: (projectId) => {}
+    },
+    post: {
+      feedback: (model) => {
+        return WebAround.post(`${API_ENDPOINT}/feedbacks`, model);
+      }
+      
     }
   },
   foreignLanguages: {
@@ -235,7 +244,7 @@ const WebApi = {
         return WebAround.post(`${API_ENDPOINT}/projects/`, settings);
       },
       add: (projectModel) => {
-        return WebAround.post(`${API_ENDPOINT}/projects/`, projectModel);
+        return WebAround.post(`${API_ENDPOINT}/projects/add`, projectModel);
       }
     },
     put: {
@@ -280,10 +289,23 @@ const WebApi = {
       },
       teams: () => {
         return WebAround.get(`${API_ENDPOINT}/reports/teams/`);
+      },
+      report: (fileName) => {
+        return WebAround.get(`${API_ENDPOINT}/reports/developers?fileName=${fileName}`);
       }
     },
-    post: (reportDetails) => {
-      return WebAround.post(`${API_ENDPOINT}/reports/developers`, reportDetails);
+    post: {
+      report: (model, param) => {
+        return WebAround.post(`${API_ENDPOINT}/reports/developers`, model);
+      }
+    }
+      
+  },
+  gDrive: {
+    get: {
+      login: () => {
+        return WebAround.get(`${API_ENDPOINT}/gdrive/Login`);
+      }
     }
   },
   responsiblePerson: {
@@ -335,9 +357,6 @@ const WebApi = {
       byUser: (userId) => {
         return WebAround.get(`${API_ENDPOINT}/users/${userId}`);
       },
-      requests: () => {
-        return WebAround.get(`${API_ENDPOINT}/users/requests`);
-      },
       adSearch: (query) => {
         return WebAround.get(`${API_ENDPOINT}/users/searchAD/${query}`);
       }
@@ -345,6 +364,9 @@ const WebApi = {
     post: {
       list: (settings = {}) => {
         return WebAround.post(`${API_ENDPOINT}/users`, settings);
+      },
+      listOfRequests: (settings = {}) => {
+        return WebAround.post(`${API_ENDPOINT}/users/requests`, settings);
       },
       add: (userId, roles) => {
         return WebAround.post(`${API_ENDPOINT}/users/add`, { id: userId, roles });

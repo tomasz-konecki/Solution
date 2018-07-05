@@ -1,7 +1,34 @@
+.col-sm-9{
+  position: relative;
+
+  .selectpicker{
+    height: 100px;
+    overflow-y: auto;
+    position: absolute;
+    bottom: -105px;
+    z-index: 100;
+    margin: 0 auto;
+    left: 0;
+    right: 0;
+    width: 50%;
+    text-align: center;
+    transition: 0.5s all ease-in-out;
+  }
+  .selectpicker > option{
+    color: black;
+    padding: 5px;
+    background-color: lightblue;
+    cursor: pointer;
+    font-size: 16px;
+  }
+  .selectpicker > option:hover{
+    background-color: lightcyan;
+  }
+}
+
 .user-details-container,
 .project-details-container {
   padding-bottom: 1.5em;
-  border-bottom: 1px solid lightgray;
 
   .detail-container {
     margin-bottom: 0.4em;

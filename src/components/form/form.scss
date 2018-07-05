@@ -1,0 +1,182 @@
+.universal-form-container{
+    display: flex;
+    width: 100%;
+    box-sizing: border-box;
+    flex-flow: column;
+    padding: 10px 0;
+    .input-container{
+        width: 100%;
+        position: relative;
+        display: flex;
+        justify-content: space-between;
+    }
+    label{
+        margin: 3px 0;
+        width: 30%;
+        font-size: 14px;
+        text-align: center;
+    }
+   
+    .right-form-container{
+        width: 68%;
+    }
+    input, textarea, select{
+        width: 100%;
+        font-size: 12px;
+        border-radius: 4px;
+        margin: 0 !important;
+        outline: none;
+        transition: 0.5s all ease-in-out;
+        border: 1px solid #20B2A9 !important;
+    }
+    input,textarea{
+        padding: 12.5px !important;
+    }
+    select{
+        padding: 0 5px; 
+    }
+    textarea{
+        resize: none;
+    }
+    input:focus, textarea:focus{
+        -webkit-box-shadow: -1px 1px 24px -2px rgb(71, 138, 160);
+        -moz-box-shadow: -1px 1px 24px -2px rgb(112, 202, 233);
+        box-shadow: -1px 1px 24px -2px rgb(112, 202, 233);
+    }
+  
+   
+ 
+    .data-list-container{
+        width: 100%;
+    }
+
+    .react-datepicker-wrapper, 
+    .react-datepicker__input-container,
+    .date-picker{
+        width: 100% !important;
+    }
+    .come-back-btn{
+        position: absolute;
+        bottom: -35px;
+        left: 25px;
+        color: lightgreen;
+        background-color: transparent;
+        cursor: pointer;
+        border: none;
+    }
+
+    .progress-btns{
+        margin-top: 25px;
+    }
+
+    .type-ah-container{
+        width: 100%;
+        position: relative;
+        .fa-search{
+            color: grey;
+        }
+        .responsibilites-list li:hover{
+            background-color: lightgrey;
+        }
+        
+    }
+    .fa-search, .fa-plus{
+        font-size: 16px;
+        position: absolute;
+        right: 0;
+        display: block;
+        height: 26px;
+        width: 26px;
+        text-align: center;
+        padding-top: 5px;
+        top: 0;
+
+    }
+
+    .input-with-add-list-container{
+        width: 100%;
+        position: relative;
+        .fa-plus{
+           color: green;
+           cursor: pointer;
+        }
+        
+    }
+    @media(max-width: 450px){
+        padding: 0;
+        .input-container{
+            flex-flow: column;
+        }
+        label{
+            display: none;
+        }
+
+        .right-form-container{
+            width: 100%;
+        }
+    }
+}
+
+.responsibilites-list{
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    overflow-y: auto;
+    position: absolute;
+    max-height: 300px;
+    top: 26px;
+    z-index: 150;
+    background-color: lightgoldenrodyellow;
+    color: black;
+    font-weight: bolder;
+}
+.list-close{
+    display: inline-block !important;
+    color: lightcoral;
+    width: 100%;
+    text-align: center;
+}
+.responsibilites-list li{
+    display: flex;
+    justify-content: space-between;
+    padding: 7.5px;
+    font-size: 12px;
+    align-items: center;
+    cursor: pointer;
+
+    .fa-minus{
+        color: red;
+        font-size: 16px;
+    }
+}
+
+
+
+
+.form-error{
+    color: tomato;
+    text-align: center;
+    font-size: 12px;
+    margin: 8px 0;
+    height: 12px;
+}
+.input-error{
+    -webkit-box-shadow: -1px 1px 24px -2px rgb(203, 50, 50) !important;
+    -moz-box-shadow: -1px 1px 24px -2px rgb(203, 50, 50) !important;
+    box-shadow: -1px 1px 24px -2px rgb(203, 50, 50) !important;
+}
+.input-dis{
+    -webkit-box-shadow: -1px 1px 24px -2px grey !important;
+    -moz-box-shadow: -1px 1px 24px -2px grey !important;
+    box-shadow: -1px 1px 24px -2px grey !important;
+}
+
+
+.found-person-succ{
+    color: green;
+    position: absolute;
+    bottom: -21px;
+    width: 100%;
+    font-size: 13px;
+    text-align: center;
+}

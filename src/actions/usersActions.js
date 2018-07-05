@@ -3,11 +3,12 @@ import axios from "axios";
 import WebApi from "../api";
 import { asyncStarted, asyncEnded } from "./asyncActions";
 
-export const loadUsersSuccess = (users, resultBlock) => {
+export const loadUsersSuccess = (users, resultBlock, show) => {
   return {
     type: LOAD_USERS_SUCCESS,
     users,
-    resultBlock
+    resultBlock,
+    show
   };
 };
 
@@ -18,30 +19,33 @@ export const loadUsersFail = (resultBlock) => {
   };
 };
 
-export const loadUsers = (page = 1, limit = 25, other = {}) => {
-  return dispatch => {
-    const settings = Object.assign(
-      {},
-      {
-        Limit: limit,
-        PageNumber: page,
-        IsDeleted: false
-      },
-      other
-    );
-
-    dispatch(asyncStarted());
-    WebApi.users.post.list(settings)
-      .then(response => {
-        if(!response.errorOccurred()){
-          dispatch(loadUsersSuccess(response.extractData(), response));
-        }
-        dispatch(asyncEnded());
-      })
-      .catch(error => {
-        dispatch(loadUsersFail(error));
-        dispatch(asyncEnded());
-        throw error;
-      });
-  };
+export const loadUsers = (page = 1, limit = 25, other = {isDeleted: false}) => {
+    return dispatch => {
+      const settings = Object.assign(
+        {},
+        {
+          Limit: limit,
+          PageNumber: page,
+        },
+        other
+      );
+      dispatch(asyncStarted());   
+      WebApi.users.post[("isNotActivated" in other ? ["listOfRequests"] : ["list"])](settings)
+        .then(response => {
+          if(!response.errorOccurred()){
+            if ("isNotActivated" in other) {
+              dispatch(loadUsersSuccess(response.extractData(), response, "isNotActivated"));
+            }
+            else {
+              dispatch(loadUsersSuccess(response.extractData(), response, "isActivated"));
+            }
+          }
+          dispatch(asyncEnded());
+        })
+        .catch(error => {
+          dispatch(loadUsersFail(error));
+          dispatch(asyncEnded());
+          throw error;
+        });
+    }; 
 };

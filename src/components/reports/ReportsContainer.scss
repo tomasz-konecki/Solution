@@ -1,0 +1,172 @@
+.reports-container {
+  width: 100%;
+  background-color: white;
+  color: black;
+  box-sizing: border-box;
+  position: relative;
+
+  .lds-ring {
+    top: 38vh !important;
+    z-index: 200;
+  }
+  .server-error {
+    color: tomato;
+    padding: 100px;
+    text-align: center;
+    font-size: 18px;
+  }
+
+  header {
+    background-color: #e8e8e8;
+    height: 120px;
+    .btns-container button:first-of-type{
+      margin-right: 10px;
+    }
+    h1 {
+      font-size: 22px;
+      margin-top: 20px;
+      padding: 10px 0;
+    }
+    nav {
+      height: 50px;
+      width: 100%;
+      padding: 0 65px;
+      display: flex;
+      justify-content: space-between;
+      div:first-of-type {
+        b {
+          position: relative;
+        }
+        b:last-of-type::before {
+          content: "znaleziono";
+          color: green;
+          position: absolute;
+          font-size: 14px;
+          right: -40px;
+          bottom: -20px;
+        }
+        b:first-of-type::before {
+          content: "dodano";
+          color: green;
+          position: absolute;
+          font-size: 14px;
+          left: -40px;
+          top: -10px;
+        }
+        b:first-of-type,
+        .fa-users {
+          margin: 15px 15px 0 10px;
+          font-size: 20px;
+        }
+        b:last-of-type,
+        .fa-search {
+          font-size: 20px;
+        }
+        .fa-search {
+          margin-right: 10px;
+        }
+        b:last-of-type {
+          margin-left: 10px;
+        }
+      }
+      .searcher-container {
+        position: absolute;
+        left: 0;
+        right: 0;
+        width: 220px;
+        margin: 0 auto;
+        input {
+          width: 100%;
+          padding: 15px;
+          border: none;
+          border-radius: 5px;
+          font-size: 14px;
+        }
+      }
+     
+    }
+  }
+
+  .reports-content-container {
+    padding: 15px;
+    .caffels-container {
+      width: 100%;
+      justify-content: center;
+      display: flex;
+      height: 100%;
+      flex-flow: wrap;
+      .caffel {
+        width: 125px;
+        background-color: #e8e8e8;
+        height: 125px;
+        margin: 10px;
+        cursor: pointer;
+        display: flex;
+        padding: 5px;
+        box-sizing: border-box;
+        text-align: center;
+        transition: 0.5s all ease-in-out;
+        justify-content: center;
+        align-items: center;
+      }
+      .caffel:hover {
+        background-color: lightblue;
+      }
+    }
+  }
+}
+
+
+.reports-items-list {
+  margin: 25px;
+  overflow-y: auto;
+  max-height: 65%;
+
+  .inc-list-item {
+    color: red;
+  }
+  li {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    padding: 2.5px 0;
+    align-items: center;
+    input {
+      width: 50px;
+      border-radius: 5px;
+      @media(max-width: 450px){
+          width: 35px;
+      }
+    }
+    i {
+      color: red;
+      right: 80px;
+      bottom: 15px;
+      cursor: pointer;
+      position: absolute;
+      @media(max-width: 450px){
+        right: 50px;
+      }
+    }
+  }
+}
+.checkbox-container {
+  color: white;
+  position: absolute;
+  bottom: -50px;
+  font-size: 16px;
+  letter-spacing: 1.5px;
+  @media(max-width: 400px){
+    bottom: -35px;
+    label{
+      font-size: 15px;
+    }
+  }
+  input {
+    margin: 0 10px;
+    height: 20px;
+    width: 20px;
+  }
+  
+}
+

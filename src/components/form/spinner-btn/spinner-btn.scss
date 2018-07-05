@@ -16,6 +16,11 @@
     bottom: 0;
     color: white;
     position: absolute;
+    @media(max-width: 440px){
+        width: 140px;
+        padding: 10px;
+        font-size: 15px;
+    }
 }
 .submit-btn:focus{
     outline: none;

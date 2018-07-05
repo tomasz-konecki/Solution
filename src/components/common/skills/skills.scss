@@ -1,6 +1,10 @@
 
 .progress-bars-container{
-    margin-right: auto;
+    margin: 15px auto 120px auto;
+    position: relative;
+    @media(min-width: 1100px){
+        margin: 0 auto 0 0;
+    }
     h3{
         position: relative;
         padding: 15px 0;
@@ -16,33 +20,55 @@
        
     }
     .progress-bar-container{
-        height: 35px;
-        margin: 2px;
-        width: 400px;
         display: flex;
+        width: 250px;
+        flex-flow: column;
+        margin: 25px auto;
         justify-content: space-between;
         align-items: center;
-
-       
+        @media(min-width: 340px){
+            width: 300px;
+        }
+        @media(min-width: 450px){
+            flex-flow: row;
+            width: 400px;
+            margin: 2px;
+            height: 35px;
+        }
         b{
-            width: 100px;
-            word-break: break-all !important;
+            font-size: .7rem;
+            margin-right: auto;
+            padding-bottom: 25px;
+            @media(min-width: 450px){
+                margin: auto;
+                padding: 0;
+                margin-right: 10px;
+                word-break: break-all !important;
+                width: 100px;
+            }
         }
         .progress-btns{
             position: relative;
-            width: 300px;
+            width: 250px;
             background-color: rgba(0,0,0,0.2);
             display: flex;
             justify-content: flex-start;
             height: 16px;
+            @media(min-width: 340px){
+                width: 300px;
+            }
         }
         .progress-btns span{
             cursor: pointer;
-            width: 60px;
+            width: 20%;
             margin: 0;
             position: relative;
             display: block;
             height: 16px;
+            @media(min-width: 340px){
+                width: 60px;
+            }
+            
         }
         .progress-btns span i{
             font-size: 10px;

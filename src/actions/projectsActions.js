@@ -70,8 +70,8 @@ export const getProjectACreator = projectId => {
           true, [], responsiblePersonKeys, overViewKeys, []));
 
     }).catch(error => {
-      dispatch(getProject(response.replyBlock.data.dtoObject, 
-        false, errorCatcher(error)));
+      dispatch(getProject(null, 
+        false, errorCatcher(error), [], []));
     })
   }
   

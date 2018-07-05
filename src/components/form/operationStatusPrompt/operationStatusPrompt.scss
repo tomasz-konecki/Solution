@@ -11,6 +11,9 @@
     margin: 0 auto;
     right: 0;
     animation: 0.5s animate-prompt-in linear forwards;
+    @media(max-width: 440px){
+        font-size: 17px;
+    }
 }
 @keyframes animate-prompt-in{
     0%{
@@ -25,8 +28,8 @@
     }
     100%{
         width: 100%;
-        padding: 15px;
-        height: 52px;
+        padding: 20px;
+        height: 62px;
     }
 }
 .operation-ok{

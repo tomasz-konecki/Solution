@@ -5,6 +5,9 @@
     display: flex;
     justify-content: flex-start;
     height: 12px;        
+    @media(max-width: 450px){
+        width: 100%;
+    }   
     span{
         width: 10%;
         cursor: pointer;

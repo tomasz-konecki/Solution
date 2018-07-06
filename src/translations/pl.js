@@ -25,7 +25,7 @@ const translations = {
     ShowDeleted: "Usunięte",
     ShowNotActivated: "Nieaktywowane",
     ShowActivated: "Aktywne",
-    ShowAll: "Pokaż wszystkie",
+    ShowAll: "Wszystkie",
     Today: "Dzisiaj",
     NoDataOrResults: "Brak danych bądź wyników"
   },

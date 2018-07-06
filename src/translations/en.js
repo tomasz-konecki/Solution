@@ -24,7 +24,7 @@ const translations = {
     ShowDeleted: "Deleted",
     ShowNotActivated: "Not activated",
     ShowActivated: "Activated",
-    ShowAll: "Show All",
+    ShowAll: "All",
     Today: "Today",
     NoDataOrResults: "No data or results given"
   },

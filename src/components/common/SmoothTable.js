@@ -428,7 +428,7 @@ class SmoothTable extends Component {
             onChange={this.handleInputChange}
           />
           <label className="smooth-radio-button3" htmlFor="radio5">
-            {this.props.t("ShowAll")}:
+            {this.props.t("ShowAll")}
           </label>
         </span>
       );

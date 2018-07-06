@@ -39,6 +39,10 @@ $activeShadow: 0 0 10px rgba($teal1, 0.5);
   user-select: none;
   margin: 20px 0 0;
 
+  @media screen and (max-width: 500px) {
+    margin-bottom: 20px;
+  }
+
   .smooth-table-remove-filters {
     padding: 2px;
     margin-left: 40px;

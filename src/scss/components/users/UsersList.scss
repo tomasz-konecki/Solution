@@ -1,0 +1,13 @@
+.users-list-container {
+  @media screen and (max-width: 480px) {
+    tbody tr:first-child,
+    th:first-child,
+    th:nth-child(4),
+    th:nth-child(5),
+    td:first-child,
+    td:nth-child(4),
+    td:nth-child(5) {
+      display: none;
+    }
+  }
+}

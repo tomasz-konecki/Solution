@@ -7,10 +7,11 @@ import { setActionConfirmation } from "../../actions/asyncActions";
 import Modal from "react-responsive-modal";
 import EditUserDetails from "../users/modals/EditUserDetails";
 import WebApi from "../../api";
-import PropTypes from 'prop-types';
-import { translate } from 'react-translate';
-import IntermediateBlock from './../common/IntermediateBlock';
-import binaryPermissioner from './../../api/binaryPermissioner';
+import PropTypes from "prop-types";
+import { translate } from "react-translate";
+import IntermediateBlock from "./../common/IntermediateBlock";
+import binaryPermissioner from "./../../api/binaryPermissioner";
+import "../../scss/components/users/UsersList.scss";
 
 class UsersList extends Component {
   constructor(props) {
@@ -40,6 +41,49 @@ class UsersList extends Component {
     });
   };
 
+  changeUserRoles = () => {
+    const { id, roles } = this.state.user;
+    this.setState(
+      {
+        loading: true
+      },
+      () => {
+        WebApi.users.patch
+          .roles(id, roles)
+          .then(response => {
+            this.setState({
+              responseBlock: response,
+              loading: false
+            });
+            setTimeout(() => {
+              this.handleCloseModal();
+            }, 500);
+          })
+          .catch(error => {
+            if (
+              "userNotFoundError" in
+              error.replyBlock.data.errorObjects[0].errors
+            ) {
+              WebApi.users.post.add(id, roles).then(response => {
+                this.setState({
+                  responseBlock: response,
+                  loading: false
+                });
+                setTimeout(() => {
+                  this.handleCloseModal();
+                }, 500);
+              });
+            }
+            console.log(error);
+            this.setState({
+              responseBlock: error,
+              loading: false
+            });
+          });
+      }
+    );
+  };
+
   handleOpenModal = () => {
     this.setState({ showModal: true });
   };
@@ -55,11 +99,17 @@ class UsersList extends Component {
       'D', 'S', 'H', 'T', 'A', 'M'
     ];
     const roles = [
-      'Developer', 'Tradesman', 'Human Resources', 'Team Leader', 'Administrator', 'Manager'
+      "Developer",
+      "Tradesman",
+      "Human Resources",
+      "Team Leader",
+      "Administrator",
+      "Manager"
     ];
     let symbols = [];
 
     for (let i = 0; i < symbol.length; i++) {
+
       if (rolesArray.indexOf(roles[i]) >= 0) symbols.push(
         <span className={'user-role-symbol ' + roles[i]} key={i} title={roles[i]}>{symbol[i]}</span>
       );
@@ -67,6 +117,8 @@ class UsersList extends Component {
         symbols.push(
           <span className={'user-role-symbol'} key={i} />
         );
+      else {
+        symbols.push(<span className={"user-role-symbol"} key={i} />);
       }
     }
 
@@ -88,7 +140,7 @@ class UsersList extends Component {
       showDeletedCheckbox: true,
       showNotActivatedAccountsCheckbox: true,
       showActivatedCheckbox: true,
-      disabledRowComparator: (object) => {
+      disabledRowComparator: object => {
         return object.isDeleted;
       },
       operators: [
@@ -97,7 +149,8 @@ class UsersList extends Component {
           click: () => {
             this.props.openAddUserModal();
           },
-          comparator: () => binaryPermissioner(false)(0)(0)(0)(0)(0)(1)(this.props.binPem)
+          comparator: () =>
+            binaryPermissioner(false)(0)(0)(0)(0)(0)(1)(this.props.binPem)
         }
       ],
       columns: [
@@ -112,7 +165,8 @@ class UsersList extends Component {
         { width: 19, field: "phoneNumber", pretty: t("Phone"), type: "text", filter: true },
         {
           width: 1,
-          comparator: object => binaryPermissioner(false)(0)(0)(0)(0)(0)(1)(this.props.binPem),
+          comparator: object =>
+            binaryPermissioner(false)(0)(0)(0)(0)(0)(1)(this.props.binPem),
           toolBox: [
             {
               icon: { icon: "sync-alt" },
@@ -121,15 +175,17 @@ class UsersList extends Component {
                 this.props.dispatch(
                   setActionConfirmation(true, {
                     key: "reactivateUser",
-                    string: `${t("ReactivateUserInfinitive")} ${object.firstName} ${
-                      object.lastName
-                      }`,
+                    string: `${t("ReactivateUserInfinitive")} ${
+                      object.firstName
+                    } ${object.lastName}`,
                     id: object.id,
                     successMessage: t("UserReactivated")
                   })
                 );
               },
-              comparator: object => object.isDeleted && binaryPermissioner(false)(0)(0)(0)(0)(0)(1)(this.props.binPem)
+              comparator: object =>
+                object.isDeleted &&
+                binaryPermissioner(false)(0)(0)(0)(0)(0)(1)(this.props.binPem)
             },
             {
               icon: { icon: "times" },
@@ -146,7 +202,9 @@ class UsersList extends Component {
                   })
                 );
               },
-              comparator: object => !object.isDeleted && binaryPermissioner(false)(0)(0)(0)(0)(0)(1)(this.props.binPem)
+              comparator: object =>
+                !object.isDeleted &&
+                binaryPermissioner(false)(0)(0)(0)(0)(0)(1)(this.props.binPem)
             },
             {
               icon: { icon: "edit", iconType: "far" },
@@ -154,6 +212,10 @@ class UsersList extends Component {
               click: object => {
                 this.handleGetUser(object);
               },
+              comparator: object =>
+                !object.isDeleted &&
+                binaryPermissioner(false)(0)(0)(0)(0)(0)(1)(this.props.binPem)
+            }
               comparator: object => !object.isDeleted && binaryPermissioner(false)(0)(0)(0)(0)(0)(1)(this.props.binPem)
             },
             {
@@ -223,14 +285,31 @@ class UsersList extends Component {
           loading={this.state.loading}
           changeUserRoles={this.changeUserRoles}
         />
-      </Modal>
-    </div>;
-    return <IntermediateBlock
-      loaded={!this.state.loading}
-      render={render}
-      resultBlock={this.props.resultBlock}
-      _className={'content-container'}
-    />;
+        <Modal
+          open={this.state.showModal}
+          classNames={{ modal: "Modal Modal-users" }}
+          contentLabel="Edit users details"
+          onClose={this.handleCloseModal}
+        >
+          <EditUserDetails
+            closeModal={this.handleCloseModal}
+            user={this.state.user}
+            handleRoleChange={this.handleRoleChange}
+            responseBlock={this.state.responseBlock}
+            loading={this.state.loading}
+            changeUserRoles={this.changeUserRoles}
+          />
+        </Modal>
+      </div>
+    );
+    return (
+      <IntermediateBlock
+        loaded={!this.state.loading}
+        render={render}
+        resultBlock={this.props.resultBlock}
+        _className={"content-container"}
+      />
+    );
   }
 }
 

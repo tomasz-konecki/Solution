@@ -18,12 +18,6 @@
   box-sizing: border-box;
   vertical-align: top;
 
-  @media only screen and (max-width: 1366px) {
-    & {
-      font-size: 100%;
-    }
-  }
-
   i {
     padding-right: 5px;
   }
@@ -53,9 +47,6 @@
     }
   }
 
-  &.submitter {
-    margin-top: 2em;
-  }
   &:hover {
     background-color: $button-element-hover-background;
     border: 1.2px solid lighten($button-element-hover-background, 5%);
@@ -78,6 +69,34 @@
 
     i {
       padding-left: 10px;
+    }
+  }
+  &.submitter {
+    margin-top: 2em;
+  }
+
+  @media only screen and (max-width: 480px) {
+    width: 100%;
+    &.submitter {
+      margin-top: 0em;
+    }
+  }
+
+  @media only screen and (max-width: 768px) {
+    &.submitter {
+      margin-top: 0.5em;
+    }
+  }
+
+  @media only screen and (min-width: 768px) {
+    &.submitter {
+      margin-top: 0.5em;
+    }
+  }
+
+  @media only screen and (max-width: 1366px) {
+    & {
+      font-size: 100%;
     }
   }
 }

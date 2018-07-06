@@ -1,17 +1,27 @@
-.flag-pol{
-  background: url('../../public/img/pol.svg') no-repeat scroll center top/cover transparent;
+.flag-pol {
+  background: url("../../public/img/pol.svg") no-repeat scroll center top/cover
+    transparent;
   width: 24px;
   height: 16px;
   display: inline-block;
   margin: 0 4px;
   cursor: pointer;
+  opacity: 0.6;
+  &:hover {
+    opacity: 1;
+  }
 }
 
-.flag-gbr{
-  background: url('../../public/img/gbr.svg') no-repeat scroll center top/cover transparent;
+.flag-gbr {
+  background: url("../../public/img/gbr.svg") no-repeat scroll center top/cover
+    transparent;
   width: 24px;
   height: 16px;
   display: inline-block;
   margin: 0 4px;
   cursor: pointer;
+  opacity: 0.6;
+  &:hover {
+    opacity: 1;
+  }
 }

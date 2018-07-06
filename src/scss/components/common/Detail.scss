@@ -1,7 +1,7 @@
-.col-sm-9{
+.col-sm-9 {
   position: relative;
 
-  .selectpicker{
+  .selectpicker {
     height: 100px;
     overflow-y: auto;
     position: absolute;
@@ -14,14 +14,14 @@
     text-align: center;
     transition: 0.5s all ease-in-out;
   }
-  .selectpicker > option{
+  .selectpicker > option {
     color: black;
     padding: 5px;
     background-color: lightblue;
     cursor: pointer;
     font-size: 16px;
   }
-  .selectpicker > option:hover{
+  .selectpicker > option:hover {
     background-color: lightcyan;
   }
 }
@@ -56,6 +56,9 @@
   justify-content: flex-end;
   padding-right: 20px;
   padding-top: 10px;
+  @media screen and (max-width: 500px) {
+    padding-right: 0px;
+  }
 }
 
 @media only screen and (max-width: 1366px) {

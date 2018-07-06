@@ -134,6 +134,7 @@ class SmoothTable extends Component {
       case "showAll":
         mainFilter["isDeleted"] = null;
         break;
+
       default:
         break;
     }
@@ -368,63 +369,61 @@ class SmoothTable extends Component {
       );
       operators.push(
         <span key={-4} className="smooth-show-deleted">
-          <label>
-            {this.props.t("ShowDeleted")}:
-            <input
-              name="radioButtons"
-              type="radio"
-              value="isDeleted"
-              checked={this.state.selectedOption === "isDeleted"}
-              onChange={this.handleInputChange}
-            />
-          </label>
+          <input
+            id="radio2"
+            name="radioButtons"
+            type="radio"
+            value="isDeleted"
+            checked={this.state.selectedOption === "isDeleted"}
+            onChange={this.handleInputChange}
+          />
+          <label htmlFor="radio2">{this.props.t("ShowDeleted")}:</label>
         </span>
       );
     }
     if (this.props.construct.showNotActivatedAccountsCheckbox) {
       operators.push(
         <span key={-5} className="smooth-show-deleted">
-          <label>
-            {this.props.t("ShowNotActivated")}:
-            <input
-              name="radioButtons"
-              type="radio"
-              value="isNotActivated"
-              checked={this.state.selectedOption === "isNotActivated"}
-              onChange={this.handleInputChange}
-            />
-          </label>
+          <input
+            id="radio3"
+            name="radioButtons"
+            type="radio"
+            value="isNotActivated"
+            checked={this.state.selectedOption === "isNotActivated"}
+            onChange={this.handleInputChange}
+          />
+          <label htmlFor="radio3">{this.props.t("ShowNotActivated")}:</label>
         </span>
       );
     }
     if (this.props.construct.showActivatedCheckbox) {
       operators.push(
         <span key={-6} className="smooth-show-deleted">
-          <label>
-            {this.props.t("ShowActivated")}:
-            <input
-              name="radioButtons"
-              type="radio"
-              value="showActivated"
-              checked={this.state.selectedOption === "showActivated"}
-              onChange={this.handleInputChange}
-            />
-          </label>
+          <input
+            id="radio4"
+            name="radioButtons"
+            type="radio"
+            value="showActivated"
+            checked={this.state.selectedOption === "showActivated"}
+            onChange={this.handleInputChange}
+          />
+          <label htmlFor="radio4">{this.props.t("ShowActivated")}: </label>
         </span>
       );
     }
     if (this.props.construct.showAllCheckbox) {
       operators.push(
         <span key={-7} className="smooth-show-deleted">
-          <label>
-            {this.props.t("ShowAll")}:
             <input
+            id="radio5"
               name="radioButtons"
               type="radio"
               value="showAll"
               checked={this.state.selectedOption === "showAll"}
               onChange={this.handleInputChange}
             />
+          <label htmlFor="radio5"> 
+            {this.props.t("ShowAll")}:
           </label>
         </span>
       );
@@ -686,7 +685,6 @@ class SmoothTable extends Component {
       }
     );
   };
-
   render() {
     const { construct } = this.state;
     let list = [],

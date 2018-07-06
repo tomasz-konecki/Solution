@@ -85,6 +85,7 @@ class StageTwo extends Component {
             </div>
             <div>
               <ResultBlock
+                type="modalInParent"
                 errorBlock={this.props.errorBlock}
                 errorOnly={false}
                 successMessage={t("UserAddedSuccessfully")}

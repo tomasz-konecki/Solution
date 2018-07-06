@@ -53,6 +53,9 @@
     color: lighten($menu-element-icon-hover-color, 55%);
     cursor: pointer;
   }
+  &:disabled {
+    background: #333;
+  }
   &.nav-compact {
     border: 0;
     min-width: 100px;

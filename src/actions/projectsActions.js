@@ -1,6 +1,6 @@
 import { LOAD_PROJECTS_SUCCESS, CHANGE_EDITED_PROJECT, GET_PROJECT, names, overViewNames, 
 ADD_EMPLOYEE_TO_PROJECT, DELETE_PROJECT_OWNER, DELETE_PROJECT, CLOSE_PROJECT, REACTIVATE_PROJECT, 
-CHANGE_PROJECT_SKILL
+CHANGE_PROJECT_SKILL, ADD_FEEDBACK, GET_FEEDBACKS
  } from "../constants";
 import axios from "axios";
 import WebApi from "../api";
@@ -14,7 +14,7 @@ export const loadProjectsSuccess = projects => {
   };
 };
 
-export const loadProjects = (page = 1, limit = 25, other = {}) => {
+export const loadProjects = (page = 1, limit = 15, other = {isDeleted: null}) => {
   const settings = Object.assign({}, {
     Limit: limit,
     PageNumber: page
@@ -70,8 +70,8 @@ export const getProjectACreator = projectId => {
           true, [], responsiblePersonKeys, overViewKeys, []));
 
     }).catch(error => {
-      dispatch(getProject(response.replyBlock.data.dtoObject, 
-        false, errorCatcher(error)));
+      dispatch(getProject(null, 
+        false, errorCatcher(error), [], []));
     })
   }
   
@@ -190,6 +190,54 @@ export const changeProjectSkillACreator = (projectId, skillId, skillLevel) => {
       dispatch(changeProjectSkill(true, []));
     }).catch(error => {
       dispatch(changeProjectSkill(false, errorCatcher(error)));
+    })
+  }
+}
+
+
+export const addFeedback = (addFeedbackStatus, addFeedbackErrors) => {
+  return {
+    type: ADD_FEEDBACK,
+    addFeedbackStatus,
+    addFeedbackErrors
+  }
+}
+
+export const addFeedbackACreator = (projectId, employeeId, description) => {
+  const objectToSend = {
+    "projectId": projectId,
+    "employeeId": employeeId,
+    "description": description
+  }
+  return dispatch => {
+    WebApi.feedbacks.post.feedback(objectToSend).then(response => {
+      console.log(response);
+      dispatch(addFeedback(true, []));
+    }).catch(error => {
+      console.log(error);
+      dispatch(addFeedback(false, errorCatcher(error)));
+    })
+  }
+}
+
+export const getFeedbacks = (loadedFeedbacks, loadFeedbackStatus, loadFeedbackErrors) => {
+  return {
+    type: GET_FEEDBACKS,
+    loadedFeedbacks,
+    loadFeedbackStatus,
+    loadFeedbackErrors
+  }
+}
+
+export const getFeedbacksACreator = employeeId => {
+  return dispatch => {
+    WebApi.feedbacks.get.byEmployee(employeeId)
+    .then(response => {
+      console.log(response);
+      dispatch(getFeedbacks([], true, []));
+    }).catch(error => {
+      console.log(error);
+      dispatch(getFeedbacks([], false, errorCatcher(error)));
     })
   }
 }

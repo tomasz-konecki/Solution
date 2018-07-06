@@ -187,40 +187,65 @@ a:visited {
   overflow-y: auto;
 }
 
-.result-block {
+.result-block{
   width: 100%;
-  display: inline-block;
   text-align: center;
   padding: 20px 0;
 
   img {
     width: 100%;
-  }
 
+}
+
+.result-block-modal-in-parent{
+  position: absolute;
+  top: 0;
+  width: 100%;
+  left: 0;
+  text-align: center;
+  padding: 20px;
+  h1,  {
+    padding: 0px;
+  }
+}
+
+.result-error,
+.modal-result-error {
   b {
-    font-weight: bold;
-  }
 
-  p {
-    padding: 10px;
+    font-weight: bolder !important;
+    color: black;
+  }
+  strong {
+    font-weight: bolder !important;
+  }
+}
+
+.result-error{
+  color: $button-element-background;  
+}
+
+.modal-result-error{
+  background: $button-element-background;
+  h1 {
+    color: white;
   }
 
   ul {
+  p {
     padding: 10px;
   }
 }
-.result-success {
+
+.result-success{
   color: darkgreen;
 }
-.result-failure {
-  color: $button-element-background;
-}
-.result-error {
-  color: $button-element-background;
 
-  h1 {
-    font-size: 40px;
-  }
+.modal-result-success{
+  background: greenyellow;
+}
+
+.result-block {
 }
 
 .Modal {

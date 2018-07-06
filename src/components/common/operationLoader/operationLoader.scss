@@ -5,6 +5,7 @@
     position: fixed;
     top: 0;
     display: flex;
+    text-align: center;
     z-index: 1000;
     justify-content: center;
     align-items: center;
@@ -17,6 +18,10 @@
         z-index: 30;
         color: tomato;
         font-size: 28px;
+        @media(max-width: 440px){
+            font-size: 20px;
+            padding: 10px;
+        }
         
     }
 }

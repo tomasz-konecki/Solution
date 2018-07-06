@@ -1,3 +1,4 @@
+
 .project-details-container{
     height: 90%;
     margin-top: 20px;
@@ -9,31 +10,52 @@
     }
     header{
         display: flex;
-        height: 70px;
         justify-content: space-around;
-        padding: 10px 6px;
         box-sizing: border-box;
-        border-bottom: 1px solid #f98c56;
+        flex-flow: column;
+        @media(min-width: 580px){
+            flex-flow: row;
+            border-bottom: 1px solid #f98c56;
+            padding: 10px 0;
+            height: 70px;
+        }
     }
     header h1{
-        width: 34%;
+        width: 100%;
         display: inherit;
         align-items: center;
-        border-right: 1px solid #f98c56;
+        padding-bottom: 10px;
         position: relative;
+        @media(min-width: 580px){
+            width: 34%;
+        }
     }
     header h1 i{
-        margin: 0 20px;
+        margin: 0 35px;
+        @media(min-width: 1100px){
+            margin: 0 20px;
+        }
     }
     header h1 b{
-        font-size: 24px;
+        font-size: 15px;
+        @media(min-width: 704px){
+            font-size: 20px;
+        }
+        @media(min-width: 1100px){
+            top: 0px;
+            font-size: 24px;
+            right: 15px;
+        }
     }
-    header h1 b span{
+    header h1 span{
         position: absolute;
-        top: 0px;
-        font-size: 18px;
-        right: 15px;
         font-weight: bolder;
+        bottom: -5px;
+        margin-left: 20px;
+        @media(min-width: 1100px){
+            right: 10px;
+            top: -10px;
+        }
     }
     .spn-active{
         color: #37D037;
@@ -42,10 +64,17 @@
         color: red;
     }
     header nav{
-        width: 65%;
+        width: 100%;
+        margin: 25px 0;
         display: flex;
         align-items: center;
-        justify-content: flex-end;
+        justify-content: space-between;
+        @media(min-width: 580px){
+            justify-content: flex-end;
+            width: 65%;
+            border-left: 1px solid #f98c56;
+            margin: initial;
+        }
     }
   
     .project-carts{
@@ -59,44 +88,60 @@
         padding: 15px;
         box-sizing: border-box;
         display: flex;
+        flex-flow: column;
         justify-content: space-between;
+        @media(min-width: 1110px){
+            flex-flow: row;
+        }
     }
     .owners-list{
         display: flex;
         justify-content: space-around;
         flex-flow: wrap;
         .owner-btn{
-            margin: 10px 0;
             cursor: pointer;
             border: none;
             font-weight: bolder;
             position: relative;
-            padding: 15.5px 10px;
             border-radius: 15px;
             color: black;
+            padding: 10px;
+            margin: 25px;
             background-color: rgba(0,0,0,0.2);
-    
+            @media(min-width: 764px){
+                margin: 10px 0;
+                padding: 15.5px 10px;
+            }
             i{
-                right: 15px;
                 cursor: pointer;
                 position: absolute;
-                bottom: -15.5px;
-                font-size: 0.8rem;
+                font-size: .7rem;
+                bottom: -18px;
+                right: 15px;
                 color: red;
+                @media(min-width: 764px){
+                    margin: 10px 0;
+                    padding: 15.5px 10px;
+                    bottom: -40px;
+                    font-size: 0.8rem;
+                    right: 15px;
+                }
             }
         }
     
     }
     .right-project-spec{
-        width: 65%;
+        width: 100%;
         display: flex;
         align-items: center;
         flex-flow: column;
         font-size: 0.8rem;
         h3{
-            text-align: center;
             margin: 10px 0 30px 0;
             font-weight: bold;
+        }
+        @media(min-width: 1100px){
+            width: 65%;
         }
     }
 
@@ -136,10 +181,11 @@
     margin-right: auto;
 }
 .option-btn:hover{
-    width: 115px;
+    transform: scale(1.05);
 }
 .green-btn{
-    background-color: seagreen;
+    background-color: #1C7744;
+    color: white;
 }
 
 .normal-btn{

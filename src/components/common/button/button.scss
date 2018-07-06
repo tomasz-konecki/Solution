@@ -1,0 +1,57 @@
+.log-in-btn {
+  padding: 15px;
+  width: 190px;
+  font-size: 16px;
+  color: lightseagreen;
+  border: 1px solid lightseagreen;
+  border-radius: 5px;
+  cursor: pointer;
+  background-color: transparent;
+  position: absolute;
+  bottom: 15px;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+}
+.download-report-btn {
+  color: lightseagreen;
+  border: none;
+  background-color: transparent;
+  position: absolute;
+  bottom: -30px;
+  right: 10px;
+  cursor: pointer;
+}
+.generate-raport-btn {
+  border: 1px solid transparent;
+  font-size: 14px;
+  cursor: pointer;
+  border-radius: 5px;
+  padding: 16px;
+  text-transform: capitalize;
+  color: white;
+  i {
+    margin-right: 5px;
+  }
+}
+.btn-green{
+  background-color: #82b541;
+}
+.btn-green:hover {
+  background-color: #93b652;
+}
+.generate-raport-btn:focus {
+  outline: none;
+}
+.generate-raport-btn:disabled, 
+.generate-raport-btn:disabled:hover
+ {
+  background-color: grey;
+  cursor: not-allowed;
+}
+.btn-brown{
+  background-color: #D22708;
+}
+.btn-brown:hover{
+  background-color: #D33819;
+}

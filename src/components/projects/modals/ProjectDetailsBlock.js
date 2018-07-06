@@ -14,7 +14,7 @@ import Form from '../../form/form';
 import { validateInput } from '../../../services/validation';
 import { mapObjectKeysToArrayByGivenIndexes } from '../../../services/methods';
 import ContactList from '../../common/contactList/contactList';
-
+import {errorCatcher} from '../../../services/errorsHandler';
 const emptyField = "<brak>";
 const active = "Aktywny";
 const inActive = "Nieaktywny";
@@ -34,7 +34,7 @@ class ProjectDetailsBlock extends Component {
         isAutocorrect: false,
         fetchClientsError: "",
         autoCorrect: true,
-        isLoading: true,
+        isLoading: false,
 
         responsiblePersons: [],
 
@@ -53,8 +53,7 @@ class ProjectDetailsBlock extends Component {
  
   componentDidMount() {
     WebApi.clients.get.all().then(response => {
-      console.log(response);
-      this.setState({fetchedClients: response.replyBlock.data.dtoObjects, isLoading: false});
+      this.setState({fetchedClients: response.replyBlock.data.dtoObjects});
       this.goForClient();
     });
 
@@ -70,7 +69,6 @@ class ProjectDetailsBlock extends Component {
       this.setState({isLoading: true, 
         editProjectResult: {content: "", status: null}});
       const projectToSend = {
-        id: this.props.project.id,
         name: this.state.editProjectArray[0].value,
         description: this.state.editProjectArray[1].value,
         client: this.state.editProjectArray[2].value,
@@ -85,13 +83,13 @@ class ProjectDetailsBlock extends Component {
       }
 
       WebApi.projects.put.project(this.props.project.id, projectToSend).then(response => {
+        console.log(response);
         this.setState({isLoading: false, editProjectResult: {content: "Edycja została przeprowadzona poprawnie", status: true}});
         if(this.props.additionalOperation){
           this.props.additionalOperation();
         }
       }).catch(error => {
-        this.setState({isLoading: false,
-          editProjectResult: {content: error.replyBlock.data.errorObjects[0].errors.dataInvalidError, status: false}});
+        this.setState({isLoading: false, editProjectResult: {content: errorCatcher(error), status: false}});
       });
   }
   onChangeClient = event => {
@@ -104,12 +102,13 @@ class ProjectDetailsBlock extends Component {
       editProjectArray[ClientId].maxLength,
       editProjectArray[ClientId].inputType, 
       editProjectArray[ClientId].title);
-    
     const clientsWhichMatch = [];
     if(this.state.fetchedClients.length > 0 && this.state.autoCorrect){
       for(let key in this.state.fetchedClients){
-        if(this.state.fetchedClients[key].name.search(event.target.value) !== -1){
-          clientsWhichMatch.push(this.state.fetchedClients[key]);
+        if(this.state.fetchedClients[key].name){
+          if(this.state.fetchedClients[key].name.search(event.target.value) !== -1){
+            clientsWhichMatch.push(this.state.fetchedClients[key]);
+          }
         }
       }      
     }
@@ -168,7 +167,6 @@ class ProjectDetailsBlock extends Component {
       selected: this.state.responsiblePersons[index].firstName});
   }
   render() {
-    console.log(this.props.estimatedEndDate);
     const editable = this.props.editable;
     const { t } = this.props;
     return (

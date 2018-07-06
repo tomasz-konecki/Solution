@@ -21,7 +21,9 @@ class SmoothTable extends Component {
       filterFieldOverrides: {},
       rowUnfurls: {},
       isQueryLoading: false,
-      selectedOption: "showActivated",
+      selectedOption: props.construct.showAllCheckbox
+        ? "showAll"
+        : "showActivated",
       searchQuery: "",
       sortingSettings: {
         Sort: props.construct.defaultSortField,
@@ -30,12 +32,33 @@ class SmoothTable extends Component {
       update: false,
       unfurl: props.construct.rowDetailUnfurl
     };
+    this.constructingTableColumns();
+    this.state.columns[props.construct.defaultSortField] =
+      props.construct.defaultSortAscending;
 
-    props.construct.columns.map((column, index) => {
+    this.handlePageChange = this.handlePageChange.bind(this);
+    this.removeFilters = this.removeFilters.bind(this);
+    this.generateOperators = this.generateOperators.bind(this);
+    this.generateSettings = this.generateSettings.bind(this);
+    this.handleQueryChange = this.handleQueryChange.bind(this);
+    this.handleColumnFilterChange = this.handleColumnFilterChange.bind(this);
+    this.handleRowClick = this.handleRowClick.bind(this);
+    this.handleInputChange = this.handleInputChange.bind(this);
+
+    this.initialState = Object.assign({}, this.state);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.construct.columns !== this.state.construct.columns) {
+      this.setState({ construct: nextProps.construct });
+    }
+  }
+
+  constructingTableColumns() {
+    this.props.construct.columns.map((column, index) => {
       if (column.field === undefined) return;
 
       let newField = {};
-      let newDateFilters = {};
       let newFilterField = {};
       let newFilterFieldLoaders = {};
       let newFilterFieldOverrides = {};
@@ -52,27 +75,6 @@ class SmoothTable extends Component {
       Object.assign(this.state.columnFilters, newFilterField);
       Object.assign(this.state.filterFieldOverrides, newFilterFieldOverrides);
     });
-
-    this.state.columns[props.construct.defaultSortField] =
-      props.construct.defaultSortAscending;
-
-    this.handleSortColumnClick = this.handleSortColumnClick.bind(this);
-    this.handlePageChange = this.handlePageChange.bind(this);
-    this.removeFilters = this.removeFilters.bind(this);
-    this.generateOperators = this.generateOperators.bind(this);
-    this.generateSettings = this.generateSettings.bind(this);
-    this.handleQueryChange = this.handleQueryChange.bind(this);
-    this.handleColumnFilterChange = this.handleColumnFilterChange.bind(this);
-    this.handleRowClick = this.handleRowClick.bind(this);
-    this.handleInputChange = this.handleInputChange.bind(this);
-
-    this.initialState = Object.assign({}, this.state);
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.construct !== this.state.construct) {
-      this.setState({ construct: nextProps.construct });
-    }
   }
 
   deepenFunction(func, ...args) {
@@ -129,6 +131,10 @@ class SmoothTable extends Component {
       case "showActivated":
         mainFilter["isDeleted"] = false;
         break;
+      case "showAll":
+        mainFilter["isDeleted"] = null;
+        break;
+
       default:
         break;
     }
@@ -145,7 +151,7 @@ class SmoothTable extends Component {
     return Object.assign({}, this.state.sortingSettings, mainFilter);
   }
 
-  handleSortColumnClick(field) {
+  handleSortColumnClick = field => {
     if (field !== undefined) {
       let oldFields = this.state.columns;
       oldFields[field] = !oldFields[field];
@@ -155,7 +161,7 @@ class SmoothTable extends Component {
           currentlySortedColumn: field,
           sortingSettings: {
             Sort: field,
-            Ascending: this.state.columns[field]
+            Ascending: oldFields[field]
           },
           rowUnfurls: {}
         },
@@ -167,7 +173,7 @@ class SmoothTable extends Component {
         }
       );
     }
-  }
+  };
 
   handlePageChange(paginator) {
     this.setState(
@@ -239,7 +245,6 @@ class SmoothTable extends Component {
   handleColumnFilterChange(column, type = "text", event) {
     let { field, multiState } = column;
     let { columnFilters, columnFiltersLoaders } = this.state;
-
     let value,
       offset = 1;
 
@@ -406,6 +411,23 @@ class SmoothTable extends Component {
         </span>
       );
     }
+    if (this.props.construct.showAllCheckbox) {
+      operators.push(
+        <span key={-7} className="smooth-show-deleted">
+            <input
+            id="radio5"
+              name="radioButtons"
+              type="radio"
+              value="showAll"
+              checked={this.state.selectedOption === "showAll"}
+              onChange={this.handleInputChange}
+            />
+          <label htmlFor="radio5"> 
+            {this.props.t("ShowAll")}:
+          </label>
+        </span>
+      );
+    }
 
     return operators;
   }
@@ -485,10 +507,11 @@ class SmoothTable extends Component {
               column.type
             )}
           >
-            <option />
-            {Object.values(column.multiState).map((stateValue, index) => {
-              return <option key={index}>{stateValue}</option>;
-            })}
+            {Object.values(column.multiState)
+              .reverse()
+              .map((stateValue, index) => {
+                return <option key={index}>{stateValue}</option>;
+              })}
           </select>
         );
       }
@@ -499,6 +522,7 @@ class SmoothTable extends Component {
             locale="pl"
             className="form-control form-control-sm manual-input"
             dateFormat="YYYY-MM-DD"
+            placeholderText={this.props.t("Search") + " " + column.pretty}
             todayButton={this.props.t("Today")}
             peekNextMonth
             showMonthDropdown
@@ -661,7 +685,6 @@ class SmoothTable extends Component {
       }
     );
   };
-
   render() {
     const { construct } = this.state;
     let list = [],

@@ -3,7 +3,7 @@ import './ProjectDetails.scss';
 import WebApi from '../../../api/index';
 import Aux from '../../../services/auxilary';
 import ProjectInformationsCart from './ProjectInformationsCart/ProjectInformationsCart';
-import { cutNotNeededKeysFromArray, getRandomColor, populateFormArrayWithValues } from '../../../services/methods';
+import { cutNotNeededKeysFromArray, populateFormArrayWithValues } from '../../../services/methods';
 import Spinner from '../../common/spinner/spinner';
 import Modal from 'react-responsive-modal';
 import Table from '../../common/table/table';
@@ -15,13 +15,12 @@ import moment from 'moment';
 import Form from '../../form/form';
 import ProgressPicker from '../../common/progressPicker/progressPicker';
 import { validateInput } from '../../../services/validation';
-import SpinnerButton from '../../form/spinner-btn/spinner-btn';
 import { errorCatcher } from '../../../services/errorsHandler';
 import OperationStatusPrompt from '../../form/operationStatusPrompt/operationStatusPrompt';
 import { connect } from 'react-redux';
 import { getProjectACreator, addEmployeeToProjectACreator, deleteProjectOwnerACreator, 
     deleteProjectACreator, closeProjectACreator, reactivateProjectACreator, 
-    addEmployeeToProject, changeProjectSkillACreator } from '../../../actions/projectsActions';
+    addEmployeeToProject, changeProjectSkillACreator, getProject } from '../../../actions/projectsActions';
 import Skills from '../../common/skills/skills';
 const workerNames = ["Nazwa", "Rola", "Doświadczenie", "Stanowisko", "Data rozpoczęcia", "Data zakończenia"];
 const projectStatuses = [{classVal: "spn-active", name:  "Aktywny"}, 
@@ -59,10 +58,13 @@ class ProjectDetails extends Component{
         return addEmployeToProjectFormItems;
     }
     componentWillReceiveProps(nextProps){
-        
+        let { addEmployeToProjectFormItems } = [...this.state];
         if(this.props.project === null){ 
-            this.setState({addEmployeToProjectFormItems: this.fillDates(nextProps.project.startDate, 
-            nextProps.project.endDate, nextProps.project.estimatedEndDate), isLoadingProject: false});
+            if(nextProps.loadProjectStatus){
+                addEmployeToProjectFormItems = this.fillDates(nextProps.project.startDate, 
+                    nextProps.project.endDate, nextProps.project.estimatedEndDate);
+            }
+            this.setState({addEmployeToProjectFormItems: addEmployeToProjectFormItems, isLoadingProject: false});
         }
         else{
             let isError = null;
@@ -75,13 +77,17 @@ class ProjectDetails extends Component{
                     operationError: (!nextProps[this.state.currentOperationError] || isError === false) ? "" : 
                     nextProps[this.state.currentOperationError], 
                     deleteProjectModal: false,
-                    addEmployeSpinner: false
+                    addEmployeSpinner: false,
+                    isLoadingProject: false
                 });
             }
             else{
                 if(nextProps.loadProjectErrors !== this.props.loadProjectErrors){
-                    const addEmployeToProjectFormItems = this.fillDates(nextProps.project.startDate, 
-                        nextProps.project.endDate, nextProps.project.estimatedEndDate);
+
+                    if(nextProps.loadProjectStatus){
+                        addEmployeToProjectFormItems = this.fillDates(nextProps.project.startDate, 
+                            nextProps.project.endDate, nextProps.project.estimatedEndDate);
+                    }
                     
                     this.setState({
                         operationLoader: false,
@@ -89,7 +95,6 @@ class ProjectDetails extends Component{
                         operationError: "",
                         addEmployeToProjectFormItems: addEmployeToProjectFormItems,
                         isLoadingProject: false
-
                     })
                 }
                 else if(nextProps.addEmployeeToProjectErrors !== this.props.addEmployeeToProjectErrors)
@@ -105,7 +110,7 @@ class ProjectDetails extends Component{
             spansArray.push(<span style={{backgroundColor: i <= this.state.lteVal ? 'lightseagreen' : null}} 
                 key={i}
                 onClick={() => this.setState({lteVal: i})}>
-                {i === this.state.lteVal ? <i style={{backgroundColor: `lightseagreen`, color: 'black', fontSize: '10px'}}>{this.state.lteVal/range * 100}%</i> : null}
+                {i === this.state.lteVal ? <i>{this.state.lteVal/range * 100}%</i> : null}
             </span>);
         }
         return spansArray;
@@ -143,20 +148,26 @@ class ProjectDetails extends Component{
         this.props.changeProjectSkill(this.props.project.id, skillId, skillLevel);
     }
     render(){
+        const { project } = this.props;
+        const { addEmployeeToProjectStatus } = this.props;
+        const { addEmployeeToProjectErrors } = this.props;
+        const { operationLoader } = this.state;
+        const { loadProjectErrors } = this.props;
         return(
-            <div onClick={this.props.addEmployeeToProjectStatus !== null ? 
+            <div onClick={addEmployeeToProjectStatus !== null ? 
                 () => this.props.addEmployeeToProjectAction(null, []) : null} className="project-details-container">
                 {this.state.isLoadingProject ? 
                 <Spinner /> :
-                this.props.project && 
+                project && 
                 <Aux>
                     <header>
                         <h1>
+                            <span className={projectStatuses[project.status].classVal}>
+                                {projectStatuses[project.status].name}
+                            </span>
                             <i className="fa fa-briefcase fa-2x"></i>
-                            <b>{this.props.project.name}
-                                <span className={projectStatuses[this.props.project.status].classVal}>
-                                {projectStatuses[this.props.project.status].name}
-                                </span>
+                            <b>{project.name}
+                                
                             </b>
                         </h1>
                         <nav>
@@ -164,15 +175,15 @@ class ProjectDetails extends Component{
                                 className="option-btn normal-btn">Edytuj projekt</button>
 
 
-                            {this.props.project.status !== 0 && 
+                            {project.status !== 0 && 
                                 <button onClick={this.reactivateProject} className="option-btn green-btn">Aktywuj projekt</button>
                             }
 
-                            {(this.props.project.status !== 1 && this.props.project.status !== 1)  && 
+                            {(project.status !== 1 && project.status !== 1)  && 
                                 <button onClick={this.closeProject} className="option-btn option-dang">Wstrzymaj</button>
                             }
 
-                            {(this.props.project.status !== 2 && this.props.project.status !== 1) &&
+                            {(project.status !== 2 && project.status !== 1) &&
                                 <button onClick={() => this.setState({deleteProjectModal: !this.state.deleteProjectModal})} className="option-btn option-very-dang">Usuń projekt</button>
                             }
                         </nav>
@@ -182,22 +193,22 @@ class ProjectDetails extends Component{
                             <ProjectInformationsCart key={1} 
                             items={this.props.overViewKeys}
                             headerTitle="Informacje ogólne"
-                            originalObject={this.props.project}
+                            originalObject={project}
                             dateKeys={["startDate","estimatedEndDate", "endDate"]}
                             />
 
                             <ProjectInformationsCart key={2} 
                             items={this.props.responsiblePersonKeys} 
                             headerTitle="Osoba odpowiedzialna" 
-                            originalObject={this.props.project.responsiblePerson}
+                            originalObject={project.responsiblePerson}
                             />
                             <article>
                                 <h4>Opis</h4>
-                                {this.props.project.description}
+                                {project.description}
                             </article>
                             <h4>Właściciele</h4>
                             <div className="owners-list">
-                                {this.props.project.owners.map((i, index) => {
+                                {project.owners.map((i, index) => {
                                     return (
                                     <button key={i.id} className="owner-btn">
                                         {i.fullName}
@@ -209,24 +220,21 @@ class ProjectDetails extends Component{
 
                         <div className="right-project-spec">
                             <Table 
-                                items={this.props.project.team} 
+                                projectId={project.id}
+                                items={project.team} 
                                 title="Zespół projektowy"
                                 thds={workerNames}
                                 emptyMsg="Ten projekt nie ma jeszcze pracowników"
                                 togleAddEmployeeModal={() => this.setState({addEmployeModal: !this.state.addEmployeModal})}
                                 />
                                 
-                            {this.props.project.skills.length > 0 ? 
+                            {project.skills.length > 0 &&
                                 <Skills 
                                 status={this.props.changeProjectSkillStatus}
                                 errors={this.props.changeProjectSkillErrors}
                                 finalFunction={this.changeSkills}
                                 title="Umiejętności na potrzeby projektu"
-                                items={this.props.project.skills} />
-                                : 
-                                <button className="add-abilites">
-                                    Dodaj umiejętności
-                                </button>
+                                items={project.skills} />
                             }       
                         </div>
                     </main>
@@ -239,7 +247,7 @@ class ProjectDetails extends Component{
                     onClose={() => this.setState({editModal: !this.state.editModal})}>
                     
                     <ProjectDetailsBlock
-                    project={this.props.project}
+                    project={project}
                     additionalOperation={this.props.getProject}
                     />
                 </Modal>
@@ -270,7 +278,7 @@ class ProjectDetails extends Component{
                 contentLabel="Add employee to project modal"
                 onClose={() => this.setState({addEmployeModal: !this.state.addEmployeModal})}>
                     <header>
-                        <h3 className="section-heading">Dodaj pracownika do projektu <b>{this.props.project.name}</b></h3>
+                        <h3 className="section-heading">Dodaj pracownika do projektu </h3>
                     </header>
                     <Form 
                         btnTitle="Dodaj"
@@ -279,7 +287,6 @@ class ProjectDetails extends Component{
                         shouldSubmit={false}
                         dateIndexesToCompare={[0,1]}
                         onSubmit={this.addEmployeeToProject}
-                        error={this.state.addEmployeError}
                         isLoading={this.state.addEmployeSpinner}
                         formItems={this.state.addEmployeToProjectFormItems} 
                         shouldCancelInputList={true}
@@ -293,24 +300,32 @@ class ProjectDetails extends Component{
                     </Form>
                 </Modal>
 
-                {(this.state.operationLoader || this.state.operationError !== "") && 
+                {(operationLoader || this.state.operationError !== "") && 
                     <OperationLoader 
-                    isLoading={this.state.operationLoader}
+                    isLoading={operationLoader}
                     operationError={this.state.operationError}
                     close={() => this.setState({operationLoader: false, operationError: ""})}
                 />
                 }
 
-                {(this.props.addEmployeeToProjectStatus !== null && 
-                this.props.addEmployeeToProjectStatus !== undefined) &&
+                {(addEmployeeToProjectStatus !== null && 
+                addEmployeeToProjectStatus !== undefined) &&
                     <OperationStatusPrompt 
-                    operationPromptContent={this.props.addEmployeeToProjectStatus ? 
+                    operationPromptContent={addEmployeeToProjectStatus ? 
                         "Pomyślnie dodano pracownika do projektu" : 
-                        this.props.addEmployeeToProjectErrors && 
-                        this.props.addEmployeeToProjectErrors[0]} 
-                    operationPrompt={this.props.addEmployeeToProjectStatus} />
+                        addEmployeeToProjectErrors && 
+                        addEmployeeToProjectErrors[0]} 
+                    operationPrompt={addEmployeeToProjectStatus} />
                 }
                 </Aux>
+                }
+
+
+                {this.props.loadProjectStatus !== null && 
+                    !this.props.loadProjectStatus &&
+                    <OperationLoader 
+                    operationError={loadProjectErrors[0]}
+                    close={() => this.props.clearProjectData(null,null,[],[],[])} />
                 }
             </div>
         );
@@ -348,6 +363,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         getProject: (projectId) => dispatch(getProjectACreator(projectId)),
+        clearProjectData: (project, status, errors, personKeys, overViewKeys) => dispatch(getProject(project, status, errors, personKeys, overViewKeys)),
         addEmployeeToProject: (empId, projId, strDate, endDate, 
             role, assignedCapacity, responsibilites) => dispatch(addEmployeeToProjectACreator(empId, projId, strDate, endDate, 
                 role, assignedCapacity, responsibilites)),

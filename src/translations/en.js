@@ -21,9 +21,9 @@ const translations = {
   SmoothTable: {
     Search: "Search",
     DeleteFilters: "Delete filters",
-    ShowDeleted: "Show deleted",
-    ShowNotActivated: "Show not activated",
-    ShowActivated: "Show activated",
+    ShowDeleted: "Deleted",
+    ShowNotActivated: "Not activated",
+    ShowActivated: "Activated",
     ShowAll: "Show All",
     Today: "Today",
     NoDataOrResults: "No data or results given"

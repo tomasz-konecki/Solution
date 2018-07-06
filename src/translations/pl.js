@@ -22,9 +22,9 @@ const translations = {
   SmoothTable: {
     Search: "Szukaj",
     DeleteFilters: "Usuń filtry",
-    ShowDeleted: "Pokaż usunięte",
-    ShowNotActivated: "Pokaż nieaktywowane",
-    ShowActivated: "Pokaż aktywne",
+    ShowDeleted: "Usunięte",
+    ShowNotActivated: "Nieaktywowane",
+    ShowActivated: "Aktywne",
     ShowAll: "Pokaż wszystkie",
     Today: "Dzisiaj",
     NoDataOrResults: "Brak danych bądź wyników"

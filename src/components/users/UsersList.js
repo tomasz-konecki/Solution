@@ -88,16 +88,16 @@ class UsersList extends Component {
     this.setState({ showModal: true });
   };
 
-  handleCloseModal = (object) => {
+  handleCloseModal = object => {
     this.setState({ showModal: false }, () => {
-      object && object.afterClose === "reloadList" ? this.props.pageChange(1, Object.assign({isNotActivated: true})) : null
+      object && object.afterClose === "reloadList"
+        ? this.props.pageChange(1, Object.assign({ isNotActivated: true }))
+        : null;
     });
   };
 
   rolesArrayToSignificantSymbol(rolesArray) {
-    const symbol = [
-      'D', 'S', 'H', 'T', 'A', 'M'
-    ];
+    const symbol = ["D", "S", "H", "T", "A", "M"];
     const roles = [
       "Developer",
       "Tradesman",
@@ -109,19 +109,20 @@ class UsersList extends Component {
     let symbols = [];
 
     for (let i = 0; i < symbol.length; i++) {
-
-      if (rolesArray.indexOf(roles[i]) >= 0) symbols.push(
-        <span className={'user-role-symbol ' + roles[i]} key={i} title={roles[i]}>{symbol[i]}</span>
-      );
-      else {
+      if (rolesArray.indexOf(roles[i]) >= 0)
         symbols.push(
-          <span className={'user-role-symbol'} key={i} />
+          <span
+            className={"user-role-symbol " + roles[i]}
+            key={i}
+            title={roles[i]}
+          >
+            {symbol[i]}
+          </span>
         );
       else {
         symbols.push(<span className={"user-role-symbol"} key={i} />);
       }
     }
-
     return symbols;
   }
 
@@ -155,14 +156,40 @@ class UsersList extends Component {
       ],
       columns: [
         {
-          width: 1, pretty: "Role", manualResolver: (user, column) => {
+          width: 1,
+          pretty: "Role",
+          manualResolver: (user, column) => {
             return this.rolesArrayToSignificantSymbol(user.roles);
           }
         },
-        { width: 20, field: "firstName", pretty: t("Name"), type: "text", filter: true },
-        { width: 30, field: "lastName", pretty: t("Surname"), type: "text", filter: true },
-        { width: 30, field: "email", pretty: t("Email"), type: "text", filter: true },
-        { width: 19, field: "phoneNumber", pretty: t("Phone"), type: "text", filter: true },
+        {
+          width: 20,
+          field: "firstName",
+          pretty: t("Name"),
+          type: "text",
+          filter: true
+        },
+        {
+          width: 30,
+          field: "lastName",
+          pretty: t("Surname"),
+          type: "text",
+          filter: true
+        },
+        {
+          width: 30,
+          field: "email",
+          pretty: t("Email"),
+          type: "text",
+          filter: true
+        },
+        {
+          width: 19,
+          field: "phoneNumber",
+          pretty: t("Phone"),
+          type: "text",
+          filter: true
+        },
         {
           width: 1,
           comparator: object =>
@@ -196,7 +223,7 @@ class UsersList extends Component {
                     key: "deleteUser",
                     string: `${t("DeleteUserInfinitive")} ${object.firstName} ${
                       object.lastName
-                      }`,
+                    }`,
                     id: object.id,
                     successMessage: t("UserDeleted")
                   })
@@ -215,17 +242,17 @@ class UsersList extends Component {
               comparator: object =>
                 !object.isDeleted &&
                 binaryPermissioner(false)(0)(0)(0)(0)(0)(1)(this.props.binPem)
-            }
-              comparator: object => !object.isDeleted && binaryPermissioner(false)(0)(0)(0)(0)(0)(1)(this.props.binPem)
             },
             {
               icon: { icon: "download" },
               title: t("DownloadCV"),
               click: object => {
-                this.props.getCV(object.id)
+                this.props.getCV(object.id);
               },
-              comparator: object => !object.isDeleted && binaryPermissioner(false)(0)(0)(0)(0)(0)(1)(this.props.binPem)
-            },
+              comparator: object =>
+                !object.isDeleted &&
+                binaryPermissioner(false)(0)(0)(0)(0)(0)(1)(this.props.binPem)
+            }
           ],
           pretty: t("DeleteEdit")
         }
@@ -233,7 +260,13 @@ class UsersList extends Component {
     };
 
     if (this.props.show === "isNotActivated") {
-      construct.columns[0] = { width: 25, field: "dateOfRequest", pretty: t("Date"), type: "date", filter: true };
+      construct.columns[0] = {
+        width: 25,
+        field: "dateOfRequest",
+        pretty: t("Date"),
+        type: "date",
+        filter: true
+      };
       construct.defaultSortField = "dateOfRequest";
       construct.columns[5].toolBox = [
         {
@@ -249,7 +282,8 @@ class UsersList extends Component {
               })
             );
           },
-          comparator: object => binaryPermissioner(false)(0)(0)(0)(0)(0)(1)(this.props.binPem)
+          comparator: object =>
+            binaryPermissioner(false)(0)(0)(0)(0)(0)(1)(this.props.binPem)
         },
         {
           icon: { icon: "plus" },
@@ -257,33 +291,21 @@ class UsersList extends Component {
           click: object => {
             this.handleGetUser(object);
           },
-          comparator: object => binaryPermissioner(false)(0)(0)(0)(0)(0)(1)(this.props.binPem)
+          comparator: object =>
+            binaryPermissioner(false)(0)(0)(0)(0)(0)(1)(this.props.binPem)
         }
       ];
     }
 
-    let render = () => <div>
-      <SmoothTable
-        show={this.props.show}
-        currentPage={this.props.currentPage}
-        totalPageCount={this.props.totalPageCount}
-        loading={this.props.loading}
-        data={this.props.users}
-        construct={construct}
-      />
-      <Modal
-        open={this.state.showModal}
-        classNames={{ modal: "Modal Modal-users" }}
-        contentLabel="Edit users details"
-        onClose={this.handleCloseModal}
-      >
-        <EditUserDetails
-          handleCloseModal={this.handleCloseModal}
-          user={this.state.user}
-          handleRoleChange={this.handleRoleChange}
-          responseBlock={this.state.responseBlock}
-          loading={this.state.loading}
-          changeUserRoles={this.changeUserRoles}
+    let render = () => (
+      <div>
+        <SmoothTable
+          show={this.props.show}
+          currentPage={this.props.currentPage}
+          totalPageCount={this.props.totalPageCount}
+          loading={this.props.loading}
+          data={this.props.users}
+          construct={construct}
         />
         <Modal
           open={this.state.showModal}

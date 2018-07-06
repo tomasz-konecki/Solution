@@ -187,24 +187,24 @@ a:visited {
   overflow-y: auto;
 }
 
-.result-block{
+.result-block {
   width: 100%;
   text-align: center;
   padding: 20px 0;
 
   img {
     width: 100%;
-
+  }
 }
 
-.result-block-modal-in-parent{
+.result-block-modal-in-parent {
   position: absolute;
   top: 0;
   width: 100%;
   left: 0;
   text-align: center;
   padding: 20px;
-  h1,  {
+  h1 {
     padding: 0px;
   }
 }
@@ -212,7 +212,6 @@ a:visited {
 .result-error,
 .modal-result-error {
   b {
-
     font-weight: bolder !important;
     color: black;
   }
@@ -221,31 +220,27 @@ a:visited {
   }
 }
 
-.result-error{
-  color: $button-element-background;  
+.result-error {
+  color: $button-element-background;
 }
 
-.modal-result-error{
+.modal-result-error {
   background: $button-element-background;
   h1 {
     color: white;
   }
 
-  ul {
   p {
     padding: 10px;
   }
 }
 
-.result-success{
+.result-success {
   color: darkgreen;
 }
 
-.modal-result-success{
+.modal-result-success {
   background: greenyellow;
-}
-
-.result-block {
 }
 
 .Modal {

@@ -323,7 +323,11 @@ class SmoothTable extends Component {
 
   operatorButton(index, operator) {
     return (
-      <button key={index} onClick={this.deepenFunction(operator.click)}>
+      <button
+        className="smooth-operator-add-button"
+        key={index}
+        onClick={this.deepenFunction(operator.click)}
+      >
         {operator.pretty}
       </button>
     );
@@ -340,9 +344,9 @@ class SmoothTable extends Component {
 
     if (this.props.construct.filtering) {
       operators.push(
-        <span key={-1}>
+        <span className="smooth-table-search-span" key={-1}>
           <input
-            type="text"
+            type="search"
             name="search"
             value={this.state.searchQuery}
             placeholder={this.props.t("Search")}
@@ -353,7 +357,7 @@ class SmoothTable extends Component {
         </span>
       );
       operators.push(
-        <span key={-2}>
+        <span className="smooth-table-remove-filters" key={-2}>
           <button onClick={this.removeFilters}>
             {this.props.t("DeleteFilters")}
           </button>
@@ -363,12 +367,7 @@ class SmoothTable extends Component {
 
     if (this.props.construct.showDeletedCheckbox) {
       operators.push(
-        <span key={-3} className="smooth-separator">
-          |
-        </span>
-      );
-      operators.push(
-        <span key={-4} className="smooth-show-deleted">
+        <span className="smooth-radio-span" key={-4}>
           <input
             id="radio2"
             name="radioButtons"
@@ -377,13 +376,15 @@ class SmoothTable extends Component {
             checked={this.state.selectedOption === "isDeleted"}
             onChange={this.handleInputChange}
           />
-          <label htmlFor="radio2">{this.props.t("ShowDeleted")}:</label>
+          <label className="smooth-radio-button1" htmlFor="radio2">
+            {this.props.t("ShowDeleted")}
+          </label>
         </span>
       );
     }
     if (this.props.construct.showNotActivatedAccountsCheckbox) {
       operators.push(
-        <span key={-5} className="smooth-show-deleted">
+        <span className="smooth-radio-span" key={-5}>
           <input
             id="radio3"
             name="radioButtons"
@@ -392,13 +393,15 @@ class SmoothTable extends Component {
             checked={this.state.selectedOption === "isNotActivated"}
             onChange={this.handleInputChange}
           />
-          <label htmlFor="radio3">{this.props.t("ShowNotActivated")}:</label>
+          <label className="smooth-radio-button2" htmlFor="radio3">
+            {this.props.t("ShowNotActivated")}
+          </label>
         </span>
       );
     }
     if (this.props.construct.showActivatedCheckbox) {
       operators.push(
-        <span key={-6} className="smooth-show-deleted">
+        <span className="smooth-radio-span" key={-6}>
           <input
             id="radio4"
             name="radioButtons"
@@ -407,23 +410,25 @@ class SmoothTable extends Component {
             checked={this.state.selectedOption === "showActivated"}
             onChange={this.handleInputChange}
           />
-          <label htmlFor="radio4">{this.props.t("ShowActivated")}: </label>
+          <label className="smooth-radio-button3" htmlFor="radio4">
+            {this.props.t("ShowActivated")}{" "}
+          </label>
         </span>
       );
     }
     if (this.props.construct.showAllCheckbox) {
       operators.push(
-        <span key={-7} className="smooth-show-deleted">
-            <input
+        <span key={-7} className="smooth-radio-span">
+          <input
             id="radio5"
-              name="radioButtons"
-              type="radio"
-              value="showAll"
-              checked={this.state.selectedOption === "showAll"}
-              onChange={this.handleInputChange}
-            />
-          <label htmlFor="radio5"> 
-            {this.props.t("ShowAll")}:
+            name="radioButtons"
+            type="radio"
+            value="showAll"
+            checked={this.state.selectedOption === "showAll"}
+            onChange={this.handleInputChange}
+          />
+          <label className="smooth-radio-button3" htmlFor="radio5">
+            {this.props.t("ShowAll")}
           </label>
         </span>
       );

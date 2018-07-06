@@ -14,6 +14,7 @@ import { translate } from "react-translate";
 import { push } from "react-router-redux";
 import binaryPermissioner from "./../../api/binaryPermissioner";
 import specialPermissioner from "./../../api/specialPermissioner";
+import "../../scss/components/projects/ProjectsList.scss";
 
 class ProjectsList extends Component {
   constructor(props) {

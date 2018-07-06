@@ -21,10 +21,10 @@ const translations = {
   SmoothTable: {
     Search: "Search",
     DeleteFilters: "Delete filters",
-    ShowDeleted: "Show deleted",
-    ShowNotActivated: "Show not activated",
-    ShowActivated: "Show activated",
-    ShowAll: "Show All",
+    ShowDeleted: "Deleted",
+    ShowNotActivated: "Not activated",
+    ShowActivated: "Activated",
+    ShowAll: "All",
     Today: "Today",
     NoDataOrResults: "No data or results given"
   },

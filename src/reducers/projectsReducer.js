@@ -4,13 +4,13 @@ import {
   CHANGE_EDITED_PROJECT,
   GET_PROJECT,
   ADD_EMPLOYEE_TO_PROJECT ,
-  DELETE_PROJECT_OWNER,
   DELETE_PROJECT,
   CLOSE_PROJECT,
   REACTIVATE_PROJECT, 
   CHANGE_PROJECT_SKILL,
   ADD_FEEDBACK,
-  GET_FEEDBACKS
+  GET_FEEDBACKS,
+  EDIT_PROJECT
 } from "../constants";
 import { updateObject } from '../services/methods';
 const initialState = {
@@ -31,17 +31,11 @@ const initialState = {
   addEmployeeToProjectStatus: null,
   addEmployeeToProjectErrors: [],
 
-  delProjectOwnerStatus: null,
-  delProjectOwnerErrors: [],
-
   deleteProjectStatus: null,
   deleteProjectErrors: [],
 
   closeProjectStatus: null,
   closeProjectErrors: [],
-
-  reactivateProjectStatus: null,
-  reactivateProjectErrors: [],
 
   changeProjectSkillStatus: null,
   changeProjectSkillErrors: [],
@@ -51,7 +45,10 @@ const initialState = {
 
   loadedFeedbacks: [],
   loadFeedbackStatus: null,
-  loadFeedbackErrors: []
+  loadFeedbackErrors: [],
+
+  editProjectStatus: null,
+  editProjectErrors: []
 };
 
 export const projectsReducer = (state = initialState, action) => {
@@ -79,18 +76,12 @@ export const projectsReducer = (state = initialState, action) => {
     case ADD_EMPLOYEE_TO_PROJECT:
       return updateObject(state, { addEmployeeToProjectStatus: action.addEmployeeToProjectStatus, 
         addEmployeeToProjectErrors: action.addEmployeeToProjectErrors })
-    case DELETE_PROJECT_OWNER:
-      return updateObject(state, { delProjectOwnerStatus: action.delProjectOwnerStatus, 
-        delProjectOwnerErrors: action.delProjectOwnerErrors})
     case DELETE_PROJECT:
       return updateObject(state, { deleteProjectStatus: action.deleteProjectStatus, 
         deleteProjectErrors: action.deleteProjectErrors})
     case CLOSE_PROJECT:
       return updateObject(state, { closeProjectStatus: action.closeProjectStatus, 
         closeProjectErrors: action.closeProjectErrors})
-    case REACTIVATE_PROJECT:
-      return updateObject(state, { reactivateProjectStatus: action.reactivateProjectStatus, 
-        reactivateProjectErrors: action.reactivateProjectErrors})
     case CHANGE_PROJECT_SKILL:
       return updateObject(state, { changeProjectSkillStatus: action.changeProjectSkillStatus, 
         changeProjectSkillErrors: action.changeProjectSkillErrors})
@@ -102,6 +93,10 @@ export const projectsReducer = (state = initialState, action) => {
     case GET_FEEDBACKS:
       return updateObject(state, { loadedFeedbacks: action.loadedFeedbacks, 
         loadFeedbackStatus: action.loadFeedbackStatus, loadFeedbackErrors: action.loadFeedbackErrors})
+
+    case EDIT_PROJECT:
+      return updateObject(state, { editProjectStatus: action.editProjectStatus, 
+        editProjectErrors: action.editProjectErrors})
     default:
       return state;
   }

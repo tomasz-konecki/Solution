@@ -24,7 +24,7 @@ export const SET_ACTION_CONFIRMATION_PROGRESS =
 export const SET_ACTION_CONFIRMATION_RESULT = "SET_ACTION_CONFIRMATION_RESULT";
 export const ACTION_CONFIRMED = "ACTION_CONFIRMED";
 export const CHANGE_EDITED_PROJECT = "CHANGE_EDITED_PROJECT";
-
+export const CHANGE_OPERATION_STATE = "CHANGE_OPERATION_STATE";
 
 
 
@@ -33,6 +33,7 @@ export const CHANGE_EDITED_PROJECT = "CHANGE_EDITED_PROJECT";
 export const GET_PROJECT = "GET_PROJECT";
 export const names = ["Imię", "Nazwisko", "Klient", "Email", "Number kontaktowy", "Pełna nazwa"];
 export const overViewNames = ["Klient", "Data rozpoczęcia", "Szacowana data zakończenia", "Data zakończenia"];
+
 export const ADD_EMPLOYEE_TO_PROJECT = "ADD_EMPLOYEE_TO_PROJECT";
 export const DELETE_PROJECT_OWNER = "DELETE_PROJECT_OWNER";
 export const DELETE_PROJECT = "DELETE_PROJECT";
@@ -41,6 +42,7 @@ export const REACTIVATE_PROJECT = "REACTIVATE_PROJECT";
 export const CHANGE_PROJECT_SKILL = "CHANGE_PROJECT_SKILL";
 export const ADD_FEEDBACK = "ADD_FEEDBACK";
 export const GET_FEEDBACKS = "GET_FEEDBACKS";
+export const EDIT_PROJECT = "EDIT_PROJECT";
 
 
 // REPORTS

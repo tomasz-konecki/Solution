@@ -4,6 +4,7 @@ import Aux from '../../../../services/auxilary';
 import { contains } from '../../../../services/methods';
 
 const projectInformationsCart = props => {
+
     return (
     <Aux>
         <h4>{props.headerTitle}</h4>
@@ -11,19 +12,21 @@ const projectInformationsCart = props => {
         {props.items.keys.map((i, index) => {
             return (
                 <li key={i}>
-                    <span>{props.items.names[index]}: </span>
+                    {props.originalObject[i] && 
+                        <span>{props.items.names[index]}: </span>
+                    }
+
+                    {props.originalObject[i] && 
                     <b>
                        {
-                         props.originalObject[i] &&
-                         props.dateKeys ?
+                         props.dateKeys &&
                          contains(i, props.dateKeys) ? 
                          props.originalObject[i].slice(0, 10) : 
-
-                         props.originalObject[i]
-                         : 
                          props.originalObject[i]
                        }
                     </b>
+                    }
+                    
                 </li>
             );
         })}

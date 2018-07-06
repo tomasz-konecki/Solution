@@ -1,12 +1,13 @@
 import { LOAD_PROJECTS_SUCCESS, CHANGE_EDITED_PROJECT, GET_PROJECT, names, overViewNames, 
 ADD_EMPLOYEE_TO_PROJECT, DELETE_PROJECT_OWNER, DELETE_PROJECT, CLOSE_PROJECT, REACTIVATE_PROJECT, 
-CHANGE_PROJECT_SKILL, ADD_FEEDBACK, GET_FEEDBACKS
+CHANGE_PROJECT_SKILL, ADD_FEEDBACK, GET_FEEDBACKS, EDIT_PROJECT
  } from "../constants";
 import axios from "axios";
 import WebApi from "../api";
-import { asyncStarted, asyncEnded } from "./asyncActions";
+import { asyncStarted, asyncEnded, changeOperationStatus } from "./asyncActions";
 import { errorCatcher } from '../services/errorsHandler';
 import { cutNotNeededKeysFromArray } from '../services/methods';
+import moment from 'moment';
 export const loadProjectsSuccess = projects => {
   return {
     type: LOAD_PROJECTS_SUCCESS,
@@ -84,6 +85,15 @@ export const addEmployeeToProject = (addEmployeeToProjectStatus, addEmployeeToPr
     addEmployeeToProjectErrors
   }
 }
+const addEmployeeToProjectPromise = (objectToAdd) => (dispatch) => {
+  return new Promise((resolve, reject) => {
+    WebApi.assignments.post(objectToAdd).then(response => {
+      resolve(response);
+    }).catch(error => {
+      reject(error);
+    });
+  })
+}
 export const addEmployeeToProjectACreator = (empId, projectId, strDate, endDate, role, assignedCapacity, responsibilites) => {
   return dispatch => {
     const objectToAdd = {
@@ -95,32 +105,31 @@ export const addEmployeeToProjectACreator = (empId, projectId, strDate, endDate,
       "assignedCapacity": assignedCapacity/10,
       "responsibilities": responsibilites
     }
-    WebApi.assignments.post(objectToAdd).then(response => {
-        dispatch(addEmployeeToProject(true, []));
+    dispatch(addEmployeeToProjectPromise(objectToAdd)).then(response => {
+      dispatch(addEmployeeToProject(true, []));
+      
+      dispatch(getProjectACreator(projectId));
+    }).catch(error => {
+      dispatch(addEmployeeToProject(false, errorCatcher(error)));
+    })
+  }
+}
+
+export const deleteProjectOwnerACreator = (projectId, ownerId) => {
+  return dispatch => {
+    WebApi.projects.delete.owner(projectId, ownerId).then(response => {
+        dispatch(changeOperationStatus({
+          status: true, error: ""
+        }));
         dispatch(getProjectACreator(projectId));
       }).catch(error => {
-        dispatch(addEmployeeToProject(false, errorCatcher(error)));
+        dispatch(changeOperationStatus({
+          status: false, error: errorCatcher(error)
+        }));
       })
   }
 }
 
-export const deleteProjectOwner = (delProjectOwnerStatus, delProjectOwnerErrors) => {
-  return {
-    type: DELETE_PROJECT_OWNER, 
-    delProjectOwnerStatus,
-    delProjectOwnerErrors
-  }
-}
-export const deleteProjectOwnerACreator = (projectId, ownerId) => {
-  return dispatch => {
-    WebApi.projects.delete.owner(projectId, ownerId).then(response => {
-        dispatch(deleteProjectOwner(true, []));
-        dispatch(getProjectACreator(projectId));
-      }).catch(error => {
-        dispatch(deleteProjectOwner(false, errorCatcher(error)));
-      })
-  }
-}
 export const deleteProject = (deleteProjectStatus, deleteProjectErrors) => {
   return {
     type: DELETE_PROJECT,
@@ -130,6 +139,7 @@ export const deleteProject = (deleteProjectStatus, deleteProjectErrors) => {
 }
 export const deleteProjectACreator = projectId => {
   return dispatch => {
+    dispatch(asyncStarted());
     WebApi.projects.delete.project(projectId).then(response => {
       dispatch(deleteProject(true, []));
       dispatch(getProjectACreator(projectId));
@@ -156,20 +166,25 @@ export const closeProjectACreator = projectId => {
   }
 }
 
-export const reactivateProject = (reactivateProjectStatus, reactivateProjectErrors) => {
-  return {
-    type: REACTIVATE_PROJECT,
-    reactivateProjectStatus,
-    reactivateProjectErrors
-  }
-}
-export const reactivateProjectACreator = projectId => {
+export const reactivateProjectACreator = project => {
   return dispatch => {
-    WebApi.projects.put.reactivate(projectId).then(response => {
-      dispatch(reactivateProject(true, []));
-      dispatch(getProjectACreator(projectId));
+      const projectToSend = {
+        "name": project.name,
+        "description": project.description,
+        "client": project.client,
+        "responsiblePerson": {...project.responsiblePerson},
+        "startDate": moment().format(),
+        "estimatedEndDate": moment(project.estimatedEndDate).format()
+      };
+    dispatch(editProjectPromise(projectToSend, project.id)).then(response =>{
+      dispatch(changeOperationStatus({
+        status: true, error: []
+      }));
+      dispatch(getProjectACreator(project.id));
     }).catch(error => {
-      dispatch(reactivateProject(false, errorCatcher(error)));
+      dispatch(changeOperationStatus({
+        status: false, error: errorCatcher(error)
+      }));
     })
   }
 }
@@ -211,10 +226,8 @@ export const addFeedbackACreator = (projectId, employeeId, description) => {
   }
   return dispatch => {
     WebApi.feedbacks.post.feedback(objectToSend).then(response => {
-      console.log(response);
       dispatch(addFeedback(true, []));
     }).catch(error => {
-      console.log(error);
       dispatch(addFeedback(false, errorCatcher(error)));
     })
   }
@@ -233,11 +246,64 @@ export const getFeedbacksACreator = employeeId => {
   return dispatch => {
     WebApi.feedbacks.get.byEmployee(employeeId)
     .then(response => {
-      console.log(response);
       dispatch(getFeedbacks([], true, []));
     }).catch(error => {
-      console.log(error);
       dispatch(getFeedbacks([], false, errorCatcher(error)));
+    })
+  }
+}
+
+
+export const editProject = (editProjectStatus, editProjectErrors) => {
+  return {
+    type: EDIT_PROJECT,
+    editProjectStatus,
+    editProjectErrors
+  }
+}
+const editProjectPromise = (projectToSend, projectId) => (dispatch) => {
+  return new Promise((resolve, reject) => {
+      WebApi.projects.put.project(projectId, projectToSend).then(response => {
+          resolve(response);
+      }).catch(error => {
+          reject(error);
+      })
+  })
+}
+const getProjectPromise = (projectId) => (dispatch) =>  {
+  return new Promise((resolve, reject) => {
+    WebApi.projects.get(projectId).then(response => {
+      resolve(response.replyBlock.data.dtoObject);
+    }).catch(error => {
+      reject(error);
+    });
+  })
+}
+
+
+export const editProjectACreator = (projectId, projectToSend) => {
+  return dispatch => {
+    dispatch(editProjectPromise(projectToSend, projectId)).then(response => {
+      dispatch(editProject(true, []));
+
+      dispatch(getProjectPromise(projectId)).then(getProjectResponse => {
+        const responsiblePersonKeys = {keys: cutNotNeededKeysFromArray(
+          Object.keys(getProjectResponse.responsiblePerson), [0]), 
+          names: names};
+        
+        const overViewKeys = {keys: cutNotNeededKeysFromArray(
+            Object.keys(getProjectResponse), [0,1,2,7,8,9,10,11]), 
+            names: overViewNames};
+        
+        dispatch(getProject(getProjectResponse, 
+            true, [], responsiblePersonKeys, overViewKeys, []));
+
+      }).catch(error => {
+        dispatch(getProject(null, 
+          false, errorCatcher(error), [], []));
+      })
+    }).catch(error => {
+      dispatch(editProject(false, errorCatcher(error)));
     })
   }
 }

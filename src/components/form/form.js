@@ -347,7 +347,6 @@ class Form extends Component{
 
                 <SpinnerButton 
                 validationResult={this.state.validationResult}
-                error={this.props.error}
                 transactionEnd={this.state.transactionEnd}
                 onClickHandler={this.onClickHandler}
                 isLoading={this.props.isLoading}

@@ -28,6 +28,74 @@ body {
   background: $content-background;
 }
 
+input[type="checkbox"] {
+  margin: 0 5px;
+}
+@media screen and (max-width: 500px) {
+  input[type="checkbox"] {
+    position: relative;
+    width: 40px;
+    height: 20px;
+    visibility: hidden;
+
+    &:before {
+      visibility: visible;
+      position: absolute;
+      display: block;
+      width: 100%;
+      height: 20px;
+      top: 0;
+      background: #fff;
+      content: "";
+      border-radius: 10px;
+      border: solid 1px #ddd;
+      transition: all 0.5s;
+    }
+
+    &:after {
+      visibility: visible;
+      top: 0;
+      display: block;
+      content: "";
+      width: 20px;
+      height: 20px;
+      background: #fff;
+      position: absolute;
+      border-radius: 50%;
+      border: solid 1px #ddd;
+      transition: all 0.5s;
+      left: 0;
+    }
+
+    &:checked:after {
+      left: 100%;
+      margin-left: -20px;
+    }
+
+    &:checked:before {
+      background: #2ecc71;
+    }
+
+    &.square {
+      width: 60px;
+      &:before {
+        border-radius: 2px;
+      }
+      &:after {
+        border-radius: 2px;
+        width: 30px;
+      }
+      &:checked:after {
+        left: 100%;
+        margin-left: -30px;
+      }
+      &:checked:before {
+        background: #3498db;
+      }
+    }
+  }
+}
+
 ::selection {
   background: #ffb97c; /* WebKit/Blink Browsers */
 }
@@ -189,6 +257,10 @@ a:visited {
 
 .Modal-users {
   height: 400px;
+
+  @media screen and (max-width: 500px) {
+    height: 600px;
+  }
 }
 
 .Modal-projects {

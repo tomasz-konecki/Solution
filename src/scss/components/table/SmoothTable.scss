@@ -73,6 +73,116 @@ $default-color: white;
   position: relative;
   min-height: 78.9vh;
 
+  @media screen and (max-width: 460px) {
+    .smooth-operator {
+      height: unset;
+
+      & > button {
+        width: 100%;
+        background-color: $button-element-background;
+        color: $default-color;
+      }
+      span:nth-of-type(1) {
+        width: 100%;
+        display: block;
+        text-align: center;
+        input {
+          width: 80%;
+        }
+      }
+      .smooth-separator,
+      span:nth-of-type(2) {
+        display: none;
+      }
+
+      .smooth-show-deleted {
+        background-color: #fff;
+        display: block;
+        margin: 10px 0;
+        position: relative;
+        text-align: center;
+      }
+      label {
+        width: 80%;
+        display: block;
+        text-align: left;
+        color: #3c454c;
+        cursor: pointer;
+        position: relative;
+        z-index: 2;
+        transition: color 200ms ease-in;
+        overflow: hidden;
+        margin: auto;
+        padding: 10px;
+        font-size: 14px;
+        border-radius: 20px;
+
+        &:before {
+          width: 10px;
+          height: 10px;
+          border-radius: 50%;
+          content: "";
+          background-color: #00989f;
+          position: absolute;
+          left: 50%;
+          top: 50%;
+          transform: translate(-50%, -50%) scale3d(1, 1, 1);
+          transition: all 300ms cubic-bezier(0.4, 0, 0.2, 1);
+          opacity: 0;
+          z-index: -1;
+        }
+
+        &:after {
+          width: 32px;
+          height: 32px;
+          content: "";
+          border: 2px solid #d1d7dc;
+          background-color: #fff;
+          background-image: url("data:image/svg+xml,%3Csvg width='32' height='32' viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M5.414 11L4 12.414l5.414 5.414L20.828 6.414 19.414 5l-10 10z' fill='%23fff' fill-rule='nonzero'/%3E%3C/svg%3E ");
+          background-repeat: no-repeat;
+          background-position: 2px 3px;
+          border-radius: 50%;
+          z-index: 2;
+          position: absolute;
+          right: 30px;
+          top: 50%;
+          transform: translateY(-50%);
+          cursor: pointer;
+          transition: all 200ms ease-in;
+        }
+      }
+
+      input:checked ~ label {
+        color: #fff;
+        box-shadow: 0px 2px 3px black;
+        text-shadow: 1px 1px 1px black;
+
+        &:before {
+          transform: translate(-50%, -50%) scale3d(56, 56, 1);
+          opacity: 1;
+        }
+
+        &:after {
+          background-color: #8c1b2f;
+          border-color: #8c1b2f;
+        }
+      }
+
+      input {
+        width: 32px;
+        height: 32px;
+        order: 1;
+        z-index: 2;
+        position: absolute;
+        right: 30px;
+        top: 50%;
+        transform: translateY(-50%);
+        cursor: pointer;
+        visibility: hidden;
+      }
+    }
+  }
+
   .fa-sync-alt {
     font-size: 96% !important;
   }
@@ -193,7 +303,12 @@ $default-color: white;
         border-bottom: 1px solid darken($default-color, 15%);
         padding: 0 15px;
         min-width: 177px;
-
+        @media screen and (max-width: 500px) {
+          min-width: 100px;
+          &:nth-child(6) {
+            font-size: 10px;
+          }
+        }
         &:first-of-type {
           padding-left: 2vh;
         }
@@ -242,6 +357,9 @@ $default-color: white;
       white-space: nowrap;
       padding: 0 15px;
       font-size: 18px;
+      @media screen and (max-width: 500px) {
+        font-size: 14px;
+      }
 
       &:first-of-type {
         padding-left: 2vh;
@@ -322,4 +440,7 @@ $default-color: white;
 .smooth-footer {
   text-align: center;
   padding: 4em;
+  @media (max-width: 500px) {
+    padding: 0;
+  }
 }

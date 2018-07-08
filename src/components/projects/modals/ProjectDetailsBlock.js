@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import Detail from "../../common/Detail";
 import ResultBlock from "./../../common/ResultBlock";
 import DatePicker from "react-datepicker";
@@ -19,7 +19,7 @@ const emptyField = "<brak>";
 const active = "Aktywny";
 const inActive = "Nieaktywny";
 
-class ProjectDetailsBlock extends Component {
+class ProjectDetailsBlock extends React.PureComponent {
       state = {
         editProjectArray: [
           {title: "Nazwa", type: "text", placeholder: "wprowadź nazwę projektu...", value: "", error: "", inputType: "name", minLength: 3, maxLength: 25, canBeNull: false},
@@ -47,8 +47,7 @@ class ProjectDetailsBlock extends Component {
         ],
 
         showContactForm: false,
-        selected: "Wybierz osoby do kontaktu",
-        editProjectResult: {content: "", status: null}
+        selected: "Wybierz osoby do kontaktu"
       }
  
   componentDidMount() {
@@ -64,7 +63,12 @@ class ProjectDetailsBlock extends Component {
     }
     this.setState({editProjectArray: editProjectArray});
   }
-
+  componentWillReceiveProps(nextProps) {
+    if(nextProps.editProjectErrors !== this.props.editProjectErrors){
+      this.setState({isLoading: false});
+    }
+  }
+  
   handleSubmit = () => {
       this.setState({isLoading: true, 
         editProjectResult: {content: "", status: null}});
@@ -78,19 +82,10 @@ class ProjectDetailsBlock extends Component {
           email: this.state.responsiblePersonArray[0].value,
           phoneNumber: this.state.responsiblePersonArray[3].value,
         },
-        startDate: this.state.editProjectArray[3].value,
-        estimatedEndDate: this.state.editProjectArray[4].value
+        startDate: moment(this.state.editProjectArray[3].value).format(),
+        estimatedEndDate: moment(this.state.editProjectArray[4].value).format()
       }
-
-      WebApi.projects.put.project(this.props.project.id, projectToSend).then(response => {
-        console.log(response);
-        this.setState({isLoading: false, editProjectResult: {content: "Edycja została przeprowadzona poprawnie", status: true}});
-        if(this.props.additionalOperation){
-          this.props.additionalOperation();
-        }
-      }).catch(error => {
-        this.setState({isLoading: false, editProjectResult: {content: errorCatcher(error), status: false}});
-      });
+      this.props.editProject(this.props.project.id, projectToSend);
   }
   onChangeClient = event => {
     const ClientId = 2;
@@ -169,6 +164,8 @@ class ProjectDetailsBlock extends Component {
   render() {
     const editable = this.props.editable;
     const { t } = this.props;
+    const { editProjectStatus } = this.props;
+    const { editProjectErrors } = this.props;
     return (
       <div className="project-details-block">
         <header>
@@ -183,7 +180,11 @@ class ProjectDetailsBlock extends Component {
           formItems={this.state.responsiblePersonArray} 
           formTitle="Dane kontaktowe do klienta"
           isLoading={this.state.isLoading}
-          submitResult={this.state.editProjectResult}>
+          submitResult={{
+            status: editProjectStatus,
+            content: editProjectStatus ? "Pomyślnie dokonano edycji projektu" : 
+              editProjectErrors[0]
+          }}>
 
               <button onClick={this.changeForm} 
                 type="button" className="come-back-btn">
@@ -203,7 +204,6 @@ class ProjectDetailsBlock extends Component {
           : 
           
           <Form 
-          error={this.state.clientError}
           key={2}
           dateIndexesToCompare={[3,4]}
           onSubmit={this.changeForm}

@@ -76,7 +76,7 @@ class Table extends Component{
                               ({moment().diff(this.props.items[id].createdAt.slice(0, 10), 'days')} dni temu)</i></li>
                             
                             <p>Lista obowiązków: </p>
-                            <li>
+                            <li className="responsibilities-list">
                                 {this.props.items[id].responsibilities.map(i => {
                                     return <i key={i}>{i}</i>
                                 })}

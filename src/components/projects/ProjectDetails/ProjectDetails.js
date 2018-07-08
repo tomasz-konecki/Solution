@@ -20,8 +20,10 @@ import OperationStatusPrompt from '../../form/operationStatusPrompt/operationSta
 import { connect } from 'react-redux';
 import { getProjectACreator, addEmployeeToProjectACreator, deleteProjectOwnerACreator, 
     deleteProjectACreator, closeProjectACreator, reactivateProjectACreator, 
-    addEmployeeToProject, changeProjectSkillACreator, getProject } from '../../../actions/projectsActions';
+    addEmployeeToProject, changeProjectSkillACreator, getProject, 
+    editProjectACreator } from '../../../actions/projectsActions';
 import Skills from '../../common/skills/skills';
+import { changeOperationStatus } from '../../../actions/asyncActions';
 const workerNames = ["Nazwa", "Rola", "Doświadczenie", "Stanowisko", "Data rozpoczęcia", "Data zakończenia"];
 const projectStatuses = [{classVal: "spn-active", name:  "Aktywny"}, 
 {classVal: "spn-unactive", name:  "Nierozpoczęty"}, {classVal: "spn-unactive", name:  "Usunięty"}];
@@ -33,8 +35,6 @@ class ProjectDetails extends Component{
         editModal: false,
         deleteProjectModal: false,
         addEmployeModal: false,
-        operationLoader: false,
-        operationError: "",
         addEmployeToProjectFormItems: [
             {title: "Data rozpoczęcia pracy", name: "startDate", type: "text", placeholder: "wprowadź datę rozpoczęcia pracy...", mode: "date-picker", value: "", error: "", canBeBefore: true},
             {title: "Data zakończenia pracy", name: "endDate", type: "text", placeholder: "wprowadź datę zakończenia pracy...", mode: "date-picker", value: "", error: "", canBeBefore: false},
@@ -46,6 +46,7 @@ class ProjectDetails extends Component{
         ],
         lteVal: 1,
         addEmployeSpinner: false,
+        isProjectStateChanging: false
     }
     componentDidMount(){
         this.props.getProject(this.props.match.params.id);
@@ -58,52 +59,20 @@ class ProjectDetails extends Component{
         return addEmployeToProjectFormItems;
     }
     componentWillReceiveProps(nextProps){
-        let { addEmployeToProjectFormItems } = [...this.state];
-        if(this.props.project === null){ 
-            if(nextProps.loadProjectStatus){
-                addEmployeToProjectFormItems = this.fillDates(nextProps.project.startDate, 
-                    nextProps.project.endDate, nextProps.project.estimatedEndDate);
-            }
-            this.setState({addEmployeToProjectFormItems: addEmployeToProjectFormItems, isLoadingProject: false});
+        if(this.props.project === null || 
+            this.props.project !== nextProps.project){
+            const { project } = nextProps;
+            this.setState({isLoadingProject: false, 
+                addEmployeToProjectFormItems: this.fillDates(project.startDate,
+                    project.endDate, project.estimatedEndDate), isProjectStateChanging: false});
         }
-        else{
-            let isError = null;
-            if(Array.isArray(nextProps[this.state.currentOperationError]))
-                isError = nextProps[this.state.currentOperationError].length > 0 ? true : false;
-
-            if(isError === true){
-                this.setState({
-                    operationLoader: false,
-                    operationError: (!nextProps[this.state.currentOperationError] || isError === false) ? "" : 
-                    nextProps[this.state.currentOperationError], 
-                    deleteProjectModal: false,
-                    addEmployeSpinner: false,
-                    isLoadingProject: false
-                });
-            }
-            else{
-                if(nextProps.loadProjectErrors !== this.props.loadProjectErrors){
-
-                    if(nextProps.loadProjectStatus){
-                        addEmployeToProjectFormItems = this.fillDates(nextProps.project.startDate, 
-                            nextProps.project.endDate, nextProps.project.estimatedEndDate);
-                    }
-                    
-                    this.setState({
-                        operationLoader: false,
-                        currentOperationError: "",
-                        operationError: "",
-                        addEmployeToProjectFormItems: addEmployeToProjectFormItems,
-                        isLoadingProject: false
-                    })
-                }
-                else if(nextProps.addEmployeeToProjectErrors !== this.props.addEmployeeToProjectErrors)
-                    this.setState({addEmployeSpinner: false});
-            }
+        else if(this.props.addEmployeeToProjectErrors !== nextProps.addEmployeeToProjectErrors){
+            this.setState({addEmployeSpinner: false});
         }
-     
-        
+        else if(this.props.operationStatus !== nextProps.operationStatus)
+            this.setState({addEmployeSpinner: false});
     }
+    
     createLTEPicker = range => {
         const spansArray = [];
         for(let i = 1; i <= range; i++){
@@ -123,15 +92,9 @@ class ProjectDetails extends Component{
             this.state.addEmployeToProjectFormItems[1].value, this.state.addEmployeToProjectFormItems[4].value, 
             this.state.lteVal, this.state.addEmployeToProjectFormItems[2].value);
     }
-    deleteProjectOwner = index => {
-        this.setState({operationLoader: true, 
-            currentOperationError: "delProjectOwnerErrors"});
-        this.props.deleteProjectOwner(this.props.project.id, this.props.project.owners[index].id);
-    }
-    deleteProject = () => {
-        this.setState({operationLoader: true, operationError: "", 
-            currentOperationError: "deleteProjectErrors"});
-        this.props.deleteProject(this.props.project.id);
+    reactivateProject = () => {
+        this.setState({isProjectStateChanging: true});
+        this.props.reactivateProject(this.props.project);
     }
     closeProject = () => {
         this.setState({operationLoader: true, operationError: "", 
@@ -139,11 +102,6 @@ class ProjectDetails extends Component{
         this.props.closeProject(this.props.project.id);
     }
 
-    reactivateProject = () => {
-        this.setState({operationLoader: true, operationError: "", 
-            currentOperationError: "reactivateProjectErrors"});
-        this.props.reactivateProject(this.props.project.id);
-    }
     changeSkills = (skillId, skillLevel) => {
         this.props.changeProjectSkill(this.props.project.id, skillId, skillLevel);
     }
@@ -151,7 +109,6 @@ class ProjectDetails extends Component{
         const { project } = this.props;
         const { addEmployeeToProjectStatus } = this.props;
         const { addEmployeeToProjectErrors } = this.props;
-        const { operationLoader } = this.state;
         const { loadProjectErrors } = this.props;
         return(
             <div onClick={addEmployeeToProjectStatus !== null ? 
@@ -174,16 +131,11 @@ class ProjectDetails extends Component{
                             <button onClick={() => this.setState({editModal: !this.state.editModal})} 
                                 className="option-btn normal-btn">Edytuj projekt</button>
 
-
-                            {project.status !== 0 && 
                                 <button onClick={this.reactivateProject} className="option-btn green-btn">Aktywuj projekt</button>
-                            }
 
-                            {(project.status !== 1 && project.status !== 1)  && 
-                                <button onClick={this.closeProject} className="option-btn option-dang">Wstrzymaj</button>
-                            }
+                                <button onClick={this.closeProject} className="option-btn option-dang">Zakończ</button>
 
-                            {(project.status !== 2 && project.status !== 1) &&
+                            {project.status !== 2 &&
                                 <button onClick={() => this.setState({deleteProjectModal: !this.state.deleteProjectModal})} className="option-btn option-very-dang">Usuń projekt</button>
                             }
                         </nav>
@@ -212,7 +164,8 @@ class ProjectDetails extends Component{
                                     return (
                                     <button key={i.id} className="owner-btn">
                                         {i.fullName}
-                                        <i onClick={() => this.deleteProjectOwner(index)}>Usuń</i>
+                                        <i onClick={() => this.props.deleteProjectOwner(project.id, 
+                                            this.props.project.owners[index].id)}>Usuń</i>
                                     </button>);
                                 })}
                             </div>
@@ -247,8 +200,10 @@ class ProjectDetails extends Component{
                     onClose={() => this.setState({editModal: !this.state.editModal})}>
                     
                     <ProjectDetailsBlock
+                    editProjectStatus={this.props.editProjectStatus}
+                    editProjectErrors={this.props.editProjectErrors}
                     project={project}
-                    additionalOperation={this.props.getProject}
+                    editProject={this.props.editProject}
                     />
                 </Modal>
                 <Modal
@@ -265,11 +220,8 @@ class ProjectDetails extends Component{
                             <button className="option-btn" 
                             onClick={() => this.setState({deleteProjectModal: !this.state.deleteProjectModal})}>Anuluj</button>
                         </div>
-                        
                     </div>
-                    
                 </Modal>
-
 
                 <Modal 
                 key={3}
@@ -300,13 +252,7 @@ class ProjectDetails extends Component{
                     </Form>
                 </Modal>
 
-                {(operationLoader || this.state.operationError !== "") && 
-                    <OperationLoader 
-                    isLoading={operationLoader}
-                    operationError={this.state.operationError}
-                    close={() => this.setState({operationLoader: false, operationError: ""})}
-                />
-                }
+            
 
                 {(addEmployeeToProjectStatus !== null && 
                 addEmployeeToProjectStatus !== undefined) &&
@@ -320,12 +266,10 @@ class ProjectDetails extends Component{
                 </Aux>
                 }
 
-
-                {this.props.loadProjectStatus !== null && 
-                    !this.props.loadProjectStatus &&
-                    <OperationLoader 
-                    operationError={loadProjectErrors[0]}
-                    close={() => this.props.clearProjectData(null,null,[],[],[])} />
+                {(this.state.isProjectStateChanging || this.props.operationStatus.status === false) &&
+                    <OperationLoader isLoading={this.state.isProjectStateChanging} 
+                    operationError={this.props.operationStatus.error[0]}
+                    close={() => this.props.changeOperationStatus({status: null, error: ""})} />
                 }
             </div>
         );
@@ -343,26 +287,26 @@ const mapStateToProps = state => {
         addEmployeeToProjectStatus: state.projectsReducer.addEmployeeToProjectStatus,
         addEmployeeToProjectErrors: state.projectsReducer.addEmployeeToProjectErrors,
 
-        delProjectOwnerStatus: state.projectsReducer.delProjectOwnerStatus,
-        delProjectOwnerErrors: state.projectsReducer.delProjectOwnerErrors,
-
         deleteProjectStatus: state.projectsReducer.deleteProjectStatus,
         deleteProjectErrors: state.projectsReducer.deleteProjectErrors,
 
         closeProjectStatus: state.projectsReducer.closeProjectStatus,
         closeProjectErrors: state.projectsReducer.closeProjectErrors,
 
-        reactivateProjectStatus: state.projectsReducer.reactivateProjectStatus,
-        reactivateProjectErrors: state.projectsReducer.reactivateProjectErrors,
-
         changeProjectSkillStatus: state.projectsReducer.changeProjectSkillStatus,
-        changeProjectSkillErrors: state.projectsReducer.changeProjectSkillErrors
+        changeProjectSkillErrors: state.projectsReducer.changeProjectSkillErrors,
+
+        editProjectStatus: state.projectsReducer.editProjectStatus,
+        editProjectErrors: state.projectsReducer.editProjectErrors,
+
+        operationStatus: state.asyncReducer.operationStatus
     };
   }
   
 const mapDispatchToProps = dispatch => {
     return {
         getProject: (projectId) => dispatch(getProjectACreator(projectId)),
+        editProject: (projectId, projectToSend) => dispatch(editProjectACreator(projectId, projectToSend)),
         clearProjectData: (project, status, errors, personKeys, overViewKeys) => dispatch(getProject(project, status, errors, personKeys, overViewKeys)),
         addEmployeeToProject: (empId, projId, strDate, endDate, 
             role, assignedCapacity, responsibilites) => dispatch(addEmployeeToProjectACreator(empId, projId, strDate, endDate, 
@@ -371,8 +315,9 @@ const mapDispatchToProps = dispatch => {
         deleteProjectOwner: (projectId, ownerId) => dispatch(deleteProjectOwnerACreator(projectId, ownerId)),
         deleteProject: (projectId) => dispatch(deleteProjectACreator(projectId)),
         closeProject: (projectId) => dispatch(closeProjectACreator(projectId)),
-        reactivateProject: (projectId) => dispatch(reactivateProjectACreator(projectId)),
-        changeProjectSkill: (projectId, skillId, skillLevel) => dispatch(changeProjectSkillACreator(projectId, skillId, skillLevel))
+        reactivateProject: (project) => dispatch(reactivateProjectACreator(project)),
+        changeProjectSkill: (projectId, skillId, skillLevel) => dispatch(changeProjectSkillACreator(projectId, skillId, skillLevel)),
+        changeOperationStatus: (operationStatus) => dispatch(changeOperationStatus(operationStatus))
     };
   }
 

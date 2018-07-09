@@ -218,7 +218,7 @@ class UsersList extends Component {
               icon: { icon: "times" },
               title: t("DeleteUserImperativus"),
               click: object => {
-                this.props.getCV(
+                this.props.dispatch(
                   setActionConfirmation(true, {
                     key: "deleteUser",
                     string: `${t("DeleteUserInfinitive")} ${object.firstName} ${

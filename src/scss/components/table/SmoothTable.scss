@@ -473,7 +473,9 @@ $activeShadow: 0 0 10px rgba($teal1, 0.5);
         font-size: 16px;
         border-bottom: 1px solid darken($default-color, 15%);
         padding: 0 15px;
-
+        @media screen and (min-width: 600px) {
+          min-width: 110px;
+        }
         @media screen and (max-width: 920px) {
           font-size: 14px;
           &:nth-child(6) {

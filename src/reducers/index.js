@@ -5,4 +5,5 @@ export * from "./usersReducer";
 export * from "./asyncReducer";
 export * from "./skillsReducer";
 export * from "./languageReducer";
-export * from './reportsReducer';
+export * from "./reportsReducer";
+export * from "./clientsReducer";

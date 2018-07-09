@@ -4,9 +4,6 @@ import {
   CHANGE_EDITED_PROJECT,
   GET_PROJECT,
   ADD_EMPLOYEE_TO_PROJECT ,
-  DELETE_PROJECT,
-  CLOSE_PROJECT,
-  REACTIVATE_PROJECT, 
   CHANGE_PROJECT_SKILL,
   ADD_FEEDBACK,
   GET_FEEDBACKS,
@@ -30,12 +27,6 @@ const initialState = {
 
   addEmployeeToProjectStatus: null,
   addEmployeeToProjectErrors: [],
-
-  deleteProjectStatus: null,
-  deleteProjectErrors: [],
-
-  closeProjectStatus: null,
-  closeProjectErrors: [],
 
   changeProjectSkillStatus: null,
   changeProjectSkillErrors: [],
@@ -76,12 +67,6 @@ export const projectsReducer = (state = initialState, action) => {
     case ADD_EMPLOYEE_TO_PROJECT:
       return updateObject(state, { addEmployeeToProjectStatus: action.addEmployeeToProjectStatus, 
         addEmployeeToProjectErrors: action.addEmployeeToProjectErrors })
-    case DELETE_PROJECT:
-      return updateObject(state, { deleteProjectStatus: action.deleteProjectStatus, 
-        deleteProjectErrors: action.deleteProjectErrors})
-    case CLOSE_PROJECT:
-      return updateObject(state, { closeProjectStatus: action.closeProjectStatus, 
-        closeProjectErrors: action.closeProjectErrors})
     case CHANGE_PROJECT_SKILL:
       return updateObject(state, { changeProjectSkillStatus: action.changeProjectSkillStatus, 
         changeProjectSkillErrors: action.changeProjectSkillErrors})

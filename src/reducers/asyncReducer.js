@@ -10,7 +10,7 @@ const initialState = {
   },
   isWorking: false,
   resultBlock: {},
-  operationStatus: {status: null, error: ""}
+  operationStatus: {status: null, error: []}
 };
 
 export const asyncReducer = (state = initialState, action) => {

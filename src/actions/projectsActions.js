@@ -1,5 +1,5 @@
 import { LOAD_PROJECTS_SUCCESS, CHANGE_EDITED_PROJECT, GET_PROJECT, names, overViewNames, 
-ADD_EMPLOYEE_TO_PROJECT, DELETE_PROJECT_OWNER, DELETE_PROJECT, CLOSE_PROJECT, REACTIVATE_PROJECT, 
+ADD_EMPLOYEE_TO_PROJECT, DELETE_PROJECT_OWNER,
 CHANGE_PROJECT_SKILL, ADD_FEEDBACK, GET_FEEDBACKS, EDIT_PROJECT
  } from "../constants";
 import axios from "axios";
@@ -119,7 +119,7 @@ export const deleteProjectOwnerACreator = (projectId, ownerId) => {
   return dispatch => {
     WebApi.projects.delete.owner(projectId, ownerId).then(response => {
         dispatch(changeOperationStatus({
-          status: true, error: ""
+          status: true, error: []
         }));
         dispatch(getProjectACreator(projectId));
       }).catch(error => {
@@ -130,38 +130,31 @@ export const deleteProjectOwnerACreator = (projectId, ownerId) => {
   }
 }
 
-export const deleteProject = (deleteProjectStatus, deleteProjectErrors) => {
-  return {
-    type: DELETE_PROJECT,
-    deleteProjectStatus,
-    deleteProjectErrors
-  }
-}
 export const deleteProjectACreator = projectId => {
   return dispatch => {
-    dispatch(asyncStarted());
     WebApi.projects.delete.project(projectId).then(response => {
-      dispatch(deleteProject(true, []));
+      dispatch(changeOperationStatus({
+        status: true, error: []
+      }));
       dispatch(getProjectACreator(projectId));
     }).catch(error => {
-      dispatch(deleteProject(false, errorCatcher(error)));
+      dispatch(changeOperationStatus({
+        status: false, error: errorCatcher(error)
+      }));
     });
-  }
-}
-export const closeProject = (closeProjectStatus, closeProjectErrors) => {
-  return {
-    type: CLOSE_PROJECT,
-    closeProjectStatus,
-    closeProjectErrors
   }
 }
 export const closeProjectACreator = projectId => {
   return dispatch => {
     WebApi.projects.put.close(projectId).then(response => {
-      dispatch(closeProject(true, []));
+      dispatch(changeOperationStatus({
+        status: true, error: []
+      }));
       dispatch(getProjectACreator(projectId));
     }).catch(error => {
-      dispatch(closeProject(false, errorCatcher(error)));
+      dispatch(changeOperationStatus({
+        status: false, error: errorCatcher(error)
+      }));
     })
   }
 }

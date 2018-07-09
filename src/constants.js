@@ -36,9 +36,6 @@ export const overViewNames = ["Klient", "Data rozpoczęcia", "Szacowana data zak
 
 export const ADD_EMPLOYEE_TO_PROJECT = "ADD_EMPLOYEE_TO_PROJECT";
 export const DELETE_PROJECT_OWNER = "DELETE_PROJECT_OWNER";
-export const DELETE_PROJECT = "DELETE_PROJECT";
-export const CLOSE_PROJECT = "CLOSE_PROJECT";
-export const REACTIVATE_PROJECT = "REACTIVATE_PROJECT";
 export const CHANGE_PROJECT_SKILL = "CHANGE_PROJECT_SKILL";
 export const ADD_FEEDBACK = "ADD_FEEDBACK";
 export const GET_FEEDBACKS = "GET_FEEDBACKS";

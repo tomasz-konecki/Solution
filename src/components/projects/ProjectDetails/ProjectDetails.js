@@ -25,12 +25,9 @@ import { getProjectACreator, addEmployeeToProjectACreator, deleteProjectOwnerACr
 import Skills from '../../common/skills/skills';
 import { changeOperationStatus } from '../../../actions/asyncActions';
 const workerNames = ["Nazwa", "Rola", "Doświadczenie", "Stanowisko", "Data rozpoczęcia", "Data zakończenia"];
-const projectStatuses = [{classVal: "spn-active", name:  "Aktywny"}, 
-{classVal: "spn-unactive", name:  "Nierozpoczęty"}, {classVal: "spn-unactive", name:  "Usunięty"}];
 
 class ProjectDetails extends Component{
     state = {
-        currentOperationError: "",
         isLoadingProject: true,
         editModal: false,
         deleteProjectModal: false,
@@ -46,7 +43,8 @@ class ProjectDetails extends Component{
         ],
         lteVal: 1,
         addEmployeSpinner: false,
-        isProjectStateChanging: false
+        isProjectStateChanging: false,
+        projectStatus: []
     }
     componentDidMount(){
         this.props.getProject(this.props.match.params.id);
@@ -64,13 +62,16 @@ class ProjectDetails extends Component{
             const { project } = nextProps;
             this.setState({isLoadingProject: false, 
                 addEmployeToProjectFormItems: this.fillDates(project.startDate,
-                    project.endDate, project.estimatedEndDate), isProjectStateChanging: false});
+                    project.endDate, project.estimatedEndDate), isProjectStateChanging: false, 
+                    projectStatus: this.calculateProjectStatus(project.startDate, 
+                        project.endDate, project.status, project.estimatedEndDate)});
         }
         else if(this.props.addEmployeeToProjectErrors !== nextProps.addEmployeeToProjectErrors){
             this.setState({addEmployeSpinner: false});
         }
-        else if(this.props.operationStatus !== nextProps.operationStatus)
-            this.setState({addEmployeSpinner: false});
+        else if(this.props.operationStatus !== nextProps.operationStatus){
+            this.setState({isProjectStateChanging: false});
+        }
     }
     
     createLTEPicker = range => {
@@ -97,19 +98,38 @@ class ProjectDetails extends Component{
         this.props.reactivateProject(this.props.project);
     }
     closeProject = () => {
-        this.setState({operationLoader: true, operationError: "", 
-            currentOperationError: "closeProjectErrors"});
+        this.setState({isProjectStateChanging: true});
         this.props.closeProject(this.props.project.id);
     }
-
+    deleteProject = () => {
+        this.setState({isProjectStateChanging: true});
+        this.props.deleteProject(this.props.project.id);
+    }
     changeSkills = (skillId, skillLevel) => {
         this.props.changeProjectSkill(this.props.project.id, skillId, skillLevel);
     }
-    render(){
+    calculateProjectStatus = (startDate, endDate, projectStatus, estimatedEndDate) => {
+     
+        if(endDate)
+            return [{ classVal: "spn-closed", name: "Zamknięty" }];
+
+        if(projectStatus === 2)
+            return [{ classVal: "spn-unactive", name: "Usunięty" }]
+
+        const today = moment();
+
+        if(today.isAfter(startDate) && today.isBefore(estimatedEndDate))
+            return [{ classVal: "spn-active", name: "Aktywny" }];
+        else
+            return [{ classVal: "spn-closed", name: "Nieaktywny"}]
+     
+    }
+    render(){ 
         const { project } = this.props;
         const { addEmployeeToProjectStatus } = this.props;
         const { addEmployeeToProjectErrors } = this.props;
         const { loadProjectErrors } = this.props;
+        const { projectStatus } = this.state;
         return(
             <div onClick={addEmployeeToProjectStatus !== null ? 
                 () => this.props.addEmployeeToProjectAction(null, []) : null} className="project-details-container">
@@ -119,25 +139,31 @@ class ProjectDetails extends Component{
                 <Aux>
                     <header>
                         <h1>
-                            <span className={projectStatuses[project.status].classVal}>
-                                {projectStatuses[project.status].name}
-                            </span>
+                            {projectStatus && 
+                                <span className={projectStatus[0].classVal}>
+                                    {projectStatus[0].name}
+                                </span>
+                            }
+                            
                             <i className="fa fa-briefcase fa-2x"></i>
-                            <b>{project.name}
-                                
-                            </b>
+                            <b>{project.name}</b>
                         </h1>
                         <nav>
                             <button onClick={() => this.setState({editModal: !this.state.editModal})} 
                                 className="option-btn normal-btn">Edytuj projekt</button>
 
+                                {
+                                projectStatus[0].name !== "Aktywny" && 
                                 <button onClick={this.reactivateProject} className="option-btn green-btn">Aktywuj projekt</button>
+                                }
 
+                                {projectStatus[0].name !== "Usunięty" && 
                                 <button onClick={this.closeProject} className="option-btn option-dang">Zakończ</button>
+                                }
 
-                            {project.status !== 2 &&
-                                <button onClick={() => this.setState({deleteProjectModal: !this.state.deleteProjectModal})} className="option-btn option-very-dang">Usuń projekt</button>
-                            }
+                                {project.status !== 2 &&
+                                    <button onClick={() => this.setState({deleteProjectModal: !this.state.deleteProjectModal})} className="option-btn option-very-dang">Usuń projekt</button>
+                                }
                         </nav>
                     </header>
                     <main>

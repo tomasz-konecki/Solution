@@ -472,7 +472,7 @@ $activeShadow: 0 0 10px rgba($teal1, 0.5);
         font-weight: bold;
         font-size: 16px;
         border-bottom: 1px solid darken($default-color, 15%);
-        padding: 0 15px;
+        padding-right: 15px;
         @media screen and (min-width: 600px) {
           min-width: 110px;
         }
@@ -480,6 +480,7 @@ $activeShadow: 0 0 10px rgba($teal1, 0.5);
           font-size: 14px;
           &:nth-child(6) {
             font-size: 10px;
+            text-align: center;
           }
         }
         @media screen and (max-width: 500px) {
@@ -501,9 +502,8 @@ $activeShadow: 0 0 10px rgba($teal1, 0.5);
       input {
         width: 90%;
         height: auto;
-        margin: 0 1em;
         transition: none !important;
-        margin: 5px;
+        margin: 5px 0;
       }
       .loading {
         background-image: url("../../public/img/loader.gif");
@@ -535,7 +535,7 @@ $activeShadow: 0 0 10px rgba($teal1, 0.5);
       position: relative;
       line-height: 2rem;
       white-space: nowrap;
-      padding: 0 15px;
+      padding-right: 15px;
       font-size: 18px;
       @media screen and (max-width: 500px) {
         font-size: 14px;

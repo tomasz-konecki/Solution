@@ -31,7 +31,7 @@ const translations = {
   StatsContainer: {
     DevLocalization: "Developers Localization",
     EmployeesWithoutProjects: "Employees Without Projects",
-    Withoout: "Without",
+    Without: "Without",
     With: "With",
     ActiveProjects: "Active Projects",
     Active: "Active",

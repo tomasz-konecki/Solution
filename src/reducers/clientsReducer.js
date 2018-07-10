@@ -8,7 +8,8 @@ export const clientsReducer = (state = initialState, action) => {
   switch (action.type) {
     case LOAD_CLIENTS_SUCCESS:
       return {
-        clients: action.clients
+        clients: action.clients,
+        resultBlock: action.resultBlock
       };
     case LOAD_CLIENTS_FAIL:
       return {

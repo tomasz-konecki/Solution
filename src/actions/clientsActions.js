@@ -1,5 +1,9 @@
 import WebApi from "../api";
-import { asyncStarted, asyncEnded } from "./asyncActions";
+import {
+  asyncStarted,
+  asyncEnded,
+  setActionConfirmationResult
+} from "./asyncActions";
 import { LOAD_CLIENTS_SUCCESS, LOAD_CLIENTS_FAIL } from "../constants";
 
 export const loadClientsSuccess = (clients, resultBlock) => {
@@ -30,6 +34,44 @@ export const loadClients = () => {
       })
       .catch(error => {
         dispatch(loadClientsFail(error));
+        dispatch(asyncEnded());
+        throw error;
+      });
+  };
+};
+
+export const deleteClient = id => {
+  return dispatch => {
+    dispatch(asyncStarted());
+    WebApi.clients
+      .delete(id)
+      .then(response => {
+        if (!response.errorOccurred()) {
+          dispatch(setActionConfirmationResult(response));
+        }
+        dispatch(asyncEnded());
+      })
+      .catch(error => {
+        dispatch(setActionConfirmationResult(error));
+        dispatch(asyncEnded());
+        throw error;
+      });
+  };
+};
+
+export const reactivateClient = id => {
+  return dispatch => {
+    dispatch(asyncStarted());
+    WebApi.clients.put
+      .reactivate(id)
+      .then(response => {
+        if (!response.errorOccurred()) {
+          dispatch(setActionConfirmationResult(response));
+        }
+        dispatch(asyncEnded());
+      })
+      .catch(error => {
+        dispatch(setActionConfirmationResult(error));
         dispatch(asyncEnded());
         throw error;
       });

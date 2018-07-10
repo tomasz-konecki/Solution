@@ -46,7 +46,7 @@ const translations = {
     Date: "Date",
     userId: "User Id",
     ReactivateUserImperativus: "Reactivate user",
-    ReactivateUserInfinitive: "Reactivate użytkownika",
+    ReactivateUserInfinitive: "Reactivate user",
     UserReactivated: "User has been reactivated",
     DeleteUserImperativus: "Delete user",
     DownloadCV: "Download CV",

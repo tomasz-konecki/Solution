@@ -2,6 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import PropTypes from "prop-types";
+import { translate } from "react-translate";
 
 import { ACTION_CONFIRMED } from "./../../constants";
 import * as asyncActions from "../../actions/asyncActions";
@@ -10,9 +11,18 @@ import * as clientsActions from "../../actions/clientsActions";
 import ClientsList from "./ClientsList";
 import IntermediateBlock from "../common/IntermediateBlock";
 import Icon from "../common/Icon";
+import Aux from "../../services/auxilary";
+import AddClient from "./AddClient/AddClient";
+import SearchClient from "./searchClient/SearchClient";
 
 class ClientsContainer extends React.Component {
-  state = { loaded: false, editingInput: null };
+  state = {
+    loaded: false,
+    editingInput: null,
+    clientName: null,
+    error: null,
+    editClickDisabled: true
+  };
 
   componentDidMount = () => {
     this.props.clientsActions.loadClients();
@@ -20,7 +30,7 @@ class ClientsContainer extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.loading === false && this.props.loading === true) {
-      this.setState({ loaded: !this.state.loaded });
+      this.setState({ loaded: true });
     }
     if (this.validatePropsForClientDeletion(nextProps)) {
       this.props.async.setActionConfirmationProgress(true);
@@ -50,59 +60,91 @@ class ClientsContainer extends React.Component {
     );
   }
 
-  handleTimesClick = (id, name) => {
+  handleTimesClick = (id, name, t) => {
     this.props.async.setActionConfirmation(true, {
       key: "deleteClient",
-      string: `Removing... ${name}`,
+      string: `${t("Removing")} ${name}`,
       id: id,
-      successMessage: "Client has been removed."
+      successMessage: t("ClientRemoved")
     });
   };
 
-  handleSyncClick = (id, name) => {
+  handleSyncClick = (id, name, t) => {
     this.props.async.setActionConfirmation(true, {
       key: "reactivateClient",
-      string: `Reactivate user ${name}`,
+      string: `${t("Reactivating")} ${name}`,
       id: id,
-      successMessage: "Client has been reactivated."
+      successMessage: t("ClientReactivated")
     });
   };
 
   handleEditClick = (id, index) => {
-    console.log(id, index);
     this.setState({ editingInput: index });
   };
 
   handleGetValueFromInput = (value, error) => {
-    console.log("AHAhahahah", value, error);
+    if (!error) {
+      this.setState({
+        editClickDisabled: false,
+        clientName: value,
+        error: error
+      });
+    } else {
+      this.setState({
+        editClickDisabled: true,
+        clientName: value,
+        error: error
+      });
+    }
   };
 
-  generateOptions = (id, isDeleted, name, index) => {
+  handleEditSaveClick = id => {
+    if (!this.state.error) {
+      this.props.clientsActions.saveEdit(id, this.state.clientName);
+      this.setState({ editingInput: null });
+    }
+  };
+
+  generateOptions = (id, isDeleted, name, index, t) => {
     let content = [];
     let { editingInput } = this.state;
 
     if (!isDeleted) {
       content.push(
-        <button key={1} onClick={() => this.handleTimesClick(id, name)}>
+        <button
+          title={t("DeleteClient")}
+          key={1}
+          onClick={() => this.handleTimesClick(id, name, t)}
+        >
           <Icon icon="times" iconType="fa" />
         </button>
       );
     } else {
       content.push(
-        <button key={2} onClick={() => this.handleSyncClick(id, name)}>
+        <button
+          title={t("ReactivateClient")}
+          key={2}
+          onClick={() => this.handleSyncClick(id, name, t)}
+        >
           <Icon icon="sync-alt" iconType="fa" />
         </button>
       );
     }
     if (editingInput === index) {
       content.push(
-        <button key={3} onClick={() => this.handleEditSaveClick(id, index)}>
+        <button
+          title={t("SaveClient")}
+          disabled={this.state.editClickDisabled}
+          key={3}
+          onClick={() => this.handleEditSaveClick(id, index)}
+        >
           <Icon icon="check" iconType="fa" />
         </button>
       );
     } else {
       content.push(
         <button
+          title={t("EditClient")}
           key={4}
           onClick={() =>
             this.handleEditClick(id, index, this.handleGetValueFromInput)
@@ -116,26 +158,34 @@ class ClientsContainer extends React.Component {
     return content;
   };
 
-  pullDOM = (editingInput, clients) => {
+  pullDOM = (editingInput, clients, t) => {
     return (
-      <ClientsList
-        clients={clients}
-        options={this.generateOptions}
-        editingInput={editingInput}
-        handleGetValueFromInput={this.handleGetValueFromInput}
-      />
+      <Aux>
+        <AddClient
+          addClient={this.props.clientsActions.addClient}
+          loading={this.props.loading}
+          resultBlock={this.props.resultBlockAddClient}
+        />
+        <SearchClient />
+        <ClientsList
+          clients={clients}
+          options={this.generateOptions}
+          editingInput={editingInput}
+          handleGetValueFromInput={this.handleGetValueFromInput}
+          t={t}
+        />
+      </Aux>
     );
   };
 
   render() {
-    let { replyBlock, clients } = this.props;
+    let { replyBlock, clients, t } = this.props;
     let { editingInput, loaded } = this.state;
-
     return (
       <div className="content-container clients-container">
         <IntermediateBlock
           loaded={loaded}
-          render={() => this.pullDOM(editingInput, clients)}
+          render={() => this.pullDOM(editingInput, clients, t)}
           resultBlock={replyBlock}
         />
       </div>
@@ -157,6 +207,7 @@ function mapStateToProps(state) {
   return {
     clients: state.clientsReducer.clients,
     resultBlock: state.clientsReducer.resultBlock,
+    resultBlockAddClient: state.clientsReducer.resultBlockAddClient,
     confirmed: state.asyncReducer.confirmed,
     toConfirm: state.asyncReducer.toConfirm,
     isWorking: state.asyncReducer.isWorking,
@@ -175,4 +226,4 @@ function mapDispatchToProps(dispatch) {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(ClientsContainer);
+)(translate("ClientsContainer")(ClientsContainer));

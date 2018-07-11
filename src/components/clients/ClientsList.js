@@ -5,7 +5,8 @@ const ClientsList = ({
   clients,
   options,
   editingInput,
-  handleGetValueFromInput
+  handleGetValueFromInput,
+  t
 }) => {
   const listOfClients = clients.map((item, index) => {
     let name =
@@ -20,7 +21,7 @@ const ClientsList = ({
     return (
       <tr key={index}>
         <td>{name}</td>
-        <td>{options(item.id, item.isDeleted, item.name, index)}</td>
+        <td>{options(item.id, item.isDeleted, item.name, index, t)}</td>
       </tr>
     );
   });
@@ -28,8 +29,8 @@ const ClientsList = ({
     <table>
       <thead>
         <tr>
-          <th>Name</th>
-          <th>Options</th>
+          <th>{t("Name")}</th>
+          <th>{t("Options")}</th>
         </tr>
       </thead>
       <tbody>{listOfClients}</tbody>

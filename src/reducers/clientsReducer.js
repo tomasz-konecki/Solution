@@ -1,4 +1,9 @@
-import { LOAD_CLIENTS_SUCCESS, LOAD_CLIENTS_FAIL, LOGOUT } from "../constants";
+import {
+  LOAD_CLIENTS_SUCCESS,
+  LOAD_CLIENTS_FAIL,
+  ADD_CLIENT_RESULT,
+  LOGOUT
+} from "../constants";
 
 const initialState = {
   clients: []
@@ -14,6 +19,11 @@ export const clientsReducer = (state = initialState, action) => {
     case LOAD_CLIENTS_FAIL:
       return {
         resultBlock: action.resultBlock
+      };
+    case ADD_CLIENT_RESULT:
+      return {
+        ...state,
+        resultBlockAddClient: action.resultBlock
       };
     case LOGOUT:
       return {

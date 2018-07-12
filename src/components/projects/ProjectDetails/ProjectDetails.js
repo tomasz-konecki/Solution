@@ -26,7 +26,7 @@ import { getAllSkillsACreator } from '../../../actions/skillsActions';
 import Skills from '../../common/skills/skills';
 import { changeOperationStatus } from '../../../actions/asyncActions';
 import ConfirmModal from '../../common/confimModal/confirmModal';
-
+import ServerError from '../../common/serverError/serverError';
 const workerNames = ["Nazwa", "Rola", "Doświadczenie", "Stanowisko", "Data rozpoczęcia", "Data zakończenia"];
 
 class ProjectDetails extends Component{
@@ -63,11 +63,18 @@ class ProjectDetails extends Component{
         if(this.props.project === null || 
             this.props.project !== nextProps.project){
             const { project } = nextProps;
-            this.setState({isLoadingProject: false, 
-                addEmployeToProjectFormItems: this.fillDates(project.startDate,
-                    project.endDate, project.estimatedEndDate), isProjectStateChanging: false, 
-                    projectStatus: this.calculateProjectStatus(project.startDate, 
-                        project.endDate, project.status, project.estimatedEndDate)});
+            
+            if(project !== null){
+                this.setState({isLoadingProject: false, 
+                    addEmployeToProjectFormItems: this.fillDates(project.startDate,
+                        project.endDate, project.estimatedEndDate), isProjectStateChanging: false, 
+                        projectStatus: this.calculateProjectStatus(project.startDate, 
+                            project.endDate, project.status, project.estimatedEndDate)});
+            }
+            else{
+                this.setState({isLoadingProject: false});
+            }
+           
         }
         else if(this.props.addEmployeeToProjectErrors !== nextProps.addEmployeeToProjectErrors){
             this.setState({addEmployeSpinner: false});
@@ -125,6 +132,8 @@ class ProjectDetails extends Component{
     }
     render(){ 
         const { project } = this.props;
+        const { loadProjectStatus } = this.props;
+
         const { addEmployeeToProjectStatus } = this.props;
         const { addEmployeeToProjectErrors } = this.props;
         const { loadProjectErrors } = this.props;
@@ -135,7 +144,7 @@ class ProjectDetails extends Component{
                 () => this.props.addEmployeeToProjectAction(null, []) : null} className="project-details-container">
                 {this.state.isLoadingProject ? 
                 <Spinner /> :
-                project && 
+                loadProjectStatus && 
                 <Aux>
                     <header>
                         <h1>
@@ -292,6 +301,11 @@ class ProjectDetails extends Component{
                     <OperationLoader isLoading={this.state.isProjectStateChanging} 
                     operationError={this.props.operationStatus.error[0]}
                     close={() => this.props.changeOperationStatus({status: null, error: ""})} />
+                }
+
+                {loadProjectStatus === false && 
+                    <ServerError 
+                    message={this.props.loadProjectErrors[0]} />
                 }
             </div>
         );

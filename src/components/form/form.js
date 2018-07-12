@@ -68,6 +68,7 @@ class Form extends Component{
     validateAllInputs = () => {
         let result = true;
         const formItems = [...this.state.formItems];
+       
         for(let key in formItems){
             if(formItems[key].mode !== "date-picker"){
                 formItems[key].error = validateInput(
@@ -93,21 +94,20 @@ class Form extends Component{
         let newFormItems = [...this.state.formItems];
         newFormItems[id].value = moment(date);
         
-        let result = true;
+        let shouldSubmit = true;
         if(this.props.dateIndexesToCompare){
-            console.log(this.props.dateIndexesToCompare);
-            for(let i = 0; i < this.props.dateIndexesToCompare.length; i++){
-                if(this.props.dateIndexesToCompare[i] !== id){
-                    newFormItems[id].error = validateDate(newFormItems[id].value,
-                        newFormItems[id].name, moment(newFormItems[this.props.dateIndexesToCompare[i]].value));
-    
-                    if(newFormItems[id].error)
-                        result = false;
-                }
-            }
+            const { dateIndexesToCompare } = this.props;
+            const startDate = moment(newFormItems[dateIndexesToCompare[0]].value);
+            const endDate = moment(newFormItems[dateIndexesToCompare[1]].value);
+            const validationResult = validateDate(startDate, endDate);
+
+            for(let i = 0; i < validationResult.length; i++)
+                newFormItems[dateIndexesToCompare[i]].error = validationResult[i];
+            if(validationResult[0])
+                shouldSubmit = false;
         }
 
-        this.setState({formItems: newFormItems, validationResult: result});
+        this.setState({formItems: newFormItems, validationResult: shouldSubmit});
     }
     onChangeInput = (e, id, type) => {
         const newFormItems = [...this.state.formItems];
@@ -190,6 +190,7 @@ class Form extends Component{
         this.setState({formItems: formItems});
     }
     render(){
+        console.log(this.props.clientsWhichMatch);
         return(
             <form onSubmit={this.props.shouldSubmit ? e => this.onSubmit(e) : null} 
             className="universal-form-container">
@@ -261,7 +262,7 @@ class Form extends Component{
                                 }
                                 {(this.state.searchedList.length === 1  && !this.state.formItems[index].error) && 
                                 <p className="found-person-succ">
-                                    Znaleziono użytkownika {this.state.searchedList[0].firstName}
+                                    Znaleziono użytkownika {this.state.searchedList[0].fullName}
                                 </p>
                                 }
 
@@ -270,7 +271,7 @@ class Form extends Component{
                                         {this.state.searchedList.map((j, itemIndex) => {
                                             return (
                                             <li onClick={() => this.selectSearched(itemIndex, index)} key={j.id}>
-                                                {j.id} 
+                                                {j.fullName} 
                                             </li>
                                             );
                                         })}

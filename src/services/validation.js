@@ -23,21 +23,12 @@ export const validateInput = (inputValue, canBeNull, minLength, maxLength, input
 }
 
 
-export const validateDate = (date, type, dateToCompare) => {
-    if(!date.isValid())
-        return "Nie prawidłowy format daty";
-
-    if(dateToCompare){
-        if(type === "startDate" && date.isAfter(dateToCompare)){
-            return "Data rozpoczęcia nie powinna być poźniej niż data zakończenia";
-        }
-        if(type === "endDate" && date.isBefore(dateToCompare)){
-            return "Data zakończenia nie powinna być wcześniej niż data rozpoczęcia";
-        }
-    }
-    
-    
-    return "";
+export const validateDate = (startDate, endDate) => {
+    if(startDate.isAfter(endDate))
+        return ["Data rozpoczęcia nie powinna być poźniej niż data zakończenia", 
+            "Data zakończenia nie może być wcześniej niż data rozpoczęcia"];
+ 
+    return ["", ""];
 }
 
 export const validateReportPages = value => {

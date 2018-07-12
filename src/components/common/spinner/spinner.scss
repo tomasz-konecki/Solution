@@ -85,3 +85,48 @@
       transform: rotate(360deg);
   }
 }
+
+.redirect-prompt{
+  color: lightseagreen;
+  position: absolute;
+  bottom: 40px;
+  width: 100%;
+  text-align: center;
+  left: 0;
+  right: 0;
+  font-size: 20px;
+  animation: 2.5s hide-content linear forwards;
+}
+
+.redirect-prompt::before{
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -40px;
+  transition: 0.5s all ease-in-out;
+  border: 2px solid lightseagreen;
+  animation: 2.5s animate-redirect linear forwards;
+} 
+@keyframes animate-redirect {
+  0%{
+    width: 0;
+    opacity: 0;
+  }
+  50%{
+    width: 100%;
+    opacity: 1;
+    border-color: green;
+  }
+  100%{
+    opacity: 0;
+  }
+}
+@keyframes hide-content{
+  0%{
+    opacity: 1;
+  }
+  100%{
+    opacity: 0;
+  }
+
+}

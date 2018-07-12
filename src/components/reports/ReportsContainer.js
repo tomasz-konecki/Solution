@@ -7,15 +7,20 @@ import {
   generateDevsReport,
   getReportACreator,
   getReport,
-  googleDriveLogIn
+  googleDriveLogIn,
+  generateReportAndDownload
 } from "../../actions/reportsActions";
 import Spinner from "../common/spinner/spinner";
 import { validateReportPages } from "services/validation";
 import Navigation from "./navigation/navigation";
 import AddCloudModal from './modals/addCloud';
 import GenerateReportModal from './modals/genReport';
+import ReportsContent from './reportsContent/reportsContent';
+import OneDriveContent from './OneDriveConent/OneDriveContent';
+import { withRouter } from 'react-router';
 class ReportsContainer extends Component {
   state = {
+    showGDriveFolders: false,
     spinner: true,
     addList: [],
     baseList: [],
@@ -28,10 +33,21 @@ class ReportsContainer extends Component {
     isDownloading: false,
 
     valueToSearch: "",
-    addCloudModal: false
+    addCloudModal: false,
+    
+    hasUserBeenRedirectedToGDrive: false,
+    shouldDownloadFile: false,
+    isFileGenerating: false,
+    isPreparingReportAfterLoginIn: false
   };
   componentDidMount() {
-    this.props.getTeams();
+    const { search } = this.props.history.location;
+    if(search !== ""){
+      this.setState({showGDriveFolders: true});
+    }
+    else{
+      this.props.getTeams();
+    }
   }
   componentWillReceiveProps(nextProps) {
     if (this.props.teams !== nextProps.teams && nextProps.teams.length !== 0) {
@@ -40,7 +56,9 @@ class ReportsContainer extends Component {
         baseList: [...nextProps.teams],
         helpList: [...nextProps.teams]
       });
-    } else if (
+   
+    } 
+    else if (
       this.props.loadTeamsErrors !== nextProps.loadTeamsErrors ||
       this.props.genReportErrors !== nextProps.genReportErrors ||
       this.props.getReportErrors !== nextProps.getReportErrors ||
@@ -51,11 +69,21 @@ class ReportsContainer extends Component {
         window.location.href = url;
         this.props.getReportClear("", null, []);
       }
+      
       this.setState({
         spinner: false,
         isGenReport: false,
-        isDownloading: false
+        isDownloading: false,
+        isPreparingReportAfterLoginIn: false
       });
+    }
+  }
+  componentDidUpdate(){
+    if(this.state.hasUserBeenRedirectedToGDrive){
+      setTimeout(() => {
+        this.setState({hasUserBeenRedirectedToGDrive: false, shouldDownloadFile: true, 
+          isPreparingReportAfterLoginIn: true})
+      }, 2000);
     }
   }
   addTeamToResultList = name => {
@@ -165,7 +193,7 @@ class ReportsContainer extends Component {
   searchInTeamList = e => {
     const searchedItems = [];
     for (let key in this.state.helpList)
-      if (this.state.helpList[key].name.search(e.target.value) !== -1)
+      if (this.state.helpList[key].name.toLowerCase().search(e.target.value.toLowerCase()) !== -1)
         searchedItems.push(this.state.helpList[key]);
     this.setState({ baseList: searchedItems, valueToSearch: e.target.value });
   };
@@ -180,49 +208,81 @@ class ReportsContainer extends Component {
     this.setState({ isDownloading: true });
     this.props.getReport(this.props.genReportResp);
   };
+  redirectToGDrive = () => {
+    setTimeout(() => {
+      window.open(this.props.gDriveRedirectLink)
+    }, 2000);
+    this.setState({hasUserBeenRedirectedToGDrive: true});
+  }
 
-
+  downloadFileAfterPageOpen = () => {
+    this.setState({shouldDownloadFile: false });
+    this.props.generateReportAndDownload(this.state.addList,
+      this.state.pagesList);
+  }
+  changeIntoFoldersView = () => {
+    const { showGDriveFolders } = this.state;
+    const { search } = this.props.history.location;
+    const { teams } = this.props;
+    if(search !== "" && teams.length === 0 && showGDriveFolders){
+      this.props.getTeams();
+      this.setState({showGDriveFolders: false});
+    }
+    else{
+      this.setState({showGDriveFolders: !showGDriveFolders});
+    }
+      
+  }
   render() {
+    const { shouldDownloadFile } = this.state;
+    const { showGDriveFolders } = this.state;
+    const { reportModal } = this.state;
+    const { baseList } = this.state;
+    const { spinner } = this.state;
+    const { loadTeamsResult } = this.props;
+    const { loadTeamsErrors } = this.props;
+
+    const { folders } = this.props;
+    const { getFoldersStatus } = this.props;
+    const { getFoldersErrors } = this.props;
+    const { path } = this.props;
     return (
-      <div className="reports-container">
-        {this.state.spinner || (
+      <div className="reports-container" onMouseOver={shouldDownloadFile ? this.downloadFileAfterPageOpen : null}>
           <Navigation
             addCloud={() => this.setState({addCloudModal: true})}
             addListLength={this.state.addList.length}
             baseListLength={this.state.baseList.length}
+            numberOfFolders={folders.length}
             searchInTeamList={e => this.searchInTeamList(e)}
+            showGDriveFolders={showGDriveFolders}
             openReportsModals={this.openReportsModals}
+            changeIntoFoldersView={this.changeIntoFoldersView}
           />
-        )}
 
-        {this.state.spinner ? (
-          <Spinner />
-        ) : this.props.loadTeamsResult ? (
-          <div className="reports-content-container">
-            <div className="caffels-container">
-              {this.state.baseList.length > 0 ? (
-                this.state.baseList.map(i => {
-                  return (
-                    <div
-                      onClick={() => this.addTeamToResultList(i.name)}
-                      key={i.name}
-                      className="caffel"
-                    >
-                      {i.name}
-                    </div>
-                  );
-                })
-              ) : (
-                <p className="server-error">Nie znaleziono wyników </p>
-              )}
-            </div>
-          </div>
-        ) : (
-          <p className="server-error">{this.props.loadTeamsErrors[0]}</p>
-        )}
-        {this.state.reportModal && (
+
+        {showGDriveFolders ? 
+          <OneDriveContent 
+          path={path}
+          folders={folders}
+          getFoldersStatus={getFoldersStatus}
+          getFoldersErrors={getFoldersErrors}
+          search={this.props.history.location.search}/> : 
+
+          <ReportsContent 
+          spinner={spinner}
+          showGDriveFolders={showGDriveFolders}
+          loadTeamsResult={loadTeamsResult} 
+          baseList={baseList} 
+          addTeamToResultList={this.addTeamToResultList} 
+          loadTeamsErrors={loadTeamsErrors} />
+        }
+
+        
+
+        {
+          reportModal && 
           <GenerateReportModal
-          shouldOpenModal={this.state.reportModal}
+          shouldOpenModal={reportModal}
           closeModal={this.closeReportModal} 
           addList={this.state.addList}
           pagesList={this.state.pagesList}
@@ -235,19 +295,16 @@ class ReportsContainer extends Component {
           didPagesHasIncorrectValues={this.state.didPagesHasIncorrectValues.status}
           generateReport={this.generateReport}
           isGenReport={this.state.isGenReport}
-          genReportStatus={this.props.genReportStatus}
           genReportErrors={this.props.genReportErrors}
-          gDriveRedirectLink={this.props.gDriveRedirectLink}
+          redirectToGDrive={this.redirectToGDrive}
           downloadReport={this.downloadReport}
           gDriveLoginResult={this.props.gDriveLoginResult}
           gDriveLoginErrors={this.props.gDriveLoginErrors}
+          hasUserBeenRedirectedToGDrive={this.state.hasUserBeenRedirectedToGDrive}
+          isPreparingReportAfterLoginIn={this.state.isPreparingReportAfterLoginIn}
           />
-        )}
+        }
 
-        <AddCloudModal 
-        closeModal={() => this.setState({addCloudModal: false})} 
-        shouldOpenModal={this.state.addCloudModal}/>
-              
       </div>
     );
   }
@@ -269,13 +326,20 @@ const mapStateToProps = state => {
 
     gDriveRedirectLink: state.reportsReducer.gDriveRedirectLink,
     gDriveLoginResult: state.reportsReducer.gDriveLoginResult,
-    gDriveLoginErrors: state.reportsReducer.gDriveLoginErrors
+    gDriveLoginErrors: state.reportsReducer.gDriveLoginErrors,
+
+    folders: state.oneDriveReducer.folders,
+    getFoldersStatus: state.oneDriveReducer.getFoldersStatus,
+    getFoldersErrors: state.oneDriveReducer.getFoldersErrors,
+    path: state.oneDriveReducer.path
+
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
     getTeams: () => dispatch(getTeamsACreator()),
+    generateReportAndDownload: (listOfAddedTeams, listOfPages) => dispatch(generateReportAndDownload(listOfAddedTeams, listOfPages)),
     generateDevsReport: (listOfAddedTeams, listOfPages, shouldGenerateLink) =>
       dispatch(
         generateDevsReportACreator(
@@ -312,4 +376,4 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(ReportsContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(ReportsContainer));

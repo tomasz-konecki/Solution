@@ -22,24 +22,8 @@ export const getTeamsACreator = () => {
     }
 };
 
-export const googleDriveLogIn = (gDriveRedirectLink, gDriveLoginResult, gDriveLoginErrors) => {
-    return {
-        type: GOOGLE_DRIVE_LOG_IN,
-        gDriveRedirectLink,
-        gDriveLoginResult,
-        gDriveLoginErrors
-    }
-}
 
-export const gdriveLoginACreator = () => {
-    return dispatch => {
-        WebApi.gDrive.get.login().then(response => {
-            dispatch(googleDriveLogIn(response.replyBlock.data.dtoObject.redirectUri, true, []));
-        }).catch(error => {
-            dispatch(googleDriveLogIn("", false, errorCatcher(error)));
-        })
-    }
-}
+
 export const generateDevsReportPromise = (finalObject, shouldGenerateLink) => (dispatch) => {
     return new Promise((resolve, reject) => {
         WebApi.reports.post.report(finalObject, shouldGenerateLink).then(response => {
@@ -58,24 +42,61 @@ export const generateDevsReport = (genReportResp, genReportStatus, genReportErro
         genReportErrors
     }
 }
+
+export const googleDriveLogIn = (gDriveRedirectLink, gDriveLoginResult, gDriveLoginErrors) => {
+    return {
+        type: GOOGLE_DRIVE_LOG_IN,
+        gDriveRedirectLink,
+        gDriveLoginResult,
+        gDriveLoginErrors
+    }
+}
+
+export const gdriveLoginPromise = () => (dispatch) => {
+    return new Promise((resolve, reject) => {
+        WebApi.gDrive.get.login().then(response => {
+            dispatch(googleDriveLogIn(response.replyBlock.data.dtoObject.redirectUri, true, []));
+            resolve(response);
+        }).catch(error => {
+            dispatch(googleDriveLogIn("", false, errorCatcher(error)));
+            reject(error);
+        })
+    })
+}
+
 export const generateDevsReportACreator = (listOfAddedTeams, listOfPages, shouldGenerateLink) => {
     return dispatch => {
-        const objectToSend = {};
-        for(let i = 0; i < listOfAddedTeams.length; i++){
-            objectToSend[listOfAddedTeams[i].name] = listOfPages[i].value;
-        }
-        const finalObject = {
-            "teamsSheets": objectToSend
-        }
         if(shouldGenerateLink){
-            dispatch(generateDevsReportPromise(finalObject, false)).then(response => {
+            const objectToSend = createReportObject(listOfAddedTeams, listOfPages);
+            dispatch(generateDevsReportPromise(objectToSend, false)).then(response => {
                 dispatch(generateDevsReport(response.replyBlock.data.dtoObject.filename, true, []));
             }).catch(error => {
                 dispatch(generateDevsReport(null, false, errorCatcher(error)));
             })
         }
         else
-            dispatch(gdriveLoginACreator());
+            dispatch(gdriveLoginPromise());
+    }
+}
+export const generateReportAndDownload = (listOfAddedTeams, listOfPages) => {
+    return dispatch => {
+        const objectToSend = createReportObject(listOfAddedTeams, listOfPages);
+        dispatch(generateDevsReportPromise(objectToSend, true)).then(response => {
+            dispatch(generateDevsReport(response.replyBlock.data.dtoObject.filename, true, []));
+            dispatch(generateDevsReportACreator(response.replyBlock.data.dtoObject.filename));
+        }).catch(error => {
+            dispatch(generateDevsReport(null, false, errorCatcher(error)));
+        })
+    }
+}
+
+const createReportObject = (listOfAddedTeams, listOfPages) => {
+    const objectToSend = {};
+    for(let i = 0; i < listOfAddedTeams.length; i++){
+        objectToSend[listOfAddedTeams[i].name] = listOfPages[i].value;
+    }
+    return {
+        "teamsSheets": objectToSend
     }
 }
 
@@ -117,3 +138,7 @@ export const getUserCVACreator = userId => {
         })
     }
 }
+
+
+
+

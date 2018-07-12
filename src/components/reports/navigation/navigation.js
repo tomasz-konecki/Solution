@@ -6,28 +6,39 @@ const navigation = ({
   valueToSearch,
   searchInTeamList,
   openReportsModals,
-  addCloud
+  changeIntoFoldersView,
+  showGDriveFolders,
+  numberOfFolders
 }) => (
   <header>
-    <h1>Generowanie raportów</h1>
+    <h1>
+      {showGDriveFolders
+        ? "Przeglądów folderów One Drive"
+        : "Generowanie raportów"}
+    </h1>
     <nav>
       <div>
         <b>
-          <i className="fa fa-users" />
-          {addListLength}
-        </b>
+            <i className="fa fa-users" />
+            {addListLength}
+        </b>  
+        
         <b>
           <i className="fa fa-search" />
-          {baseListLength}
+          {showGDriveFolders ? numberOfFolders : baseListLength}
         </b>
       </div>
+
       <div className="searcher-container">
-        <input
+        {showGDriveFolders || 
+          <input
           value={valueToSearch}
           onChange={searchInTeamList}
           type="text"
           placeholder="wpisz nazwę drużyny..."
-        />
+          />
+        }
+        
       </div>
       <div className="btns-container">
         <Button
@@ -41,11 +52,15 @@ const navigation = ({
 
         <Button
           disable={false}
-          title="Dodaj chmurę"
-          onClick={addCloud}
+          title={showGDriveFolders ? "Teamy" : "Foldery"}
+          onClick={changeIntoFoldersView}
           mainClass="generate-raport-btn btn-green"
         >
-          <i className="fa fa-plus" />
+          <i
+            className={`fa ${showGDriveFolders
+              ? "fa-sitemap"
+              : "fa-folder-open"}`}
+          />
         </Button>
       </div>
     </nav>

@@ -17,78 +17,133 @@
             font-size: 12.5px;
             color: tomato;
         }
+        .fa-plus{
+            color: green;
+            font-size: 22px;
+            position: absolute;
+            cursor: pointer;
+            top: -15px;
+        }
        
     }
-    .progress-bar-container{
-        display: flex;
-        width: 250px;
-        flex-flow: column;
-        margin: 25px auto;
-        justify-content: space-between;
-        align-items: center;
-        @media(min-width: 340px){
-            width: 300px;
-        }
-        @media(min-width: 450px){
-            flex-flow: row;
-            width: 400px;
-            margin: 2px;
-            height: 35px;
-        }
-        b{
-            font-size: .7rem;
-            margin-right: auto;
-            padding-bottom: 25px;
-            @media(min-width: 450px){
-                margin: auto;
-                padding: 0;
-                margin-right: 10px;
-                word-break: break-all !important;
-                width: 100px;
-            }
-        }
-        .progress-btns{
-            position: relative;
-            width: 250px;
-            background-color: rgba(0,0,0,0.2);
-            display: flex;
-            justify-content: flex-start;
-            height: 16px;
-            @media(min-width: 340px){
-                width: 300px;
-            }
-        }
-        .progress-btns span{
-            cursor: pointer;
-            width: 20%;
-            margin: 0;
-            position: relative;
-            display: block;
-            height: 16px;
-            @media(min-width: 340px){
-                width: 60px;
-            }
-            
-        }
-        .progress-btns span i{
-            font-size: 10px;
-            position: absolute;
-            display: block;
-            right: 0;
-            top: -15px;
-            animation: 0.5s animate-cas ease-in-out forwards;
-        }
-        
-        .progress-btns span:hover{
-            background-color: rgba(0,0,0,0.3) !important;
-        }
+    .server-error{
+        color: tomato;
+        font-size: 26px;
+        text-align: center;
+        padding: 100px;
     }
-
-    .option-btn{
+    .btn-abs{
         margin: 15px auto;
         left: 0;
         right: 0;
+        position: absolute;            
+    }
+   
+   
+}
+.modal-container{
+    width: 100%;
+    height: 100%;
+    position: relative;
+    .option-btn{
+        bottom: 40px;
         position: absolute;
+        right: 0;
+        left: 0;
+        width: 120px;
+        margin: 0 auto;
+    }
+}
+.progress-bar-container{
+    display: flex;
+    width: 250px;
+    flex-flow: column;
+    margin: 25px auto;
+    justify-content: space-between;
+    align-items: center;
+    @media(min-width: 340px){
+        width: 300px;
+    }
+    @media(min-width: 450px){
+        flex-flow: row;
+        width: 400px;
+        margin: 2px;
+        height: 35px;
+    }
+    b{
+        font-size: .75rem;
+        margin-right: auto;
+        padding-bottom: 25px;
+        @media(min-width: 450px){
+            margin: auto;
+            padding: 0;
+            margin-right: 10px;
+            word-break: break-all !important;
+            width: 100px;
+        }
+    }
+    .progress-btns{
+        position: relative;
+        width: 250px;
+        background-color: rgba(0,0,0,0.2);
+        display: flex;
+        justify-content: flex-start;
+        height: 16px;
+        @media(min-width: 340px){
+            width: 300px;
+        }
+    }
+    .progress-btns span{
+        cursor: pointer;
+        width: 20%;
+        margin: 0;
+        position: relative;
+        display: block;
+        height: 16px;
+        @media(min-width: 340px){
+            width: 60px;
+        }
         
+    }
+    .progress-btns span i{
+        font-size: 10px;
+        position: absolute;
+        display: block;
+        right: 0;
+        top: -15px;
+        animation: 0.5s animate-cas ease-in-out forwards;
+    }
+    
+    .progress-btns span:hover{
+        background-color: rgba(0,0,0,0.3) !important;
+    }
+    .fa-save{
+        font-size: 18px;
+        position: absolute;
+        right: -25px;
+        animation: 0.5s animate-to-save linear infinite;
+    }
+    .fa-plus{
+        color: green;
+        margin-left: 10px;
+        cursor: pointer;
+    }
+}
+.modal-progress-br-container{
+    overflow-y: auto;
+    height: 70%;
+    width: 100%;
+    padding: 10px;
+    margin-top: 15px;
+}
+@keyframes animate-to-save {
+    0%{
+        transform: scale(1);
+    }
+    50%{
+        transform: scale(1.1);
+    }
+    100%{
+        transform: scale(1);
     }
 }

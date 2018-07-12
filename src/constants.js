@@ -36,10 +36,10 @@ export const overViewNames = ["Klient", "Data rozpoczęcia", "Szacowana data zak
 
 export const ADD_EMPLOYEE_TO_PROJECT = "ADD_EMPLOYEE_TO_PROJECT";
 export const DELETE_PROJECT_OWNER = "DELETE_PROJECT_OWNER";
-export const CHANGE_PROJECT_SKILL = "CHANGE_PROJECT_SKILL";
 export const ADD_FEEDBACK = "ADD_FEEDBACK";
 export const GET_FEEDBACKS = "GET_FEEDBACKS";
 export const EDIT_PROJECT = "EDIT_PROJECT";
+export const CHANGE_PROJECT_SKILLS = "CHANGE_PROJECT_SKILLS";
 
 
 // REPORTS
@@ -48,3 +48,21 @@ export const GENERATE_DEVS_REPORT = "GENERATE_DEVS_REPORT";
 export const GET_REPORT = "GET_REPORT";
 export const GOOGLE_DRIVE_LOG_IN = "GOOGLE_DRIVE_LOG_IN";
 export const GET_USER_CV = "GET_USER_CV";
+export const CHANGE_REPORT_OPERATION_STATE = "CHANGE_REPORT_OPERATION_STATE";
+
+
+// ONEDRIVE
+
+export const ONE_DRIVE_AUTH = "ONE_DRIVE_AUTH";
+export const SEND_CODE_TO_GET_TOKEN = "SEND_CODE_TO_GET_TOKEN";
+export const GET_FOLDERS = "GET_FOLDERS";
+export const CREATE_FOLDER = "CREATE_FOLDER";
+export const DELETE_FOLDER = "DELETE_FOLDER";
+export const UPDATE_FOLDER = "UPDATE_FOLDER";
+export const UPLOAD_FILE = "UPLOAD_FILE";
+
+
+
+// SKILLS
+
+export const GET_ALL_SKILLS = "GET_ALL_SKILLS";

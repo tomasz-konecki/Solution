@@ -89,24 +89,13 @@ class Form extends Component{
         this.setState({validationResult: result, formItems: formItems});
         return result;
     }
-    
-    dateValidate = (id, newFormItems) => {
-        for(let i = 0; i < this.props.dateIndexesToCompare.length; i++){
-            if(this.props.dateIndexesToCompare[i] !== id){
-                newFormItems[id].error = validateDate(newFormItems[id].value,
-                    newFormItems[id].name, moment(newFormItems[this.props.dateIndexesToCompare[i]].value));
-
-                this.setState({validationResult: newFormItems[id].error ? false : true});
-            }
-        }
-    }
-
     onDateChange = (date, id) => {
         let newFormItems = [...this.state.formItems];
         newFormItems[id].value = moment(date);
         
         let result = true;
         if(this.props.dateIndexesToCompare){
+            console.log(this.props.dateIndexesToCompare);
             for(let i = 0; i < this.props.dateIndexesToCompare.length; i++){
                 if(this.props.dateIndexesToCompare[i] !== id){
                     newFormItems[id].error = validateDate(newFormItems[id].value,

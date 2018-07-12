@@ -15,13 +15,19 @@ import Aux from "../../services/auxilary";
 import AddClient from "./AddClient/AddClient";
 import SearchClient from "./searchClient/SearchClient";
 
+import "../../scss/components/clients/ClientsContainer.scss";
+
 class ClientsContainer extends React.Component {
   state = {
     loaded: false,
     editingInput: null,
     clientName: null,
     error: null,
-    editClickDisabled: true
+    editClickDisabled: true,
+    filteredClients: null,
+    sortingDirections: {
+      name: "asc"
+    }
   };
 
   componentDidMount = () => {
@@ -158,7 +164,41 @@ class ClientsContainer extends React.Component {
     return content;
   };
 
-  pullDOM = (editingInput, clients, t) => {
+  filterList = e => {
+    let searchedValue = e.target.value;
+    var updatedList = this.props.clients;
+    if (searchedValue) {
+      updatedList = updatedList.filter((item, index) => {
+        if (item.name && searchedValue) {
+          return (
+            item.name.toLowerCase().indexOf(searchedValue.toLowerCase()) >= 0
+          );
+        }
+      });
+      this.setState({ filteredClients: updatedList });
+    }
+  };
+
+  sortBy = key => {
+    const { sortingDirections } = this.state;
+
+    let sortedClients = this.props.clients.sort((a, b) => {
+      let nameA = a[key] ? a[key].toLowerCase() : "";
+      let nameB = b[key] ? b[key].toLowerCase() : "";
+
+      if (nameA < nameB) return sortingDirections[key] === "asc" ? -1 : 1;
+      if (nameA > nameB) return sortingDirections[key] === "asc" ? 1 : -1;
+    });
+
+    this.setState({
+      filteredClients: sortedClients,
+      sortingDirections: {
+        [key]: sortingDirections[key] === "asc" ? "desc" : "asc"
+      }
+    });
+  };
+
+  pullDOM = (editingInput, clients, t, filterList, sortBy) => {
     return (
       <Aux>
         <AddClient
@@ -166,13 +206,14 @@ class ClientsContainer extends React.Component {
           loading={this.props.loading}
           resultBlock={this.props.resultBlockAddClient}
         />
-        <SearchClient />
+        <SearchClient filter={filterList} t={t} />
         <ClientsList
           clients={clients}
           options={this.generateOptions}
           editingInput={editingInput}
           handleGetValueFromInput={this.handleGetValueFromInput}
           t={t}
+          sortBy={sortBy}
         />
       </Aux>
     );
@@ -180,14 +221,28 @@ class ClientsContainer extends React.Component {
 
   render() {
     let { replyBlock, clients, t } = this.props;
-    let { editingInput, loaded } = this.state;
+    let { editingInput, loaded, filteredClients } = this.state;
+
+    let clientList = !filteredClients ? clients : filteredClients;
+
     return (
       <div className="content-container clients-container">
-        <IntermediateBlock
-          loaded={loaded}
-          render={() => this.pullDOM(editingInput, clients, t)}
-          resultBlock={replyBlock}
-        />
+        <div className="clients-list-container">
+          <IntermediateBlock
+            loaded={loaded}
+            render={() =>
+              this.pullDOM(
+                editingInput,
+                clientList,
+                t,
+                this.filterList,
+                this.sortBy
+              )
+            }
+            resultBlock={replyBlock}
+          />
+        </div>
+        <div className="clients-more-container" />
       </div>
     );
   }

@@ -22,7 +22,9 @@ class AddClient extends Component {
     let { addClient, loading, resultBlock, t } = this.props;
     return (
       <Aux>
-        <Button onClick={this.handleButtonClick}>{t("AddClient")}</Button>
+        <Button mainClass="add-client-button" onClick={this.handleButtonClick}>
+          {t("AddClient")}
+        </Button>
         <Modal
           open={this.state.showAddClientModal}
           classNames={{ modal: "Modal Modal-add-client" }}

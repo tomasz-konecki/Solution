@@ -1,12 +1,14 @@
 import React from "react";
 import ClientNameInput from "./ClientNameInput";
+import "../../scss/components/clients/ClientsList.scss";
 
 const ClientsList = ({
   clients,
   options,
   editingInput,
   handleGetValueFromInput,
-  t
+  t,
+  sortBy
 }) => {
   const listOfClients = clients.map((item, index) => {
     let name =
@@ -21,15 +23,24 @@ const ClientsList = ({
     return (
       <tr key={index}>
         <td>{name}</td>
-        <td>{options(item.id, item.isDeleted, item.name, index, t)}</td>
+        <td className="client-options">
+          {options(item.id, item.isDeleted, item.name, index, t)}
+        </td>
       </tr>
     );
   });
   return (
-    <table>
+    <table className="client-list-table">
       <thead>
         <tr>
-          <th>{t("Name")}</th>
+          <th>
+            <button
+              className="clients-sorting-button"
+              onClick={() => sortBy("name")}
+            >
+              {t("Name")}
+            </button>
+          </th>
           <th>{t("Options")}</th>
         </tr>
       </thead>

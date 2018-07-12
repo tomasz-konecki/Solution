@@ -126,7 +126,8 @@ export const addClient = clientName => {
         if (!response.errorOccurred()) {
           dispatch(addClientResult(response));
           setTimeout(() => {
-            dispatch(addClientResult(null));
+            //dispatch(addClientResult(null));
+            //dispatch(loadClients());
           }, 2000);
         }
         dispatch(asyncEnded());

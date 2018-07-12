@@ -3,6 +3,8 @@ import Button from "../../common/button/button";
 import { validateInput } from "../../../services/validation";
 import IntermediateBlock from "../../common/IntermediateBlock";
 
+import "../../../scss/components/clients/addClient/addClientModal.scss";
+
 class AddClientModal extends Component {
   state = { inputValue: null, inputError: null, buttonDisabled: true };
 
@@ -68,12 +70,15 @@ class AddClientModal extends Component {
         <header>
           <h3 className="section-heading">{t("AddClient")}</h3>
         </header>
-        <IntermediateBlock
-          loaded={!loading}
-          render={() => this.pullDOM(addClient, buttonDisabled, error, t)}
-          resultBlock={resultBlock}
-          spinner="Cube"
-        />
+        <div className="add-client-container-left">
+          <IntermediateBlock
+            loaded={!loading}
+            render={() => this.pullDOM(addClient, buttonDisabled, error, t)}
+            resultBlock={resultBlock}
+            spinner="Cube"
+          />
+        </div>
+        <div className="add-client-container-right" />
         {info}
       </div>
     );

@@ -8,4 +8,22 @@
   .clients-list-container {
     margin-top: 20px;
   }
+
+  .clients-not-found {
+    display: inline-block;
+    width: 100%;
+    text-align: center;
+    padding: 20px;
+    color: red;
+  }
+
+  .client-name-input-error {
+    text-align: center;
+    padding: 20px;
+    color: red;
+    position: absolute;
+  }
+
+  .show-clients-container {
+  }
 }

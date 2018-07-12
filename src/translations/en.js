@@ -72,7 +72,10 @@ const translations = {
     ClientReactivated: "Client has beed reactivated.",
     Removing: "You are about to remove client",
     Reactivating: "You are about to reactivate client",
-    Search: "Search"
+    Search: "Search",
+    ClientsNotFound: "Clients Not Found",
+    Activated: "Activated",
+    NotActivated: "Not Activated"
   },
   AddClient: {
     AddClient: "Add Client",

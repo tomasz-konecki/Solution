@@ -14,27 +14,37 @@ import Icon from "../common/Icon";
 import Aux from "../../services/auxilary";
 import AddClient from "./AddClient/AddClient";
 import SearchClient from "./searchClient/SearchClient";
+import ShowRadioButtons from "./ShowRadioButtons/ShowRadioButtons";
 
 import "../../scss/components/clients/ClientsContainer.scss";
-
 class ClientsContainer extends React.Component {
   state = {
+    clients: [],
     loaded: false,
     editingInput: null,
     clientName: null,
     error: null,
     editClickDisabled: true,
-    filteredClients: null,
     sortingDirections: {
       name: "asc"
-    }
+    },
+    checked: "activated",
+    firstReceiving: true
   };
 
   componentDidMount = () => {
     this.props.clientsActions.loadClients();
+    this.radioButtonClick("activated");
   };
 
   componentWillReceiveProps(nextProps) {
+    if (nextProps.clients !== this.props.clients) {
+      if (this.state.firstReceiving) {
+        this.setState({ firstReceiving: false });
+      } else {
+        this.setState({ clients: nextProps.clients });
+      }
+    }
     if (nextProps.loading === false && this.props.loading === true) {
       this.setState({ loaded: true });
     }
@@ -166,7 +176,7 @@ class ClientsContainer extends React.Component {
 
   filterList = e => {
     let searchedValue = e.target.value;
-    var updatedList = this.props.clients;
+    let updatedList = this.props.clients;
     if (searchedValue) {
       updatedList = updatedList.filter((item, index) => {
         if (item.name && searchedValue) {
@@ -175,30 +185,50 @@ class ClientsContainer extends React.Component {
           );
         }
       });
-      this.setState({ filteredClients: updatedList });
     }
+    this.setState({ clients: updatedList });
   };
 
   sortBy = key => {
-    const { sortingDirections } = this.state;
+    const { sortingDirections, clients } = this.state;
 
-    let sortedClients = this.props.clients.sort((a, b) => {
-      let nameA = a[key] ? a[key].toLowerCase() : "";
-      let nameB = b[key] ? b[key].toLowerCase() : "";
+    let sortedClients = (clients ? clients : this.props.clients).sort(
+      (a, b) => {
+        let nameA = a[key] ? a[key].toLowerCase() : "";
+        let nameB = b[key] ? b[key].toLowerCase() : "";
 
-      if (nameA < nameB) return sortingDirections[key] === "asc" ? -1 : 1;
-      if (nameA > nameB) return sortingDirections[key] === "asc" ? 1 : -1;
-    });
+        if (nameA < nameB) return sortingDirections[key] === "asc" ? -1 : 1;
+        if (nameA > nameB) return sortingDirections[key] === "asc" ? 1 : -1;
+      }
+    );
 
     this.setState({
-      filteredClients: sortedClients,
+      clients: sortedClients,
       sortingDirections: {
         [key]: sortingDirections[key] === "asc" ? "desc" : "asc"
       }
     });
   };
 
-  pullDOM = (editingInput, clients, t, filterList, sortBy) => {
+  radioButtonClick = value => {
+    let updatedList = this.props.clients;
+
+    updatedList = updatedList.filter((item, index) => {
+      if (value === "activated") {
+        if (!item.isDeleted) {
+          return item;
+        }
+      }
+      if (value === "not-activated") {
+        if (item.isDeleted) {
+          return item;
+        }
+      }
+    });
+    this.setState({ clients: updatedList, checked: value });
+  };
+
+  pullDOM = (editingInput, clients, t, filterList, sortBy, checked) => {
     return (
       <Aux>
         <AddClient
@@ -207,6 +237,11 @@ class ClientsContainer extends React.Component {
           resultBlock={this.props.resultBlockAddClient}
         />
         <SearchClient filter={filterList} t={t} />
+        <ShowRadioButtons
+          t={t}
+          radioButtonClick={this.radioButtonClick}
+          checked={checked}
+        />
         <ClientsList
           clients={clients}
           options={this.generateOptions}
@@ -215,15 +250,15 @@ class ClientsContainer extends React.Component {
           t={t}
           sortBy={sortBy}
         />
+        {clients.length === 0 && (
+          <span className="clients-not-found">{t("ClientsNotFound")}</span>
+        )}
       </Aux>
     );
   };
-
   render() {
-    let { replyBlock, clients, t } = this.props;
-    let { editingInput, loaded, filteredClients } = this.state;
-
-    let clientList = !filteredClients ? clients : filteredClients;
+    let { replyBlock, t } = this.props;
+    let { editingInput, loaded, clients, checked } = this.state;
 
     return (
       <div className="content-container clients-container">
@@ -233,10 +268,11 @@ class ClientsContainer extends React.Component {
             render={() =>
               this.pullDOM(
                 editingInput,
-                clientList,
+                clients,
                 t,
                 this.filterList,
-                this.sortBy
+                this.sortBy,
+                checked
               )
             }
             resultBlock={replyBlock}

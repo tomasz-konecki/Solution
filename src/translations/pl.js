@@ -29,6 +29,15 @@ const translations = {
     Today: "Dzisiaj",
     NoDataOrResults: "Brak danych bądź wyników"
   },
+  StatsContainer: {
+    DevLocalization: "Lokalizacja Developerów",
+    EmployeesWithoutProjects: "Pracownicy bez projektów",
+    Withoout: "BEZ",
+    With: "Z",
+    ActiveProjects: "Aktywne Projekty",
+    Active: "Aktywne",
+    Archive: "Archiwalne"
+  },
   UsersList: {
     Add: "Dodaj",
     Name: "Imię",

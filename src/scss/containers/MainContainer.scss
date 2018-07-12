@@ -188,6 +188,9 @@
     box-sizing: border-box;
     margin-top: 6vh;
     color: $content-color;
+    @media screen and (max-width: 900px) {
+      padding: 0;
+    }
   }
 }
 @media (max-width: 1366px) {

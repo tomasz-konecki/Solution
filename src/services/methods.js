@@ -42,3 +42,10 @@ export const updateObject = (oldObject, updatedValues) => {
       ...updatedValues
   }
 }
+export const isArrayContainsByObjectKey = (array, element) => {
+  for(let i = 0; i < array.length; i++){
+    if(array[i].obj.skillName === element)
+      return true;
+  }
+  return false;
+}

@@ -66,3 +66,4 @@ export const UPLOAD_FILE = "UPLOAD_FILE";
 // SKILLS
 
 export const GET_ALL_SKILLS = "GET_ALL_SKILLS";
+export const ADD_SKILLS_TO_PROJECT = "ADD_SKILLS_TO_PROJECT";

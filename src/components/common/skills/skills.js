@@ -15,7 +15,13 @@ class Skills extends Component{
         addSkillsModal: false,
         isLoadingSkillsForModal: false,
         allSkills: [],
-        newSkillsList: []
+        searchedSkills: [],
+        showSearchBar: false,
+
+        skillName: "",
+        listToAddForProject: [],
+        showAddList: false,
+        isAddingNewSkills: false
     }
     fetchSkillsOnStart = skills => {
         const newSkills = [];
@@ -26,20 +32,27 @@ class Skills extends Component{
         return newSkills;
     }
     componentDidMount(){
-        this.setState({items: this.fetchSkillsOnStart(this.props.items)})
+        const items = this.fetchSkillsOnStart(this.props.items);
+        this.setState({items: items, listToAddForProject: items});
     }
     componentWillReceiveProps(nextProps){
       if(this.props.items !== nextProps.items){
-        this.setState({isChanging: false, items: this.fetchSkillsOnStart(nextProps.items)});
+        this.setState({isChanging: false, items: this.fetchSkillsOnStart(nextProps.items),
+            isAddingNewSkills: false});
       }
-      else if(this.props.errors !== nextProps.errors)
-        this.setState({isChanging: false});
-      else if(nextProps.loadedSkills && nextProps.loadSkillsStatus){
-          this.setState({allSkills: this.fetchSkillsOnStart(nextProps.loadedSkills), 
+      else if(this.props.changeProjectSkillsErrors !== nextProps.changeProjectSkillsErrors)
+        this.setState({isChanging: false, isAddingNewSkills: false});
+      else if(nextProps.loadedSkills && nextProps.loadSkillsStatus && 
+            nextProps.addSkillsToProjectStatus === null){
+          const fetchedSkills = this.fetchSkillsOnStart(nextProps.loadedSkills);
+
+          this.setState({allSkills: fetchedSkills, searchedSkills: fetchedSkills, 
             isLoadingSkillsForModal: false});
       }
       else if(this.props.loadSkillsErrors !== nextProps.loadSkillsErrors)
         this.setState({isLoadingSkillsForModal: false});
+      else if(this.props.addSkillsToProjectErrors !== nextProps.addSkillsToProjectErrors)
+        this.setState({isAddingNewSkills: false});
     }
     
     changeSkill = (valueToChange, index, listName) => {
@@ -68,26 +81,103 @@ class Skills extends Component{
     getAllSkills = () => {
         if(this.props.loadedSkills.length === 0){
             this.setState({addSkillsModal: true, isLoadingSkillsForModal: true});
-            this.props.getAllSkills();
+            this.props.getAllSkills(this.state.items);
         }
         else
             this.setState({addSkillsModal: true});
         
     }
-    render(){
-        const { isChanging } = this.state;
-        const { addSkillsModal } = this.state;
-        const { isLoadingSkillsForModal } = this.state;
-        const { allSkills } = this.state;
-        const { items } = this.state;
+    findSkillByName = e => {
+        const typedValue = e.target.value.toLowerCase();
+        const searchedSkills = [];
+        const { allSkills, showAddList, listToAddForProject } = this.state;
+        
+        const whereShouldSearch = showAddList ? listToAddForProject : allSkills;
 
-        const { loadSkillsStatus } = this.props;
-        const { loadSkillsErrors } = this.props;
+        if(whereShouldSearch.length > 0){
+            for(let key in whereShouldSearch){
+                const checkWhichItem = whereShouldSearch[key].obj.name ? whereShouldSearch[key].obj.name : 
+                    whereShouldSearch[key].obj.skillName;
+                if(checkWhichItem.toLowerCase().search(typedValue) !== -1)
+                    searchedSkills.push(whereShouldSearch[key]);
+            }
+        }
+        
+        this.setState({searchedSkills: searchedSkills, skillName: typedValue});
+    }
+    addItemToProjectList = (id, index) => {
+        const listToAddForProject = [...this.state.listToAddForProject];
+        const allSkills = [...this.state.allSkills];
+        const searchedSkills = [...this.state.searchedSkills];
+
+        searchedSkills[index].startValue = searchedSkills[index].startValue ? searchedSkills[index].startValue : 1;
+        listToAddForProject.push(searchedSkills[index]);
+
+        const indexInAllSkills = allSkills.findIndex(index => {
+            return index.obj.id === id
+        });
+        const indexInSearchedSkills = searchedSkills.findIndex(index => {
+            return index.obj.id === id
+        });
+        allSkills.splice(indexInAllSkills, 1);
+        searchedSkills.splice(indexInSearchedSkills, 1);
+
+        this.setState({listToAddForProject: listToAddForProject, allSkills: allSkills, 
+            searchedSkills: searchedSkills});
+    }
+    showAddList = () => { 
+        const searchedSkills = [];
+        const { listToAddForProject, showAddList } = this.state;
+
+        if(!showAddList){
+            for(let key in listToAddForProject)
+                searchedSkills.push(listToAddForProject[key]);
+        }
+        else{
+            const { allSkills } = this.state;
+            for(let key in allSkills)
+                searchedSkills.push(allSkills[key]);
+        }
+        
+        this.setState({searchedSkills: searchedSkills, showAddList: !showAddList});
+    }
+    removeItemFromProjectList = (id, index) => {
+        const listToAddForProject = [...this.state.listToAddForProject];
+        const allSkills = [...this.state.allSkills];
+        const searchedSkills = [...this.state.searchedSkills];
+
+        allSkills.push(listToAddForProject[index]);
+
+        const listToAddForProjectIndex = listToAddForProject.findIndex(item => {
+            return item.obj.id === id
+        });
+        listToAddForProject.splice(listToAddForProjectIndex, 1);
+        
+        searchedSkills.splice(index, 1);
+
+        this.setState({listToAddForProject: listToAddForProject, allSkills: allSkills, 
+            searchedSkills: searchedSkills});
+    }
+    addSkillsToProject = () => {
+        this.setState({isAddingNewSkills: true});
+        this.props.addSkillsToProject(this.props.projectId, this.state.listToAddForProject);
+    }
+    closeModal = () => {
+        this.setState({addSkillsModal: false});
+        this.props.addSkillsToProjectClear(null, []);
+    }
+    render(){
+        const { isChanging, addSkillsModal, isLoadingSkillsForModal, items, showSearchBar,
+            skillName, searchedSkills, showAddList, isAddingNewSkills } = this.state;
+            
+        const { loadSkillsStatus, loadSkillsErrors, title, changeProjectSkillsErrors, changeProjectSkillsStatus,
+            addSkillsToProjectStatus, addSkillsToProjectErrors } = this.props;
+
         return(
         <div className="progress-bars-container">
-            <h3>{this.props.title}
-                {this.props.status === false && 
-                <span>{this.props.errors[0]}</span>}
+            <h3>{title}
+                {changeProjectSkillsStatus === false && 
+                <span>{changeProjectSkillsErrors[0]}</span>}
 
                 {isChanging && 
                     <SmallSpinner />
@@ -120,27 +210,49 @@ class Skills extends Component{
                 open={addSkillsModal}
                 classNames={{ modal: "Modal Modal-add-owner" }}
                 contentLabel="Edit project modal"
-                onClose={() => this.setState({addSkillsModal: false})}>
+                onClose={this.closeModal}>
 
-                <header>
-                    <h3 className="section-heading">Dodaj umiejętność do projektu </h3>
+                <header className="header-container">
+                    {(showSearchBar && loadSkillsStatus) ? 
+                        <input value={skillName} type="text"
+                        onChange={e => this.findSkillByName(e)} 
+                        placeholder="wpisz nazwę umiejętności..." /> : 
+
+                        <h3 className="section-heading">Dodaj umiejętność do projektu 
+                        { loadSkillsStatus && <i onClick={() => this.setState({showSearchBar: true})} className="fa fa-search"></i>}
+                        </h3>
+                    }
+                    
+                    {loadSkillsStatus && 
+                        <button onClick={this.showAddList} className="change-list-btn">
+                            {showAddList ? "Ukryj dodane" : "Pokaż dodane"}
+                        </button>
+                    }
+                    
                 </header>
-
 
                 {isLoadingSkillsForModal && <Spinner />}
                 <div className="modal-container">
                     {loadSkillsStatus !== null && 
                         loadSkillsStatus ? 
                         <div className="modal-progress-br-container">
-                        {allSkills.map((skill, index) => {
+
+                        {searchedSkills.length === 0 && 
+                            <p className="empty-list">Brak wyników dla tego ciągu znaków</p>
+                        }
+
+                        {searchedSkills.map((skill, index) => {
                             return (
-                            <div key={skill.obj.id}
+                            <div key={index}
                                 className="progress-bar-container">
-                                    <b>{skill.obj.name}</b>
+                                    <b>{skill.obj.name ? skill.obj.name : skill.obj.skillName}</b>
                                     <ProgressPicker 
-                                        createResult={this.createProgressBtns(5, skill.color, skill.startValue, index, "allSkills")}
+                                        createResult={this.createProgressBtns(5, skill.color, skill.startValue, index, "searchedSkills")}
                                     />
-                                    <i className="fa fa-plus"></i>
+                                    {showAddList ? 
+                                        <i onClick={() => this.removeItemFromProjectList(skill.obj.id, index)} className="fa fa-minus"></i> : 
+                                        <i onClick={() => this.addItemToProjectList(skill.obj.id, index)} className="fa fa-plus"></i>
+                                    }
                             </div> )
                             })}
                         
@@ -149,13 +261,22 @@ class Skills extends Component{
                         <p className="server-error">{loadSkillsErrors[0]}</p>
                     }
                     {isLoadingSkillsForModal || 
-                    <button onClick={this.addSkillToProject} className="option-btn green-btn">
+                    <button onClick={this.addSkillsToProject} className="option-btn green-btn">
                         Zatwierdź
+                        {isAddingNewSkills && 
+                            <SmallSpinner />
+                        }
                     </button>
                     }
+
+                    {addSkillsToProjectStatus === false && 
+                        <p style={{fontSize: '22px'}} className="server-error">{addSkillsToProjectErrors[0]}</p>
+                    }
+
+                    {addSkillsToProjectStatus && 
+                        <div className="correct-operation"></div>
+                    }
                 </div>
-               
-               
             </Modal>     
             
         </div>

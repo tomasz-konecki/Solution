@@ -1,6 +1,7 @@
 import { LOAD_PROJECTS_SUCCESS, CHANGE_EDITED_PROJECT, GET_PROJECT, names, overViewNames, 
 ADD_EMPLOYEE_TO_PROJECT, DELETE_PROJECT_OWNER,
-CHANGE_PROJECT_SKILLS, ADD_FEEDBACK, GET_FEEDBACKS, EDIT_PROJECT
+CHANGE_PROJECT_SKILLS, ADD_FEEDBACK, GET_FEEDBACKS, EDIT_PROJECT, 
+ADD_SKILLS_TO_PROJECT
  } from "../constants";
 import axios from "axios";
 import WebApi from "../api";
@@ -315,3 +316,28 @@ export const changeProjectSkillsACreator = (projectId, skills) => {
       dispatch(changeProjectSkills(false, ["Nie zmieniono żadnej wartości"]));
   }
 }
+
+export const addSkillsToProject = (addSkillsToProjectStatus, addSkillsToProjectErrors) => {
+  return { type: ADD_SKILLS_TO_PROJECT, addSkillsToProjectStatus, addSkillsToProjectErrors}
+}
+
+export const addSkillsToProjectACreator = (projectId, currentAddedSkills) => {
+  return dispatch => {
+      const skillsToSend = [];
+      for(let key in currentAddedSkills){
+        const whichIdIsExist = currentAddedSkills[key].obj.id ? currentAddedSkills[key].obj.id : 
+          currentAddedSkills[key].obj.skillId;
+        skillsToSend.push({
+          "skillId": whichIdIsExist,
+          "skillLevel": currentAddedSkills[key].startValue
+        })
+      }
+      WebApi.projects.put.skills(projectId, skillsToSend).then(response => {
+        dispatch(addSkillsToProject(true, []));
+        dispatch(getProjectACreator(projectId));
+      }).catch(error => {
+        dispatch(addSkillsToProject(false, errorCatcher(error)));
+      }) 
+    }
+  }
+

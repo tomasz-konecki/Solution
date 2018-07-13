@@ -182,7 +182,7 @@ class ProjectDetailsBlock extends React.PureComponent {
           submitResult={{
             status: editProjectStatus,
             content: editProjectStatus ? "Pomyślnie dokonano edycji projektu" : 
-              editProjectErrors.length > 0 ? editProjectErrors[0] : "Ups, coś poszło nie tak"
+              editProjectErrors ? editProjectErrors[0] : "Ups, coś poszło nie tak"
           }}>
 
               <button onClick={this.changeForm} 

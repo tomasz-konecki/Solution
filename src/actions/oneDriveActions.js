@@ -174,7 +174,6 @@ export const uploadFileACreator = (token, path, file, currentFilesList) => {
         const nameBeforeDot = fileToEdit.name.substring(0, dotIndex);
         
         const duplicatedItemsCount = countHowManyItems(currentFilesList, nameBeforeDot, "name");
-        console.log(duplicatedItemsCount);
         if(duplicatedItemsCount > 0){
             const nameWithNumberOfRepeatingFiles = nameBeforeDot + `(${duplicatedItemsCount})` + 
                 fileToEdit.name.substring(dotIndex, fileToEdit.name.length);
@@ -183,7 +182,6 @@ export const uploadFileACreator = (token, path, file, currentFilesList) => {
         else
             model.set("file", fileToEdit);
         
-        console.log(model);
         const config = {
              headers: {'Content-Type': 'multipart/form-data' }
         }

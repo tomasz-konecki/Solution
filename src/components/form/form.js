@@ -190,7 +190,6 @@ class Form extends Component{
         this.setState({formItems: formItems});
     }
     render(){
-        console.log(this.props.clientsWhichMatch);
         return(
             <form onSubmit={this.props.shouldSubmit ? e => this.onSubmit(e) : null} 
             className="universal-form-container">

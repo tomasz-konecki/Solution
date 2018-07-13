@@ -21,7 +21,8 @@ import { connect } from 'react-redux';
 import { getProjectACreator, addEmployeeToProjectACreator, deleteProjectOwnerACreator, 
     deleteProjectACreator, closeProjectACreator, reactivateProjectACreator, 
     addEmployeeToProject, getProject, changeProjectSkillsACreator,
-    editProjectACreator } from '../../../actions/projectsActions';
+    editProjectACreator, addSkillsToProjectACreator, 
+    addSkillsToProject } from '../../../actions/projectsActions';
 import { getAllSkillsACreator } from '../../../actions/skillsActions';
 import Skills from '../../common/skills/skills';
 import { changeOperationStatus } from '../../../actions/asyncActions';
@@ -218,15 +219,20 @@ class ProjectDetails extends Component{
                                 
                                 <Skills 
                                 projectId={project.id}
-                                status={this.props.changeProjectSkillsStatus}
-                                errors={this.props.changeProjectSkillsErrors}
+                                changeProjectSkillsStatus={this.props.changeProjectSkillsStatus}
+                                changeProjectSkillsErrors={this.props.changeProjectSkillsErrors}
                                 changeProjectSkills={this.props.changeProjectSkills}
                                 title="Umiejętności na potrzeby projektu"
                                 items={project.skills} 
                                 getAllSkills={this.props.getAllSkills} 
                                 loadedSkills={this.props.loadedSkills} 
                                 loadSkillsStatus={this.props.loadSkillsStatus} 
-                                loadSkillsErrors={this.props.loadSkillsErrors}/>
+                                loadSkillsErrors={this.props.loadSkillsErrors} 
+                                addSkillsToProject={this.props.addSkillsToProject} 
+                                addSkillsToProjectStatus={this.props.addSkillsToProjectStatus}
+                                addSkillsToProjectErrors={this.props.addSkillsToProjectErrors} 
+                                addSkillsToProjectClear={this.props.addSkillsToProjectClear}
+                                />
                         </div>
                     </main>
 
@@ -282,8 +288,6 @@ class ProjectDetails extends Component{
                         </div>
                     </Form>
                 </Modal>
-
-            
 
                 {(addEmployeeToProjectStatus !== null && 
                 addEmployeeToProjectStatus !== undefined) &&
@@ -342,7 +346,10 @@ const mapStateToProps = state => {
 
         loadedSkills: state.skillsReducer.loadedSkills,
         loadSkillsStatus: state.skillsReducer.loadSkillsStatus,
-        loadSkillsErrors: state.skillsReducer.loadSkillsErrors
+        loadSkillsErrors: state.skillsReducer.loadSkillsErrors,
+
+        addSkillsToProjectStatus: state.projectsReducer.addSkillsToProjectStatus,
+        addSkillsToProjectErrors: state.projectsReducer.addSkillsToProjectErrors
     };
   }
   
@@ -361,7 +368,9 @@ const mapDispatchToProps = dispatch => {
         reactivateProject: (project) => dispatch(reactivateProjectACreator(project)),
         changeOperationStatus: (operationStatus) => dispatch(changeOperationStatus(operationStatus)),
         changeProjectSkills: (projectId, skills) => dispatch(changeProjectSkillsACreator(projectId, skills)),
-        getAllSkills: (currentAddedSkills) => dispatch(getAllSkillsACreator(currentAddedSkills))
+        getAllSkills: (currentAddedSkills) => dispatch(getAllSkillsACreator(currentAddedSkills)),
+        addSkillsToProject: (projectId, currentSkills) => dispatch(addSkillsToProjectACreator(projectId, currentSkills)),
+        addSkillsToProjectClear: (state, errors) => dispatch(addSkillsToProject(state, errors))
     };
   }
 

@@ -4,6 +4,7 @@ import { validateInput } from "../../../services/validation";
 import IntermediateBlock from "../../common/IntermediateBlock";
 
 import "../../../scss/components/clients/addClient/addClientModal.scss";
+import PersonImgSrc from "../../../assets/img/billeniumIcons/person.png";
 
 class AddClientModal extends Component {
   state = { inputValue: null, inputError: null, buttonDisabled: true };
@@ -42,6 +43,7 @@ class AddClientModal extends Component {
         <Button
           disable={buttonDisabled}
           onClick={e => this.handleAddClientButtonClick(e, addClient)}
+          mainClass="dcmt-button"
         >
           {t("AddClient")}
         </Button>
@@ -78,7 +80,9 @@ class AddClientModal extends Component {
             spinner="Cube"
           />
         </div>
-        <div className="add-client-container-right" />
+        <div className="add-client-container-right">
+          <img src={PersonImgSrc} alt="person" />
+        </div>
         {info}
       </div>
     );

@@ -75,7 +75,10 @@ const translations = {
     Search: "Search",
     ClientsNotFound: "Clients Not Found",
     Activated: "Activated",
-    NotActivated: "Not Activated"
+    NotActivated: "Not Activated",
+    ClientCloudsList: "Client's Clouds List",
+    AddCloud: "Add Cloud",
+    CloudsNotFound: "Clouds not found."
   },
   AddClient: {
     AddClient: "Add Client",

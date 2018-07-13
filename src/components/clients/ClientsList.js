@@ -26,7 +26,13 @@ const ClientsList = ({
         <td>
           <span
             onClick={() =>
-              clientNameClickedHandler(item.id, item.name, index, t)
+              clientNameClickedHandler(
+                item.id,
+                item.name,
+                item.clouds,
+                index,
+                t
+              )
             }
           >
             {name}

@@ -77,7 +77,10 @@ const translations = {
     Search: "Szukaj",
     ClientsNotFound: "Brak klientów",
     Activated: "Aktywne",
-    NotActivated: "Nieaktywne"
+    NotActivated: "Nieaktywne",
+    ClientCloudsList: "Lista Chmur Klienta",
+    AddCloud: "Dodaj Chmurę",
+    CloudsNotFound: "Nie znaleziono żadnej chmury."
   },
   AddClient: {
     AddClient: "Add Client",

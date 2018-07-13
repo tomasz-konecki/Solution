@@ -15,6 +15,7 @@ import Aux from "../../services/auxilary";
 import AddClient from "./AddClient/AddClient";
 import SearchClient from "./searchClient/SearchClient";
 import ShowRadioButtons from "./ShowRadioButtons/ShowRadioButtons";
+import InfoClient from "./infoClient/infoClientContainer";
 
 import "../../scss/components/clients/ClientsContainer.scss";
 class ClientsContainer extends React.Component {
@@ -29,7 +30,12 @@ class ClientsContainer extends React.Component {
       name: "asc"
     },
     checked: "activated",
-    firstReceiving: true
+    firstReceiving: true,
+    client: {
+      index: null,
+      id: null,
+      name: null
+    }
   };
 
   componentDidMount = () => {
@@ -177,7 +183,7 @@ class ClientsContainer extends React.Component {
   filterList = e => {
     let searchedValue = e.target.value;
     let updatedList = this.props.clients;
-    if (searchedValue) {
+    if (searchedValue && this.props.clients) {
       updatedList = updatedList.filter((item, index) => {
         if (item.name && searchedValue) {
           return (
@@ -234,8 +240,10 @@ class ClientsContainer extends React.Component {
     );
   };
 
-  clientNameClickedHandler = () => {
-    console.log("Clicked!");
+  clientNameClickedHandler = (id, name, clouds, index, t) => {
+    this.setState({
+      client: { index: index, id: id, name: name, clouds: clouds }
+    });
   };
 
   pullDOM = (editingInput, clients, t, filterList, sortBy, checked) => {
@@ -269,7 +277,13 @@ class ClientsContainer extends React.Component {
   };
   render() {
     let { replyBlock, t } = this.props;
-    let { editingInput, loaded, clients, checked } = this.state;
+    let { editingInput, loaded, clients, checked, client } = this.state;
+
+    let infoClient = null;
+
+    if (client.name) {
+      infoClient = <InfoClient client={client} t={t} />;
+    }
 
     return (
       <div className="content-container clients-container">
@@ -289,7 +303,7 @@ class ClientsContainer extends React.Component {
             resultBlock={replyBlock}
           />
         </div>
-        <div className="clients-more-container" />
+        <div className="clients-info">{infoClient}</div>
       </div>
     );
   }

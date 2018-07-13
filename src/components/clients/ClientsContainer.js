@@ -211,21 +211,31 @@ class ClientsContainer extends React.Component {
   };
 
   radioButtonClick = value => {
-    let updatedList = this.props.clients;
-
-    updatedList = updatedList.filter((item, index) => {
-      if (value === "activated") {
-        if (!item.isDeleted) {
-          return item;
-        }
-      }
-      if (value === "not-activated") {
-        if (item.isDeleted) {
-          return item;
-        }
-      }
+    let updatedList;
+    let listFilled = new Promise(resolve => {
+      updatedList = this.props.clients;
+      resolve(updatedList);
     });
-    this.setState({ clients: updatedList, checked: value });
+
+    listFilled.then(
+      (updatedList = updatedList.filter((item, index) => {
+        if (value === "activated") {
+          if (!item.isDeleted) {
+            return item;
+          }
+        }
+        if (value === "not-activated") {
+          if (item.isDeleted) {
+            return item;
+          }
+        }
+      })),
+      this.setState({ clients: updatedList, checked: value })
+    );
+  };
+
+  clientNameClickedHandler = () => {
+    console.log("Clicked!");
   };
 
   pullDOM = (editingInput, clients, t, filterList, sortBy, checked) => {
@@ -249,6 +259,7 @@ class ClientsContainer extends React.Component {
           handleGetValueFromInput={this.handleGetValueFromInput}
           t={t}
           sortBy={sortBy}
+          clientNameClickedHandler={this.clientNameClickedHandler}
         />
         {clients.length === 0 && (
           <span className="clients-not-found">{t("ClientsNotFound")}</span>

@@ -8,7 +8,8 @@ const ClientsList = ({
   editingInput,
   handleGetValueFromInput,
   t,
-  sortBy
+  sortBy,
+  clientNameClickedHandler
 }) => {
   const listOfClients = clients.map((item, index) => {
     let name =
@@ -22,7 +23,15 @@ const ClientsList = ({
       );
     return (
       <tr key={index}>
-        <td>{name}</td>
+        <td>
+          <span
+            onClick={() =>
+              clientNameClickedHandler(item.id, item.name, index, t)
+            }
+          >
+            {name}
+          </span>
+        </td>
         <td className="client-options">
           {options(item.id, item.isDeleted, item.name, index, t)}
         </td>

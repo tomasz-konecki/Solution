@@ -13,6 +13,7 @@ const translations = {
   LeftMenu: {
     Users: "Users",
     Employees: "Employees",
+    Clients: "Clients",
     Projects: "Projects",
     Assign: "Assign",
     Stats: "Statistics",
@@ -21,9 +22,21 @@ const translations = {
   SmoothTable: {
     Search: "Search",
     DeleteFilters: "Delete filters",
-    ShowDeleted: "Show deleted",
+    ShowDeleted: "Deleted",
+    ShowNotActivated: "Not activated",
+    ShowActivated: "Activated",
+    ShowAll: "All",
     Today: "Today",
     NoDataOrResults: "No data or results given"
+  },
+  StatsContainer: {
+    DevLocalization: "Developers Localization",
+    EmployeesWithoutProjects: "Employees Without Projects",
+    Without: "Without",
+    With: "With",
+    ActiveProjects: "Active Projects",
+    Active: "Active",
+    Archive: "Archive"
   },
   UsersList: {
     Add: "Add",
@@ -31,28 +44,64 @@ const translations = {
     Surname: "Surname",
     Email: "Email",
     Phone: "Phone",
+    Date: "Date",
+    userId: "User Id",
     ReactivateUserImperativus: "Reactivate user",
-    ReactivateUserInfinitive: "Reactivate użytkownika",
+    ReactivateUserInfinitive: "Reactivate user",
     UserReactivated: "User has been reactivated",
     DeleteUserImperativus: "Delete user",
+    DownloadCV: "Download CV",
     DeleteUserInfinitive: "Delete user",
+    DeleteUserRequestImperativus: "Delete user request",
+    DeleteUserRequestInfinitive: "Delete user request",
     UserDeleted: "User has been deleted",
+    UserRequestDeleted: "Account request has been deleted",
     EditUserImperativus: "Edit user",
-    DeleteEdit: "Delete/Edit"
+    DeleteEdit: "Delete/Edit",
+    DeleteAdd: "Delete/Add",
+    AddUserWhenRequestImperativus: "Add user"
+  },
+  ClientsContainer: {
+    Name: "Name",
+    Options: "Options",
+    DeleteClient: "Delete Client",
+    EditClient: "Edit Client",
+    ReactivateClient: "Reactivate Client",
+    SaveClient: "Save Client",
+    ClientRemoved: "Client has been removed.",
+    ClientReactivated: "Client has beed reactivated.",
+    Removing: "You are about to remove client",
+    Reactivating: "You are about to reactivate client",
+    Search: "Search",
+    ClientsNotFound: "Clients Not Found",
+    Activated: "Activated",
+    NotActivated: "Not Activated",
+    ClientCloudsList: "Client's Clouds List",
+    AddCloud: "Add Cloud",
+    CloudsNotFound: "Clouds not found."
+  },
+  AddClient: {
+    AddClient: "Add Client",
+    ClientName: "Client Name",
+    ClientAddedSuccess: "Client has been added."
   },
   ProjectsList: {
     Add: "Add",
-    DeleteOwnerFuture: "Delete {{ownerFullName}} as owner of project {{projectName}}",
+    DeleteOwnerFuture:
+      "Delete {{ownerFullName}} as owner of project {{projectName}}",
     OwnerHasBeenDeleted: "Owner has been deleted",
-    ChangeSkillSettingsFuture: "Change skill settings of project #{{projectId}}",
+    ChangeSkillSettingsFuture:
+      "Change skill settings of project #{{projectId}}",
     SettingsHaveBeenSaved: "Settings have been saved",
     ProjectName: "Project name",
     Client: "Client",
     StartDate: "Start date",
     EndDate: "End date",
     Status: "Status",
-    Active: "Active",
+    Activated: "Active",
+    NotActivated: "Not activated",
     Closed: "Closed",
+    SelectStatus: "Select status...",
     CloseProjectImperativus: "Close project",
     CloseProjectInfinitive: "Close project",
     ProjectClosed: "Project has been closed",
@@ -92,7 +141,10 @@ const translations = {
     NotImplemented: "Functionality not implemented yet",
     ServiceUnavailable: "Service is currently unavailable",
     GatewayTimeout: "Timeout",
-    UnexpectedError: "Unexpected error occured"
+    UnexpectedError: "Unexpected error occured",
+    ErrorModel: "Error Model",
+    Error: "Error",
+    OK: ""
   },
   EmployeesRowUnfurl: {
     ActivateEmployee: "Activate employee",
@@ -135,8 +187,10 @@ const translations = {
   },
   ResponsiblePersonBlock: {
     NameNoSpecial: "Name cannot contain either special characters or digits.",
-    SurnameNoSpecial: "Surname cannot contain either special characters or digits.",
-    EmailToBeValid: "Email address should have the appropriate structure ie. someone@something.com",
+    SurnameNoSpecial:
+      "Surname cannot contain either special characters or digits.",
+    EmailToBeValid:
+      "Email address should have the appropriate structure ie. someone@something.com",
     NumberValid: "Phone number must contain 9 to 11 digits"
   },
   ProjectRowUnfurl: {
@@ -160,7 +214,10 @@ const translations = {
   },
   StageOne: {
     SearchAD: "Search Active Directory",
-    Next: "Next"
+    UserNotFoundInAD: "User not found in AD",
+    Next: "Next",
+    HasAccount: "Account already exists for that User",
+    SelectUser: "Select User"
   },
   StageTwo: {
     AddRoles: "Add roles!",
@@ -205,7 +262,8 @@ const translations = {
     Add: "Add",
     Save: "Save",
     Edit: "Edit",
-    DeleteOwnerFuture: "Delete {{ownerFullName}} as owner of project {{projectName}}",
+    DeleteOwnerFuture:
+      "Delete {{ownerFullName}} as owner of project {{projectName}}",
     OwnerHasBeenDeleted: "Owner has been deleted",
     ResponsiblePerson: "Responsible person",
     Yes: "Yes",
@@ -259,7 +317,8 @@ const translations = {
   },
   SkillsContainer: {
     Deletion: "Deletion",
-    Info1: "Deletion will be permanent, removing entries from the database and all places where referenced.",
+    Info1:
+      "Deletion will be permanent, removing entries from the database and all places where referenced.",
     Info2: "Rollback of this action is not available.",
     SuccessfullyDeleted: "Successfully deleted skill"
   }

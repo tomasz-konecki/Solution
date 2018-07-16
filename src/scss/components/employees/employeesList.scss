@@ -1,0 +1,9 @@
+.employees-list-container {
+  @media screen and (max-width: 500px) {
+    tbody tr:first-child,
+    th:nth-child(3),
+    td:nth-child(3) {
+      display: none;
+    }
+  }
+}

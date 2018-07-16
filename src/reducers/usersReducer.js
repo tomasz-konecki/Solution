@@ -12,11 +12,13 @@ export const usersReducer = (state = initialState, action) => {
       return {
         users: action.users.results,
         currentPage: action.users.currentPage,
-        totalPageCount: action.users.totalPageCount
+        totalPageCount: action.users.totalPageCount,
+        show: action.show
       };
     case LOAD_USERS_FAIL:
       return {
-        resultBlock: action.resultBlock
+        resultBlock: action.resultBlock,
+        show: action.show
       };
     case LOGOUT:
       return {

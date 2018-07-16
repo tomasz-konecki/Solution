@@ -28,6 +28,74 @@ body {
   background: $content-background;
 }
 
+input[type="checkbox"] {
+  margin: 0 5px;
+}
+@media screen and (max-width: 500px) {
+  input[type="checkbox"] {
+    position: relative;
+    width: 40px;
+    height: 20px;
+    visibility: hidden;
+
+    &:before {
+      visibility: visible;
+      position: absolute;
+      display: block;
+      width: 100%;
+      height: 20px;
+      top: 0;
+      background: #dc3545;
+      content: "";
+      border-radius: 10px;
+      border: solid 1px #ddd;
+      transition: all 0.5s;
+    }
+
+    &:after {
+      visibility: visible;
+      top: 0;
+      display: block;
+      content: "";
+      width: 20px;
+      height: 20px;
+      background: rgba(0, 0, 0, 0.2);
+      position: absolute;
+      border-radius: 50%;
+      border: solid 1px #212529;
+      transition: all 0.5s;
+      left: 0;
+    }
+
+    &:checked:after {
+      left: 100%;
+      margin-left: -20px;
+    }
+
+    &:checked:before {
+      background: #2ecc71;
+    }
+
+    &.square {
+      width: 60px;
+      &:before {
+        border-radius: 2px;
+      }
+      &:after {
+        border-radius: 2px;
+        width: 30px;
+      }
+      &:checked:after {
+        left: 100%;
+        margin-left: -30px;
+      }
+      &:checked:before {
+        background: #3498db;
+      }
+    }
+  }
+}
+
 ::selection {
   background: #ffb97c; /* WebKit/Blink Browsers */
 }
@@ -58,7 +126,8 @@ a:visited {
 }
 
 .underline-anchors {
-  a, a:visited {
+  a,
+  a:visited {
     border-bottom: 1px dashed darken($main-color, 5%);
     color: darken(white, 3%);
   }
@@ -76,6 +145,22 @@ a:visited {
   padding: 8px 16px 8px 8px;
   color: darken($body-background, 0.1%);
 }
+.intermediate-block {
+  margin-top: 3vh;
+  @media screen and (max-width: 500px) {
+    margin-top: 0;
+  }
+}
+@media screen and (max-width: 500px) {
+  .content-abs-footer {
+    font-size: 20px;
+    width: 100%;
+    text-align: center;
+    margin-top: -20px;
+    padding: 0;
+    position: relative;
+  }
+}
 
 .user-role-symbol {
   display: inline-block;
@@ -88,7 +173,7 @@ a:visited {
     color: rgb(98, 176, 132);
   }
   &.Human {
-    color: rgb(46, 125, 168)(98, 176, 132);
+    color: rgb(46, 125, 168) (98, 176, 132);
   }
   &.Team {
     color: rgb(108, 178, 61);
@@ -112,14 +197,58 @@ a:visited {
 
 .result-block {
   width: 100%;
-  display: inline-block;
   text-align: center;
+  padding: 20px 0;
+
+  img {
+    width: 100%;
+  }
 }
+
+.result-block-modal-in-parent {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  left: 0;
+  text-align: center;
+  padding: 20px;
+  h1 {
+    padding: 0px;
+  }
+}
+
+.result-error,
+.modal-result-error {
+  b {
+    font-weight: bolder !important;
+    color: black;
+  }
+  strong {
+    font-weight: bolder !important;
+  }
+}
+
+.result-error {
+  color: $button-element-background;
+}
+
+.modal-result-error {
+  background: $button-element-background;
+  h1 {
+    color: white;
+  }
+
+  p {
+    padding: 10px;
+  }
+}
+
 .result-success {
   color: darkgreen;
 }
-.result-failure {
-  color: $button-element-background;
+
+.modal-result-success {
+  background: greenyellow;
 }
 
 .Modal {
@@ -156,6 +285,10 @@ a:visited {
 
 .Modal-users {
   height: 400px;
+
+  @media screen and (max-width: 500px) {
+    height: 600px;
+  }
 }
 
 .Modal-projects {
@@ -167,4 +300,8 @@ a:visited {
 
 .Modal-assignment {
   height: auto;
+}
+
+.full-screen-loader {
+  position: relative;
 }

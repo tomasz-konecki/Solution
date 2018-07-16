@@ -1,150 +1,181 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 import WebApi from "../../api";
 import * as d3 from "d3";
-import C3Chart from 'react-c3js';
-import 'c3/c3.css';
-import IntermediateBlock from './../common/IntermediateBlock';
+import C3Chart from "react-c3js";
+import "c3/c3.css";
+import IntermediateBlock from "./../common/IntermediateBlock";
+import { translate } from "react-translate";
+
+const SIZE_MOBILE = {
+  width: 300
+};
+
+const SIZE_DESKTOP = {
+  height: 240,
+  width: 480
+};
 
 class StatsContainer extends Component {
   constructor(props) {
     super(props);
     this.state = {
       loaded: false,
-      resultBlock: {}
+      resultBlock: {},
+      windowWidth: 0,
+      windowHeight: 0
     };
   }
 
   componentDidMount() {
     this.loadStats();
+
+    var w = window,
+      d = document,
+      documentElement = d.documentElement,
+      body = d.getElementsByTagName("body")[0],
+      width = w.innerWidth || documentElement.clientWidth || body.clientWidth,
+      height =
+        w.innerHeight || documentElement.clientHeight || body.clientHeight;
+
+    this.setState({
+      windowWidth: width,
+      windowHeight: height
+    });
   }
 
   loadStats = () => {
-    WebApi.stats.get.basic()
-      .then((result) => {
+    WebApi.stats.get
+      .basic()
+      .then(result => {
         this.setState({
           loaded: true,
           resultBlock: result,
           stats: result.extractData()
         });
       })
-      .catch((result) => {
+      .catch(result => {
         this.setState({
           loaded: true,
           resultBlock: result,
           stats: {}
         });
       });
-  }
+  };
 
-  createDevChart = () => {
+  createDevChart = t => {
     let cols = [];
-    Object.entries(this.state.stats.localizations).map(([_i, {localization, count}], index) => {
-      cols.push([localization, count]);
-    });
+    Object.entries(this.state.stats.localizations).map(
+      ([_i, { localization, count }], index) => {
+        cols.push([localization, count]);
+      }
+    );
     const data = {
-      type : 'pie',
+      type: "pie",
       columns: cols
-    };
-
-    const size = {
-      height: 240,
-      width: 480
     };
 
     const tooltip = {
       format: {
-          value: function (value, ratio, id) {
-              return `${value}`;
-          }
+        value: function(value, ratio, id) {
+          return `${value}`;
+        }
       }
     };
 
-    return <span className="chart-container">
-      <span>
-        Lokalizacje developerów
+    return (
+      <span className="chart-container">
+        <span>{t("DevLocalization")}</span>
+        <C3Chart
+          data={data}
+          size={this.state.windowWidth < 500 ? SIZE_MOBILE : SIZE_DESKTOP}
+          tooltip={tooltip}
+        />
       </span>
-      <C3Chart data={data} size={size} tooltip={tooltip} />
-    </span>;
-  }
+    );
+  };
 
-  createEWPChart = () => {
+  createEWPChart = t => {
     let cols = [
-      ['BEZ', this.state.stats.employees.withoutProjects],
-      ['Z', this.state.stats.employees.withProjects]
+      [t("Without"), this.state.stats.employees.withoutProjects],
+      [t("With"), this.state.stats.employees.withProjects]
     ];
     const data = {
-      type : 'pie',
+      type: "pie",
       columns: cols
-    };
-
-    const size = {
-      height: 240,
-      width: 480
     };
 
     const tooltip = {
       format: {
-          value: function (value, ratio, id) {
-              return `${value}`;
-          }
+        value: function(value, ratio, id) {
+          return `${value}`;
+        }
       }
     };
 
-    return <span className="chart-container">
-      <span>
-        Pracownicy bez projektów
+    return (
+      <span className="chart-container">
+        <span>{t("EmployeesWithoutProjects")}</span>
+        <C3Chart
+          data={data}
+          size={this.state.windowWidth < 500 ? SIZE_MOBILE : SIZE_DESKTOP}
+          tooltip={tooltip}
+        />
       </span>
-      <C3Chart data={data} size={size} tooltip={tooltip} />
-    </span>;
-  }
+    );
+  };
 
-  createPAChart = () => {
+  createPAChart = t => {
     let cols = [
-      ['Aktywne', this.state.stats.projects.active],
-      ['Archiwalne', this.state.stats.projects.inactive]
+      [t("Active"), this.state.stats.projects.active],
+      [t("Archive"), this.state.stats.projects.inactive]
     ];
     const data = {
-      type : 'pie',
+      type: "pie",
       columns: cols
-    };
-
-    const size = {
-      height: 240,
-      width: 480
     };
 
     const tooltip = {
       format: {
-          value: function (value, ratio, id) {
-              return `${value}`;
-          }
+        value: function(value, ratio, id) {
+          return `${value}`;
+        }
       }
     };
 
-    return <span className="chart-container">
-      <span>
-        Aktywne projekty
+    return (
+      <span className="chart-container">
+        <span>{t("ActiveProjects")}</span>
+        <C3Chart
+          data={data}
+          size={this.state.windowWidth < 500 ? SIZE_MOBILE : SIZE_DESKTOP}
+          tooltip={tooltip}
+        />
       </span>
-      <C3Chart data={data} size={size} tooltip={tooltip} />
-    </span>;
-  }
+    );
+  };
 
   pullDOM = () => {
-    return <div className="content-container stats-container">
-      {this.createDevChart()}
-      {this.createEWPChart()}
-      {this.createPAChart()}
-    </div>;
-  }
+    const { t } = this.props;
+    return (
+      <div className="content-container stats-container">
+        {this.createDevChart(t)}
+        {this.createEWPChart(t)}
+        {this.createPAChart(t)}
+      </div>
+    );
+  };
 
   render() {
-    return <IntermediateBlock
-      loaded={this.state.loaded}
-      render={this.pullDOM}
-      resultBlock={this.props.replyBlock}
-      _className="content-container"
-    />;
+    const { t } = this.props;
+    return (
+      <IntermediateBlock
+        loaded={this.state.loaded}
+        render={this.pullDOM}
+        resultBlock={this.props.replyBlock}
+        _className="content-container"
+      />
+    );
   }
 }
 
-export default StatsContainer;
+export default translate("StatsContainer")(StatsContainer);

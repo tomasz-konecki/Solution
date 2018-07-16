@@ -5,8 +5,9 @@ import LoaderHorizontal from "../../../components/common/LoaderHorizontal";
 import ResultBlock from "../../common/ResultBlock";
 import Select from "react-select";
 import "react-select/dist/react-select.css";
-import PropTypes from 'prop-types';
-import { translate } from 'react-translate';
+import PropTypes from "prop-types";
+import { translate } from "react-translate";
+import WebApi from "../../../api";
 
 class StageOne extends Component {
   constructor() {
@@ -15,14 +16,27 @@ class StageOne extends Component {
     this.state = {
       backspaceRemoves: true,
       multi: false,
-      isLoading: false
+      isLoading: false,
+      userExists: false
     };
   }
 
   handleChange = value => {
-    this.setState({
-      value
-    });
+    !value && this.setState({ value: null });
+    value &&
+      WebApi.users.get
+        .byUser(value.id)
+        .then(response => {
+          this.setState({
+            userExists: true
+          });
+        })
+        .catch(error => {
+          this.setState({
+            value,
+            userExists: false
+          });
+        });
   };
 
   checkLength = input => {
@@ -46,9 +60,8 @@ class StageOne extends Component {
       : Promise.resolve({ options: [] });
   };
 
-  handleClick = () => {
+  handleClick = value => {
     this.props.setSelectedUser(this.state.value);
-    console.log('setSelected', this.state.value);
   };
 
   render() {
@@ -57,19 +70,11 @@ class StageOne extends Component {
       ? Select.AsyncCreatable
       : Select.Async;
     const { multi, value, backspaceRemoves, isLoading } = this.state;
-
     return (
       <div className="stage-one-container">
         <header>
           <h3 className="section-heading">{t("SearchAD")}</h3>
         </header>
-
-        <div className="error-block-container">
-          {this.props.errorBlock !== null && (
-            <ResultBlock errorBlock={this.props.errorBlock} />
-          )}
-        </div>
-
         <div className="search-container">
           <AsyncComponent
             multi={multi}
@@ -79,8 +84,11 @@ class StageOne extends Component {
             onChange={this.handleChange}
             // valueKey="lastName"
             labelKey="fullName"
+            placeholder={t("SelectUser")}
             loadOptions={this.getUsers}
             backspaceRemoves={backspaceRemoves}
+            clearable={true}
+            clearValueText={t("Remove")}
           />
 
           {this.state.value && (
@@ -94,6 +102,31 @@ class StageOne extends Component {
             </div>
           )}
         </div>
+        {this.state.userExists && (
+          <p
+            style={{
+              width: "100%",
+              textAlign: "center",
+              color: "red",
+              lineHeight: "100px"
+            }}
+          >
+            {t("HasAccount")}
+          </p>
+        )}
+
+        {this.props.errorBlock &&
+          this.props.errorBlock.replyBlock !== undefined &&
+          this.props.errorBlock.replyBlock.status !== 200 && (
+            <div className="error-block-container">
+              {this.props.errorBlock !== null && (
+                <ResultBlock
+                  errorBlock={this.props.errorBlock}
+                  errorMessage={t("UserNotFoundInAD")}
+                />
+              )}
+            </div>
+          )}
       </div>
     );
   }

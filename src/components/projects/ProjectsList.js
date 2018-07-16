@@ -8,12 +8,13 @@ import EditProjectDetails from "../projects/modals/EditProjectDetails";
 import WebApi from "../../api";
 import "react-datepicker/dist/react-datepicker.css";
 import DatePicker from "react-datepicker";
-import ProjectRowUnfurl from './ProjectRowUnfurl';
-import PropTypes from 'prop-types';
-import { translate } from 'react-translate';
-import { push } from 'react-router-redux';
-import binaryPermissioner from './../../api/binaryPermissioner';
-import specialPermissioner from './../../api/specialPermissioner';
+import ProjectRowUnfurl from "./ProjectRowUnfurl";
+import PropTypes from "prop-types";
+import { translate } from "react-translate";
+import { push } from "react-router-redux";
+import binaryPermissioner from "./../../api/binaryPermissioner";
+import specialPermissioner from "./../../api/specialPermissioner";
+import "../../scss/components/projects/ProjectsList.scss";
 
 class ProjectsList extends Component {
   constructor(props) {
@@ -27,7 +28,8 @@ class ProjectsList extends Component {
   }
 
   handleGetProject = object => {
-    WebApi.projects.get(object.id)
+    WebApi.projects
+      .get(object.id)
       .then(response => {
         this.setState({
           project: response.extractData(),
@@ -64,7 +66,8 @@ class ProjectsList extends Component {
       rowDetailUnfurl: true,
       unfurler: ProjectRowUnfurl,
       showDeletedCheckbox: true,
-      disabledRowComparator: (object) => {
+      showAllCheckbox: true,
+      disabledRowComparator: object => {
         return object.isDeleted;
       },
       handles: {
@@ -100,19 +103,51 @@ class ProjectsList extends Component {
           click: () => {
             this.props.openAddProjectModal();
           },
-          comparator: () => binaryPermissioner(false)(0)(0)(0)(0)(1)(1)(this.props.binPem)
+          comparator: () =>
+            binaryPermissioner(false)(0)(0)(0)(0)(1)(1)(this.props.binPem)
         }
       ],
       columns: [
-        { width: 20, field: "name", pretty: t("ProjectName"), type: "text", filter: true },
-        { width: 20, field: "client", pretty: t("Client"), type: "text", filter: true },
-        { width: 20, field: "startDate", pretty: t("StartDate"), type: "date", filter: true, filterFieldOverride: "fromDate" },
-        { width: 20, field: "endDate", pretty: t("EndDate"), type: "date", filter: true, filterFieldOverride: "toDate" },
+        {
+          width: 20,
+          field: "name",
+          pretty: t("ProjectName"),
+          type: "text",
+          filter: true
+        },
+        {
+          width: 20,
+          field: "client",
+          pretty: t("Client"),
+          type: "text",
+          filter: true
+        },
+        {
+          width: 20,
+          field: "startDate",
+          pretty: t("StartDate"),
+          type: "date",
+          filter: true,
+          filterFieldOverride: "fromDate"
+        },
+        {
+          width: 20,
+          field: "estimatedEndDate",
+          pretty: t("EndDate"),
+          type: "date",
+          filter: true,
+          filterFieldOverride: "toDate"
+        },
         {
           width: 10,
-          field: "isActive",
+          field: "status",
           pretty: t("Status"),
-          multiState: { true: t("Active"), false: t("Closed") },
+          multiState: {
+            100: t("SelectStatus"),
+            0: t("Activated"),
+            1: t("NotActivated"),
+            2: t("Closed")
+          },
           type: "multiState",
           filter: true
         },
@@ -132,10 +167,17 @@ class ProjectsList extends Component {
                   })
                 );
               },
-              comparator: (object) => {
-                return (specialPermissioner().projects.isOwner(object, this.props.login)
-                 || binaryPermissioner(false)(0)(0)(0)(0)(1)(1)(this.props.binPem))
-                 && object.isActive;
+              comparator: object => {
+                return (
+                  (specialPermissioner().projects.isOwner(
+                    object,
+                    this.props.login
+                  ) ||
+                    binaryPermissioner(false)(0)(0)(0)(0)(1)(1)(
+                      this.props.binPem
+                    )) &&
+                  object.status === 0
+                );
               }
             },
             {
@@ -145,16 +187,25 @@ class ProjectsList extends Component {
                 this.props.dispatch(
                   setActionConfirmation(true, {
                     key: "reactivateProject",
-                    string: `${t("ReactivateProjectInfinitive")} ${object.name}`,
+                    string: `${t("ReactivateProjectInfinitive")} ${
+                      object.name
+                    }`,
                     id: object.id,
                     successMessage: t("ProjectReactivated")
                   })
                 );
               },
-              comparator: (object) => {
-                return (specialPermissioner().projects.isOwner(object, this.props.login)
-                 || binaryPermissioner(false)(0)(0)(0)(0)(1)(1)(this.props.binPem))
-                 && !object.isActive;
+              comparator: object => {
+                return (
+                  (specialPermissioner().projects.isOwner(
+                    object,
+                    this.props.login
+                  ) ||
+                    binaryPermissioner(false)(0)(0)(0)(0)(1)(1)(
+                      this.props.binPem
+                    )) &&
+                  object.isDeleted
+                );
               }
             },
             {
@@ -170,10 +221,17 @@ class ProjectsList extends Component {
                   })
                 );
               },
-              comparator: (object) => {
-                return (specialPermissioner().projects.isOwner(object, this.props.login)
-                 || binaryPermissioner(false)(0)(0)(0)(0)(1)(1)(this.props.binPem))
-                 && !object.isDeleted;
+              comparator: object => {
+                return (
+                  (specialPermissioner().projects.isOwner(
+                    object,
+                    this.props.login
+                  ) ||
+                    binaryPermissioner(false)(0)(0)(0)(0)(1)(1)(
+                      this.props.binPem
+                    )) &&
+                  !object.isDeleted
+                );
               }
             },
             {
@@ -182,26 +240,34 @@ class ProjectsList extends Component {
               click: object => {
                 this.handleGetProject(object);
               },
-              comparator: (object) => {
-                return specialPermissioner().projects.isOwner(object, this.props.login)
-                 || binaryPermissioner(false)(0)(0)(0)(0)(1)(1)(this.props.binPem);
+              comparator: object => {
+                return (
+                  specialPermissioner().projects.isOwner(
+                    object,
+                    this.props.login
+                  ) ||
+                  binaryPermissioner(false)(0)(0)(0)(0)(1)(1)(this.props.binPem)
+                );
               }
             },
             {
               icon: { icon: "sign-in-alt", iconType: "fas" },
               title: t("SeeMore"),
               click: object => {
-                this.props.dispatch(
-                  push(`/main/projects/${object.id}`)
-                );
+                this.props.dispatch(push(`/main/projects/${object.id}`));
               },
-              comparator: (object) => {
-                return specialPermissioner().projects.isOwner(object, this.props.login)
-                 || binaryPermissioner(false)(1)(0)(1)(0)(1)(1)(this.props.binPem);
+              comparator: object => {
+                return (
+                  specialPermissioner().projects.isOwner(
+                    object,
+                    this.props.login
+                  ) ||
+                  binaryPermissioner(false)(1)(0)(1)(0)(1)(1)(this.props.binPem)
+                );
               }
             }
           ],
-          pretty: ''
+          pretty: ""
         }
       ]
     };
@@ -222,6 +288,8 @@ class ProjectsList extends Component {
           onClose={this.handleCloseModal}
         >
           <EditProjectDetails
+            handleGetProject={this.handleGetProject}
+            projects={this.props.projects}
             closeModal={this.handleCloseModal}
             project={this.state.project}
             responseBlock={this.state.responseBlock}
@@ -244,14 +312,16 @@ function mapStateToProps(state) {
 }
 
 ProjectsList.propTypes = {
+  projects: PropTypes.arrayOf(PropTypes.object),
   pageChange: PropTypes.func.isRequired,
   dispatch: PropTypes.func,
   openAddProjectModal: PropTypes.func.isRequired,
   currentPage: PropTypes.number.isRequired,
   totalPageCount: PropTypes.number.isRequired,
   loading: PropTypes.bool.isRequired,
-  projects: PropTypes.arrayOf(PropTypes.object),
   projectActions: PropTypes.object
 };
 
-export default connect(mapStateToProps)(translate("ProjectsList")(ProjectsList));
+export default connect(mapStateToProps)(
+  translate("ProjectsList")(ProjectsList)
+);

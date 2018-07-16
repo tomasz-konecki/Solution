@@ -1,0 +1,40 @@
+.progress-btns{
+    position: relative;
+    width: 68%;
+    background-color: rgba(0,0,0,0.2);
+    display: flex;
+    justify-content: flex-start;
+    height: 12px;        
+    @media(max-width: 450px){
+        width: 100%;
+    }   
+    span{
+        width: 10%;
+        cursor: pointer;
+        margin: 0;
+        position: relative;
+        display: block;
+        height: 12px;
+        i{
+            font-size: 12px;
+            position: absolute;
+            display: block;
+            right: 0;
+            top: -16px;
+            animation: 0.5s animate-cas ease-in-out forwards;
+        }
+    }      
+
+}
+.progress-btns span:hover{
+    background-color: rgba(0,0,0,0.3) !important;
+}
+
+@keyframes animate-cas {
+    0%{
+        right: 10px;
+    }
+    100%{
+        right: 0;
+    }
+}

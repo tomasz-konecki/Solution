@@ -1,0 +1,30 @@
+.reports-content-container {
+    padding: 15px;
+    .caffels-container {
+      width: 100%;
+      justify-content: center;
+      display: flex;
+      height: 100%;
+      flex-flow: wrap;
+      .caffel {
+        width: 125px;
+        background-color: #e8e8e8;
+        height: 125px;
+        margin: 10px;
+        cursor: pointer;
+        display: flex;
+        padding: 5px;
+        box-sizing: border-box;
+        text-align: center;
+        transition: 0.5s all ease-in-out;
+        justify-content: center;
+        align-items: center;
+        @media(max-width: 1000px){
+          font-size: 14px;
+        }
+      }
+      .caffel:hover {
+        background-color: lightblue;
+      }
+    }
+  }

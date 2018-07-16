@@ -1,6 +1,7 @@
 import { LOAD_PROJECTS_SUCCESS, CHANGE_EDITED_PROJECT, GET_PROJECT, names, overViewNames, 
 ADD_EMPLOYEE_TO_PROJECT, DELETE_PROJECT_OWNER,
-CHANGE_PROJECT_SKILL, ADD_FEEDBACK, GET_FEEDBACKS, EDIT_PROJECT
+CHANGE_PROJECT_SKILLS, ADD_FEEDBACK, GET_FEEDBACKS, EDIT_PROJECT, 
+ADD_SKILLS_TO_PROJECT
  } from "../constants";
 import axios from "axios";
 import WebApi from "../api";
@@ -181,27 +182,6 @@ export const reactivateProjectACreator = project => {
     })
   }
 }
-export const changeProjectSkill = (changeProjectSkillStatus, changeProjectSkillErrors) => {
-  return {
-    type: CHANGE_PROJECT_SKILL,
-    changeProjectSkillStatus,
-    changeProjectSkillErrors
-  }
-}
-export const changeProjectSkillACreator = (projectId, skillId, skillLevel) => {
-  const objectToSend = {
-    "skillId": skillId,
-    "skillLevel": skillLevel
-  }
-  return dispatch => {
-    WebApi.projects.put.skills(projectId, objectToSend).then(response => {
-      dispatch(changeProjectSkill(true, []));
-    }).catch(error => {
-      dispatch(changeProjectSkill(false, errorCatcher(error)));
-    })
-  }
-}
-
 
 export const addFeedback = (addFeedbackStatus, addFeedbackErrors) => {
   return {
@@ -300,3 +280,64 @@ export const editProjectACreator = (projectId, projectToSend) => {
     })
   }
 }
+
+export const changeProjectSkills = (changeProjectSkillsStatus, changeProjectSkillsErrors) => {
+  return { type: CHANGE_PROJECT_SKILLS, changeProjectSkillsStatus, changeProjectSkillsErrors}
+}
+export const changeProjectSkillsACreator = (projectId, skills) => {
+  return dispatch => {
+    const skillsToSend = [];
+    let somethingChanged = false;
+    for(let key in skills){
+      if(skills[key].startValue !== skills[key].obj.skillLevel){
+        skillsToSend.push({
+        "skillId": skills[key].obj.skillId, 
+        "skillLevel": skills[key].startValue
+        });
+        somethingChanged = true;
+      }
+      else{
+        skillsToSend.push({
+          "skillId": skills[key].obj.skillId, 
+          "skillLevel": skills[key].obj.skillLevel
+          });
+      }
+    }
+
+    if(somethingChanged){
+      WebApi.projects.put.skills(projectId, skillsToSend).then(response => {
+        dispatch(changeProjectSkills(true, []));
+        dispatch(getProjectACreator(projectId));
+      }).catch(error => {
+        dispatch(changeProjectSkills(false, errorCatcher(error)));
+      }) 
+    }
+    else
+      dispatch(changeProjectSkills(false, ["Nie zmieniono żadnej wartości"]));
+  }
+}
+
+export const addSkillsToProject = (addSkillsToProjectStatus, addSkillsToProjectErrors) => {
+  return { type: ADD_SKILLS_TO_PROJECT, addSkillsToProjectStatus, addSkillsToProjectErrors}
+}
+
+export const addSkillsToProjectACreator = (projectId, currentAddedSkills) => {
+  return dispatch => {
+      const skillsToSend = [];
+      for(let key in currentAddedSkills){
+        const whichIdIsExist = currentAddedSkills[key].obj.id ? currentAddedSkills[key].obj.id : 
+          currentAddedSkills[key].obj.skillId;
+        skillsToSend.push({
+          "skillId": whichIdIsExist,
+          "skillLevel": currentAddedSkills[key].startValue
+        })
+      }
+      WebApi.projects.put.skills(projectId, skillsToSend).then(response => {
+        dispatch(addSkillsToProject(true, []));
+        dispatch(getProjectACreator(projectId));
+      }).catch(error => {
+        dispatch(addSkillsToProject(false, errorCatcher(error)));
+      }) 
+    }
+  }
+

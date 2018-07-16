@@ -27,6 +27,7 @@
   font-size: 14px;
   cursor: pointer;
   border-radius: 5px;
+  min-width: 120px;
   padding: 16px;
   text-transform: capitalize;
   color: white;
@@ -47,6 +48,9 @@
 .generate-raport-btn:disabled:hover {
   background-color: grey;
   cursor: not-allowed;
+  .small-spiner::before, .small-spiner::after{
+    background-color: green;
+  }
 }
 .btn-brown {
   background-color: #d22708;
@@ -72,4 +76,23 @@
   &:hover {
     background-color: #4c0f19;
   }
+}
+
+.btn-brown:hover{
+  background-color: #D33819;
+}
+
+.input-error{
+  border: none;
+  box-shadow: 0 2px 12px red !important;
+}
+.btn-transparent{
+  position: absolute;
+  top: 0px;
+  left: 50px;
+  height: 25px;
+  background-color: transparent;
+  color: black;
+  font-weight: bold;
+  border-radius: 5px;
 }

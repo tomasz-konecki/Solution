@@ -363,6 +363,34 @@ const WebApi = {
       }
     }
   },
+  oneDrive: {
+    get: {
+      authBegin: () => {
+        return WebAround.get(`${API_ENDPOINT}/api/onedrive/auth`);
+      },
+      sendQuertToAuth: (code) => {
+        return WebAround.get(`${API_ENDPOINT}/api/onedrive/authenticated?code=${code}`);
+      }
+    },
+    post: {
+      getFolders: (model) => {
+        return WebAround.post(`${API_ENDPOINT}/api/onedrive/files`, model);
+      },
+      createFolder: (model) => {
+        return WebAround.post(`${API_ENDPOINT}/api/onedrive/createFolder`, model);
+      },
+      deleteFolder: (model) => {
+        return WebAround.post(`${API_ENDPOINT}/api/onedrive/deleteFolder`, model);
+      },
+      updateFolder: (model) => {
+        return WebAround.post(`${API_ENDPOINT}/api/onedrive/updateFolder`, model);
+      },
+      uploadFile: (model, config) => {
+        return WebAround.post(`${API_ENDPOINT}/api/onedrive/upload`, model, config);
+      }
+
+    }
+  }, 
   responsiblePerson: {
     get: {
       byClient: clientId => {

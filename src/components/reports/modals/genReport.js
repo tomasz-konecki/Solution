@@ -3,7 +3,8 @@ import Modal from "react-responsive-modal";
 import StatusPrompt from "../../common/statusPrompt/statusPrompt";
 import Button from "../../common/button/button";
 import SpinnerButton from "../../form/spinner-btn/spinner-btn";
-
+import Spinner from '../../common/spinner/spinner';
+import RedirectSpinner from '../../common/spinner/redirect-spinner';
 const genReport = props => {
   return (
     <Modal
@@ -40,7 +41,7 @@ const genReport = props => {
       </ul>
       {!props.genReportStatus && (
         <div className="checkbox-container">
-          <label>Generować link do pobrania?</label>
+          <label>Wygenerować raport bez logowania ?</label>
           <input
             name="isGoing"
             type="checkbox"
@@ -63,15 +64,29 @@ const genReport = props => {
               : props.genReportErrors[0]
           }}
         />
-      ) : (
-        <Button
-          onClick={() => {
-            window.open(props.gDriveRedirectLink);
-          }}
+      ) : 
+      
+      (!props.isPreparingReportAfterLoginIn && !props.genReportStatus && !props.hasUserBeenRedirectedToGDrive) &&
+          <Button
+          onClick={props.redirectToGDrive}
           mainClass="log-in-btn"
           title="Przejdź do logowania"
         />
-      )}
+      }
+      {
+        props.hasUserBeenRedirectedToGDrive && <RedirectSpinner message="Jesteś przekierowywany"/>  
+      }
+      
+      {props.isPreparingReportAfterLoginIn && 
+        <Spinner top='80%'/>
+      }
+      {!props.generateLink && props.genReportStatus &&
+        <StatusPrompt
+          error={props.genReportErrors[0]}
+          result={props.genReportStatus}
+          message="Raport został wygenerowany"
+        />
+      }
 
       {props.genReportStatus && (
         <Button
@@ -81,10 +96,11 @@ const genReport = props => {
         />
       )}
 
-      {props.gDriveLoginResult !== null && (
+      {!props.isPreparingReportAfterLoginIn && !props.genReportStatus && !props.hasUserBeenRedirectedToGDrive && props.gDriveLoginResult !== null && (
         <StatusPrompt
           error={props.gDriveLoginErrors[0]}
           result={props.gDriveLoginResult}
+          message="Przygotowanie do logowania powiodło się"
         />
       )}
     </Modal>

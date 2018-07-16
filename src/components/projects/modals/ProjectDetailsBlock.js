@@ -137,9 +137,7 @@ class ProjectDetailsBlock extends React.PureComponent {
               responsiblePersonArray: responsiblePersonArray
             });
           }
-      }).catch(error => {
-        
-      })
+      });
     }
     
   }
@@ -166,6 +164,7 @@ class ProjectDetailsBlock extends React.PureComponent {
     const { t } = this.props;
     const { editProjectStatus } = this.props;
     const { editProjectErrors } = this.props;
+
     return (
       <div className="project-details-block">
         <header>
@@ -183,7 +182,7 @@ class ProjectDetailsBlock extends React.PureComponent {
           submitResult={{
             status: editProjectStatus,
             content: editProjectStatus ? "Pomyślnie dokonano edycji projektu" : 
-              editProjectErrors[0]
+              editProjectErrors ? editProjectErrors[0] : "Ups, coś poszło nie tak"
           }}>
 
               <button onClick={this.changeForm} 

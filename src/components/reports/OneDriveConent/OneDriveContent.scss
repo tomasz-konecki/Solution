@@ -1,0 +1,323 @@
+.gdrive-content-container{
+    .file-picker{
+        position: fixed;
+        bottom: 0;
+        background-color: rgba(0,0,0,0.9);
+        width: 100%;
+        z-index: 1;
+        left: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        button{
+            height: 40px;
+            padding: 0;
+            position: relative;
+            .small-spiner{
+                right: -30px;
+                top: 9px;
+            }
+            .small-spiner::before, .small-spiner::after{
+                background-color: lightgreen;
+            }
+        }
+        #upload{
+            padding: 15px;
+            color: white;
+        }
+        
+    }
+    
+
+    .one-d-error{
+        color: red;
+        position: relative;
+        padding: 30px 0;
+        text-align: center;
+    }
+    .navigation-folders-container{
+        
+        .empty-files-list{
+            font-size: 26px;
+            padding: 35px;
+        }
+        header{
+            display: flex;
+            align-items: center;
+           
+            .fa-folder{
+                margin-right: 5px;
+            }
+            h3{
+                font-size: 18px;
+                font-weight: bolder;
+                position: relative;
+                span{
+                    font-weight: normal;
+                    margin-left: 15px;
+                    letter-spacing: 2px;
+                    font-size: 20px;
+                    text-transform: uppercase;
+                }
+                .btn-transparent{
+                    right: 0;
+                    position: absolute;
+                    top: -15px;
+                }
+            }
+            p{
+                position: absolute;
+                margin: 0 auto;
+                left: 0;
+                right: 0;
+            }
+            .generate-raport-btn{
+                padding: 5px;
+                font-size: 15px;
+                transition: 0.5s all ease-in-out;
+                position: absolute;
+                bottom: 0;
+                border-radius: 0;
+                left: -5px;
+                input{
+                    width: 100%;
+                }
+                    
+            }
+        }
+        .current-folders{
+            display: flex;
+            flex-flow: wrap;
+            margin: 10px 0;
+            width: 100%;
+            justify-content: center;
+            li{
+                width: 150px;
+                box-sizing: border-box;
+                height: 150px;
+                background-color: #e8e8e8;
+                border-radius: 5px;
+                padding: 7.5px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                animation: 0.5s animate-files ease-in-out forwards;
+                position: relative;
+                text-align: center;
+                cursor: pointer;
+                font-weight: bold;
+                transition: 0.3s all ease-in-out;
+                .fa-folder-open{
+                    position: absolute;
+                    font-size: 22px;
+                    top: 5px;
+                    left: 5px;
+                }
+                i{
+                    transition: 0.5s all ease-in-out;
+                }
+                .fa-check:hover, .fa-times:hover, 
+                .fa-folder-open:hover, .fa-trash:hover,
+                .fa-pen-square:hover
+                {
+                    opacity: 0.6;
+                }
+                form{
+                    width: 100%;
+                    position: relative;
+                    input{
+                        width: 100%;
+                        height: 100%;
+                        padding: 5px;
+                        border-radius: 5px;
+                        border: none;
+                    }
+                    .fa-check, .fa-times{
+                        position: absolute;
+                        bottom: -20px;
+                    }
+                    .fa-check{
+                        color: green;
+                        right: 0;
+                    }
+                    .fa-times{
+                        right: 25px;
+                    }
+                    .small-spiner{
+                        bottom: -50px;
+                        right: -2.5px;
+                    }
+                   
+                }
+                .folders-icons{
+                    position: absolute;
+                    height: 35px;
+                    bottom: 0;
+                    left: 0;
+                    width: 60px;
+                }
+                i{
+                    position: absolute;
+                    cursor: pointer;
+                }
+                .fa-folder, .fa-file-word{
+                    color: darkblue;
+                    top: 5px;
+                    font-size: 24px;
+                    cursor: auto !important;
+                    right: 5px;
+                }
+                .fa-trash{
+                    bottom: 7.5px;
+                    left: 7.5px;
+                    color: red;
+                    font-size: 18px;
+                }
+                .fa-pen-square{
+                    bottom: 5px;
+                    color: green;
+                    left: 30.5px;
+                    font-size: 20px;
+                }
+                .file-details{
+                    z-index: 1;
+                    position: absolute;
+                    transition: 0.5s all linear;
+                    background-color: #e9e9e9;
+                    border-radius: 5px;
+                    animation: 0.5s animate-details-in ease-in forwards;
+                    p{
+                        font-size: 18px;
+                        display: flex;
+                        padding: 0 20px;
+                        justify-content: space-between;
+                        margin: 15px 0;
+                        span{
+                            font-weight: normal;
+                        }
+                    }
+                    button{
+                        color: blue;
+                        font-size: 20px;
+                        margin-top: 25px;
+                        border: none;
+                        cursor: pointer;
+                        background: transparent;
+                    }
+                    button:focus{
+                        outline: none;
+                    }
+                }
+            }
+        }
+    }
+}
+
+@keyframes animate-files {
+    0%{
+        margin: 0;
+    }
+    100%{
+       margin: 15px;
+    }
+}
+@keyframes animate-details-in {
+    0%{
+        width: 0;
+        height: 0;
+        opacity: 0;
+    }
+    100%{
+        width: 130%;
+        height: 130%;
+        opacity: 1;
+    }
+}
+
+
+
+
+
+
+.sk-folding-cube {
+    padding: 0 !important;
+    background: white !important;
+}
+  
+  .sk-folding-cube .sk-cube {
+    width: 25%;
+    height: 25%;
+    position: absolute;
+    -webkit-transform: scale(1.1);
+        -ms-transform: scale(1.1);
+            transform: scale(1.1); 
+  }
+  .sk-folding-cube .sk-cube:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #333;
+    -webkit-animation: sk-foldCubeAngle 2.4s infinite linear both;
+            animation: sk-foldCubeAngle 2.4s infinite linear both;
+    -webkit-transform-origin: 100% 100%;
+        -ms-transform-origin: 100% 100%;
+            transform-origin: 100% 100%;
+  }
+  .sk-folding-cube .sk-cube2 {
+    -webkit-transform: scale(1.1) rotateZ(90deg);
+            transform: scale(1.1) rotateZ(90deg);
+  }
+  .sk-folding-cube .sk-cube3 {
+    -webkit-transform: scale(1.1) rotateZ(180deg);
+            transform: scale(1.1) rotateZ(180deg);
+  }
+  .sk-folding-cube .sk-cube4 {
+    -webkit-transform: scale(1.1) rotateZ(270deg);
+            transform: scale(1.1) rotateZ(270deg);
+  }
+  .sk-folding-cube .sk-cube2:before {
+    -webkit-animation-delay: 0.3s;
+            animation-delay: 0.3s;
+  }
+  .sk-folding-cube .sk-cube3:before {
+    -webkit-animation-delay: 0.6s;
+            animation-delay: 0.6s; 
+  }
+  .sk-folding-cube .sk-cube4:before {
+    -webkit-animation-delay: 0.9s;
+            animation-delay: 0.9s;
+  }
+  @-webkit-keyframes sk-foldCubeAngle {
+    0%, 10% {
+      -webkit-transform: perspective(140px) rotateX(-180deg);
+              transform: perspective(140px) rotateX(-180deg);
+      opacity: 0; 
+    } 25%, 75% {
+      -webkit-transform: perspective(140px) rotateX(0deg);
+              transform: perspective(140px) rotateX(0deg);
+      opacity: 1; 
+    } 90%, 100% {
+      -webkit-transform: perspective(140px) rotateY(180deg);
+              transform: perspective(140px) rotateY(180deg);
+      opacity: 0; 
+    } 
+  }
+  
+  @keyframes sk-foldCubeAngle {
+    0%, 10% {
+      -webkit-transform: perspective(140px) rotateX(-180deg);
+              transform: perspective(140px) rotateX(-180deg);
+      opacity: 0; 
+    } 25%, 75% {
+      -webkit-transform: perspective(140px) rotateX(0deg);
+              transform: perspective(140px) rotateX(0deg);
+      opacity: 1; 
+    } 90%, 100% {
+      -webkit-transform: perspective(140px) rotateY(180deg);
+              transform: perspective(140px) rotateY(180deg);
+      opacity: 0; 
+    }
+  }

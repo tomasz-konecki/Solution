@@ -156,6 +156,9 @@ a:visited {
     font-size: 20px;
     width: 100%;
     text-align: center;
+    margin-top: -20px;
+    padding: 0;
+    position: relative;
   }
 }
 
@@ -297,4 +300,8 @@ a:visited {
 
 .Modal-assignment {
   height: auto;
+}
+
+.full-screen-loader {
+  position: relative;
 }

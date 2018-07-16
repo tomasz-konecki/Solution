@@ -1,5 +1,5 @@
 import * as types from "../constants";
-import { updateObject } from '../services/methods';
+import { updateObject } from "../services/methods";
 const initialState = {
   loading: false,
   confirmed: false,
@@ -10,7 +10,7 @@ const initialState = {
   },
   isWorking: false,
   resultBlock: {},
-  operationStatus: {status: null, error: []}
+  operationStatus: { status: null, error: [] }
 };
 
 export const asyncReducer = (state = initialState, action) => {
@@ -50,7 +50,7 @@ export const asyncReducer = (state = initialState, action) => {
         confirmed: true
       };
     case types.CHANGE_OPERATION_STATE:
-      return updateObject(state, { operationStatus: action.operationStatus })
+      return updateObject(state, { operationStatus: action.operationStatus });
     default:
       return state;
   }

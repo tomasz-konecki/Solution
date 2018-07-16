@@ -166,6 +166,11 @@ const WebApi = {
       }
     }
   },
+  clouds: {
+    post: (name, clientId) => {
+      return WebAround.post(`${API_ENDPOINT}/clouds/`, { name, clientId });
+    }
+  },
   education: {
     get: {
       byEmployee: employeeId => {

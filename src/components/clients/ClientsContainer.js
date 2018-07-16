@@ -15,7 +15,7 @@ import Aux from "../../services/auxilary";
 import AddClient from "./AddClient/AddClient";
 import SearchClient from "./searchClient/SearchClient";
 import ShowRadioButtons from "./ShowRadioButtons/ShowRadioButtons";
-import InfoClient from "./infoClient/infoClientContainer";
+import InfoClientContainer from "./infoClient/infoClientContainer";
 
 import "../../scss/components/clients/ClientsContainer.scss";
 class ClientsContainer extends React.Component {
@@ -222,28 +222,33 @@ class ClientsContainer extends React.Component {
       updatedList = this.props.clients;
       resolve(updatedList);
     });
-
-    listFilled.then(
-      (updatedList = updatedList.filter((item, index) => {
-        if (value === "activated") {
-          if (!item.isDeleted) {
-            return item;
+    if (updatedList) {
+      listFilled.then(
+        (updatedList = updatedList.filter((item, index) => {
+          if (value === "activated") {
+            if (!item.isDeleted) {
+              return item;
+            }
           }
-        }
-        if (value === "not-activated") {
-          if (item.isDeleted) {
-            return item;
+          if (value === "not-activated") {
+            if (item.isDeleted) {
+              return item;
+            }
           }
-        }
-      })),
-      this.setState({ clients: updatedList, checked: value })
-    );
+        })),
+        this.setState({ clients: updatedList, checked: value })
+      );
+    }
   };
 
   clientNameClickedHandler = (id, name, clouds, index, t) => {
     this.setState({
       client: { index: index, id: id, name: name, clouds: clouds }
     });
+  };
+
+  handleAddCloudSave = (name, clientId) => {
+    this.props.clientsActions.addCloud(name, clientId);
   };
 
   pullDOM = (editingInput, clients, t, filterList, sortBy, checked) => {
@@ -276,13 +281,20 @@ class ClientsContainer extends React.Component {
     );
   };
   render() {
-    let { replyBlock, t } = this.props;
+    let { resultBlock, resultBlockCloud, t, loading } = this.props;
     let { editingInput, loaded, clients, checked, client } = this.state;
-
     let infoClient = null;
-
+    console.log(this.props);
     if (client.name) {
-      infoClient = <InfoClient client={client} t={t} />;
+      infoClient = (
+        <InfoClientContainer
+          client={client}
+          t={t}
+          handleAddCloudSave={this.handleAddCloudSave}
+          loading={loading}
+          resultBlock={resultBlockCloud}
+        />
+      );
     }
 
     return (
@@ -300,7 +312,7 @@ class ClientsContainer extends React.Component {
                 checked
               )
             }
-            resultBlock={replyBlock}
+            resultBlock={resultBlock}
           />
         </div>
         <div className="clients-info">{infoClient}</div>
@@ -324,6 +336,7 @@ function mapStateToProps(state) {
     clients: state.clientsReducer.clients,
     resultBlock: state.clientsReducer.resultBlock,
     resultBlockAddClient: state.clientsReducer.resultBlockAddClient,
+    resultBlockCloud: state.clientsReducer.resultBlockCloud,
     confirmed: state.asyncReducer.confirmed,
     toConfirm: state.asyncReducer.toConfirm,
     isWorking: state.asyncReducer.isWorking,

@@ -3,8 +3,20 @@ import Aux from "services/auxilary";
 import "./infoClient.scss";
 import BilleniumPleaceholder from "assets/img/small-logo.png";
 import Icon from "../../common/Icon";
+import Spinner from "../../common/spinner/spinner";
 
-const InfoClient = ({ client, t }) => {
+const InfoClient = ({
+  client,
+  t,
+  handleAddCloud,
+  addingNewCloud,
+  handleInputAddCloud,
+  handleAddCloudSaveChild,
+  loading,
+  resultBlockCloud
+}) => {
+  console.log(resultBlockCloud);
+  let adddingNewCloudContainer = null;
   const clientClouds = client.clouds.map((cloud, index) => {
     return (
       <div key={index} className="cloud">
@@ -26,6 +38,28 @@ const InfoClient = ({ client, t }) => {
   }
   if (!client.img) {
     client.img = BilleniumPleaceholder;
+  }
+
+  if (addingNewCloud) {
+    adddingNewCloudContainer = (
+      <div className="cloud">
+        <div className="cloud-circle" />
+        <div className="cloud-name">
+          <input
+            onChange={e => handleInputAddCloud(e)}
+            placeholder={t("CloudName")}
+          />
+        </div>
+        <div className="cloud-options">
+          <button onClick={handleAddCloudSaveChild}>
+            <Icon icon="check" iconType="fa" additionalClass="icon-success" />
+          </button>
+          <button onClick={handleAddCloud}>
+            <Icon icon="times" iconType="fa" additionalClass="icon-danger" />
+          </button>
+        </div>
+      </div>
+    );
   }
   return (
     <Aux>
@@ -54,15 +88,23 @@ const InfoClient = ({ client, t }) => {
           {clientClouds.length === 0 && (
             <span className="clouds-not-found">{t("CloudsNotFound")}</span>
           )}
+          {adddingNewCloudContainer && adddingNewCloudContainer}
         </div>
 
-        <div className="client-cloud-add">
-          <button onClick={() => handleAddCloud()}>
-            <Icon icon="plus" iconType="fa" />
-            {t("AddCloud").toUpperCase()}
-          </button>
-        </div>
+        {!adddingNewCloudContainer && (
+          <div className="client-cloud-add">
+            <button onClick={() => handleAddCloud()}>
+              <Icon icon="plus" iconType="fa" />
+              {t("AddCloud").toUpperCase()}
+            </button>
+          </div>
+        )}
       </div>
+      {loading && (
+        <div className="full-screen-loader">
+          <Spinner />
+        </div>
+      )}
     </Aux>
   );
 };

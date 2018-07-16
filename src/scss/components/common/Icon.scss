@@ -6,3 +6,12 @@
     cursor: pointer;
   }
 }
+
+.icon-success {
+  transition: color 1s ease-out;
+  &:hover {
+    color: #44d337;
+    transition: color 0.3s ease-out;
+    cursor: pointer;
+  }
+}

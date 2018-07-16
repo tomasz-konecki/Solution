@@ -7,7 +7,8 @@ import {
 import {
   LOAD_CLIENTS_SUCCESS,
   LOAD_CLIENTS_FAIL,
-  ADD_CLIENT_RESULT
+  ADD_CLIENT_RESULT,
+  ADD_CLOUD_RESULT
 } from "../constants";
 
 export const loadClientsSuccess = (clients, resultBlock) => {
@@ -28,6 +29,13 @@ export const loadClientsFail = resultBlock => {
 export const addClientResult = resultBlock => {
   return {
     type: ADD_CLIENT_RESULT,
+    resultBlock
+  };
+};
+
+export const addCloudResult = resultBlock => {
+  return {
+    type: ADD_CLOUD_RESULT,
     resultBlock
   };
 };
@@ -137,6 +145,25 @@ export const addClient = clientName => {
         setTimeout(() => {
           dispatch(addClientResult(null));
         }, 2000);
+        dispatch(asyncEnded());
+        throw error;
+      });
+  };
+};
+
+export const addCloud = (name, clientId) => {
+  return dispatch => {
+    dispatch(asyncStarted());
+    WebApi.clouds
+      .post(name, clientId)
+      .then(response => {
+        if (!response.errorOccurred()) {
+          dispatch(addCloudResult(response));
+          dispatch(asyncEnded());
+        }
+      })
+      .catch(error => {
+        dispatch(addCloudResult(error));
         dispatch(asyncEnded());
         throw error;
       });

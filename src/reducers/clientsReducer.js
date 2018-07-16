@@ -2,6 +2,7 @@ import {
   LOAD_CLIENTS_SUCCESS,
   LOAD_CLIENTS_FAIL,
   ADD_CLIENT_RESULT,
+  ADD_CLOUD_RESULT,
   LOGOUT
 } from "../constants";
 
@@ -11,6 +12,11 @@ const initialState = {
 
 export const clientsReducer = (state = initialState, action) => {
   switch (action.type) {
+    case ADD_CLOUD_RESULT:
+      return {
+        ...state,
+        resultBlockCloud: action.resultBlock
+      };
     case LOAD_CLIENTS_SUCCESS:
       return {
         clients: action.clients,

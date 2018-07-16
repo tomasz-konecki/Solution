@@ -41,6 +41,10 @@ export default class infoClientContainer extends Component {
     );
   };
 
+  handleDeleteCloudChild = (cloudId, cloudName) => {
+    this.props.handleDeleteCloud(cloudId, cloudName);
+  };
+
   render() {
     const { shouldAnimate, addingNewCloud } = this.state;
     const {
@@ -48,7 +52,9 @@ export default class infoClientContainer extends Component {
       t,
       handleAddCloudSave,
       loading,
-      resultBlockCloud
+      clearResponseCloud,
+      resultBlockCloud,
+      handleTimesClick
     } = this.props;
 
     if (shouldAnimate) {
@@ -68,6 +74,9 @@ export default class infoClientContainer extends Component {
           handleAddCloudSaveChild={this.handleAddCloudSaveChild}
           loading={loading}
           resultBlockCloud={resultBlockCloud}
+          clearResponseCloud={clearResponseCloud}
+          handleTimesClick={handleTimesClick}
+          handleDeleteCloudChild={this.handleDeleteCloudChild}
         />
       </div>
     );

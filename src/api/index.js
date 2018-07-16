@@ -169,6 +169,9 @@ const WebApi = {
   clouds: {
     post: (name, clientId) => {
       return WebAround.post(`${API_ENDPOINT}/clouds/`, { name, clientId });
+    },
+    delete: cloudId => {
+      return WebAround.delete(`${API_ENDPOINT}/clouds/${cloudId}`);
     }
   },
   education: {

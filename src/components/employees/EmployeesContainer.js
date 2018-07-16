@@ -8,7 +8,7 @@ import "../../scss/containers/UsersContainer.scss";
 import { ACTION_CONFIRMED } from "./../../constants";
 import EmployeesList from "./EmployeesList";
 import EmployeeDetailContainer from "./EmployeeDetailContainer";
-import { withRouter, Switch, Route } from 'react-router-dom';
+import { withRouter, Switch, Route } from "react-router-dom";
 
 class EmployeesContainer extends React.Component {
   constructor(props) {
@@ -20,9 +20,7 @@ class EmployeesContainer extends React.Component {
     };
   }
 
-  componentDidMount() {
-
-  }
+  componentDidMount() {}
 
   pageChange = (page, other) => {
     this.setState(
@@ -39,19 +37,24 @@ class EmployeesContainer extends React.Component {
   };
 
   pullEmployeesList = () => {
-    if(!this.state.init){
-      this.setState({
-        init: true
-      }, this.pageChange(this.state.currentPage));
+    if (!this.state.init) {
+      this.setState(
+        {
+          init: true
+        },
+        this.pageChange(this.state.currentPage)
+      );
     }
-    return <EmployeesList
-      employees={this.props.employees}
-      currentPage={this.state.currentPage}
-      totalPageCount={this.props.totalPageCount}
-      pageChange={this.pageChange}
-      loading={this.props.loading}
-    />;
-  }
+    return (
+      <EmployeesList
+        employees={this.props.employees}
+        currentPage={this.state.currentPage}
+        totalPageCount={this.props.totalPageCount}
+        pageChange={this.pageChange}
+        loading={this.props.loading}
+      />
+    );
+  };
 
   render() {
     const { match } = this.props;
@@ -90,4 +93,7 @@ EmployeesContainer.propTypes = {
   employees: PropTypes.array
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(EmployeesContainer));
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withRouter(EmployeesContainer));

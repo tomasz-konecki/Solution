@@ -1,0 +1,59 @@
+.client-list-table {
+  width: 100%;
+  margin-top: 20px;
+  thead {
+    border-bottom: 1px solid #d9d9d9;
+    font-weight: bold;
+    font-size: 16px;
+  }
+  tr {
+    height: 2rem;
+    border-bottom: 1px solid #f2f2f2;
+    &:first-child {
+      height: unset;
+    }
+    &:nth-child(1) {
+      margin-top: 10px;
+    }
+    th:last-child {
+      text-align: center;
+      width: 1%;
+      white-space: nowrap;
+    }
+  }
+  td.client-options {
+    text-align: center;
+  }
+  .client-options {
+    width: 1%;
+    white-space: nowrap;
+    button {
+      display: inline-block;
+      text-align: center;
+      height: 4vh;
+      height: 4vh;
+      line-height: 2vh;
+      vertical-align: middle;
+      border: 1px solid transparent;
+      margin-right: 0.5vh;
+      background: transparent;
+      cursor: pointer;
+      border-radius: 6px;
+      &:hover {
+        background: #f2f2f2;
+        & i {
+          color: #d83552;
+        }
+      }
+    }
+  }
+  .clients-sorting-button {
+    border: none;
+    background: none;
+    cursor: pointer;
+    font-weight: bold;
+    &:focus {
+      outline: 0;
+    }
+  }
+}

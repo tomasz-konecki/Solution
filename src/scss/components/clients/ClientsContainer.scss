@@ -1,0 +1,45 @@
+.clients-container {
+  .clients-list-container {
+    width: 50%;
+    float: left;
+    height: 100%;
+  }
+  .clients-info {
+    width: 44%;
+    float: left;
+    height: 100%;
+    margin-left: 5%;
+    margin-top: 20px;
+  }
+
+  .anim-in {
+    animation: 0.8s easyInLoad ease-in-out forwards;
+  }
+  @keyframes easyInLoad {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+
+  .clients-list-container {
+    margin-top: 20px;
+  }
+
+  .clients-not-found {
+    display: inline-block;
+    width: 100%;
+    text-align: center;
+    padding: 20px;
+    color: red;
+  }
+
+  .client-name-input-error {
+    text-align: center;
+    padding: 20px;
+    color: red;
+    position: absolute;
+  }
+}

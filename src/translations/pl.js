@@ -13,6 +13,7 @@ const translations = {
   LeftMenu: {
     Users: "Użytkownicy",
     Employees: "Pracownicy",
+    Clients: "Klienci",
     Projects: "Projekty",
     Assign: "Przypisz",
     Stats: "Statystyki",
@@ -28,6 +29,15 @@ const translations = {
     ShowAll: "Wszystkie",
     Today: "Dzisiaj",
     NoDataOrResults: "Brak danych bądź wyników"
+  },
+  StatsContainer: {
+    DevLocalization: "Lokalizacja Developerów",
+    EmployeesWithoutProjects: "Pracownicy bez projektów",
+    Without: "BEZ",
+    With: "Z",
+    ActiveProjects: "Aktywne Projekty",
+    Active: "Aktywne",
+    Archive: "Archiwalne"
   },
   UsersList: {
     Add: "Dodaj",
@@ -52,6 +62,30 @@ const translations = {
     DeleteEdit: "Usuń/Edytuj",
     DeleteAdd: "Usuń/Dodaj",
     AddUserWhenRequestImperativus: "Dodaj użytkownika"
+  },
+  ClientsContainer: {
+    Name: "Nazwa",
+    Options: "Opcje",
+    DeleteClient: "Usuń Klienta",
+    EditClient: "Edytuj Klienta",
+    ReactivateClient: "Reaktywuj Klienta",
+    SaveClient: "Zapisz Klienta",
+    ClientRemoved: "Klient został usunięty",
+    ClientReactivated: "Klient został reaktywowany",
+    Removing: "Zamierzasz usunąć klienta",
+    Reactivating: "Zamierzasz reaktywować klienta",
+    Search: "Szukaj",
+    ClientsNotFound: "Brak klientów",
+    Activated: "Aktywne",
+    NotActivated: "Nieaktywne",
+    ClientCloudsList: "Lista Chmur Klienta",
+    AddCloud: "Dodaj Chmurę",
+    CloudsNotFound: "Nie znaleziono żadnej chmury."
+  },
+  AddClient: {
+    AddClient: "Add Client",
+    ClientName: "Client Name",
+    ClientAddedSuccess: "Client has been added."
   },
   ProjectsList: {
     Add: "Dodaj",

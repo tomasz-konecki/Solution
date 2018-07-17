@@ -3,7 +3,7 @@
   min-height: 200px;
   background-color: #f0f0f075;
   margin-bottom: 40px;
-  box-shadow: 0.5px 1px 3px 0px #00000059;
+  box-shadow: 0.5px 1px 3px 0px #000000;
 
   .client-info-logo,
   .client-info-details {
@@ -43,7 +43,7 @@
         transition: all 0.3s ease-in;
         padding: 0 5px;
         &:hover {
-          background-color: #0000001f;
+          background-color: #000000;
           border-radius: 50px;
         }
       }
@@ -56,7 +56,7 @@
   min-height: 200px;
   background-color: #f0f0f075;
   padding: 20px;
-  box-shadow: 0.5px 1px 3px 0px #00000059;
+  box-shadow: 0.5px 1px 3px 0px #000000;
 
   .client-clouds-header {
     h2 {

@@ -132,7 +132,7 @@
 .reports-items-list {
   margin: 25px;
   overflow-y: auto;
-  max-height: 65%;
+  max-height: 40%;
 
   .inc-list-item {
     color: red;
@@ -192,3 +192,64 @@
   
 }
 
+
+.choosen-folder-content{
+  display: flex;
+  min-height: 50%;
+  margin: 0 auto;
+  padding: 5px 25px;
+  flex-flow: wrap;
+  @media(max-width: 625px){
+    .folder-details{
+      width: 100% !important;
+    }
+    .icon-container{
+      display: none;
+    }
+
+  }
+  @media(max-width: 530px){
+    .submit-btn{
+      bottom: -15px !important;
+    }
+    .folder-details{
+      p:first-of-type{
+        word-break: break-all;
+      }
+      p{
+        margin: 5px 0 !important;
+        text-align: center;
+      }
+      p, span{
+        font-size: 14px !important;
+      }
+    }
+  }
+  .folder-details{
+    width: 80%;
+    p{
+      margin: 10px 0;
+      span{
+        font-size: 17px;
+      }
+      b{
+        font-weight: bold;
+        font-size: 16px;
+        
+      }
+    }
+  }
+  .icon-container{
+    width: 20%;
+    .fa-folder{
+      font-size: 84px;
+    }
+    span{
+      font-size: 16px;
+      color: rgba(69, 69, 209, 0.81);
+      cursor: pointer;
+      margin-left: 5px;
+    }
+  }
+  
+}

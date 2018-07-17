@@ -6,7 +6,7 @@ const headerTitles = {"none": "Wybierz drużyny do wygenerowania raportu" ,"driv
   
 const navigation = ({addListLength, baseListLength, valueToSearch, searchInTeamList,
   openReportsModals, changeIntoFoldersView, choosenDriveType, numberOfFolders, 
-  changeIntoTeamsView }) => {
+  changeIntoTeamsView, choosenFolder }) => {
 
     const whichCountShouldShow = (choosenDriveType === "none" || choosenDriveType === "drive-select") ? 
       baseListLength : numberOfFolders;
@@ -46,7 +46,7 @@ const navigation = ({addListLength, baseListLength, valueToSearch, searchInTeamL
 
           <div className="btns-container">
             <Button
-              disable={!shouldLetGenerateReport}
+              disable={!shouldLetGenerateReport || !choosenFolder}
               title="Generowanie"
               onClick={openReportsModals}
               mainClass="generate-raport-btn gen-changed-position btn-brown"

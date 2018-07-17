@@ -19,13 +19,13 @@ class ReportsContainer extends Component {
     choosenDriveType: "none",
     spinner: true,
     reportModal: false,
-    pagesList: [],
     didPagesHasIncorrectValues: { status: null, error: "" },
     valueToSearch: ""
   }
   componentDidMount() {
     const { search } = this.props.history.location;
-    if(search !== ""){
+
+    if(search !== "" && this.props.addList.length > 0){
       this.setState({choosenDriveType: driveTypes[2]});
     }
     else
@@ -35,6 +35,7 @@ class ReportsContainer extends Component {
     if (this.props.teams !== nextProps.teams && nextProps.teams.length !== 0) {
       this.setState({spinner: false});
       this.props.fetchLists([], [...nextProps.teams], [...nextProps.teams]);
+      this.props.chooseFolder(null);
     } 
     else
       this.setState({spinner: false});
@@ -62,24 +63,29 @@ class ReportsContainer extends Component {
     const addList = [...this.props.addList];
     const baseList = [...this.props.baseList];
     const helpList = [...this.props.helpList];
-    const pagesList = [...this.state.pagesList];
+    const pagesList = [...this.props.pagesList];
     helpList.push(addList[index]);
     baseList.push(addList[index]);
     addList.splice(index, 1);
     pagesList.splice(index, 1);
 
-    this.setState({pagesList: pagesList, reportModal: addList.length > 0 ? true : false});
-    this.props.fetchLists(addList, baseList, helpList);
+    const isListEmpty = addList.length > 0 ? false : true;
+    const driveType = isListEmpty ? "none" : this.state.choosenDriveType;
+
+    this.setState({reportModal: !isListEmpty, choosenDriveType: driveType});
+
+    this.props.fetchLists(addList, baseList, helpList, pagesList);
   };
 
   validateForError = () => {
     const didPagesHasIncorrectValues = {
       ...this.state.didPagesHasIncorrectValues
     };
+    const { pagesList } = this.props;
     let error = "";
-    for (let key in this.state.pagesList) {
-      if (this.state.pagesList[key].error)
-        error = this.state.pagesList[key].error;
+    for (let key in pagesList) {
+      if (pagesList[key].error)
+        error = pagesList[key].error;
     }
     didPagesHasIncorrectValues.error = error;
     didPagesHasIncorrectValues.status = error ? true : null;
@@ -88,22 +94,26 @@ class ReportsContainer extends Component {
 
   openReportsModals = () => {
     const pagesList = [];
+    const { addList, baseList, helpList, fetchLists } = this.props;
+
     for (let i = 0; i < this.props.addList.length; i++)
       pagesList[i] = { value: 1, error: "" };
     const didPagesHasIncorrectValues = {
       ...this.state.didPagesHasIncorrectValues
     };
+
     didPagesHasIncorrectValues.error = "";
     didPagesHasIncorrectValues.status = null;
     this.setState({
-      pagesList: pagesList,
       reportModal: true,
       didPagesHasIncorrectValues: didPagesHasIncorrectValues
     });
+    fetchLists(addList, baseList, helpList, pagesList);
   };
   onChangeReportPages = e => {
     const index = Number(e.target.id);
-    const pagesList = [...this.state.pagesList];
+    const pagesList = [...this.props.pagesList];
+    const { addList, baseList, helpList, fetchLists } = this.props;
     if (e.target.value.length >= 1) {
       const convertedValue = Number(e.target.value);
       const validation = validateReportPages(convertedValue);
@@ -118,9 +128,9 @@ class ReportsContainer extends Component {
         didPagesHasIncorrectValues.status = true;
       }
       this.setState({
-        pagesList: pagesList,
         didPagesHasIncorrectValues: didPagesHasIncorrectValues
       });
+      fetchLists(addList, baseList, helpList, pagesList);
     }
   };
   searchInTeamList = e => {
@@ -132,9 +142,16 @@ class ReportsContainer extends Component {
     this.props.fetchLists(this.props.addList, searchedItems, this.props.helpList);
   }
 
+  chooseFolderHandler = folder => {
+    this.openReportsModals();
+    this.props.chooseFolder(folder);
+  }
+
+
   putContentIntoVDom = () => {
     const { reportModal, spinner, choosenDriveType } = this.state;
-    const { folders, getFoldersStatus, getFoldersErrors, path, loadTeamsResult, loadTeamsErrors, baseList } = this.props;
+    const { folders, getFoldersStatus, getFoldersErrors, path, 
+      loadTeamsResult, loadTeamsErrors, baseList, choosenFolder } = this.props;
     
     switch(choosenDriveType){
       case driveTypes[1]:
@@ -148,10 +165,12 @@ class ReportsContainer extends Component {
         return (
           <OneDriveContent 
           path={path}
+          choosenFolder={choosenFolder}
           folders={folders}
           getFoldersStatus={getFoldersStatus}
           getFoldersErrors={getFoldersErrors}
-          search={this.props.history.location.search} />
+          search={this.props.history.location.search} 
+          chooseFolder={this.chooseFolderHandler} />
         );
       case driveTypes[3]:
       break;
@@ -167,15 +186,17 @@ class ReportsContainer extends Component {
         );
     }
   }
-  componentWillUnmount(){ this.props.fetchLists([],[],[]); }
 
   render() {
-    const {  reportModal, choosenDriveType, pagesList } = this.state;
-    const { addList, baseList, folders } = this.props;
+    const {  reportModal, choosenDriveType, spinner } = this.state;
+    const { addList, baseList, folders, pagesList, choosenFolder } = this.props;
 
     return (
       <div className="reports-container">
-        <Navigation
+
+        {spinner || 
+          <Navigation
+            choosenFolder={choosenFolder}
             choosenDriveType={choosenDriveType}
             addListLength={addList.length}
             baseListLength={baseList.length}
@@ -184,7 +205,10 @@ class ReportsContainer extends Component {
             openReportsModals={this.openReportsModals}
             changeIntoFoldersView={() => this.setState({choosenDriveType: driveTypes[1]})}
             changeIntoTeamsView={() => this.setState({choosenDriveType: driveTypes[0]})}
-        />  
+          />  
+        }
+        
+        
         {this.putContentIntoVDom()}
 
         {
@@ -197,6 +221,7 @@ class ReportsContainer extends Component {
           deleteTeamFromResultList={this.deleteTeamFromResultList}
           onChangeReportPages={e => this.onChangeReportPages(e)}
           didPagesHasIncorrectValues={this.state.didPagesHasIncorrectValues.status}
+          choosenFolder={choosenFolder}
           />
         }
 
@@ -218,7 +243,9 @@ const mapStateToProps = state => {
 
     addList: state.persistHelpReducer.addList,
     baseList: state.persistHelpReducer.baseList,
-    helpList: state.persistHelpReducer.helpList
+    helpList: state.persistHelpReducer.helpList,
+    pagesList: state.persistHelpReducer.pagesList,
+    choosenFolder: state.persistHelpReducer.folderToGenerateReport
 
   };
 };
@@ -226,7 +253,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     getTeams: () => dispatch(getTeamsACreator()),
-    fetchLists: (addList, baseList, helpList) => dispatch(fetchLists(addList, baseList, helpList)),
+    fetchLists: (addList, baseList, helpList, pagesList) => dispatch(fetchLists(addList, baseList, helpList, pagesList)),
     chooseFolder: (folderToGenerateReport) => dispatch(chooseFolder(folderToGenerateReport))
   };
 };

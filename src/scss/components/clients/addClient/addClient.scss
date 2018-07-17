@@ -1,0 +1,12 @@
+.add-client-button{
+        background-color: $button-element-background;
+        color: white;
+        text-shadow: 1px 1px 1px black;
+        padding: 0 30px;
+        float: left;
+    
+        &:hover {
+          background-color: $button-element-hover-background;
+        }
+      }
+}

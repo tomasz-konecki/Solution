@@ -12,6 +12,7 @@ import UsersList from "../../components/users/UsersList";
 import { ACTION_CONFIRMED } from "./../../constants";
 import WebApi from "../../api/";
 import OperationLoader from "../common/operationLoader/operationLoader";
+
 class UsersContainer extends React.Component {
   constructor(props) {
     super(props);

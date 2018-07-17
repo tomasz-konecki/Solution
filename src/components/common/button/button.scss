@@ -27,6 +27,7 @@
   font-size: 14px;
   cursor: pointer;
   border-radius: 5px;
+  min-width: 120px;
   padding: 16px;
   text-transform: capitalize;
   color: white;
@@ -34,7 +35,7 @@
     margin-right: 5px;
   }
 }
-.btn-green{
+.btn-green {
   background-color: #82b541;
 }
 .btn-green:hover {
@@ -43,15 +44,55 @@
 .generate-raport-btn:focus {
   outline: none;
 }
-.generate-raport-btn:disabled, 
-.generate-raport-btn:disabled:hover
- {
+.generate-raport-btn:disabled,
+.generate-raport-btn:disabled:hover {
   background-color: grey;
   cursor: not-allowed;
+  .small-spiner::before, .small-spiner::after{
+    background-color: green;
+  }
 }
-.btn-brown{
-  background-color: #D22708;
+.btn-brown {
+  background-color: #d22708;
 }
+.btn-brown:hover {
+  background-color: #d33819;
+}
+
+.add-client-button {
+  background-color: #8c1b2f;
+  color: white;
+  text-shadow: 1px 1px 1px black;
+  padding: 0 30px;
+  height: 5vh;
+  line-height: 3vh;
+  font-family: "Roboto";
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  font-size: 1rem;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #4c0f19;
+  }
+}
+
 .btn-brown:hover{
   background-color: #D33819;
+}
+
+.input-error{
+  border: none;
+  box-shadow: 0 2px 12px red !important;
+}
+.btn-transparent{
+  position: absolute;
+  top: 0px;
+  left: 50px;
+  height: 25px;
+  background-color: transparent;
+  color: black;
+  font-weight: bold;
+  border-radius: 5px;
 }

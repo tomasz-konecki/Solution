@@ -74,7 +74,6 @@ class UsersList extends Component {
                 }, 500);
               });
             }
-            console.log(error);
             this.setState({
               responseBlock: error,
               loading: false

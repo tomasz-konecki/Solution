@@ -29,8 +29,8 @@
     }
     .btns-container{
       @media(max-width: 890px){
-        margin-top: 30px;
-        margin-left: auto;
+        margin-top: 40px;
+        margin: 40px auto 0 auto;
       }
     }
     .btns-container button:first-of-type{
@@ -118,39 +118,12 @@
           border-radius: 5px;
           font-size: 14px;
         }
-      }
-     
-    }
-  }
-
-  .reports-content-container {
-    padding: 15px;
-    .caffels-container {
-      width: 100%;
-      justify-content: center;
-      display: flex;
-      height: 100%;
-      flex-flow: wrap;
-      .caffel {
-        width: 125px;
-        background-color: #e8e8e8;
-        height: 125px;
-        margin: 10px;
-        cursor: pointer;
-        display: flex;
-        padding: 5px;
-        box-sizing: border-box;
-        text-align: center;
-        transition: 0.5s all ease-in-out;
-        justify-content: center;
-        align-items: center;
-        @media(max-width: 1000px){
-          font-size: 14px;
+        input:disabled{
+          background-color: rgba(0,0,0,0.3);
+          color: white;
         }
       }
-      .caffel:hover {
-        background-color: lightblue;
-      }
+     
     }
   }
 }
@@ -192,20 +165,29 @@
 .checkbox-container {
   color: white;
   position: absolute;
-  bottom: -50px;
+  bottom: -90px;
+  display: flex;
+  padding: 10px;
+  box-sizing: border-box;
+  flex-flow: column;
   font-size: 16px;
   width: 100%;
+  left: 0;
   letter-spacing: 1.5px;
+  
   @media(max-width: 400px){
-    bottom: -35px;
+    bottom: -85px;
     label{
-      font-size: 15px;
+      font-size: 14px;
     }
   }
+  label{
+    margin-bottom: 15px;
+  }
   input {
-    margin: 0 10px;
     height: 20px;
     width: 20px;
+    align-self: flex-end;
   }
   
 }

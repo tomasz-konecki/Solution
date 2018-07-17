@@ -1,13 +1,13 @@
 import React from "react";
 import "./statusPrompt.scss";
 
-const statusPrompt = ({ result, error }) => (
+const statusPrompt = ({ result, error, message }) => (
   <p
     className={`small-operation-prompt ${result
       ? "prompt-succ"
       : "prompt-fail"}`}
   >
-    {result ? "Przygotowanie do logowania powiodło się" : error}
+    {result ? message : error}
   </p>
 );
 

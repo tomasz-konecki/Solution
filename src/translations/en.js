@@ -13,6 +13,7 @@ const translations = {
   LeftMenu: {
     Users: "Users",
     Employees: "Employees",
+    Clients: "Clients",
     Projects: "Projects",
     Assign: "Assign",
     Stats: "Statistics",
@@ -46,7 +47,7 @@ const translations = {
     Date: "Date",
     userId: "User Id",
     ReactivateUserImperativus: "Reactivate user",
-    ReactivateUserInfinitive: "Reactivate użytkownika",
+    ReactivateUserInfinitive: "Reactivate user",
     UserReactivated: "User has been reactivated",
     DeleteUserImperativus: "Delete user",
     DownloadCV: "Download CV",
@@ -59,6 +60,30 @@ const translations = {
     DeleteEdit: "Delete/Edit",
     DeleteAdd: "Delete/Add",
     AddUserWhenRequestImperativus: "Add user"
+  },
+  ClientsContainer: {
+    Name: "Name",
+    Options: "Options",
+    DeleteClient: "Delete Client",
+    EditClient: "Edit Client",
+    ReactivateClient: "Reactivate Client",
+    SaveClient: "Save Client",
+    ClientRemoved: "Client has been removed.",
+    ClientReactivated: "Client has beed reactivated.",
+    Removing: "You are about to remove client",
+    Reactivating: "You are about to reactivate client",
+    Search: "Search",
+    ClientsNotFound: "Clients Not Found",
+    Activated: "Activated",
+    NotActivated: "Not Activated",
+    ClientCloudsList: "Client's Clouds List",
+    AddCloud: "Add Cloud",
+    CloudsNotFound: "Clouds not found."
+  },
+  AddClient: {
+    AddClient: "Add Client",
+    ClientName: "Client Name",
+    ClientAddedSuccess: "Client has been added."
   },
   ProjectsList: {
     Add: "Add",

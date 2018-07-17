@@ -68,7 +68,7 @@ class UserSelector extends Component {
         });
         setTimeout(() => {
           this.props.closeModal();
-        }, 500);
+        }, 2000);
       })
       .catch(errorBlock => {
         this.setState({

@@ -43,7 +43,6 @@ class EmployeeDetailContainer extends Component {
   }
 
   componentDidMount() {
-    console.log(this.props);
     if (
       this.props.match.params.id === this.props.login ||
       binaryPermissioner(false)(0)(1)(1)(1)(1)(1)(this.props.binPem)

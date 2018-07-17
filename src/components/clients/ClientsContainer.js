@@ -34,14 +34,14 @@ class ClientsContainer extends React.Component {
     client: {
       index: null,
       id: null,
-      name: null
+      name: null,
+      isDeleted: null
     }
   };
 
   componentDidMount = () => {
     this.props.clientsActions.loadClients();
     this.radioButtonClick("activated");
-    console.log(this.props);
   };
 
   componentWillReceiveProps(nextProps) {

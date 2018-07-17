@@ -49,7 +49,6 @@ const InfoClient = ({
   handleDeleteCloudChild,
   disabled
 }) => {
-  console.log(client);
   const clientClouds = client.clouds.map((cloud, index) => {
     return (
       <div key={index} className="cloud">

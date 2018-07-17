@@ -3,8 +3,8 @@ import UserDetailsBlock from "./UserDetailsBlock";
 import UserRoleAssigner from "./UserRoleAssigner";
 import LoaderHorizontal from "./../../common/LoaderHorizontal";
 import ResultBlock from "./../../common/ResultBlock";
-import PropTypes from 'prop-types';
-import { translate } from 'react-translate';
+import PropTypes from "prop-types";
+import { translate } from "react-translate";
 import WebApi from "api/index";
 
 class EditUserDetails extends Component {
@@ -24,7 +24,8 @@ class EditUserDetails extends Component {
         disabledButton: !this.props.disabledButton
       },
       () => {
-        WebApi.users.patch.roles(id, roles)
+        WebApi.users.patch
+          .roles(id, roles)
           .then(response => {
             this.setState({
               responseBlock: response,
@@ -35,23 +36,27 @@ class EditUserDetails extends Component {
             }, 1500);
           })
           .catch(error => {
-            if('userNotFoundError' in error.replyBlock.data.errorObjects[0].errors){
-              WebApi.users.post.add(id, roles)
-              .then(response => {
-                this.setState({
-                  responseBlock: response,
-                  loading: !this.state.loading
+            if (
+              "userNotFoundError" in
+              error.replyBlock.data.errorObjects[0].errors
+            ) {
+              WebApi.users.post
+                .add(id, roles)
+                .then(response => {
+                  this.setState({
+                    responseBlock: response,
+                    loading: !this.state.loading
+                  });
+                  setTimeout(() => {
+                    this.props.handleCloseModal({ afterClose: "reloadList" });
+                  }, 1500);
+                })
+                .catch(errorResponse => {
+                  this.setState({
+                    responseBlock: errorResponse,
+                    loading: !this.state.loading
+                  });
                 });
-                setTimeout(() => {
-                  this.props.handleCloseModal({afterClose: "reloadList"});
-                }, 1500);
-              })
-              .catch(errorResponse => {
-                this.setState({
-                  responseBlock: errorResponse,
-                  loading: !this.state.loading
-                });
-              })
             }
             this.setState({
               responseBlock: error,
@@ -67,21 +72,25 @@ class EditUserDetails extends Component {
     return (
       <div className="stage-two-container">
         <div className="form-container">
-          <UserDetailsBlock editable={false} user={this.props.user} /> 
+          <UserDetailsBlock editable={false} user={this.props.user} />
           <UserRoleAssigner
-            roles={this.props.user.roles !== undefined ? this.props.user.roles : []}
+            roles={
+              this.props.user.roles !== undefined ? this.props.user.roles : []
+            }
             handleRoleChange={this.props.handleRoleChange}
           />
           <div className="edit-user-button-container">
-            {
-              this.props.user.roles !== undefined ? this.props.user.roles[0] !== undefined ? <button
-                className="dcmt-button"
-                onClick={this.changeUserRoles}
-                disabled={this.state.disabledButton}
-              >
-                {t("Confirm")}
-              </button> : null : null
-            }
+            {this.props.user.roles !== undefined ? (
+              this.props.user.roles[0] !== undefined ? (
+                <button
+                  className="dcmt-button"
+                  onClick={this.changeUserRoles}
+                  disabled={this.state.disabledButton}
+                >
+                  {t("Confirm")}
+                </button>
+              ) : null
+            ) : null}
           </div>
           <div className="edit-user-result-modal">
             <ResultBlock
@@ -100,7 +109,7 @@ class EditUserDetails extends Component {
 
 EditUserDetails.propTypes = {
   user: PropTypes.object.isRequired,
-  handleCloseModal: PropTypes.func.isRequired,
+  handleCloseModal: PropTypes.func,
   handleRoleChange: PropTypes.func.isRequired,
   responseBlock: PropTypes.object,
   loading: PropTypes.bool

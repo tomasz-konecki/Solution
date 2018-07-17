@@ -39,7 +39,7 @@ const ClientsList = ({
   return (
     <table className="client-list-table">
       <thead>
-        <tr>
+        <tr className="client-list-table-header">
           <th>
             <button
               className="clients-sorting-button"

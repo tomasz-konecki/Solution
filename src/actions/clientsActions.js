@@ -184,15 +184,11 @@ export const deleteCloud = id => {
       .delete(id)
       .then(response => {
         if (!response.errorOccurred()) {
-          console.log(response);
           dispatch(setActionConfirmationResult(response));
-
           dispatch(asyncEnded());
         }
       })
       .catch(error => {
-        console.log(error);
-
         dispatch(setActionConfirmationResult(error));
         dispatch(asyncEnded());
         throw error;

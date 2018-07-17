@@ -4,10 +4,11 @@ import SmallSpinner  from '../../../../common/spinner/small-spinner';
 const file = ({folder, openFolder, editFolderError, isDeletingOrEditingFolder, 
     onSubmit, currentOpenedFolderDetailName, showDeleteFolderModal, onStateChange,
     onEditFolder, onChangeFolderName, currentOpenedFolderToEditId, 
-    enableFolderEdit, editFolderName, closeEditingFolderName, onFileClick }) => {
+    enableFolderEdit, editFolderName, closeEditingFolderName, onFileClick, chooseFolder, choosenFolder }) => {
     
     return (
-    <li 
+    <li className={choosenFolder ? folder.name === choosenFolder.name ? "selected-folder" : null : null}
+
         onClick={folder.type === "file" ? 
             () => onFileClick(folder.name) : null}
         key={folder.name}>
@@ -39,7 +40,7 @@ const file = ({folder, openFolder, editFolderError, isDeletingOrEditingFolder,
         }
 
         {folder.type !== "file" && 
-            <i className="fa fa-cloud-upload-alt"></i>
+            <i onClick={() => chooseFolder(folder)} className="fa fa-cloud-upload-alt"></i>
         }
 
         <i className={`fa ${folder.type === "file" ? "fa-file-word" : "fa-folder"}`}></i>

@@ -1,12 +1,14 @@
 import React from "react";
 import Modal from "react-responsive-modal";
 import StatusPrompt from "../../common/statusPrompt/statusPrompt";
-import Button from "../../common/button/button";
 import SpinnerButton from "../../form/spinner-btn/spinner-btn";
 import Spinner from '../../common/spinner/spinner';
 import RedirectSpinner from '../../common/spinner/redirect-spinner';
 const genReport = ( {shouldOpenModal, closeModal, addList, pagesList, 
-  deleteTeamFromResultList, onChangeReportPages, didPagesHasIncorrectValues}) => {
+  deleteTeamFromResultList, onChangeReportPages, didPagesHasIncorrectValues,
+  choosenFolder }) => {
+  
+  console.log(choosenFolder);
   return (
     <Modal
       key={1}
@@ -40,6 +42,26 @@ const genReport = ( {shouldOpenModal, closeModal, addList, pagesList,
           );
         })}
       </ul>
+
+      {
+        choosenFolder && 
+        <div className="choosen-folder-content">
+          <div className="icon-container">
+            <i className="fa fa-folder"></i>
+            <span onClick={() => window.open(choosenFolder.webUrl)}>Otwórz w <i className="fab fa-google-drive"></i></span>
+          </div>
+          <article className="folder-details">
+            <p><span>Identyfikator: </span><b>{choosenFolder.id}</b></p>
+            <p><span>Nazwa: </span><b>{choosenFolder.name}</b></p>
+            <p><span>Data utworzenia: </span><b>{choosenFolder.createDateTime}</b></p>
+            <p><span>Ścieżka: </span><b>{choosenFolder.parentPath}</b></p>
+          </article>
+
+          <SpinnerButton btnTitle="Generuj raport" />
+
+        </div>
+      }
+     
     </Modal>
   );
 };

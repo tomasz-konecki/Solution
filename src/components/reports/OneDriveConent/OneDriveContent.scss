@@ -90,6 +90,9 @@
             margin: 20px 0;
             width: 100%;
             justify-content: center;
+            .selected-folder{
+                background-color: lightblue;
+            }
             li{
                 width: 150px;
                 box-sizing: border-box;

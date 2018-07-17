@@ -11,6 +11,7 @@ import { validateInput } from '../../../services/validation';
 import ConfirmModal from '../../common/confimModal/confirmModal';
 import OperationLoader from '../../common/operationLoader/operationLoader';
 import FilesList from './FilesList/FilesList';
+import SmallSpinner from '../../common/spinner/small-spinner';
 
 const startPath = "/drive/root:";
 
@@ -162,7 +163,7 @@ class OneDriveContent extends React.PureComponent {
         const { folders, getFoldersStatus, getFoldersErrors, path, 
             createFolderStatus, createFolderErrors, deleteFolderStatus, 
             deleteFolderErrors, updateFolderStatus, updateFolderErrors, 
-            uploadFileStatus, uploadFileErrors } = this.props;
+            uploadFileStatus, uploadFileErrors, chooseFolder, choosenFolder } = this.props;
         return (
             <div className="gdrive-content-container">
 
@@ -243,6 +244,8 @@ class OneDriveContent extends React.PureComponent {
                             </p> : 
 
                             <FilesList 
+                            chooseFolder={chooseFolder}
+                            choosenFolder={choosenFolder}
                             folderIsLoadingName={folderIsLoadingName}
                             folders={folders}
                             editFolderName={editFolderName}

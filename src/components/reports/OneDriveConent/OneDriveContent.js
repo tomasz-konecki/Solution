@@ -7,10 +7,10 @@ import { authOneDriveACreator, sendCodeToGetTokenACreator, createFolderACreator,
 } from '../../../actions/oneDriveActions';
 import Spinner from '../../common/spinner/spinner';
 import Button from '../../common/button/button';
-import SmallSpinner from '../../common/spinner/small-spinner.js';
 import { validateInput } from '../../../services/validation';
 import ConfirmModal from '../../common/confimModal/confirmModal';
 import OperationLoader from '../../common/operationLoader/operationLoader';
+import FilesList from './FilesList/FilesList';
 
 const startPath = "/drive/root:";
 
@@ -139,37 +139,30 @@ class OneDriveContent extends React.PureComponent {
         this.props.uploadFile(this.props.authCodeToken, this.props.path,
             this.state.fileToUpload, this.props.folders);
     }
+    enableFolderEdit = (currentOpenedFolderToEditId, editFolderName) => {
+        this.setState({currentOpenedFolderToEditId:currentOpenedFolderToEditId, 
+            editFolderName: editFolderName});
+    }
+    showDeleteFolderModal = folderId => {
+        this.setState({showDeleteFolderModal: true, 
+            folderToDeleteId: folderId});
+    }
+    onFileClick = fileName => {
+        this.setState({currentOpenedFolderDetailName: 
+            fileName === this.state.currentOpenedFolderDetailName ? 
+            null : fileName})
+    }
     render(){
-        const { isPreparingForLogingIn } = this.state;
-        const { isTakingCodeFromApi } = this.state;
-        const { currentOpenedFolderDetailName } = this.state;
-        const { showAddingFolderInput } = this.state;
-        const { folderName } = this.state;
-        const { isAddingFolder } = this.state;
-        const { folderNameError } = this.state;
-        const { showDeleteFolderModal } = this.state;
-        const { folderToDeleteId } = this.state;
-        const { isDeletingOrEditingFolder } = this.state;
-        const { currentOpenedFolderToEditId } = this.state;
-        const { editFolderName } = this.state;
-        const { editFolderError } = this.state;
-        const { folderIsLoadingName } = this.state;
-        const { isGoingBack } = this.state;
-        const { fileToUpload } = this.state;
-        const { isUploadingFile } = this.state;
+        const { isPreparingForLogingIn, isTakingCodeFromApi, currentOpenedFolderDetailName,
+            showAddingFolderInput, folderName, isAddingFolder, folderNameError, 
+            showDeleteFolderModal, folderToDeleteId, isDeletingOrEditingFolder, 
+            currentOpenedFolderToEditId, editFolderName, editFolderError, 
+            folderIsLoadingName, isGoingBack, fileToUpload, isUploadingFile } = this.state;
 
-        const { folders } = this.props;
-        const { getFoldersStatus } = this.props;
-        const { getFoldersErrors } = this.props;
-        const { path } = this.props;
-        const { createFolderStatus } = this.props;
-        const { createFolderErrors } = this.props;
-        const { deleteFolderStatus } = this.props;
-        const { deleteFolderErrors } = this.props;
-        const { updateFolderStatus } = this.props;
-        const { updateFolderErrors } = this.props;
-        const { uploadFileStatus } = this.props;
-        const { uploadFileErrors } = this.props;
+        const { folders, getFoldersStatus, getFoldersErrors, path, 
+            createFolderStatus, createFolderErrors, deleteFolderStatus, 
+            deleteFolderErrors, updateFolderStatus, updateFolderErrors, 
+            uploadFileStatus, uploadFileErrors } = this.props;
         return (
             <div className="gdrive-content-container">
 
@@ -241,89 +234,35 @@ class OneDriveContent extends React.PureComponent {
                                 <i className="fa fa-long-arrow-alt-left"></i>
                             </Button> 
                             }
-                              
                            
                         </header>
                         
-                        {folders.length === 0 && 
+                        {folders.length === 0 ? 
                             <p className="empty-files-list">
                                 Ten folder jest pusty...
-                            </p>
+                            </p> : 
+
+                            <FilesList 
+                            folderIsLoadingName={folderIsLoadingName}
+                            folders={folders}
+                            editFolderName={editFolderName}
+                            currentOpenedFolderDetailName={currentOpenedFolderDetailName}
+                            currentOpenedFolderToEditId={currentOpenedFolderToEditId}
+                            onEditFolder={this.onEditFolder}
+                            editFolderError={editFolderError}
+                            onChangeFolderName={this.onChangeFolderName}
+                            isDeletingOrEditingFolder={isDeletingOrEditingFolder}
+                            openFolder={this.openFolder}
+
+                            enableFolderEdit={this.enableFolderEdit}
+                            onStateChange={this.setState}
+                            showDeleteFolderModal={this.showDeleteFolderModal}
+                            closeEditingFolderName={() => this.setState({currentOpenedFolderToEditId: "", 
+                            editFolderError: ""})}
+                            onFileClick={this.onFileClick}
+                            />
                         }
 
-                        <ul className="current-folders">
-                        {folders.map(folder => {
-                            return (
-                                folderIsLoadingName === folder.name ? 
-                                <li className="sk-folding-cube" key={folder.name}>
-                                    <div className="sk-cube1 sk-cube"></div>
-                                    <div className="sk-cube2 sk-cube"></div>
-                                    <div className="sk-cube4 sk-cube"></div>
-                                    <div className="sk-cube3 sk-cube"></div>
-                                </li>
-                                :
-                                <li 
-                                    onClick={folder.type === "file" ?
-                                    () => this.setState({currentOpenedFolderDetailName: 
-                                    folder.name === currentOpenedFolderDetailName ? 
-                                    null : folder.name}) : null}
-                                    key={folder.name}>
-
-                                    {(currentOpenedFolderToEditId === folder.id && folder.type !== "file") ? 
-                                        <form onSubmit={e => this.onEditFolder(e, folder.name)}>
-
-                                            <input className={editFolderError ? "input-error" : null}
-                                            type="text" value={editFolderName} 
-                                            onChange={e => this.onChangeFolderName(e, "edit", folder.name)} />
-
-                                            { isDeletingOrEditingFolder && <SmallSpinner /> } 
-                                            
-                                            { isDeletingOrEditingFolder ||
-                                                <i onClick={e => this.onEditFolder(e, folder.name)} 
-                                                className="fa fa-check"></i>
-                                            }
-                                            { isDeletingOrEditingFolder || 
-                                                <i onClick={() => this.setState({currentOpenedFolderToEditId: "", 
-                                                editFolderError: ""})} className="fa fa-times"></i>
-                                            }
-                                            
-                                        </form> 
-                                        : 
-                                        <span onClick={() => this.setState({currentOpenedFolderToEditId: folder.id, 
-                                                editFolderName: folder.name})}>{folder.name}</span>
-                                    }
-                                    
-                                    {folder.type !== "file" && 
-                                    <i onClick={() => this.openFolder(folder.name)} className="fa fa-folder-open"></i>
-                                    }
-
-                                    <i className={`fa ${folder.type === "file" ? "fa-file-word" : "fa-folder"}`}></i>
-                                    
-                                    {
-                                        folder.type !== "file" && 
-                                        <div className="folders-icons">
-                                            <i onClick={() => this.setState({showDeleteFolderModal: true, 
-                                                folderToDeleteId: folder.id})} className="fa fa-trash"></i>
-                                            <i onClick={() => this.setState({currentOpenedFolderToEditId: folder.id, 
-                                                editFolderName: folder.name})} 
-                                                className="fa fa-pen-square"></i>
-                                        </div>
-                                    }
-                                   
-                                    {(folder.name === currentOpenedFolderDetailName && folder.type === "file") && 
-                                        <div className="file-details">
-                                            <p><b>Typ</b><span>{folder.type}</span></p>
-                                            <p><b>Rozmiar</b><span>{folder.size}</span></p>
-                                            <p><b>Ścieżka</b><span>{folder.parentPath}</span></p>
-                                            <button onClick={() => window.open()}>Pobierz</button>
-                                        </div>
-                                    }
-                                    
-
-                                </li>
-                            );
-                        })}  
-                        </ul> 
                     </div>
                 }
 

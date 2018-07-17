@@ -6,7 +6,8 @@ export default class infoClientContainer extends Component {
   state = {
     shouldAnimate: true,
     addingNewCloud: false,
-    inputValueToAdd: null
+    inputValueToAdd: null,
+    disabled: true
   };
 
   componentWillReceiveProps(nextState) {
@@ -31,7 +32,9 @@ export default class infoClientContainer extends Component {
   };
 
   handleInputAddCloud = e => {
-    this.setState({ inputValueToAdd: e.target.value });
+    if (e.target.value) {
+      this.setState({ inputValueToAdd: e.target.value, disabled: false });
+    }
   };
 
   handleAddCloudSaveChild = () => {
@@ -41,14 +44,20 @@ export default class infoClientContainer extends Component {
     );
   };
 
+  handleDeleteCloudChild = (cloudId, cloudName) => {
+    this.props.handleDeleteCloud(cloudId, cloudName);
+  };
+
   render() {
-    const { shouldAnimate, addingNewCloud } = this.state;
+    const { shouldAnimate, addingNewCloud, disabled } = this.state;
     const {
       client,
       t,
       handleAddCloudSave,
       loading,
-      resultBlockCloud
+      clearResponseCloud,
+      resultBlockCloud,
+      handleTimesClick
     } = this.props;
 
     if (shouldAnimate) {
@@ -68,6 +77,10 @@ export default class infoClientContainer extends Component {
           handleAddCloudSaveChild={this.handleAddCloudSaveChild}
           loading={loading}
           resultBlockCloud={resultBlockCloud}
+          clearResponseCloud={clearResponseCloud}
+          handleTimesClick={handleTimesClick}
+          handleDeleteCloudChild={this.handleDeleteCloudChild}
+          disabled={disabled}
         />
       </div>
     );

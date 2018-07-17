@@ -4,6 +4,36 @@ import "./infoClient.scss";
 import BilleniumPleaceholder from "assets/img/small-logo.png";
 import Icon from "../../common/Icon";
 import Spinner from "../../common/spinner/spinner";
+import IntermediateBlock from "../../common/IntermediateBlock";
+import { CSSTransitionGroup } from "react-transition-group";
+
+const pullDOM = (
+  t,
+  handleAddCloud,
+  handleAddCloudSaveChild,
+  handleInputAddCloud,
+  disabled
+) => {
+  return (
+    <div className="cloud">
+      <div className="cloud-circle" />
+      <div className="cloud-name">
+        <input
+          onChange={e => handleInputAddCloud(e)}
+          placeholder={t("CloudName")}
+        />
+      </div>
+      <div className="cloud-options">
+        <button disabled={disabled} onClick={handleAddCloudSaveChild}>
+          <Icon icon="check" iconType="fa" additionalClass="icon-success" />
+        </button>
+        <button onClick={handleAddCloud}>
+          <Icon icon="times" iconType="fa" additionalClass="icon-danger" />
+        </button>
+      </div>
+    </div>
+  );
+};
 
 const InfoClient = ({
   client,
@@ -13,10 +43,12 @@ const InfoClient = ({
   handleInputAddCloud,
   handleAddCloudSaveChild,
   loading,
-  resultBlockCloud
+  resultBlockCloud,
+  clearResponseCloud,
+  handleTimesClick,
+  handleDeleteCloudChild,
+  disabled
 }) => {
-  console.log(resultBlockCloud);
-  let adddingNewCloudContainer = null;
   const clientClouds = client.clouds.map((cloud, index) => {
     return (
       <div key={index} className="cloud">
@@ -25,42 +57,46 @@ const InfoClient = ({
           <span>{cloud.name}</span>
         </div>
         <div className="cloud-options">
-          <button>
+          <button onClick={() => handleDeleteCloudChild(cloud.id, cloud.name)}>
             <Icon icon="times" iconType="fa" additionalClass="icon-danger" />
           </button>
         </div>
       </div>
     );
   });
-  if (!client.description) {
-    client.description =
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer ultrices, ante eget dapibus euismod, velit ipsum posuere quam, vel gravida justo metus sed nisi. Praesent semper mi non mi aliquam porttitor.";
-  }
-  if (!client.img) {
-    client.img = BilleniumPleaceholder;
+
+  client.description = !client.description
+    ? "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer ultrices, ante eget dapibus euismod, velit ipsum posuere quam, vel gravida justo metus sed nisi. Praesent semper mi non mi aliquam porttitor."
+    : client.description;
+
+  client.img = !client.img ? BilleniumPleaceholder : client.img;
+
+  let closeMessage = null;
+
+  if (resultBlockCloud) {
+    closeMessage = resultBlockCloud.errorOccurred() ? (
+      <span className="messageClose" onClick={() => clearResponseCloud()}>
+        x
+      </span>
+    ) : null;
   }
 
-  if (addingNewCloud) {
-    adddingNewCloudContainer = (
-      <div className="cloud">
-        <div className="cloud-circle" />
-        <div className="cloud-name">
-          <input
-            onChange={e => handleInputAddCloud(e)}
-            placeholder={t("CloudName")}
-          />
-        </div>
-        <div className="cloud-options">
-          <button onClick={handleAddCloudSaveChild}>
-            <Icon icon="check" iconType="fa" additionalClass="icon-success" />
-          </button>
-          <button onClick={handleAddCloud}>
-            <Icon icon="times" iconType="fa" additionalClass="icon-danger" />
-          </button>
-        </div>
-      </div>
-    );
-  }
+  let adddingNewCloudContainer = addingNewCloud ? (
+    <IntermediateBlock
+      loaded={!loading}
+      render={() =>
+        pullDOM(
+          t,
+          handleAddCloud,
+          handleAddCloudSaveChild,
+          handleInputAddCloud,
+          disabled
+        )
+      }
+      resultBlock={resultBlockCloud}
+    />
+  ) : null;
+
   return (
     <Aux>
       <div className="client-info-header">
@@ -74,7 +110,10 @@ const InfoClient = ({
           </div>
           <hr />
           <div className="client-info-options">
-            <span>{t("EditClient")}</span> | <span>{t("DeleteClient")}</span>
+            <span>{t("EditClient")}</span> |{" "}
+            <span onClick={() => handleTimesClick(client.id, client.name, t)}>
+              {t("DeleteClient")}
+            </span>
           </div>
         </div>
       </div>
@@ -88,7 +127,16 @@ const InfoClient = ({
           {clientClouds.length === 0 && (
             <span className="clouds-not-found">{t("CloudsNotFound")}</span>
           )}
-          {adddingNewCloudContainer && adddingNewCloudContainer}
+          <div className="client-cloud-adding-container">
+            {closeMessage}
+            <CSSTransitionGroup
+              transitionName="example"
+              transitionEnterTimeout={500}
+              transitionLeaveTimeout={300}
+            >
+              {adddingNewCloudContainer}
+            </CSSTransitionGroup>
+          </div>
         </div>
 
         {!adddingNewCloudContainer && (

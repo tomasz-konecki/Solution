@@ -5,10 +5,6 @@ import Aux from "../../services/auxilary";
 class ClientNameInput extends Component {
   state = { value: this.props.value, errors: null };
 
-  test() {
-    console.log("kupa");
-  }
-
   onInputChange = (e, handleGetValueFromInput) => {
     e.preventDefault();
     let inputValue = e.target.value;

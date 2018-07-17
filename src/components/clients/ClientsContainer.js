@@ -34,7 +34,8 @@ class ClientsContainer extends React.Component {
     client: {
       index: null,
       id: null,
-      name: null
+      name: null,
+      isDeleted: null
     }
   };
 
@@ -45,11 +46,12 @@ class ClientsContainer extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.clients !== this.props.clients) {
-      if (this.state.firstReceiving) {
-        this.setState({ firstReceiving: false });
-      } else {
-        this.setState({ clients: nextProps.clients });
-      }
+      this.setState({ clients: nextProps.clients });
+      // if (this.state.firstReceiving) {
+      //   this.setState({ firstReceiving: false });
+      // } else {
+      //   this.setState({ clients: nextProps.clients });
+      // }
     }
     if (nextProps.loading === false && this.props.loading === true) {
       this.setState({ loaded: true });
@@ -61,6 +63,10 @@ class ClientsContainer extends React.Component {
     if (this.validatePropsForClientReactivation(nextProps)) {
       this.props.async.setActionConfirmationProgress(true);
       this.props.clientsActions.reactivateClient(nextProps.toConfirm.id);
+    }
+    if (this.validatePropsForCloudDeletion(nextProps)) {
+      this.props.async.setActionConfirmationProgress(true);
+      this.props.clientsActions.deleteCloud(nextProps.toConfirm.id);
     }
   }
 
@@ -79,6 +85,15 @@ class ClientsContainer extends React.Component {
       !nextProps.isWorking &&
       nextProps.type === ACTION_CONFIRMED &&
       nextProps.toConfirm.key === "reactivateClient"
+    );
+  }
+
+  validatePropsForCloudDeletion(nextProps) {
+    return (
+      nextProps.confirmed &&
+      !nextProps.isWorking &&
+      nextProps.type === ACTION_CONFIRMED &&
+      nextProps.toConfirm.key === "deleteCloud"
     );
   }
 
@@ -251,6 +266,15 @@ class ClientsContainer extends React.Component {
     this.props.clientsActions.addCloud(name, clientId);
   };
 
+  handleDeleteCloud = (id, name) => {
+    this.props.async.setActionConfirmation(true, {
+      key: "deleteCloud",
+      string: `${this.props.t("RemovingCloud")} ${name}`,
+      id: id,
+      successMessage: this.props.t("CloudRemoved")
+    });
+  };
+
   pullDOM = (editingInput, clients, t, filterList, sortBy, checked) => {
     return (
       <Aux>
@@ -284,7 +308,6 @@ class ClientsContainer extends React.Component {
     let { resultBlock, resultBlockCloud, t, loading } = this.props;
     let { editingInput, loaded, clients, checked, client } = this.state;
     let infoClient = null;
-    console.log(this.props);
     if (client.name) {
       infoClient = (
         <InfoClientContainer
@@ -292,7 +315,10 @@ class ClientsContainer extends React.Component {
           t={t}
           handleAddCloudSave={this.handleAddCloudSave}
           loading={loading}
-          resultBlock={resultBlockCloud}
+          resultBlockCloud={resultBlockCloud}
+          clearResponseCloud={this.props.clientsActions.clearResponseCloud}
+          handleTimesClick={this.handleTimesClick}
+          handleDeleteCloud={this.handleDeleteCloud}
         />
       );
     }

@@ -456,8 +456,10 @@ class SmoothTable extends Component {
           )}
           key={index}
         >
-          {column.pretty}
-          {this.generateSortingArrow(columns[currentlySortedColumn])}
+          <span style={{ display: "inline-block", width: "95%" }}>
+            {column.pretty}
+            {this.generateSortingArrow(columns[currentlySortedColumn])}
+          </span>
         </th>
       );
     else

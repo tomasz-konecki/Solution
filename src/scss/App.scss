@@ -105,6 +105,10 @@ input[type="checkbox"] {
   }
 }
 
+path.c3-shape {
+  cursor: default !important;
+}
+
 .text-just {
   display: block;
   text-align: justify;
@@ -138,7 +142,7 @@ a:visited {
 }
 
 .content-abs-footer {
-  position: absolute;
+  position: fixed;
   bottom: 0;
   right: 0;
   padding: 8px 16px 8px 8px;

@@ -73,7 +73,7 @@ $activeShadow: 0 0 10px rgba($teal1, 0.5);
     display: flex;
     flex-flow: row nowrap;
     justify-content: flex-start;
-    align-items: stretch;
+    align-items: center;
     input[type="radio"] {
       @include hideInput;
     }
@@ -124,12 +124,13 @@ $activeShadow: 0 0 10px rgba($teal1, 0.5);
 
     .smooth-radio-span {
       margin: 0px;
+      white-space: nowrap;
     }
   }
 
   span {
     float: left;
-    display: block;
+    display: inline-flex;
     margin: 0 20px;
 
     @media screen and (max-width: 500px) {

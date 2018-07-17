@@ -40,6 +40,7 @@ function listener() {
       break;
   }
 
+  axios.defaults.withCredentials = true;
   axios.defaults.headers.common["Authorization"] = token;
   axios.defaults.headers.common["Accept-Language"] = langHeader;
 }
@@ -169,6 +170,9 @@ const WebApi = {
   clouds: {
     post: (name, clientId) => {
       return WebAround.post(`${API_ENDPOINT}/clouds/`, { name, clientId });
+    },
+    delete: cloudId => {
+      return WebAround.delete(`${API_ENDPOINT}/clouds/${cloudId}`);
     }
   },
   education: {
@@ -449,57 +453,57 @@ const WebApi = {
   users: {
     get: {
       byUser: userId => {
-        return WebAround.get(`${API_ENDPOINT}/users/${userId}`);
+        return WebAround.get(`${API_ENDPOINT}/account/${userId}`);
       },
       adSearch: query => {
-        return WebAround.get(`${API_ENDPOINT}/users/searchAD/${query}`);
+        return WebAround.get(`${API_ENDPOINT}/account/searchAD/${query}`);
       }
     },
     post: {
       list: (settings = {}) => {
-        return WebAround.post(`${API_ENDPOINT}/users`, settings);
+        return WebAround.post(`${API_ENDPOINT}/account`, settings);
       },
       listOfRequests: (settings = {}) => {
-        return WebAround.post(`${API_ENDPOINT}/users/requests`, settings);
+        return WebAround.post(`${API_ENDPOINT}/account/requests`, settings);
       },
       add: (userId, roles) => {
-        return WebAround.post(`${API_ENDPOINT}/users/add`, {
+        return WebAround.post(`${API_ENDPOINT}/account/add`, {
           id: userId,
           roles
         });
       },
       login: (login, password) => {
         return axios
-          .post(`${API_ENDPOINT}/users/login`, { login, password })
+          .post(`${API_ENDPOINT}/account/login`, { login, password })
           .then(response => response.data.dtoObject);
       },
       logout: () => {
-        return axios.post(`${API_ENDPOINT}/users/logout`);
+        return axios.post(`${API_ENDPOINT}/account/logout`);
       },
       token: refreshToken => {
-        return axios.post(`${API_ENDPOINT}/users/login`, { refreshToken });
+        return axios.post(`${API_ENDPOINT}/account/login`, { refreshToken });
       }
     },
     delete: {
       user: userId => {
-        return WebAround.delete(`${API_ENDPOINT}/users/${userId}`);
+        return WebAround.delete(`${API_ENDPOINT}/account/${userId}`);
       },
       request: userId => {
         return WebAround.delete(
-          `${API_ENDPOINT}/users/requests`,
+          `${API_ENDPOINT}/account/requests`,
           params({ userId })
         );
       }
     },
     patch: {
       roles: (userId, roles) => {
-        return WebAround.patch(`${API_ENDPOINT}/users`, {
+        return WebAround.patch(`${API_ENDPOINT}/account`, {
           id: userId,
           roles
         });
       },
       reactivate: userId => {
-        return WebAround.patch(`${API_ENDPOINT}/users/reactivate/${userId}`);
+        return WebAround.patch(`${API_ENDPOINT}/account/reactivate/${userId}`);
       }
     }
   },
@@ -517,7 +521,7 @@ const WebApi = {
 class DCMTWebApi {
   auth(login, password) {
     return axios
-      .post(`${API_ENDPOINT}/users/login`, { login, password })
+      .post(`${API_ENDPOINT}/account/login`, { login, password })
       .then(response => response.data.dtoObject);
   }
 
@@ -527,43 +531,43 @@ class DCMTWebApi {
 
   getUsers(settings = {}) {
     return axios
-      .post(`${API_ENDPOINT}/users`, settings)
+      .post(`${API_ENDPOINT}/account`, settings)
       .catch(response => authValidator(response));
   }
 
   searchAD(user) {
     return axios
-      .get(`${API_ENDPOINT}/users/searchAD/${user}`)
+      .get(`${API_ENDPOINT}/account/searchAD/${user}`)
       .catch(response => authValidator(response));
   }
 
   addUser(id, roles) {
     return axios
-      .post(`${API_ENDPOINT}/users/add`, { id, roles })
+      .post(`${API_ENDPOINT}/account/add`, { id, roles })
       .catch(response => authValidator(response));
   }
 
   deleteUser(id) {
     return axios
-      .delete(`${API_ENDPOINT}/users/${id}`)
+      .delete(`${API_ENDPOINT}/account/${id}`)
       .catch(response => authValidator(response));
   }
 
   getUser(id) {
     return axios
-      .get(`${API_ENDPOINT}/users/${id}`)
+      .get(`${API_ENDPOINT}/account/${id}`)
       .catch(response => authValidator(response));
   }
 
   reactivateUser(id) {
     return axios
-      .patch(`${API_ENDPOINT}/users/reactivate/${id}`)
+      .patch(`${API_ENDPOINT}/account/reactivate/${id}`)
       .catch(response => authValidator(response));
   }
 
   changeUserRole(id, roles) {
     return axios
-      .patch(`${API_ENDPOINT}/users`, {
+      .patch(`${API_ENDPOINT}/account`, {
         id,
         roles
       })

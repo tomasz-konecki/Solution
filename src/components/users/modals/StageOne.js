@@ -23,20 +23,7 @@ class StageOne extends Component {
 
   handleChange = value => {
     !value && this.setState({ value: null });
-    value &&
-      WebApi.users.get
-        .byUser(value.id)
-        .then(response => {
-          this.setState({
-            userExists: true
-          });
-        })
-        .catch(error => {
-          this.setState({
-            value,
-            userExists: false
-          });
-        });
+    value && this.setState({ value });
   };
 
   checkLength = input => {

@@ -71,6 +71,7 @@ const translations = {
     ClientRemoved: "Client has been removed.",
     ClientReactivated: "Client has beed reactivated.",
     Removing: "You are about to remove client",
+    RemovingCloud: "You are about to remove cloud",
     Reactivating: "You are about to reactivate client",
     Search: "Search",
     ClientsNotFound: "Clients Not Found",
@@ -78,7 +79,8 @@ const translations = {
     NotActivated: "Not Activated",
     ClientCloudsList: "Client's Clouds List",
     AddCloud: "Add Cloud",
-    CloudsNotFound: "Clouds not found."
+    CloudsNotFound: "Clouds not found.",
+    CloudName: "Cloud Name"
   },
   AddClient: {
     AddClient: "Add Client",

@@ -8,8 +8,16 @@ import {
   LOAD_CLIENTS_SUCCESS,
   LOAD_CLIENTS_FAIL,
   ADD_CLIENT_RESULT,
-  ADD_CLOUD_RESULT
+  ADD_CLOUD_RESULT,
+  CLEAR_RESPONSE_CLOUD
 } from "../constants";
+
+export const clearResponseCloud = () => {
+  return {
+    type: CLEAR_RESPONSE_CLOUD,
+    resultBlock: null
+  };
+};
 
 export const loadClientsSuccess = (clients, resultBlock) => {
   return {
@@ -118,7 +126,6 @@ export const saveEdit = (id, value) => {
         dispatch(asyncEnded());
       })
       .catch(error => {
-        console.log(error);
         dispatch(asyncEnded());
         throw error;
       });
@@ -164,6 +171,25 @@ export const addCloud = (name, clientId) => {
       })
       .catch(error => {
         dispatch(addCloudResult(error));
+        dispatch(asyncEnded());
+        throw error;
+      });
+  };
+};
+
+export const deleteCloud = id => {
+  return dispatch => {
+    dispatch(asyncStarted());
+    WebApi.clouds
+      .delete(id)
+      .then(response => {
+        if (!response.errorOccurred()) {
+          dispatch(setActionConfirmationResult(response));
+          dispatch(asyncEnded());
+        }
+      })
+      .catch(error => {
+        dispatch(setActionConfirmationResult(error));
         dispatch(asyncEnded());
         throw error;
       });

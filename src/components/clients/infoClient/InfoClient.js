@@ -5,12 +5,14 @@ import BilleniumPleaceholder from "assets/img/small-logo.png";
 import Icon from "../../common/Icon";
 import Spinner from "../../common/spinner/spinner";
 import IntermediateBlock from "../../common/IntermediateBlock";
+import { CSSTransitionGroup } from "react-transition-group";
 
 const pullDOM = (
   t,
   handleAddCloud,
   handleAddCloudSaveChild,
-  handleInputAddCloud
+  handleInputAddCloud,
+  disabled
 ) => {
   return (
     <div className="cloud">
@@ -22,7 +24,7 @@ const pullDOM = (
         />
       </div>
       <div className="cloud-options">
-        <button onClick={handleAddCloudSaveChild}>
+        <button disabled={disabled} onClick={handleAddCloudSaveChild}>
           <Icon icon="check" iconType="fa" additionalClass="icon-success" />
         </button>
         <button onClick={handleAddCloud}>
@@ -44,9 +46,10 @@ const InfoClient = ({
   resultBlockCloud,
   clearResponseCloud,
   handleTimesClick,
-  handleDeleteCloudChild
+  handleDeleteCloudChild,
+  disabled
 }) => {
-  console.log(resultBlockCloud);
+  console.log(client);
   const clientClouds = client.clouds.map((cloud, index) => {
     return (
       <div key={index} className="cloud">
@@ -72,7 +75,6 @@ const InfoClient = ({
   let closeMessage = null;
 
   if (resultBlockCloud) {
-    console.log(resultBlockCloud);
     closeMessage = resultBlockCloud.errorOccurred() ? (
       <span className="messageClose" onClick={() => clearResponseCloud()}>
         x
@@ -84,7 +86,13 @@ const InfoClient = ({
     <IntermediateBlock
       loaded={!loading}
       render={() =>
-        pullDOM(t, handleAddCloud, handleAddCloudSaveChild, handleInputAddCloud)
+        pullDOM(
+          t,
+          handleAddCloud,
+          handleAddCloudSaveChild,
+          handleInputAddCloud,
+          disabled
+        )
       }
       resultBlock={resultBlockCloud}
     />
@@ -120,9 +128,15 @@ const InfoClient = ({
           {clientClouds.length === 0 && (
             <span className="clouds-not-found">{t("CloudsNotFound")}</span>
           )}
-          <div>
+          <div className="client-cloud-adding-container">
             {closeMessage}
-            {adddingNewCloudContainer}
+            <CSSTransitionGroup
+              transitionName="example"
+              transitionEnterTimeout={500}
+              transitionLeaveTimeout={300}
+            >
+              {adddingNewCloudContainer}
+            </CSSTransitionGroup>
           </div>
         </div>
 

@@ -82,6 +82,7 @@
     "react-select": "^1.2.1",
     "react-throttle": "^0.3.0",
     "react-thunk": "^1.0.0",
+    "react-transition-group": "^1.2.1",
     "react-translate": "^6.0.0",
     "redux": "^3.7.2",
     "redux-devtools": "^3.4.1",

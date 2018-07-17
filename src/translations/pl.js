@@ -73,6 +73,7 @@ const translations = {
     ClientRemoved: "Klient został usunięty",
     ClientReactivated: "Klient został reaktywowany",
     Removing: "Zamierzasz usunąć klienta",
+    RemovingCloud: "Zamierzasz usunąć chmurę",
     Reactivating: "Zamierzasz reaktywować klienta",
     Search: "Szukaj",
     ClientsNotFound: "Brak klientów",

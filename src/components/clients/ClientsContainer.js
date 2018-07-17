@@ -269,7 +269,7 @@ class ClientsContainer extends React.Component {
   handleDeleteCloud = (id, name) => {
     this.props.async.setActionConfirmation(true, {
       key: "deleteCloud",
-      string: `${this.props.t("Removing")} ${name}`,
+      string: `${this.props.t("RemovingCloud")} ${name}`,
       id: id,
       successMessage: this.props.t("CloudRemoved")
     });

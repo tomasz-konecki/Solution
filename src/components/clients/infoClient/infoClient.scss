@@ -58,6 +58,26 @@
   padding: 20px;
   box-shadow: 0.5px 1px 3px 0px #00000059;
 
+  .client-cloud-adding-container {
+    .example-enter {
+      opacity: 0.01;
+    }
+
+    .example-enter.example-enter-active {
+      opacity: 1;
+      transition: opacity 500ms ease-in;
+    }
+
+    .example-leave {
+      opacity: 1;
+    }
+
+    .example-leave.example-leave-active {
+      opacity: 0.01;
+      transition: opacity 300ms ease-in;
+    }
+  }
+
   .client-clouds-header {
     h2 {
       font-weight: bold;
@@ -73,10 +93,25 @@
       display: flex;
       align-items: center;
       width: 100%;
+      margin-top: 10px;
       .cloud-circle,
       .cloud-name,
       .cloud-options {
         float: left;
+        button {
+          &:nth-child(2) {
+            margin-left: 9px;
+          }
+          &:disabled,
+          &[disabled] {
+            &:hover {
+              i {
+                color: unset;
+                cursor: not-allowed;
+              }
+            }
+          }
+        }
       }
 
       .cloud-circle {

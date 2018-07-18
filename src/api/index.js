@@ -27,7 +27,7 @@ const selectLang = state =>
     : "pl";
 
 function listener() {
-  const token = `Bearer ${select(store.getState())}`;
+  // const token = `Bearer ${select(store.getState())}`;
 
   let langHeader = "";
 
@@ -41,13 +41,15 @@ function listener() {
   }
 
   axios.defaults.withCredentials = true;
-  axios.defaults.headers.common["Authorization"] = token;
+  // axios.defaults.headers.common["Authorization"] = token;
   axios.defaults.headers.common["Accept-Language"] = langHeader;
 }
 
 const authValidator = response => {
   if (response.response === undefined) {
-    throw response;
+    // throw response;
+    store.dispatch(logout());
+    store.dispatch(push("/"));
   }
   if (response.response.status === 401) {
     store.dispatch(logout());
@@ -372,29 +374,43 @@ const WebApi = {
       authBegin: () => {
         return WebAround.get(`${API_ENDPOINT}/api/onedrive/auth`);
       },
-      sendQuertToAuth: (code) => {
-        return WebAround.get(`${API_ENDPOINT}/api/onedrive/authenticated?code=${code}`);
+      sendQuertToAuth: code => {
+        return WebAround.get(
+          `${API_ENDPOINT}/api/onedrive/authenticated?code=${code}`
+        );
       }
     },
     post: {
-      getFolders: (model) => {
+      getFolders: model => {
         return WebAround.post(`${API_ENDPOINT}/api/onedrive/files`, model);
       },
-      createFolder: (model) => {
-        return WebAround.post(`${API_ENDPOINT}/api/onedrive/createFolder`, model);
+      createFolder: model => {
+        return WebAround.post(
+          `${API_ENDPOINT}/api/onedrive/createFolder`,
+          model
+        );
       },
-      deleteFolder: (model) => {
-        return WebAround.post(`${API_ENDPOINT}/api/onedrive/deleteFolder`, model);
+      deleteFolder: model => {
+        return WebAround.post(
+          `${API_ENDPOINT}/api/onedrive/deleteFolder`,
+          model
+        );
       },
-      updateFolder: (model) => {
-        return WebAround.post(`${API_ENDPOINT}/api/onedrive/updateFolder`, model);
+      updateFolder: model => {
+        return WebAround.post(
+          `${API_ENDPOINT}/api/onedrive/updateFolder`,
+          model
+        );
       },
       uploadFile: (model, config) => {
-        return WebAround.post(`${API_ENDPOINT}/api/onedrive/upload`, model, config);
+        return WebAround.post(
+          `${API_ENDPOINT}/api/onedrive/upload`,
+          model,
+          config
+        );
       }
-
     }
-  }, 
+  },
   responsiblePerson: {
     get: {
       byClient: clientId => {

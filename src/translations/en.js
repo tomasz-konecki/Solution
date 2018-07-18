@@ -85,6 +85,7 @@ const translations = {
   AddClient: {
     AddClient: "Add Client",
     ClientName: "Client Name",
+    ClientDescription: "Client Description",
     ClientAddedSuccess: "Client has been added."
   },
   ProjectsList: {
@@ -323,6 +324,10 @@ const translations = {
       "Deletion will be permanent, removing entries from the database and all places where referenced.",
     Info2: "Rollback of this action is not available.",
     SuccessfullyDeleted: "Successfully deleted skill"
+  },
+  FileInput: {
+    ChooseFile: "Choose File",
+    WrongFileType: "Wrong File Type"
   }
 };
 

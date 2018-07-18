@@ -5,14 +5,28 @@ import IntermediateBlock from "../../common/IntermediateBlock";
 
 import "../../../scss/components/clients/addClient/addClientModal.scss";
 import PersonImgSrc from "../../../assets/img/billeniumIcons/person.png";
+import FileInput from "components/common/inputs/fileInput/fileInput";
 
 class AddClientModal extends Component {
-  state = { inputValue: null, inputError: null, buttonDisabled: true };
+  state = {
+    inputValue: null,
+    inputError: null,
+    buttonDisabled: true,
+    uploadedFile: null,
+    validate: false
+  };
 
   handleInputChange = e => {
     e.preventDefault();
     let value = e.target.value;
-    let error = validateInput(value, false, 3, 20, "name", "ClientName");
+    let error = validateInput(
+      value,
+      false,
+      3,
+      20,
+      "name",
+      this.props.t("ClientName")
+    );
     let disabled = error ? true : false;
     this.setState({
       inputValue: value,
@@ -29,24 +43,39 @@ class AddClientModal extends Component {
   pullDOM = (addClient, buttonDisabled, error, t) => {
     return (
       <form>
-        <div className="group">
-          <label htmlFor="clientName">{t("ClientName")}</label>
-          <input
-            type="text"
-            id="clientName"
-            autoComplete="off"
-            required
-            onChange={this.handleInputChange}
-          />
-          {error}
+        <div className="add-client-container-left">
+          <div className="group">
+            <label htmlFor="clientName">{t("ClientName")}</label>
+            <input
+              type="text"
+              id="clientName"
+              autoComplete="off"
+              required
+              onChange={this.handleInputChange}
+            />
+            {error}
+
+            <label htmlFor="clientDescription">{t("ClientDescription")}</label>
+            <input
+              type="text"
+              id="clientDescriptio"
+              autoComplete="off"
+              onChange={this.handleInputChange}
+            />
+            {error}
+          </div>
+          <Button
+            disable={buttonDisabled}
+            onClick={e => this.handleAddClientButtonClick(e, addClient)}
+            mainClass="dcmt-button"
+          >
+            {t("AddClient")}
+          </Button>
         </div>
-        <Button
-          disable={buttonDisabled}
-          onClick={e => this.handleAddClientButtonClick(e, addClient)}
-          mainClass="dcmt-button"
-        >
-          {t("AddClient")}
-        </Button>
+        <div className="add-client-container-right">
+          <img src={PersonImgSrc} alt="person" />
+          <FileInput type="image/jpeg" />
+        </div>
       </form>
     );
   };
@@ -72,17 +101,12 @@ class AddClientModal extends Component {
         <header>
           <h3 className="section-heading">{t("AddClient")}</h3>
         </header>
-        <div className="add-client-container-left">
-          <IntermediateBlock
-            loaded={!loading}
-            render={() => this.pullDOM(addClient, buttonDisabled, error, t)}
-            resultBlock={resultBlock}
-            spinner="Cube"
-          />
-        </div>
-        <div className="add-client-container-right">
-          <img src={PersonImgSrc} alt="person" />
-        </div>
+        <IntermediateBlock
+          loaded={!loading}
+          render={() => this.pullDOM(addClient, buttonDisabled, error, t)}
+          resultBlock={resultBlock}
+          spinner="Cube"
+        />
         {info}
       </div>
     );

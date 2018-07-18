@@ -17,15 +17,18 @@
   padding: 0 10px;
   box-sizing: border-box;
   vertical-align: top;
-
+  border-radius: 6px;
   i {
     padding-right: 5px;
   }
 
-  &.button-disabled {
+  &.button-disabled,
+  &:disabled {
     background: #333;
+    cursor: not-allowed;
     &:hover {
       background: #222;
+      cursor: not-allowed;
     }
   }
 

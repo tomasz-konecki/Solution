@@ -13,6 +13,7 @@ const IntermediateBlock = ({
   if (
     resultBlock === undefined ||
     resultBlock === null ||
+    !resultBlock.replyBlock ||
     resultBlock.replyBlock.status === 200
   ) {
     if (loaded) return render();
@@ -29,6 +30,7 @@ const IntermediateBlock = ({
       loader = <LoaderCircular />;
       break;
   }
+
   return (
     <div className="intermediate-block">
       {loaded ? (

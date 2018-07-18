@@ -118,10 +118,7 @@ export const saveEdit = (id, value) => {
       .info(id, value)
       .then(response => {
         if (!response.errorOccurred()) {
-          let promise = new Promise((resolve, reject) => {
-            resolve(console.log(response));
-          });
-          promise.then(dispatch(this.loadClients()));
+          dispatch(this.loadClients());
         }
         dispatch(asyncEnded());
       })

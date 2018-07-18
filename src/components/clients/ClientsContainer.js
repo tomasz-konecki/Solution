@@ -29,7 +29,7 @@ class ClientsContainer extends React.Component {
     sortingDirections: {
       name: "asc"
     },
-    checked: "activated",
+    checked: null,
     firstReceiving: true,
     client: {
       index: null,
@@ -41,7 +41,7 @@ class ClientsContainer extends React.Component {
 
   componentDidMount = () => {
     this.props.clientsActions.loadClients();
-    this.radioButtonClick("activated");
+    // this.radioButtonClick("activated");
   };
 
   componentWillReceiveProps(nextProps) {
@@ -207,7 +207,7 @@ class ClientsContainer extends React.Component {
         }
       });
     }
-    this.setState({ clients: updatedList });
+    this.setState({ clients: updatedList, checked: null });
   };
 
   sortBy = key => {

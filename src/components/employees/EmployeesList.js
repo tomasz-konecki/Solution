@@ -9,6 +9,7 @@ import EmployeesRowUnfurl from "./EmployeesRowUnfurl";
 import PropTypes from "prop-types";
 import { translate } from "react-translate";
 import "../../scss/components/employees/employeesList.scss";
+import IntermediateBlock from "./../common/IntermediateBlock";
 
 class EmployeesList extends Component {
   constructor(props) {
@@ -73,7 +74,7 @@ class EmployeesList extends Component {
         }
       ]
     };
-    return (
+    let render = () => (
       <div>
         <SmoothTable
           currentPage={this.props.currentPage}
@@ -83,6 +84,14 @@ class EmployeesList extends Component {
           construct={construct}
         />
       </div>
+    );
+    return (
+      <IntermediateBlock
+        loaded={!this.props.loading}
+        render={render}
+        resultBlock={this.props.resultBlock}
+        _className={"content-container"}
+      />
     );
   }
 }

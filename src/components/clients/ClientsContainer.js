@@ -41,17 +41,11 @@ class ClientsContainer extends React.Component {
 
   componentDidMount = () => {
     this.props.clientsActions.loadClients();
-    // this.radioButtonClick("activated");
   };
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.clients !== this.props.clients) {
       this.setState({ clients: nextProps.clients });
-      // if (this.state.firstReceiving) {
-      //   this.setState({ firstReceiving: false });
-      // } else {
-      //   this.setState({ clients: nextProps.clients });
-      // }
     }
     if (nextProps.loading === false && this.props.loading === true) {
       this.setState({ loaded: true });
@@ -142,7 +136,7 @@ class ClientsContainer extends React.Component {
     }
   };
 
-  generateOptions = (id, isDeleted, name, index, t) => {
+  generateOptions = (id, isDeleted, name, index, t, client) => {
     let content = [];
     let { editingInput } = this.state;
 
@@ -180,15 +174,24 @@ class ClientsContainer extends React.Component {
       );
     } else {
       content.push(
-        <button
-          title={t("EditClient")}
+        <AddClient
           key={4}
-          onClick={() =>
-            this.handleEditClick(id, index, this.handleGetValueFromInput)
-          }
+          client={client}
+          addClient={this.props.clientsActions.editClient}
+          loading={this.props.loading}
+          resultBlock={this.props.resultBlockEditClient}
         >
           <Icon icon="edit" iconType="fa" />
-        </button>
+        </AddClient>
+        // <button
+        //   title={t("EditClient")}
+        //   key={4}
+        //   onClick={() =>
+        //     this.handleEditClick(id, index, this.handleGetValueFromInput)
+        //   }
+        // >
+        //   <Icon icon="edit" iconType="fa" />
+        // </button>
       );
     }
 

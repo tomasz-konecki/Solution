@@ -30,12 +30,19 @@ class AddClient extends Component {
       }
   };
   render() {
-    let { addClient, loading, resultBlock, t } = this.props;
+    let { addClient, loading, resultBlock, t, children } = this.props;
+    let content = children ? (
+      <Button mainClass="" onClick={this.handleButtonClick}>
+        {children}
+      </Button>
+    ) : (
+      <Button mainClass="add-client-button" onClick={this.handleButtonClick}>
+        {t("AddClient")}
+      </Button>
+    );
     return (
       <Aux>
-        <Button mainClass="add-client-button" onClick={this.handleButtonClick}>
-          {t("AddClient")}
-        </Button>
+        {content}
         <Modal
           open={this.state.showAddClientModal}
           classNames={{ modal: "Modal Modal-add-client" }}

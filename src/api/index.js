@@ -46,10 +46,12 @@ function listener() {
 }
 
 const authValidator = response => {
+  console.log(response);
+  console.log(response.response);
   if (response.response === undefined) {
-    // throw response;
-    store.dispatch(logout());
-    store.dispatch(push("/"));
+    throw response;
+    // store.dispatch(logout());
+    // store.dispatch(push("/"));
   }
   if (response.response.status === 401) {
     store.dispatch(logout());
@@ -80,39 +82,49 @@ const params = obj => {
 
 const WebAround = {
   get: (path, payload) => {
-    return axios
-      .get(path, payload)
-      .then(response => parseSuccess(response))
-      .catch(response => authValidator(response))
-      .catch(response => parseFailure(response));
+    return (
+      axios
+        .get(path, payload)
+        .then(response => parseSuccess(response))
+        //.catch(response => authValidator(response))
+        .catch(response => parseFailure(response))
+    );
   },
   post: (path, payload) => {
-    return axios
-      .post(path, payload)
-      .then(response => parseSuccess(response))
-      .catch(response => authValidator(response))
-      .catch(response => parseFailure(response));
+    return (
+      axios
+        .post(path, payload)
+        .then(response => parseSuccess(response))
+        //.catch(response => authValidator(response))
+        .catch(response => parseFailure(response))
+    );
   },
   put: (path, payload) => {
-    return axios
-      .put(path, payload)
-      .then(response => parseSuccess(response))
-      .catch(response => authValidator(response))
-      .catch(response => parseFailure(response));
+    return (
+      axios
+        .put(path, payload)
+        .then(response => parseSuccess(response))
+        //.catch(response => authValidator(response))
+        .catch(response => parseFailure(response))
+    );
   },
   delete: (path, payload) => {
-    return axios
-      .delete(path, payload)
-      .then(response => parseSuccess(response))
-      .catch(response => authValidator(response))
-      .catch(response => parseFailure(response));
+    return (
+      axios
+        .delete(path, payload)
+        .then(response => parseSuccess(response))
+        //.catch(response => authValidator(response))
+        .catch(response => parseFailure(response))
+    );
   },
   patch: (path, payload) => {
-    return axios
-      .patch(path, payload)
-      .then(response => parseSuccess(response))
-      .catch(response => authValidator(response))
-      .catch(response => parseFailure(response));
+    return (
+      axios
+        .patch(path, payload)
+        .then(response => parseSuccess(response))
+        //.catch(response => authValidator(response))
+        .catch(response => parseFailure(response))
+    );
   }
 };
 
@@ -152,8 +164,8 @@ const WebApi = {
         return WebAround.get(`${API_ENDPOINT}/clients/${clientId}`);
       }
     },
-    post: name => {
-      return WebAround.post(`${API_ENDPOINT}/clients/`, { name });
+    post: formData => {
+      return WebAround.post(`${API_ENDPOINT}/clients/`, formData);
     },
     delete: clientId => {
       return WebAround.delete(`${API_ENDPOINT}/clients/${clientId}`);
@@ -546,60 +558,51 @@ class DCMTWebApi {
   }
 
   getUsers(settings = {}) {
-    return axios
-      .post(`${API_ENDPOINT}/account`, settings)
-      .catch(response => authValidator(response));
+    return axios.post(`${API_ENDPOINT}/account`, settings);
+    //.catch(response => authValidator(response));
   }
 
   searchAD(user) {
-    return axios
-      .get(`${API_ENDPOINT}/account/searchAD/${user}`)
-      .catch(response => authValidator(response));
+    return axios.get(`${API_ENDPOINT}/account/searchAD/${user}`);
+    //.catch(response => authValidator(response));
   }
 
   addUser(id, roles) {
-    return axios
-      .post(`${API_ENDPOINT}/account/add`, { id, roles })
-      .catch(response => authValidator(response));
+    return axios.post(`${API_ENDPOINT}/account/add`, { id, roles });
+    //.catch(response => authValidator(response));
   }
 
   deleteUser(id) {
-    return axios
-      .delete(`${API_ENDPOINT}/account/${id}`)
-      .catch(response => authValidator(response));
+    return axios.delete(`${API_ENDPOINT}/account/${id}`);
+    //.catch(response => authValidator(response));
   }
 
   getUser(id) {
-    return axios
-      .get(`${API_ENDPOINT}/account/${id}`)
-      .catch(response => authValidator(response));
+    return axios.get(`${API_ENDPOINT}/account/${id}`);
+    //.catch(response => authValidator(response));
   }
 
   reactivateUser(id) {
-    return axios
-      .patch(`${API_ENDPOINT}/account/reactivate/${id}`)
-      .catch(response => authValidator(response));
+    return axios.patch(`${API_ENDPOINT}/account/reactivate/${id}`);
+    //.catch(response => authValidator(response));
   }
 
   changeUserRole(id, roles) {
-    return axios
-      .patch(`${API_ENDPOINT}/account`, {
-        id,
-        roles
-      })
-      .catch(response => authValidator(response));
+    return axios.patch(`${API_ENDPOINT}/account`, {
+      id,
+      roles
+    });
+    //.catch(response => authValidator(response));
   }
 
   getProjects(settings = {}) {
-    return axios
-      .post(`${API_ENDPOINT}/projects`, settings)
-      .catch(response => authValidator(response));
+    return axios.post(`${API_ENDPOINT}/projects`, settings);
+    //.catch(response => authValidator(response));
   }
 
   getProject(id) {
-    return axios
-      .get(`${API_ENDPOINT}/projects/${id}`)
-      .catch(response => authValidator(response));
+    return axios.get(`${API_ENDPOINT}/projects/${id}`);
+    //.catch(response => authValidator(response));
   }
 
   addProject({
@@ -610,16 +613,15 @@ class DCMTWebApi {
     startDate,
     estimatedEndDate
   }) {
-    return axios
-      .post(`${API_ENDPOINT}/projects/add`, {
-        name,
-        description,
-        client,
-        responsiblePerson,
-        startDate,
-        estimatedEndDate
-      })
-      .catch(response => authValidator(response));
+    return axios.post(`${API_ENDPOINT}/projects/add`, {
+      name,
+      description,
+      client,
+      responsiblePerson,
+      startDate,
+      estimatedEndDate
+    });
+    //.catch(response => authValidator(response));
   }
 
   editProject({
@@ -631,70 +633,61 @@ class DCMTWebApi {
     startDate,
     estimatedEndDate
   }) {
-    return axios
-      .put(`${API_ENDPOINT}/projects/${id}`, {
-        name,
-        client,
-        description,
-        responsiblePerson,
-        startDate,
-        estimatedEndDate
-      })
-      .catch(response => authValidator(response));
+    return axios.put(`${API_ENDPOINT}/projects/${id}`, {
+      name,
+      client,
+      description,
+      responsiblePerson,
+      startDate,
+      estimatedEndDate
+    });
+    //.catch(response => authValidator(response));
   }
 
   addOwners(projectId, ownersArray) {
-    return axios
-      .put(`${API_ENDPOINT}/projects/${projectId}/owner`, {
-        usersIds: ownersArray
-      })
-      .catch(response => authValidator(response));
+    return axios.put(`${API_ENDPOINT}/projects/${projectId}/owner`, {
+      usersIds: ownersArray
+    });
+    //.catch(response => authValidator(response));
   }
 
   deleteProject(id) {
-    return axios
-      .delete(`${API_ENDPOINT}/projects/${id}/delete`)
-      .catch(response => authValidator(response));
+    return axios.delete(`${API_ENDPOINT}/projects/${id}/delete`);
+    //.catch(response => authValidator(response));
   }
 
   closeProject(id) {
-    return axios
-      .put(`${API_ENDPOINT}/projects/${id}/close`)
-      .catch(response => authValidator(response));
+    return axios.put(`${API_ENDPOINT}/projects/${id}/close`);
+    //.catch(response => authValidator(response));
   }
 
   reactivateProject(id) {
-    return axios
-      .put(`${API_ENDPOINT}/projects/${id}/reactivate`)
-      .catch(response => authValidator(response));
+    return axios.put(`${API_ENDPOINT}/projects/${id}/reactivate`);
+    //.catch(response => authValidator(response));
   }
 
   putProjectSkills(id, skillsArray) {
-    return axios
-      .put(`${API_ENDPOINT}/projects/${id}/skills`, skillsArray)
-      .catch(response => authValidator(response));
+    return axios.put(`${API_ENDPOINT}/projects/${id}/skills`, skillsArray);
+    //.catch(response => authValidator(response));
   }
 
   deleteProjectOwner(ownerId, projectId) {
-    return axios
-      .delete(`${API_ENDPOINT}/projects/${projectId}/owner`, {
-        data: {
-          userId: ownerId
-        }
-      })
-      .catch(response => authValidator(response));
+    return axios.delete(`${API_ENDPOINT}/projects/${projectId}/owner`, {
+      data: {
+        userId: ownerId
+      }
+    });
+    //.catch(response => authValidator(response));
   }
 
   getAssignmentsForEmployee(id) {
-    return axios
-      .get(`${API_ENDPOINT}/assignments/employee/${id}`)
-      .catch(response => authValidator(response));
+    return axios.get(`${API_ENDPOINT}/assignments/employee/${id}`);
+    //.catch(response => authValidator(response));
   }
 
   getAssignmentsForProject(id) {
-    return axios
-      .get(`${API_ENDPOINT}/assignments/project/${id}`)
-      .catch(response => authValidator(response));
+    return axios.get(`${API_ENDPOINT}/assignments/project/${id}`);
+    //.catch(response => authValidator(response));
   }
 
   addAssignment(
@@ -706,130 +699,117 @@ class DCMTWebApi {
     assignedCapacity,
     responsibilitiesArray
   ) {
-    return axios
-      .post(`${API_ENDPOINT}/assignments`, {
-        employeeId,
-        projectId,
-        startDate,
-        endDate,
-        role,
-        assignedCapacity,
-        responsibilities: responsibilitiesArray
-      })
-      .catch(response => authValidator(response));
+    return axios.post(`${API_ENDPOINT}/assignments`, {
+      employeeId,
+      projectId,
+      startDate,
+      endDate,
+      role,
+      assignedCapacity,
+      responsibilities: responsibilitiesArray
+    });
+    //.catch(response => authValidator(response));
   }
 
   editAssignment(id, startDate, endDate, role, assignedCapacity) {
-    return axios
-      .put(`${API_ENDPOINT}/assignments/${id}`, {
-        startDate,
-        endDate,
-        role,
-        assignedCapacity
-      })
-      .catch(response => authValidator(response));
+    return axios.put(`${API_ENDPOINT}/assignments/${id}`, {
+      startDate,
+      endDate,
+      role,
+      assignedCapacity
+    });
+    //.catch(response => authValidator(response));
   }
 
   deleteAssignment(id) {
-    return axios
-      .delete(`${API_ENDPOINT}/assignments/${id}`)
-      .catch(response => authValidator(response));
+    return axios.delete(`${API_ENDPOINT}/assignments/${id}`);
+    //.catch(response => authValidator(response));
   }
 
   getEmployees(settings = {}) {
-    return axios
-      .post(`${API_ENDPOINT}/employees`, settings)
-      .then(response => parseSuccess(response))
-      .catch(response => authValidator(response))
-      .catch(response => parseFailure(response));
+    return (
+      axios
+        .post(`${API_ENDPOINT}/employees`, settings)
+        .then(response => parseSuccess(response))
+        //.catch(response => authValidator(response))
+        .catch(response => parseFailure(response))
+    );
   }
 
   getEmployee(id) {
-    return axios
-      .get(`${API_ENDPOINT}/employees/${id}`)
-      .catch(response => authValidator(response));
+    return axios.get(`${API_ENDPOINT}/employees/${id}`);
+    //.catch(response => authValidator(response));
   }
 
   addEmployee(id, capacity, seniority, skillsArray) {
-    return axios
-      .post(`${API_ENDPOINT}/employees/add`, {
-        id,
-        capacity,
-        seniority,
-        skills: skillsArray
-      })
-      .catch(response => authValidator(response));
+    return axios.post(`${API_ENDPOINT}/employees/add`, {
+      id,
+      capacity,
+      seniority,
+      skills: skillsArray
+    });
+    //.catch(response => authValidator(response));
   }
 
   editEmployee(id, seniority, capacity) {
-    return axios
-      .patch(`${API_ENDPOINT}/employees/${id}`, {
-        seniority,
-        capacity
-      })
-      .catch(response => authValidator(response));
+    return axios.patch(`${API_ENDPOINT}/employees/${id}`, {
+      seniority,
+      capacity
+    });
+    //.catch(response => authValidator(response));
   }
 
   editEmployeeSkills(id, skillsArray) {
-    return axios
-      .put(`${API_ENDPOINT}/employees/${id}/skills`, skillsArray)
-      .catch(response => authValidator(response));
+    return axios.put(`${API_ENDPOINT}/employees/${id}/skills`, skillsArray);
+    //.catch(response => authValidator(response));
   }
 
   getEmploSkills(employeeId) {
-    return axios
-      .get(`${API_ENDPOINT}/employees/BillenniumEmploSkills`, {
-        params: {
-          employeeId
-        }
-      })
-      .catch(response => authValidator(response));
+    return axios.get(`${API_ENDPOINT}/employees/BillenniumEmploSkills`, {
+      params: {
+        employeeId
+      }
+    });
+    //.catch(response => authValidator(response));
   }
 
   getEmploContactInfo(employeeId) {
-    return axios
-      .get(`${API_ENDPOINT}/employees/BillenniumEmploContact`, {
-        params: {
-          employeeId
-        }
-      })
-      .catch(response => authValidator(response));
+    return axios.get(`${API_ENDPOINT}/employees/BillenniumEmploContact`, {
+      params: {
+        employeeId
+      }
+    });
+    //.catch(response => authValidator(response));
   }
 
   overrideSkillsOnEmployee(id, skillsArray) {
-    return axios
-      .put(`${API_ENDPOINT}/employee/${id}`, skillsArray)
-      .catch(response => authValidator(response));
+    return axios.put(`${API_ENDPOINT}/employee/${id}`, skillsArray);
+    //.catch(response => authValidator(response));
   }
 
   deleteEmployee(id) {
-    return axios
-      .delete(`${API_ENDPOINT}/employees/${id}`)
-      .catch(response => authValidator(response));
+    return axios.delete(`${API_ENDPOINT}/employees/${id}`);
+    //.catch(response => authValidator(response));
   }
 
   changeEmployeeSeniority(id, seniority, role) {
-    return axios
-      .patch(`${API_ENDPOINT}/employees/${id}`, { seniority, role })
-      .catch(response => authValidator(response));
+    return axios.patch(`${API_ENDPOINT}/employees/${id}`, { seniority, role });
+    //.catch(response => authValidator(response));
   }
 
   addSkill(name) {
-    return axios
-      .post(`${API_ENDPOINT}/skills`, { name })
-      .catch(response => authValidator(response));
+    return axios.post(`${API_ENDPOINT}/skills`, { name });
+    //.catch(response => authValidator(response));
   }
 
   getSkills() {
-    return axios
-      .get(`${API_ENDPOINT}/skills`)
-      .catch(response => authValidator(response));
+    return axios.get(`${API_ENDPOINT}/skills`);
+    //.catch(response => authValidator(response));
   }
 
   deleteSkill(name, level) {
-    return axios
-      .delete(`${API_ENDPOINT}/skills`, { name, level })
-      .catch(response => authValidator(response));
+    return axios.delete(`${API_ENDPOINT}/skills`, { name, level });
+    //.catch(response => authValidator(response));
   }
 
   // addResponsiblePerson(firstName, lastName, clientId, phoneNumber, email) {

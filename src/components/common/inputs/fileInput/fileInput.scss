@@ -9,6 +9,13 @@
     flex-direction: row;
     align-items: center;
     cursor: pointer;
+    transition: all ease-out 1s;
+
+    &.file-input-error {
+      color: red !important;
+      border: 1px solid red !important;
+      transition: all ease-in-out 1s;
+    }
 
     i {
       color: rgb(255, 255, 255);

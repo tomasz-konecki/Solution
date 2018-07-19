@@ -21,6 +21,7 @@
     .group {
       width: 100%;
       height: 80%;
+      padding-top: 20px;
 
       span {
         color: red;
@@ -30,7 +31,7 @@
       label {
         font-size: x-large;
         color: #6c757d;
-        margin-bottom: 20px;
+        margin-bottom: 5px;
         display: block;
       }
       input[type="text"],

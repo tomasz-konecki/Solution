@@ -34,7 +34,7 @@ const IntermediateBlock = ({
   return (
     <div className="intermediate-block">
       {loaded ? (
-        resultBlock.replyBlock.data === "" ? (
+        resultBlock.replyBlock.data || resultBlock.replyBlock.data === "" ? (
           resultBlock.replyBlock.data.ErrorOccurred ||
           resultBlock.replyBlock.data.errorOccurred ? (
             <div className={_className}>

@@ -129,17 +129,17 @@ export const saveEdit = (id, value) => {
   };
 };
 
-export const addClient = clientName => {
+export const addClient = formData => {
   return dispatch => {
     dispatch(asyncStarted());
     WebApi.clients
-      .post(clientName)
+      .post(formData)
       .then(response => {
         if (!response.errorOccurred()) {
           dispatch(addClientResult(response));
           setTimeout(() => {
-            //dispatch(addClientResult(null));
-            //dispatch(loadClients());
+            dispatch(addClientResult(null));
+            dispatch(loadClients());
           }, 2000);
         }
         dispatch(asyncEnded());
@@ -164,6 +164,7 @@ export const addCloud = (name, clientId) => {
         if (!response.errorOccurred()) {
           dispatch(addCloudResult(response));
           dispatch(asyncEnded());
+          dispatch(this.loadClients());
         }
       })
       .catch(error => {

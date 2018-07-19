@@ -18,6 +18,17 @@ class AddClient extends Component {
     this.setState({ showAddClientModal: false });
   };
 
+  componentWillReceiveProps = nextProps => {
+    if (
+      nextProps.resultBlock &&
+      nextProps.resultBlock !== this.props.resultBlock
+    )
+      if (!nextProps.resultBlock.errorOccurred()) {
+        setTimeout(() => {
+          this.handleCloseAddClientModal();
+        }, 2000);
+      }
+  };
   render() {
     let { addClient, loading, resultBlock, t } = this.props;
     return (

@@ -9,38 +9,89 @@ import FileInput from "components/common/inputs/fileInput/fileInput";
 
 class AddClientModal extends Component {
   state = {
-    inputValue: null,
-    inputError: null,
-    buttonDisabled: true,
-    uploadedFile: null,
-    validate: false
+    inputValue: {
+      clientName: "",
+      clientDescription: ""
+    },
+    inputError: {
+      clientName: "",
+      clientDescription: ""
+    },
+    file: "",
+    imagePreviewUrl: "",
+    isFormValid: false
+  };
+
+  makeFormValid = inputError => {
+    !inputError.clientName && !inputError.clientDescription
+      ? this.setState({
+          isFormValid: true
+        })
+      : null;
   };
 
   handleInputChange = e => {
     e.preventDefault();
     let value = e.target.value;
-    let error = validateInput(
-      value,
-      false,
-      3,
-      20,
-      "name",
-      this.props.t("ClientName")
+    let { inputError, inputValue } = this.state;
+
+    let error =
+      e.target.name === "clientName"
+        ? validateInput(value, false, 3, 20, "name", this.props.t("ClientName"))
+        : e.target.name === "clientDescription"
+          ? validateInput(
+              value,
+              true,
+              null,
+              30,
+              "name",
+              this.props.t("ClientDescription")
+            )
+          : null;
+
+    this.setState(
+      {
+        inputValue: { ...inputValue, [e.target.name]: value },
+        inputError: { ...inputError, [e.target.name]: error },
+        isFormValid: false
+      },
+      () => this.makeFormValid(this.state.inputError)
     );
-    let disabled = error ? true : false;
-    this.setState({
-      inputValue: value,
-      inputError: error,
-      buttonDisabled: disabled
-    });
   };
 
   handleAddClientButtonClick = (e, addClient) => {
     e.preventDefault();
-    addClient(this.state.inputValue);
+    const { file, inputValue } = this.state;
+    let fd = new FormData();
+    fd.append("Name", inputValue.clientName);
+    {
+      file && fd.append("File", file);
+    }
+    fd.append("Description", inputValue.clientDescription);
+
+    addClient(fd);
   };
 
-  pullDOM = (addClient, buttonDisabled, error, t) => {
+  getFileHandler = file => {
+    if (file) {
+      let reader = new FileReader();
+
+      reader.onloadend = () => {
+        this.setState({
+          file: file,
+          imagePreviewUrl: reader.result
+        });
+      };
+      reader.readAsDataURL(file);
+    } else {
+      this.setState({
+        file: null,
+        imagePreviewUrl: null
+      });
+    }
+  };
+
+  pullDOM = (addClient, t, $imagePreview) => {
     return (
       <form>
         <div className="add-client-container-left">
@@ -49,23 +100,32 @@ class AddClientModal extends Component {
             <input
               type="text"
               id="clientName"
+              name="clientName"
               autoComplete="off"
               required
+              value={this.state.inputValue.clientName}
+              className={
+                this.state.inputError.clientName && "add-client-input-error"
+              }
               onChange={this.handleInputChange}
             />
-            {error}
+            {this.state.inputError.clientName &&
+              this.state.inputError.clientName}
 
             <label htmlFor="clientDescription">{t("ClientDescription")}</label>
-            <input
+            <textarea
               type="text"
-              id="clientDescriptio"
+              id="clientDescription"
+              name="clientDescription"
               autoComplete="off"
-              onChange={this.handleInputChange}
+              value={this.state.inputValue.clientDescription}
+              onChange={textarea => this.handleInputChange(textarea)}
             />
-            {error}
+            {this.state.inputError.clientDescription &&
+              this.state.inputError.clientDescription}
           </div>
           <Button
-            disable={buttonDisabled}
+            disable={!this.state.isFormValid}
             onClick={e => this.handleAddClientButtonClick(e, addClient)}
             mainClass="dcmt-button"
           >
@@ -73,17 +133,19 @@ class AddClientModal extends Component {
           </Button>
         </div>
         <div className="add-client-container-right">
-          <img src={PersonImgSrc} alt="person" />
-          <FileInput type="image/jpeg" />
+          {$imagePreview}
+          <FileInput
+            allowedFileTypes={["image/jpeg", "image/png"]}
+            getFile={this.getFileHandler}
+          />
         </div>
       </form>
     );
   };
 
   render() {
-    let { inputError, buttonDisabled } = this.state;
+    let { imagePreviewUrl } = this.state;
     let { addClient, loading, resultBlock, t } = this.props;
-    let error = inputError ? <span>{inputError}</span> : null;
     let info = null;
 
     if (resultBlock) {
@@ -96,14 +158,21 @@ class AddClientModal extends Component {
       }
     }
 
+    let $imagePreview = null;
+    if (imagePreviewUrl) {
+      $imagePreview = <img src={imagePreviewUrl} alt="person" />;
+    } else {
+      $imagePreview = <img src={PersonImgSrc} alt="person" />;
+    }
+
     return (
       <div className="add-client-container">
         <header>
           <h3 className="section-heading">{t("AddClient")}</h3>
         </header>
         <IntermediateBlock
-          loaded={!loading}
-          render={() => this.pullDOM(addClient, buttonDisabled, error, t)}
+          loaded={true}
+          render={() => this.pullDOM(addClient, t, $imagePreview)}
           resultBlock={resultBlock}
           spinner="Cube"
         />

@@ -22,6 +22,22 @@ class AddClientModal extends Component {
     isFormValid: false
   };
 
+  componentDidMount = () => {
+    const { client } = this.props;
+    console.log(client);
+    if (this.props.client) {
+      this.setState({
+        inputValue: {
+          clientName: client.name,
+          clientDescription: client.description ? client.description : ""
+        },
+        imagePreviewUrl: client.path
+          ? "http://10.255.20.241/ClientsPictures/" + client.path
+          : null
+      });
+    }
+  };
+
   makeFormValid = inputError => {
     !inputError.clientName && !inputError.clientDescription
       ? this.setState({
@@ -59,7 +75,7 @@ class AddClientModal extends Component {
     );
   };
 
-  handleAddClientButtonClick = (e, addClient) => {
+  handleAddClientButtonClick = e => {
     e.preventDefault();
     const { file, inputValue } = this.state;
     let fd = new FormData();
@@ -69,7 +85,11 @@ class AddClientModal extends Component {
     }
     fd.append("Description", inputValue.clientDescription);
 
-    addClient(fd);
+    if (this.props.editClient) {
+      this.props.editClient(this.props.client.id, fd);
+    } else {
+      this.props.addClient(fd);
+    }
   };
 
   getFileHandler = file => {
@@ -126,7 +146,7 @@ class AddClientModal extends Component {
           </div>
           <Button
             disable={!this.state.isFormValid}
-            onClick={e => this.handleAddClientButtonClick(e, addClient)}
+            onClick={e => this.handleAddClientButtonClick(e)}
             mainClass="dcmt-button"
           >
             {t("AddClient")}
@@ -157,7 +177,6 @@ class AddClientModal extends Component {
         );
       }
     }
-
     let $imagePreview = null;
     if (imagePreviewUrl) {
       $imagePreview = <img src={imagePreviewUrl} alt="person" />;

@@ -23,16 +23,10 @@ const ClientsList = ({
       );
     return (
       <tr key={index}>
-        <td
-          onClick={() =>
-            clientNameClickedHandler(item.id, item.name, item.clouds, index, t)
-          }
-        >
+        <td onClick={() => clientNameClickedHandler(item)}>
           <span>{name}</span>
         </td>
-        <td className="client-options">
-          {options(item.id, item.isDeleted, item.name, index, t)}
-        </td>
+        <td className="client-options">{options(item, index)}</td>
       </tr>
     );
   });

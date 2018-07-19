@@ -171,10 +171,8 @@ const WebApi = {
       return WebAround.delete(`${API_ENDPOINT}/clients/${clientId}`);
     },
     put: {
-      info: (clientId, clientName) => {
-        return WebAround.put(`${API_ENDPOINT}/clients/${clientId}`, {
-          name: clientName
-        });
+      info: (clientId, formData) => {
+        return WebAround.put(`${API_ENDPOINT}/clients/${clientId}`, formData);
       },
       reactivate: clientId => {
         return WebAround.put(`${API_ENDPOINT}/clients/${clientId}/reactivate`);

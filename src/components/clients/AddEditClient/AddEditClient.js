@@ -5,7 +5,7 @@ import Button from "../../common/button/button";
 import Aux from "../../../services/auxilary";
 import { translate } from "react-translate";
 
-class AddClient extends Component {
+class AddEditClient extends Component {
   constructor(props) {
     super(props);
     this.state = { showAddClientModal: false };
@@ -30,7 +30,15 @@ class AddClient extends Component {
       }
   };
   render() {
-    let { addClient, loading, resultBlock, t, children } = this.props;
+    let {
+      addClient,
+      loading,
+      resultBlock,
+      t,
+      children,
+      client,
+      editClient
+    } = this.props;
     let content = children ? (
       <Button mainClass="" onClick={this.handleButtonClick}>
         {children}
@@ -51,9 +59,12 @@ class AddClient extends Component {
         >
           <AddClientModal
             addClient={addClient}
+            editClient={editClient}
+            S
             loading={loading}
             resultBlock={resultBlock}
             t={t}
+            client={client}
           />
         </Modal>
       </Aux>
@@ -61,4 +72,4 @@ class AddClient extends Component {
   }
 }
 
-export default translate("AddClient")(AddClient);
+export default translate("AddClient")(AddEditClient);

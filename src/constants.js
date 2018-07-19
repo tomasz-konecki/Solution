@@ -53,15 +53,17 @@ export const overViewNames = [
 ];
 
 export const ADD_EMPLOYEE_TO_PROJECT = "ADD_EMPLOYEE_TO_PROJECT";
-export const DELETE_PROJECT_OWNER = "DELETE_PROJECT_OWNER";
 export const ADD_FEEDBACK = "ADD_FEEDBACK";
 export const GET_FEEDBACKS = "GET_FEEDBACKS";
 export const EDIT_PROJECT = "EDIT_PROJECT";
 export const CHANGE_PROJECT_SKILLS = "CHANGE_PROJECT_SKILLS";
+export const CHANGE_PROJECT_STATE = "CHANGE_PROJECT_STATE";
+
 
 // REPORTS
 export const GET_TEAMS = "GET_TEAMS";
 export const GET_USER_CV = "GET_USER_CV";
+export const GENERATE_REPORT = "GENERATE_REPORT";
 
 // PERSIST HELPER
 export const FETCH_LISTS = "FETCH_LISTS";
@@ -82,3 +84,11 @@ export const UPLOAD_FILE = "UPLOAD_FILE";
 
 export const GET_ALL_SKILLS = "GET_ALL_SKILLS";
 export const ADD_SKILLS_TO_PROJECT = "ADD_SKILLS_TO_PROJECT";
+
+//GDRIVE
+
+export const G_DRIVE_LOGIN = "G_DRIVE_LOGIN";
+export const GET_GDRIVE_FOLDERS = "GET_GDRIVE_FOLDERS";
+export const G_DRIVE_DELETE = "G_DRIVE_DELETE";
+export const G_DRIVE_CREATE = "G_DRIVE_CREATE";
+

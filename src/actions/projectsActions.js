@@ -1,7 +1,7 @@
 import { LOAD_PROJECTS_SUCCESS, CHANGE_EDITED_PROJECT, GET_PROJECT, names, overViewNames, 
-ADD_EMPLOYEE_TO_PROJECT, DELETE_PROJECT_OWNER,
+ADD_EMPLOYEE_TO_PROJECT,
 CHANGE_PROJECT_SKILLS, ADD_FEEDBACK, GET_FEEDBACKS, EDIT_PROJECT, 
-ADD_SKILLS_TO_PROJECT
+ADD_SKILLS_TO_PROJECT, CHANGE_PROJECT_STATE
  } from "../constants";
 import axios from "axios";
 import WebApi from "../api";
@@ -70,10 +70,12 @@ export const getProjectACreator = projectId => {
      
       dispatch(getProject(response.replyBlock.data.dtoObject, 
           true, [], responsiblePersonKeys, overViewKeys, []));
-
+      
+      dispatch(asyncEnded());
     }).catch(error => {
       dispatch(getProject(null, 
         false, errorCatcher(error), [], []));
+      dispatch(asyncEnded());
     })
   }
   
@@ -116,72 +118,7 @@ export const addEmployeeToProjectACreator = (empId, projectId, strDate, endDate,
   }
 }
 
-export const deleteProjectOwnerACreator = (projectId, ownerId) => {
-  return dispatch => {
-    WebApi.projects.delete.owner(projectId, ownerId).then(response => {
-        dispatch(changeOperationStatus({
-          status: true, error: []
-        }));
-        dispatch(getProjectACreator(projectId));
-      }).catch(error => {
-        dispatch(changeOperationStatus({
-          status: false, error: errorCatcher(error)
-        }));
-      })
-  }
-}
 
-export const deleteProjectACreator = projectId => {
-  return dispatch => {
-    WebApi.projects.delete.project(projectId).then(response => {
-      dispatch(changeOperationStatus({
-        status: true, error: []
-      }));
-      dispatch(getProjectACreator(projectId));
-    }).catch(error => {
-      dispatch(changeOperationStatus({
-        status: false, error: errorCatcher(error)
-      }));
-    });
-  }
-}
-export const closeProjectACreator = projectId => {
-  return dispatch => {
-    WebApi.projects.put.close(projectId).then(response => {
-      dispatch(changeOperationStatus({
-        status: true, error: []
-      }));
-      dispatch(getProjectACreator(projectId));
-    }).catch(error => {
-      dispatch(changeOperationStatus({
-        status: false, error: errorCatcher(error)
-      }));
-    })
-  }
-}
-
-export const reactivateProjectACreator = project => {
-  return dispatch => {
-      const projectToSend = {
-        "name": project.name,
-        "description": project.description,
-        "client": project.client,
-        "responsiblePerson": {...project.responsiblePerson},
-        "startDate": moment().format(),
-        "estimatedEndDate": moment(project.estimatedEndDate).format()
-      };
-    dispatch(editProjectPromise(projectToSend, project.id)).then(response =>{
-      dispatch(changeOperationStatus({
-        status: true, error: []
-      }));
-      dispatch(getProjectACreator(project.id));
-    }).catch(error => {
-      dispatch(changeOperationStatus({
-        status: false, error: errorCatcher(error)
-      }));
-    })
-  }
-}
 
 export const addFeedback = (addFeedbackStatus, addFeedbackErrors) => {
   return {
@@ -341,3 +278,42 @@ export const addSkillsToProjectACreator = (projectId, currentAddedSkills) => {
     }
   }
 
+
+
+
+  
+  export const changeProjectStatePromise = (func, ...params) => (dispatch) =>  {
+    return new Promise((resolve, reject) => {
+      func(...params).then(response => {
+        resolve(response.replyBlock.data.dtoObject);
+      }).catch(error => {
+        reject(error);
+      });
+    })
+  }
+
+  export const changeProjectState = (changeProjectStateStatus, changeProjectStateErrors, currentOperation) => {
+    return { type: CHANGE_PROJECT_STATE, 
+      changeProjectStateStatus, 
+      changeProjectStateErrors, 
+      currentOperation 
+    }
+  }
+  export const changeProjectStateACreator = (ApiOperation, currentOperation, model) => {
+    return dispatch => {
+      dispatch(asyncStarted());
+      dispatch(changeProjectStatePromise(ApiOperation, Object.values(model))).then(response => {
+        dispatch(changeProjectState(true, [], currentOperation));
+
+        dispatch(getProjectACreator(model.projectId));
+        
+      }).catch(error => {
+        dispatch(changeProjectState(false, errorCatcher(error), ""));
+        dispatch(asyncEnded());
+      })
+    }
+  }
+  export const clearProjectState = () => {
+    return { type: CHANGE_PROJECT_STATE, changeProjectStateStatus: null, 
+      changeProjectStateErrors: [], currentOperation: "" }
+  }

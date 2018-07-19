@@ -2,18 +2,12 @@ import React from "react";
 import Modal from "react-responsive-modal";
 import StatusPrompt from "../../common/statusPrompt/statusPrompt";
 import SpinnerButton from "../../form/spinner-btn/spinner-btn";
-import Spinner from "../../common/spinner/spinner";
-import RedirectSpinner from "../../common/spinner/redirect-spinner";
-const genReport = ({
-  shouldOpenModal,
-  closeModal,
-  addList,
-  pagesList,
-  deleteTeamFromResultList,
-  onChangeReportPages,
-  didPagesHasIncorrectValues,
-  choosenFolder
-}) => {
+import Spinner from '../../common/spinner/spinner';
+import RedirectSpinner from '../../common/spinner/redirect-spinner';
+const genReport = ( {shouldOpenModal, closeModal, addList, pagesList, 
+  deleteTeamFromResultList, onChangeReportPages, didPagesHasIncorrectValues,
+  choosenFolder, generateReport, isReportGenerating, generateReportStatus, generateReportErrors }) => {
+
   return (
     <Modal
       key={1}
@@ -73,7 +67,18 @@ const genReport = ({
             </p>
           </article>
 
-          <SpinnerButton btnTitle="Generuj raport" />
+
+          <SpinnerButton 
+          submitResult={
+            {status: generateReportStatus, 
+            content: generateReportStatus ? "Pomyślnie wygenerowano raport" : 
+              generateReportErrors[0]}
+          }
+          isLoading={isReportGenerating}
+          onClickHandler={generateReport}
+          btnTitle="Generuj raport" />
+
+
         </div>
       )}
     </Modal>

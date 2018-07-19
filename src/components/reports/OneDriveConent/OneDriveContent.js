@@ -346,8 +346,7 @@ const mapStateToProps = state => {
         updateFolderClear: (status, errors) => dispatch(updateFolder(status, errors)),
         getFolder: (token, path) => dispatch(getFolderACreator(token, path)),
         uploadFile: (token, path, file, currentFilesList) => dispatch(uploadFileACreator(token, path, file, currentFilesList)),
-        uploadFileClear: (uploadFileStatus, uploadFileErrors) => dispatch(uploadFile(uploadFileStatus, uploadFileErrors))
-    
+        uploadFileClear: (uploadFileStatus, uploadFileErrors) => dispatch(uploadFile(uploadFileStatus, uploadFileErrors))    
     };
   };
   

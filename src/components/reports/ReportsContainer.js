@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import "./ReportsContainer.scss";
-import { getTeamsACreator } from "../../actions/reportsActions";
+import { getTeamsACreator, generateReportACreator, generateReport } from "../../actions/reportsActions";
 import { fetchLists, chooseFolder } from '../../actions/persistHelpActions';
 import Spinner from "../common/spinner/spinner";
 import { validateReportPages } from "services/validation";
@@ -11,6 +11,7 @@ import ReportsContent from './reportsContent/reportsContent';
 import OneDriveContent from './OneDriveConent/OneDriveContent';
 import { withRouter } from 'react-router';
 import ChooseDriveView from './chooseDriveView/chooseDriveView';
+import GDriveContent from './GDriveContent/GDriveContent';
 
 const driveTypes = ["none", "drive-select", "onedrive", "gdrive"];
 
@@ -20,12 +21,15 @@ class ReportsContainer extends Component {
     spinner: true,
     reportModal: false,
     didPagesHasIncorrectValues: { status: null, error: "" },
-    valueToSearch: ""
+    valueToSearch: "",
+    isReportGenerating: false
   }
   componentDidMount() {
     const { search } = this.props.history.location;
-
-    if(search !== "" && this.props.addList.length > 0){
+    if(window.location.href.search("#") !== -1){
+      this.setState({choosenDriveType: driveTypes[3], spinner: false});
+    }
+    else if(search !== "" && this.props.addList.length > 0){
       this.setState({choosenDriveType: driveTypes[2]});
     }
     else
@@ -38,7 +42,7 @@ class ReportsContainer extends Component {
       this.props.chooseFolder(null);
     } 
     else
-      this.setState({spinner: false});
+      this.setState({spinner: false, isReportGenerating: false});
   }
 
   addTeamToResultList = name => {
@@ -173,6 +177,7 @@ class ReportsContainer extends Component {
           chooseFolder={this.chooseFolderHandler} />
         );
       case driveTypes[3]:
+        return ( <GDriveContent /> );
       break;
 
       default:
@@ -186,10 +191,19 @@ class ReportsContainer extends Component {
         );
     }
   }
+  generateReportHandler = () => {
+    const { addList, choosenFolder, pagesList } = this.props;
+    this.setState({isReportGenerating: true});
+    this.props.generateReport(addList, choosenFolder, this.state.choosenDriveType, pagesList);
+  }
 
+  closeReportModal = () => {
+    this.props.generateReportClearData(null, []);
+    this.setState({reportModal: false});
+  }
   render() {
-    const {  reportModal, choosenDriveType, spinner } = this.state;
-    const { addList, baseList, folders, pagesList, choosenFolder } = this.props;
+    const { reportModal, choosenDriveType, spinner, valueToSearch, isReportGenerating } = this.state;
+    const { addList, baseList, folders, pagesList, choosenFolder, generateReportStatus, generateReportErrors } = this.props;
 
     return (
       <div className="reports-container">
@@ -200,6 +214,7 @@ class ReportsContainer extends Component {
             choosenDriveType={choosenDriveType}
             addListLength={addList.length}
             baseListLength={baseList.length}
+            valueToSearch={valueToSearch}
             numberOfFolders={folders.length}
             searchInTeamList={e => this.searchInTeamList(e)}
             openReportsModals={this.openReportsModals}
@@ -214,8 +229,13 @@ class ReportsContainer extends Component {
         {
           reportModal && 
           <GenerateReportModal
+          generateReport={this.generateReportHandler}
+          isReportGenerating={isReportGenerating}
+          generateReportStatus={generateReportStatus}
+          generateReportErrors={generateReportErrors}
+
           shouldOpenModal={reportModal}
-          closeModal={() => this.setState({ reportModal: false })} 
+          closeModal={this.closeReportModal} 
           addList={addList}
           pagesList={pagesList}
           deleteTeamFromResultList={this.deleteTeamFromResultList}
@@ -245,7 +265,10 @@ const mapStateToProps = state => {
     baseList: state.persistHelpReducer.baseList,
     helpList: state.persistHelpReducer.helpList,
     pagesList: state.persistHelpReducer.pagesList,
-    choosenFolder: state.persistHelpReducer.folderToGenerateReport
+    choosenFolder: state.persistHelpReducer.folderToGenerateReport,
+
+    generateReportStatus: state.reportsReducer.generateReportStatus,
+    generateReportErrors: state.reportsReducer.generateReportErrors
 
   };
 };
@@ -254,7 +277,10 @@ const mapDispatchToProps = dispatch => {
   return {
     getTeams: () => dispatch(getTeamsACreator()),
     fetchLists: (addList, baseList, helpList, pagesList) => dispatch(fetchLists(addList, baseList, helpList, pagesList)),
-    chooseFolder: (folderToGenerateReport) => dispatch(chooseFolder(folderToGenerateReport))
+    chooseFolder: (folderToGenerateReport) => dispatch(chooseFolder(folderToGenerateReport)),
+    generateReport: (teamSheets, choosenFolder, shouldOneDrive, pageList) => dispatch(generateReportACreator(teamSheets, choosenFolder, shouldOneDrive, pageList)),
+    generateReportClearData: (status, errors) => dispatch(generateReport(status, errors))
+    
   };
 };
 

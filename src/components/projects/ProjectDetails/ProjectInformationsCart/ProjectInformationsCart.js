@@ -4,7 +4,6 @@ import Aux from '../../../../services/auxilary';
 import { contains } from '../../../../services/methods';
 
 const projectInformationsCart = props => {
-
     return (
     <Aux>
         <h4>{props.headerTitle}</h4>
@@ -12,7 +11,8 @@ const projectInformationsCart = props => {
         {props.items.keys.map((i, index) => {
             return (
                 <li key={i}>
-                    {props.originalObject[i] && 
+                    {
+                        props.originalObject[i] && props.items.names[index] &&
                         <span>{props.items.names[index]}: </span>
                     }
 

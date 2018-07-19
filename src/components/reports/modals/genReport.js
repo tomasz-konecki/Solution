@@ -6,9 +6,8 @@ import Spinner from '../../common/spinner/spinner';
 import RedirectSpinner from '../../common/spinner/redirect-spinner';
 const genReport = ( {shouldOpenModal, closeModal, addList, pagesList, 
   deleteTeamFromResultList, onChangeReportPages, didPagesHasIncorrectValues,
-  choosenFolder }) => {
+  choosenFolder, generateReport, isReportGenerating, generateReportStatus, generateReportErrors }) => {
   
-  console.log(choosenFolder);
   return (
     <Modal
       key={1}
@@ -57,7 +56,15 @@ const genReport = ( {shouldOpenModal, closeModal, addList, pagesList,
             <p><span>Ścieżka: </span><b>{choosenFolder.parentPath}</b></p>
           </article>
 
-          <SpinnerButton btnTitle="Generuj raport" />
+          <SpinnerButton 
+          submitResult={
+            {status: generateReportStatus, 
+            content: generateReportStatus ? "Pomyślnie wygenerowano raport" : 
+              generateReportErrors[0]}
+          }
+          isLoading={isReportGenerating}
+          onClickHandler={generateReport}
+          btnTitle="Generuj raport" />
 
         </div>
       }

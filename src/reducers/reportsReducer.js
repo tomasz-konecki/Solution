@@ -1,4 +1,4 @@
-import { GET_TEAMS, GET_USER_CV  } from "../constants";
+import { GET_TEAMS, GET_USER_CV, GENERATE_REPORT  } from "../constants";
 import { updateObject } from '../services/methods';
 
 const initialState = {
@@ -8,7 +8,10 @@ const initialState = {
 
   userDownloadCVLink: "",
   getUserCVStatus: null,
-  getUserCVErrors: []
+  getUserCVErrors: [],
+
+  generateReportStatus: null,
+  generateReportErrors: []
 };
 
 export const reportsReducer = (state = initialState, action) => {
@@ -20,6 +23,9 @@ export const reportsReducer = (state = initialState, action) => {
         return updateObject(state, { userDownloadCVLink: action.userDownloadCVLink,
           getUserCVStatus: action.getUserCVStatus, 
           getUserCVErrors: action.getUserCVErrors})
+    case GENERATE_REPORT:
+        return updateObject(state, { generateReportStatus: action.generateReportStatus, 
+          generateReportErrors: action.generateReportErrors })
     default:
       return state;
   }

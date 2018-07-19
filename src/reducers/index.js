@@ -9,3 +9,4 @@ export * from './reportsReducer';
 export * from './oneDriveReducer';
 export * from './persistHelpReducer';
 export * from "./clientsReducer";
+export * from './gDriveReducer';

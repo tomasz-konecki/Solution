@@ -5,6 +5,7 @@ import { getRandomColor } from '../../../services/methods';
 import SmallSpinner from '../spinner/small-spinner';
 import Modal from "react-responsive-modal";
 import Spinner from '../spinner/spinner';
+import { isArrayContainsByObjectKey } from '../../../services/methods';
 
 class Skills extends Component{
     state = {
@@ -37,15 +38,23 @@ class Skills extends Component{
     }
     componentWillReceiveProps(nextProps){
       if(this.props.items !== nextProps.items){
+        let shouldCloseModal = nextProps.addSkillsToProjectStatus ? false : true;
+        
+        
         this.setState({isChanging: false, items: this.fetchSkillsOnStart(nextProps.items),
-            isAddingNewSkills: false});
+            isAddingNewSkills: false, showAddList: false});
+        if(nextProps.addSkillsToProjectStatus){
+            setTimeout(() => {
+                this.setState({addSkillsModal: shouldCloseModal});
+                this.props.addSkillsToProjectClear(null, []);
+            }, 1000);
+        }
+    
       }
       else if(this.props.changeProjectSkillsErrors !== nextProps.changeProjectSkillsErrors)
         this.setState({isChanging: false, isAddingNewSkills: false});
-      else if(nextProps.loadedSkills && nextProps.loadSkillsStatus && 
-            nextProps.addSkillsToProjectStatus === null){
+      else if(nextProps.loadSkillsStatus){
           const fetchedSkills = this.fetchSkillsOnStart(nextProps.loadedSkills);
-
           this.setState({allSkills: fetchedSkills, searchedSkills: fetchedSkills, 
             isLoadingSkillsForModal: false});
       }
@@ -53,8 +62,10 @@ class Skills extends Component{
         this.setState({isLoadingSkillsForModal: false});
       else if(this.props.addSkillsToProjectErrors !== nextProps.addSkillsToProjectErrors)
         this.setState({isAddingNewSkills: false});
+      else
+        this.setState({isAddingNewSkills: false});
     }
-    
+
     changeSkill = (valueToChange, index, listName) => {
         const skill = valueToChange+1;
         const items = [...this.state[listName]];
@@ -79,21 +90,14 @@ class Skills extends Component{
         this.props.changeProjectSkills(this.props.projectId, this.state.items);
     }
     getAllSkills = () => {
-        if(this.props.loadedSkills.length === 0){
-            this.setState({addSkillsModal: true, isLoadingSkillsForModal: true});
-            this.props.getAllSkills(this.state.items);
-        }
-        else
-            this.setState({addSkillsModal: true});
-        
+        this.setState({addSkillsModal: true, isLoadingSkillsForModal: true});
+        this.props.getAllSkills(this.state.items);
     }
     findSkillByName = e => {
         const typedValue = e.target.value.toLowerCase();
         const searchedSkills = [];
         const { allSkills, showAddList, listToAddForProject } = this.state;
-        
         const whereShouldSearch = showAddList ? listToAddForProject : allSkills;
-
         if(whereShouldSearch.length > 0){
             for(let key in whereShouldSearch){
                 const checkWhichItem = whereShouldSearch[key].obj.name ? whereShouldSearch[key].obj.name : 
@@ -127,17 +131,15 @@ class Skills extends Component{
     }
     showAddList = () => { 
         const searchedSkills = [];
-        const { listToAddForProject, showAddList } = this.state;
-
+        const { listToAddForProject, showAddList, allSkills } = this.state;
         if(!showAddList){
             for(let key in listToAddForProject)
                 searchedSkills.push(listToAddForProject[key]);
         }
-        else{
-            const { allSkills } = this.state;
+        else
             for(let key in allSkills)
                 searchedSkills.push(allSkills[key]);
-        }
+        
         
         this.setState({searchedSkills: searchedSkills, showAddList: !showAddList});
     }
@@ -163,16 +165,16 @@ class Skills extends Component{
         this.props.addSkillsToProject(this.props.projectId, this.state.listToAddForProject);
     }
     closeModal = () => {
-        this.setState({addSkillsModal: false});
+        this.setState({addSkillsModal: false, showAddList: false});
         this.props.addSkillsToProjectClear(null, []);
     }
     render(){
         const { isChanging, addSkillsModal, isLoadingSkillsForModal, items, showSearchBar,
-            skillName, searchedSkills, showAddList, isAddingNewSkills } = this.state;
+            skillName, searchedSkills, showAddList, isAddingNewSkills, 
+            listToAddForProject } = this.state;
             
         const { loadSkillsStatus, loadSkillsErrors, title, changeProjectSkillsErrors, changeProjectSkillsStatus,
             addSkillsToProjectStatus, addSkillsToProjectErrors } = this.props;
-
         return(
         <div className="progress-bars-container">
             <h3>{title}
@@ -261,7 +263,7 @@ class Skills extends Component{
                         <p className="server-error">{loadSkillsErrors[0]}</p>
                     }
                     {isLoadingSkillsForModal || 
-                    <button onClick={this.addSkillsToProject} className="option-btn green-btn">
+                    <button disabled={isAddingNewSkills} onClick={this.addSkillsToProject} className="option-btn green-btn">
                         Zatwierdź
                         {isAddingNewSkills && 
                             <SmallSpinner />
@@ -273,7 +275,7 @@ class Skills extends Component{
                         <p style={{fontSize: '22px'}} className="server-error">{addSkillsToProjectErrors[0]}</p>
                     }
 
-                    {addSkillsToProjectStatus && 
+                    {addSkillsToProjectStatus && !isAddingNewSkills && 
                         <div className="correct-operation"></div>
                     }
                 </div>

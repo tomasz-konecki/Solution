@@ -322,10 +322,10 @@ const WebApi = {
       }
     },
     delete: {
-      owner: (projectId, ownerId) => {
-        return WebAround.delete(`${API_ENDPOINT}/projects/owner/${projectId}`, {
+      owner: (model) => {
+        return WebAround.delete(`${API_ENDPOINT}/projects/owner/${model[0]}`, {
           data: {
-            userId: ownerId
+            userId: model[1]
           }
         });
       },
@@ -355,8 +355,8 @@ const WebApi = {
       }
     },
     post: {
-      report: (model, param) => {
-        return WebAround.post(`${API_ENDPOINT}/reports/developers`, model);
+      report: (model, hyperlinksOnGDrive, hyperlinksOnOneDrive) => {
+        return WebAround.post(`${API_ENDPOINT}/reports/developers?hyperlinksOnGDrive=${hyperlinksOnGDrive}&hyperlinksOnOneDrive=${hyperlinksOnOneDrive}`, model);
       }
     }
   },
@@ -364,6 +364,11 @@ const WebApi = {
     get: {
       login: () => {
         return WebAround.get(`${API_ENDPOINT}/gdrive/Login`);
+      }
+    },
+    post: {
+      getFolders: (model) => {
+        return WebAround.post(`${API_ENDPOINT}/GDrive/Get`, model); 
       }
     }
   },

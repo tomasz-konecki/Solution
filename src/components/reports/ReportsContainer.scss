@@ -192,13 +192,17 @@
   
 }
 
-
 .choosen-folder-content{
   display: flex;
   min-height: 50%;
   margin: 0 auto;
   padding: 5px 25px;
   flex-flow: wrap;
+  & > p{
+    bottom: -50px;
+    font-size: 20px;
+    color: lightgreen;
+  }
   @media(max-width: 625px){
     .folder-details{
       width: 100% !important;

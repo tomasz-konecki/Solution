@@ -135,6 +135,7 @@ $activeShadow: 0 0 10px rgba($teal1, 0.5);
 
     @media screen and (max-width: 500px) {
       float: unset;
+      display: block;
     }
   }
 

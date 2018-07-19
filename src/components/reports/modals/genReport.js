@@ -7,7 +7,7 @@ import RedirectSpinner from '../../common/spinner/redirect-spinner';
 const genReport = ( {shouldOpenModal, closeModal, addList, pagesList, 
   deleteTeamFromResultList, onChangeReportPages, didPagesHasIncorrectValues,
   choosenFolder, generateReport, isReportGenerating, generateReportStatus, generateReportErrors }) => {
-  
+
   return (
     <Modal
       key={1}
@@ -21,9 +21,7 @@ const genReport = ( {shouldOpenModal, closeModal, addList, pagesList,
         {addList.map((i, index) => {
           return (
             <li
-              className={
-                pagesList[index].error ? "inc-list-item" : null
-              }
+              className={pagesList[index].error ? "inc-list-item" : null}
               key={index}
             >
               <b>{i.name}</b>
@@ -42,19 +40,33 @@ const genReport = ( {shouldOpenModal, closeModal, addList, pagesList,
         })}
       </ul>
 
-      {
-        choosenFolder && 
+      {choosenFolder && (
         <div className="choosen-folder-content">
           <div className="icon-container">
-            <i className="fa fa-folder"></i>
-            <span onClick={() => window.open(choosenFolder.webUrl)}>Otwórz w <i className="fab fa-google-drive"></i></span>
+            <i className="fa fa-folder" />
+            <span onClick={() => window.open(choosenFolder.webUrl)}>
+              Otwórz w <i className="fab fa-google-drive" />
+            </span>
           </div>
           <article className="folder-details">
-            <p><span>Identyfikator: </span><b>{choosenFolder.id}</b></p>
-            <p><span>Nazwa: </span><b>{choosenFolder.name}</b></p>
-            <p><span>Data utworzenia: </span><b>{choosenFolder.createDateTime}</b></p>
-            <p><span>Ścieżka: </span><b>{choosenFolder.parentPath}</b></p>
+            <p>
+              <span>Identyfikator: </span>
+              <b>{choosenFolder.id}</b>
+            </p>
+            <p>
+              <span>Nazwa: </span>
+              <b>{choosenFolder.name}</b>
+            </p>
+            <p>
+              <span>Data utworzenia: </span>
+              <b>{choosenFolder.createDateTime}</b>
+            </p>
+            <p>
+              <span>Ścieżka: </span>
+              <b>{choosenFolder.parentPath}</b>
+            </p>
           </article>
+
 
           <SpinnerButton 
           submitResult={
@@ -66,9 +78,9 @@ const genReport = ( {shouldOpenModal, closeModal, addList, pagesList,
           onClickHandler={generateReport}
           btnTitle="Generuj raport" />
 
+
         </div>
-      }
-     
+      )}
     </Modal>
   );
 };

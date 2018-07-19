@@ -52,6 +52,7 @@ class EmployeesContainer extends React.Component {
         totalPageCount={this.props.totalPageCount}
         pageChange={this.pageChange}
         loading={this.props.loading}
+        resultBlock={this.props.resultBlock}
       />
     );
   };
@@ -75,7 +76,8 @@ function mapStateToProps(state) {
     confirmed: state.asyncReducer.confirmed,
     toConfirm: state.asyncReducer.toConfirm,
     isWorking: state.asyncReducer.isWorking,
-    type: state.asyncReducer.type
+    type: state.asyncReducer.type,
+    resultBlock: state.employeesReducer.resultBlock
   };
 }
 

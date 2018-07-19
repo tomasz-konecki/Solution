@@ -29,17 +29,33 @@ const IntermediateBlock = ({
       loader = <LoaderCircular />;
       break;
   }
-
   return (
     <div className="intermediate-block">
       {loaded ? (
-        resultBlock.replyBlock.data.ErrorOccurred ||
-        resultBlock.replyBlock.data.errorOccurred ? (
-          <div className={_className}>
-            <ResultBlock errorBlock={resultBlock} />
-          </div>
+        resultBlock.replyBlock.data === "" ? (
+          resultBlock.replyBlock.data.ErrorOccurred ||
+          resultBlock.replyBlock.data.errorOccurred ? (
+            <div className={_className}>
+              <ResultBlock errorBlock={resultBlock} />
+            </div>
+          ) : resultBlock.replyBlock.status !== 200 ? (
+            <div className="api-error-message">
+              <h1>
+                {resultBlock.replyBlock.status} {resultBlock.message}
+              </h1>
+            </div>
+          ) : (
+            render()
+          )
         ) : (
-          render()
+          <div className="api-error-message">
+            <h1 style={{ color: "red" }}>Internal Server Error 500</h1>
+            <img
+              style={{ width: "100%" }}
+              src="https://starecat.com/content/wp-content/uploads/500-internal-server-error-meanwhile-frontend-developer-cutting-grass-not-worried-about-it.jpg"
+              alt="500"
+            />
+          </div>
         )
       ) : (
         <div className={_className}>{loader}</div>

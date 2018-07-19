@@ -308,3 +308,11 @@ a:visited {
 .full-screen-loader {
   position: relative;
 }
+
+.api-error-message {
+  color: red;
+  background: white;
+  border-radius: 10px;
+  padding: 20px;
+  text-align: center;
+}

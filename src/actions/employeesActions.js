@@ -1,7 +1,8 @@
 import {
   LOAD_EMPLOYEES_SUCCESS,
   ASYNC_STARTED,
-  ASYNC_ENDED
+  ASYNC_ENDED,
+  LOAD_EMPLOYEES_FAILURE
 } from "../constants";
 import axios from "axios";
 import WebApi from "../api";
@@ -14,6 +15,13 @@ export const loadEmployeesSuccess = employees => {
   };
 };
 
+export const loadEmployeesFailure = resultBlock => {
+  return {
+    type: LOAD_EMPLOYEES_FAILURE,
+    resultBlock
+  };
+};
+
 export const loadEmployees = (page = 1, limit = 25, other = {}) => {
   return dispatch => {
     const settings = Object.assign(
@@ -23,14 +31,16 @@ export const loadEmployees = (page = 1, limit = 25, other = {}) => {
     );
 
     dispatch(asyncStarted());
-    WebApi.employees.post.list(settings)
+    WebApi.employees.post
+      .list(settings)
       .then(response => {
-        if(!response.errorOccurred()){
+        if (!response.errorOccurred()) {
           dispatch(loadEmployeesSuccess(response.extractData()));
         }
         dispatch(asyncEnded());
       })
       .catch(error => {
+        dispatch(loadEmployeesFailure(error));
         dispatch(asyncEnded());
       });
   };

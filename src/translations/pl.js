@@ -85,9 +85,9 @@ const translations = {
     CloudName: "Nazwa Chmury"
   },
   AddClient: {
-    AddClient: "Add Client",
-    ClientName: "Client Name",
-    ClientAddedSuccess: "Client has been added."
+    AddClient: "Dodaj Klienta",
+    ClientName: "Nazwa Klienta",
+    ClientAddedSuccess: "Klient został dodany."
   },
   ProjectsList: {
     Add: "Dodaj",

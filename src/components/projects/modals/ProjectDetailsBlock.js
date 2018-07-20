@@ -85,7 +85,7 @@ class ProjectDetailsBlock extends React.PureComponent {
         startDate: moment(this.state.editProjectArray[3].value).format(),
         estimatedEndDate: moment(this.state.editProjectArray[4].value).format()
       }
-      this.props.editProject(this.props.project.id, projectToSend);
+      this.props.editProject(this.props.project.id, projectToSend, this.props.onlyActiveAssignments);
   }
   onChangeClient = event => {
     const ClientId = 2;

@@ -7,7 +7,7 @@ import RedirectSpinner from '../../common/spinner/redirect-spinner';
 const genReport = ( {shouldOpenModal, closeModal, addList, pagesList, 
   deleteTeamFromResultList, onChangeReportPages, didPagesHasIncorrectValues,
   choosenFolder, generateReport, isReportGenerating, generateReportStatus, generateReportErrors }) => {
-
+console.log(generateReportStatus);
   return (
     <Modal
       key={1}
@@ -70,9 +70,11 @@ const genReport = ( {shouldOpenModal, closeModal, addList, pagesList,
 
           <SpinnerButton 
           submitResult={
-            {status: generateReportStatus, 
-            content: generateReportStatus ? "Pomyślnie wygenerowano raport" : 
-              generateReportErrors[0]}
+            {
+              content: generateReportStatus ? "Pomyślnie wygenerowano raport" : 
+              generateReportErrors[0],
+              status: generateReportStatus
+            }
           }
           isLoading={isReportGenerating}
           onClickHandler={generateReport}

@@ -47,11 +47,18 @@ class ProjectDetails extends Component{
         ],
         lteVal: 1,
         addEmployeSpinner: false,
-        projectStatus: []
+        projectStatus: [],
+        onlyActiveAssignments: true
     }
     componentDidMount(){
-        this.props.getProject(this.props.match.params.id);
+        this.props.getProject(this.props.match.params.id, this.state.onlyActiveAssignments);
     }  
+    changeOnlyActiveAssignments = () => {
+        const { onlyActiveAssignments } = this.state;
+        const { id } = this.props.match.params;
+        this.setState({isLoadingProject: true, onlyActiveAssignments: !onlyActiveAssignments});
+        this.props.getProject(id, !onlyActiveAssignments);
+    }
     fillDates = (startDate, endDate, estimatedEndDate) => {
         const addEmployeToProjectFormItems = [...this.state.addEmployeToProjectFormItems];
         addEmployeToProjectFormItems[0].value = moment(startDate);
@@ -71,14 +78,12 @@ class ProjectDetails extends Component{
                         projectStatus: this.calculateProjectStatus(project.startDate, 
                             project.endDate, project.status, project.estimatedEndDate, project.isDeleted)});
             }
-            else{
+            else
                 this.setState({isLoadingProject: false});
-            }
            
         }
-        else if(this.props.addEmployeeToProjectErrors !== nextProps.addEmployeeToProjectErrors){
+        else if(this.props.addEmployeeToProjectErrors !== nextProps.addEmployeeToProjectErrors)
             this.setState({addEmployeSpinner: false});
-        }
     }
     
     createLTEPicker = range => {
@@ -98,27 +103,19 @@ class ProjectDetails extends Component{
         this.props.addEmployeeToProject(this.state.addEmployeToProjectFormItems[3].value, 
             this.props.project.id, this.state.addEmployeToProjectFormItems[0].value, 
             this.state.addEmployeToProjectFormItems[1].value, this.state.addEmployeToProjectFormItems[4].value, 
-            this.state.lteVal, this.state.addEmployeToProjectFormItems[2].value);
+            this.state.lteVal, this.state.addEmployeToProjectFormItems[2].value,
+            this.state.onlyActiveAssignments);
     }
 
     calculateProjectStatus = (startDate, endDate, projectStatus, estimatedEndDate, isDeleted) => {
-        if(projectStatus === 2 && !isDeleted){
-            return [{ classVal: "spn-closed", name: "Zakończony" }];
-        }
-        if(projectStatus === 2 && isDeleted)
+        if(projectStatus === 2 && isDeleted === true)
             return [{ classVal: "spn-unactive", name: "Usunięty" }];
-       
-        if(projectStatus === 0){
+        if(projectStatus === 2 && isDeleted === false)
+            return [{ classVal: "spn-closed", name: "Zamknięty" }];
+        if(projectStatus === 1)
+            return [{ classVal: "spn-closed", name: "Nieaktywny"}];
+        if(projectStatus === 0)
             return [{ classVal: "spn-active", name: "Aktywny" }];
-        }
-
-        const today = moment();
-
-        if(today.isAfter(startDate) && today.isBefore(estimatedEndDate))
-            return [{ classVal: "spn-active", name: "Aktywny" }];
-        else
-            return [{ classVal: "spn-closed", name: "Nieaktywny"}]
-     
     }
 
     clearEditModalData = () => {
@@ -129,13 +126,20 @@ class ProjectDetails extends Component{
         this.props.clearProjectData(null, null, [], [], []);
         this.props.getAllSkillsDataClear([], null, []);
     }
+    togleActiveAssign = () => {
+        const { onlyActiveAssignments } = this.state;
+        console.log(onlyActiveAssignments);
+        this.setState({onlyActiveAssignments: !onlyActiveAssignments, isLoadingProject: true})
+        this.props.getProject(this.props.match.params.id, !onlyActiveAssignments);
+    }
     render(){ 
         const { project, loading, loadProjectStatus, 
             addEmployeeToProjectStatus, addEmployeeToProjectErrors,
             loadProjectErrors, changeProjectState, changeProjectStateStatus,
             changeProjectStateErrors } = this.props;
+        
         const { reactivate, close } = WebApi.projects.put;
-        const { projectStatus } = this.state;
+        const { projectStatus, onlyActiveAssignments } = this.state;
         const { owner } = WebApi.projects.delete;
         return(
             <div onClick={addEmployeeToProjectStatus !== null ? 
@@ -161,14 +165,17 @@ class ProjectDetails extends Component{
 
                                 {
                                 projectStatus[0].name !== "Aktywny" && 
-                                <button onClick={() => changeProjectState(reactivate, "reactivate", {"projectId": project.id})} className="option-btn green-btn">Aktywuj projekt</button>
+                                <button onClick={() => changeProjectState(reactivate, "reactivate", 
+                                    {"projectId": project.id, "onlyActiveAssignments": onlyActiveAssignments})} 
+                                    className="option-btn green-btn">Aktywuj projekt</button>
                                 }
 
-                                {(projectStatus[0].name !== "Usunięty" && projectStatus[0].name !== "Zakończony") && 
-                                <button onClick={() => changeProjectState(close, "close", {"projectId": project.id})} className="option-btn option-dang">Zakończ</button>
+                                {(projectStatus[0].name !== "Usunięty" && projectStatus[0].name !== "Zamknięty") && 
+                                <button onClick={() => changeProjectState(close, "close", {"projectId": project.id, 
+                                    "onlyActiveAssignments": onlyActiveAssignments})} className="option-btn option-dang">Zamknij</button>
                                 }
 
-                                {projectStatus[0].name !== "Usunięty" &&
+                                {projectStatus[0].name !== "Usunięty" && projectStatus[0].name !== "Zamknięty" && 
                                     <button onClick={() => this.setState({deleteProjectModal: !this.state.deleteProjectModal})} className="option-btn option-very-dang">Usuń projekt</button>
                                 }
                         </nav>
@@ -198,13 +205,20 @@ class ProjectDetails extends Component{
                                     <button key={i.id} className="owner-btn">
                                         {i.fullName}
                                         <i onClick={() => changeProjectState(owner, "deleteOwner", 
-                                            {"projectId": project.id, "ownerId": project.owners[index].id})}>Usuń</i>
+                                            {"projectId": project.id, "ownerId": project.owners[index].id
+                                            ,"onlyActiveAssignments": onlyActiveAssignments})}>Usuń</i>
                                     </button>);
                                 })}
                             </div>
                         </div>
 
                         <div className="right-project-spec">
+                            <div className="a-asign-container">
+                                <label>Pokaż aktywne przypisania</label>
+                                <input type="checkbox" checked={onlyActiveAssignments}
+                                onChange={this.togleActiveAssign}/>
+                            </div>
+
                             <Table 
                                 projectId={project.id}
                                 items={project.team} 
@@ -215,6 +229,7 @@ class ProjectDetails extends Component{
                                 />
                                 
                                 <Skills 
+                                onlyActiveAssignments={onlyActiveAssignments}
                                 projectId={project.id}
                                 changeProjectSkillsStatus={this.props.changeProjectSkillsStatus}
                                 changeProjectSkillsErrors={this.props.changeProjectSkillsErrors}
@@ -238,9 +253,11 @@ class ProjectDetails extends Component{
                     open={this.state.editModal}
                     classNames={{ modal: "Modal Modal-add-owner" }}
                     contentLabel="Edit project modal"
-                    onClose={this.clearEditModalData}>
+                    onClose={this.clearEditModalData}
+                    >
                     
                     <ProjectDetailsBlock
+                    onlyActiveAssignments={onlyActiveAssignments}
                     editProjectStatus={this.props.editProjectStatus}
                     editProjectErrors={this.props.editProjectErrors}
                     project={project}
@@ -254,7 +271,8 @@ class ProjectDetails extends Component{
                 onClose={() => this.setState({deleteProjectModal: !this.state.deleteProjectModal})} 
                 header="Czy jesteś pewny, że chcesz usunąć ten projekt?"
                 operationName="Usuń"
-                operation={() => changeProjectState(WebApi.projects.delete.project, "delete", {"projectId": project.id})}
+                operation={() => changeProjectState(WebApi.projects.delete.project, "delete", {"projectId": project.id
+                , "onlyActiveAssignments": onlyActiveAssignments})}
                 />
          
                 <Modal 
@@ -303,11 +321,15 @@ class ProjectDetails extends Component{
                     message={this.props.loadProjectErrors[0]} />
                 }
 
-                { (loading || changeProjectStateStatus === false) && 
-                    <OperationLoader isLoading={loading} 
-                    operationError={changeProjectStateErrors[0]}
+                { changeProjectStateStatus === false && 
+                    <OperationLoader operationError={changeProjectStateErrors.length > 0 ? 
+                        changeProjectStateErrors[0] : ""}
                     close={this.props.clearProjectState}
                     />
+                }
+                {
+                    loading && 
+                    <OperationLoader isLoading={loading}/>
                 }
 
             </div>
@@ -348,18 +370,18 @@ const mapStateToProps = state => {
   
 const mapDispatchToProps = dispatch => {
     return {
-        getProject: (projectId) => dispatch(getProjectACreator(projectId)),
-        editProject: (projectId, projectToSend) => dispatch(editProjectACreator(projectId, projectToSend)),
+        getProject: (projectId, onlyActiveAssignments) => dispatch(getProjectACreator(projectId, onlyActiveAssignments)),
+        editProject: (projectId, projectToSend, onlyActiveAssignments) => dispatch(editProjectACreator(projectId, projectToSend, onlyActiveAssignments)),
         editProjectClearData: (status, errors) => dispatch(editProject(status, errors)),
         clearProjectData: (project, status, errors, personKeys, overViewKeys) => dispatch(getProject(project, status, errors, personKeys, overViewKeys)),
         addEmployeeToProject: (empId, projId, strDate, endDate, 
-            role, assignedCapacity, responsibilites) => dispatch(addEmployeeToProjectACreator(empId, projId, strDate, endDate, 
-                role, assignedCapacity, responsibilites)),
+            role, assignedCapacity, responsibilites, onlyActiveAssignments) => dispatch(addEmployeeToProjectACreator(empId, projId, strDate, endDate, 
+                role, assignedCapacity, responsibilites, onlyActiveAssignments)),
         addEmployeeToProjectAction: (status, errors) => dispatch(addEmployeeToProject(status, errors)),
-        changeProjectSkills: (projectId, skills) => dispatch(changeProjectSkillsACreator(projectId, skills)),
+        changeProjectSkills: (projectId, skills, onlyActiveAssignments) => dispatch(changeProjectSkillsACreator(projectId, skills, onlyActiveAssignments)),
         getAllSkills: (currentAddedSkills) => dispatch(getAllSkillsACreator(currentAddedSkills)),
         getAllSkillsDataClear: (loadedSkills, loadSkillsStatus, loadSkillsErrors) => dispatch(getAllSkills(loadedSkills, loadSkillsStatus, loadSkillsErrors)),
-        addSkillsToProject: (projectId, currentSkills) => dispatch(addSkillsToProjectACreator(projectId, currentSkills)),
+        addSkillsToProject: (projectId, currentSkills, onlyActiveAssignments) => dispatch(addSkillsToProjectACreator(projectId, currentSkills, onlyActiveAssignments)),
         addSkillsToProjectClear: (state, errors) => dispatch(addSkillsToProject(state, errors)),
         
         changeProjectState: (funcName, currentOperation, model) => dispatch(changeProjectStateACreator(funcName, currentOperation, model)),

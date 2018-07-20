@@ -87,7 +87,8 @@ class Skills extends Component{
     }
     saveChangedSkills = () => {
         this.setState({isChanging: true});
-        this.props.changeProjectSkills(this.props.projectId, this.state.items);
+        this.props.changeProjectSkills(this.props.projectId, this.state.items, 
+            this.props.onlyActiveAssignments);
     }
     getAllSkills = () => {
         this.setState({addSkillsModal: true, isLoadingSkillsForModal: true});
@@ -162,7 +163,8 @@ class Skills extends Component{
     }
     addSkillsToProject = () => {
         this.setState({isAddingNewSkills: true});
-        this.props.addSkillsToProject(this.props.projectId, this.state.listToAddForProject);
+        this.props.addSkillsToProject(this.props.projectId, this.state.listToAddForProject, 
+            this.props.onlyActiveAssignments);
     }
     closeModal = () => {
         this.setState({addSkillsModal: false, showAddList: false});
@@ -202,8 +204,9 @@ class Skills extends Component{
                 )
             })}
 
-            {this.state.items.length > 0 && 
-                <button onClick={this.saveChangedSkills} className="option-btn green-btn btn-abs" >
+            {items.length > 0 && 
+                <button disabled={isChanging} 
+                onClick={this.saveChangedSkills} className="option-btn green-btn btn-abs" >
                     Zapisz zmiany
                 </button>
             }

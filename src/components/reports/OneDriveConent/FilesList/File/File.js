@@ -36,7 +36,7 @@ const file = ({folder, openFolder, editFolderError, isDeletingOrEditingFolder,
         }
         
         {folder.type !== "file" && 
-        <i onClick={() => openFolder(folder.name)} className="fa fa-folder-open"></i>
+        <i onClick={() => openFolder(folder.name, folder.id)} className="fa fa-folder-open"></i>
         }
 
         {folder.type !== "file" && 

@@ -1,5 +1,5 @@
 import React from 'react'
-import './OneDriveContent.scss';
+import '../OneDriveContent.scss';
 import { connect } from 'react-redux'; 
 import { authOneDriveACreator, sendCodeToGetTokenACreator, createFolderACreator,
     deleteFolderACreator, deleteFolder, updateFolderACreator, 
@@ -12,6 +12,7 @@ import ConfirmModal from '../../common/confimModal/confirmModal';
 import OperationLoader from '../../common/operationLoader/operationLoader';
 import FilesList from './FilesList/FilesList';
 import SmallSpinner from '../../common/spinner/small-spinner';
+import FilePicker from '../filePicker/filePicker';
 
 const startPath = "/drive/root:";
 
@@ -165,26 +166,11 @@ class OneDriveContent extends React.PureComponent {
             deleteFolderErrors, updateFolderStatus, updateFolderErrors, 
             uploadFileStatus, uploadFileErrors, chooseFolder, choosenFolder } = this.props;
         return (
-            <div className="gdrive-content-container">
+            <div className="drive-content-container">
 
                 {(isPreparingForLogingIn || isTakingCodeFromApi || isGoingBack) || 
-                    <div className="file-picker">
-                        <input type="file" placeholder="wybierz plik do dodania..."
-                        id="upload" onChange={e => this.handleAddFile(e)} 
-                        />
-
-                        {fileToUpload && 
-                            <Button 
-                            onClick={this.uploadFile}
-                            title="Prześlij"
-                            mainClass="generate-raport-btn btn-green" 
-                            >
-                            {isUploadingFile && 
-                                <SmallSpinner /> 
-                            }
-                            </Button>
-                        }
-                    </div>
+                    <FilePicker fileToUpload={fileToUpload} uploadFile={this.uploadFile}
+                    handleAddFile={e => this.handleAddFile(e)} isUploadingFile={isUploadingFile}/>
                 }
                 
 
@@ -231,7 +217,7 @@ class OneDriveContent extends React.PureComponent {
                             {path !== startPath && 
                             <Button 
                             onClick={(this.goToFolderBefore)}
-                            mainClass="generate-raport-btn btn-transparent" title="Cofnij">
+                            mainClass="generate-raport-btn btn-transparent btn-g-drive" title="Cofnij">
                                 <i className="fa fa-long-arrow-alt-left"></i>
                             </Button> 
                             }

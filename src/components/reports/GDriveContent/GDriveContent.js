@@ -1,17 +1,22 @@
 import React from 'react'
-import './GDriveContent.scss';
 import { connect } from 'react-redux';
 import Spinner from '../../common/spinner/spinner';
-import { loginACreator, getFoldersACreator } from '../../../actions/gDriveActions';
+import { getFoldersACreator } from '../../../actions/gDriveActions';
+import { loginACreator } from '../../../actions/persistHelpActions';
+import FilesList from '../OneDriveConent/FilesList/FilesList';
+import '../OneDriveContent.scss';
+import Button from '../../common/button/button';
+const startPath = "root";
 
 class GDriveContent extends React.Component{
     state = {
-        isLoading: true
+        isLoading: true,
+        folderIsLoadingName: false
     }
     componentDidMount(){
         const isAuth = window.location.href.search("#") === -1 ? false : true;
         if(isAuth && this.props.folders.length === 0){
-            this.props.getFolders("root");
+            this.props.getFolders(startPath, startPath);
         }
         else{
             this.props.login();
@@ -26,22 +31,62 @@ class GDriveContent extends React.Component{
             this.setState({isLoading: false});
         }
     }
-    
-    
+    openFolder = (folderName, folderId) => {
+        this.setState({folderIsLoadingName: folderName});
+        this.props.getFolders(folderId, this.props.path + "/" + folderName);
+    }
+    goToFolderBefore = () => {
+
+    }
+    /*
+             chooseFolder={chooseFolder}
+                            choosenFolder={choosenFolder}
+                            folderIsLoadingName={folderIsLoadingName}
+                            folders={folders}
+                            editFolderName={editFolderName}
+                            currentOpenedFolderDetailName={currentOpenedFolderDetailName}
+                            currentOpenedFolderToEditId={currentOpenedFolderToEditId}
+                            onEditFolder={this.onEditFolder}
+                            editFolderError={editFolderError}
+                            onChangeFolderName={this.onChangeFolderName}
+                            isDeletingOrEditingFolder={isDeletingOrEditingFolder}
+                            openFolder={this.openFolder}
+
+                            enableFolderEdit={this.enableFolderEdit}
+                            onStateChange={this.setState}
+                            showDeleteFolderModal={this.showDeleteFolderModal}
+                            closeEditingFolderName={() => this.setState({currentOpenedFolderToEditId: "", 
+                            editFolderError: ""})}
+                            onFileClick={this.onFileClick}*/
     render(){
-        const { isLoading } = this.state;
-        const { loginStatus, loginErrors, getFoldersStatus, getFoldersErrors } = this.props;
+        const { isLoading, folderIsLoadingName } = this.state;
+        const { loginStatus, loginErrors, getFoldersStatus, getFoldersErrors, 
+            folders, path } = this.props;
         return (
-            <div className="g-drive-container">
+            <div className="drive-content-container">
                 { isLoading ? <Spinner /> :
                 
                     loginStatus !== null && 
 
                     loginStatus ? 
-                    <div className="g-drive-content">
+                    <div className="navigation-folders-container">
+                        <header>
+                            <h3>Aktualna ścieżka: {path}</h3>
+                        </header>
+                        <FilesList 
+                        folders={folders} 
+                        openFolder={this.openFolder} 
+                        folderIsLoadingName={folderIsLoadingName}/>
 
-
-                    </div> : 
+                        {path !== startPath && 
+                            <Button 
+                            onClick={(this.goToFolderBefore)}
+                            mainClass="generate-raport-btn btn-transparent" title="Cofnij">
+                                <i className="fa fa-long-arrow-alt-left"></i>
+                            </Button> 
+                        }
+                    </div>
+                    : 
                     <p className="g-drive-error-occured">{loginErrors[0]}</p>
 
                 }
@@ -55,20 +100,21 @@ class GDriveContent extends React.Component{
 }
 const mapStateToProps = state => {
     return {
-        loginStatus: state.gDriveReducer.loginStatus,
-        loginErrors: state.gDriveReducer.loginErrors,
-        redirectUrl: state.gDriveReducer.redirectUrl,
+        loginStatus: state.persistHelpReducer.loginStatus,
+        loginErrors: state.persistHelpReducer.loginErrors,
+        redirectUrl: state.persistHelpReducer.redirectUrl,
 
-        folders: state.gDriveReducer.folders,
-        getFoldersStatus: state.gDriveReducer.getFoldersStatus,
-        getFoldersErrors: state.gDriveReducer.getFoldersErrors
+        folders: state.oneDriveReducer.folders,
+        getFoldersStatus: state.oneDriveReducer.getFoldersStatus,
+        getFoldersErrors: state.oneDriveReducer.getFoldersErrors,
+        path: state.oneDriveReducer.path
     };
   };
   
   const mapDispatchToProps = dispatch => {
     return {
         login: () => dispatch(loginACreator()),
-        getFolders: (folderId) => dispatch(getFoldersACreator(folderId))
+        getFolders: (folderId, path) => dispatch(getFoldersACreator(folderId, path))
     };
   };
   

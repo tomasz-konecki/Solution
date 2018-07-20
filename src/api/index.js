@@ -283,8 +283,8 @@ const WebApi = {
     put: foreignLanguageId => {}
   },
   projects: {
-    get: projectId => {
-      return WebAround.get(`${API_ENDPOINT}/projects/${projectId}`);
+    get: (projectId, onlyActiveAssignments) => {
+      return WebAround.get(`${API_ENDPOINT}/projects/${projectId}?onlyActiveAssignments=${onlyActiveAssignments}`);
     },
     post: {
       list: (settings = {}) => {
@@ -306,12 +306,12 @@ const WebApi = {
           userIds: ownersIdsArray
         });
       },
-      close: projectId => {
-        return WebAround.put(`${API_ENDPOINT}/projects/close/${projectId}`);
+      close: model => {
+        return WebAround.put(`${API_ENDPOINT}/projects/close/${model[0]}`);
       },
-      reactivate: projectId => {
+      reactivate: model => {
         return WebAround.put(
-          `${API_ENDPOINT}/projects/reactivate/${projectId}`
+          `${API_ENDPOINT}/projects/reactivate/${model[0]}`
         );
       },
       skills: (projectId, skillsArray) => {
@@ -329,8 +329,8 @@ const WebApi = {
           }
         });
       },
-      project: projectId => {
-        return WebAround.delete(`${API_ENDPOINT}/projects/delete/${projectId}`);
+      project: model => {
+        return WebAround.delete(`${API_ENDPOINT}/projects/delete/${model[0]}`);
       }
     }
   },

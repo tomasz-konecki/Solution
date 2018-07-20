@@ -108,9 +108,9 @@ class ProjectDetails extends Component{
     }
 
     calculateProjectStatus = (startDate, endDate, projectStatus, estimatedEndDate, isDeleted) => {
-        if(projectStatus === 2 && isDeleted === true)
+        if(isDeleted === true)
             return [{ classVal: "spn-unactive", name: "Usunięty" }];
-        if(projectStatus === 2 && isDeleted === false)
+        if(projectStatus === 2)
             return [{ classVal: "spn-closed", name: "Zamknięty" }];
         if(projectStatus === 1)
             return [{ classVal: "spn-closed", name: "Nieaktywny"}];
@@ -128,7 +128,6 @@ class ProjectDetails extends Component{
     }
     togleActiveAssign = () => {
         const { onlyActiveAssignments } = this.state;
-        console.log(onlyActiveAssignments);
         this.setState({onlyActiveAssignments: !onlyActiveAssignments, isLoadingProject: true})
         this.props.getProject(this.props.match.params.id, !onlyActiveAssignments);
     }
@@ -164,13 +163,13 @@ class ProjectDetails extends Component{
                                 className="option-btn normal-btn">Edytuj projekt</button>
 
                                 {
-                                projectStatus[0].name !== "Aktywny" && 
+                                (projectStatus[0].name !== "Usunięty" || projectStatus[0].name !== "Aktywny") &&
                                 <button onClick={() => changeProjectState(reactivate, "reactivate", 
                                     {"projectId": project.id, "onlyActiveAssignments": onlyActiveAssignments})} 
                                     className="option-btn green-btn">Aktywuj projekt</button>
                                 }
 
-                                {(projectStatus[0].name !== "Usunięty" && projectStatus[0].name !== "Zamknięty") && 
+                                {projectStatus[0].name === "Aktywny" && 
                                 <button onClick={() => changeProjectState(close, "close", {"projectId": project.id, 
                                     "onlyActiveAssignments": onlyActiveAssignments})} className="option-btn option-dang">Zamknij</button>
                                 }

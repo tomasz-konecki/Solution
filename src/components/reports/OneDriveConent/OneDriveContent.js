@@ -217,7 +217,7 @@ class OneDriveContent extends React.PureComponent {
                             {path !== startPath && 
                             <Button 
                             onClick={(this.goToFolderBefore)}
-                            mainClass="generate-raport-btn btn-transparent btn-g-drive" title="Cofnij">
+                            mainClass="generate-raport-btn btn-transparent" title="Cofnij">
                                 <i className="fa fa-long-arrow-alt-left"></i>
                             </Button> 
                             }
@@ -244,7 +244,6 @@ class OneDriveContent extends React.PureComponent {
                             openFolder={this.openFolder}
 
                             enableFolderEdit={this.enableFolderEdit}
-                            onStateChange={this.setState}
                             showDeleteFolderModal={this.showDeleteFolderModal}
                             closeEditingFolderName={() => this.setState({currentOpenedFolderToEditId: "", 
                             editFolderError: ""})}

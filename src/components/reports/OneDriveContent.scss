@@ -1,4 +1,7 @@
 .drive-content-container{
+    .btn-g-drive{
+        top: 125px;
+    }
     .file-picker{
         position: fixed;
         bottom: 0;
@@ -43,9 +46,6 @@
             display: flex;
             align-items: center;
            
-            .fa-folder{
-                margin-right: 5px;
-            }
             h3{
                 font-size: 18px;
                 font-weight: bolder;
@@ -167,13 +167,6 @@
                     position: absolute;
                     cursor: pointer;
                 }
-                .fa-folder, .fa-file-word{
-                    color: darkblue;
-                    top: 5px;
-                    font-size: 24px;
-                    cursor: auto !important;
-                    right: 5px;
-                }
                 .fa-trash{
                     bottom: 7.5px;
                     left: 7.5px;
@@ -201,18 +194,8 @@
                         margin: 15px 0;
                         span{
                             font-weight: normal;
+                            word-break: break-all;
                         }
-                    }
-                    button{
-                        color: blue;
-                        font-size: 20px;
-                        margin-top: 25px;
-                        border: none;
-                        cursor: pointer;
-                        background: transparent;
-                    }
-                    button:focus{
-                        outline: none;
                     }
                 }
             }

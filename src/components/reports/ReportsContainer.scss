@@ -4,6 +4,12 @@
   color: black;
   box-sizing: border-box;
   position: relative;
+  .g-drive-error-occured {
+    color: tomato;
+    font-size: 26px;
+    padding: 25px 0;
+    text-align: center;
+  }
 
   .lds-ring {
     top: 38vh !important;
@@ -20,20 +26,19 @@
     background-color: #e8e8e8;
     height: 120px;
     position: relative;
-    @media(max-width: 890px){
+    @media (max-width: 890px) {
       height: 200px;
     }
-    @media(max-width: 500px){
+    @media (max-width: 500px) {
       height: 250px;
-
     }
-    .btns-container{
-      @media(max-width: 890px){
+    .btns-container {
+      @media (max-width: 890px) {
         margin-top: 40px;
         margin: 40px auto 0 auto;
       }
     }
-    .btns-container button:first-of-type{
+    .btns-container button:first-of-type {
       margin-right: 10px;
     }
     h1 {
@@ -47,10 +52,10 @@
       padding: 0 65px;
       display: flex;
       justify-content: space-between;
-      @media(max-width: 1000px){
+      @media (max-width: 1000px) {
         padding: 0;
       }
-      @media(max-width: 890px){
+      @media (max-width: 890px) {
         flex-flow: column;
       }
       div:first-of-type {
@@ -72,7 +77,7 @@
           font-size: 14px;
           left: -40px;
           top: -10px;
-          @media(max-width: 1000px){
+          @media (max-width: 1000px) {
             left: -20px;
             top: -15px;
           }
@@ -96,21 +101,21 @@
       .searcher-container {
         position: absolute;
         width: 220px;
-        @media(min-width: 891px){
+        @media (min-width: 891px) {
           left: 0;
           right: 0;
           margin: 0 auto;
         }
-        @media(max-width: 890px){
+        @media (max-width: 890px) {
           right: 0;
         }
-        @media(max-width: 500px){
+        @media (max-width: 500px) {
           right: 0;
           left: 0;
           margin: 0 auto;
           bottom: 20px;
         }
-        
+
         input {
           width: 100%;
           padding: 15px;
@@ -118,16 +123,14 @@
           border-radius: 5px;
           font-size: 14px;
         }
-        input:disabled{
-          background-color: rgba(0,0,0,0.3);
+        input:disabled {
+          background-color: rgba(0, 0, 0, 0.3);
           color: white;
         }
       }
-     
     }
   }
 }
-
 
 .reports-items-list {
   margin: 25px;
@@ -146,8 +149,8 @@
     input {
       width: 50px;
       border-radius: 5px;
-      @media(max-width: 450px){
-          width: 35px;
+      @media (max-width: 450px) {
+        width: 35px;
       }
     }
     i {
@@ -156,7 +159,7 @@
       bottom: 15px;
       cursor: pointer;
       position: absolute;
-      @media(max-width: 450px){
+      @media (max-width: 450px) {
         right: 50px;
       }
     }
@@ -174,14 +177,14 @@
   width: 100%;
   left: 0;
   letter-spacing: 1.5px;
-  
-  @media(max-width: 400px){
+
+  @media (max-width: 400px) {
     bottom: -85px;
-    label{
+    label {
       font-size: 14px;
     }
   }
-  label{
+  label {
     margin-bottom: 15px;
   }
   input {
@@ -189,71 +192,68 @@
     width: 20px;
     align-self: flex-end;
   }
-  
 }
 
-.choosen-folder-content{
+.choosen-folder-content {
   display: flex;
   min-height: 50%;
   margin: 0 auto;
   padding: 5px 25px;
   flex-flow: wrap;
-  & > p{
+  & > p {
     bottom: -50px;
     font-size: 20px;
     color: lightgreen;
   }
-  @media(max-width: 625px){
-    .folder-details{
+  @media (max-width: 625px) {
+    .folder-details {
       width: 100% !important;
     }
-    .icon-container{
+    .icon-container {
       display: none;
     }
-
   }
-  @media(max-width: 530px){
-    .submit-btn{
+  @media (max-width: 530px) {
+    .submit-btn {
       bottom: -15px !important;
     }
-    .folder-details{
-      p:first-of-type{
+    .folder-details {
+      p:first-of-type {
         word-break: break-all;
       }
-      p{
+      p {
         margin: 5px 0 !important;
         text-align: center;
       }
-      p, span{
+      p,
+      span {
         font-size: 14px !important;
       }
     }
   }
-  .folder-details{
+  .folder-details {
     width: 80%;
-    p{
+    p {
       margin: 10px 0;
-      span{
+      span {
         font-size: 17px;
       }
-      b{
+      b {
         font-weight: bold;
         font-size: 16px;
-        
       }
     }
   }
-  .icon-container{
+  .icon-container {
     width: 20%;
-    .fa-folder{
+    .fa-folder {
       font-size: 84px;
     }
-    span{
+    span {
       font-size: 16px;
       color: rgba(69, 69, 209, 0.81);
       cursor: pointer;
       margin-left: 5px;
     }
   }
-  
 }

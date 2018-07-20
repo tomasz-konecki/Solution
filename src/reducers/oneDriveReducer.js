@@ -1,6 +1,6 @@
 import {
     ONE_DRIVE_AUTH, SEND_CODE_TO_GET_TOKEN, GET_FOLDERS, CREATE_FOLDER, DELETE_FOLDER,
-    UPDATE_FOLDER, UPLOAD_FILE  } from "../constants";
+    UPDATE_FOLDER, UPLOAD_FILE, SET_PARENT_DETAILS  } from "../constants";
   import { updateObject } from '../services/methods';
   const initialState = {
     authStatus: null,
@@ -15,6 +15,8 @@ import {
     getFoldersStatus: null,
     getFoldersErrors: [],
     path: "",
+
+    parentId: "",
 
     createFolderStatus: null,
     createFolderErrors: [],
@@ -53,6 +55,8 @@ import {
       case UPLOAD_FILE:
         return updateObject(state, { uploadFileStatus: action.uploadFileStatus, 
           uploadFileErrors: action.uploadFileErrors })
+      case SET_PARENT_DETAILS:
+        return updateObject(state, { parentId: action.parentId })
       default:
         return state;
     }

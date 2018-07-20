@@ -1,5 +1,5 @@
 import { ONE_DRIVE_AUTH, SEND_CODE_TO_GET_TOKEN, GET_FOLDERS, CREATE_FOLDER, DELETE_FOLDER,
-    UPDATE_FOLDER, UPLOAD_FILE } from "../constants";
+    UPDATE_FOLDER, UPLOAD_FILE, SET_PARENT_DETAILS } from "../constants";
 import WebApi from "../api";
 import { changeOperationStatus } from "./asyncActions";
 import { errorCatcher } from '../services/errorsHandler';
@@ -193,4 +193,8 @@ export const uploadFileACreator = (token, path, file, currentFilesList) => {
             dispatch(uploadFile(false, errorCatcher(error)));
         })
     }
+}
+
+export const setParentDetails = parentId => {
+    return { type: SET_PARENT_DETAILS, parentId}
 }

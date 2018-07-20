@@ -369,8 +369,17 @@ const WebApi = {
     post: {
       getFolders: (model) => {
         return WebAround.post(`${API_ENDPOINT}/GDrive/Get`, model); 
+      },
+      deleteFolder: (model) => {
+        return WebAround.post(`${API_ENDPOINT}/GDrive/Delete`, model);
+      },
+      updateFolder: (model) => {
+        return WebAround.post(`${API_ENDPOINT}/GDrive/Update`, model);
+      },
+      createFolder: (model) => {
+        return WebAround.post(`${API_ENDPOINT}/GDrive/Create`, model);
       }
-    }
+    },
   },
   oneDrive: {
     get: {

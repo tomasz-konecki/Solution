@@ -5,7 +5,6 @@ const file = ({folder, openFolder, editFolderError, isDeletingOrEditingFolder,
     onSubmit, currentOpenedFolderDetailName, showDeleteFolderModal, onStateChange,
     onEditFolder, onChangeFolderName, currentOpenedFolderToEditId, 
     enableFolderEdit, editFolderName, closeEditingFolderName, onFileClick, chooseFolder, choosenFolder }) => {
-    
     return (
     <li className={choosenFolder ? folder.name === choosenFolder.name ? "selected-folder" : null : null}
 
@@ -18,7 +17,7 @@ const file = ({folder, openFolder, editFolderError, isDeletingOrEditingFolder,
 
                 <input className={editFolderError ? "input-error" : null}
                 type="text" value={editFolderName} 
-                onChange={e => onChangeFolderName(e, "edit", folder.name)} />
+                onChange={e => onChangeFolderName(e, folder.name)} />
 
                 { isDeletingOrEditingFolder && <SmallSpinner /> } 
                 
@@ -43,8 +42,6 @@ const file = ({folder, openFolder, editFolderError, isDeletingOrEditingFolder,
             <i onClick={() => chooseFolder(folder)} className="fa fa-cloud-upload-alt"></i>
         }
 
-        <i className={`fa ${folder.type === "file" ? "fa-file-word" : "fa-folder"}`}></i>
-        
         {
             folder.type !== "file" && 
             <div className="folders-icons">
@@ -60,7 +57,6 @@ const file = ({folder, openFolder, editFolderError, isDeletingOrEditingFolder,
                 <p><b>Typ</b><span>{folder.type}</span></p>
                 <p><b>Rozmiar</b><span>{folder.size}</span></p>
                 <p><b>Ścieżka</b><span>{folder.parentPath}</span></p>
-                <button onClick={() => window.open()}>Pobierz</button>
             </div>
         }
         

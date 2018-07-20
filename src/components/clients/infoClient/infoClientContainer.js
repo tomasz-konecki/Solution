@@ -53,11 +53,11 @@ export default class infoClientContainer extends Component {
     const {
       client,
       t,
-      handleAddCloudSave,
-      loading,
       clearResponseCloud,
       resultBlockCloud,
-      handleTimesClick
+      handleTimesClick,
+      onEditClient,
+      resultBlockAddClient
     } = this.props;
 
     if (shouldAnimate) {
@@ -75,12 +75,14 @@ export default class infoClientContainer extends Component {
           addingNewCloud={addingNewCloud}
           handleInputAddCloud={this.handleInputAddCloud}
           handleAddCloudSaveChild={this.handleAddCloudSaveChild}
-          loading={loading}
+          loading={false}
           resultBlockCloud={resultBlockCloud}
           clearResponseCloud={clearResponseCloud}
           handleTimesClick={handleTimesClick}
           handleDeleteCloudChild={this.handleDeleteCloudChild}
           disabled={disabled}
+          onEditClient={onEditClient}
+          resultBlockAddClient={resultBlockAddClient}
         />
       </div>
     );

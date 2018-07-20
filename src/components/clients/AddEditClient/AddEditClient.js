@@ -32,7 +32,6 @@ class AddEditClient extends Component {
   render() {
     let {
       addClient,
-      loading,
       resultBlock,
       t,
       children,
@@ -60,8 +59,7 @@ class AddEditClient extends Component {
           <AddClientModal
             addClient={addClient}
             editClient={editClient}
-            S
-            loading={loading}
+            loading={false}
             resultBlock={resultBlock}
             t={t}
             client={client}

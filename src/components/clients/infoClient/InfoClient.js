@@ -6,6 +6,7 @@ import Icon from "../../common/Icon";
 import Spinner from "../../common/spinner/spinner";
 import IntermediateBlock from "../../common/IntermediateBlock";
 import { CSSTransitionGroup } from "react-transition-group";
+import AddEditClient from "../AddEditClient/AddEditClient";
 
 const pullDOM = (
   t,
@@ -42,13 +43,15 @@ const InfoClient = ({
   addingNewCloud,
   handleInputAddCloud,
   handleAddCloudSaveChild,
-  loading,
   resultBlockCloud,
   clearResponseCloud,
   handleTimesClick,
   handleDeleteCloudChild,
-  disabled
+  disabled,
+  onEditClient,
+  resultBlockAddClient
 }) => {
+  console.log(client);
   const clientClouds = client.clouds.map((cloud, index) => {
     return (
       <div key={index} className="cloud">
@@ -66,10 +69,16 @@ const InfoClient = ({
   });
 
   client.description = !client.description
-    ? "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer ultrices, ante eget dapibus euismod, velit ipsum posuere quam, vel gravida justo metus sed nisi. Praesent semper mi non mi aliquam porttitor."
+    ? t("NoClientDescription")
     : client.description;
 
-  client.img = !client.img ? BilleniumPleaceholder : client.img;
+  client.imgSrc = client.path
+    ? "http://10.255.20.241/ClientsPictures/" + client.path
+    : BilleniumPleaceholder;
+
+  client.imgAlt = client.path
+    ? client.name + " logo"
+    : "Billeniumm Placeholder";
 
   let closeMessage = null;
 
@@ -83,7 +92,7 @@ const InfoClient = ({
 
   let adddingNewCloudContainer = addingNewCloud ? (
     <IntermediateBlock
-      loaded={!loading}
+      loaded={true}
       render={() =>
         pullDOM(
           t,
@@ -101,7 +110,7 @@ const InfoClient = ({
     <Aux>
       <div className="client-info-header">
         <div className="client-info-logo">
-          <img src={client.img} title={`${client.name} logo`} />
+          <img src={client.imgSrc} title={client.imgAlt} />
         </div>
         <div className="client-info-details">
           <div className="client-info-details-more">
@@ -110,7 +119,16 @@ const InfoClient = ({
           </div>
           <hr />
           <div className="client-info-options">
-            <span>{t("EditClient")}</span> |{" "}
+            <AddEditClient
+              key={4}
+              client={client}
+              editClient={onEditClient}
+              loading={false}
+              resultBlock={resultBlockAddClient}
+            >
+              {t("EditClient")}
+            </AddEditClient>
+            |
             <span onClick={() => handleTimesClick(client.id, client.name, t)}>
               {t("DeleteClient")}
             </span>
@@ -148,11 +166,11 @@ const InfoClient = ({
           </div>
         )}
       </div>
-      {loading && (
+      {/* {loading && (
         <div className="full-screen-loader">
           <Spinner />
         </div>
-      )}
+      )} */}
     </Aux>
   );
 };

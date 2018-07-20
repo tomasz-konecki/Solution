@@ -6,6 +6,7 @@ import IntermediateBlock from "../../common/IntermediateBlock";
 import "../../../scss/components/clients/addClient/addClientModal.scss";
 import PersonImgSrc from "../../../assets/img/billeniumIcons/person.png";
 import FileInput from "components/common/inputs/fileInput/fileInput";
+import SmallSpinner from "../../common/spinner/small-spinner";
 
 class AddClientModal extends Component {
   state = {
@@ -19,12 +20,18 @@ class AddClientModal extends Component {
     },
     file: "",
     imagePreviewUrl: "",
-    isFormValid: false
+    isFormValid: false,
+    loading: false
+  };
+
+  componentWillReceiveProps = nextProps => {
+    if (nextProps.resultBlock !== this.props.resultBlock) {
+      this.setState({ loading: false });
+    }
   };
 
   componentDidMount = () => {
     const { client } = this.props;
-    console.log(client);
     if (this.props.client) {
       this.setState({
         inputValue: {
@@ -88,6 +95,7 @@ class AddClientModal extends Component {
     if (this.props.editClient) {
       this.props.editClient(this.props.client.id, fd);
     } else {
+      this.setState({ loading: true });
       this.props.addClient(fd);
     }
   };
@@ -112,6 +120,7 @@ class AddClientModal extends Component {
   };
 
   pullDOM = (addClient, t, $imagePreview) => {
+    const { loading } = this.state;
     return (
       <form>
         <div className="add-client-container-left">
@@ -151,6 +160,7 @@ class AddClientModal extends Component {
           >
             {t("AddClient")}
           </Button>
+          {loading && <SmallSpinner />}
         </div>
         <div className="add-client-container-right">
           {$imagePreview}

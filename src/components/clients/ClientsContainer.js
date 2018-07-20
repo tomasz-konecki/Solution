@@ -11,7 +11,6 @@ import * as clientsActions from "../../actions/clientsActions";
 import ClientsList from "./ClientsList";
 import IntermediateBlock from "../common/IntermediateBlock";
 import Icon from "../common/Icon";
-import Aux from "../../services/auxilary";
 import AddEditClient from "./AddEditClient/AddEditClient";
 import SearchClient from "./searchClient/SearchClient";
 import ShowRadioButtons from "./ShowRadioButtons/ShowRadioButtons";
@@ -26,7 +25,8 @@ class ClientsContainer extends React.Component {
     sortingDirections: {
       name: "asc"
     },
-    checked: null
+    checked: null,
+    loaded: false
   };
 
   componentDidMount = () => {
@@ -36,6 +36,9 @@ class ClientsContainer extends React.Component {
   componentWillReceiveProps(nextProps) {
     if (nextProps.clients !== this.props.clients) {
       this.setState({ clients: nextProps.clients });
+    }
+    if (nextProps.loading === false && this.props.loading === true) {
+      this.setState({ loaded: true });
     }
     if (this.validatePropsForClientDeletion(nextProps)) {
       this.props.async.setActionConfirmationProgress(true);
@@ -231,7 +234,6 @@ class ClientsContainer extends React.Component {
       <React.Fragment>
         <AddEditClient
           addClient={clientsActions.addClient}
-          loading={loading}
           resultBlock={resultBlockAddClient}
         />
         <SearchClient filter={this.filterList} t={t} />
@@ -246,6 +248,7 @@ class ClientsContainer extends React.Component {
           t={t}
           sortBy={this.sortBy}
           clientNameClickedHandler={this.clientNameClickedHandler}
+          loading={loading}
         />
         {resultBlock ? (
           clients.length === 0 && (
@@ -258,8 +261,8 @@ class ClientsContainer extends React.Component {
     );
   };
   render() {
-    let { resultBlock, resultBlockCloud, t, loading } = this.props;
-    let { clients, checked, client } = this.state;
+    let { resultBlock, resultBlockCloud, t } = this.props;
+    let { client, loaded } = this.state;
     let infoClient = null;
 
     if (client.name) {
@@ -268,11 +271,12 @@ class ClientsContainer extends React.Component {
           client={client}
           t={t}
           handleAddCloudSave={this.handleAddCloudSave}
-          loading={loading}
           resultBlockCloud={resultBlockCloud}
           clearResponseCloud={this.props.clientsActions.clearResponseCloud}
           handleTimesClick={this.handleTimesClick}
           handleDeleteCloud={this.handleDeleteCloud}
+          onEditClient={this.props.clientsActions.editClient}
+          resultBlockAddClient={this.props.resultBlockAddClient}
         />
       );
     }
@@ -281,7 +285,7 @@ class ClientsContainer extends React.Component {
       <div className="content-container clients-container">
         <div className="clients-list-container">
           <IntermediateBlock
-            loaded={!loading}
+            loaded={loaded}
             render={() => this.pullDOM()}
             resultBlock={resultBlock}
           />

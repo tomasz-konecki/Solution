@@ -6,13 +6,15 @@ import Icon from "../../common/Icon";
 import Spinner from "../../common/spinner/spinner";
 import IntermediateBlock from "../../common/IntermediateBlock";
 import { CSSTransitionGroup } from "react-transition-group";
+import AddEditClient from "../AddEditClient/AddEditClient";
 
 const pullDOM = (
   t,
   handleAddCloud,
   handleAddCloudSaveChild,
   handleInputAddCloud,
-  disabled
+  disabled,
+  inputValueToAdd
 ) => {
   return (
     <div className="cloud">
@@ -21,6 +23,7 @@ const pullDOM = (
         <input
           onChange={e => handleInputAddCloud(e)}
           placeholder={t("CloudName")}
+          value={inputValueToAdd}
         />
       </div>
       <div className="cloud-options">
@@ -42,12 +45,16 @@ const InfoClient = ({
   addingNewCloud,
   handleInputAddCloud,
   handleAddCloudSaveChild,
-  loading,
   resultBlockCloud,
   clearResponseCloud,
   handleTimesClick,
+  handleSyncClick,
   handleDeleteCloudChild,
-  disabled
+  handleReactivateCloudChild,
+  disabled,
+  onEditClient,
+  resultBlockAddClient,
+  inputValueToAdd
 }) => {
   const clientClouds = client.clouds.map((cloud, index) => {
     return (
@@ -57,19 +64,39 @@ const InfoClient = ({
           <span>{cloud.name}</span>
         </div>
         <div className="cloud-options">
-          <button onClick={() => handleDeleteCloudChild(cloud.id, cloud.name)}>
-            <Icon icon="times" iconType="fa" additionalClass="icon-danger" />
-          </button>
+          {!cloud.isDeleted ? (
+            <button
+              onClick={() => handleDeleteCloudChild(cloud.id, cloud.name)}
+            >
+              <Icon icon="times" iconType="fa" additionalClass="icon-danger" />
+            </button>
+          ) : (
+            <button
+              onClick={() => handleReactivateCloudChild(cloud.id, cloud.name)}
+            >
+              <Icon
+                icon="sync-alt"
+                iconType="fa"
+                additionalClass="icon-danger"
+              />
+            </button>
+          )}
         </div>
       </div>
     );
   });
 
-  client.description = !client.description
-    ? "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer ultrices, ante eget dapibus euismod, velit ipsum posuere quam, vel gravida justo metus sed nisi. Praesent semper mi non mi aliquam porttitor."
+  client.descriptionHelper = !client.description
+    ? t("NoClientDescription")
     : client.description;
 
-  client.img = !client.img ? BilleniumPleaceholder : client.img;
+  client.imgSrc = client.path
+    ? "http://10.255.20.241/ClientsPictures/" + client.path
+    : BilleniumPleaceholder;
+
+  client.imgAlt = client.path
+    ? client.name + " logo"
+    : "Billeniumm Placeholder";
 
   let closeMessage = null;
 
@@ -83,14 +110,15 @@ const InfoClient = ({
 
   let adddingNewCloudContainer = addingNewCloud ? (
     <IntermediateBlock
-      loaded={!loading}
+      loaded={true}
       render={() =>
         pullDOM(
           t,
           handleAddCloud,
           handleAddCloudSaveChild,
           handleInputAddCloud,
-          disabled
+          disabled,
+          inputValueToAdd
         )
       }
       resultBlock={resultBlockCloud}
@@ -101,19 +129,34 @@ const InfoClient = ({
     <Aux>
       <div className="client-info-header">
         <div className="client-info-logo">
-          <img src={client.img} title={`${client.name} logo`} />
+          <img src={client.imgSrc} title={client.imgAlt} />
         </div>
         <div className="client-info-details">
           <div className="client-info-details-more">
             <h1>{client.name}</h1>
-            <p>{client.description}</p>
+            <p>{client.descriptionHelper}</p>
           </div>
           <hr />
           <div className="client-info-options">
-            <span>{t("EditClient")}</span> |{" "}
-            <span onClick={() => handleTimesClick(client.id, client.name, t)}>
-              {t("DeleteClient")}
-            </span>
+            <AddEditClient
+              key={4}
+              client={client}
+              editClient={onEditClient}
+              loading={false}
+              resultBlock={resultBlockAddClient}
+            >
+              <span>{t("EditClient")}</span>
+            </AddEditClient>
+            |
+            {!client.isDeleted ? (
+              <span onClick={() => handleTimesClick(client.id, client.name, t)}>
+                {t("DeleteClient")}
+              </span>
+            ) : (
+              <span onClick={() => handleSyncClick(client.id, client.name)}>
+                {t("ReactivateClient")}
+              </span>
+            )}
           </div>
         </div>
       </div>
@@ -148,11 +191,11 @@ const InfoClient = ({
           </div>
         )}
       </div>
-      {loading && (
+      {/* {loading && (
         <div className="full-screen-loader">
           <Spinner />
         </div>
-      )}
+      )} */}
     </Aux>
   );
 };

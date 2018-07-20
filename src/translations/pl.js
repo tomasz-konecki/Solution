@@ -74,7 +74,9 @@ const translations = {
     ClientReactivated: "Klient został reaktywowany",
     Removing: "Zamierzasz usunąć klienta",
     RemovingCloud: "Zamierzasz usunąć chmurę",
+    ReactivatingCloud: "Zamierzasz reaktywować chmurę",
     Reactivating: "Zamierzasz reaktywować klienta",
+    CloudReactivated: "Chmura została reaktywowana",
     Search: "Szukaj",
     ClientsNotFound: "Brak klientów",
     Activated: "Aktywne",
@@ -82,11 +84,14 @@ const translations = {
     ClientCloudsList: "Lista Chmur Klienta",
     AddCloud: "Dodaj Chmurę",
     CloudsNotFound: "Nie znaleziono żadnej chmury.",
-    CloudName: "Nazwa Chmury"
+    CloudName: "Nazwa Chmury",
+    NoClientDescription: "Brak opisu Klienta",
+    CloudRemoved: "Chmura została usunięta"
   },
   AddClient: {
     AddClient: "Dodaj Klienta",
     ClientName: "Nazwa Klienta",
+    ClientDescription: "Opis Klienta",
     ClientAddedSuccess: "Klient został dodany."
   },
   ProjectsList: {
@@ -324,6 +329,10 @@ const translations = {
       "Ten proces jest permanentny. Usuwa wpis z bazy danych i wszystkich powiązanych miejsc.",
     Info2: "Cofnięcie tej akcji jest niemożliwe.",
     SuccessfullyDeleted: "Pomyślnie usunięto umiejętność"
+  },
+  FileInput: {
+    ChooseFile: "Wybierz plik",
+    WrongFileType: "Zły format pliku"
   }
 };
 

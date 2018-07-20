@@ -6,7 +6,7 @@ export default class infoClientContainer extends Component {
   state = {
     shouldAnimate: true,
     addingNewCloud: false,
-    inputValueToAdd: null,
+    inputValueToAdd: "",
     disabled: true
   };
 
@@ -42,22 +42,33 @@ export default class infoClientContainer extends Component {
       this.state.inputValueToAdd,
       this.props.client.id
     );
+    this.setState({ inputValueToAdd: "" });
   };
 
   handleDeleteCloudChild = (cloudId, cloudName) => {
     this.props.handleDeleteCloud(cloudId, cloudName);
   };
 
+  handleReactivateCloudChild = (cloudId, cloudName) => {
+    this.props.handleReactivateCloud(cloudId, cloudName);
+  };
+
   render() {
-    const { shouldAnimate, addingNewCloud, disabled } = this.state;
+    const {
+      shouldAnimate,
+      addingNewCloud,
+      disabled,
+      inputValueToAdd
+    } = this.state;
     const {
       client,
       t,
-      handleAddCloudSave,
-      loading,
       clearResponseCloud,
       resultBlockCloud,
-      handleTimesClick
+      handleTimesClick,
+      handleSyncClick,
+      onEditClient,
+      resultBlockAddClient
     } = this.props;
 
     if (shouldAnimate) {
@@ -75,12 +86,17 @@ export default class infoClientContainer extends Component {
           addingNewCloud={addingNewCloud}
           handleInputAddCloud={this.handleInputAddCloud}
           handleAddCloudSaveChild={this.handleAddCloudSaveChild}
-          loading={loading}
+          loading={false}
           resultBlockCloud={resultBlockCloud}
           clearResponseCloud={clearResponseCloud}
           handleTimesClick={handleTimesClick}
+          handleSyncClick={handleSyncClick}
           handleDeleteCloudChild={this.handleDeleteCloudChild}
+          handleReactivateCloudChild={this.handleReactivateCloudChild}
           disabled={disabled}
+          onEditClient={onEditClient}
+          resultBlockAddClient={resultBlockAddClient}
+          inputValueToAdd={inputValueToAdd}
         />
       </div>
     );

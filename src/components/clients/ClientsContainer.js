@@ -11,47 +11,40 @@ import * as clientsActions from "../../actions/clientsActions";
 import ClientsList from "./ClientsList";
 import IntermediateBlock from "../common/IntermediateBlock";
 import Icon from "../common/Icon";
-import Aux from "../../services/auxilary";
-import AddClient from "./AddClient/AddClient";
+import AddEditClient from "./AddEditClient/AddEditClient";
 import SearchClient from "./searchClient/SearchClient";
 import ShowRadioButtons from "./ShowRadioButtons/ShowRadioButtons";
 import InfoClientContainer from "./infoClient/infoClientContainer";
 
 import "../../scss/components/clients/ClientsContainer.scss";
+
 class ClientsContainer extends React.Component {
   state = {
     clients: [],
-    loaded: false,
-    editingInput: null,
-    clientName: null,
-    error: null,
-    editClickDisabled: true,
+    client: {},
+    clientIndex: null,
     sortingDirections: {
       name: "asc"
     },
     checked: null,
-    firstReceiving: true,
-    client: {
-      index: null,
-      id: null,
-      name: null,
-      isDeleted: null
-    }
+    loaded: false
   };
 
   componentDidMount = () => {
     this.props.clientsActions.loadClients();
-    // this.radioButtonClick("activated");
   };
 
   componentWillReceiveProps(nextProps) {
+    const { client } = this.state;
+
     if (nextProps.clients !== this.props.clients) {
-      this.setState({ clients: nextProps.clients });
-      // if (this.state.firstReceiving) {
-      //   this.setState({ firstReceiving: false });
-      // } else {
-      //   this.setState({ clients: nextProps.clients });
-      // }
+      const updatedClient = nextProps.clients.filter(clientItem => {
+        return Object.getOwnPropertyNames(client).length !== 0
+          ? clientItem.id === client.id
+          : {};
+      });
+
+      this.setState({ clients: nextProps.clients, client: updatedClient[0] });
     }
     if (nextProps.loading === false && this.props.loading === true) {
       this.setState({ loaded: true });
@@ -67,6 +60,10 @@ class ClientsContainer extends React.Component {
     if (this.validatePropsForCloudDeletion(nextProps)) {
       this.props.async.setActionConfirmationProgress(true);
       this.props.clientsActions.deleteCloud(nextProps.toConfirm.id);
+    }
+    if (this.validatePropsForCloudReactivation(nextProps)) {
+      this.props.async.setActionConfirmationProgress(true);
+      this.props.clientsActions.reactivateCloud(nextProps.toConfirm.id);
     }
   }
 
@@ -97,7 +94,17 @@ class ClientsContainer extends React.Component {
     );
   }
 
-  handleTimesClick = (id, name, t) => {
+  validatePropsForCloudReactivation(nextProps) {
+    return (
+      nextProps.confirmed &&
+      !nextProps.isWorking &&
+      nextProps.type === ACTION_CONFIRMED &&
+      nextProps.toConfirm.key === "reactivateCloud"
+    );
+  }
+
+  handleTimesClick = (id, name) => {
+    const { t } = this.props;
     this.props.async.setActionConfirmation(true, {
       key: "deleteClient",
       string: `${t("Removing")} ${name}`,
@@ -106,7 +113,8 @@ class ClientsContainer extends React.Component {
     });
   };
 
-  handleSyncClick = (id, name, t) => {
+  handleSyncClick = (id, name) => {
+    const { t } = this.props;
     this.props.async.setActionConfirmation(true, {
       key: "reactivateClient",
       string: `${t("Reactivating")} ${name}`,
@@ -115,43 +123,15 @@ class ClientsContainer extends React.Component {
     });
   };
 
-  handleEditClick = (id, index) => {
-    this.setState({ editingInput: index });
-  };
-
-  handleGetValueFromInput = (value, error) => {
-    if (!error) {
-      this.setState({
-        editClickDisabled: false,
-        clientName: value,
-        error: error
-      });
-    } else {
-      this.setState({
-        editClickDisabled: true,
-        clientName: value,
-        error: error
-      });
-    }
-  };
-
-  handleEditSaveClick = id => {
-    if (!this.state.error) {
-      this.props.clientsActions.saveEdit(id, this.state.clientName);
-      this.setState({ editingInput: null });
-    }
-  };
-
-  generateOptions = (id, isDeleted, name, index, t) => {
+  generateOptions = client => {
+    const { t } = this.props;
     let content = [];
-    let { editingInput } = this.state;
-
-    if (!isDeleted) {
+    if (!client.isDeleted) {
       content.push(
         <button
           title={t("DeleteClient")}
           key={1}
-          onClick={() => this.handleTimesClick(id, name, t)}
+          onClick={() => this.handleTimesClick(client.id, client.name)}
         >
           <Icon icon="times" iconType="fa" />
         </button>
@@ -161,43 +141,30 @@ class ClientsContainer extends React.Component {
         <button
           title={t("ReactivateClient")}
           key={2}
-          onClick={() => this.handleSyncClick(id, name, t)}
+          onClick={() => this.handleSyncClick(client.id, client.name)}
         >
           <Icon icon="sync-alt" iconType="fa" />
         </button>
       );
     }
-    if (editingInput === index) {
-      content.push(
-        <button
-          title={t("SaveClient")}
-          disabled={this.state.editClickDisabled}
-          key={3}
-          onClick={() => this.handleEditSaveClick(id, index)}
-        >
-          <Icon icon="check" iconType="fa" />
-        </button>
-      );
-    } else {
-      content.push(
-        <button
-          title={t("EditClient")}
-          key={4}
-          onClick={() =>
-            this.handleEditClick(id, index, this.handleGetValueFromInput)
-          }
-        >
-          <Icon icon="edit" iconType="fa" />
-        </button>
-      );
-    }
+    content.push(
+      <AddEditClient
+        key={4}
+        client={client}
+        editClient={this.props.clientsActions.editClient}
+        loading={this.props.loading}
+        resultBlock={this.props.resultBlockAddClient}
+      >
+        <Icon icon="edit" iconType="fa" />
+      </AddEditClient>
+    );
 
     return content;
   };
 
   filterList = e => {
-    let searchedValue = e.target.value;
     let updatedList = this.props.clients;
+    let searchedValue = e.target.value;
     if (searchedValue && this.props.clients) {
       updatedList = updatedList.filter((item, index) => {
         if (item.name && searchedValue) {
@@ -256,9 +223,10 @@ class ClientsContainer extends React.Component {
     }
   };
 
-  clientNameClickedHandler = (id, name, clouds, index, t) => {
+  clientNameClickedHandler = (client, index) => {
     this.setState({
-      client: { index: index, id: id, name: name, clouds: clouds }
+      client,
+      clientIndex: index
     });
   };
 
@@ -267,23 +235,41 @@ class ClientsContainer extends React.Component {
   };
 
   handleDeleteCloud = (id, name) => {
-    this.props.async.setActionConfirmation(true, {
+    const { async, t } = this.props;
+    async.setActionConfirmation(true, {
       key: "deleteCloud",
-      string: `${this.props.t("RemovingCloud")} ${name}`,
+      string: `${t("RemovingCloud")} ${name}`,
       id: id,
-      successMessage: this.props.t("CloudRemoved")
+      successMessage: t("CloudRemoved")
     });
   };
 
-  pullDOM = (editingInput, clients, t, filterList, sortBy, checked) => {
+  handleReactivateCloud = (id, name) => {
+    const { async, t } = this.props;
+    async.setActionConfirmation(true, {
+      key: "reactivateCloud",
+      string: `${t("ReactivatingCloud")} ${name}`,
+      id: id,
+      successMessage: t("CloudReactivated")
+    });
+  };
+
+  pullDOM = () => {
+    const {
+      clientsActions,
+      loading,
+      resultBlockAddClient,
+      t,
+      resultBlock
+    } = this.props;
+    const { clients, checked } = this.state;
     return (
-      <Aux>
-        <AddClient
-          addClient={this.props.clientsActions.addClient}
-          loading={this.props.loading}
-          resultBlock={this.props.resultBlockAddClient}
+      <React.Fragment>
+        <AddEditClient
+          addClient={clientsActions.addClient}
+          resultBlock={resultBlockAddClient}
         />
-        <SearchClient filter={filterList} t={t} />
+        <SearchClient filter={this.filterList} t={t} />
         <ShowRadioButtons
           t={t}
           radioButtonClick={this.radioButtonClick}
@@ -292,33 +278,40 @@ class ClientsContainer extends React.Component {
         <ClientsList
           clients={clients}
           options={this.generateOptions}
-          editingInput={editingInput}
-          handleGetValueFromInput={this.handleGetValueFromInput}
           t={t}
-          sortBy={sortBy}
+          sortBy={this.sortBy}
           clientNameClickedHandler={this.clientNameClickedHandler}
+          loading={loading}
         />
-        {clients.length === 0 && (
-          <span className="clients-not-found">{t("ClientsNotFound")}</span>
+        {resultBlock ? (
+          clients.length === 0 && (
+            <span className="clients-not-found">{t("ClientsNotFound")}</span>
+          )
+        ) : (
+          <h1>Error during loading</h1>
         )}
-      </Aux>
+      </React.Fragment>
     );
   };
   render() {
-    let { resultBlock, resultBlockCloud, t, loading } = this.props;
-    let { editingInput, loaded, clients, checked, client } = this.state;
+    let { resultBlock, resultBlockCloud, t } = this.props;
+    let { client, loaded } = this.state;
     let infoClient = null;
+
     if (client.name) {
       infoClient = (
         <InfoClientContainer
           client={client}
           t={t}
           handleAddCloudSave={this.handleAddCloudSave}
-          loading={loading}
           resultBlockCloud={resultBlockCloud}
           clearResponseCloud={this.props.clientsActions.clearResponseCloud}
           handleTimesClick={this.handleTimesClick}
+          handleSyncClick={this.handleSyncClick}
           handleDeleteCloud={this.handleDeleteCloud}
+          handleReactivateCloud={this.handleReactivateCloud}
+          onEditClient={this.props.clientsActions.editClient}
+          resultBlockAddClient={this.props.resultBlockAddClient}
         />
       );
     }
@@ -328,16 +321,7 @@ class ClientsContainer extends React.Component {
         <div className="clients-list-container">
           <IntermediateBlock
             loaded={loaded}
-            render={() =>
-              this.pullDOM(
-                editingInput,
-                clients,
-                t,
-                this.filterList,
-                this.sortBy,
-                checked
-              )
-            }
+            render={() => this.pullDOM()}
             resultBlock={resultBlock}
           />
         </div>

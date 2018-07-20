@@ -74,7 +74,9 @@ const translations = {
     ClientReactivated: "Klient został reaktywowany",
     Removing: "Zamierzasz usunąć klienta",
     RemovingCloud: "Zamierzasz usunąć chmurę",
+    ReactivatingCloud: "Zamierzasz reaktywować chmurę",
     Reactivating: "Zamierzasz reaktywować klienta",
+    CloudReactivated: "Chmura została reaktywowana",
     Search: "Szukaj",
     ClientsNotFound: "Brak klientów",
     Activated: "Aktywne",
@@ -82,7 +84,9 @@ const translations = {
     ClientCloudsList: "Lista Chmur Klienta",
     AddCloud: "Dodaj Chmurę",
     CloudsNotFound: "Nie znaleziono żadnej chmury.",
-    CloudName: "Nazwa Chmury"
+    CloudName: "Nazwa Chmury",
+    NoClientDescription: "Brak opisu Klienta",
+    CloudRemoved: "Chmura została usunięta"
   },
   AddClient: {
     AddClient: "Dodaj Klienta",

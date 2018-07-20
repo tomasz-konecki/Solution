@@ -15,7 +15,7 @@ const ClientsList = ({
   const listOfClients = clients.map((item, index) => {
     return (
       <tr key={index}>
-        <td onClick={() => clientNameClickedHandler(item)}>
+        <td onClick={() => clientNameClickedHandler(item, index)}>
           <span>{item.name}</span>
         </td>
         <td className="client-options">{options(item, index)}</td>

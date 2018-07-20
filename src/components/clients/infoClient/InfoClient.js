@@ -13,7 +13,8 @@ const pullDOM = (
   handleAddCloud,
   handleAddCloudSaveChild,
   handleInputAddCloud,
-  disabled
+  disabled,
+  inputValueToAdd
 ) => {
   return (
     <div className="cloud">
@@ -22,6 +23,7 @@ const pullDOM = (
         <input
           onChange={e => handleInputAddCloud(e)}
           placeholder={t("CloudName")}
+          value={inputValueToAdd}
         />
       </div>
       <div className="cloud-options">
@@ -46,10 +48,13 @@ const InfoClient = ({
   resultBlockCloud,
   clearResponseCloud,
   handleTimesClick,
+  handleSyncClick,
   handleDeleteCloudChild,
+  handleReactivateCloudChild,
   disabled,
   onEditClient,
-  resultBlockAddClient
+  resultBlockAddClient,
+  inputValueToAdd
 }) => {
   console.log(client);
   const clientClouds = client.clouds.map((cloud, index) => {
@@ -60,15 +65,29 @@ const InfoClient = ({
           <span>{cloud.name}</span>
         </div>
         <div className="cloud-options">
-          <button onClick={() => handleDeleteCloudChild(cloud.id, cloud.name)}>
-            <Icon icon="times" iconType="fa" additionalClass="icon-danger" />
-          </button>
+          {!cloud.isDeleted ? (
+            <button
+              onClick={() => handleDeleteCloudChild(cloud.id, cloud.name)}
+            >
+              <Icon icon="times" iconType="fa" additionalClass="icon-danger" />
+            </button>
+          ) : (
+            <button
+              onClick={() => handleReactivateCloudChild(cloud.id, cloud.name)}
+            >
+              <Icon
+                icon="sync-alt"
+                iconType="fa"
+                additionalClass="icon-danger"
+              />
+            </button>
+          )}
         </div>
       </div>
     );
   });
 
-  client.description = !client.description
+  client.descriptionHelper = !client.description
     ? t("NoClientDescription")
     : client.description;
 
@@ -99,7 +118,8 @@ const InfoClient = ({
           handleAddCloud,
           handleAddCloudSaveChild,
           handleInputAddCloud,
-          disabled
+          disabled,
+          inputValueToAdd
         )
       }
       resultBlock={resultBlockCloud}
@@ -115,7 +135,7 @@ const InfoClient = ({
         <div className="client-info-details">
           <div className="client-info-details-more">
             <h1>{client.name}</h1>
-            <p>{client.description}</p>
+            <p>{client.descriptionHelper}</p>
           </div>
           <hr />
           <div className="client-info-options">
@@ -126,12 +146,18 @@ const InfoClient = ({
               loading={false}
               resultBlock={resultBlockAddClient}
             >
-              {t("EditClient")}
+              <span>{t("EditClient")}</span>
             </AddEditClient>
             |
-            <span onClick={() => handleTimesClick(client.id, client.name, t)}>
-              {t("DeleteClient")}
-            </span>
+            {!client.isDeleted ? (
+              <span onClick={() => handleTimesClick(client.id, client.name, t)}>
+                {t("DeleteClient")}
+              </span>
+            ) : (
+              <span onClick={() => handleSyncClick(client.id, client.name)}>
+                {t("ReactivateClient")}
+              </span>
+            )}
           </div>
         </div>
       </div>

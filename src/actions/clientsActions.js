@@ -216,3 +216,20 @@ export const deleteCloud = id => {
       });
   };
 };
+
+export const reactivateCloud = id => {
+  return dispatch => {
+    WebApi.clouds
+      .reactivate(id)
+      .then(response => {
+        if (!response.errorOccurred()) {
+          dispatch(setActionConfirmationResult(response));
+          dispatch(loadClients());
+        }
+      })
+      .catch(error => {
+        dispatch(setActionConfirmationResult(error));
+        throw error;
+      });
+  };
+};

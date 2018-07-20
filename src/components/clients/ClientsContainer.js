@@ -22,6 +22,7 @@ class ClientsContainer extends React.Component {
   state = {
     clients: [],
     client: {},
+    clientIndex: null,
     sortingDirections: {
       name: "asc"
     },
@@ -34,8 +35,16 @@ class ClientsContainer extends React.Component {
   };
 
   componentWillReceiveProps(nextProps) {
+    const { client } = this.state;
+
     if (nextProps.clients !== this.props.clients) {
-      this.setState({ clients: nextProps.clients });
+      const updatedClient = nextProps.clients.filter(clientItem => {
+        return Object.getOwnPropertyNames(client).length !== 0
+          ? clientItem.id === client.id
+          : {};
+      });
+
+      this.setState({ clients: nextProps.clients, client: updatedClient[0] });
     }
     if (nextProps.loading === false && this.props.loading === true) {
       this.setState({ loaded: true });
@@ -51,6 +60,10 @@ class ClientsContainer extends React.Component {
     if (this.validatePropsForCloudDeletion(nextProps)) {
       this.props.async.setActionConfirmationProgress(true);
       this.props.clientsActions.deleteCloud(nextProps.toConfirm.id);
+    }
+    if (this.validatePropsForCloudReactivation(nextProps)) {
+      this.props.async.setActionConfirmationProgress(true);
+      this.props.clientsActions.reactivateCloud(nextProps.toConfirm.id);
     }
   }
 
@@ -78,6 +91,15 @@ class ClientsContainer extends React.Component {
       !nextProps.isWorking &&
       nextProps.type === ACTION_CONFIRMED &&
       nextProps.toConfirm.key === "deleteCloud"
+    );
+  }
+
+  validatePropsForCloudReactivation(nextProps) {
+    return (
+      nextProps.confirmed &&
+      !nextProps.isWorking &&
+      nextProps.type === ACTION_CONFIRMED &&
+      nextProps.toConfirm.key === "reactivateCloud"
     );
   }
 
@@ -201,9 +223,10 @@ class ClientsContainer extends React.Component {
     }
   };
 
-  clientNameClickedHandler = client => {
+  clientNameClickedHandler = (client, index) => {
     this.setState({
-      client
+      client,
+      clientIndex: index
     });
   };
 
@@ -218,6 +241,16 @@ class ClientsContainer extends React.Component {
       string: `${t("RemovingCloud")} ${name}`,
       id: id,
       successMessage: t("CloudRemoved")
+    });
+  };
+
+  handleReactivateCloud = (id, name) => {
+    const { async, t } = this.props;
+    async.setActionConfirmation(true, {
+      key: "reactivateCloud",
+      string: `${t("ReactivatingCloud")} ${name}`,
+      id: id,
+      successMessage: t("CloudReactivated")
     });
   };
 
@@ -274,7 +307,9 @@ class ClientsContainer extends React.Component {
           resultBlockCloud={resultBlockCloud}
           clearResponseCloud={this.props.clientsActions.clearResponseCloud}
           handleTimesClick={this.handleTimesClick}
+          handleSyncClick={this.handleSyncClick}
           handleDeleteCloud={this.handleDeleteCloud}
+          handleReactivateCloud={this.handleReactivateCloud}
           onEditClient={this.props.clientsActions.editClient}
           resultBlockAddClient={this.props.resultBlockAddClient}
         />

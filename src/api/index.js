@@ -185,6 +185,9 @@ const WebApi = {
     },
     delete: cloudId => {
       return WebAround.delete(`${API_ENDPOINT}/clouds/${cloudId}`);
+    },
+    reactivate: cloudId => {
+      return WebAround.put(`${API_ENDPOINT}/clouds/${cloudId}/reactivate`);
     }
   },
   education: {

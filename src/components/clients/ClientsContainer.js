@@ -219,10 +219,16 @@ class ClientsContainer extends React.Component {
   };
 
   pullDOM = () => {
-    const { clientsActions, loading, resultBlockAddClient, t } = this.props;
+    const {
+      clientsActions,
+      loading,
+      resultBlockAddClient,
+      t,
+      resultBlock
+    } = this.props;
     const { clients, checked } = this.state;
     return (
-      <Aux>
+      <React.Fragment>
         <AddEditClient
           addClient={clientsActions.addClient}
           loading={loading}
@@ -241,17 +247,21 @@ class ClientsContainer extends React.Component {
           sortBy={this.sortBy}
           clientNameClickedHandler={this.clientNameClickedHandler}
         />
-        {clients.length === 0 && (
-          <span className="clients-not-found">{t("ClientsNotFound")}</span>
+        {resultBlock ? (
+          clients.length === 0 && (
+            <span className="clients-not-found">{t("ClientsNotFound")}</span>
+          )
+        ) : (
+          <h1>Error during loading</h1>
         )}
-      </Aux>
+      </React.Fragment>
     );
   };
   render() {
     let { resultBlock, resultBlockCloud, t, loading } = this.props;
     let { clients, checked, client } = this.state;
     let infoClient = null;
-    console.log(client);
+
     if (client.name) {
       infoClient = (
         <InfoClientContainer

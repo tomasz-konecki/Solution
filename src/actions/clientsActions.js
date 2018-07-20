@@ -157,18 +157,19 @@ export const editClient = (clientId, formData) => {
 
 export const addClient = formData => {
   return dispatch => {
-    dispatch(asyncStarted());
+    // dispatch(asyncStarted());
     WebApi.clients
       .post(formData)
       .then(response => {
         if (!response.errorOccurred()) {
-          dispatch(addClientResult(response));
-          setTimeout(() => {
-            dispatch(addClientResult(null));
-            dispatch(loadClients());
-          }, 2000);
+          console.log("kupa");
+          // dispatch(addClientResult(response));
+          // setTimeout(() => {
+          //   dispatch(addClientResult(null));
+          //   dispatch(loadClients());
+          // }, 2000);
         }
-        dispatch(asyncEnded());
+        // dispatch(asyncEnded());
       })
       .catch(error => {
         dispatch(addClientResult(error));

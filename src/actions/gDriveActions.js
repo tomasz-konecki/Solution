@@ -3,7 +3,7 @@ from "../constants";
 import WebApi from "../api";
 import { errorCatcher } from '../services/errorsHandler';
 import { asyncEnded, asyncStarted } from '../actions/asyncActions';
-import { getFolders, setParentDetails, deleteFolder, updateFolder, createFolder } from './oneDriveActions';
+import { getFolders, setParentDetails, deleteFolder, updateFolder, createFolder, uploadFile } from './oneDriveActions';
 import { loginACreator } from './persistHelpActions';
 import storeCreator from '../store';
 
@@ -72,6 +72,25 @@ export const createFolderACreator = (name, parentId, path) => {
             dispatch(getFoldersACreator(path, "root"));
         }).catch(error => {
             dispatch(createFolder(false, errorCatcher(error)));
+        })
+    }
+}
+
+export const uploadFileACreator = (path, file, parentId) => {
+    return dispatch => {
+        let model = new FormData();
+        model.set("parentId", parentId);
+        model.set("File", file);
+        
+        const config = {
+            headers: {'Content-Type': 'multipart/form-data' }
+        }
+
+        WebApi.gDrive.post.uploadFile(model, config).then(response => {
+            dispatch(uploadFile(true, []));
+            dispatch(getFoldersACreator(path, "root"));
+        }).catch(error => {
+            dispatch(uploadFile(false, errorCatcher(error)));
         })
     }
 }

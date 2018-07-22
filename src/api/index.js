@@ -378,6 +378,9 @@ const WebApi = {
       },
       createFolder: (model) => {
         return WebAround.post(`${API_ENDPOINT}/GDrive/Create`, model);
+      },
+      uploadFile: (model, config) => {
+        return WebAround.post(`${API_ENDPOINT}/GDrive/Upload`, model, config);
       }
     },
   },

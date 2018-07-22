@@ -12,6 +12,10 @@
         display: flex;
         align-items: center;
         justify-content: center;
+        @media(max-width: 550px){
+            flex-flow: column;
+            padding: 15px 0;
+        }
         button{
             height: 40px;
             padding: 0;
@@ -185,7 +189,8 @@
                     transition: 0.5s all linear;
                     background-color: #e9e9e9;
                     border-radius: 5px;
-                    animation: 0.5s animate-details-in ease-in forwards;
+                    width: 130%;
+                    height: 130%;
                     p{
                         font-size: 18px;
                         display: flex;
@@ -202,20 +207,6 @@
         }
     }
 }
-
-@keyframes animate-details-in {
-    0%{
-        width: 0;
-        height: 0;
-        opacity: 0;
-    }
-    100%{
-        width: 130%;
-        height: 130%;
-        opacity: 1;
-    }
-}
-
 
 
 

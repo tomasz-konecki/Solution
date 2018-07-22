@@ -2,9 +2,9 @@ import React from 'react'
 import { connect } from 'react-redux';
 import Spinner from '../../common/spinner/spinner';
 import { getFoldersACreator, deleteFolderACreator, updateFolderACreator,
-    createFolderACreator } from '../../../actions/gDriveActions';
+    createFolderACreator, uploadFileACreator } from '../../../actions/gDriveActions';
 import { loginACreator } from '../../../actions/persistHelpActions';
-import { deleteFolder, updateFolder } from '../../../actions/oneDriveActions';
+import { deleteFolder, updateFolder, uploadFile } from '../../../actions/oneDriveActions';
 import FilesList from '../OneDriveConent/FilesList/FilesList';
 import '../OneDriveContent.scss';
 import Button from '../../common/button/button';
@@ -12,6 +12,7 @@ import ConfirmModal from '../../common/confimModal/confirmModal';
 import OperationLoader from '../../common/operationLoader/operationLoader';
 import { validateInput } from '../../../services/validation';
 import SmallSpinner from '../../common/spinner/small-spinner';
+import FilePicker from '../filePicker/filePicker';
 const startPath = "root";
 
 class GDriveContent extends React.Component{
@@ -21,14 +22,19 @@ class GDriveContent extends React.Component{
         showDeleteModal: false,
         folderToDeleteId: "",
         currentOpenedFolderToEditId: "",
-        isEditingFolder: false,
         showAddingFolderInput: false,
-        isAddingFolder: false,
+        
         folderNameError: "",
         editFolderName: "",
-
+        isEditingFolder: false,
+        
         newFolderName: "",
-        newFolderNameError: ""
+        newFolderNameError: "",
+        isAddingFolder: false,
+
+        fileToUpload: null,
+        isUploadingFile: false        
+        
         
     }
     componentDidMount(){
@@ -41,17 +47,19 @@ class GDriveContent extends React.Component{
     }
     componentWillReceiveProps(nextProps){
         if(nextProps.loginStatus && window.location.href.search("#") === -1){
-            this.setState({isLoading: false, isDeletingOrEditingFolder: false, isEditingFolder: false});
+            this.setState({isLoading: false, isDeletingOrEditingFolder: false});
             window.open(nextProps.redirectUrl);
         }
-        else if(nextProps.folders !== this.props.folders){
-            this.setState({isLoading: false, isEditingFolder: false, 
-                currentOpenedFolderToEditId: "", editFolderName: "", isAddingFolder: false});
+        else if(nextProps.folders !== this.props.folders || 
+            nextProps.editFolderError !== this.props.editFolderError){
+            this.setState({isLoading: false, currentOpenedFolderToEditId: "", 
+                editFolderName: "", isAddingFolder: false, isEditingFolder: false,
+                isUploadingFile: false, showAddingFolderInput: false});
             if(nextProps.deleteFolderStatus)
                 setTimeout(this.closeModal(), 1500);
         }
         else{
-            this.setState({isAddingFolder: false, isDeletingOrEditingFolder: false, isEditingFolder: false})
+            this.setState({isAddingFolder: false, isDeletingOrEditingFolder: false, isUploadingFile: false});
         }
     }
     openFolder = (folderName, folderId) => {
@@ -108,7 +116,6 @@ class GDriveContent extends React.Component{
         else{
             const { editFolderName, currentOpenedFolderToEditId } = this.state;
             this.setState({folderNameError: "", isEditingFolder: true});
-
             this.props.updateFolder(currentOpenedFolderToEditId, 
                 "root", editFolderName);   
         }
@@ -124,7 +131,6 @@ class GDriveContent extends React.Component{
         if(e.key === 'Enter'){
             const { newFolderName } = this.state;
             const validationResult = this.checkForCorrectInputValue(newFolderName);
-            console.log(validationResult);
             if(!validationResult){
                 this.setState({isAddingFolder: true, newFolderNameError: validationResult});
                 this.props.createFolder(newFolderName, "root", "root");
@@ -137,15 +143,24 @@ class GDriveContent extends React.Component{
         const validationResult = this.checkForCorrectInputValue(e.target.value);
         this.setState({newFolderName: e.target.value, newFolderNameError: validationResult});
     }
+
+    uploadFile = () => {
+        this.setState({isUploadingFile: true});
+        this.props.uploadFile("root", this.state.fileToUpload, "root");
+    }
+
+    handleAddFile = e => { this.setState({fileToUpload: e.target.files}); }
+        
     render(){
         const { isLoading, folderIsLoadingName, showDeleteModal,
             folderToDeleteId, currentOpenedFolderToEditId, editFolderName, isEditingFolder, 
             showAddingFolderInput, folderNameError, isAddingFolder, newFolderName, 
-            newFolderNameError } = this.state;
+            newFolderNameError, isUploadingFile, fileToUpload } = this.state;
         const { loginStatus, loginErrors, getFoldersStatus, getFoldersErrors, 
             folders, path, deleteFolderStatus, deleteFolderErrors, loading, 
             updateFolderStatus, updateFolderErrors,
-            createFolderStatus, createFolderErrors } = this.props;
+            createFolderStatus, createFolderErrors, uploadFileErrors,
+            uploadFileStatus } = this.props;
         return (
             <div 
                 className="drive-content-container">
@@ -170,8 +185,7 @@ class GDriveContent extends React.Component{
                                         <input 
                                         className={newFolderNameError ? "input-error" : null}
                                         value={newFolderName}
-                                        onBlur={() => this.setState({showAddingFolderInput: false, 
-                                            newFolderNameError: ""})}
+                                  
                                         onKeyPress={e => this.onKeyPress(e)}
                                         onChange={e => this.onChangeNewFolderName(e)}
                                         type="text" placeholder="wpisz nazwę folderu..." />
@@ -211,12 +225,12 @@ class GDriveContent extends React.Component{
                         }
                     </div>
                     : 
-                    <p className="g-drive-error-occured">{loginErrors[0]}</p>
+                    <p className="one-d-error">{loginErrors[0]}</p>
 
                 }
 
                 {getFoldersStatus === false && 
-                    <p className="g-drive-error-occured">{getFoldersErrors[0]}</p>
+                    <p className="one-d-error">{getFoldersErrors[0]}</p>
                 }
 
                 <ConfirmModal 
@@ -240,9 +254,27 @@ class GDriveContent extends React.Component{
                 </ConfirmModal>
                 {updateFolderStatus === false && 
                     <OperationLoader 
+                        key={1}
                         close={() => this.props.updateFolderClear(null, [])}
                         isLoading={false} 
                         operationError={updateFolderErrors[0]}
+                    />
+                }
+
+                {(!isLoading && loginStatus && getFoldersStatus) &&
+                    <FilePicker 
+                    fileToUpload={fileToUpload} 
+                    uploadFile={this.uploadFile}
+                    handleAddFile={e => this.handleAddFile(e)} 
+                    isUploadingFile={isUploadingFile}/>
+                }
+
+                {uploadFileStatus === false && 
+                    <OperationLoader 
+                        key={2}
+                        close={() => this.props.clearUploadFile(null, [])}
+                        isLoading={false} 
+                        operationError={uploadFileErrors[0]}
                     />
                 }
             </div>
@@ -270,6 +302,9 @@ const mapStateToProps = state => {
         createFolderStatus: state.oneDriveReducer.createFolderStatus,
         createFolderErrors: state.oneDriveReducer.createFolderErrors,
 
+        uploadFileStatus: state.oneDriveReducer.uploadFileStatus,
+        uploadFileErrors: state.oneDriveReducer.uploadFileErrors,
+
         loading: state.asyncReducer.loading
     };
   };
@@ -282,7 +317,9 @@ const mapStateToProps = state => {
         deleteFolderClear: (status, errors) => dispatch(deleteFolder(status, errors)),
         updateFolder: (folderId, path, newName) => dispatch(updateFolderACreator(folderId, path, newName)),
         updateFolderClear: (status, errors) => dispatch(updateFolder(status, errors)),
-        createFolder: (name, parentId, path) => dispatch(createFolderACreator(name, parentId, path))
+        createFolder: (name, parentId, path) => dispatch(createFolderACreator(name, parentId, path)),
+        uploadFile: (path, file, parentId) => dispatch(uploadFileACreator(path, file, parentId)),
+        clearUploadFile: (status, errors) => dispatch(uploadFile(status, errors))
     };
   };
   

@@ -6,7 +6,8 @@ const file = ({folder, openFolder, editFolderError, isDeletingOrEditingFolder,
     onEditFolder, onChangeFolderName, currentOpenedFolderToEditId, 
     enableFolderEdit, editFolderName, closeEditingFolderName, onFileClick, chooseFolder, choosenFolder }) => {
     return (
-    <li className={choosenFolder ? folder.name === choosenFolder.name ? "selected-folder" : null : null}
+    <li onDoubleClick={folder.type !== "file" ? () => openFolder(folder.name, folder.id) : null}
+    className={choosenFolder ? folder.name === choosenFolder.name ? "selected-folder" : null : null}
 
         onClick={folder.type === "file" ? 
             () => onFileClick(folder.name) : null}
@@ -31,7 +32,7 @@ const file = ({folder, openFolder, editFolderError, isDeletingOrEditingFolder,
                 
             </form> 
             : 
-            <span onClick={() => enableFolderEdit(folder.id, folder.name)}>{folder.name}</span>
+            <span>{folder.name}</span>
         }
         
         {folder.type !== "file" && 

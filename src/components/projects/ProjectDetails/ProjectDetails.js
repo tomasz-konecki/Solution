@@ -140,6 +140,8 @@ class ProjectDetails extends Component{
         const { reactivate, close } = WebApi.projects.put;
         const { projectStatus, onlyActiveAssignments } = this.state;
         const { owner } = WebApi.projects.delete;
+        if(projectStatus.length > 0)
+            console.log(projectStatus[0].name);
         return(
             <div onClick={addEmployeeToProjectStatus !== null ? 
                 () => this.props.addEmployeeToProjectAction(null, []) : null} className="project-details-container">
@@ -163,7 +165,7 @@ class ProjectDetails extends Component{
                                 className="option-btn normal-btn">Edytuj projekt</button>
 
                                 {
-                                (projectStatus[0].name !== "Usunięty" || projectStatus[0].name !== "Aktywny") &&
+                                (projectStatus[0].name !== "Aktywny") &&
                                 <button onClick={() => changeProjectState(reactivate, "reactivate", 
                                     {"projectId": project.id, "onlyActiveAssignments": onlyActiveAssignments})} 
                                     className="option-btn green-btn">Aktywuj projekt</button>

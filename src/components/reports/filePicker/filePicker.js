@@ -13,6 +13,7 @@ const filePicker = ({handleAddFile, fileToUpload, isUploadingFile, uploadFile}) 
 
       {fileToUpload && (
         <Button
+          disable={isUploadingFile}
           onClick={uploadFile}
           title="Prześlij"
           mainClass="generate-raport-btn btn-green"

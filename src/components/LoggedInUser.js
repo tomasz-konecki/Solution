@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { translate } from 'react-translate';
+import { translate } from "react-translate";
 
 class LoggedInUser extends Component {
   render() {
@@ -10,7 +10,9 @@ class LoggedInUser extends Component {
       <span className="logged-in-user">
         {t("LoggedIn") + ": "}
         <strong className="underline-anchors">
-          <a target="_blank" href={`/main/employees/${this.props.login}`}>{this.props.firstName + " " + this.props.lastName}</a>
+          <a href={`/main/employees/${this.props.login}`}>
+            {this.props.firstName + " " + this.props.lastName}
+          </a>
         </strong>
       </span>
     );
@@ -30,4 +32,6 @@ LoggedInUser.propTypes = {
   lastName: PropTypes.string.isRequired
 };
 
-export default connect(mapStateToProps)(translate("LoggedInUser")(LoggedInUser));
+export default connect(mapStateToProps)(
+  translate("LoggedInUser")(LoggedInUser)
+);

@@ -129,17 +129,17 @@ export const saveEdit = (id, value) => {
   };
 };
 
-export const addClient = clientName => {
+export const editClient = (clientId, formData) => {
   return dispatch => {
     dispatch(asyncStarted());
-    WebApi.clients
-      .post(clientName)
+    WebApi.clients.put
+      .info(clientId, formData)
       .then(response => {
         if (!response.errorOccurred()) {
           dispatch(addClientResult(response));
           setTimeout(() => {
-            //dispatch(addClientResult(null));
-            //dispatch(loadClients());
+            dispatch(addClientResult(null));
+            dispatch(loadClients());
           }, 2000);
         }
         dispatch(asyncEnded());
@@ -155,6 +155,29 @@ export const addClient = clientName => {
   };
 };
 
+export const addClient = formData => {
+  return dispatch => {
+    WebApi.clients
+      .post(formData)
+      .then(response => {
+        if (!response.errorOccurred()) {
+          dispatch(addClientResult(response));
+          setTimeout(() => {
+            dispatch(addClientResult(null));
+            dispatch(loadClients());
+          }, 2000);
+        }
+      })
+      .catch(error => {
+        dispatch(addClientResult(error));
+        setTimeout(() => {
+          dispatch(addClientResult(null));
+        }, 2000);
+        throw error;
+      });
+  };
+};
+
 export const addCloud = (name, clientId) => {
   return dispatch => {
     dispatch(asyncStarted());
@@ -164,6 +187,7 @@ export const addCloud = (name, clientId) => {
         if (!response.errorOccurred()) {
           dispatch(addCloudResult(response));
           dispatch(asyncEnded());
+          dispatch(this.loadClients());
         }
       })
       .catch(error => {
@@ -188,6 +212,23 @@ export const deleteCloud = id => {
       .catch(error => {
         dispatch(setActionConfirmationResult(error));
         dispatch(asyncEnded());
+        throw error;
+      });
+  };
+};
+
+export const reactivateCloud = id => {
+  return dispatch => {
+    WebApi.clouds
+      .reactivate(id)
+      .then(response => {
+        if (!response.errorOccurred()) {
+          dispatch(setActionConfirmationResult(response));
+          dispatch(loadClients());
+        }
+      })
+      .catch(error => {
+        dispatch(setActionConfirmationResult(error));
         throw error;
       });
   };

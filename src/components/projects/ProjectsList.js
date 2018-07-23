@@ -189,7 +189,7 @@ class ProjectsList extends Component {
                     key: "reactivateProject",
                     string: `${t("ReactivateProjectInfinitive")} ${
                       object.name
-                    }`,
+                      }`,
                     id: object.id,
                     successMessage: t("ProjectReactivated")
                   })

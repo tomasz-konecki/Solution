@@ -18,7 +18,7 @@ export const getFoldersACreator = (folderId, path) => {
             
             dispatch(getFolders(dtoObjects, true, [], path));
 
-            dispatch(setParentDetails(dtoObjects[0].parents));
+            dispatch(setParentDetails(folderId, response.replyBlock.data.goBack));
             dispatch(asyncEnded());
         }).catch(error => {
             dispatch(getFolders([], false, errorCatcher(error), ""));
@@ -28,7 +28,7 @@ export const getFoldersACreator = (folderId, path) => {
     }
 }
 
-export const deleteFolderACreator = (folderId, path) => {
+export const deleteFolderACreator = (folderId, path, redirectPath) => {
     return dispatch => {
         const model = {
             "id": folderId
@@ -37,7 +37,7 @@ export const deleteFolderACreator = (folderId, path) => {
         
         WebApi.gDrive.post.deleteFolder(model).then(response => {
             dispatch(deleteFolder(true, []));
-            dispatch(getFoldersACreator(path, "root"));
+            dispatch(getFoldersACreator(redirectPath, path));
         }).catch(error => {
             dispatch(deleteFolder(false, errorCatcher(error)));
             dispatch(asyncEnded());
@@ -45,23 +45,23 @@ export const deleteFolderACreator = (folderId, path) => {
     }
 }
 
-export const updateFolderACreator = (folderId, path, newName) => {
+export const updateFolderACreator = (name, path, redirectPath, folderId) => {
     return dispatch => {
         dispatch(asyncStarted());
         const model = {
             "id": folderId,
-            "newName": newName
+            "newName": name
         }
         WebApi.gDrive.post.updateFolder(model).then(response => {
             dispatch(updateFolder(true, []));
-            dispatch(getFoldersACreator(path, "root"));
+            dispatch(getFoldersACreator(redirectPath, path));
         }).catch(error => {
             dispatch(updateFolder(false, errorCatcher(error)));
             dispatch(asyncEnded());
         })
     }
 } 
-export const createFolderACreator = (name, parentId, path) => {
+export const createFolderACreator = (name, parentId, path, redirectPath) => {
     return dispatch => {
         const model = {
             "name": name,
@@ -69,7 +69,7 @@ export const createFolderACreator = (name, parentId, path) => {
         }
         WebApi.gDrive.post.createFolder(model).then(response => {
             dispatch(createFolder(true , []));
-            dispatch(getFoldersACreator(path, "root"));
+            dispatch(getFoldersACreator(redirectPath, path));
         }).catch(error => {
             dispatch(createFolder(false, errorCatcher(error)));
         })

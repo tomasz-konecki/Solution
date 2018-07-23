@@ -1,12 +1,7 @@
-import {
-  ONE_DRIVE_AUTH,
-  SEND_CODE_TO_GET_TOKEN,
-  GET_FOLDERS,
-  CREATE_FOLDER,
-  DELETE_FOLDER,
-  UPDATE_FOLDER,
-  UPLOAD_FILE
-} from "../constants";
+
+import { ONE_DRIVE_AUTH, SEND_CODE_TO_GET_TOKEN, GET_FOLDERS, CREATE_FOLDER, DELETE_FOLDER,
+    UPDATE_FOLDER, UPLOAD_FILE, SET_PARENT_DETAILS } from "../constants";
+
 import WebApi from "../api";
 import { changeOperationStatus } from "./asyncActions";
 import { errorCatcher } from "../services/errorsHandler";
@@ -213,40 +208,38 @@ export const countHowManyItems = (array, item, key) => {
 };
 
 export const uploadFileACreator = (token, path, file, currentFilesList) => {
-  return dispatch => {
-    let model = new FormData();
-    model.set("token", token);
-    model.set("path", path);
+    return dispatch => {
+        let model = new FormData();
+        model.set("token", token);
+        model.set("path", path);
+        
+        const fileToEdit = file[0];
+        const dotIndex = fileToEdit.name.lastIndexOf(".");
+        const nameBeforeDot = fileToEdit.name.substring(0, dotIndex);
+        
+        const duplicatedItemsCount = countHowManyItems(currentFilesList, nameBeforeDot, "name");
+        if(duplicatedItemsCount > 0){
+            const nameWithNumberOfRepeatingFiles = nameBeforeDot + `(${duplicatedItemsCount})` + 
+                fileToEdit.name.substring(dotIndex, fileToEdit.name.length);
+            model.set("file", fileToEdit, nameWithNumberOfRepeatingFiles);
+        }
+        else
+            model.set("file", fileToEdit);
+        
+        const config = {
+             headers: {'Content-Type': 'multipart/form-data' }
+        }
 
-    const fileToEdit = file[0];
-    const dotIndex = fileToEdit.name.lastIndexOf(".");
-    const nameBeforeDot = fileToEdit.name.substring(0, dotIndex);
+        WebApi.oneDrive.post.uploadFile(model, config).then(response => {
+            dispatch(uploadFile(true, []));
+            dispatch(getFolderACreator(token, path));
+        }).catch(error => {
+            dispatch(uploadFile(false, errorCatcher(error)));
+        })
+    }
+}
 
-    const duplicatedItemsCount = countHowManyItems(
-      currentFilesList,
-      nameBeforeDot,
-      "name"
-    );
-    if (duplicatedItemsCount > 0) {
-      const nameWithNumberOfRepeatingFiles =
-        nameBeforeDot +
-        `(${duplicatedItemsCount})` +
-        fileToEdit.name.substring(dotIndex, fileToEdit.name.length);
-      model.set("file", fileToEdit, nameWithNumberOfRepeatingFiles);
-    } else model.set("file", fileToEdit);
+export const setParentDetails = parentId => {
+    return { type: SET_PARENT_DETAILS, parentId}
+}
 
-    const config = {
-      headers: { "Content-Type": "multipart/form-data" }
-    };
-
-    WebApi.oneDrive.post
-      .uploadFile(model, config)
-      .then(response => {
-        dispatch(uploadFile(true, []));
-        dispatch(getFolderACreator(token, path));
-      })
-      .catch(error => {
-        dispatch(uploadFile(false, errorCatcher(error)));
-      });
-  };
-};

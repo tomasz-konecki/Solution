@@ -7,8 +7,8 @@ const FilesList = ({folders, folderIsLoadingName, ...content}) => (
         {folders.map(folder => {
             return (
                 folderIsLoadingName === folder.name ? 
-                <FolderLoader key={folder.name} /> : 
-                <File {...content} folder={folder} key={folder.name} />
+                <FolderLoader key={folder.id} /> : 
+                <File {...content} folder={folder} key={folder.id} />
             );
         })}
     </ul> 

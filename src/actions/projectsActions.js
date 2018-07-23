@@ -57,9 +57,9 @@ export const getProject = (project, loadProjectStatus, loadProjectErrors, respon
   }
 }
 
-export const getProjectACreator = projectId => {
+export const getProjectACreator = (projectId, onlyActiveAssignments) => {
   return dispatch => {
-    WebApi.projects.get(projectId).then(response => {
+    WebApi.projects.get(projectId, onlyActiveAssignments).then(response => {
       const responsiblePersonKeys = {keys: cutNotNeededKeysFromArray(
         Object.keys(response.replyBlock.data.dtoObject.responsiblePerson), [0]), 
         names: names};
@@ -97,7 +97,8 @@ const addEmployeeToProjectPromise = (objectToAdd) => (dispatch) => {
     });
   })
 }
-export const addEmployeeToProjectACreator = (empId, projectId, strDate, endDate, role, assignedCapacity, responsibilites) => {
+export const addEmployeeToProjectACreator = (empId, projectId, strDate, endDate, 
+  role, assignedCapacity, responsibilites, onlyActiveAssignments) => {
   return dispatch => {
     const objectToAdd = {
       "employeeId": empId,
@@ -111,7 +112,7 @@ export const addEmployeeToProjectACreator = (empId, projectId, strDate, endDate,
     dispatch(addEmployeeToProjectPromise(objectToAdd)).then(response => {
       dispatch(addEmployeeToProject(true, []));
       
-      dispatch(getProjectACreator(projectId));
+      dispatch(getProjectACreator(projectId, onlyActiveAssignments));
     }).catch(error => {
       dispatch(addEmployeeToProject(false, errorCatcher(error)));
     })
@@ -180,9 +181,9 @@ const editProjectPromise = (projectToSend, projectId) => (dispatch) => {
       })
   })
 }
-const getProjectPromise = (projectId) => (dispatch) =>  {
+const getProjectPromise = (projectId, onlyActiveAssignments) => (dispatch) =>  {
   return new Promise((resolve, reject) => {
-    WebApi.projects.get(projectId).then(response => {
+    WebApi.projects.get(projectId, onlyActiveAssignments).then(response => {
       resolve(response.replyBlock.data.dtoObject);
     }).catch(error => {
       reject(error);
@@ -191,12 +192,12 @@ const getProjectPromise = (projectId) => (dispatch) =>  {
 }
 
 
-export const editProjectACreator = (projectId, projectToSend) => {
+export const editProjectACreator = (projectId, projectToSend, onlyActiveAssignments) => {
   return dispatch => {
     dispatch(editProjectPromise(projectToSend, projectId)).then(response => {
       dispatch(editProject(true, []));
 
-      dispatch(getProjectPromise(projectId)).then(getProjectResponse => {
+      dispatch(getProjectPromise(projectId, onlyActiveAssignments)).then(getProjectResponse => {
         const responsiblePersonKeys = {keys: cutNotNeededKeysFromArray(
           Object.keys(getProjectResponse.responsiblePerson), [0]), 
           names: names};
@@ -221,7 +222,7 @@ export const editProjectACreator = (projectId, projectToSend) => {
 export const changeProjectSkills = (changeProjectSkillsStatus, changeProjectSkillsErrors) => {
   return { type: CHANGE_PROJECT_SKILLS, changeProjectSkillsStatus, changeProjectSkillsErrors}
 }
-export const changeProjectSkillsACreator = (projectId, skills) => {
+export const changeProjectSkillsACreator = (projectId, skills, onlyActiveAssignments) => {
   return dispatch => {
     const skillsToSend = [];
     let somethingChanged = false;
@@ -244,7 +245,7 @@ export const changeProjectSkillsACreator = (projectId, skills) => {
     if(somethingChanged){
       WebApi.projects.put.skills(projectId, skillsToSend).then(response => {
         dispatch(changeProjectSkills(true, []));
-        dispatch(getProjectACreator(projectId));
+        dispatch(getProjectACreator(projectId, onlyActiveAssignments));
       }).catch(error => {
         dispatch(changeProjectSkills(false, errorCatcher(error)));
       }) 
@@ -258,7 +259,7 @@ export const addSkillsToProject = (addSkillsToProjectStatus, addSkillsToProjectE
   return { type: ADD_SKILLS_TO_PROJECT, addSkillsToProjectStatus, addSkillsToProjectErrors}
 }
 
-export const addSkillsToProjectACreator = (projectId, currentAddedSkills) => {
+export const addSkillsToProjectACreator = (projectId, currentAddedSkills, onlyActiveAssignments) => {
   return dispatch => {
       const skillsToSend = [];
       for(let key in currentAddedSkills){
@@ -271,7 +272,7 @@ export const addSkillsToProjectACreator = (projectId, currentAddedSkills) => {
       }
       WebApi.projects.put.skills(projectId, skillsToSend).then(response => {
         dispatch(addSkillsToProject(true, []));
-        dispatch(getProjectACreator(projectId));
+        dispatch(getProjectACreator(projectId, onlyActiveAssignments));
       }).catch(error => {
         dispatch(addSkillsToProject(false, errorCatcher(error)));
       }) 
@@ -285,7 +286,7 @@ export const addSkillsToProjectACreator = (projectId, currentAddedSkills) => {
   export const changeProjectStatePromise = (func, ...params) => (dispatch) =>  {
     return new Promise((resolve, reject) => {
       func(...params).then(response => {
-        resolve(response.replyBlock.data.dtoObject);
+        resolve(response);
       }).catch(error => {
         reject(error);
       });
@@ -304,8 +305,7 @@ export const addSkillsToProjectACreator = (projectId, currentAddedSkills) => {
       dispatch(asyncStarted());
       dispatch(changeProjectStatePromise(ApiOperation, Object.values(model))).then(response => {
         dispatch(changeProjectState(true, [], currentOperation));
-
-        dispatch(getProjectACreator(model.projectId));
+        dispatch(getProjectACreator(model.projectId, model.onlyActiveAssignments));
         
       }).catch(error => {
         dispatch(changeProjectState(false, errorCatcher(error), ""));

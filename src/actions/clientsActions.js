@@ -206,6 +206,7 @@ export const deleteCloud = id => {
       .then(response => {
         if (!response.errorOccurred()) {
           dispatch(setActionConfirmationResult(response));
+          dispatch(this.loadClients());
           dispatch(asyncEnded());
         }
       })

@@ -129,7 +129,13 @@ const InfoClient = ({
     <Aux>
       <div className="client-info-header">
         <div className="client-info-logo">
-          <img src={client.imgSrc} title={client.imgAlt} />
+          <img
+            src={client.imgSrc}
+            title={client.imgAlt}
+            onError={e => {
+              e.target.src = BilleniumPleaceholder;
+            }}
+          />
         </div>
         <div className="client-info-details">
           <div className="client-info-details-more">

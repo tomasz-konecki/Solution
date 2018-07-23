@@ -18,24 +18,28 @@
       }
     }
 
-    &:first-child {
-      height: unset;
-    }
     &:nth-child(1) {
       margin-top: 10px;
     }
-    th:last-child {
-      text-align: center;
-      width: 1%;
-      white-space: nowrap;
+    th {
+      vertical-align: middle;
+      &:last-child {
+        text-align: center;
+        width: 1%;
+        white-space: nowrap;
+      }
     }
-    span {
+    th span {
       cursor: pointer;
     }
   }
-  td.client-options {
-    text-align: center;
+  td {
+    vertical-align: middle;
+    .client-options {
+      text-align: center;
+    }
   }
+
   .client-options {
     width: 1%;
     white-space: nowrap;

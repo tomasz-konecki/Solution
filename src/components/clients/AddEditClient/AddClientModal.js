@@ -4,7 +4,7 @@ import { validateInput } from "../../../services/validation";
 import IntermediateBlock from "../../common/IntermediateBlock";
 
 import "../../../scss/components/clients/addClient/addClientModal.scss";
-import PersonImgSrc from "../../../assets/img/billeniumIcons/person.png";
+import BilleniumPleaceholder from "assets/img/small-logo.png";
 import FileInput from "components/common/inputs/fileInput/fileInput";
 import SmallSpinner from "../../common/spinner/small-spinner";
 
@@ -66,7 +66,7 @@ class AddClientModal extends Component {
               value,
               true,
               null,
-              30,
+              50,
               "name",
               this.props.t("ClientDescription")
             )
@@ -158,12 +158,14 @@ class AddClientModal extends Component {
             onClick={e => this.handleAddClientButtonClick(e)}
             mainClass="dcmt-button"
           >
-            {t("AddClient")}
+            {editClient ? t("Save") : t("AddClient")}
           </Button>
           {loading && <SmallSpinner />}
         </div>
         <div className="add-client-container-right">
-          {$imagePreview}
+          <div className="add-client-container-right-image-holder">
+            {$imagePreview}
+          </div>
           <FileInput
             allowedFileTypes={["image/jpeg", "image/png"]}
             getFile={this.getFileHandler}
@@ -189,9 +191,11 @@ class AddClientModal extends Component {
     }
     let $imagePreview = null;
     if (imagePreviewUrl) {
-      $imagePreview = <img src={imagePreviewUrl} alt="person" />;
+      $imagePreview = <img src={imagePreviewUrl} alt="Client Logo" />;
     } else {
-      $imagePreview = <img src={PersonImgSrc} alt="person" />;
+      $imagePreview = (
+        <img src={BilleniumPleaceholder} alt="Billenium Placeholder" />
+      );
     }
 
     return (

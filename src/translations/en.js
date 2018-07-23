@@ -88,7 +88,7 @@ const translations = {
     CloudRemoved: "Cloud has been removed."
   },
   AddClient: {
-    AddClient: "Add Client",
+    AddClient: "Add",
     ClientName: "Client Name",
     ClientDescription: "Client Description",
     ClientAddedSuccess: "Client has been added."

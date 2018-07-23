@@ -140,8 +140,7 @@ class ProjectDetails extends Component{
         const { reactivate, close } = WebApi.projects.put;
         const { projectStatus, onlyActiveAssignments } = this.state;
         const { owner } = WebApi.projects.delete;
-        if(projectStatus.length > 0)
-            console.log(projectStatus[0].name);
+     
         return(
             <div onClick={addEmployeeToProjectStatus !== null ? 
                 () => this.props.addEmployeeToProjectAction(null, []) : null} className="project-details-container">

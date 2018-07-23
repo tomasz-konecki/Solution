@@ -93,21 +93,24 @@ class OneDriveContent extends React.PureComponent {
     }
     onKeyPress = e => {
         if(e.key === 'Enter'){
-            const { newFolderName } = this.state;
-            const validationResult = this.checkForCorrectInputValue(newFolderName);
-            if(!validationResult){
-                this.setState({isAddingFolder: true, newFolderNameError: validationResult});
-                this.props.createFolder(this.state.newFolderName, 
-                    this.props.path, this.props.authCodeToken);
-            }
-            else
-                this.setState({newFolderNameError: validationResult});
+            this.addFolder();
         }
+    }
+    addFolder = () => {
+        const { newFolderName } = this.state;
+        const validationResult = this.checkForCorrectInputValue(newFolderName);
+        if(!validationResult){
+            this.setState({isAddingFolder: true, newFolderNameError: validationResult});
+            this.props.createFolder(this.state.newFolderName, 
+                this.props.path, this.props.authCodeToken);
+        }
+        else
+            this.setState({newFolderNameError: validationResult});
     }
     deleteFolder = () => {
         this.setState({isDeletingOrEditingFolder: true});
-        this.props.deleteFolder(this.state.folderToDeleteId, 
-            this.props.authCodeToken, this.props.path);
+        const { authCodeToken, path, choosenFolder } = this.props;
+        this.props.deleteFolder(this.state.folderToDeleteId, authCodeToken, path, choosenFolder);
     }
 
     checkForCorrectInputValue = (value, oldValue) => {
@@ -229,7 +232,7 @@ class OneDriveContent extends React.PureComponent {
                                         type="text" placeholder="wpisz nazwę folderu..." />
                                     }
                                     <span onClick={this.openAddingFolderInput} >
-                                        <i className="fa fa-folder">
+                                        <i onClick={this.addFolder} className="fa fa-folder">
                                         </i>
                                         {showAddingFolderInput && "Stwórz"} 
                                     </span>
@@ -316,6 +319,7 @@ class OneDriveContent extends React.PureComponent {
                     operationError={uploadFileErrors[0]}
                     />
                 }
+           
             </div>
         );
     }
@@ -350,7 +354,7 @@ const mapStateToProps = state => {
         authOneDrive: () => dispatch(authOneDriveACreator()),
         sendCodeToGetToken: (url) => dispatch(sendCodeToGetTokenACreator(url)),
         createFolder: (folderName, path, token) => dispatch(createFolderACreator(folderName, path, token)),
-        deleteFolder: (folderId, token, path) => dispatch(deleteFolderACreator(folderId, token, path)),
+        deleteFolder: (folderId, token, path, choosenFolder) => dispatch(deleteFolderACreator(folderId, token, path, choosenFolder)),
         deleteFolderClear: (status, errors) => dispatch(deleteFolder(status, errors)),
         updateFolder: (newName, folderId, token, path) => dispatch(updateFolderACreator(newName, folderId, token, path)),
         updateFolderClear: (status, errors) => dispatch(updateFolder(status, errors)),

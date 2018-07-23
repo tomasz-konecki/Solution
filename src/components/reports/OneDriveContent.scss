@@ -1,6 +1,7 @@
 .drive-content-container{
     .btn-g-drive{
-        top: 125px;
+        top: 100px;
+        left: 0;
     }
     .file-picker{
         position: fixed;
@@ -201,6 +202,10 @@
                             font-weight: normal;
                             word-break: break-all;
                         }
+                    }
+                    a{
+                        margin-top: 45px;
+                        display: block;
                     }
                 }
             }

@@ -4,6 +4,7 @@ import { ONE_DRIVE_AUTH, SEND_CODE_TO_GET_TOKEN, GET_FOLDERS, CREATE_FOLDER, DEL
 
 import WebApi from "../api";
 import { changeOperationStatus } from "./asyncActions";
+import { chooseFolder } from './persistHelpActions';
 import { errorCatcher } from "../services/errorsHandler";
 
 export const authOneDrive = (authStatus, authErrors, authRedirectLink) => {
@@ -148,17 +149,20 @@ export const deleteFolder = (deleteFolderStatus, deleteFolderErrors) => {
   };
 };
 
-export const deleteFolderACreator = (folderId, token, path) => {
+export const deleteFolderACreator = (folderId, token, path, choosenFolder) => {
   return dispatch => {
     const model = {
       folderId: folderId,
       token: token
     };
+    
     WebApi.oneDrive.post
       .deleteFolder(model)
       .then(response => {
         dispatch(deleteFolder(true, []));
-
+        if(choosenFolder.id === folderId){
+          dispatch(chooseFolder(null));
+        }
         dispatch(getFolderACreator(token, path));
       })
       .catch(error => {
@@ -239,7 +243,7 @@ export const uploadFileACreator = (token, path, file, currentFilesList) => {
     }
 }
 
-export const setParentDetails = parentId => {
-    return { type: SET_PARENT_DETAILS, parentId}
+export const setParentDetails = (parentId, goBackPath) => {
+    return { type: SET_PARENT_DETAILS, parentId, goBackPath }
 }
 

@@ -52,12 +52,13 @@ const file = ({folder, openFolder, editFolderError, isDeletingOrEditingFolder,
                     className="fa fa-pen-square"></i>
             </div>
         }
-        
+
         {(folder.name === currentOpenedFolderDetailName && folder.type === "file") && 
             <div className="file-details">
                 <p><b>Typ</b><span>{folder.type}</span></p>
                 <p><b>Rozmiar</b><span>{folder.size}</span></p>
                 <p><b>Ścieżka</b><span>{folder.parentPath}</span></p>
+                <a href={folder.webUrl}>Otwórz</a>
             </div>
         }
         

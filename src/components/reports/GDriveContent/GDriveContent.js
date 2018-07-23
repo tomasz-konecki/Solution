@@ -18,7 +18,7 @@ const startPath = "root";
 class GDriveContent extends React.Component{
     state = {
         isLoading: true,
-        folderIsLoadingName: false,
+        folderIsLoadingName: "",
         showDeleteModal: false,
         folderToDeleteId: "",
         currentOpenedFolderToEditId: "",
@@ -54,7 +54,7 @@ class GDriveContent extends React.Component{
             nextProps.editFolderError !== this.props.editFolderError){
             this.setState({isLoading: false, currentOpenedFolderToEditId: "", 
                 editFolderName: "", isAddingFolder: false, isEditingFolder: false,
-                isUploadingFile: false, showAddingFolderInput: false});
+                isUploadingFile: false, showAddingFolderInput: false, folderIsLoadingName: ""});
             if(nextProps.deleteFolderStatus)
                 setTimeout(this.closeModal(), 1500);
         }
@@ -67,19 +67,20 @@ class GDriveContent extends React.Component{
         this.props.getFolders(folderId, this.props.path + "/" + folderName);
     }
     goToFolderBefore = () => {
-        const { path, parentId } = this.props;
         this.setState({isLoading: true});
-        this.props.getFolders(parentId, "root");
+        const { path, goBackPath } = this.props;
+        const indexOfLastSlash = path.lastIndexOf("/");
+        const newPath = path.substring(0, indexOfLastSlash);
+        this.props.getFolders(goBackPath, newPath);
     }
-    cutFromString = (oldStr, fullStr) =>  {
-        return fullStr.split(oldStr).join('');
-    }
+
     showDeleteFolderModal = folderId => {
         this.setState({showDeleteModal: true, 
             folderToDeleteId: folderId});
     }
     deleteFolder = () => {
-        this.props.deleteFolder(this.state.folderToDeleteId, "root");
+        const { path, parentId } = this.props;
+        this.props.deleteFolder(this.state.folderToDeleteId, path, parentId);
     }
     closeModal = () => {
         this.setState({showDeleteModal: !this.state.showDeleteModal, 
@@ -115,9 +116,9 @@ class GDriveContent extends React.Component{
             this.setState({folderNameError: validationResult});
         else{
             const { editFolderName, currentOpenedFolderToEditId } = this.state;
+            const { path, parentId, updateFolder } = this.props;
             this.setState({folderNameError: "", isEditingFolder: true});
-            this.props.updateFolder(currentOpenedFolderToEditId, 
-                "root", editFolderName);   
+            updateFolder(editFolderName, path, parentId, currentOpenedFolderToEditId);
         }
     }
     onChangeFolderName = (e, folderName) => {
@@ -129,15 +130,20 @@ class GDriveContent extends React.Component{
     }
     onKeyPress = e => {
         if(e.key === 'Enter'){
-            const { newFolderName } = this.state;
-            const validationResult = this.checkForCorrectInputValue(newFolderName);
-            if(!validationResult){
-                this.setState({isAddingFolder: true, newFolderNameError: validationResult});
-                this.props.createFolder(newFolderName, "root", "root");
-            }
-            else
-                this.setState({newFolderNameError: validationResult});
+            this.addFolder();
         }
+    }
+    addFolder = () => {
+        const { newFolderName } = this.state;
+        const validationResult = this.checkForCorrectInputValue(newFolderName);
+        if(!validationResult){
+            const { parentId, path, createFolder } = this.props;
+            this.setState({isAddingFolder: true, newFolderNameError: validationResult});
+            createFolder(newFolderName, parentId, 
+                path, parentId);
+        }
+        else
+            this.setState({newFolderNameError: validationResult});
     }
     onChangeNewFolderName = e => {
         const validationResult = this.checkForCorrectInputValue(e.target.value);
@@ -152,6 +158,7 @@ class GDriveContent extends React.Component{
     handleAddFile = e => { this.setState({fileToUpload: e.target.files}); }
         
     render(){
+        
         const { isLoading, folderIsLoadingName, showDeleteModal,
             folderToDeleteId, currentOpenedFolderToEditId, editFolderName, isEditingFolder, 
             showAddingFolderInput, folderNameError, isAddingFolder, newFolderName, 
@@ -191,7 +198,7 @@ class GDriveContent extends React.Component{
                                         type="text" placeholder="wpisz nazwę folderu..." />
                                     }
                                     <span onClick={this.openAddingFolderInput} >
-                                        <i className="fa fa-folder">
+                                        <i onClick={this.addFolder} className="fa fa-folder">
                                         </i>
                                         {showAddingFolderInput && "Stwórz"} 
                                     </span>
@@ -200,21 +207,29 @@ class GDriveContent extends React.Component{
                                     {isAddingFolder && <SmallSpinner /> } 
                             </Button>    
                         </header>
-                        <FilesList 
-                        editFolderError={folderNameError}
-                        onChangeFolderName={this.onChangeFolderName}
-                        isDeletingOrEditingFolder={isEditingFolder}
-                        onEditFolder={this.onEditFolder}
-                        closeEditingFolderName={() => this.setState({currentOpenedFolderToEditId: "", 
-                            folderNameError: ""})}
-                        enableFolderEdit={this.enableFolderEdit}
-                        editFolderName={editFolderName}
-                        currentOpenedFolderToEditId={currentOpenedFolderToEditId}
-                        folders={folders} 
-                        openFolder={this.openFolder} 
-                        folderIsLoadingName={folderIsLoadingName} 
-                        showDeleteFolderModal={this.showDeleteFolderModal} 
-                        />
+                        {folders.length === 0 ? 
+                            <p className="empty-files-list">
+                                Ten folder jest pusty...
+                            </p> : 
+
+                            <FilesList 
+                            editFolderError={folderNameError}
+                            onChangeFolderName={this.onChangeFolderName}
+                            isDeletingOrEditingFolder={isEditingFolder}
+                            onEditFolder={this.onEditFolder}
+                            closeEditingFolderName={() => this.setState({currentOpenedFolderToEditId: "", 
+                                folderNameError: ""})}
+                            enableFolderEdit={this.enableFolderEdit}
+                            editFolderName={editFolderName}
+                            currentOpenedFolderToEditId={currentOpenedFolderToEditId}
+                            folders={folders} 
+                            openFolder={this.openFolder} 
+                            folderIsLoadingName={folderIsLoadingName} 
+                            showDeleteFolderModal={this.showDeleteFolderModal} 
+                            />
+                        }
+
+                        
 
                         {path !== startPath && 
                             <Button 
@@ -292,6 +307,7 @@ const mapStateToProps = state => {
         getFoldersErrors: state.oneDriveReducer.getFoldersErrors,
         path: state.oneDriveReducer.path,
         parentId: state.oneDriveReducer.parentId,
+        goBackPath: state.oneDriveReducer.goBackPath,
 
         deleteFolderStatus: state.oneDriveReducer.deleteFolderStatus,
         deleteFolderErrors: state.oneDriveReducer.deleteFolderErrors,
@@ -313,11 +329,11 @@ const mapStateToProps = state => {
     return {
         login: () => dispatch(loginACreator()),
         getFolders: (folderId, path) => dispatch(getFoldersACreator(folderId, path)),
-        deleteFolder: (folderId, path) => dispatch(deleteFolderACreator(folderId, path)),
+        deleteFolder: (folderId, path, redirectPath) => dispatch(deleteFolderACreator(folderId, path, redirectPath)),
         deleteFolderClear: (status, errors) => dispatch(deleteFolder(status, errors)),
-        updateFolder: (folderId, path, newName) => dispatch(updateFolderACreator(folderId, path, newName)),
+        updateFolder: (name, path, redirectPath, folderId) => dispatch(updateFolderACreator(name, path, redirectPath, folderId)),
         updateFolderClear: (status, errors) => dispatch(updateFolder(status, errors)),
-        createFolder: (name, parentId, path) => dispatch(createFolderACreator(name, parentId, path)),
+        createFolder: (name, parentId, path, redirectPath) => dispatch(createFolderACreator(name, parentId, path, redirectPath)),
         uploadFile: (path, file, parentId) => dispatch(uploadFileACreator(path, file, parentId)),
         clearUploadFile: (status, errors) => dispatch(uploadFile(status, errors))
     };

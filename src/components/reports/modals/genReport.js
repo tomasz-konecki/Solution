@@ -7,7 +7,7 @@ import RedirectSpinner from '../../common/spinner/redirect-spinner';
 const genReport = ( {shouldOpenModal, closeModal, addList, pagesList, 
   deleteTeamFromResultList, onChangeReportPages, didPagesHasIncorrectValues,
   choosenFolder, generateReport, isReportGenerating, generateReportStatus, generateReportErrors }) => {
-console.log(generateReportStatus);
+
   return (
     <Modal
       key={1}

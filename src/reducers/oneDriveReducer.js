@@ -17,6 +17,7 @@ import {
     path: "",
 
     parentId: "",
+    goBackPath: "",
 
     createFolderStatus: null,
     createFolderErrors: [],
@@ -56,7 +57,7 @@ import {
         return updateObject(state, { uploadFileStatus: action.uploadFileStatus, 
           uploadFileErrors: action.uploadFileErrors })
       case SET_PARENT_DETAILS:
-        return updateObject(state, { parentId: action.parentId })
+        return updateObject(state, { parentId: action.parentId, goBackPath: action.goBackPath })
       default:
         return state;
     }

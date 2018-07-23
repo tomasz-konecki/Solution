@@ -295,7 +295,6 @@ class UsersList extends Component {
         }
       ];
     }
-
     let render = () => (
       <div>
         <SmoothTable

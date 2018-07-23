@@ -68,18 +68,23 @@ class EmployeesList extends Component {
           width: 10,
           field: "hasAccount",
           pretty: t("Status"),
-          multiState: { true: t("AccountActive"), false: t("AccountInactive") },
+          multiState: {
+            true: t("AccountActive"),
+            false: t("AccountInactive"),
+            "": t("SelectStatus")
+          },
           type: "multiState",
           filter: true
         }
       ]
     };
+    console.log(this.props);
     let render = () => (
       <div>
         <SmoothTable
           currentPage={this.props.currentPage}
           totalPageCount={this.props.totalPageCount}
-          loading={this.props.loading}
+          loading={false}
           data={this.props.employees}
           construct={construct}
         />
@@ -87,7 +92,7 @@ class EmployeesList extends Component {
     );
     return (
       <IntermediateBlock
-        loaded={!this.props.loading}
+        loaded={true}
         render={render}
         resultBlock={this.props.resultBlock}
         _className={"content-container"}

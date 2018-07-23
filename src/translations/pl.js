@@ -131,7 +131,8 @@ const translations = {
     Location: "Lokalizacja",
     Status: "Status",
     AccountActive: "Aktywny",
-    AccountInactive: "Nieaktywny"
+    AccountInactive: "Nieaktywny",
+    SelectStatus: "Select Status..."
   },
   Confirmation: {
     YouAreAboutTo: "Właśnie chcesz",

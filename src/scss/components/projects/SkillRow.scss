@@ -6,6 +6,7 @@ $block-color: #ababab;
 }
 
 .skill-row {
+  display: flex;
   box-sizing: border-box;
   height: 24px;
   .skill-row-cblock {
@@ -143,7 +144,7 @@ $block-color: #ababab;
     cursor: pointer;
 
     &:after {
-      content: 'x';
+      content: "x";
     }
   }
 }

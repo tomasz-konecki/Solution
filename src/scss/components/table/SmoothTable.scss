@@ -55,16 +55,19 @@ $activeShadow: 0 0 10px rgba($teal1, 0.5);
   .smooth-radio-button1 {
     border-radius: 6px 0 0 6px;
     border-right: 0px !important;
+    cursor: pointer;
   }
 
   .smooth-radio-button2 {
     border-right: 0px !important;
     border-left: 0px !important;
+    cursor: pointer;
   }
 
   .smooth-radio-button3 {
     border-radius: 0 6px 6px 0;
     border-left: 0px !important;
+    cursor: pointer;
   }
 
   @media screen and (min-width: 501px) {

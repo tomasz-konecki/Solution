@@ -17,7 +17,8 @@ const translations = {
     Projects: "Projects",
     Assign: "Assign",
     Stats: "Statistics",
-    Skills: "Skills"
+    Skills: "Skills",
+    Reports: "Reports"
   },
   SmoothTable: {
     Search: "Search",
@@ -323,6 +324,9 @@ const translations = {
       "Deletion will be permanent, removing entries from the database and all places where referenced.",
     Info2: "Rollback of this action is not available.",
     SuccessfullyDeleted: "Successfully deleted skill"
+  },
+  validateInput: {
+
   }
 };
 

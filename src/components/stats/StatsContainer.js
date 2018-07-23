@@ -76,7 +76,7 @@ class StatsContainer extends Component {
 
     const tooltip = {
       format: {
-        value: function(value, ratio, id) {
+        value: function (value, ratio, id) {
           return `${value}`;
         }
       }
@@ -97,7 +97,7 @@ class StatsContainer extends Component {
   createEWPChart = t => {
     let cols = [
       [t("Without"), this.state.stats.employees.withoutProjects],
-      [t("With"), this.state.stats.employees.withProjects]
+      [t("With"), this.state.stats.employees.withProjects],
     ];
     const data = {
       type: "pie",
@@ -106,7 +106,7 @@ class StatsContainer extends Component {
 
     const tooltip = {
       format: {
-        value: function(value, ratio, id) {
+        value: function (value, ratio, id) {
           return `${value}`;
         }
       }
@@ -136,7 +136,7 @@ class StatsContainer extends Component {
 
     const tooltip = {
       format: {
-        value: function(value, ratio, id) {
+        value: function (value, ratio, id) {
           return `${value}`;
         }
       }

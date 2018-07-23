@@ -158,7 +158,7 @@ class AddClientModal extends Component {
             onClick={e => this.handleAddClientButtonClick(e)}
             mainClass="dcmt-button"
           >
-            {editClient ? t("Save") : t("AddClient")}
+            {this.props.editClient ? t("Save") : t("AddClient")}
           </Button>
           {loading && <SmallSpinner />}
         </div>

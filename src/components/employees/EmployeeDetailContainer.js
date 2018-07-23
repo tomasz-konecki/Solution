@@ -530,8 +530,8 @@ class EmployeeDetailContainer extends Component {
         {this.state.employeeActive ? (
           <h3 className="employee-active">{t("Active")}</h3>
         ) : (
-          <h3 className="employee-inactive">{t("Inactive")}</h3>
-        )}
+            <h3 className="employee-inactive">{t("Inactive")}</h3>
+          )}
         <hr className="sharp" />
         <div className="employee-headway">
           <DetailCascade
@@ -671,13 +671,13 @@ class EmployeeDetailContainer extends Component {
             {t("Save")}
           </button>
         ) : (
-          <button
-            onClick={this.activate}
-            className="dcmt-button button-success"
-          >
-            {t("Activate")}
-          </button>
-        )}
+            <button
+              onClick={this.activate}
+              className="dcmt-button button-success"
+            >
+              {t("Activate")}
+            </button>
+          )}
       </div>
     );
   };
@@ -707,7 +707,7 @@ class EmployeeDetailContainer extends Component {
         key: "deleteProjectMember",
         string: `Wypisać ${assignment.firstName} ${
           assignment.lastName
-        } z projektu ${assignment.projectName}`,
+          } z projektu ${assignment.projectName}`,
         assignmentId: assignment.assignmentId,
         successMessage: "Wypisano pracownika"
       })
@@ -747,6 +747,7 @@ class EmployeeDetailContainer extends Component {
           ? this.pullEmployeeIdBlockDOM()
           : null}
         <div className="col-sm-7 employee-headway">
+          {this.state.edit ? this.pullEmployeeSettingsEditorDOM() : null}
           {this.state.employee.hasAccount && this.state.team.length > 0 ? (
             <table className="team-member-compact-table team-member-compact-project-flavor">
               <thead>
@@ -764,7 +765,6 @@ class EmployeeDetailContainer extends Component {
               <tbody>{this.mapTeam(this.state.team)}</tbody>
             </table>
           ) : null}
-          {this.state.edit ? this.pullEmployeeSettingsEditorDOM() : null}
           {this.mapSkills(this.state.skills)}
         </div>
         <div className="col-sm-1 employee-headway full-width-button">
@@ -773,8 +773,8 @@ class EmployeeDetailContainer extends Component {
               {t("Edit")}
             </button>
           ) : (
-            this.pullEditToolbarDOM()
-          )}
+              this.pullEditToolbarDOM()
+            )}
         </div>
       </div>
     );

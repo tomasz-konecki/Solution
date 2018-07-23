@@ -73,7 +73,9 @@ const translations = {
     ClientReactivated: "Client has beed reactivated.",
     Removing: "You are about to remove client",
     RemovingCloud: "You are about to remove cloud",
+    ReactivatingCloud: "You are about to reactivate cloud",
     Reactivating: "You are about to reactivate client",
+    CloudReactivated: "Cloud has been reactivated",
     Search: "Search",
     ClientsNotFound: "Clients Not Found",
     Activated: "Activated",
@@ -81,11 +83,14 @@ const translations = {
     ClientCloudsList: "Client's Clouds List",
     AddCloud: "Add Cloud",
     CloudsNotFound: "Clouds not found.",
-    CloudName: "Cloud Name"
+    CloudName: "Cloud Name",
+    NoClientDescription: "No Client Description.",
+    CloudRemoved: "Cloud has been removed."
   },
   AddClient: {
     AddClient: "Add Client",
     ClientName: "Client Name",
+    ClientDescription: "Client Description",
     ClientAddedSuccess: "Client has been added."
   },
   ProjectsList: {
@@ -325,8 +330,9 @@ const translations = {
     Info2: "Rollback of this action is not available.",
     SuccessfullyDeleted: "Successfully deleted skill"
   },
-  validateInput: {
-
+  FileInput: {
+    ChooseFile: "Choose File",
+    WrongFileType: "Wrong File Type"
   }
 };
 

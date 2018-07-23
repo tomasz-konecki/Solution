@@ -1,5 +1,5 @@
 import React from 'react'
-import './OneDriveContent.scss';
+import '../OneDriveContent.scss';
 import { connect } from 'react-redux'; 
 import { authOneDriveACreator, sendCodeToGetTokenACreator, createFolderACreator,
     deleteFolderACreator, deleteFolder, updateFolderACreator, 
@@ -12,6 +12,7 @@ import ConfirmModal from '../../common/confimModal/confirmModal';
 import OperationLoader from '../../common/operationLoader/operationLoader';
 import FilesList from './FilesList/FilesList';
 import SmallSpinner from '../../common/spinner/small-spinner';
+import FilePicker from '../filePicker/filePicker';
 
 const startPath = "/drive/root:";
 
@@ -22,7 +23,6 @@ class OneDriveContent extends React.PureComponent {
         currentOpenedFolderDetailName: null,
 
         showAddingFolderInput: false,
-        folderName: "",
         folderNameError: "",
         isAddingFolder: false,
         isDeletingOrEditingFolder: false,
@@ -38,7 +38,10 @@ class OneDriveContent extends React.PureComponent {
         isGoingBack: false,
 
         fileToUpload: null,
-        isUploadingFile: false
+        isUploadingFile: false,
+
+        newFolderName: "",
+        newFolderNameError: ""
     }
     componentDidMount(){
         const { search } = this.props;
@@ -71,34 +74,34 @@ class OneDriveContent extends React.PureComponent {
         else if(nextProps.uploadFileStatus === false)
             this.setState({isUploadingFile: false});
     }
-    onChangeFolderName = (e, flag, folderName) => {
-        const validationResult = validateInput(e.target.value, false, 
-            3,30, "name", "nazwa folderu");
-        
-        if(flag === "edit"){
-            const didUserChangedFolderName = validationResult ? validationResult : 
-                folderName !== e.target.value ? "" : "Nie zmieniono nazwy folderu";
-            
-            this.setState({editFolderName: e.target.value, editFolderError: didUserChangedFolderName});
-        }
-        else{
-            this.setState({folderName: e.target.value, folderNameError: validationResult});
-        }
+    onChangeFolderName = (e, folderName) => {
+        const validationResult = this.checkForCorrectInputValue(e.target.value, folderName);
+        this.setState({editFolderName: e.target.value, editFolderError: validationResult});
     }
+
     openAddingFolderInput = () => {
-        const { showAddingFolderInput } = this.state;
-        if(showAddingFolderInput){
+        const { showAddingFolderInput, newFolderName } = this.state;
+        const validationResult = this.checkForCorrectInputValue(newFolderName);
+        
+        if(showAddingFolderInput && !validationResult){
             this.setState({isAddingFolder: true});
-            this.props.createFolder(this.state.folderName, this.props.path, this.props.authCodeToken);
+            this.props.createFolder(this.state.newFolderName, this.props.path, 
+                this.props.authCodeToken);
         }
         else
             this.setState({showAddingFolderInput: true});
     }
     onKeyPress = e => {
         if(e.key === 'Enter'){
-            this.setState({isAddingFolder: true});
-            this.props.createFolder(this.state.folderName, 
-                this.props.path, this.props.authCodeToken);
+            const { newFolderName } = this.state;
+            const validationResult = this.checkForCorrectInputValue(newFolderName);
+            if(!validationResult){
+                this.setState({isAddingFolder: true, newFolderNameError: validationResult});
+                this.props.createFolder(this.state.newFolderName, 
+                    this.props.path, this.props.authCodeToken);
+            }
+            else
+                this.setState({newFolderNameError: validationResult});
         }
     }
     deleteFolder = () => {
@@ -107,14 +110,38 @@ class OneDriveContent extends React.PureComponent {
             this.props.authCodeToken, this.props.path);
     }
 
+    checkForCorrectInputValue = (value, oldValue) => {
+        const validationResult = validateInput(value, false, 
+            3,30, "name", "nazwa folderu");
+        
+        if(oldValue){
+            const checkForEqualNames = value === oldValue ? "Nie zmieniono wartości" : "";
+            if(checkForEqualNames)
+                return checkForEqualNames
+        }
+        
+        if(validationResult)
+            return validationResult;
+
+        return "";
+    }
+
+    onChangeNewFolderName = e => {
+        const validationResult = this.checkForCorrectInputValue(e.target.value);
+        this.setState({newFolderName: e.target.value, newFolderNameError: validationResult});
+    }
+
     onEditFolder = (e, folderName) => {
         e.preventDefault();
-        if(folderName === this.state.editFolderName)
-            this.setState({currentOpenedFolderToEditId: ""});
+        const { editFolderName } = this.state;
+        const validationResult = this.checkForCorrectInputValue(editFolderName, folderName);
+        if(validationResult)
+            this.setState({editFolderError: validationResult});
         else{
-            this.setState({isDeletingOrEditingFolder: true});
-            this.props.updateFolder(this.state.editFolderName, this.state.currentOpenedFolderToEditId, 
-                this.props.authCodeToken, this.props.path);   
+            const { editFolderName, currentOpenedFolderToEditId } = this.state;
+            this.setState({editFolderError: "", isDeletingOrEditingFolder: true});
+            this.props.updateFolder(editFolderName, this.state.currentOpenedFolderToEditId, 
+                this.props.authCodeToken, this.props.path);     
         }
     }
     openFolder = folderName => {
@@ -132,9 +159,8 @@ class OneDriveContent extends React.PureComponent {
         this.props.getFolder(this.props.authCodeToken, newPath);
     }
 
-    handleAddFile = e => {
-        this.setState({fileToUpload: e.target.files});
-    }
+    handleAddFile = e => { this.setState({fileToUpload: e.target.files}); }
+
     uploadFile = () => {
         this.setState({isUploadingFile: true});
         this.props.uploadFile(this.props.authCodeToken, this.props.path,
@@ -155,36 +181,22 @@ class OneDriveContent extends React.PureComponent {
     }
     render(){
         const { isPreparingForLogingIn, isTakingCodeFromApi, currentOpenedFolderDetailName,
-            showAddingFolderInput, folderName, isAddingFolder, folderNameError, 
+            showAddingFolderInput, isAddingFolder, folderNameError, 
             showDeleteFolderModal, folderToDeleteId, isDeletingOrEditingFolder, 
             currentOpenedFolderToEditId, editFolderName, editFolderError, 
-            folderIsLoadingName, isGoingBack, fileToUpload, isUploadingFile } = this.state;
+            folderIsLoadingName, isGoingBack, fileToUpload, isUploadingFile,
+            newFolderName, newFolderNameError } = this.state;
 
         const { folders, getFoldersStatus, getFoldersErrors, path, 
             createFolderStatus, createFolderErrors, deleteFolderStatus, 
             deleteFolderErrors, updateFolderStatus, updateFolderErrors, 
             uploadFileStatus, uploadFileErrors, chooseFolder, choosenFolder } = this.props;
         return (
-            <div className="gdrive-content-container">
+            <div className="drive-content-container">
 
                 {(isPreparingForLogingIn || isTakingCodeFromApi || isGoingBack) || 
-                    <div className="file-picker">
-                        <input type="file" placeholder="wybierz plik do dodania..."
-                        id="upload" onChange={e => this.handleAddFile(e)} 
-                        />
-
-                        {fileToUpload && 
-                            <Button 
-                            onClick={this.uploadFile}
-                            title="Prześlij"
-                            mainClass="generate-raport-btn btn-green" 
-                            >
-                            {isUploadingFile && 
-                                <SmallSpinner /> 
-                            }
-                            </Button>
-                        }
-                    </div>
+                    <FilePicker fileToUpload={fileToUpload} uploadFile={this.uploadFile}
+                    handleAddFile={e => this.handleAddFile(e)} isUploadingFile={isUploadingFile}/>
                 }
                 
 
@@ -203,18 +215,17 @@ class OneDriveContent extends React.PureComponent {
                             
                             <Button
                                 onClick={!showAddingFolderInput ? () => this.setState({showAddingFolderInput: true}) : null}
-                                disable={isAddingFolder || folderNameError}
+                                disable={isAddingFolder || newFolderNameError}
                                 title={showAddingFolderInput || "Dodaj folder"}
                                 mainClass="generate-raport-btn btn-green"
                                 >
                                     {showAddingFolderInput && 
                                         <input 
-                                        className={folderNameError ? "input-error" : null}
-                                        value={folderName}
-                                        onBlur={() => this.setState({showAddingFolderInput: false, 
-                                            folderNameError: ""})}
+                                        className={newFolderNameError ? "input-error" : null}
+                                        value={newFolderName}
+
                                         onKeyPress={e => this.onKeyPress(e)}
-                                        onChange={e => this.onChangeFolderName(e)}
+                                        onChange={e => this.onChangeNewFolderName(e)}
                                         type="text" placeholder="wpisz nazwę folderu..." />
                                     }
                                     <span onClick={this.openAddingFolderInput} >
@@ -258,7 +269,6 @@ class OneDriveContent extends React.PureComponent {
                             openFolder={this.openFolder}
 
                             enableFolderEdit={this.enableFolderEdit}
-                            onStateChange={this.setState}
                             showDeleteFolderModal={this.showDeleteFolderModal}
                             closeEditingFolderName={() => this.setState({currentOpenedFolderToEditId: "", 
                             editFolderError: ""})}

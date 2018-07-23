@@ -5,7 +5,7 @@ import Button from "../../common/button/button";
 import Aux from "../../../services/auxilary";
 import { translate } from "react-translate";
 
-class AddClient extends Component {
+class AddEditClient extends Component {
   constructor(props) {
     super(props);
     this.state = { showAddClientModal: false };
@@ -18,13 +18,38 @@ class AddClient extends Component {
     this.setState({ showAddClientModal: false });
   };
 
+  componentWillReceiveProps = nextProps => {
+    if (
+      nextProps.resultBlock &&
+      nextProps.resultBlock !== this.props.resultBlock
+    )
+      if (!nextProps.resultBlock.errorOccurred()) {
+        setTimeout(() => {
+          this.handleCloseAddClientModal();
+        }, 2000);
+      }
+  };
   render() {
-    let { addClient, loading, resultBlock, t } = this.props;
+    let {
+      addClient,
+      resultBlock,
+      t,
+      children,
+      client,
+      editClient
+    } = this.props;
+    let content = children ? (
+      <Button mainClass="" onClick={this.handleButtonClick}>
+        {children}
+      </Button>
+    ) : (
+      <Button mainClass="add-client-button" onClick={this.handleButtonClick}>
+        {t("AddClient")}
+      </Button>
+    );
     return (
       <Aux>
-        <Button mainClass="add-client-button" onClick={this.handleButtonClick}>
-          {t("AddClient")}
-        </Button>
+        {content}
         <Modal
           open={this.state.showAddClientModal}
           classNames={{ modal: "Modal Modal-add-client" }}
@@ -33,9 +58,11 @@ class AddClient extends Component {
         >
           <AddClientModal
             addClient={addClient}
-            loading={loading}
+            editClient={editClient}
+            loading={false}
             resultBlock={resultBlock}
             t={t}
+            client={client}
           />
         </Modal>
       </Aux>
@@ -43,4 +70,4 @@ class AddClient extends Component {
   }
 }
 
-export default translate("AddClient")(AddClient);
+export default translate("AddClient")(AddEditClient);

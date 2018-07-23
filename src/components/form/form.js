@@ -140,7 +140,10 @@ class Form extends Component{
         const apiCommandSettings={
             "limit": 1000,
             "ascending": true,
-            "query": this.state.formItems[index].value      
+            "query": this.state.formItems[index].value,
+            "employeeFilter": {
+                "hasAccount": true
+            }     
         }
         
         WebApi.employees.post.list(apiCommandSettings).then(response => {

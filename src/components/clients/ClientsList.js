@@ -1,42 +1,29 @@
 import React from "react";
-import ClientNameInput from "./ClientNameInput";
+
+import Spinner from "../common/LoaderCircular";
+
 import "../../scss/components/clients/ClientsList.scss";
 
 const ClientsList = ({
+  loading,
   clients,
   options,
-  editingInput,
-  handleGetValueFromInput,
   t,
   sortBy,
   clientNameClickedHandler
 }) => {
   const listOfClients = clients.map((item, index) => {
-    let name =
-      editingInput === index ? (
-        <ClientNameInput
-          value={item.name}
-          handleGetValueFromInput={handleGetValueFromInput}
-        />
-      ) : (
-        item.name
-      );
     return (
       <tr key={index}>
-        <td
-          onClick={() =>
-            clientNameClickedHandler(item.id, item.name, item.clouds, index, t)
-          }
-        >
-          <span>{name}</span>
+        <td onClick={() => clientNameClickedHandler(item, index)}>
+          <span>{item.name}</span>
         </td>
-        <td className="client-options">
-          {options(item.id, item.isDeleted, item.name, index, t)}
-        </td>
+        <td className="client-options">{options(item, index)}</td>
       </tr>
     );
   });
-  return (
+
+  const content = !loading ? (
     <table className="client-list-table">
       <thead>
         <tr className="client-list-table-header">
@@ -53,7 +40,10 @@ const ClientsList = ({
       </thead>
       <tbody>{listOfClients}</tbody>
     </table>
+  ) : (
+    <Spinner />
   );
+  return <React.Fragment>{content}</React.Fragment>;
 };
 
 export default ClientsList;

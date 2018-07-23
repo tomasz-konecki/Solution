@@ -5,9 +5,9 @@ const file = ({folder, openFolder, editFolderError, isDeletingOrEditingFolder,
     onSubmit, currentOpenedFolderDetailName, showDeleteFolderModal, onStateChange,
     onEditFolder, onChangeFolderName, currentOpenedFolderToEditId, 
     enableFolderEdit, editFolderName, closeEditingFolderName, onFileClick, chooseFolder, choosenFolder }) => {
-    
     return (
-    <li className={choosenFolder ? folder.name === choosenFolder.name ? "selected-folder" : null : null}
+    <li onDoubleClick={folder.type !== "file" ? () => openFolder(folder.name, folder.id) : null}
+    className={choosenFolder ? folder.name === choosenFolder.name ? "selected-folder" : null : null}
 
         onClick={folder.type === "file" ? 
             () => onFileClick(folder.name) : null}
@@ -18,7 +18,7 @@ const file = ({folder, openFolder, editFolderError, isDeletingOrEditingFolder,
 
                 <input className={editFolderError ? "input-error" : null}
                 type="text" value={editFolderName} 
-                onChange={e => onChangeFolderName(e, "edit", folder.name)} />
+                onChange={e => onChangeFolderName(e, folder.name)} />
 
                 { isDeletingOrEditingFolder && <SmallSpinner /> } 
                 
@@ -32,19 +32,17 @@ const file = ({folder, openFolder, editFolderError, isDeletingOrEditingFolder,
                 
             </form> 
             : 
-            <span onClick={() => enableFolderEdit(folder.id, folder.name)}>{folder.name}</span>
+            <span>{folder.name}</span>
         }
         
         {folder.type !== "file" && 
-        <i onClick={() => openFolder(folder.name)} className="fa fa-folder-open"></i>
+        <i onClick={() => openFolder(folder.name, folder.id)} className="fa fa-folder-open"></i>
         }
 
         {folder.type !== "file" && 
             <i onClick={() => chooseFolder(folder)} className="fa fa-cloud-upload-alt"></i>
         }
 
-        <i className={`fa ${folder.type === "file" ? "fa-file-word" : "fa-folder"}`}></i>
-        
         {
             folder.type !== "file" && 
             <div className="folders-icons">
@@ -60,7 +58,6 @@ const file = ({folder, openFolder, editFolderError, isDeletingOrEditingFolder,
                 <p><b>Typ</b><span>{folder.type}</span></p>
                 <p><b>Rozmiar</b><span>{folder.size}</span></p>
                 <p><b>Ścieżka</b><span>{folder.parentPath}</span></p>
-                <button onClick={() => window.open()}>Pobierz</button>
             </div>
         }
         

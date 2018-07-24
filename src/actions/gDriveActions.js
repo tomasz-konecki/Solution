@@ -3,6 +3,7 @@ from "../constants";
 import WebApi from "../api";
 import { errorCatcher } from '../services/errorsHandler';
 import { asyncEnded, asyncStarted } from '../actions/asyncActions';
+import { chooseFolder } from './persistHelpActions';
 import { getFolders, setParentDetails, deleteFolder, updateFolder, createFolder, uploadFile } from './oneDriveActions';
 import { loginACreator } from './persistHelpActions';
 import storeCreator from '../store';
@@ -28,7 +29,7 @@ export const getFoldersACreator = (folderId, path) => {
     }
 }
 
-export const deleteFolderACreator = (folderId, path, redirectPath) => {
+export const deleteFolderACreator = (folderId, path, redirectPath, currentChoosenFolder) => {
     return dispatch => {
         const model = {
             "id": folderId
@@ -37,6 +38,10 @@ export const deleteFolderACreator = (folderId, path, redirectPath) => {
         
         WebApi.gDrive.post.deleteFolder(model).then(response => {
             dispatch(deleteFolder(true, []));
+            if(currentChoosenFolder)
+                if(currentChoosenFolder.id === folderId)
+                    dispatch(chooseFolder(null));
+            
             dispatch(getFoldersACreator(redirectPath, path));
         }).catch(error => {
             dispatch(deleteFolder(false, errorCatcher(error)));
@@ -79,16 +84,14 @@ export const createFolderACreator = (name, parentId, path, redirectPath) => {
 export const uploadFileACreator = (path, file, parentId) => {
     return dispatch => {
         let model = new FormData();
-        model.set("parentId", parentId);
-        model.set("File", file);
-        
+        model.set("ParentId", parentId);
+        model.set("File", file[0]);
         const config = {
             headers: {'Content-Type': 'multipart/form-data' }
         }
-
         WebApi.gDrive.post.uploadFile(model, config).then(response => {
             dispatch(uploadFile(true, []));
-            dispatch(getFoldersACreator(path, "root"));
+            dispatch(getFoldersACreator(parentId, path));
         }).catch(error => {
             dispatch(uploadFile(false, errorCatcher(error)));
         })

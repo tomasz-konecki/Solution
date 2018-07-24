@@ -5,7 +5,7 @@ const contactList = props => (
     <section className="contact-list-container">
         <label>Wybierz z listy kontaktow</label>
         <select value={props.selected} onChange={props.onChange} className="contact-list">
-            <optgroup  label="Dane kontaktowe">
+            <optgroup label="Dane kontaktowe">
                 {props.items.map(i => {
                     return <option className="option" value={i.firstName} key={i.id}>{i.firstName}</option>
                 })}

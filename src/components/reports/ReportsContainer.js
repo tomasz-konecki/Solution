@@ -147,7 +147,9 @@ class ReportsContainer extends Component {
   }
 
   chooseFolderHandler = folder => {
-    this.openReportsModals();
+    if(this.props.addList.length > 0)
+      this.openReportsModals();
+    
     this.props.chooseFolder(folder);
   }
 
@@ -177,7 +179,15 @@ class ReportsContainer extends Component {
           chooseFolder={this.chooseFolderHandler} />
         );
       case driveTypes[3]:
-        return ( <GDriveContent /> );
+        return ( <GDriveContent 
+           path={path}
+           choosenFolder={choosenFolder}
+           folders={folders}
+           getFoldersStatus={getFoldersStatus}
+           getFoldersErrors={getFoldersErrors}
+           search={this.props.history.location.search} 
+           chooseFolder={this.chooseFolderHandler}
+        /> );
       break;
 
       default:

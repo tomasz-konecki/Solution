@@ -58,8 +58,12 @@ class GDriveContent extends React.Component{
             if(nextProps.deleteFolderStatus)
                 setTimeout(this.closeModal(), 1500);
         }
-        else{
-            this.setState({isAddingFolder: false, isDeletingOrEditingFolder: false, isUploadingFile: false});
+        else if(nextProps.createFolderErrors !== this.props.createFolderErrors || 
+            nextProps.deleteFolderErrors !== this.props.deleteFolderErrors || 
+            nextProps.uploadFileErrors !== this.props.uploadFileErrors || 
+            nextProps.getFoldersErrors !== this.props.getFoldersErrors){
+            this.setState({isAddingFolder: false, isDeletingOrEditingFolder: false, isUploadingFile: false,
+                isLoading: false});
         }
     }
     openFolder = (folderName, folderId) => {
@@ -79,8 +83,8 @@ class GDriveContent extends React.Component{
             folderToDeleteId: folderId});
     }
     deleteFolder = () => {
-        const { path, parentId } = this.props;
-        this.props.deleteFolder(this.state.folderToDeleteId, path, parentId);
+        const { path, parentId, choosenFolder } = this.props;
+        this.props.deleteFolder(this.state.folderToDeleteId, path, parentId, choosenFolder);
     }
     closeModal = () => {
         this.setState({showDeleteModal: !this.state.showDeleteModal, 
@@ -151,14 +155,14 @@ class GDriveContent extends React.Component{
     }
 
     uploadFile = () => {
+        const { path, parentId, uploadFile } = this.props;
         this.setState({isUploadingFile: true});
-        this.props.uploadFile("root", this.state.fileToUpload, "root");
+        uploadFile(path, this.state.fileToUpload, parentId);
     }
 
     handleAddFile = e => { this.setState({fileToUpload: e.target.files}); }
-        
+    
     render(){
-        
         const { isLoading, folderIsLoadingName, showDeleteModal,
             folderToDeleteId, currentOpenedFolderToEditId, editFolderName, isEditingFolder, 
             showAddingFolderInput, folderNameError, isAddingFolder, newFolderName, 
@@ -167,7 +171,7 @@ class GDriveContent extends React.Component{
             folders, path, deleteFolderStatus, deleteFolderErrors, loading, 
             updateFolderStatus, updateFolderErrors,
             createFolderStatus, createFolderErrors, uploadFileErrors,
-            uploadFileStatus } = this.props;
+            uploadFileStatus, choosenFolder } = this.props;
         return (
             <div 
                 className="drive-content-container">
@@ -207,12 +211,14 @@ class GDriveContent extends React.Component{
                                     {isAddingFolder && <SmallSpinner /> } 
                             </Button>    
                         </header>
-                        {folders.length === 0 ? 
+                        {folders.length === 0 && getFoldersStatus ? 
                             <p className="empty-files-list">
                                 Ten folder jest pusty...
                             </p> : 
 
                             <FilesList 
+                            choosenFolder={choosenFolder}
+                            chooseFolder={this.props.chooseFolder}
                             editFolderError={folderNameError}
                             onChangeFolderName={this.onChangeFolderName}
                             isDeletingOrEditingFolder={isEditingFolder}
@@ -301,11 +307,7 @@ const mapStateToProps = state => {
         loginStatus: state.persistHelpReducer.loginStatus,
         loginErrors: state.persistHelpReducer.loginErrors,
         redirectUrl: state.persistHelpReducer.redirectUrl,
-
-        folders: state.oneDriveReducer.folders,
-        getFoldersStatus: state.oneDriveReducer.getFoldersStatus,
-        getFoldersErrors: state.oneDriveReducer.getFoldersErrors,
-        path: state.oneDriveReducer.path,
+   
         parentId: state.oneDriveReducer.parentId,
         goBackPath: state.oneDriveReducer.goBackPath,
 
@@ -329,7 +331,7 @@ const mapStateToProps = state => {
     return {
         login: () => dispatch(loginACreator()),
         getFolders: (folderId, path) => dispatch(getFoldersACreator(folderId, path)),
-        deleteFolder: (folderId, path, redirectPath) => dispatch(deleteFolderACreator(folderId, path, redirectPath)),
+        deleteFolder: (folderId, path, redirectPath, currentChoosenFolder) => dispatch(deleteFolderACreator(folderId, path, redirectPath, currentChoosenFolder)),
         deleteFolderClear: (status, errors) => dispatch(deleteFolder(status, errors)),
         updateFolder: (name, path, redirectPath, folderId) => dispatch(updateFolderACreator(name, path, redirectPath, folderId)),
         updateFolderClear: (status, errors) => dispatch(updateFolder(status, errors)),

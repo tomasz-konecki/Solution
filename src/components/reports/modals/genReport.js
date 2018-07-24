@@ -2,12 +2,22 @@ import React from "react";
 import Modal from "react-responsive-modal";
 import StatusPrompt from "../../common/statusPrompt/statusPrompt";
 import SpinnerButton from "../../form/spinner-btn/spinner-btn";
-import Spinner from '../../common/spinner/spinner';
-import RedirectSpinner from '../../common/spinner/redirect-spinner';
-const genReport = ( {shouldOpenModal, closeModal, addList, pagesList, 
-  deleteTeamFromResultList, onChangeReportPages, didPagesHasIncorrectValues,
-  choosenFolder, generateReport, isReportGenerating, generateReportStatus, generateReportErrors }) => {
-
+import Spinner from "../../common/spinner/spinner";
+import RedirectSpinner from "../../common/spinner/redirect-spinner";
+const genReport = ({
+  shouldOpenModal,
+  closeModal,
+  addList,
+  pagesList,
+  deleteTeamFromResultList,
+  onChangeReportPages,
+  didPagesHasIncorrectValues,
+  choosenFolder,
+  generateReport,
+  isReportGenerating,
+  generateReportStatus,
+  generateReportErrors
+}) => {
   return (
     <Modal
       key={1}
@@ -49,38 +59,43 @@ const genReport = ( {shouldOpenModal, closeModal, addList, pagesList,
             </span>
           </div>
           <article className="folder-details">
-            <p>
-              <span>Identyfikator: </span>
-              <b>{choosenFolder.id}</b>
-            </p>
-            <p>
-              <span>Nazwa: </span>
-              <b>{choosenFolder.name}</b>
-            </p>
-            <p>
-              <span>Data utworzenia: </span>
-              <b>{choosenFolder.createDateTime}</b>
-            </p>
-            <p>
-              <span>Ścieżka: </span>
-              <b>{choosenFolder.parentPath}</b>
-            </p>
+            {choosenFolder.id && (
+              <p>
+                <span>Identyfikator: </span>
+                <b>{choosenFolder.id}</b>
+              </p>
+            )}
+            {choosenFolder.name && (
+              <p>
+                <span>Nazwa: </span>
+                <b>{choosenFolder.name}</b>
+              </p>
+            )}
+            {choosenFolder.createDateTime && (
+              <p>
+                <span>Data utworzenia: </span>
+                <b>{choosenFolder.createDateTime}</b>
+              </p>
+            )}
+            {choosenFolder.parentPath && (
+              <p>
+                <span>Ścieżka: </span>
+                <b>{choosenFolder.parentPath}</b>
+              </p>
+            )}
           </article>
 
-
-          <SpinnerButton 
-          submitResult={
-            {
-              content: generateReportStatus ? "Pomyślnie wygenerowano raport" : 
-              generateReportErrors[0],
+          <SpinnerButton
+            submitResult={{
+              content: generateReportStatus
+                ? "Pomyślnie wygenerowano raport"
+                : generateReportErrors[0],
               status: generateReportStatus
-            }
-          }
-          isLoading={isReportGenerating}
-          onClickHandler={generateReport}
-          btnTitle="Generuj raport" />
-
-
+            }}
+            isLoading={isReportGenerating}
+            onClickHandler={generateReport}
+            btnTitle="Generuj raport"
+          />
         </div>
       )}
     </Modal>

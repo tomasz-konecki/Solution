@@ -1,7 +1,11 @@
-import { FETCH_LISTS, CHOOSE_FOLDER_TO_GENERATE_REPORT, G_DRIVE_LOGIN } from "../constants";
+import { FETCH_LISTS, CHOOSE_FOLDER_TO_GENERATE_REPORT, G_DRIVE_LOGIN, FETCH_FORM_CLIENTS } from "../constants";
 import { updateObject } from "../services/methods";
 
 const initialState = {
+  fetchedFormClients: [],
+  fetchStatus: null,
+  fetchError: [],
+
   addList: [],
   baseList: [],
   helpList: [],
@@ -10,7 +14,8 @@ const initialState = {
 
   loginStatus: null,
   loginErrors: [],
-  redirectUrl: ""
+  redirectUrl: "",
+
 };
 
 export const persistHelpReducer = (state = initialState, action) => {
@@ -31,6 +36,10 @@ export const persistHelpReducer = (state = initialState, action) => {
         loginStatus: action.loginStatus,
         loginErrors: action.loginErrors,
         redirectUrl: action.redirectUrl
+      });
+    case FETCH_FORM_CLIENTS:
+      return updateObject(state, { fetchedFormClients: action.fetchedFormClients, fetchStatus: action.fetchStatus,
+          fetchError: action.fetchError
       });
     default:
       return state;

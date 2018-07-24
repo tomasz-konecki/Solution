@@ -2,7 +2,6 @@ import React from "react";
 import "./spinner-btn.scss";
 import Aux from "../../../services/auxilary";
 const spinnerBtn = props => {
-  console.log(props.submitResult);
   return (
     <Aux>
       {props.submitResult &&

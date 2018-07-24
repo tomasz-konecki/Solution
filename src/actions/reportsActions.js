@@ -3,7 +3,8 @@ import { GET_TEAMS, GET_USER_CV, GENERATE_REPORT }
 import WebApi from "../api";
 import { errorCatcher } from '../services/errorsHandler';
 import { asyncStarted, asyncEnded } from "./asyncActions";
-import { getFolderACreator } from './oneDriveActions';
+import { getFolderACreator as getOneDriveFolders } from './oneDriveActions';
+import { getFoldersACreator as getGDriveFolders } from './gDriveActions';
 import storeCreator from '../store';
 
 
@@ -63,20 +64,35 @@ export const generateReportACreator = (addList, choosenFolder, shouldOneDrive, p
         }
         
         const currentPath = path + "/" + choosenFolder.name;
-        const model = {
-            "teamsSheets": teamsSheets,
-            "folderId": choosenFolder.id,
-            "folderName": choosenFolder.name,
-            "oneDriveToken": token,
-            "oneDrivePath": currentPath
-        }
+     
 
         const generateOnOneDrive = shouldOneDrive === "onedrive" ? true : false;
         const generateOnGDrive = !generateOnOneDrive;
 
+        let model = {};
+        if(generateOnGDrive){
+            model = {
+                "teamsSheets": teamsSheets,
+                "folderId": choosenFolder.id
+            } 
+        }
+        else{
+            model = {
+                "teamsSheets": teamsSheets,
+                "folderId": choosenFolder.id,
+                "folderName": choosenFolder.name,
+                "oneDriveToken": token,
+                "oneDrivePath": currentPath
+            } 
+        }
         WebApi.reports.post.report(model, generateOnGDrive, generateOnOneDrive).then(response => {
             dispatch(generateReport(true, []));
-            dispatch(getFolderACreator(token, currentPath));
+            if(generateOnGDrive)
+                dispatch(getGDriveFolders(choosenFolder.id, path + "/" + choosenFolder.id));
+            
+            else
+                dispatch(getOneDriveFolders(token, currentPath));
+            
         }).catch(error => {
             dispatch(generateReport(false, errorCatcher(error)));
         })

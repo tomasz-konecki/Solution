@@ -29,7 +29,6 @@ class ProjectDetailsBlock extends React.PureComponent {
           {title: "Data zakończenia ", name: "endDate", type: "text", placeholder: "wprowadź datę zakończenia projektu...", mode: "date-picker", value: "", error: "", canBeBefore: false},
         ],
         fetchedClients: [],
-        clientError: "",
         clientsWhichMatch: [],
         isAutocorrect: false,
         fetchClientsError: "",
@@ -109,9 +108,8 @@ class ProjectDetailsBlock extends React.PureComponent {
     }
     this.setState({
       editProjectArray: editProjectArray,
-      clientsWhichMatch: clientsWhichMatch,
-      clientError: editProjectArray[ClientId].error ? true : false
-    });
+      clientsWhichMatch: clientsWhichMatch   
+     });
      
   }
   

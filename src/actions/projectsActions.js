@@ -1,7 +1,7 @@
 import { LOAD_PROJECTS_SUCCESS, CHANGE_EDITED_PROJECT, GET_PROJECT, names, overViewNames, 
 ADD_EMPLOYEE_TO_PROJECT,
 CHANGE_PROJECT_SKILLS, ADD_FEEDBACK, GET_FEEDBACKS, EDIT_PROJECT, 
-ADD_SKILLS_TO_PROJECT, CHANGE_PROJECT_STATE
+ADD_SKILLS_TO_PROJECT, CHANGE_PROJECT_STATE, CREATE_PROJECT 
  } from "../constants";
 import axios from "axios";
 import WebApi from "../api";
@@ -316,4 +316,36 @@ export const addSkillsToProjectACreator = (projectId, currentAddedSkills, onlyAc
   export const clearProjectState = () => {
     return { type: CHANGE_PROJECT_STATE, changeProjectStateStatus: null, 
       changeProjectStateErrors: [], currentOperation: "" }
+  }
+
+
+  export const createProject = (createProjectStatus, createProjectErrors) => {
+    return { type: CREATE_PROJECT, createProjectStatus, createProjectErrors}
+  }
+
+  export const createProjectACreator = (firstArray, secondArray, history, url) => {
+    return dispatch => {
+      const model = {
+        "name": firstArray[0].value,
+        "description": firstArray[1].value,
+        "client": firstArray[2].value,
+        "responsiblePerson": {
+          "firstName": secondArray[1].value,
+          "lastName": secondArray[2].value,
+          "email": secondArray[0].value,
+          "phoneNumber": secondArray[3].value
+        },
+        "startDate": firstArray[3].value,
+        "estimatedEndDate": firstArray[4].value
+      }
+      WebApi.projects.post.add(model).then(response => {
+        dispatch(createProject(true, []));
+
+        setTimeout(() => { 
+          history.push(url + "/" + response.replyBlock.data.dtoObject.id) 
+        } , 1500);
+      }).catch(error => {
+        dispatch(createProject(false, errorCatcher(error)));
+      })
+    }
   }

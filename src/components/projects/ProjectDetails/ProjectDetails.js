@@ -56,7 +56,7 @@ class ProjectDetails extends Component{
     changeOnlyActiveAssignments = () => {
         const { onlyActiveAssignments } = this.state;
         const { id } = this.props.match.params;
-        this.setState({isLoadingProject: true, onlyActiveAssignments: !onlyActiveAssignments});
+        this.setState({ onlyActiveAssignments: !onlyActiveAssignments});
         this.props.getProject(id, !onlyActiveAssignments);
     }
     fillDates = (startDate, endDate, estimatedEndDate) => {
@@ -138,14 +138,15 @@ class ProjectDetails extends Component{
             changeProjectStateErrors } = this.props;
         
         const { reactivate, close } = WebApi.projects.put;
-        const { projectStatus, onlyActiveAssignments } = this.state;
+        const { projectStatus, onlyActiveAssignments, isChangingAssignment } = this.state;
         const { owner } = WebApi.projects.delete;
      
         return(
             <div onClick={addEmployeeToProjectStatus !== null ? 
                 () => this.props.addEmployeeToProjectAction(null, []) : null} className="project-details-container">
-                {this.state.isLoadingProject ? 
-                <Spinner /> :
+                {this.state.isLoadingProject &&
+                    <OperationLoader isLoading={true}/>  }
+                {
                 loadProjectStatus && 
                 <Aux>
                     <header>

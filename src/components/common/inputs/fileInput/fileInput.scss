@@ -18,6 +18,7 @@
     }
 
     i {
+      margin-left: -5px;
       color: rgb(255, 255, 255);
       padding: 15px;
       border-radius: 30px;
@@ -32,6 +33,38 @@
     span {
       word-break: break-all;
       padding-left: 10px;
+    }
+  }
+
+  .file-input-walidation {
+    position: absolute;
+    color: red;
+    margin-left: 43px;
+    span {
+      padding: 16px;
+      background: whitesmoke;
+      display: inline-block;
+      margin-top: 20px;
+      position: relative;
+      border: #00000059 1px solid;
+      border-radius: 15px;
+      font-size: 12px;
+      box-shadow: 1px 1px 2px 0px #00000075;
+    }
+    span:before {
+      content: "";
+      padding: 10px;
+      display: inline-block;
+      position: absolute;
+      -moz-transform: rotate(135deg);
+      -o-transform: rotate(135deg);
+      -webkit-transform: rotate(135deg);
+      transform: rotate(135deg);
+      top: -11px;
+      z-index: 10;
+      background: whitesmoke;
+      border-left: 1px #00000059 solid;
+      border-bottom: 1px #00000059 solid;
     }
   }
 

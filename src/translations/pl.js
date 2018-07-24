@@ -95,6 +95,7 @@ const translations = {
     ClientName: "Nazwa Klienta",
     ClientDescription: "Opis Klienta",
     ClientAddedSuccess: "Klient został dodany.",
+    ClientEditedSuccess: "Szczegóły Klienta zostały zaktualizowane.",
     Save: "Zapisz"
   },
   ProjectsList: {

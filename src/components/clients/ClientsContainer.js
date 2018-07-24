@@ -44,7 +44,11 @@ class ClientsContainer extends React.Component {
           : {};
       });
 
-      this.setState({ clients: nextProps.clients, client: updatedClient[0] });
+      this.setState({
+        clients: nextProps.clients,
+        client: updatedClient[0],
+        checked: null
+      });
     }
     if (nextProps.loading === false && this.props.loading === true) {
       this.setState({ loaded: true });

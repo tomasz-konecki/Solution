@@ -1,6 +1,7 @@
 import React, { PureComponent } from "react";
 import { translate } from "react-translate";
 import PropTypes from "prop-types";
+import { CSSTransitionGroup } from "react-transition-group";
 
 import Icon from "../../Icon";
 
@@ -74,7 +75,16 @@ class FileInput extends PureComponent {
             </span>
           </label>
         </div>
-        <div className="file-input-walidation">{error}</div>
+        {/* <div className="file-input-walidation"> */}
+        <CSSTransitionGroup
+          className="file-input-walidation"
+          transitionName="error-validation"
+          transitionEnterTimeout={1000}
+          transitionLeaveTimeout={1000}
+        >
+          {error}
+        </CSSTransitionGroup>
+        {/* </div> */}
       </div>
     );
   }

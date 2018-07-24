@@ -131,7 +131,6 @@ export const saveEdit = (id, value) => {
 
 export const editClient = (clientId, formData) => {
   return dispatch => {
-    dispatch(asyncStarted());
     WebApi.clients.put
       .info(clientId, formData)
       .then(response => {
@@ -142,14 +141,12 @@ export const editClient = (clientId, formData) => {
             dispatch(loadClients());
           }, 2000);
         }
-        dispatch(asyncEnded());
       })
       .catch(error => {
         dispatch(addClientResult(error));
         setTimeout(() => {
           dispatch(addClientResult(null));
         }, 2000);
-        dispatch(asyncEnded());
         throw error;
       });
   };
@@ -162,6 +159,7 @@ export const addClient = formData => {
       .then(response => {
         if (!response.errorOccurred()) {
           dispatch(addClientResult(response));
+
           setTimeout(() => {
             dispatch(addClientResult(null));
             dispatch(loadClients());

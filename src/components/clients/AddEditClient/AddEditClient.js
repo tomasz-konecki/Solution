@@ -44,11 +44,11 @@ class AddEditClient extends Component {
       </Button>
     ) : (
       <Button mainClass="add-client-button" onClick={this.handleButtonClick}>
-        {t("AddClient")}
+        {t("Add")}
       </Button>
     );
     return (
-      <Aux>
+      <React.Fragment>
         {content}
         <Modal
           open={this.state.showAddClientModal}
@@ -65,7 +65,7 @@ class AddEditClient extends Component {
             client={client}
           />
         </Modal>
-      </Aux>
+      </React.Fragment>
     );
   }
 }

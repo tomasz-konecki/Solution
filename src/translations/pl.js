@@ -89,7 +89,9 @@ const translations = {
     CloudRemoved: "Chmura została usunięta"
   },
   AddClient: {
-    AddClient: "Dodaj Klienta",
+    Add: "Dodaj",
+    Edit: "Edytuj",
+    Client: "Klienta",
     ClientName: "Nazwa Klienta",
     ClientDescription: "Opis Klienta",
     ClientAddedSuccess: "Klient został dodany.",

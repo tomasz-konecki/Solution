@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import "./ShowRadioButtons.scss";
 
 export default class ShowRadioButtons extends Component {
   render() {
@@ -6,30 +7,40 @@ export default class ShowRadioButtons extends Component {
     return (
       <div className="show-clients-container">
         <form>
-          <input
-            onChange={e => radioButtonClick(e.target.value)}
-            name="show-clients"
-            className="toggle toggle-left"
-            id="show-activated"
-            type="radio"
-            value="activated"
-            checked={checked === "activated"}
-          />
-          <label className="btn" htmlFor="show-activated">
-            {t("Activated")}
-          </label>
-          <input
-            onChange={e => radioButtonClick(e.target.value)}
-            name="show-clients"
-            className="toggle toggle-right"
-            id="show-not-activated"
-            type="radio"
-            value="not-activated"
-            checked={checked === "not-activated"}
-          />
-          <label className="btn" htmlFor="show-not-activated">
-            {t("NotActivated")}
-          </label>
+          <span className="smooth-radio-span">
+            <input
+              onChange={e => radioButtonClick(e.target.value)}
+              name="show-clients"
+              className="toggle toggle-left"
+              id="show-activated"
+              type="radio"
+              value="activated"
+              checked={checked === "activated"}
+            />
+            <label
+              className="btn smooth-radio-button1"
+              htmlFor="show-activated"
+            >
+              {t("Activated")}
+            </label>
+          </span>
+          <span className="smooth-radio-span">
+            <input
+              onChange={e => radioButtonClick(e.target.value)}
+              name="show-clients"
+              className="toggle toggle-right"
+              id="show-not-activated"
+              type="radio"
+              value="not-activated"
+              checked={checked === "not-activated"}
+            />
+            <label
+              className="btn smooth-radio-button3"
+              htmlFor="show-not-activated"
+            >
+              {t("NotActivated")}
+            </label>
+          </span>
         </form>
       </div>
     );

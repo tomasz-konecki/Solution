@@ -14,4 +14,8 @@
     border-radius: 0.25rem;
     transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
   }
+
+  @media screen and (max-width: 500px) {
+    width: 80%;
+  }
 }

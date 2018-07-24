@@ -110,6 +110,7 @@ $activeShadow: 0 0 10px rgba($teal1, 0.5);
       box-shadow: $activeShadow;
       border-color: $teal2;
       z-index: 1;
+      outline: none !important;
     }
     input[type="radio"]:focus + label {
       @include focusOutline;

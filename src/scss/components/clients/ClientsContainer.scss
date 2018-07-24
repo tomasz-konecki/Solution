@@ -3,13 +3,41 @@
     width: 50%;
     float: left;
     height: 100%;
+
+    @media screen and (max-width: 700px) {
+      width: 100%;
+    }
+
+    .clients-operators {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      & > div {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+
+        @media screen and (max-width: 500px) {
+          flex-wrap: wrap;
+        }
+
+        @media screen and (min-width: 1120px) {
+          width: 50%;
+        }
+      }
+    }
   }
+
   .clients-info {
     width: 44%;
     float: left;
     height: 100%;
     margin-left: 5%;
     margin-top: 20px;
+    @media screen and (max-width: 700px) {
+      display: none;
+    }
   }
 
   .anim-in {

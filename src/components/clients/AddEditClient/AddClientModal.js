@@ -158,7 +158,7 @@ class AddClientModal extends Component {
             onClick={e => this.handleAddClientButtonClick(e)}
             mainClass="dcmt-button"
           >
-            {this.props.editClient ? t("Save") : t("AddClient")}
+            {this.props.editClient ? t("Save") : t("Add")}
           </Button>
           {loading && <SmallSpinner />}
         </div>
@@ -191,7 +191,15 @@ class AddClientModal extends Component {
     }
     let $imagePreview = null;
     if (imagePreviewUrl) {
-      $imagePreview = <img src={imagePreviewUrl} alt="Client Logo" />;
+      $imagePreview = (
+        <img
+          src={imagePreviewUrl}
+          alt="Client Logo"
+          onError={e => {
+            e.target.src = BilleniumPleaceholder;
+          }}
+        />
+      );
     } else {
       $imagePreview = (
         <img src={BilleniumPleaceholder} alt="Billenium Placeholder" />
@@ -201,7 +209,9 @@ class AddClientModal extends Component {
     return (
       <div className="add-client-container">
         <header>
-          <h3 className="section-heading">{t("AddClient")}</h3>
+          <h3 className="section-heading">
+            {this.props.editClient ? t("Edit") : t("Add")} {t("Client")}
+          </h3>
         </header>
         <IntermediateBlock
           loaded={true}

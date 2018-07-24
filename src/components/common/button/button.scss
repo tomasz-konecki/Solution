@@ -48,7 +48,8 @@
 .generate-raport-btn:disabled:hover {
   background-color: grey;
   cursor: not-allowed;
-  .small-spiner::before, .small-spiner::after{
+  .small-spiner::before,
+  .small-spiner::after {
     background-color: green;
   }
 }
@@ -76,17 +77,22 @@
   &:hover {
     background-color: #4c0f19;
   }
+
+  @media screen and (max-width: 500px) {
+    width: 90%;
+    margin-bottom: 10px;
+  }
 }
 
-.btn-brown:hover{
-  background-color: #D33819;
+.btn-brown:hover {
+  background-color: #d33819;
 }
 
-.input-error{
+.input-error {
   border: none;
   box-shadow: 0 2px 12px red !important;
 }
-.btn-transparent{
+.btn-transparent {
   position: absolute;
   top: 0px;
   left: 50px;

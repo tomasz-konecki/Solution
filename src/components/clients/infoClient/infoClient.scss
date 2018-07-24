@@ -39,7 +39,6 @@
     }
 
     .client-info-options {
-      padding: 0 20px;
       button {
         background: none;
         border: none;
@@ -54,6 +53,15 @@
           background-color: rgba(8, 8, 8, 0.1);
           border-radius: 50px;
         }
+      }
+      @media screen and (min-width: 850px) {
+        padding: 0 20px;
+      }
+      @media screen and (max-width: 950px) {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 13px;
       }
     }
   }

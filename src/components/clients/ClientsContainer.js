@@ -265,16 +265,20 @@ class ClientsContainer extends React.Component {
     const { clients, checked } = this.state;
     return (
       <React.Fragment>
-        <AddEditClient
-          addClient={clientsActions.addClient}
-          resultBlock={resultBlockAddClient}
-        />
-        <SearchClient filter={this.filterList} t={t} />
-        <ShowRadioButtons
-          t={t}
-          radioButtonClick={this.radioButtonClick}
-          checked={checked}
-        />
+        <div className="clients-operators">
+          <div className="clients-add-search">
+            <AddEditClient
+              addClient={clientsActions.addClient}
+              resultBlock={resultBlockAddClient}
+            />
+            <SearchClient filter={this.filterList} t={t} />
+          </div>
+          <ShowRadioButtons
+            t={t}
+            radioButtonClick={this.radioButtonClick}
+            checked={checked}
+          />
+        </div>
         <ClientsList
           clients={clients}
           options={this.generateOptions}

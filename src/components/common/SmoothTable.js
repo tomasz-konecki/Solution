@@ -7,11 +7,13 @@ import DatePicker from "react-datepicker";
 import moment from "moment";
 import PropTypes from "prop-types";
 import { translate } from "react-translate";
+import { Redirect } from 'react-router-dom';
 
 class SmoothTable extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      toRaports: false,
       construct: props.construct,
       currentlySortedColumn: props.construct.defaultSortField,
       ascending: true,
@@ -189,7 +191,7 @@ class SmoothTable extends Component {
     );
   }
 
-  handleFilterDateChange() {}
+  handleFilterDateChange() { }
 
   toolBoxButton(button, object) {
     return (
@@ -341,7 +343,6 @@ class SmoothTable extends Component {
       if (operator.comparator === undefined || operator.comparator(operator))
         operators.push(this.operatorButton(index, operator));
     });
-
     if (this.props.construct.filtering) {
       operators.push(
         <span className="smooth-table-search-span" key={-1}>
@@ -361,7 +362,7 @@ class SmoothTable extends Component {
           <button onClick={this.removeFilters}>
             {this.props.t("DeleteFilters")}
           </button>
-        </span>
+        </span >
       );
     }
 
@@ -544,8 +545,8 @@ class SmoothTable extends Component {
             value={
               this.state.columnFilters[column.field] !== ""
                 ? new Date(
-                    this.state.columnFilters[column.field]
-                  ).toLocaleDateString()
+                  this.state.columnFilters[column.field]
+                ).toLocaleDateString()
                 : ""
             }
           />
@@ -692,8 +693,17 @@ class SmoothTable extends Component {
       }
     );
   };
+
+  setToRaports = () => {
+    this.setState({
+      toRaports: true
+    })
+  }
+  //http://localhost:8080/main/reports
   render() {
     const { construct } = this.state;
+    const { showRaportButton } = this.props;
+    const { t } = this.props;
     let list = [],
       empty = false;
     list.push(this.generateFieldSearchRow());
@@ -704,9 +714,15 @@ class SmoothTable extends Component {
     } else {
       empty = true;
     }
+    if (this.state.toRaports === true) {
+      return <Redirect to='/main/reports' />
+    }
     return (
       <div className="smooth-table">
-        <div className="smooth-operator">{this.generateOperators()}</div>
+        <div className="d-flex">
+          <div className="smooth-operator">{this.generateOperators()}</div>
+          {showRaportButton && <button className="dcmt-button raport-button ml-auto mt-3 mr-3" onClick={this.setToRaports}>{this.props.t("Reports")}</button>}
+        </div>
         <div className="smooth-loader-top">
           {this.props.loading && <LoaderHorizontal />}
         </div>

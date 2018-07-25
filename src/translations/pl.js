@@ -28,7 +28,8 @@ const translations = {
     ShowActivated: "Aktywne",
     ShowAll: "Wszystkie",
     Today: "Dzisiaj",
-    NoDataOrResults: "Brak danych bądź wyników"
+    NoDataOrResults: "Brak danych bądź wyników",
+    Reports: "Raporty",
   },
   StatsContainer: {
     DevLocalization: "Lokalizacja Developerów",

@@ -22,6 +22,11 @@ const pullDOM = (
       <div className="cloud-name">
         <input
           onChange={e => handleInputAddCloud(e)}
+          onKeyPress={e => {
+            if (e.key === "Enter") {
+              handleAddCloudSaveChild();
+            }
+          }}
           placeholder={t("CloudName")}
           value={inputValueToAdd}
         />

@@ -27,10 +27,11 @@ const spinnerBtn = props => {
         onClick={props.onClickHandler}
         className={
           !props.isLoading
-            ? `submit-btn ${props.validationResult === false ||
-              props.transactionEnd
-                ? "submit-btn-dis"
-                : "submit-btn-cor"}`
+            ? `submit-btn ${
+                props.validationResult === false || props.transactionEnd
+                  ? "submit-btn-dis"
+                  : "submit-btn-cor"
+              }`
             : "spinner-btn"
         }
         type={props.shouldSubmit ? "submit" : "button"}

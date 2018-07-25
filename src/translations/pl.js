@@ -24,6 +24,7 @@ const translations = {
     Search: "Szukaj",
     DeleteFilters: "Usuń filtry",
     ShowDeleted: "Usunięte",
+    Deleted: "Usunięty",
     ShowNotActivated: "Nieaktywowane",
     ShowActivated: "Aktywne",
     ShowAll: "Wszystkie",
@@ -95,6 +96,7 @@ const translations = {
     ClientName: "Nazwa Klienta",
     ClientDescription: "Opis Klienta",
     ClientAddedSuccess: "Klient został dodany.",
+    ClientEditedSuccess: "Szczegóły Klienta zostały zaktualizowane.",
     Save: "Zapisz"
   },
   ProjectsList: {
@@ -135,7 +137,7 @@ const translations = {
     Status: "Status",
     AccountActive: "Aktywny",
     AccountInactive: "Nieaktywny",
-    SelectStatus: "Select Status..."
+    SelectStatus: "Wybierz status..."
   },
   Confirmation: {
     YouAreAboutTo: "Właśnie chcesz",

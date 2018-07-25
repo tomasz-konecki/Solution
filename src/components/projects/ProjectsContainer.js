@@ -15,6 +15,7 @@ import "../../scss/containers/ProjectsContainer.scss";
 import { fetchFormClientsACreator } from '../../actions/persistHelpActions';
 import { ACTION_CONFIRMED } from "./../../constants";
 import { Route, Switch, withRouter } from "react-router-dom";
+import ProjectDetails from "./ProjectDetails/ProjectDetails";
 import Form from '../form/form';
 import moment from 'moment';
 import { validateInput } from '../../services/validation';
@@ -54,6 +55,7 @@ class ProjectsContainer extends React.Component {
     this.handleCloseModal = this.handleCloseModal.bind(this);
     this.pageChange = this.pageChange.bind(this);
   }
+
   componentDidMount(){
     const { fetchStatus, persistHelpActions } = this.props;
     if(!fetchStatus) 
@@ -265,6 +267,19 @@ class ProjectsContainer extends React.Component {
         />
 
         <Modal
+          open={this.state.showModal}
+          classNames={{ modal: "Modal Modal-projects" }}
+          contentLabel="Projects test modal"
+          onClose={this.handleCloseModal}
+        >
+          <AddProjectScreen
+            projectActions={this.props.projectActions}
+            limit={this.state.limit}
+            currentPage={this.state.currentPage}
+            closeModal={this.handleCloseModal}
+          />
+
+        <Modal
           key={1}
           open={this.state.showModal}
           classNames={{ modal: "Modal Modal-add-owner" }}
@@ -365,4 +380,7 @@ ProjectsContainer.propTypes = {
   persistHelpActions: PropTypes.object
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(ProjectsContainer));
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withRouter(ProjectsContainer));

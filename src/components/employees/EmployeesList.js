@@ -83,7 +83,7 @@ class EmployeesList extends Component {
         <SmoothTable
           currentPage={this.props.currentPage}
           totalPageCount={this.props.totalPageCount}
-          loading={false}
+          loading={this.props.loading}
           data={this.props.employees}
           construct={construct}
         />

@@ -24,6 +24,7 @@ const translations = {
     Search: "Search",
     DeleteFilters: "Delete filters",
     ShowDeleted: "Deleted",
+    Deleted: "Deleted",
     ShowNotActivated: "Not activated",
     ShowActivated: "Activated",
     ShowAll: "All",
@@ -94,6 +95,7 @@ const translations = {
     ClientName: "Client Name",
     ClientDescription: "Client Description",
     ClientAddedSuccess: "Client has been added.",
+    ClientEditedSuccess: "Client's details has been modified.",
     Save: "Save"
   },
   ProjectsList: {

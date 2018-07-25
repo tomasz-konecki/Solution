@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import Button from "../../common/button/button";
 import { validateInput } from "../../../services/validation";
 import IntermediateBlock from "../../common/IntermediateBlock";
+import { CSSTransitionGroup } from "react-transition-group";
 
 import "../../../scss/components/clients/addClient/addClientModal.scss";
 import BilleniumPleaceholder from "assets/img/small-logo.png";
@@ -45,8 +46,11 @@ class AddClientModal extends Component {
     }
   };
 
-  makeFormValid = inputError => {
-    !inputError.clientName && !inputError.clientDescription
+  makeFormValid = () => {
+    const { inputError, inputValue } = this.state;
+    inputValue.clientName !== "" &&
+    !inputError.clientName &&
+    !inputError.clientDescription
       ? this.setState({
           isFormValid: true
         })
@@ -60,30 +64,36 @@ class AddClientModal extends Component {
 
     let error =
       e.target.name === "clientName"
-        ? validateInput(value, false, 3, 20, "name", this.props.t("ClientName"))
+        ? validateInput(value, false, 3, 50, "name", this.props.t("ClientName"))
         : e.target.name === "clientDescription"
           ? validateInput(
               value,
               true,
-              null,
-              50,
+              3,
+              200,
               "name",
               this.props.t("ClientDescription")
             )
           : null;
 
+    let errorItem = error ? <span key={[e.target.name]}>{error}</span> : null;
     this.setState(
       {
         inputValue: { ...inputValue, [e.target.name]: value },
-        inputError: { ...inputError, [e.target.name]: error },
+        inputError: {
+          ...inputError,
+          [e.target.name]: errorItem
+        },
         isFormValid: false
       },
-      () => this.makeFormValid(this.state.inputError)
+      () => this.makeFormValid()
     );
   };
 
   handleAddClientButtonClick = e => {
     e.preventDefault();
+    this.setState({ loading: true, isFormValid: false });
+
     const { file, inputValue } = this.state;
     let fd = new FormData();
     fd.append("Name", inputValue.clientName);
@@ -95,7 +105,6 @@ class AddClientModal extends Component {
     if (this.props.editClient) {
       this.props.editClient(this.props.client.id, fd);
     } else {
-      this.setState({ loading: true });
       this.props.addClient(fd);
     }
   };
@@ -108,7 +117,8 @@ class AddClientModal extends Component {
         this.setState({
           file: file,
           imagePreviewUrl: reader.result
-        });
+        }),
+          this.makeFormValid();
       };
       reader.readAsDataURL(file);
     } else {
@@ -118,9 +128,8 @@ class AddClientModal extends Component {
       });
     }
   };
-
   pullDOM = (addClient, t, $imagePreview) => {
-    const { loading } = this.state;
+    const { loading, inputError } = this.state;
     return (
       <form>
         <div className="add-client-container-left">
@@ -133,13 +142,18 @@ class AddClientModal extends Component {
               autoComplete="off"
               required
               value={this.state.inputValue.clientName}
-              className={
-                this.state.inputError.clientName && "add-client-input-error"
-              }
+              className={inputError.clientName && "add-client-input-error"}
               onChange={this.handleInputChange}
             />
-            {this.state.inputError.clientName &&
-              this.state.inputError.clientName}
+            <CSSTransitionGroup
+              transitionName="error-validation"
+              transitionEnterTimeout={1000}
+              transitionLeaveTimeout={1000}
+            >
+              {this.state.inputError.clientName &&
+                inputError.clientName.props.children &&
+                this.state.inputError.clientName}
+            </CSSTransitionGroup>
 
             <label htmlFor="clientDescription">{t("ClientDescription")}</label>
             <textarea
@@ -147,11 +161,21 @@ class AddClientModal extends Component {
               id="clientDescription"
               name="clientDescription"
               autoComplete="off"
+              className={
+                inputError.clientDescription && "add-client-input-error"
+              }
               value={this.state.inputValue.clientDescription}
               onChange={textarea => this.handleInputChange(textarea)}
             />
-            {this.state.inputError.clientDescription &&
-              this.state.inputError.clientDescription}
+            <CSSTransitionGroup
+              transitionName="error-validation"
+              transitionEnterTimeout={1000}
+              transitionLeaveTimeout={1000}
+            >
+              {inputError.clientDescription &&
+                inputError.clientDescription.props.children &&
+                inputError.clientDescription}
+            </CSSTransitionGroup>
           </div>
           <Button
             disable={!this.state.isFormValid}
@@ -183,9 +207,21 @@ class AddClientModal extends Component {
     if (resultBlock) {
       if (resultBlock.replyBlock.status === 200) {
         info = (
-          <div className="user-added-success">
-            <span>{t("ClientAddedSuccess")}</span>
-          </div>
+          <CSSTransitionGroup
+            transitionName="example"
+            transitionAppear={true}
+            transitionAppearTimeout={1000}
+            transitionEnter={false}
+            transitionLeave={false}
+          >
+            <div className="user-added-success">
+              <span>
+                {this.props.editClient
+                  ? t("ClientEditedSuccess")
+                  : t("ClientAddedSuccess")}
+              </span>
+            </div>
+          </CSSTransitionGroup>
         );
       }
     }

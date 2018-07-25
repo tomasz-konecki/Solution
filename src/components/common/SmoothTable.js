@@ -589,7 +589,11 @@ class SmoothTable extends Component {
       case "text":
         return object[column.field];
       case "multiState":
-        return column.multiState[object[column.field]];
+        if (object.isDeleted) {
+          return this.props.t("Deleted");
+        } else {
+          return column.multiState[object[column.field]];
+        }
       case "date":
         return new Date(object[column.field]).toLocaleDateString();
     }

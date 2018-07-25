@@ -319,6 +319,9 @@ const WebApi = {
           userIds: ownersIdsArray
         });
       },
+      closeProject: projectId => {
+        return WebAround.put(`${API_ENDPOINT}/projects/close/${projectId}`)
+      },
       close: model => {
         return WebAround.put(`${API_ENDPOINT}/projects/close/${model[0]}`);
       },
@@ -327,6 +330,10 @@ const WebApi = {
           `${API_ENDPOINT}/projects/reactivate/${model[0]}`
         );
       },
+      reactivateProject: projectId => {  
+        return WebAround.put(
+        `${API_ENDPOINT}/projects/reactivate/${projectId}`
+      )},
       skills: (projectId, skillsArray) => {
         return WebAround.put(
           `${API_ENDPOINT}/projects/skills/${projectId}`,
@@ -344,6 +351,9 @@ const WebApi = {
       },
       project: model => {
         return WebAround.delete(`${API_ENDPOINT}/projects/delete/${model[0]}`);
+      },
+      deleteProject: projectId => {
+        return WebAround.delete(`${API_ENDPOINT}/projects/delete/${projectId}`);
       }
     }
   },

@@ -79,7 +79,7 @@ class ProjectsContainer extends React.Component {
     if (this.validatePropsForAction(nextProps, "deleteProject")) {
       this.props.async.setActionConfirmationProgress(true);
       WebApi.projects.delete
-        .project(this.props.toConfirm.id)
+        .deleteProject(this.props.toConfirm.id)
         .then(response => {
           this.props.async.setActionConfirmationResult(response);
           this.pageChange(this.state.currentPage);
@@ -91,7 +91,7 @@ class ProjectsContainer extends React.Component {
     if (this.validatePropsForAction(nextProps, "closeProject")) {
       this.props.async.setActionConfirmationProgress(true);
       WebApi.projects.put
-        .close(this.props.toConfirm.id)
+        .closeProject(this.props.toConfirm.id)
         .then(response => {
           this.props.async.setActionConfirmationResult(response);
           this.pageChange(this.state.currentPage);
@@ -103,7 +103,7 @@ class ProjectsContainer extends React.Component {
     if (this.validatePropsForAction(nextProps, "reactivateProject")) {
       this.props.async.setActionConfirmationProgress(true);
       WebApi.projects.put
-        .reactivate(this.props.toConfirm.id)
+        .reactivateProject(this.props.toConfirm.id)
         .then(response => {
           this.props.async.setActionConfirmationResult(response);
           this.pageChange(this.state.currentPage);

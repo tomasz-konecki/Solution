@@ -12,8 +12,8 @@ import ProjectDetailContainer from "./ProjectDetailContainer";
 
 import "../../scss/containers/ProjectsContainer.scss";
 import { ACTION_CONFIRMED } from "./../../constants";
-import { Route, Switch, withRouter } from 'react-router-dom';
-import ProjectDetails from './ProjectDetails/ProjectDetails';
+import { Route, Switch, withRouter } from "react-router-dom";
+import ProjectDetails from "./ProjectDetails/ProjectDetails";
 class ProjectsContainer extends React.Component {
   constructor(props) {
     super(props);
@@ -29,12 +29,11 @@ class ProjectsContainer extends React.Component {
     this.pageChange = this.pageChange.bind(this);
   }
 
-
-
   componentWillReceiveProps(nextProps) {
     if (this.validatePropsForAction(nextProps, "deleteProject")) {
       this.props.async.setActionConfirmationProgress(true);
-      WebApi.projects.delete.project(this.props.toConfirm.id)
+      WebApi.projects.delete
+        .project(this.props.toConfirm.id)
         .then(response => {
           this.props.async.setActionConfirmationResult(response);
           this.pageChange(this.state.currentPage);
@@ -45,7 +44,8 @@ class ProjectsContainer extends React.Component {
     }
     if (this.validatePropsForAction(nextProps, "closeProject")) {
       this.props.async.setActionConfirmationProgress(true);
-      WebApi.projects.put.close(this.props.toConfirm.id)
+      WebApi.projects.put
+        .close(this.props.toConfirm.id)
         .then(response => {
           this.props.async.setActionConfirmationResult(response);
           this.pageChange(this.state.currentPage);
@@ -56,7 +56,8 @@ class ProjectsContainer extends React.Component {
     }
     if (this.validatePropsForAction(nextProps, "reactivateProject")) {
       this.props.async.setActionConfirmationProgress(true);
-      WebApi.projects.put.reactivate(this.props.toConfirm.id)
+      WebApi.projects.put
+        .reactivate(this.props.toConfirm.id)
         .then(response => {
           this.props.async.setActionConfirmationResult(response);
           this.pageChange(this.state.currentPage);
@@ -68,7 +69,8 @@ class ProjectsContainer extends React.Component {
     if (this.validatePropsForAction(nextProps, "deleteProjectOwner")) {
       this.props.async.setActionConfirmationProgress(true);
       const { ownerId, projectId } = this.props.toConfirm;
-      WebApi.projects.delete.owner(projectId, ownerId)
+      WebApi.projects.delete
+        .owner(projectId, ownerId)
         .then(response => {
           this.props.async.setActionConfirmationResult(response);
           this.pageChange(this.state.currentPage);
@@ -80,7 +82,8 @@ class ProjectsContainer extends React.Component {
     if (this.validatePropsForAction(nextProps, "putProjectSkills")) {
       this.props.async.setActionConfirmationProgress(true);
       const { projectId, skillsArray } = this.props.toConfirm;
-      WebApi.projects.put.skills(projectId, skillsArray)
+      WebApi.projects.put
+        .skills(projectId, skillsArray)
         .then(response => {
           this.props.async.setActionConfirmationResult(response);
           this.pageChange(this.state.currentPage);
@@ -123,37 +126,42 @@ class ProjectsContainer extends React.Component {
   }
 
   pullDOM = () => {
-    if(!this.state.init){
-      this.setState({
-        init: true
-      }, this.pageChange(this.state.currentPage));
+    if (!this.state.init) {
+      this.setState(
+        {
+          init: true
+        },
+        this.pageChange(this.state.currentPage)
+      );
     }
-    return <div>
-      <ProjectsList
-        openAddProjectModal={this.handleOpenModal}
-        projects={this.props.projects}
-        currentPage={this.state.currentPage}
-        totalPageCount={this.props.totalPageCount}
-        pageChange={this.pageChange}
-        loading={this.props.loading}
-        projectActions={this.props.projectActions}
-        limit={this.state.limit}
-      />
-      <Modal
-        open={this.state.showModal}
-        classNames={{ modal: "Modal Modal-projects" }}
-        contentLabel="Projects test modal"
-        onClose={this.handleCloseModal}
-      >
-        <AddProjectScreen
+    return (
+      <div>
+        <ProjectsList
+          openAddProjectModal={this.handleOpenModal}
+          projects={this.props.projects}
+          currentPage={this.state.currentPage}
+          totalPageCount={this.props.totalPageCount}
+          pageChange={this.pageChange}
+          loading={this.props.loading}
           projectActions={this.props.projectActions}
           limit={this.state.limit}
-          currentPage={this.state.currentPage}
-          closeModal={this.handleCloseModal}
         />
-      </Modal>
-    </div>;
-  }
+        <Modal
+          open={this.state.showModal}
+          classNames={{ modal: "Modal Modal-projects" }}
+          contentLabel="Projects test modal"
+          onClose={this.handleCloseModal}
+        >
+          <AddProjectScreen
+            projectActions={this.props.projectActions}
+            limit={this.state.limit}
+            currentPage={this.state.currentPage}
+            closeModal={this.handleCloseModal}
+          />
+        </Modal>
+      </div>
+    );
+  };
 
   render() {
     const { match } = this.props;
@@ -162,7 +170,6 @@ class ProjectsContainer extends React.Component {
         <Route exact path={match.url + ""} component={this.pullDOM} />
         <Route exact path={match.url + "/:id"} component={ProjectDetails} />
       </Switch>
-
     );
   }
 }
@@ -198,4 +205,7 @@ ProjectsContainer.propTypes = {
   loading: PropTypes.bool.isRequired
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(ProjectsContainer));
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withRouter(ProjectsContainer));

@@ -146,7 +146,8 @@ class ProjectsList extends Component {
             100: t("SelectStatus"),
             0: t("Activated"),
             1: t("NotActivated"),
-            2: t("Closed")
+            2: t("Closed"),
+            isDeleted: t("Deleted")
           },
           type: "multiState",
           filter: true
@@ -189,7 +190,7 @@ class ProjectsList extends Component {
                     key: "reactivateProject",
                     string: `${t("ReactivateProjectInfinitive")} ${
                       object.name
-                      }`,
+                    }`,
                     id: object.id,
                     successMessage: t("ProjectReactivated")
                   })

@@ -24,6 +24,7 @@ const translations = {
     Search: "Szukaj",
     DeleteFilters: "Usuń filtry",
     ShowDeleted: "Usunięte",
+    Deleted: "Usunięty",
     ShowNotActivated: "Nieaktywowane",
     ShowActivated: "Aktywne",
     ShowAll: "Wszystkie",

@@ -299,7 +299,9 @@ const WebApi = {
   },
   projects: {
     get: (projectId, onlyActiveAssignments) => {
-      return WebAround.get(`${API_ENDPOINT}/projects/${projectId}?onlyActiveAssignments=${onlyActiveAssignments}`);
+      return WebAround.get(
+        `${API_ENDPOINT}/projects/${projectId}?onlyActiveAssignments=${onlyActiveAssignments}`
+      );
     },
     post: {
       list: (settings = {}) => {
@@ -321,12 +323,15 @@ const WebApi = {
           userIds: ownersIdsArray
         });
       },
-      close: model => {
-        return WebAround.put(`${API_ENDPOINT}/projects/close/${model[0]}`);
+      // close: model => {
+      //   return WebAround.put(`${API_ENDPOINT}/projects/close/${model[0]}`);
+      // },
+      close: projectId => {
+        return WebAround.put(`${API_ENDPOINT}/projects/close/${projectId}`);
       },
-      reactivate: model => {
+      reactivate: projectId => {
         return WebAround.put(
-          `${API_ENDPOINT}/projects/reactivate/${model[0]}`
+          `${API_ENDPOINT}/projects/reactivate/${projectId}`
         );
       },
       skills: (projectId, skillsArray) => {
@@ -337,15 +342,15 @@ const WebApi = {
       }
     },
     delete: {
-      owner: (model) => {
+      owner: model => {
         return WebAround.delete(`${API_ENDPOINT}/projects/owner/${model[0]}`, {
           data: {
             userId: model[1]
           }
         });
       },
-      project: model => {
-        return WebAround.delete(`${API_ENDPOINT}/projects/delete/${model[0]}`);
+      project: projectId => {
+        return WebAround.delete(`${API_ENDPOINT}/projects/delete/${projectId}`);
       }
     }
   },
@@ -371,7 +376,10 @@ const WebApi = {
     },
     post: {
       report: (model, hyperlinksOnGDrive, hyperlinksOnOneDrive) => {
-        return WebAround.post(`${API_ENDPOINT}/reports/developers?hyperlinksOnGDrive=${hyperlinksOnGDrive}&hyperlinksOnOneDrive=${hyperlinksOnOneDrive}`, model);
+        return WebAround.post(
+          `${API_ENDPOINT}/reports/developers?hyperlinksOnGDrive=${hyperlinksOnGDrive}&hyperlinksOnOneDrive=${hyperlinksOnOneDrive}`,
+          model
+        );
       }
     }
   },
@@ -382,22 +390,22 @@ const WebApi = {
       }
     },
     post: {
-      getFolders: (model) => {
-        return WebAround.post(`${API_ENDPOINT}/GDrive/Get`, model); 
+      getFolders: model => {
+        return WebAround.post(`${API_ENDPOINT}/GDrive/Get`, model);
       },
-      deleteFolder: (model) => {
+      deleteFolder: model => {
         return WebAround.post(`${API_ENDPOINT}/GDrive/Delete`, model);
       },
-      updateFolder: (model) => {
+      updateFolder: model => {
         return WebAround.post(`${API_ENDPOINT}/GDrive/Update`, model);
       },
-      createFolder: (model) => {
+      createFolder: model => {
         return WebAround.post(`${API_ENDPOINT}/GDrive/Create`, model);
       },
       uploadFile: (model, config) => {
         return WebAround.post(`${API_ENDPOINT}/GDrive/Upload`, model, config);
       }
-    },
+    }
   },
   oneDrive: {
     get: {

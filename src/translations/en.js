@@ -24,6 +24,7 @@ const translations = {
     Search: "Search",
     DeleteFilters: "Delete filters",
     ShowDeleted: "Deleted",
+    Deleted: "Deleted",
     ShowNotActivated: "Not activated",
     ShowActivated: "Activated",
     ShowAll: "All",

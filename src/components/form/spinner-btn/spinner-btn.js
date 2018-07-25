@@ -24,7 +24,7 @@ const spinnerBtn = props => {
             ? true
             : false
         }
-        onClick={props.onClickHandler}
+        onClick={props.shouldSubmit ? null : props.onClickHandler}
         className={
           !props.isLoading
             ? `submit-btn ${

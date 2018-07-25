@@ -9,7 +9,8 @@ import {
   EDIT_PROJECT,
   CHANGE_PROJECT_SKILLS,
   ADD_SKILLS_TO_PROJECT, 
-  CHANGE_PROJECT_STATE
+  CHANGE_PROJECT_STATE,
+  CREATE_PROJECT
 } from "../constants";
 import { updateObject } from '../services/methods';
 const initialState = {
@@ -48,7 +49,10 @@ const initialState = {
 
   changeProjectStateStatus: null,
   changeProjectStateErrors: [],
-  currentOperation: ""
+  currentOperation: "",
+
+  createProjectStatus: null,
+  createProjectErrors: []
 };
 
 export const projectsReducer = (state = initialState, action) => {
@@ -99,6 +103,9 @@ export const projectsReducer = (state = initialState, action) => {
     case CHANGE_PROJECT_STATE:
       return updateObject(state, { changeProjectStateStatus: action.changeProjectStateStatus, 
         changeProjectStateErrors: action.changeProjectStateErrors, currentOperation: action.currentOperation })
+    case CREATE_PROJECT:
+      return updateObject(state, { createProjectStatus: action.createProjectStatus, 
+        createProjectErrors: action.createProjectErrors})
     default:
       return state;
   }

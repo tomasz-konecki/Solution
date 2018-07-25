@@ -48,10 +48,17 @@ export const sendCodeToGetTokenACreator = url => {
   return dispatch => {
     const indexOfEqualMark = url.search("=");
     const codeWithNotNeededId = url.substring(indexOfEqualMark + 1, url.length);
-    const codeWithoutId = codeWithNotNeededId.substring(
-      0,
-      codeWithNotNeededId.search("&")
-    );
+    let codeWithoutId = null;
+    if(codeWithNotNeededId.length > 50){
+      codeWithoutId = codeWithNotNeededId.substring(
+        0,
+        codeWithNotNeededId.search("&")
+      );
+    }
+    else
+      codeWithoutId = codeWithNotNeededId;
+
+
     dispatch(sendAuthCodePromise(codeWithoutId)).then(response => {
       const { access_token } = response.replyBlock.data.dtoObject;
       dispatch(sendCodeToGetToken(access_token, true, []));
@@ -125,9 +132,9 @@ export const createFolder = (createFolderStatus, createFolderErrors) => {
 export const createFolderACreator = (folderName, path, token) => {
   return dispatch => {
     const model = {
-      folderName: folderName,
-      path: path,
-      token: token
+      "folderName": folderName,
+      "path": path,
+      "token": token
     };
     WebApi.oneDrive.post
       .createFolder(model)
@@ -152,17 +159,19 @@ export const deleteFolder = (deleteFolderStatus, deleteFolderErrors) => {
 export const deleteFolderACreator = (folderId, token, path, choosenFolder) => {
   return dispatch => {
     const model = {
-      folderId: folderId,
-      token: token
+      "folderId": folderId,
+      "token": token
     };
-    
     WebApi.oneDrive.post
       .deleteFolder(model)
       .then(response => {
         dispatch(deleteFolder(true, []));
-        if(choosenFolder.id === folderId){
-          dispatch(chooseFolder(null));
+        if(choosenFolder){
+          if(choosenFolder.id === folderId){
+            dispatch(chooseFolder(null));
+          }
         }
+        
         dispatch(getFolderACreator(token, path));
       })
       .catch(error => {

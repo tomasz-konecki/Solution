@@ -46,8 +46,6 @@ function listener() {
 }
 
 const authValidator = response => {
-  console.log(response);
-  console.log(response.response);
   if (response.response === undefined) {
     throw response;
     // store.dispatch(logout());

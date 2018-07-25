@@ -86,6 +86,7 @@ class EmployeesList extends Component {
           loading={this.props.loading}
           data={this.props.employees}
           construct={construct}
+          showRaportButton={true}
         />
       </div>
     );

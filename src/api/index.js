@@ -327,9 +327,9 @@ const WebApi = {
       close: model => {
         return WebAround.put(`${API_ENDPOINT}/projects/close/${model[0]}`);
       },
-      reactivate: projectId => {
+      reactivate: model => {
         return WebAround.put(
-          `${API_ENDPOINT}/projects/reactivate/${projectId}`
+          `${API_ENDPOINT}/projects/reactivate/${model[0]}`
         );
       },
       reactivateProject: projectId => {  

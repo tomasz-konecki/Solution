@@ -5,9 +5,9 @@ import Hoc from '../../../services/auxilary';
 import Modal from 'react-responsive-modal';
 import Form from 'components/form/form';
 import { connect } from 'react-redux';
-import { addFeedbackACreator, getFeedbacksACreator } from '../../../actions/projectsActions';
+import { addFeedbackACreator, getFeedbacksACreator, addFeedback, getFeedbacks } from '../../../actions/projectsActions';
 import Spinner from 'components/common/spinner/spinner';
-import Axios from 'axios';
+import OperationStatusPrompt from '../../form/operationStatusPrompt/operationStatusPrompt';
 class Table extends Component{
     state = {
         trs: [], 
@@ -20,26 +20,21 @@ class Table extends Component{
             mode: "textarea", value: "", error: "", inputType: null, minLength: 3, maxLength: 1500, canBeNull: false}
         ],
         isLoading: false,
-        isLoadingFeeds: false, 
         helpData: []
     }
     componentDidMount(){
         const trs = this.populateTrs(this.props.items);
         this.setState({trs: trs, currentTrs: trs});
-        Axios.get("https://jsonplaceholder.typicode.com/posts").then(response => {
-            this.setState({helpData: response.data});
-        })
     }
     componentWillReceiveProps(nextProps){
         if(nextProps.items !== this.props.items){
             const trs = this.populateTrs(nextProps.items);
-            this.setState({trs: trs, currentTrs: trs});
+            this.setState({trs: trs, currentTrs: trs, isLoading: false});
         }
-        else if(nextProps.addFeedbackErrors !== this.props.addFeedbackErrors)
+        else if(nextProps.addFeedbackErrors !== this.props.addFeedbackErrors || 
+            nextProps.loadFeedbackErrors !== this.props.loadFeedbackError){
             this.setState({isLoading: false});
-        else if(nextProps.loadFeedbackErrors !== this.props.loadFeedbackError)
-            this.setState({isLoadingFeeds: false});
-        
+        }
     }
     closeCurrentOpenedRow = () => {
         const currentTrs = [...this.state.currentTrs];
@@ -113,52 +108,56 @@ class Table extends Component{
         return trs;
     }
 
-    addFeedback = () => {
+    addFeedbackHandler = () => {
         this.setState({isLoading: true});
-        this.props.addFeedback(this.props.projectId, this.props.items[this.state.currentOpenedRowId].employeeId, 
-            this.state.feedbackItems[0].value);
+        const { addFeedback, projectId, items } = this.props;
+        const { currentOpenedRowId, feedbackItems } = this.state;
+        addFeedback(projectId, items[currentOpenedRowId].employeeId, 
+            feedbackItems[0].value);
     }
     getFeedbacks = () => {
-        this.setState({opinionModal: true, modalType: false, isLoadingFeeds: true});
+        this.setState({opinionModal: true, modalType: false, isLoading: true});
         this.props.getFeedbacks(this.props.items[this.state.currentOpenedRowId].employeeId);
     }
     changeModal = () => {
-       if(this.state.modalType && this.props.loadedFeedbacks.length === 0){
-        this.setState({isLoadingFeeds: true, modalType: false});
-        this.props.getFeedbacks(this.props.items[this.state.currentOpenedRowId].employeeId);
+       const { modalType, currentOpenedRowId } = this.state;
+       const { getFeedbacks, items } = this.props;
+
+      this.clearData();
+
+       if(modalType){
+           this.setState({isLoading: true, modalType: false});
+           getFeedbacks(items[currentOpenedRowId].employeeId);
        }
        else
         this.setState({modalType: true});
     }
-    /*
-    Tego uzyje jak chlopaki zrobia na backendzie
-     {this.state.isLoadingFeeds ? 
-        <Spinner /> : 
-        this.props.loadFeedbackStatus ? 
-            <ul>
-                {this.props.loadedFeedbacks.map(j => {
-                    <li>
-                        ddsa
-                    </li>
-                })}
-            </ul>
-
-            : 
-        <p className="empty-list-err">{this.props.loadFeedbackErrors[0]}</p>
-    }*/
+    clearData = () => {
+        const { addFeedbackStatus, loadFeedbackStatus, addFeedbackClear, getFeedbacksClear } = this.props;
+        if(addFeedbackStatus !== null && addFeedbackStatus !== undefined) addFeedbackClear(null, []);
+        
+        if(loadFeedbackStatus !== null && loadFeedbackStatus !== undefined) getFeedbacksClear([], null, []);
+    }
+    closeModal = () => {
+        this.clearData();
+        this.setState({opinionModal: !this.state.opinionModal})
+    }
+    componentWillUnmount() { this.clearData(); }
+    
     render(){
-        const errorValue = this.props.addFeedbackErrors && this.props.addFeedbackErrors.length > 0 ? 
-            this.props.addFeedbackErrors[0] : "";
+        const { addFeedbackStatus, addFeedbackErrors, loadedFeedbacks, loadFeedbackStatus, 
+            loadFeedbackErrors, items, thds, title, togleAddEmployeeModal, emptyMsg } = this.props;
+        const {modalType} = this.state;
         return (
             <div className="table-container">
-            {this.props.items && 
-                this.props.items.length > 0 ? 
+            {items && 
+                items.length > 0 ? 
                 <Hoc>
-                    <h3>{this.props.title}</h3>
+                    <h3>{title}</h3>
                     <table>
                         <thead>
                             <tr>
-                                {this.props.thds.map(i => {
+                                {thds.map(i => {
                                     return <th key={i}>{i}</th>
                                 })}
                             </tr>                                       
@@ -169,14 +168,14 @@ class Table extends Component{
                             })}
                         </tbody>
                     </table>
-                    <button onClick={this.props.togleAddEmployeeModal} className="add-programmer-btn">
+                    <button onClick={togleAddEmployeeModal} className="add-programmer-btn">
                         Dodaj 
                     </button>   
                 </Hoc> : 
                  <div className="empty-project-squad">
                     <div>
-                        <span>{this.props.emptyMsg}</span>
-                        <i onClick={this.props.togleAddEmployeeModal} className="fa fa-user-plus"></i>
+                        <span>{emptyMsg}</span>
+                        <i onClick={togleAddEmployeeModal} className="fa fa-user-plus"></i>
                     </div>
                 </div>
                 }
@@ -188,53 +187,77 @@ class Table extends Component{
                     open={this.state.opinionModal}
                     classNames={{ modal: "Modal Modal-add-owner" }}
                     contentLabel="Employee opinion modal"
-                    onClose={() => this.setState({opinionModal: !this.state.opinionModal})}>
+                    onClose={this.closeModal}>
                     
                     <div className="opinion-container">
                         <header>
-                            <h3 className="section-heading">{this.state.modalType ? 
+                            <h3 className="section-heading">{modalType ? 
                             "Dodaj opinie o pracowniku" : "Lista opini o pracowniku"}</h3>
                         </header>
                         
-                        {this.state.modalType ? 
+                        {modalType ? 
                             <div className="add-opinion-container">
                                 <Form
                                 transactionEnd={this.props.addFeedbackStatus}
                                 btnTitle="Dodaj opinie"
                                 shouldSubmit={true}
-                                submitResult={
-                                    {content: errorValue, 
-                                    status: this.props.addFeedbackStatus}
-                                }
-                                onSubmit={this.addFeedback}
-                                error={errorValue}
+                                onSubmit={this.addFeedbackHandler}
                                 isLoading={this.state.isLoading}
                                 formItems={this.state.feedbackItems} 
                                 >
                                 </Form>
 
                             </div> :
+
+                            this.state.isLoading ? <Spinner /> : 
+                            loadFeedbackStatus && 
+                            loadedFeedbacks.length > 0 ? 
                             <div className="opinion-list-container">
                                <ul>
-                                   {this.state.helpData.map(j => {
+                                   {loadedFeedbacks.map(j => {
                                        return (
                                            <li key={j.id}>
-                                                <p>Data dodania: 19-12-1994 16:45</p>
-                                                <p>{j.body}</p>
+                                                <p>Autor: {j.author} => {j.client}</p>
+                                                <p>{j.description}</p>
                                             </li>
                                        );
                                    })}
                                </ul>
 
                             </div>
+                            : <p className="empty-opinions">Brak opini o tym pracowniku</p>
                         }
                         <button onClick={this.changeModal} className="show-opinions-btn">
-                            {this.state.modalType ? "Pokaż opinie" : "Dodaj opinie"}
+                            {modalType ? "Pokaż opinie" : "Dodaj opinie"}
                         </button>
                     </div>
                 </Modal>                          
                 }
                
+                {
+                    addFeedbackStatus !== null && addFeedbackStatus !== undefined &&  
+                    <OperationStatusPrompt
+                    operationPromptContent={
+                        addFeedbackStatus
+                        ? "Pomyślnie dodano opinie"
+                        : addFeedbackErrors &&
+                        addFeedbackErrors[0]
+                    }
+                    operationPrompt={addFeedbackStatus}
+                    />
+                }
+
+                {
+                    loadFeedbackStatus === false &&   
+                    <OperationStatusPrompt
+                    operationPromptContent={
+                        loadFeedbackErrors &&
+                        loadFeedbackErrors[0]
+                    }
+                    operationPrompt={false}
+                    />
+                }
+                
         </div>
         );
     }
@@ -254,7 +277,9 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         addFeedback: (projectId, employeeId, description) => dispatch(addFeedbackACreator(projectId, employeeId, description)),
-        getFeedbacks: (employeeId) => dispatch(getFeedbacksACreator(employeeId))
+        getFeedbacks: (employeeId) => dispatch(getFeedbacksACreator(employeeId)),
+        addFeedbackClear: (status, errors) => dispatch(addFeedback(status, errors)),
+        getFeedbacksClear: (loadedFeedbacks, loadFeedbackStatus, loadFeedbackErrors) => dispatch(getFeedbacks(loadedFeedbacks, loadFeedbackStatus, loadFeedbackErrors))
     };
   }
        

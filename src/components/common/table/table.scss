@@ -263,6 +263,17 @@
     width: 100%;
     height: 100%;
     position: relative;
+    .empty-opinions{
+        font-size: 20px;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: 100%;
+        text-align: center;
+        height: 50px;
+        margin: auto;
+        font-weight: 400;
+    }
     .add-opinion-container{
         .submit-btn{
             @media(max-width: 440px){
@@ -302,15 +313,17 @@
 
         ul{
           li{
+              margin: 10px 0;
               p{
                   margin: 5px 0;
               }
               p:first-of-type{
                   color: lightseagreen;
-                  font-size: 14px;
+                  font-size: 16px;
               }
               p:last-of-type{
                   padding: 10px;
+                  font-size: 14px;
                   box-sizing: border-box;
 
               }

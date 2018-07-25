@@ -130,12 +130,12 @@ export const addFeedback = (addFeedbackStatus, addFeedbackErrors) => {
 }
 
 export const addFeedbackACreator = (projectId, employeeId, description) => {
-  const objectToSend = {
-    "projectId": projectId,
-    "employeeId": employeeId,
-    "description": description
-  }
   return dispatch => {
+    const objectToSend = {
+      "projectId": projectId,
+      "employeeId": employeeId,
+      "description": description
+    }
     WebApi.feedbacks.post.feedback(objectToSend).then(response => {
       dispatch(addFeedback(true, []));
     }).catch(error => {
@@ -157,7 +157,7 @@ export const getFeedbacksACreator = employeeId => {
   return dispatch => {
     WebApi.feedbacks.get.byEmployee(employeeId)
     .then(response => {
-      dispatch(getFeedbacks([], true, []));
+      dispatch(getFeedbacks(response.replyBlock.data.dtoObjects, true, []));
     }).catch(error => {
       dispatch(getFeedbacks([], false, errorCatcher(error)));
     })

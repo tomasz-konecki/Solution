@@ -180,7 +180,7 @@ class ProjectDetailsBlock extends React.PureComponent {
           submitResult={{
             status: editProjectStatus,
             content: editProjectStatus ? "Pomyślnie dokonano edycji projektu" : 
-              editProjectErrors ? editProjectErrors[0] : "Ups, coś poszło nie tak"
+              editProjectErrors && editProjectErrors[0] 
           }}>
 
               <button onClick={this.changeForm} 

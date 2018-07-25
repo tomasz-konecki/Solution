@@ -3,6 +3,8 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const OptimizeJsPlugin = require("optimize-js-plugin");
 const path = require("path");
 const env = process.env.NODE_ENV || "development";
+const protocol = process.env.HTTPS === 'true' ? 'https' : 'http';
+
 
 const plugins = [
   new HtmlWebpackPlugin({
@@ -29,6 +31,7 @@ module.exports = {
     filename: "app.bundle.js",
     publicPath: "/"
   },
+  https: protocol === 'https',
   resolve: {
     extensions: [".js", ".jsx"],
     alias: {
@@ -98,10 +101,10 @@ module.exports = {
     Config: JSON.stringify(
       process.env.NODE_ENV === "production"
         ? {
-            serverUrl: "http://10.255.20.241"
+            serverUrl: "https://10.255.20.241"
           }
         : {
-            serverUrl: "http://10.255.20.241"
+            serverUrl: "https://10.255.20.241"
           }
     )
 

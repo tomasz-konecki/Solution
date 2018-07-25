@@ -134,10 +134,7 @@ class ProjectDetails extends Component {
   changeOnlyActiveAssignments = () => {
     const { onlyActiveAssignments } = this.state;
     const { id } = this.props.match.params;
-    this.setState({
-      isLoadingProject: true,
-      onlyActiveAssignments: !onlyActiveAssignments
-    });
+    this.setState({ onlyActiveAssignments: !onlyActiveAssignments });
     this.props.getProject(id, !onlyActiveAssignments);
   };
   fillDates = (startDate, endDate, estimatedEndDate) => {
@@ -198,7 +195,6 @@ class ProjectDetails extends Component {
           ) : null}
         </span>
       );
-
     }
     return spansArray;
   };
@@ -264,7 +260,11 @@ class ProjectDetails extends Component {
     } = this.props;
 
     const { reactivate, close } = WebApi.projects.put;
-    const { projectStatus, onlyActiveAssignments } = this.state;
+    const {
+      projectStatus,
+      onlyActiveAssignments,
+      isChangingAssignment
+    } = this.state;
     const { owner } = WebApi.projects.delete;
 
     return (
@@ -276,394 +276,245 @@ class ProjectDetails extends Component {
         }
         className="project-details-container"
       >
-        {this.state.isLoadingProject ? (
-          <Spinner />
-        ) : (
-          loadProjectStatus && (
-            <Aux>
-              <header>
-                <h1>
-                  {projectStatus && (
-                    <span className={projectStatus[0].classVal}>
-                      {projectStatus[0].name}
-                    </span>
-                  )}
+        {this.state.isLoadingProject && <OperationLoader isLoading={true} />}
+        {loadProjectStatus && (
+          <Aux>
+            <header>
+              <h1>
+                {projectStatus && (
+                  <span className={projectStatus[0].classVal}>
+                    {projectStatus[0].name}
+                  </span>
+                )}
 
-                  <i className="fa fa-briefcase fa-2x" />
-                  <b>{project.name}</b>
-                </h1>
-                <nav>
+                <i className="fa fa-briefcase fa-2x" />
+                <b>{project.name}</b>
+              </h1>
+              <nav>
+                <button
+                  onClick={() =>
+                    this.setState({ editModal: !this.state.editModal })
+                  }
+                  className="option-btn normal-btn"
+                >
+                  Edytuj projekt
+                </button>
+
+                {projectStatus[0].name !== "Aktywny" && (
                   <button
                     onClick={() =>
-                      this.setState({ editModal: !this.state.editModal })
-                    }
-                    className="option-btn normal-btn"
-                  >
-                    Edytuj projekt
-                  </button>
-
-                  {projectStatus[0].name !== "Aktywny" && (
-                    <button
-                      onClick={() =>
-                        changeProjectState(reactivate, "reactivate", {
-                          projectId: project.id,
-                          onlyActiveAssignments: onlyActiveAssignments
-                        })
-                      }
-                      className="option-btn green-btn"
-                    >
-                      Aktywuj projekt
-                    </button>
-                  )}
-
-
-                  {projectStatus[0].name === "Aktywny" && (
-                    <button
-                      onClick={() =>
-                        changeProjectState(close, "close", {
-                          projectId: project.id,
-                          onlyActiveAssignments: onlyActiveAssignments
-                        })
-                      }
-                      className="option-btn option-dang"
-
-    clearEditModalData = () => {
-        this.props.editProjectClearData(null, []);
-        this.setState({editModal: false});
-    }
-    componentWillUnmount(){
-        this.props.clearProjectData(null, null, [], [], []);
-        this.props.getAllSkillsDataClear([], null, []);
-    }
-    togleActiveAssign = () => {
-        const { onlyActiveAssignments } = this.state;
-        this.setState({onlyActiveAssignments: !onlyActiveAssignments, isLoadingProject: true})
-        this.props.getProject(this.props.match.params.id, !onlyActiveAssignments);
-    }
-    render(){ 
-        const { project, loading, loadProjectStatus, 
-            addEmployeeToProjectStatus, addEmployeeToProjectErrors,
-            loadProjectErrors, changeProjectState, changeProjectStateStatus,
-            changeProjectStateErrors } = this.props;
-        
-        const { reactivate, close } = WebApi.projects.put;
-        const { projectStatus, onlyActiveAssignments, isChangingAssignment } = this.state;
-        const { owner } = WebApi.projects.delete;
-     
-        return(
-            <div onClick={addEmployeeToProjectStatus !== null ? 
-                () => this.props.addEmployeeToProjectAction(null, []) : null} className="project-details-container">
-                {this.state.isLoadingProject &&
-                    <OperationLoader isLoading={true}/>  }
-                {
-                loadProjectStatus && 
-                <Aux>
-                    <header>
-                        <h1>
-                            {projectStatus && 
-                                <span className={projectStatus[0].classVal}>
-                                    {projectStatus[0].name}
-                                </span>
-                            }
-                            
-                            <i className="fa fa-briefcase fa-2x"></i>
-                            <b>{project.name}</b>
-                        </h1>
-                        <nav>
-                            <button onClick={() => this.setState({editModal: !this.state.editModal})} 
-                                className="option-btn normal-btn">Edytuj projekt</button>
-
-                                {
-                                (projectStatus[0].name !== "Aktywny") &&
-                                <button onClick={() => changeProjectState(reactivate, "reactivate", 
-                                    {"projectId": project.id, "onlyActiveAssignments": onlyActiveAssignments})} 
-                                    className="option-btn green-btn">Aktywuj projekt</button>
-                                }
-
-                                {projectStatus[0].name === "Aktywny" && 
-                                <button onClick={() => changeProjectState(close, "close", {"projectId": project.id, 
-                                    "onlyActiveAssignments": onlyActiveAssignments})} className="option-btn option-dang">Zamknij</button>
-                                }
-
-                                {projectStatus[0].name !== "Usunięty" && projectStatus[0].name !== "Zamknięty" && 
-                                    <button onClick={() => this.setState({deleteProjectModal: !this.state.deleteProjectModal})} className="option-btn option-very-dang">Usuń projekt</button>
-                                }
-                        </nav>
-                    </header>
-                    <main>
-                        <div className="project-details">
-                            <ProjectInformationsCart key={1} 
-                            items={this.props.overViewKeys}
-                            headerTitle="Informacje ogólne"
-                            originalObject={project}
-                            dateKeys={["startDate","estimatedEndDate", "endDate"]}
-                            />
-
-                            <ProjectInformationsCart key={2} 
-                            items={this.props.responsiblePersonKeys} 
-                            headerTitle="Osoba odpowiedzialna" 
-                            originalObject={project.responsiblePerson}
-                            />
-                            <article>
-                                <h4>Opis</h4>
-                                {project.description}
-                            </article>
-                            <h4>Właściciele</h4>
-                            <div className="owners-list">
-                                {project.owners.map((i, index) => {
-                                    return (
-                                    <button key={i.id} className="owner-btn">
-                                        {i.fullName}
-                                        <i onClick={() => changeProjectState(owner, "deleteOwner", 
-                                            {"projectId": project.id, "ownerId": project.owners[index].id
-                                            ,"onlyActiveAssignments": onlyActiveAssignments})}>Usuń</i>
-                                    </button>);
-                                })}
-                            </div>
-                        </div>
-
-                        <div className="right-project-spec">
-                            <div className="a-asign-container">
-                                <label>Pokaż aktywne przypisania</label>
-                                <input type="checkbox" checked={onlyActiveAssignments}
-                                onChange={this.togleActiveAssign}/>
-                            </div>
-
-                            <Table 
-                                projectId={project.id}
-                                items={project.team} 
-                                title="Zespół projektowy"
-                                thds={workerNames}
-                                emptyMsg="Ten projekt nie ma jeszcze pracowników"
-                                togleAddEmployeeModal={() => this.setState({addEmployeModal: !this.state.addEmployeModal})}
-                                />
-                                
-                                <Skills 
-                                onlyActiveAssignments={onlyActiveAssignments}
-                                projectId={project.id}
-                                changeProjectSkillsStatus={this.props.changeProjectSkillsStatus}
-                                changeProjectSkillsErrors={this.props.changeProjectSkillsErrors}
-                                changeProjectSkills={this.props.changeProjectSkills}
-                                title="Umiejętności na potrzeby projektu"
-                                items={project.skills} 
-                                getAllSkills={this.props.getAllSkills} 
-                                loadedSkills={this.props.loadedSkills} 
-                                loadSkillsStatus={this.props.loadSkillsStatus} 
-                                loadSkillsErrors={this.props.loadSkillsErrors} 
-                                addSkillsToProject={this.props.addSkillsToProject} 
-                                addSkillsToProjectStatus={this.props.addSkillsToProjectStatus}
-                                addSkillsToProjectErrors={this.props.addSkillsToProjectErrors} 
-                                addSkillsToProjectClear={this.props.addSkillsToProjectClear}
-                                />
-                        </div>
-                    </main>
-
-                <Modal
-                    key={1}
-                    open={this.state.editModal}
-                    classNames={{ modal: "Modal Modal-add-owner" }}
-                    contentLabel="Edit project modal"
-                    onClose={this.clearEditModalData}
-
-                    >
-                      Zamknij
-                    </button>
-                  )}
-
-                  {projectStatus[0].name !== "Usunięty" &&
-                    projectStatus[0].name !== "Zamknięty" && (
-                      <button
-                        onClick={() =>
-                          this.setState({
-                            deleteProjectModal: !this.state.deleteProjectModal
-                          })
-                        }
-                        className="option-btn option-very-dang"
-                      >
-                        Usuń projekt
-                      </button>
-                    )}
-                </nav>
-              </header>
-              <main>
-                <div className="project-details">
-                  <ProjectInformationsCart
-                    key={1}
-                    items={this.props.overViewKeys}
-                    headerTitle="Informacje ogólne"
-                    originalObject={project}
-                    dateKeys={["startDate", "estimatedEndDate", "endDate"]}
-                  />
-
-                  <ProjectInformationsCart
-                    key={2}
-                    items={this.props.responsiblePersonKeys}
-                    headerTitle="Osoba odpowiedzialna"
-                    originalObject={project.responsiblePerson}
-                  />
-                  <article>
-                    <h4>Opis</h4>
-                    {project.description}
-                  </article>
-                  <h4>Właściciele</h4>
-                  <div className="owners-list">
-                    {project.owners.map((i, index) => {
-                      return (
-                        <button key={i.id} className="owner-btn">
-                          {i.fullName}
-                          <i
-                            onClick={() =>
-                              changeProjectState(owner, "deleteOwner", {
-                                projectId: project.id,
-                                ownerId: project.owners[index].id,
-                                onlyActiveAssignments: onlyActiveAssignments
-                              })
-                            }
-                          >
-                            Usuń
-                          </i>
-                        </button>
-                      );
-                    })}
-                  </div>
-                </div>
-
-                <div className="right-project-spec">
-                  <div className="a-asign-container">
-                    <label>Pokaż aktywne przypisania</label>
-                    <input
-                      type="checkbox"
-                      checked={onlyActiveAssignments}
-                      onChange={this.togleActiveAssign}
-                    />
-                  </div>
-
-                  <Table
-                    projectId={project.id}
-                    items={project.team}
-                    title="Zespół projektowy"
-                    thds={workerNames}
-                    emptyMsg="Ten projekt nie ma jeszcze pracowników"
-                    togleAddEmployeeModal={() =>
-                      this.setState({
-                        addEmployeModal: !this.state.addEmployeModal
+                      changeProjectState(reactivate, "reactivate", {
+                        projectId: project.id,
+                        onlyActiveAssignments: onlyActiveAssignments
                       })
                     }
-                  />
+                    className="option-btn green-btn"
+                  >
+                    Aktywuj projekt
+                  </button>
+                )}
 
-                  <Skills
-                    onlyActiveAssignments={onlyActiveAssignments}
-                    projectId={project.id}
-                    changeProjectSkillsStatus={
-                      this.props.changeProjectSkillsStatus
+                {projectStatus[0].name === "Aktywny" && (
+                  <button
+                    onClick={() =>
+                      changeProjectState(close, "close", {
+                        projectId: project.id,
+                        onlyActiveAssignments: onlyActiveAssignments
+                      })
                     }
-                    changeProjectSkillsErrors={
-                      this.props.changeProjectSkillsErrors
-                    }
-                    changeProjectSkills={this.props.changeProjectSkills}
-                    title="Umiejętności na potrzeby projektu"
-                    items={project.skills}
-                    getAllSkills={this.props.getAllSkills}
-                    loadedSkills={this.props.loadedSkills}
-                    loadSkillsStatus={this.props.loadSkillsStatus}
-                    loadSkillsErrors={this.props.loadSkillsErrors}
-                    addSkillsToProject={this.props.addSkillsToProject}
-                    addSkillsToProjectStatus={
-                      this.props.addSkillsToProjectStatus
-                    }
-                    addSkillsToProjectErrors={
-                      this.props.addSkillsToProjectErrors
-                    }
-                    addSkillsToProjectClear={this.props.addSkillsToProjectClear}
+                    className="option-btn option-dang"
+                  >
+                    Zamknij
+                  </button>
+                )}
+
+                {projectStatus[0].name !== "Usunięty" &&
+                  projectStatus[0].name !== "Zamknięty" && (
+                    <button
+                      onClick={() =>
+                        this.setState({
+                          deleteProjectModal: !this.state.deleteProjectModal
+                        })
+                      }
+                      className="option-btn option-very-dang"
+                    >
+                      Usuń projekt
+                    </button>
+                  )}
+              </nav>
+            </header>
+            <main>
+              <div className="project-details">
+                <ProjectInformationsCart
+                  key={1}
+                  items={this.props.overViewKeys}
+                  headerTitle="Informacje ogólne"
+                  originalObject={project}
+                  dateKeys={["startDate", "estimatedEndDate", "endDate"]}
+                />
+
+                <ProjectInformationsCart
+                  key={2}
+                  items={this.props.responsiblePersonKeys}
+                  headerTitle="Osoba odpowiedzialna"
+                  originalObject={project.responsiblePerson}
+                />
+                <article>
+                  <h4>Opis</h4>
+                  {project.description}
+                </article>
+                <h4>Właściciele</h4>
+                <div className="owners-list">
+                  {project.owners.map((i, index) => {
+                    return (
+                      <button key={i.id} className="owner-btn">
+                        {i.fullName}
+                        <i
+                          onClick={() =>
+                            changeProjectState(owner, "deleteOwner", {
+                              projectId: project.id,
+                              ownerId: project.owners[index].id,
+                              onlyActiveAssignments: onlyActiveAssignments
+                            })
+                          }
+                        >
+                          Usuń
+                        </i>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              <div className="right-project-spec">
+                <div className="a-asign-container">
+                  <label>Pokaż aktywne przypisania</label>
+                  <input
+                    type="checkbox"
+                    checked={onlyActiveAssignments}
+                    onChange={this.togleActiveAssign}
                   />
                 </div>
-              </main>
 
-              <Modal
-                key={1}
-                open={this.state.editModal}
-                classNames={{ modal: "Modal Modal-add-owner" }}
-                contentLabel="Edit project modal"
-                onClose={this.clearEditModalData}
-              >
-                <ProjectDetailsBlock
-                  onlyActiveAssignments={onlyActiveAssignments}
-                  editProjectStatus={this.props.editProjectStatus}
-                  editProjectErrors={this.props.editProjectErrors}
-                  project={project}
-                  editProject={this.props.editProject}
+                <Table
+                  projectId={project.id}
+                  items={project.team}
+                  title="Zespół projektowy"
+                  thds={workerNames}
+                  emptyMsg="Ten projekt nie ma jeszcze pracowników"
+                  togleAddEmployeeModal={() =>
+                    this.setState({
+                      addEmployeModal: !this.state.addEmployeModal
+                    })
+                  }
                 />
-              </Modal>
 
-              <ConfirmModal
-                open={this.state.deleteProjectModal}
-                content="Delete project modal"
-                onClose={() =>
-                  this.setState({
-                    deleteProjectModal: !this.state.deleteProjectModal
-                  })
-                }
-                header="Czy jesteś pewny, że chcesz usunąć ten projekt?"
-                operationName="Usuń"
-                operation={() =>
-                  changeProjectState(WebApi.projects.delete.project, "delete", {
-                    projectId: project.id,
-                    onlyActiveAssignments: onlyActiveAssignments
-                  })
-                }
+                <Skills
+                  onlyActiveAssignments={onlyActiveAssignments}
+                  projectId={project.id}
+                  changeProjectSkillsStatus={
+                    this.props.changeProjectSkillsStatus
+                  }
+                  changeProjectSkillsErrors={
+                    this.props.changeProjectSkillsErrors
+                  }
+                  changeProjectSkills={this.props.changeProjectSkills}
+                  title="Umiejętności na potrzeby projektu"
+                  items={project.skills}
+                  getAllSkills={this.props.getAllSkills}
+                  loadedSkills={this.props.loadedSkills}
+                  loadSkillsStatus={this.props.loadSkillsStatus}
+                  loadSkillsErrors={this.props.loadSkillsErrors}
+                  addSkillsToProject={this.props.addSkillsToProject}
+                  addSkillsToProjectStatus={this.props.addSkillsToProjectStatus}
+                  addSkillsToProjectErrors={this.props.addSkillsToProjectErrors}
+                  addSkillsToProjectClear={this.props.addSkillsToProjectClear}
+                />
+              </div>
+            </main>
+
+            <Modal
+              key={1}
+              open={this.state.editModal}
+              classNames={{ modal: "Modal Modal-add-owner" }}
+              contentLabel="Edit project modal"
+              onClose={this.clearEditModalData}
+            >
+              <ProjectDetailsBlock
+                onlyActiveAssignments={onlyActiveAssignments}
+                editProjectStatus={this.props.editProjectStatus}
+                editProjectErrors={this.props.editProjectErrors}
+                project={project}
+                editProject={this.props.editProject}
               />
+            </Modal>
 
-              <Modal
-                key={3}
-                open={this.state.addEmployeModal}
-                classNames={{ modal: "Modal Modal-add-owner" }}
-                contentLabel="Add employee to project modal"
-                onClose={() =>
-                  this.setState({
-                    addEmployeModal: !this.state.addEmployeModal
-                  })
-                }
+            <ConfirmModal
+              open={this.state.deleteProjectModal}
+              content="Delete project modal"
+              onClose={() =>
+                this.setState({
+                  deleteProjectModal: !this.state.deleteProjectModal
+                })
+              }
+              header="Czy jesteś pewny, że chcesz usunąć ten projekt?"
+              operationName="Usuń"
+              operation={() =>
+                changeProjectState(WebApi.projects.delete.project, "delete", {
+                  projectId: project.id,
+                  onlyActiveAssignments: onlyActiveAssignments
+                })
+              }
+            />
+
+            <Modal
+              key={3}
+              open={this.state.addEmployeModal}
+              classNames={{ modal: "Modal Modal-add-owner" }}
+              contentLabel="Add employee to project modal"
+              onClose={() =>
+                this.setState({ addEmployeModal: !this.state.addEmployeModal })
+              }
+            >
+              <header>
+                <h3 className="section-heading">
+                  Dodaj pracownika do projektu{" "}
+                </h3>
+              </header>
+              <Form
+                btnTitle="Dodaj"
+                key={4}
+                endDate={this.props.estimatedEndDate}
+                shouldSubmit={false}
+                dateIndexesToCompare={[0, 1]}
+                onSubmit={this.addEmployeeToProject}
+                isLoading={this.state.addEmployeSpinner}
+                formItems={this.state.addEmployeToProjectFormItems}
+                shouldCancelInputList={true}
               >
-                <header>
-                  <h3 className="section-heading">
-                    Dodaj pracownika do projektu{" "}
-                  </h3>
-                </header>
-                <Form
-                  btnTitle="Dodaj"
-                  key={4}
-                  endDate={this.props.estimatedEndDate}
-                  shouldSubmit={false}
-                  dateIndexesToCompare={[0, 1]}
-                  onSubmit={this.addEmployeeToProject}
-                  isLoading={this.state.addEmployeSpinner}
-                  formItems={this.state.addEmployeToProjectFormItems}
-                  shouldCancelInputList={true}
-                >
-                  <div className="lte-pic-container">
-                    <label>Długość etatu</label>
-                    <ProgressPicker
-                      settings={{ width: "10%" }}
-                      createResult={this.createLTEPicker(10)}
-                    />
-                  </div>
-                </Form>
-              </Modal>
-
-              {addEmployeeToProjectStatus !== null &&
-                addEmployeeToProjectStatus !== undefined && (
-                  <OperationStatusPrompt
-                    operationPromptContent={
-                      addEmployeeToProjectStatus
-                        ? "Pomyślnie dodano pracownika do projektu"
-                        : addEmployeeToProjectErrors &&
-                          addEmployeeToProjectErrors[0]
-                    }
-                    operationPrompt={addEmployeeToProjectStatus}
+                <div className="lte-pic-container">
+                  <label>Długość etatu</label>
+                  <ProgressPicker
+                    settings={{ width: "10%" }}
+                    createResult={this.createLTEPicker(10)}
                   />
-                )}
-            </Aux>
-          )
+                </div>
+              </Form>
+            </Modal>
+
+            {addEmployeeToProjectStatus !== null &&
+              addEmployeeToProjectStatus !== undefined && (
+                <OperationStatusPrompt
+                  operationPromptContent={
+                    addEmployeeToProjectStatus
+                      ? "Pomyślnie dodano pracownika do projektu"
+                      : addEmployeeToProjectErrors &&
+                        addEmployeeToProjectErrors[0]
+                  }
+                  operationPrompt={addEmployeeToProjectStatus}
+                />
+              )}
+          </Aux>
         )}
 
         {loadProjectStatus === false && (

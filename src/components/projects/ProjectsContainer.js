@@ -4,24 +4,22 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import * as projectsActions from "../../actions/projectsActions";
 import * as asyncActions from "../../actions/asyncActions";
-import * as persistHelpActions from '../../actions/persistHelpActions';
+import * as persistHelpActions from "../../actions/persistHelpActions";
 import Modal from "react-responsive-modal";
 import AddProjectScreen from "../../components/projects/modals/AddProjectScreen";
 import ProjectsList from "../../components/projects/ProjectsList";
 import WebApi from "../../api/";
 import ProjectDetailContainer from "./ProjectDetailContainer";
-import ProjectDetails from "./ProjectDetails/ProjectDetails";
 import "../../scss/containers/ProjectsContainer.scss";
-import { fetchFormClientsACreator } from '../../actions/persistHelpActions';
+import { fetchFormClientsACreator } from "../../actions/persistHelpActions";
 import { ACTION_CONFIRMED } from "./../../constants";
 import { Route, Switch, withRouter } from "react-router-dom";
 import ProjectDetails from "./ProjectDetails/ProjectDetails";
-import Form from '../form/form';
-import moment from 'moment';
-import { validateInput } from '../../services/validation';
-import ContactList from '../../components/common/contactList/contactList';
+import Form from "../form/form";
+import moment from "moment";
+import { validateInput } from "../../services/validation";
+import ContactList from "../../components/common/contactList/contactList";
 const ClientId = 2;
-
 
 class ProjectsContainer extends React.Component {
   constructor(props) {
@@ -32,51 +30,139 @@ class ProjectsContainer extends React.Component {
       limit: 15,
       init: false,
       addNewProjectArray: [
-        {title: "Nazwa", type: "text", placeholder: "wprowadź nazwę projektu...", value: "", error: "", inputType: "name", minLength: 3, maxLength: 25, canBeNull: false},
-        {title: "Opis", type: "text", placeholder: "wprowadź opis projektu...", mode: "textarea", value: "", error: "", inputType: null, minLength: 3, maxLength: 1500, canBeNull: false},
-        {title: "Klient", type: "text", placeholder: "wprowadź klienta...", mode: "drop-down-with-data", value: "", error: "", inputType: "client", minLength: 3, maxLength: 100, canBeNull: false},
-        {title: "Data rozpoczęcia", name: "startDate", type: "text", placeholder: "wprowadź datę rozpoczęcia projektu...", mode: "date-picker", value: moment(), error: "", canBeBefore: true},
-        {title: "Data zakończenia ", name: "endDate", type: "text", placeholder: "wprowadź datę zakończenia projektu...", mode: "date-picker", value: moment(), error: "", canBeBefore: false},
+        {
+          title: "Nazwa",
+          type: "text",
+          placeholder: "wprowadź nazwę projektu...",
+          value: "",
+          error: "",
+          inputType: "name",
+          minLength: 3,
+          maxLength: 25,
+          canBeNull: false
+        },
+        {
+          title: "Opis",
+          type: "text",
+          placeholder: "wprowadź opis projektu...",
+          mode: "textarea",
+          value: "",
+          error: "",
+          inputType: null,
+          minLength: 3,
+          maxLength: 1500,
+          canBeNull: false
+        },
+        {
+          title: "Klient",
+          type: "text",
+          placeholder: "wprowadź klienta...",
+          mode: "drop-down-with-data",
+          value: "",
+          error: "",
+          inputType: "client",
+          minLength: 3,
+          maxLength: 100,
+          canBeNull: false
+        },
+        {
+          title: "Data rozpoczęcia",
+          name: "startDate",
+          type: "text",
+          placeholder: "wprowadź datę rozpoczęcia projektu...",
+          mode: "date-picker",
+          value: moment(),
+          error: "",
+          canBeBefore: true
+        },
+        {
+          title: "Data zakończenia ",
+          name: "endDate",
+          type: "text",
+          placeholder: "wprowadź datę zakończenia projektu...",
+          mode: "date-picker",
+          value: moment(),
+          error: "",
+          canBeBefore: false
+        }
       ],
       responsiblePersonsArray: [
-        {title: "Email", type: "text", placeholder: "wprowadź adres email...", value: "", error: "", inputType: "email", minLength: 7, maxLength: 70, canBeNull: false},
-        {title: "Imię", type: "text", placeholder: "wprowadź imię...", value: "", error: "", inputType: "firstName", minLength: 3, maxLength: 30, canBeNull: false},
-        {title: "Nazwisko", type: "text", placeholder: "wprowadź nazwisko...", value: "", error: "", inputType: "lastName", minLength: 3, maxLength: 40, canBeNull: false},
-        {title: "Numer telefonu", type: "text", placeholder: "wprowadź numer telefonu...", value: "", inputType: "phoneNumber", error: "", canBeNull: false, 
-        minLength: 7, maxLength: 20}
+        {
+          title: "Email",
+          type: "text",
+          placeholder: "wprowadź adres email...",
+          value: "",
+          error: "",
+          inputType: "email",
+          minLength: 7,
+          maxLength: 70,
+          canBeNull: false
+        },
+        {
+          title: "Imię",
+          type: "text",
+          placeholder: "wprowadź imię...",
+          value: "",
+          error: "",
+          inputType: "firstName",
+          minLength: 3,
+          maxLength: 30,
+          canBeNull: false
+        },
+        {
+          title: "Nazwisko",
+          type: "text",
+          placeholder: "wprowadź nazwisko...",
+          value: "",
+          error: "",
+          inputType: "lastName",
+          minLength: 3,
+          maxLength: 40,
+          canBeNull: false
+        },
+        {
+          title: "Numer telefonu",
+          type: "text",
+          placeholder: "wprowadź numer telefonu...",
+          value: "",
+          inputType: "phoneNumber",
+          error: "",
+          canBeNull: false,
+          minLength: 7,
+          maxLength: 20
+        }
       ],
       openFirstForm: true,
       selected: "Wybierz osoby do kontaktu",
       responsiblePersons: [],
       isLoading: false
     };
-    
+
     this.handleOpenModal = this.handleOpenModal.bind(this);
     this.handleCloseModal = this.handleCloseModal.bind(this);
     this.pageChange = this.pageChange.bind(this);
   }
 
-  componentDidMount(){
+  componentDidMount() {
     const { fetchStatus, persistHelpActions } = this.props;
-    if(!fetchStatus) 
-      persistHelpActions.fetchFormClientsACreator();
+    if (!fetchStatus) persistHelpActions.fetchFormClientsACreator();
   }
   onChangeClient = event => {
     const addNewProjectArray = [...this.state.addNewProjectArray];
     addNewProjectArray[ClientId].value = event.target.value;
-    addNewProjectArray[ClientId].error = validateInput(event.target.value,
-      addNewProjectArray[ClientId].canBeNull, 
+    addNewProjectArray[ClientId].error = validateInput(
+      event.target.value,
+      addNewProjectArray[ClientId].canBeNull,
       addNewProjectArray[ClientId].minLength,
       addNewProjectArray[ClientId].maxLength,
-      addNewProjectArray[ClientId].inputType, 
-      addNewProjectArray[ClientId].title);
-      
-  
+      addNewProjectArray[ClientId].inputType,
+      addNewProjectArray[ClientId].title
+    );
+
     this.setState({
       addNewProjectArray: addNewProjectArray
     });
-     
-  }
+  };
   componentWillReceiveProps(nextProps) {
     if (this.validatePropsForAction(nextProps, "deleteProject")) {
       this.props.async.setActionConfirmationProgress(true);
@@ -140,8 +226,8 @@ class ProjectsContainer extends React.Component {
           this.props.async.setActionConfirmationResult(error);
         });
     }
-    if(nextProps.createProjectErrors !== this.props.createProjectErrors){
-      this.setState({isLoading: false});
+    if (nextProps.createProjectErrors !== this.props.createProjectErrors) {
+      this.setState({ isLoading: false });
     }
   }
 
@@ -177,49 +263,56 @@ class ProjectsContainer extends React.Component {
     this.setState({ showModal: false });
   }
   changeForm = () => {
-    this.setState({openFirstForm: !this.state.openFirstForm});
-  }
-  
+    this.setState({ openFirstForm: !this.state.openFirstForm });
+  };
+
   goForClient = () => {
     const { fetchedFormClients } = this.props;
     const { responsiblePersonsArray, addNewProjectArray } = this.state;
-    
+
     const index = fetchedFormClients.findIndex(i => {
       return i.name === addNewProjectArray[ClientId].value;
     });
-    if(index !== -1){
-      this.setState({isLoading: true});
-      WebApi.responsiblePerson.get.byClient(fetchedFormClients[index].id).
-      then(response => {
-          if(response.replyBlock.data.dtoObjects.length > 0){
+    if (index !== -1) {
+      this.setState({ isLoading: true });
+      WebApi.responsiblePerson.get
+        .byClient(fetchedFormClients[index].id)
+        .then(response => {
+          if (response.replyBlock.data.dtoObjects.length > 0) {
             let responsiblePersons = [];
-        
-            responsiblePersons = responsiblePersons.concat(response.replyBlock.data.dtoObjects);
-            const responsiblePersonsArray = [...this.state.responsiblePersonsArray];
-            responsiblePersonsArray[0].value = response.replyBlock.data.dtoObjects[0].email;
-            responsiblePersonsArray[1].value = response.replyBlock.data.dtoObjects[0].firstName;
-            responsiblePersonsArray[2].value = response.replyBlock.data.dtoObjects[0].lastName;
-            responsiblePersonsArray[3].value = response.replyBlock.data.dtoObjects[0].phoneNumber;
-            
+
+            responsiblePersons = responsiblePersons.concat(
+              response.replyBlock.data.dtoObjects
+            );
+            const responsiblePersonsArray = [
+              ...this.state.responsiblePersonsArray
+            ];
+            responsiblePersonsArray[0].value =
+              response.replyBlock.data.dtoObjects[0].email;
+            responsiblePersonsArray[1].value =
+              response.replyBlock.data.dtoObjects[0].firstName;
+            responsiblePersonsArray[2].value =
+              response.replyBlock.data.dtoObjects[0].lastName;
+            responsiblePersonsArray[3].value =
+              response.replyBlock.data.dtoObjects[0].phoneNumber;
+
             this.setState({
               responsiblePersons: responsiblePersons,
               responsiblePersonsArray: responsiblePersonsArray,
               isLoading: false
             });
-          }
-          else
-            this.setState({isLoading: false});
-      }).catch(error => {
-        this.setState({isLoading: false});
-      });
+          } else this.setState({ isLoading: false });
+        })
+        .catch(error => {
+          this.setState({ isLoading: false });
+        });
     }
-    
-  }
+  };
 
   fetchContactDateByOtherClient = e => {
     const { responsiblePersons } = this.state;
     const index = responsiblePersons.findIndex(i => {
-      return i.firstName === e.target.value
+      return i.firstName === e.target.value;
     });
     const responsiblePersonsArray = [...this.state.responsiblePersonsArray];
     responsiblePersonsArray[0].value = responsiblePersons[index].email;
@@ -227,24 +320,35 @@ class ProjectsContainer extends React.Component {
     responsiblePersonsArray[2].value = responsiblePersons[index].lastName;
     responsiblePersonsArray[3].value = responsiblePersons[index].phoneNumber;
 
-    this.setState({responsiblePersonsArray: responsiblePersonsArray,
-      selected: responsiblePersons[index].firstName});
-  }
+    this.setState({
+      responsiblePersonsArray: responsiblePersonsArray,
+      selected: responsiblePersons[index].firstName
+    });
+  };
 
   handleSubmit = () => {
-    this.setState({isLoading: true});
+    this.setState({ isLoading: true });
     const { responsiblePersonsArray, addNewProjectArray } = this.state;
     const { history, match, projectActions } = this.props;
-    projectActions.createProjectACreator(addNewProjectArray, responsiblePersonsArray,
-      history, match.url);
-  }
-
+    projectActions.createProjectACreator(
+      addNewProjectArray,
+      responsiblePersonsArray,
+      history,
+      match.url
+    );
+  };
 
   pullDOM = () => {
-    const { addNewProjectArray, responsiblePersonsArray, 
-      openFirstForm, selected, responsiblePersons, isLoading } = this.state;
+    const {
+      addNewProjectArray,
+      responsiblePersonsArray,
+      openFirstForm,
+      selected,
+      responsiblePersons,
+      isLoading
+    } = this.state;
     const { createProjectStatus, createProjectErrors } = this.props;
-    const today = new Date()
+    const today = new Date();
     if (!this.state.init) {
       this.setState(
         {
@@ -266,7 +370,7 @@ class ProjectsContainer extends React.Component {
           limit={this.state.limit}
         />
 
-        <Modal
+        {/* <Modal
           open={this.state.showModal}
           classNames={{ modal: "Modal Modal-projects" }}
           contentLabel="Projects test modal"
@@ -277,49 +381,64 @@ class ProjectsContainer extends React.Component {
             limit={this.state.limit}
             currentPage={this.state.currentPage}
             closeModal={this.handleCloseModal}
-          />
+          /> */}
 
         <Modal
           key={1}
           open={this.state.showModal}
           classNames={{ modal: "Modal Modal-add-owner" }}
           contentLabel="Add project modal"
-          onClose={() => this.setState({showModal: false})}
+          onClose={() => this.setState({ showModal: false })}
         >
           <header>
             <h3>Dodaj projekt</h3>
           </header>
 
-          {openFirstForm ? 
-            <Form btnTitle="Dalej" key={1} shouldSubmit={false} 
-            dateIndexesToCompare={[3,4]} onSubmit={this.changeForm}
-            formItems={addNewProjectArray} 
-            endDate={today.getDate()}
-            clientsWhichMatch={this.props.fetchedFormClients}
-            onChangeClient={event => this.onChangeClient(event)} 
-            onBlur={this.goForClient} /> :
-
-            <Form btnTitle="Dodaj" key={2} shouldSubmit={true} 
-            formItems={responsiblePersonsArray} onSubmit={this.handleSubmit}
-            isLoading={isLoading} submitResult={{
-              status: createProjectStatus,
-              content: createProjectStatus ? "Pomyślnie dodano projekt. Jesteś przekierowywany..." : 
-              createProjectErrors && createProjectErrors[0]
-            }}>
-              <button onClick={this.changeForm} 
-                type="button" className="come-back-btn">
-                  Cofnij
+          {openFirstForm ? (
+            <Form
+              btnTitle="Dalej"
+              key={1}
+              shouldSubmit={false}
+              dateIndexesToCompare={[3, 4]}
+              onSubmit={this.changeForm}
+              formItems={addNewProjectArray}
+              endDate={today.getDate()}
+              clientsWhichMatch={this.props.fetchedFormClients}
+              onChangeClient={event => this.onChangeClient(event)}
+              onBlur={this.goForClient}
+            />
+          ) : (
+            <Form
+              btnTitle="Dodaj"
+              key={2}
+              shouldSubmit={true}
+              formItems={responsiblePersonsArray}
+              onSubmit={this.handleSubmit}
+              isLoading={isLoading}
+              submitResult={{
+                status: createProjectStatus,
+                content: createProjectStatus
+                  ? "Pomyślnie dodano projekt. Jesteś przekierowywany..."
+                  : createProjectErrors && createProjectErrors[0]
+              }}
+            >
+              <button
+                onClick={this.changeForm}
+                type="button"
+                className="come-back-btn"
+              >
+                Cofnij
               </button>
 
-              {responsiblePersons.length > 0 && 
-                <ContactList 
+              {responsiblePersons.length > 0 && (
+                <ContactList
                   selected={selected}
-                  onChange={e => this.fetchContactDateByOtherClient(e)} 
-                  items={responsiblePersons} 
-                /> 
-              }
+                  onChange={e => this.fetchContactDateByOtherClient(e)}
+                  items={responsiblePersons}
+                />
+              )}
             </Form>
-          }
+          )}
         </Modal>
       </div>
     );
@@ -352,7 +471,7 @@ function mapStateToProps(state) {
 
     createProjectStatus: state.projectsReducer.createProjectStatus,
     createProjectErrors: state.projectsReducer.createProjectErrors
-  }
+  };
 }
 
 function mapDispatchToProps(dispatch) {

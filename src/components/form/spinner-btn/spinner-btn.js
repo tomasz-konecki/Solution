@@ -2,7 +2,6 @@ import React from "react";
 import "./spinner-btn.scss";
 import Aux from "../../../services/auxilary";
 const spinnerBtn = props => {
-  console.log(props.submitResult);
   return (
     <Aux>
       {props.submitResult &&
@@ -28,10 +27,11 @@ const spinnerBtn = props => {
         onClick={props.onClickHandler}
         className={
           !props.isLoading
-            ? `submit-btn ${props.validationResult === false ||
-              props.transactionEnd
-                ? "submit-btn-dis"
-                : "submit-btn-cor"}`
+            ? `submit-btn ${
+                props.validationResult === false || props.transactionEnd
+                  ? "submit-btn-dis"
+                  : "submit-btn-cor"
+              }`
             : "spinner-btn"
         }
         type={props.shouldSubmit ? "submit" : "button"}

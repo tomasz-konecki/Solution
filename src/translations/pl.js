@@ -136,7 +136,7 @@ const translations = {
     Status: "Status",
     AccountActive: "Aktywny",
     AccountInactive: "Nieaktywny",
-    SelectStatus: "Select Status..."
+    SelectStatus: "Wybierz status..."
   },
   Confirmation: {
     YouAreAboutTo: "Właśnie chcesz",

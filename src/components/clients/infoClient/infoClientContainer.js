@@ -34,15 +34,19 @@ export default class infoClientContainer extends Component {
   handleInputAddCloud = e => {
     if (e.target.value) {
       this.setState({ inputValueToAdd: e.target.value, disabled: false });
+    } else {
+      this.setState({ inputValueToAdd: e.target.value, disabled: true });
     }
   };
 
   handleAddCloudSaveChild = () => {
-    this.props.handleAddCloudSave(
-      this.state.inputValueToAdd,
-      this.props.client.id
-    );
-    this.setState({ inputValueToAdd: "" });
+    if (!this.state.disabled) {
+      this.props.handleAddCloudSave(
+        this.state.inputValueToAdd,
+        this.props.client.id
+      );
+      this.setState({ inputValueToAdd: "" });
+    }
   };
 
   handleDeleteCloudChild = (cloudId, cloudName) => {

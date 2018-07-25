@@ -8,7 +8,7 @@ import LoaderHorizontal from "../../components/common/LoaderHorizontal";
 import "../../scss/LoginForm.scss";
 import { push } from "react-router-redux";
 import { translate } from "react-translate";
-import { bindActionCreators } from 'redux';
+import { bindActionCreators } from "redux";
 
 class LoginForm extends React.Component {
   constructor(props) {
@@ -16,15 +16,13 @@ class LoginForm extends React.Component {
   }
 
   componentDidMount() {
-    if(this.props.isAuthenticated){
-      if(new Date(this.props.tokenExpirationDate) > new Date()){
-        this.props.dispatch(push("/main"));
-      }
+    if (this.props.isAuthenticated) {
+      this.props.dispatch(push("/main"));
     }
   }
 
   languageSwitch(language) {
-    return (event) => {
+    return event => {
       this.props.lang.languageChange(language);
     };
   }
@@ -74,8 +72,14 @@ class LoginForm extends React.Component {
                 {t("Forgot")} <a href="#">{t("Password")}?</a>
               </span>
               <span className="psr">
-                <span onClick={this.languageSwitch("pl")} className="flag-pol"/>
-                <span onClick={this.languageSwitch("en")} className="flag-gbr"/>
+                <span
+                  onClick={this.languageSwitch("pl")}
+                  className="flag-pol"
+                />
+                <span
+                  onClick={this.languageSwitch("en")}
+                  className="flag-gbr"
+                />
               </span>
             </div>
           </form>
@@ -93,7 +97,7 @@ const mapStateToProps = state => {
   };
 };
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = dispatch => {
   return {
     lang: bindActionCreators(languageActions, dispatch)
   };
@@ -113,4 +117,7 @@ LoginForm.propTypes = {
   dispatch: PropTypes.func.isRequired
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(translate("LoginForm")(Form));
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(translate("LoginForm")(Form));

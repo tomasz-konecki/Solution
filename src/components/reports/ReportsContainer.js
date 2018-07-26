@@ -22,8 +22,10 @@ class ReportsContainer extends Component {
     reportModal: false,
     didPagesHasIncorrectValues: { status: null, error: "" },
     valueToSearch: "",
-    isReportGenerating: false
+    isReportGenerating: false,
+    extendId: ""
   }
+
   componentDidMount() {
     const { search } = this.props.history.location;
     if(window.location.href.search("#") !== -1){
@@ -153,9 +155,8 @@ class ReportsContainer extends Component {
     this.props.chooseFolder(folder);
   }
 
-
   putContentIntoVDom = () => {
-    const { reportModal, spinner, choosenDriveType } = this.state;
+    const { reportModal, spinner, choosenDriveType, extendId } = this.state;
     const { folders, getFoldersStatus, getFoldersErrors, path, 
       loadTeamsResult, loadTeamsErrors, baseList, choosenFolder } = this.props;
     
@@ -171,6 +172,8 @@ class ReportsContainer extends Component {
         return (
           <OneDriveContent 
           path={path}
+          extendDetailName={this.extendDetailName}
+          extendId={extendId}
           choosenFolder={choosenFolder}
           folders={folders}
           getFoldersStatus={getFoldersStatus}
@@ -181,6 +184,8 @@ class ReportsContainer extends Component {
       case driveTypes[3]:
         return ( <GDriveContent 
            path={path}
+           extendId={extendId}
+           extendDetailName={this.extendDetailName}
            choosenFolder={choosenFolder}
            folders={folders}
            getFoldersStatus={getFoldersStatus}
@@ -211,10 +216,13 @@ class ReportsContainer extends Component {
     this.props.generateReportClearData(null, []);
     this.setState({reportModal: false});
   }
+  extendDetailName = id => {  
+    this.setState({extendId: id});
+  }
+ 
   render() {
     const { reportModal, choosenDriveType, spinner, valueToSearch, isReportGenerating } = this.state;
     const { addList, baseList, folders, pagesList, choosenFolder, generateReportStatus, generateReportErrors } = this.props;
-
     return (
       <div className="reports-container">
 

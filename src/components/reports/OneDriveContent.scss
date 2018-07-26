@@ -1,14 +1,18 @@
 .drive-content-container{
-    .btn-g-drive{
-        top: 100px;
-        left: 0;
+    .validation-error{
+        color: tomato;
+        font-size: 20px;
+        width: 100%;
+        text-align: center;
+        top: 0;
+        position: absolute;
     }
     .file-picker{
         position: fixed;
         bottom: 0;
         background-color: rgba(0,0,0,0.9);
         width: 100%;
-        z-index: 1;
+        z-index: 10;
         left: 0;
         display: flex;
         align-items: center;
@@ -50,11 +54,19 @@
         header{
             display: flex;
             align-items: center;
-           
+            .btn-transparent{
+                bottom: 10px !important;
+                top: unset;
+                right: 10px;
+                left: unset !important;
+            }
             h3{
                 font-size: 18px;
                 font-weight: bolder;
                 position: relative;
+                margin: 20px 0;
+                width: 100%;
+                text-align: center;
                 span{
                     font-weight: normal;
                     margin-left: 15px;
@@ -62,17 +74,6 @@
                     font-size: 20px;
                     text-transform: uppercase;
                 }
-                .btn-transparent{
-                    right: 0;
-                    position: absolute;
-                    top: -15px;
-                }
-            }
-            p{
-                position: absolute;
-                margin: 0 auto;
-                left: 0;
-                right: 0;
             }
             .generate-raport-btn{
                 padding: 5px;
@@ -91,8 +92,9 @@
         .current-folders{
             display: flex;
             flex-flow: wrap;
-            margin: 20px 0;
+            padding: 20px 0;
             width: 100%;
+            margin: 50px 0;
             justify-content: center;
             .selected-folder{
                 background-color: lightblue;
@@ -114,11 +116,20 @@
                 cursor: pointer;
                 font-weight: bold;
                 transition: 0.3s all ease-in-out;
+                @media(max-width: 400px){
+                    width: 250px;
+                    height: 250px;
+                }
                 .fa-folder-open{
                     position: absolute;
                     font-size: 22px;
                     top: 5px;
                     left: 5px;
+                    @media(max-width: 400px){
+                        font-size: 40px;
+                        left: 10px;
+                        top: 10px;
+                    }
                 }
                 i{
                     transition: 0.5s all ease-in-out;
@@ -128,6 +139,11 @@
                     top: 5px;
                     font-size: 22px;
                     left: 36px;
+                    @media(max-width: 400px){
+                        font-size: 40px;
+                        left: 70px;
+                        top: 10px;
+                    }
                 }
                 .fa-check:hover, .fa-times:hover, 
                 .fa-folder-open:hover, .fa-trash:hover,
@@ -148,13 +164,24 @@
                     .fa-check, .fa-times{
                         position: absolute;
                         bottom: -20px;
+                        @media(max-width: 400px){
+                            bottom: -35px;
+                        }
                     }
                     .fa-check{
                         color: green;
                         right: 0;
+                        @media(max-width: 400px){
+                            font-size: 30px;
+                            right: 10px;
+                        }
                     }
                     .fa-times{
                         right: 25px;
+                        @media(max-width: 400px){
+                            font-size: 30px;
+                            right: 50px;
+                        }
                     }
                     .small-spiner{
                         bottom: -50px;
@@ -178,12 +205,22 @@
                     left: 7.5px;
                     color: red;
                     font-size: 18px;
+                    @media(max-width: 400px){
+                        font-size: 40px;
+                        left: 10px;
+                        bottom: 10px;
+                    }
                 }
                 .fa-pen-square{
                     bottom: 5px;
                     color: green;
                     left: 30.5px;
                     font-size: 20px;
+                    @media(max-width: 400px){
+                        font-size: 40px;
+                        left: 70px;
+                        bottom: 10px;
+                    }
                 }
                 .file-details{
                     z-index: 1;

@@ -18,7 +18,7 @@ const startPath = "root";
 class GDriveContent extends React.Component{
     state = {
         isLoading: true,
-        folderIsLoadingName: "",
+        folderIsLoadingId: "",
         showDeleteModal: false,
         folderToDeleteId: "",
         currentOpenedFolderToEditId: "",
@@ -54,7 +54,7 @@ class GDriveContent extends React.Component{
             nextProps.editFolderError !== this.props.editFolderError){
             this.setState({isLoading: false, currentOpenedFolderToEditId: "", 
                 editFolderName: "", isAddingFolder: false, isEditingFolder: false,
-                isUploadingFile: false, showAddingFolderInput: false, folderIsLoadingName: ""});
+                isUploadingFile: false, showAddingFolderInput: false, folderIsLoadingId: ""});
             if(nextProps.deleteFolderStatus)
                 setTimeout(this.closeModal(), 1500);
         }
@@ -67,7 +67,7 @@ class GDriveContent extends React.Component{
         }
     }
     openFolder = (folderName, folderId) => {
-        this.setState({folderIsLoadingName: folderName});
+        this.setState({folderIsLoadingId: folderId});
         this.props.getFolders(folderId, this.props.path + "/" + folderName);
     }
     goToFolderBefore = () => {
@@ -163,10 +163,10 @@ class GDriveContent extends React.Component{
     handleAddFile = e => { this.setState({fileToUpload: e.target.files}); }
     
     render(){
-        const { isLoading, folderIsLoadingName, showDeleteModal,
+        const { isLoading, folderIsLoadingId, showDeleteModal,
             folderToDeleteId, currentOpenedFolderToEditId, editFolderName, isEditingFolder, 
             showAddingFolderInput, folderNameError, isAddingFolder, newFolderName, 
-            newFolderNameError, isUploadingFile, fileToUpload } = this.state;
+            newFolderNameError, isUploadingFile, fileToUpload, editFolderError } = this.state;
         const { loginStatus, loginErrors, getFoldersStatus, getFoldersErrors, 
             folders, path, deleteFolderStatus, deleteFolderErrors, loading, 
             updateFolderStatus, updateFolderErrors,
@@ -182,9 +182,13 @@ class GDriveContent extends React.Component{
                     <div className="navigation-folders-container">
                         <header>
                             <h3>Aktualna ścieżka: <span>{path}</span></h3>
-                            {createFolderStatus === false && 
-                                <p className="server-error">
-                                {createFolderErrors[0]}</p>
+                            {newFolderNameError &&
+                                <p className="validation-error">
+                                {newFolderNameError}</p>
+                            }
+                            {editFolderError && 
+                                <p className="validation-error">
+                                {editFolderError}</p> 
                             }
                             <Button
                                 onClick={!showAddingFolderInput ? () => this.setState({showAddingFolderInput: true}) : null}
@@ -209,7 +213,17 @@ class GDriveContent extends React.Component{
                                     
 
                                     {isAddingFolder && <SmallSpinner /> } 
-                            </Button>    
+                                    { showAddingFolderInput && !isAddingFolder && <i onClick={() => this.setState({showAddingFolderInput: false})} 
+                                        className="fa fa-times"></i> }
+                            </Button>   
+
+                            {path !== startPath && 
+                            <Button 
+                            onClick={(this.goToFolderBefore)}
+                            mainClass="generate-raport-btn btn-transparent" title="Cofnij">
+                                <i className="fa fa-long-arrow-alt-left"></i>
+                            </Button> 
+                            } 
                         </header>
                         {folders.length === 0 && getFoldersStatus ? 
                             <p className="empty-files-list">
@@ -230,20 +244,15 @@ class GDriveContent extends React.Component{
                             currentOpenedFolderToEditId={currentOpenedFolderToEditId}
                             folders={folders} 
                             openFolder={this.openFolder} 
-                            folderIsLoadingName={folderIsLoadingName} 
+                            folderIsLoadingId={folderIsLoadingId} 
                             showDeleteFolderModal={this.showDeleteFolderModal} 
+                            onFileClick={null}
                             />
                         }
 
                         
 
-                        {path !== startPath && 
-                            <Button 
-                            onClick={(this.goToFolderBefore)}
-                            mainClass="generate-raport-btn btn-transparent btn-g-drive" title="Cofnij">
-                                <i className="fa fa-long-arrow-alt-left"></i>
-                            </Button> 
-                        }
+                       
                     </div>
                     : 
                     <p className="one-d-error">{loginErrors[0]}</p>
@@ -290,12 +299,39 @@ class GDriveContent extends React.Component{
                     isUploadingFile={isUploadingFile}/>
                 }
 
-                {uploadFileStatus === false && 
-                    <OperationLoader 
-                        key={2}
-                        close={() => this.props.clearUploadFile(null, [])}
-                        isLoading={false} 
-                        operationError={uploadFileErrors[0]}
+                {createFolderStatus !== null && 
+                    <OperationStatusPrompt
+                    key={0} 
+                    operationPromptContent={createFolderStatus ? 
+                        "Folder utworzony pomyślnie" : createFolderErrors[0]}
+                    operationPrompt={createFolderStatus}
+                    />
+                }
+
+                {deleteFolderStatus !== null && 
+                    <OperationStatusPrompt
+                    key={1} 
+                    operationPromptContent={deleteFolderStatus ? 
+                        "Folder został pomyślnie usunięty" : deleteFolderErrors[0]}
+                    operationPrompt={deleteFolderStatus}
+                    />
+                }
+
+                {updateFolderStatus !== null && 
+                    <OperationStatusPrompt 
+                    key={2} 
+                    operationPromptContent={updateFolderStatus ? 
+                        "Folder został pomyślnie edytowany" : updateFolderErrors[0]}
+                    operationPrompt={updateFolderStatus}
+                    />
+                }
+            
+                {uploadFileStatus !== null && 
+                    <OperationStatusPrompt 
+                    key={3} 
+                    operationPromptContent={uploadFileStatus ? 
+                        "Pomyślnie dodano plik" : uploadFileErrors[0]}
+                    operationPrompt={uploadFileStatus}
                     />
                 }
             </div>

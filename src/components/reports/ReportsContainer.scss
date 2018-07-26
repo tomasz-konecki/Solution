@@ -4,6 +4,12 @@
   color: black;
   box-sizing: border-box;
   position: relative;
+  .generate-raport-btn{
+    .fa-times{
+      right: 10px;
+      position: absolute;
+    }
+  }
   .lds-ring {
     top: 38vh !important;
     z-index: 200;
@@ -50,6 +56,10 @@
       }
       @media (max-width: 890px) {
         flex-flow: column;
+      }
+      @media(max-width: 500px){
+        align-items: center;
+        margin: 15px 0;
       }
       div:first-of-type {
         b {
@@ -196,6 +206,8 @@
   & > p {
     bottom: -50px;
     font-size: 20px;
+  }
+  .correct-status{
     color: lightgreen;
   }
   @media (max-width: 625px) {

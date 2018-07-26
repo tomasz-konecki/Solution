@@ -49,3 +49,21 @@ export const isArrayContainsByObjectKey = (array, element) => {
   }
   return false;
 }
+
+
+export const prepareToLongStringToShow = (optimalLength, incomingWord) => {
+  let returnWord = "";
+
+  if(incomingWord.length > optimalLength){
+    for(let i = 0; i < optimalLength; i++)
+      returnWord += incomingWord.charAt(i);
+    
+    returnWord = returnWord + "...";
+  }
+  
+  else
+    returnWord = incomingWord;
+
+  return returnWord;
+
+}

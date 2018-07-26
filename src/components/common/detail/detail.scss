@@ -1,0 +1,27 @@
+.detail-expander{
+    position: relative;
+}
+.show-expander{
+    position: absolute;
+    width: 100%;
+    display: flex;
+    top: -20px;
+    padding: 10px 0;
+    justify-content: center;
+    align-items: center;
+    opacity: 1;
+    left: 0;
+    background: rgba(0,0,0,0.7);
+    animation: 0.5s animate-detals-in ease-in-out forwards;
+    color: white;
+}
+@keyframes animate-detals-in{
+    0%{
+        opacity: 0;
+        z-index: -1;
+    }
+    100%{
+        z-index: 10;
+        opacity: 1;
+    }
+}

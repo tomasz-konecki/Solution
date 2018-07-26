@@ -171,7 +171,7 @@ class GDriveContent extends React.Component{
             folders, path, deleteFolderStatus, deleteFolderErrors, loading, 
             updateFolderStatus, updateFolderErrors,
             createFolderStatus, createFolderErrors, uploadFileErrors,
-            uploadFileStatus, choosenFolder } = this.props;
+            uploadFileStatus, choosenFolder, extendDetailName, extendId } = this.props;
         return (
             <div 
                 className="drive-content-container">

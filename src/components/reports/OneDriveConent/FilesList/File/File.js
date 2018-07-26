@@ -9,8 +9,11 @@ const file = ({folder, openFolder, editFolderError, isDeletingOrEditingFolder,
     enableFolderEdit, editFolderName, closeEditingFolderName, onFileClick, 
     chooseFolder, choosenFolder, extendId, extendDetailName }) => {
 
-    const parentPath = prepareToLongStringToShow(11, folder.parentPath);
-    console.log(parentPath);
+
+    let parentPath = null
+    if(folder.parentPath)
+        parentPath = prepareToLongStringToShow(11, folder.parentPath);
+
     return (
     <li onDoubleClick={folder.type !== "file" ? () => openFolder(folder.name, folder.id) : null}
     className={choosenFolder ? folder.id === choosenFolder.id ? "selected-folder" : null : null}
@@ -63,12 +66,16 @@ const file = ({folder, openFolder, editFolderError, isDeletingOrEditingFolder,
             <div className="file-details">
                 <p><b>Typ</b><span>{folder.type}</span></p>
                 <p><b>Rozmiar</b><span>{folder.size}</span></p>
+
+                {parentPath && 
                 <DetailExpander extendDetailName={extendDetailName} 
-                currentId={folder.id}
-                extend={extendId === folder.id ? true : false}
-                originalName={folder.parentPath}>
+                    currentId={folder.id}
+                    extend={extendId === folder.id ? true : false}
+                    originalName={folder.parentPath}>
                     <b>Ścieżka</b><span>{parentPath}</span>
                 </DetailExpander>
+                }
+                
                 <a href={folder.webUrl}>Otwórz</a>
             </div>
         }

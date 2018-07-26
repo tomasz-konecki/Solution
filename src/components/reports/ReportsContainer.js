@@ -184,8 +184,6 @@ class ReportsContainer extends Component {
       case driveTypes[3]:
         return ( <GDriveContent 
            path={path}
-           extendId={extendId}
-           extendDetailName={this.extendDetailName}
            choosenFolder={choosenFolder}
            folders={folders}
            getFoldersStatus={getFoldersStatus}

@@ -369,7 +369,8 @@ class ProjectDetails extends Component {
                     return (
                       <button key={i.id} className="owner-btn">
                         {i.fullName}
-                        <i
+                        {project.owners.length > 1 && 
+                          <i
                           onClick={() =>
                             changeProjectState(owner, "deleteOwner", {
                               projectId: project.id,
@@ -377,9 +378,11 @@ class ProjectDetails extends Component {
                               onlyActiveAssignments: onlyActiveAssignments
                             })
                           }
-                        >
+                          >
                           Usuń
                         </i>
+                        }
+                        
                       </button>
                     );
                   })}

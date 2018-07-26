@@ -30,7 +30,7 @@ const translations = {
     ShowAll: "Wszystkie",
     Today: "Dzisiaj",
     NoDataOrResults: "Brak danych bądź wyników",
-    Reports: "Raporty",
+    Reports: "Raporty"
   },
   StatsContainer: {
     DevLocalization: "Lokalizacja Developerów",
@@ -339,7 +339,9 @@ const translations = {
   },
   FileInput: {
     ChooseFile: "Wybierz plik",
-    WrongFileType: "Zły format pliku"
+    WrongFileType: "Zły format pliku",
+    FileIsTooBig: "Za duży plik",
+    WrongAspectRatio: "Obrazek ma zły aspect ratio"
   }
 };
 

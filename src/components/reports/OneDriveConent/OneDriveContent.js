@@ -3,7 +3,7 @@ import '../OneDriveContent.scss';
 import { connect } from 'react-redux'; 
 import { authOneDriveACreator, sendCodeToGetTokenACreator, createFolderACreator,
     deleteFolderACreator, deleteFolder, updateFolderACreator, 
-    updateFolder, getFolderACreator, uploadFileACreator, uploadFile  
+    getFolderACreator, uploadFileACreator  
 } from '../../../actions/oneDriveActions';
 import Spinner from '../../common/spinner/spinner';
 import Button from '../../common/button/button';
@@ -13,7 +13,7 @@ import OperationLoader from '../../common/operationLoader/operationLoader';
 import FilesList from './FilesList/FilesList';
 import SmallSpinner from '../../common/spinner/small-spinner';
 import FilePicker from '../filePicker/filePicker';
-
+import OperationStatusPrompt from '../../form/operationStatusPrompt/operationStatusPrompt';
 const startPath = "/drive/root:";
 
 class OneDriveContent extends React.PureComponent {
@@ -34,7 +34,7 @@ class OneDriveContent extends React.PureComponent {
         editFolderError: "",
         currentOpenedFolderToEditId: "",
 
-        folderIsLoadingName: "",
+        folderIsLoadingId: "",
         isGoingBack: false,
 
         fileToUpload: null,
@@ -58,14 +58,14 @@ class OneDriveContent extends React.PureComponent {
     }
     componentWillReceiveProps(nextProps){
         if(nextProps.authErrors !== this.props.authErrors){
-            window.open(nextProps.authRedirectLink);
             this.setState({isPreparingForLogingIn: false});
+            window.open(nextProps.authRedirectLink);
         }
         else if(nextProps.getFoldersErrors !== this.props.getFoldersErrors){
             this.setState({isTakingCodeFromApi: false, isAddingFolder: false, 
                 showAddingFolderInput: false, isDeletingOrEditingFolder: false, 
                 showDeleteFolderModal: false, currentOpenedFolderToEditId: "", 
-                folderIsLoadingName: "", isGoingBack: false, isUploadingFile: false});
+                folderIsLoadingId: "", isGoingBack: false, isUploadingFile: false});
         }
         else if(nextProps.createFolderStatus === false)
             this.setState({ isAddingFolder: false });
@@ -77,19 +77,6 @@ class OneDriveContent extends React.PureComponent {
     onChangeFolderName = (e, folderName) => {
         const validationResult = this.checkForCorrectInputValue(e.target.value, folderName);
         this.setState({editFolderName: e.target.value, editFolderError: validationResult});
-    }
-
-    openAddingFolderInput = () => {
-        const { showAddingFolderInput, newFolderName } = this.state;
-        const validationResult = this.checkForCorrectInputValue(newFolderName);
-        
-        if(showAddingFolderInput && !validationResult){
-            this.setState({isAddingFolder: true});
-            this.props.createFolder(this.state.newFolderName, this.props.path, 
-                this.props.authCodeToken);
-        }
-        else
-            this.setState({showAddingFolderInput: true});
     }
     onKeyPress = e => {
         if(e.key === 'Enter'){
@@ -115,7 +102,7 @@ class OneDriveContent extends React.PureComponent {
 
     checkForCorrectInputValue = (value, oldValue) => {
         const validationResult = validateInput(value, false, 
-            3,30, "name", "nazwa folderu");
+            3,30, "firstName", "nazwa folderu");
         
         if(oldValue){
             const checkForEqualNames = value === oldValue ? "Nie zmieniono wartości" : "";
@@ -147,8 +134,8 @@ class OneDriveContent extends React.PureComponent {
                 this.props.authCodeToken, this.props.path);     
         }
     }
-    openFolder = folderName => {
-        this.setState({folderIsLoadingName: folderName});
+    openFolder = (folderName, folderId) => {
+        this.setState({folderIsLoadingId: folderId});
         const nextPath = this.props.path + "/" + folderName;
         this.props.getFolder(this.props.authCodeToken, nextPath);
     }
@@ -187,13 +174,14 @@ class OneDriveContent extends React.PureComponent {
             showAddingFolderInput, isAddingFolder, folderNameError, 
             showDeleteFolderModal, folderToDeleteId, isDeletingOrEditingFolder, 
             currentOpenedFolderToEditId, editFolderName, editFolderError, 
-            folderIsLoadingName, isGoingBack, fileToUpload, isUploadingFile,
+            folderIsLoadingId, isGoingBack, fileToUpload, isUploadingFile,
             newFolderName, newFolderNameError } = this.state;
 
         const { folders, getFoldersStatus, getFoldersErrors, path, 
             createFolderStatus, createFolderErrors, deleteFolderStatus, 
             deleteFolderErrors, updateFolderStatus, updateFolderErrors, 
-            uploadFileStatus, uploadFileErrors, chooseFolder, choosenFolder } = this.props;
+            uploadFileStatus, uploadFileErrors, chooseFolder, choosenFolder, 
+            extendDetailName, extendId } = this.props;
         return (
             <div className="drive-content-container">
 
@@ -211,13 +199,18 @@ class OneDriveContent extends React.PureComponent {
                     <div className="navigation-folders-container">
                         <header>
                             <h3>Aktualna ścieżka: <span>{path}</span></h3>
-                            {createFolderStatus === false && 
-                                <p className="server-error">
-                                {createFolderErrors[0]}</p>
-                            }
-                            
+                                {newFolderNameError &&
+                                    <p className="validation-error">
+                                    {newFolderNameError}</p>
+                                }
+                                {editFolderError && 
+                                    <p className="validation-error">
+                                    {editFolderError}</p> 
+                                }
+                                
                             <Button
-                                onClick={!showAddingFolderInput ? () => this.setState({showAddingFolderInput: true}) : null}
+                                onClick={!showAddingFolderInput ? () => this.setState({showAddingFolderInput: true})
+                                 : null}
                                 disable={isAddingFolder || newFolderNameError}
                                 title={showAddingFolderInput || "Dodaj folder"}
                                 mainClass="generate-raport-btn btn-green"
@@ -231,16 +224,19 @@ class OneDriveContent extends React.PureComponent {
                                         onChange={e => this.onChangeNewFolderName(e)}
                                         type="text" placeholder="wpisz nazwę folderu..." />
                                     }
-                                    <span onClick={this.openAddingFolderInput} >
-                                        <i onClick={this.addFolder} className="fa fa-folder">
+                                    <span onClick={this.addFolder}>
+                                        <i className="fa fa-folder">
                                         </i>
                                         {showAddingFolderInput && "Stwórz"} 
                                     </span>
                                     
 
-                                    {isAddingFolder && <SmallSpinner /> } 
+                                    { isAddingFolder && <SmallSpinner /> } 
+                                    { showAddingFolderInput && !isAddingFolder && 
+                                    <i onClick={newFolderNameError ? null :
+                                        () => this.setState({showAddingFolderInput: false})} 
+                                        className="fa fa-times"></i> }
                             </Button>    
-                        
                             
                             {path !== startPath && 
                             <Button 
@@ -258,9 +254,11 @@ class OneDriveContent extends React.PureComponent {
                             </p> : 
 
                             <FilesList 
+                            extendDetailName={extendDetailName}
+                            extendId={extendId}
                             chooseFolder={chooseFolder}
                             choosenFolder={choosenFolder}
-                            folderIsLoadingName={folderIsLoadingName}
+                            folderIsLoadingId={folderIsLoadingId}
                             folders={folders}
                             editFolderName={editFolderName}
                             currentOpenedFolderDetailName={currentOpenedFolderDetailName}
@@ -294,32 +292,50 @@ class OneDriveContent extends React.PureComponent {
                 operation={this.deleteFolder} 
                 operationName="Usuń"
                 >
-                    {(isDeletingOrEditingFolder || deleteFolderStatus === false) &&
+                    {isDeletingOrEditingFolder &&
                     <OperationLoader 
-                    close={() => this.props.deleteFolderClear(null, [])}
-                    isLoading={isDeletingOrEditingFolder} 
-                    operationError={deleteFolderErrors[0]}
-                    />
+                        isLoading={true} 
+                        />
                     }
                 </ConfirmModal>
+                
 
-                
-                {updateFolderStatus === false &&
-                    <OperationLoader 
-                    close={() => this.props.updateFolderClear(null, [])}
-                    isLoading={false} 
-                    operationError={updateFolderErrors[0]}
+                {createFolderStatus !== null && 
+                    <OperationStatusPrompt
+                    key={0} 
+                    operationPromptContent={createFolderStatus ? 
+                        "Folder utworzony pomyślnie" : createFolderErrors[0]}
+                    operationPrompt={createFolderStatus}
+                    />
+                }
+
+                {deleteFolderStatus !== null && 
+                    <OperationStatusPrompt
+                    key={1} 
+                    operationPromptContent={deleteFolderStatus ? 
+                        "Folder został pomyślnie usunięty" : deleteFolderErrors[0]}
+                    operationPrompt={deleteFolderStatus}
+                    />
+                }
+
+                {updateFolderStatus !== null && 
+                    <OperationStatusPrompt 
+                    key={2} 
+                    operationPromptContent={updateFolderStatus ? 
+                        "Folder został pomyślnie edytowany" : updateFolderErrors[0]}
+                    operationPrompt={updateFolderStatus}
+                    />
+                }
+            
+                {uploadFileStatus !== null && 
+                    <OperationStatusPrompt 
+                    key={3} 
+                    operationPromptContent={uploadFileStatus ? 
+                        "Pomyślnie dodano plik" : uploadFileErrors[0]}
+                    operationPrompt={uploadFileStatus}
                     />
                 }
                 
-                {uploadFileStatus === false &&
-                    <OperationLoader 
-                    close={() => this.props.uploadFileClear(null, [])}
-                    isLoading={false} 
-                    operationError={uploadFileErrors[0]}
-                    />
-                }
-           
             </div>
         );
     }
@@ -357,10 +373,8 @@ const mapStateToProps = state => {
         deleteFolder: (folderId, token, path, choosenFolder) => dispatch(deleteFolderACreator(folderId, token, path, choosenFolder)),
         deleteFolderClear: (status, errors) => dispatch(deleteFolder(status, errors)),
         updateFolder: (newName, folderId, token, path) => dispatch(updateFolderACreator(newName, folderId, token, path)),
-        updateFolderClear: (status, errors) => dispatch(updateFolder(status, errors)),
         getFolder: (token, path) => dispatch(getFolderACreator(token, path)),
-        uploadFile: (token, path, file, currentFilesList) => dispatch(uploadFileACreator(token, path, file, currentFilesList)),
-        uploadFileClear: (uploadFileStatus, uploadFileErrors) => dispatch(uploadFile(uploadFileStatus, uploadFileErrors))    
+        uploadFile: (token, path, file, currentFilesList) => dispatch(uploadFileACreator(token, path, file, currentFilesList))
     };
   };
   

@@ -18,6 +18,7 @@ const genReport = ({
   generateReportStatus,
   generateReportErrors
 }) => {
+  console.log(generateReportStatus);
   return (
     <Modal
       key={1}
@@ -87,10 +88,10 @@ const genReport = ({
 
           <SpinnerButton
             submitResult={{
+              status: generateReportStatus,
               content: generateReportStatus
                 ? "Pomyślnie wygenerowano raport"
-                : generateReportErrors[0],
-              status: generateReportStatus
+                : generateReportErrors[0]
             }}
             isLoading={isReportGenerating}
             onClickHandler={generateReport}

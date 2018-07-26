@@ -141,9 +141,15 @@ export const createFolderACreator = (folderName, path, token) => {
       .then(response => {
         dispatch(createFolder(true, []));
         dispatch(getFolderACreator(token, path));
+        setTimeout(() => {
+          dispatch(createFolder(null, []));
+        }, 4000);
       })
       .catch(error => {
         dispatch(createFolder(false, errorCatcher(error)));
+        setTimeout(() => {
+          dispatch(createFolder(null, []));
+        }, 4000);
       });
   };
 };
@@ -173,9 +179,15 @@ export const deleteFolderACreator = (folderId, token, path, choosenFolder) => {
         }
         
         dispatch(getFolderACreator(token, path));
+        setTimeout(() => {
+          dispatch(deleteFolder(null, []));
+        }, 4000);
       })
       .catch(error => {
         dispatch(deleteFolder(false, errorCatcher(error)));
+        setTimeout(() => {
+          dispatch(deleteFolder(null, []));
+        }, 4000);
       });
   };
 };
@@ -195,11 +207,16 @@ export const updateFolderACreator = (newName, folderId, token, path) => {
       .updateFolder(model)
       .then(response => {
         dispatch(updateFolder(true, []));
-
         dispatch(getFolderACreator(token, path));
+        setTimeout(() => {
+          dispatch(updateFolder(null, []));
+        }, 4000);
       })
       .catch(error => {
         dispatch(updateFolder(false, errorCatcher(error)));
+        setTimeout(() => {
+          dispatch(updateFolder(null, []));
+        }, 4000);
       });
   };
 };
@@ -238,21 +255,23 @@ export const uploadFileACreator = (token, path, file, currentFilesList) => {
         }
         else
             model.set("file", fileToEdit);
-        
         const config = {
              headers: {'Content-Type': 'multipart/form-data' }
         }
-
         WebApi.oneDrive.post.uploadFile(model, config).then(response => {
             dispatch(uploadFile(true, []));
             dispatch(getFolderACreator(token, path));
+            setTimeout(() => {
+              dispatch(uploadFile(null, []));
+            }, 4000);
         }).catch(error => {
             dispatch(uploadFile(false, errorCatcher(error)));
+            setTimeout(() => {
+              dispatch(uploadFile(null, []));
+            }, 4000);
         })
     }
 }
-
 export const setParentDetails = (parentId, goBackPath) => {
     return { type: SET_PARENT_DETAILS, parentId, goBackPath }
 }
-

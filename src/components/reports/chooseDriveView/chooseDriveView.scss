@@ -2,7 +2,7 @@
     display: flex;
     align-items: center;
     flex-flow: wrap;
-    padding: 25px;
+    padding: 25px 0;
     justify-content: center;
     position: relative;
     box-sizing: border-box;
@@ -30,8 +30,8 @@
         height: 500px;
         background: rgba(0,0,0,0.7);
         @media(min-width: 1024px){
-            width: 750px;
-            height: 500px;
+            width: 600px;
+            height: 600px;
         }
         @media(max-width: 600px){
             width: 100%;

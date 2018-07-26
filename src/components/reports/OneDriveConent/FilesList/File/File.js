@@ -1,13 +1,19 @@
 import React from 'react';
 import SmallSpinner  from '../../../../common/spinner/small-spinner';
+import { prepareToLongStringToShow } from '../../../../../services/methods';
+import DetailExpander from '../../../../common/detail/detail';
 
 const file = ({folder, openFolder, editFolderError, isDeletingOrEditingFolder, 
     onSubmit, currentOpenedFolderDetailName, showDeleteFolderModal, onStateChange,
     onEditFolder, onChangeFolderName, currentOpenedFolderToEditId, 
-    enableFolderEdit, editFolderName, closeEditingFolderName, onFileClick, chooseFolder, choosenFolder }) => {
+    enableFolderEdit, editFolderName, closeEditingFolderName, onFileClick, 
+    chooseFolder, choosenFolder, extendId, extendDetailName }) => {
+
+    const parentPath = prepareToLongStringToShow(11, folder.parentPath);
+    console.log(parentPath);
     return (
     <li onDoubleClick={folder.type !== "file" ? () => openFolder(folder.name, folder.id) : null}
-    className={choosenFolder ? folder.name === choosenFolder.name ? "selected-folder" : null : null}
+    className={choosenFolder ? folder.id === choosenFolder.id ? "selected-folder" : null : null}
 
         onClick={folder.type === "file" ? 
             () => onFileClick(folder.name) : null}
@@ -57,7 +63,12 @@ const file = ({folder, openFolder, editFolderError, isDeletingOrEditingFolder,
             <div className="file-details">
                 <p><b>Typ</b><span>{folder.type}</span></p>
                 <p><b>Rozmiar</b><span>{folder.size}</span></p>
-                <p><b>Ścieżka</b><span>{folder.parentPath}</span></p>
+                <DetailExpander extendDetailName={extendDetailName} 
+                currentId={folder.id}
+                extend={extendId === folder.id ? true : false}
+                originalName={folder.parentPath}>
+                    <b>Ścieżka</b><span>{parentPath}</span>
+                </DetailExpander>
                 <a href={folder.webUrl}>Otwórz</a>
             </div>
         }

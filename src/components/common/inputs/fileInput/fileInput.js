@@ -28,7 +28,7 @@ class FileInput extends PureComponent {
     });
   };
 
-  checkImageAspectRatio = (imageDimensions, aspectRatioDifference) => {
+  checkImageAspectRatio = (imageDimensions, aspectRatioDifference, error) => {
     return new Promise((resolve, reject) => {
       let width = Math.round(
         imageDimensions.imageWidth / imageDimensions.imageHeight
@@ -37,76 +37,60 @@ class FileInput extends PureComponent {
         imageDimensions.imageHeight / imageDimensions.imageWidth
       );
       let difference = Math.abs(width - height);
+
       if (difference > aspectRatioDifference) {
         resolve(this.props.t("WrongAspectRatio"));
       } else {
-        resolve("");
+        resolve(error);
       }
     });
   };
 
-  setStateIfError = (error, resolve) => {
+  setStateIfError = (error, file) => {
     if (error.length === 0) {
-      console.log("zwaracam true");
-      this.setState({ error: "", errorStatus: true }), () => resolve();
-      // return true;
+      this.setState({ uploadedFile: file, error: "" });
+      this.props.getFile(file);
     } else {
-      console.log("zwracam falses");
-      this.setState({ error, errorStatus: false }), () => resolve();
-      // return false;
+      this.setState({ uploadedFile: null, error });
+      this.props.getFile();
     }
   };
 
   validateInputForm = file => {
-    return new Promise(resolve => {
-      const {
-        allowedFileTypes,
-        maxFileSize,
-        aspectRatioDifference,
-        t
-      } = this.props;
-      let error = "";
-      if (allowedFileTypes && !allowedFileTypes.includes(file.type)) {
-        error = t("WrongFileType");
-      }
-      if (maxFileSize && file.size > maxFileSize) {
-        error = t("FileIsTooBig");
-      }
+    const {
+      allowedFileTypes,
+      maxFileSize,
+      aspectRatioDifference,
+      t
+    } = this.props;
+    let error = "";
 
-      if (file.type.includes("image") && aspectRatioDifference) {
-        this.getImageDimensions(file).then(imageDimensions => {
-          this.checkImageAspectRatio(
-            imageDimensions,
-            aspectRatioDifference
-          ).then(resolvedError => {
-            this.setStateIfError(resolvedError, resolve);
-          });
+    if (maxFileSize && file.size > maxFileSize) {
+      error = t("FileIsTooBig");
+    }
+    if (allowedFileTypes && !allowedFileTypes.includes(file.type)) {
+      error = t("WrongFileType");
+    }
+
+    if (file.type.includes("image") && aspectRatioDifference) {
+      this.getImageDimensions(file).then(imageDimensions => {
+        this.checkImageAspectRatio(
+          imageDimensions,
+          aspectRatioDifference,
+          error
+        ).then(resolvedError => {
+          this.setStateIfError(resolvedError, file);
         });
-      } else {
-        this.setStateIfError(error, resolve);
-      }
-    });
+      });
+    } else {
+      return this.setStateIfError(error, file);
+    }
   };
 
   onFileUpload = event => {
     let file = event.target.files[0];
-    console.log(file);
-    return new Promise(resolve => {
-      this.validateInputForm(file).then(
-        setTimeout(() => {
-          resolve(this.state.errorStatus);
-        }, 2000)
-      );
-    }).then(errorStatusFromResolve => {
-      console.log(errorStatusFromResolve);
-      if (file && this.validateInputForm(file)) {
-        this.setState({ uploadedFile: file });
-        this.props.getFile(file);
-      } else {
-        this.setState({ uploadedFile: null });
-        this.props.getFile();
-      }
-    });
+
+    file && this.validateInputForm(file);
   };
 
   render() {

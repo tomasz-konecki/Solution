@@ -94,7 +94,6 @@ module.exports = {
     }
   },
   externals: {
-
     Config: JSON.stringify(
       process.env.NODE_ENV === "production"
         ? {
@@ -104,6 +103,5 @@ module.exports = {
             serverUrl: "https://10.255.20.241"
           }
     )
-
   }
 };

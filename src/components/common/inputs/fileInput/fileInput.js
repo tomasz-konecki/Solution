@@ -10,52 +10,96 @@ import "./fileInput.scss";
 class FileInput extends PureComponent {
   state = {
     uploadedFile: null,
-    errors: []
+    error: ""
+  };
+
+  getImageDimensions = file => {
+    return new Promise(resolve => {
+      const _URL = window.URL || window.webkitURL;
+      let img = new Image();
+
+      img.onload = function() {
+        resolve({ imageHeight: this.height, imageWidth: this.width });
+      };
+      img.onerror = () => {
+        resolve();
+      };
+      img.src = _URL.createObjectURL(file);
+    });
+  };
+
+  checkImageAspectRatio = (imageDimensions, aspectRatioDifference, error) => {
+    return new Promise((resolve, reject) => {
+      let width = Math.round(
+        imageDimensions.imageWidth / imageDimensions.imageHeight
+      );
+      let height = Math.round(
+        imageDimensions.imageHeight / imageDimensions.imageWidth
+      );
+      let difference = Math.abs(width - height);
+
+      if (difference > aspectRatioDifference) {
+        resolve(this.props.t("WrongAspectRatio"));
+      } else {
+        resolve(error);
+      }
+    });
+  };
+
+  setStateIfError = (error, file) => {
+    if (error.length === 0) {
+      this.setState({ uploadedFile: file, error: "" });
+      this.props.getFile(file);
+    } else {
+      this.setState({ uploadedFile: null, error });
+      this.props.getFile();
+    }
   };
 
   validateInputForm = file => {
-    const { allowedFileTypes, t } = this.props;
-    let errors = [];
-    if (allowedFileTypes && !allowedFileTypes.includes(file.type)) {
-      errors.push(t("WrongFileType"));
+    const {
+      allowedFileTypes,
+      maxFileSize,
+      aspectRatioDifference,
+      t
+    } = this.props;
+    let error = "";
+
+    if (maxFileSize && file.size > maxFileSize) {
+      error = t("FileIsTooBig");
     }
-    if (errors.length === 0) {
-      this.setState({ errors: [] });
-      return true;
+    if (allowedFileTypes && !allowedFileTypes.includes(file.type)) {
+      error = t("WrongFileType");
+    }
+
+    if (file.type.includes("image") && aspectRatioDifference) {
+      this.getImageDimensions(file).then(imageDimensions => {
+        this.checkImageAspectRatio(
+          imageDimensions,
+          aspectRatioDifference,
+          error
+        ).then(resolvedError => {
+          this.setStateIfError(resolvedError, file);
+        });
+      });
     } else {
-      this.setState({ errors: errors });
-      return false;
+      return this.setStateIfError(error, file);
     }
   };
 
   onFileUpload = event => {
     let file = event.target.files[0];
-    if (file && this.validateInputForm(file)) {
-      this.setState({ uploadedFile: file });
-      this.props.getFile(file);
-    } else {
-      this.setState({ uploadedFile: null });
-      this.props.getFile();
-    }
+
+    file && this.validateInputForm(file);
   };
 
   render() {
     const { t } = this.props;
-    const { uploadedFile, errors } = this.state;
+    const { uploadedFile, error } = this.state;
 
-    FileInput.propTypes = {
-      allowedFileTypes: PropTypes.arrayOf(PropTypes.string)
-    };
+    let classes = error.length !== 0 ? "file-input-error" : "";
 
-    FileInput.defaultProps = {
-      allowedFileTypes: []
-    };
-
-    let classes = errors.length !== 0 ? "file-input-error" : "";
-
-    let error = errors.map((i, index) => {
-      return <span key={index}>{i}</span>;
-    });
+    let errorJsx = error && <span>{error}</span>;
 
     return (
       <div className="file_input_div">
@@ -82,11 +126,22 @@ class FileInput extends PureComponent {
           transitionEnterTimeout={1000}
           transitionLeaveTimeout={1000}
         >
-          {error}
+          {errorJsx}
         </CSSTransitionGroup>
         {/* </div> */}
       </div>
     );
   }
 }
+
+FileInput.propTypes = {
+  allowedFileTypes: PropTypes.arrayOf(PropTypes.string),
+  aspectRatioDifference: PropTypes.number,
+  maxFileSize: PropTypes.number.isRequired
+};
+
+FileInput.defaultProps = {
+  allowedFileTypes: []
+};
+
 export default translate("FileInput")(FileInput);

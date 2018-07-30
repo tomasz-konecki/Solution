@@ -193,6 +193,8 @@ class AddClientModal extends Component {
           <FileInput
             allowedFileTypes={["image/jpeg", "image/png"]}
             getFile={this.getFileHandler}
+            maxFileSize={1048576}
+            aspectRatioDifference={1}
           />
         </div>
       </form>

@@ -306,7 +306,7 @@ class ClientsContainer extends React.Component {
     let { client, loaded } = this.state;
     let infoClient = null;
 
-    if (client.name) {
+    if (client && client.name) {
       infoClient = (
         <InfoClientContainer
           client={client}

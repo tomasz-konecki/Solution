@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import "bootstrap/dist/css/bootstrap.css";
 import * as languageActions from "../actions/languageActions";
 
@@ -9,14 +9,14 @@ import { TranslatorProvider } from "react-translate";
 
 import "../scss/App.scss";
 
-import en from '../translations/en';
-import pl from '../translations/pl';
+import en from "../translations/en";
+import pl from "../translations/pl";
 
-import LoginScreen from './login/LoginScreen';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import { LANGUAGE_CHANGE } from '../constants';
-import { withRouter } from 'react-router-dom';
+import LoginScreen from "./login/LoginScreen";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import { LANGUAGE_CHANGE } from "../constants";
+import { withRouter } from "react-router-dom";
 
 class App extends Component {
   constructor(props) {
@@ -30,23 +30,26 @@ class App extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if(nextProps.type === LANGUAGE_CHANGE){
+    if (nextProps.type === LANGUAGE_CHANGE) {
       this.changeLanguage(nextProps.language);
     }
   }
 
   changeLanguage(language) {
-    this.setState({
-      language
-    }, () => {
-      setTimeout(() => {
-        window.location.reload();
-      }, 100);
-    });
+    this.setState(
+      {
+        language
+      },
+      () => {
+        setTimeout(() => {
+          window.location.reload();
+        }, 100);
+      }
+    );
   }
 
   returnLanguage() {
-    switch(this.state.language){
+    switch (this.state.language) {
       case "pl":
         return pl;
       case "en":
@@ -61,7 +64,11 @@ class App extends Component {
       <TranslatorProvider translations={this.returnLanguage()}>
         <Switch>
           <Route exact path="/" component={LoginScreen} />
-          <PrivateRoute path="/main" component={Home} history={this.props.history} />
+          <PrivateRoute
+            path="/main"
+            component={Home}
+            history={this.props.history}
+          />
         </Switch>
       </TranslatorProvider>
     );
@@ -85,4 +92,9 @@ App.propTypes = {
   history: PropTypes.object.isRequired
 };
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(App));
+export default withRouter(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(App)
+);

@@ -46,6 +46,8 @@ function listener() {
 }
 
 const authValidator = response => {
+  console.log(response);
+
   if (response.response === undefined) {
     throw response;
     // store.dispatch(logout());
@@ -80,49 +82,39 @@ const params = obj => {
 
 const WebAround = {
   get: (path, payload) => {
-    return (
-      axios
-        .get(path, payload)
-        .then(response => parseSuccess(response))
-        //.catch(response => authValidator(response))
-        .catch(response => parseFailure(response))
-    );
+    return axios
+      .get(path, payload)
+      .then(response => parseSuccess(response))
+      .catch(response => authValidator(response))
+      .catch(response => parseFailure(response));
   },
   post: (path, payload) => {
-    return (
-      axios
-        .post(path, payload)
-        .then(response => parseSuccess(response))
-        //.catch(response => authValidator(response))
-        .catch(response => parseFailure(response))
-    );
+    return axios
+      .post(path, payload)
+      .then(response => parseSuccess(response))
+      .catch(response => authValidator(response))
+      .catch(response => parseFailure(response));
   },
   put: (path, payload) => {
-    return (
-      axios
-        .put(path, payload)
-        .then(response => parseSuccess(response))
-        //.catch(response => authValidator(response))
-        .catch(response => parseFailure(response))
-    );
+    return axios
+      .put(path, payload)
+      .then(response => parseSuccess(response))
+      .catch(response => authValidator(response))
+      .catch(response => parseFailure(response));
   },
   delete: (path, payload) => {
-    return (
-      axios
-        .delete(path, payload)
-        .then(response => parseSuccess(response))
-        //.catch(response => authValidator(response))
-        .catch(response => parseFailure(response))
-    );
+    return axios
+      .delete(path, payload)
+      .then(response => parseSuccess(response))
+      .catch(response => authValidator(response))
+      .catch(response => parseFailure(response));
   },
   patch: (path, payload) => {
-    return (
-      axios
-        .patch(path, payload)
-        .then(response => parseSuccess(response))
-        //.catch(response => authValidator(response))
-        .catch(response => parseFailure(response))
-    );
+    return axios
+      .patch(path, payload)
+      .then(response => parseSuccess(response))
+      .catch(response => authValidator(response))
+      .catch(response => parseFailure(response));
   }
 };
 
@@ -322,20 +314,19 @@ const WebApi = {
         });
       },
       closeProject: projectId => {
-        return WebAround.put(`${API_ENDPOINT}/projects/close/${projectId}`)
+        return WebAround.put(`${API_ENDPOINT}/projects/close/${projectId}`);
       },
       close: model => {
         return WebAround.put(`${API_ENDPOINT}/projects/close/${model[0]}`);
       },
       reactivate: model => {
+        return WebAround.put(`${API_ENDPOINT}/projects/reactivate/${model[0]}`);
+      },
+      reactivateProject: projectId => {
         return WebAround.put(
-          `${API_ENDPOINT}/projects/reactivate/${model[0]}`
+          `${API_ENDPOINT}/projects/reactivate/${projectId}`
         );
       },
-      reactivateProject: projectId => {  
-        return WebAround.put(
-        `${API_ENDPOINT}/projects/reactivate/${projectId}`
-      )},
       skills: (projectId, skillsArray) => {
         return WebAround.put(
           `${API_ENDPOINT}/projects/skills/${projectId}`,
@@ -589,51 +580,61 @@ class DCMTWebApi {
   }
 
   getUsers(settings = {}) {
-    return axios.post(`${API_ENDPOINT}/account`, settings);
-    //.catch(response => authValidator(response));
+    return axios
+      .post(`${API_ENDPOINT}/account`, settings)
+      .catch(response => authValidator(response));
   }
 
   searchAD(user) {
-    return axios.get(`${API_ENDPOINT}/account/searchAD/${user}`);
-    //.catch(response => authValidator(response));
+    return axios
+      .then(console.log("siema"))
+      .get(`${API_ENDPOINT}/account/searchAD/${user}`)
+      .catch(response => authValidator(response));
   }
 
   addUser(id, roles) {
-    return axios.post(`${API_ENDPOINT}/account/add`, { id, roles });
-    //.catch(response => authValidator(response));
+    return axios
+      .post(`${API_ENDPOINT}/account/add`, { id, roles })
+      .catch(response => authValidator(response));
   }
 
   deleteUser(id) {
-    return axios.delete(`${API_ENDPOINT}/account/${id}`);
-    //.catch(response => authValidator(response));
+    return axios
+      .delete(`${API_ENDPOINT}/account/${id}`)
+      .catch(response => authValidator(response));
   }
 
   getUser(id) {
-    return axios.get(`${API_ENDPOINT}/account/${id}`);
-    //.catch(response => authValidator(response));
+    return axios
+      .get(`${API_ENDPOINT}/account/${id}`)
+      .catch(response => authValidator(response));
   }
 
   reactivateUser(id) {
-    return axios.patch(`${API_ENDPOINT}/account/reactivate/${id}`);
-    //.catch(response => authValidator(response));
+    return axios
+      .patch(`${API_ENDPOINT}/account/reactivate/${id}`)
+      .catch(response => authValidator(response));
   }
 
   changeUserRole(id, roles) {
-    return axios.patch(`${API_ENDPOINT}/account`, {
-      id,
-      roles
-    });
-    //.catch(response => authValidator(response));
+    return axios
+      .patch(`${API_ENDPOINT}/account`, {
+        id,
+        roles
+      })
+      .catch(response => authValidator(response));
   }
 
   getProjects(settings = {}) {
-    return axios.post(`${API_ENDPOINT}/projects`, settings);
-    //.catch(response => authValidator(response));
+    return axios
+      .post(`${API_ENDPOINT}/projects`, settings)
+      .catch(response => authValidator(response));
   }
 
   getProject(id) {
-    return axios.get(`${API_ENDPOINT}/projects/${id}`);
-    //.catch(response => authValidator(response));
+    return axios
+      .get(`${API_ENDPOINT}/projects/${id}`)
+      .catch(response => authValidator(response));
   }
 
   addProject({

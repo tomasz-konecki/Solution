@@ -2,11 +2,13 @@ import {
   LOAD_EMPLOYEES_SUCCESS,
   ASYNC_STARTED,
   ASYNC_ENDED,
-  LOAD_EMPLOYEES_FAILURE
+  LOAD_EMPLOYEES_FAILURE, GET_EMPLOYEE,
+  CHANGE_EMPLOYEE_OPERATION_STATUS
 } from "../constants";
 import axios from "axios";
 import WebApi from "../api";
 import { asyncStarted, asyncEnded } from "./asyncActions";
+import { errorCatcher } from '../services/errorsHandler';
 
 export const loadEmployeesSuccess = employees => {
   return {
@@ -45,3 +47,34 @@ export const loadEmployees = (page = 1, limit = 25, other = {}) => {
       });
   };
 };
+
+
+
+export const changeEmployeeOperationStatus = (employeeStatus, employeeErrors) => {
+  return { type: CHANGE_EMPLOYEE_OPERATION_STATUS, employeeStatus, employeeErrors }
+}
+export const getEmployee = employee => {
+  return { type: GET_EMPLOYEE, employee }
+}
+export const getEmployeePromise = (employeeId) => (dispatch) => {
+  return new Promise(resolve => {
+    WebApi.employees.get.byEmployee(employeeId).then(response => {
+      const { dtoObject } = response.replyBlock.data;
+      dispatch(getEmployee(dtoObject));
+      dispatch(changeEmployeeOperationStatus(true, []));
+      resolve(dtoObject);
+    }).catch(error => {
+      dispatch(changeEmployeeOperationStatus(false, errorCatcher(error)));
+      dispatch(clearAfterTime(5000));
+    })
+  })
+}
+
+const clearAfterTime = delay => {
+  return dispatch => {
+      setTimeout(() => {
+        dispatch(changeEmployeeOperationStatus(null, []))
+      }, delay);
+  }
+  
+}

@@ -20,6 +20,8 @@ import { ACTION_CONFIRMED } from "./../../constants";
 import { connect } from "react-redux";
 import binaryPermissioner from "./../../api/binaryPermissioner";
 import { push } from "react-router-redux";
+import DegreeBar from './details/degreeBar/degreeBar';
+import FteBar from './details/fteBar/fteBar';
 
 class EmployeeDetailContainer extends Component {
   constructor(props) {
@@ -605,17 +607,22 @@ class EmployeeDetailContainer extends Component {
   };
 
   pullInfoBlocksDOM = () => {
-    const { employee } = this.state;
+    const { employee, seniorityLevel, employeeLoadedSuccessfully } = this.state;
     return (
       <div className="row employee-headway">
         <div className="col-sm-3">
-          <SenioritySlider
-            seniorityLevel={this.state.seniorityLevel}
-            editable={this.state.edit}
+          <DegreeBar
+            seniority={seniorityLevel}
+            range={4}
+            operationStatus={employeeLoadedSuccessfully}
+            operationErrors={[]}
+            finalFunc={() => this.getEmployee()}
+            employee={employee}
+            seniorityName={employee.seniority}
           />
         </div>
         <div className="col-sm-9">
-          <CapacitySlider
+          <FteBar
             capacityLevel={employee.baseCapacity}
             capacityLeft={employee.capacityLeft}
             editable={this.state.edit}

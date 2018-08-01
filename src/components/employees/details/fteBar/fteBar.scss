@@ -3,6 +3,11 @@
     height: 40px;
     display: flex;
     position: relative;
+    .small-spiner{
+        right: -35px;
+        top: 6.5px;
+
+    }
     & > span{
         position: absolute;
         left: 0;

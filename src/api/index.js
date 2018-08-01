@@ -255,7 +255,7 @@ const WebApi = {
       },
       reactivate: employeeId => {
         return WebAround.patch(
-          `${API_ENDPOINT}/employees/${employeeId}/reactivate`
+          `${API_ENDPOINT}/employees/reactivate/${employeeId}`
         );
       }
     }

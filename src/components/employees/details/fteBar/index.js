@@ -11,4 +11,6 @@ export const calculateFteBarWidth = incomingPercentage => {
     for(let key in valuesArray)
         if(valuesArray[key].percentage === incomingPercentage)
             return valuesArray[key]
+
+    return {mark: "nstd", percentage: incomingPercentage}
 }

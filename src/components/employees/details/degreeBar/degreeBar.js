@@ -19,7 +19,7 @@ const findSeniorityIndex = seniority => {
   });
 }
 
-class DegreeBar extends React.PureComponent {
+class DegreeBar extends React.Component {
   state = {
     currentHoveredIndex: null,
     array: createSpans(this.props.range),
@@ -27,9 +27,30 @@ class DegreeBar extends React.PureComponent {
     seniorityIndex: findSeniorityIndex(this.props.seniority)+1
   };
   changeDegreeValue = index => {
-    this.setState({ isChanging: true});
+    this.setState({ isChanging: true });
+    this.props.editSeniority(seniorities[index]);
   };
- 
+
+  shouldComponentUpdate(nextState){
+    if(nextState.seniorityIndex !== this.state.seniorityIndex)
+      return true;
+    
+    return false;
+  }
+  
+  componentDidUpdate(nextProps){
+   
+    if(this.props.employeeErrors !== nextProps.employeeErrors){
+      const { seniority } = this.props;
+      const { seniorityIndex } = this.state;
+
+      const newSeniorityIndex = seniority !== seniorities[seniorityIndex] ? 
+        findSeniorityIndex(seniority) + 1 : seniorityIndex + 1;
+
+      this.setState({isChanging: false, seniorityIndex: newSeniorityIndex });
+    }
+  }
+  
   render() {
     const { seniority, range } = this.props;
     const {
@@ -43,7 +64,7 @@ class DegreeBar extends React.PureComponent {
         {array.map(index => {
           return (
             <span
-              onClick={() => this.changeDegreeValue(index)}
+              onClick={isChanging ? null : () => this.changeDegreeValue(index)}
               onMouseOver={() => this.setState({ currentHoveredIndex: index })}
               onMouseOut={() => this.setState({ currentHoveredIndex: null })}
               style={{

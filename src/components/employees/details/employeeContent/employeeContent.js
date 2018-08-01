@@ -3,14 +3,20 @@ import "./employeeContent.scss";
 import FteBar from '../fteBar/fteBar';
 import DegreeBar from '../degreeBar/degreeBar';
 import Button from '../../../common/button/button';
+import Quaters from '../quaters/quaters';
+import Spinner from '../../../common/spinner/small-spinner';
+const employeeContent = ({employee, editSeniority, employeeErrors, 
+  editCapacity, activateEmployee, isChangingEmployeeData, reactivateEmployee, deleteEmployee}) => {
 
-const employeeContent = ({employee}) => (
+    const status = employee.isDeleted ? "Usunięty" : employee.hasAccount ? "Aktywny" : "Nieaktywny";
+
+    return (
   <section className="top-content-container">
     <div className="employee-details-bar">
       <div className="left-content">
         <header>
           <span className={(employee.hasAccount && !employee.isDeleted) ? "has-acc" : "no-acc"}>
-            {(employee.hasAccount && !employee.isDeleted) ? "Aktywny" : "Nieaktywny"}
+            {status}
           </span>
           <div className="icon-container">
             <figure>
@@ -36,42 +42,58 @@ const employeeContent = ({employee}) => (
         <p>
           Lokalizacja: <span>{employee.localization ? employee.localization : "Nie podano"}</span>
         </p>
-        <button>Zmień</button>
+        <button>Więcej</button>
       </div>
-      <div className="fte-bar-container">
-        <FteBar capacityLeft={employee.capacityLeft} />
-        
-      </div>
-
-      <div className="degree-bar-container">
-        <DegreeBar
-            seniority={employee.seniority}
-            range={4}
-          />
-      </div>
-
-      <Button title="Edytuj" mainClass="option-btn normal-btn" />
-
-    </div>
-
-    <div className="quaters-container">
-      <h2>Rozmowy kwartalne</h2>
-      <ul>
-        <li><span>Rozmowa w sprawie pracy</span>19-12-1994</li>
-        <li><span>Rozmowa w sprawie pracy</span>19-12-1994</li>
-        <li><span>Rozmowa w sprawie pracy</span>19-12-1994</li>
-        <li><span>Rozmowa w sprawie pracy</span>19-12-1994</li>
-        <li><span>Rozmowa w sprawie pracy</span>19-12-1994</li>
-        <li><span>Rozmowa w sprawie pracy</span>19-12-1994</li>
-        <li><span>Rozmowa w sprawie pracy</span>19-12-1994</li>
-        <li><span>Rozmowa w sprawie pracy</span>19-12-1994</li>
-        <li><span>Rozmowa w sprawie pracy</span>19-12-1994</li>
-        <li><span>Rozmowa w sprawie pracy</span>19-12-1994</li>
-      </ul>
-      <Button title="Dodaj" mainClass="option-btn normal-btn" />
       
+
+      {(employee.hasAccount && !employee.isDeleted) && 
+        <React.Fragment>
+          <div className="fte-bar-container">
+            <FteBar capacityLeft={employee.baseCapacity} 
+            editCapacity={editCapacity} employeeErrors={employeeErrors} />
+          
+          </div>
+          <div className="degree-bar-container">
+          <DegreeBar
+              editSeniority={editSeniority}
+              seniority={employee.seniority}
+              employeeErrors={employeeErrors}
+              range={4}
+            />
+          </div>
+        </React.Fragment> 
+      }
+
+        <div className="emp-btns-container">
+          {
+            status === "Aktywny" ?
+            <Button mainClass="option-btn option-very-dang" title="Usuń" disable={isChangingEmployeeData} onClick={deleteEmployee}>
+              {isChangingEmployeeData && <Spinner /> } 
+            </Button> :
+
+            <Button disable={isChangingEmployeeData} onClick={status === "Usunięty" ? 
+              reactivateEmployee : activateEmployee} 
+            title="Aktywuj" mainClass="option-btn green-btn">
+              {isChangingEmployeeData && <Spinner /> } 
+            </Button> 
+          }
+        </div>
+        
+        {status === "Nieaktywny" && 
+          <div className="information-for-statuses">
+            <p>Zanim zmienisz status</p>
+            <article>
+              Zmiana statusów pracownika polega na przypisaniu mu wymiaru czasu pracy oraz poziomu doświadczenia.
+              Pamiętaj, że możesz także zmienić jego status na <b>Usunięty</b> co spowoduje wymazanie dotychczasowych ustawień.
+            </article>
+          </div>
+        }
+        
     </div>
+    <Quaters paginationLimit={5} quarterTalks={employee.quarterTalks}/>
+    
   </section>
-);
+  );
+  };
 
 export default employeeContent;

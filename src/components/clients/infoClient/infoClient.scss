@@ -14,6 +14,11 @@
   .client-info-logo {
     width: 30%;
     display: flex;
+    background-repeat: no-repeat !important;
+    background-size: contain !important;
+    background-position: top !important;
+    margin-top: 25px;
+    margin: 25px 10px 0 10px;
     img {
       width: 100%;
       height: 200px;

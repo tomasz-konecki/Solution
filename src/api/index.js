@@ -587,7 +587,6 @@ class DCMTWebApi {
 
   searchAD(user) {
     return axios
-      .then(console.log("siema"))
       .get(`${API_ENDPOINT}/account/searchAD/${user}`)
       .catch(response => authValidator(response));
   }

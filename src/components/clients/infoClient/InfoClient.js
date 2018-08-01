@@ -133,15 +133,11 @@ const InfoClient = ({
   return (
     <Aux>
       <div className="client-info-header">
-        <div className="client-info-logo">
-          <img
-            src={client.imgSrc}
-            title={client.imgAlt}
-            onError={e => {
-              e.target.src = BilleniumPleaceholder;
-            }}
-          />
-        </div>
+        <div
+          style={{ background: `url(${client.imgSrc})` }}
+          className="client-info-logo"
+          title={client.imgAlt}
+        />
         <div className="client-info-details">
           <div className="client-info-details-more">
             <h1>{client.name}</h1>

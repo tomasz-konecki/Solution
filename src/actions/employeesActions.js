@@ -4,7 +4,7 @@ import {
   ASYNC_ENDED,
   LOAD_EMPLOYEES_FAILURE, GET_EMPLOYEE,
   CHANGE_EMPLOYEE_OPERATION_STATUS,
-  CHANGE_EMPLOYEE_STATE
+  CHANGE_EMPLOYEE_STATE, LOAD_ASSIGNMENTS, DELETE_QUATER
 } from "../constants";
 import axios from "axios";
 import WebApi from "../api";
@@ -143,12 +143,47 @@ const clearAfterTimeStatus = delay => {
 }
 }
 
-export const loadEmploSkills = employeeId => {
-  return dispatch => {
-    WebApi.employees.get.emplo.skills(employeeId).then(response => {
 
-    }).catch(error => {
-      
+export const loadAssignments = (loadAssignmentsStatus, loadAssignmentsErrors, loadedAssignments) => {
+  return { type: LOAD_ASSIGNMENTS, loadAssignmentsStatus, loadAssignmentsErrors, loadedAssignments}
+}
+
+export const loadAssignmentsACreator = (employeeId) => (dispatch) => {
+  return new Promise((resolve, reject) => {
+    WebApi.assignments.get.byEmployee(employeeId).then(response => {
+      dispatch(loadAssignments(true, [], response.replyBlock.data.dtoObjects));
+      resolve(response.replyBlock.data.dtoObjects);
+      }).catch(error => {
+        dispatch(loadAssignments(false, errorCatcher(error), []));
+        reject(response.replyBlock.data.dtoObjects);
+      })
     })
+}
+
+export const deleteQuater = (deleteQuaterStatus, deleteQuaterErrors) => {
+  return { type: DELETE_QUATER, deleteQuaterStatus, deleteQuaterErrors }
+}
+export const deleteQuaterACreator = (quarterId, employeeId) => {
+  return dispatch => {
+
+    WebApi.quarterTalks.delete(quarterId).then(response => {
+      dispatch(deleteQuater(true, []));
+      dispatch(loadAssignmentsACreator(employeeId));
+
+      dispatch(clearAfterTimeByFuncRef(deleteQuater, 5000, null, []));
+      
+    }).catch(error => {
+      dispatch(deleteQuater(false, errorCatcher(error)));
+      dispatch(clearAfterTimeByFuncRef(deleteQuater, 5000, null, []));
+    })
+    
+  }
+}
+
+const clearAfterTimeByFuncRef = (funcRef, delay, ...params) => {
+  return dispatch => {
+    setTimeout(() => {
+      dispatch(funcRef(...params))
+    }, delay);
   }
 }

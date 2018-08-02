@@ -191,6 +191,16 @@ const WebApi = {
     put: educationId => {},
     post: () => {}
   },
+  quarterTalks: {
+    delete: quarterId => {
+      return WebAround.delete(`${API_ENDPOINT}/QuarterTalks/${quarterId}`)
+    },
+    put: {
+      reactivate: quarterId => {
+        return WebAround.put(`${API_ENDPOINT}/QuarterTalks/Reactivate/${quarterId}`)
+      }
+    }
+  },
   employees: {
     get: {
       byEmployee: employeeId => {

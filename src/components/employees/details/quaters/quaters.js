@@ -1,21 +1,42 @@
 import React from 'react'
 import './quaters.scss';
 import Button from '../../../common/button/button';
-
+import ConfirmModal from '../../../common/confimModal/confirmModal';
+import Spinner from '../../../common/spinner/spinner';
+import OperationStatusPrompt from '../../../form/operationStatusPrompt/operationStatusPrompt';
 class Quaters extends React.PureComponent{
     state = {
         listToShowIndex: null,
         currentPage: 1, 
-        watchedRecords: 0
+        watchedRecords: 0,
+        showDeleteModal: false,
+        deletingQuater: false,
+        activatingQuater: false
     }
+    componentWillReceiveProps(nextProps){
+        if(nextProps.deleteQuaterStatus){
+            this.setState({deletingQuater: false, showDeleteModal: false, listToShowIndex: null});
+        }
+        else if(nextProps.deleteQuaterErrors !== this.props.deleteQuaterErrors)
+            this.setState({deletingQuater: false});
+    }
+    
     showDetails = index => {
         const newIndex = this.state.listToShowIndex === index ? null : index;
         this.setState({listToShowIndex: newIndex})
     }
+    deleteQuaters = () => {
+        this.setState({deletingQuater: true});
+        this.props.deleteQuaterACreator(this.state.listToShowIndex+1, this.props.employeeId);
+    }
 
+    activateQuaters = () => {
+        this.setState({activatingQuater: true});
+        
+    }
     render(){
-        const { paginationLimit, quarterTalks } = this.props;
-        const { listToShowIndex, currentPage, watchedRecords } = this.state;
+        const { paginationLimit, quarterTalks, deleteQuaterStatus, deleteQuaterErrors } = this.props;
+        const { listToShowIndex, currentPage, watchedRecords, showDeleteModal, deletingQuater, activatingQuater } = this.state;
         return (
             <div className="quaters-container">
                 {quarterTalks && 
@@ -26,7 +47,8 @@ class Quaters extends React.PureComponent{
                         {quarterTalks.map((item, index) => {
                             return ( 
                                 (index >= paginationLimit * (currentPage-1) && index < paginationLimit * currentPage) &&   
-                                <li onClick={() => this.showDetails(index)} key={index}>
+                                <li className={item.isDeleted === false ? "is-deleted-quater" : "is-activate-quater"}
+                                onClick={() => this.showDetails(index)} key={index}>
                                     {index === listToShowIndex && 
                                         <div className="clicked-row"></div>
                                     }
@@ -53,6 +75,14 @@ class Quaters extends React.PureComponent{
 
                     {quarterTalks.length > paginationLimit && 
                     <div className="pagination-options">
+                        {listToShowIndex !== null && quarterTalks[listToShowIndex].isDeleted === false &&
+                            <i onClick={() => this.setState({showDeleteModal: true})} className="fa fa-trash"></i>
+                        }
+
+                        {listToShowIndex !== null && quarterTalks[listToShowIndex].isDeleted === true && 
+                            <i onClick={this.activateQuaters} className="fa fa-check"></i>
+                        }
+
                         {watchedRecords !== 0 && 
                             <i onClick={() => this.setState({currentPage: currentPage-1, watchedRecords: watchedRecords-paginationLimit})} className="fa fa-arrow-left"></i>
                         }
@@ -70,6 +100,22 @@ class Quaters extends React.PureComponent{
                         </div>
                     </div>
                 }
+
+               
+                <ConfirmModal operationName="Usuń" operation={this.deleteQuaters}
+                open={showDeleteModal} header="Czy jestes pewny, że chcesz usunąć rozmowę?"
+                onClose={() => this.setState({showDeleteModal: false})}>
+                    {deletingQuater && <Spinner />}
+                </ConfirmModal>
+
+                {deleteQuaterStatus !== null && deleteQuaterStatus !== undefined && 
+                <OperationStatusPrompt
+                    operationPromptContent={deleteQuaterStatus ? "Pomyślnie wykonano operację" :
+                        deleteQuaterErrors[0]}
+                    operationPrompt={deleteQuaterStatus}
+                />
+                }
+                
           </div>
         );
     }

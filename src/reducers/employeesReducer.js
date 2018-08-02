@@ -3,7 +3,8 @@ import {
   LOAD_EMPLOYEES_FAILURE,
   LOGOUT, GET_EMPLOYEE,
   CHANGE_EMPLOYEE_OPERATION_STATUS,
-  CHANGE_EMPLOYEE_STATE
+  CHANGE_EMPLOYEE_STATE, LOAD_ASSIGNMENTS,
+  DELETE_QUATER, REACTIVATE_QUATER
 } from "../constants";
 import { updateObject } from '../services/methods';
 const initialState = {
@@ -17,8 +18,19 @@ const initialState = {
 
   employeeOperationStatus: null,
   employeeOperationErrors: [],
-  employeeResultMessage: ""
+  employeeResultMessage: "",
 
+  loadAssignmentsStatus: null,
+  loadAssignmentsErrors: [],
+  loadedAssignments: [],
+
+  deleteQuaterStatus: null,
+  deleteQuaterErrors: [],
+
+  reactivateQuaterStatus: null,
+  reactivateQuaterErrors: []
+
+  // Tu sknczyolem
 };
 
 export const employeesReducer = (state = initialState, action) => {
@@ -46,7 +58,13 @@ export const employeesReducer = (state = initialState, action) => {
     case CHANGE_EMPLOYEE_STATE:
       return updateObject(state, { employeeOperationStatus: action.employeeOperationStatus, employeeOperationErrors: action.employeeOperationErrors, 
         employeeResultMessage: action.employeeResultMessage })
-    default:
+    case LOAD_ASSIGNMENTS:
+      return updateObject(state, { loadAssignmentsStatus: action.loadAssignmentsStatus, loadAssignmentsErrors: action.loadAssignmentsErrors, 
+        loadedAssignments: action.loadedAssignments})
+    case DELETE_QUATER:
+      return updateObject(state, { deleteQuaterStatus: action.deleteQuaterStatus, deleteQuaterErrors: action.deleteQuaterErrors })
+    
+      default:
       return state;
   }
 };

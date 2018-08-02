@@ -6,7 +6,8 @@ import Button from '../../../common/button/button';
 import Quaters from '../quaters/quaters';
 import Spinner from '../../../common/spinner/small-spinner';
 const employeeContent = ({employee, editSeniority, employeeErrors, 
-  editCapacity, activateEmployee, isChangingEmployeeData, reactivateEmployee, deleteEmployee}) => {
+  editCapacity, activateEmployee, isChangingEmployeeData, reactivateEmployee, deleteEmployee,
+  deleteQuaterStatus, deleteQuaterErrors, deleteQuaterACreator}) => {
 
     const status = employee.isDeleted ? "Usunięty" : employee.hasAccount ? "Aktywny" : "Nieaktywny";
 
@@ -90,7 +91,12 @@ const employeeContent = ({employee, editSeniority, employeeErrors,
         }
         
     </div>
-    <Quaters paginationLimit={5} quarterTalks={employee.quarterTalks}/>
+    <Quaters deleteQuaterStatus={deleteQuaterStatus}
+    deleteQuaterErrors={deleteQuaterErrors}
+    employeeId={employee.id}
+    deleteQuaterACreator={deleteQuaterACreator}
+    paginationLimit={5} 
+    quarterTalks={employee.quarterTalks}/>
     
   </section>
   );

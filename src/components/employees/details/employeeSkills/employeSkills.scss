@@ -1,0 +1,70 @@
+.employee-skills{
+    margin-top: 150px;
+    border-top: 2px solid #707070;
+    padding: 40px;
+    h2{
+        font-size: 24px;
+        color: #707070;
+        padding: 20px 0;
+    }
+    .emp-skills-container{
+        width: 500px;
+        margin: 25px 0;
+        .empty-skills{
+            background: rgba(0, 0, 0, 0.6);
+            width: 400px;
+            height: 320px;
+            font-size: 22px;
+            display: flex;
+            justify-content: center;
+            flex-flow: column;
+            border-radius: 5px;
+            align-items: center;
+            color: white;
+            i{
+                color: lightgreen;
+                margin-top: 15px;
+                font-size: 26px;
+            }
+        }
+        li{
+            margin: 10px 0;
+            label{
+                max-width: 150px;
+            }
+           
+            .spans-container{
+                position: relative;
+                width: 350px;
+                background: rgba(0, 0, 0, 0.2);
+                position: relative;
+                height: 16px;
+                margin: 8px 0;
+                display: flex;
+                .years-of-expierience{
+                    position: absolute;
+                    right: -65px;
+                    color: #964646;
+                    font-size: 18px;
+                    i{
+                        margin-left: 5px;
+                    }
+                }
+                span{
+                    cursor: pointer;
+                    z-index: 1;
+                }
+                span:hover{
+                    background: rgba(0, 0, 0, 0.3);
+                }
+                .progress-markup{
+                    position: absolute;
+                    height: 100%;
+                    left: 0;
+                    transition: 0.5s all ease-in-out;
+                }
+            }
+        }
+    }
+}
+

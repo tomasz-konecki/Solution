@@ -1,209 +1,156 @@
-import React from "react";
+import React, { Component } from "react";
+import Modal from "react-responsive-modal";
+
 import Aux from "services/auxilary";
 import "./infoClient.scss";
 import BilleniumPleaceholder from "assets/img/small-logo.png";
 import Icon from "../../common/Icon";
 import Spinner from "../../common/spinner/spinner";
 import IntermediateBlock from "../../common/IntermediateBlock";
-import { CSSTransitionGroup } from "react-transition-group";
 import AddEditClient from "../AddEditClient/AddEditClient";
+import InfoClientList from "./InfoClientList/InfoClientList";
+import AddCloudModal from "./InfoClientList/Modals/AddCloudModal";
 
-const pullDOM = (
-  t,
-  handleAddCloud,
-  handleAddCloudSaveChild,
-  handleInputAddCloud,
-  disabled,
-  inputValueToAdd
-) => {
-  return (
-    <div className="cloud">
-      <div className="cloud-circle" />
-      <div className="cloud-name">
-        <input
-          onChange={e => handleInputAddCloud(e)}
-          onKeyPress={e => {
-            if (e.key === "Enter") {
-              handleAddCloudSaveChild();
-            }
-          }}
-          placeholder={t("CloudName")}
-          value={inputValueToAdd}
-        />
-      </div>
-      <div className="cloud-options">
-        <button disabled={disabled} onClick={handleAddCloudSaveChild}>
-          <Icon icon="check" iconType="fa" additionalClass="icon-success" />
-        </button>
-        <button onClick={handleAddCloud}>
-          <Icon icon="times" iconType="fa" additionalClass="icon-danger" />
-        </button>
-      </div>
-    </div>
-  );
-};
+export default class InfoClient extends Component {
+  state = {
+    shouldAnimate: true,
+    addingNewCloud: false,
+    inputValueToAdd: "",
+    openCloudAddModal: false,
+    openResponsiblePersonAddModal: false
+  };
 
-const InfoClient = ({
-  client,
-  t,
-  handleAddCloud,
-  addingNewCloud,
-  handleInputAddCloud,
-  handleAddCloudSaveChild,
-  resultBlockCloud,
-  clearResponseCloud,
-  handleTimesClick,
-  handleSyncClick,
-  handleDeleteCloudChild,
-  handleReactivateCloudChild,
-  disabled,
-  onEditClient,
-  resultBlockAddClient,
-  inputValueToAdd
-}) => {
-  const clientClouds = client.clouds.map((cloud, index) => {
+  handleCloudAddToggleModal = () => {
+    this.setState({ openCloudAddModal: !this.state.openCloudAddModal });
+  };
+
+  handleResponsiblePersonAddToggleModal = () => {
+    this.setState({
+      openResponsiblePersonAddModal: !this.state.openResponsiblePersonAddModal
+    });
+  };
+
+  render() {
+    const {
+      client,
+      t,
+      handleAddCloud,
+      addingNewCloud,
+      handleInputAddCloud,
+      handleAddCloudSaveChild,
+      resultBlockCloud,
+      clearResponseCloud,
+      handleTimesClick,
+      handleSyncClick,
+      handleDeleteCloudChild,
+      handleReactivateCloudChild,
+      disabled,
+      onEditClient,
+      resultBlockAddClient,
+      inputValueToAdd
+    } = this.props;
+
+    const { openCloudAddModal } = this.state;
+
+    const cloudsTranslateText = {
+      Header: "ClientCloudsList",
+      NotFound: "CloudsNotFound",
+      ItemName: "CloudName",
+      AddItem: "Add"
+    };
+
+    const responsiblePersonTranslateText = {
+      Header: "ResponsiblePersonList",
+      NotFound: "ResponsiblePersonNotFound",
+      ItemName: "ResponsiblePersonName",
+      AddItem: "Add"
+    };
+
+    client.descriptionHelper = !client.description
+      ? t("NoClientDescription")
+      : client.description;
+
+    client.imgSrc = client.path
+      ? "http://10.255.20.241/ClientsPictures/" + client.path
+      : BilleniumPleaceholder;
+
+    client.imgAlt = client.path
+      ? client.name + " logo"
+      : "Billeniumm Placeholder";
+
+    if (resultBlockCloud) {
+      closeMessage = resultBlockCloud.errorOccurred() ? (
+        <span className="messageClose" onClick={() => clearResponseCloud()}>
+          x
+        </span>
+      ) : null;
+    }
+
     return (
-      <div key={index} className="cloud">
-        <div className="cloud-circle" />
-        <div className="cloud-name">
-          <span>{cloud.name}</span>
+      <Aux>
+        <div className="client-info-header">
+          <div
+            style={{ background: `url(${client.imgSrc})` }}
+            className="client-info-logo"
+            title={client.imgAlt}
+          />
+          <div className="client-info-details">
+            <div className="client-info-details-more">
+              <h1>{client.name}</h1>
+              <p>{client.descriptionHelper}</p>
+            </div>
+            <hr />
+            <div className="client-info-options">
+              <AddEditClient
+                key={4}
+                client={client}
+                editClient={onEditClient}
+                loading={false}
+                resultBlock={resultBlockAddClient}
+              >
+                <span>{t("EditClient")}</span>
+              </AddEditClient>
+              |
+              {!client.isDeleted ? (
+                <span
+                  onClick={() => handleTimesClick(client.id, client.name, t)}
+                >
+                  {t("DeleteClient")}
+                </span>
+              ) : (
+                <span onClick={() => handleSyncClick(client.id, client.name)}>
+                  {t("ReactivateClient")}
+                </span>
+              )}
+            </div>
+          </div>
         </div>
-        <div className="cloud-options">
-          {!cloud.isDeleted ? (
-            <button
-              onClick={() => handleDeleteCloudChild(cloud.id, cloud.name)}
-            >
-              <Icon icon="times" iconType="fa" additionalClass="icon-danger" />
-            </button>
-          ) : (
-            <button
-              onClick={() => handleReactivateCloudChild(cloud.id, cloud.name)}
-            >
-              <Icon
-                icon="sync-alt"
-                iconType="fa"
-                additionalClass="icon-danger"
-              />
-            </button>
-          )}
+        <div className="client-clouds-container">
+          <InfoClientList
+            t={t}
+            list={client.clouds}
+            translateText={cloudsTranslateText}
+            handleItemAddModal={this.handleItemAddModal}
+            handleOpenAddItemModal={this.handleCloudAddToggleModal}
+          />
         </div>
-      </div>
+        <div className="responsible-person-container">
+          <InfoClientList
+            t={t}
+            list={client.resposiblePersons}
+            translateText={responsiblePersonTranslateText}
+            handleOpenAddItemModal={this.handleResponsiblePersonAddToggleModal}
+          />
+        </div>
+        <Modal
+          open={openCloudAddModal}
+          classNames={{ modal: "Modal Modal-add-cloud" }}
+          contentLabel="Add Cloud"
+          onClose={this.handleCloudAddToggleModal}
+        >
+          <AddCloudModal t={t} />
+        </Modal>;
+      </Aux>
     );
-  });
-
-  client.descriptionHelper = !client.description
-    ? t("NoClientDescription")
-    : client.description;
-
-  client.imgSrc = client.path
-    ? "http://10.255.20.241/ClientsPictures/" + client.path
-    : BilleniumPleaceholder;
-
-  client.imgAlt = client.path
-    ? client.name + " logo"
-    : "Billeniumm Placeholder";
-
-  let closeMessage = null;
-
-  if (resultBlockCloud) {
-    closeMessage = resultBlockCloud.errorOccurred() ? (
-      <span className="messageClose" onClick={() => clearResponseCloud()}>
-        x
-      </span>
-    ) : null;
   }
-
-  let adddingNewCloudContainer = addingNewCloud ? (
-    <IntermediateBlock
-      loaded={true}
-      render={() =>
-        pullDOM(
-          t,
-          handleAddCloud,
-          handleAddCloudSaveChild,
-          handleInputAddCloud,
-          disabled,
-          inputValueToAdd
-        )
-      }
-      resultBlock={resultBlockCloud}
-    />
-  ) : null;
-
-  return (
-    <Aux>
-      <div className="client-info-header">
-        <div
-          style={{ background: `url(${client.imgSrc})` }}
-          className="client-info-logo"
-          title={client.imgAlt}
-        />
-        <div className="client-info-details">
-          <div className="client-info-details-more">
-            <h1>{client.name}</h1>
-            <p>{client.descriptionHelper}</p>
-          </div>
-          <hr />
-          <div className="client-info-options">
-            <AddEditClient
-              key={4}
-              client={client}
-              editClient={onEditClient}
-              loading={false}
-              resultBlock={resultBlockAddClient}
-            >
-              <span>{t("EditClient")}</span>
-            </AddEditClient>
-            |
-            {!client.isDeleted ? (
-              <span onClick={() => handleTimesClick(client.id, client.name, t)}>
-                {t("DeleteClient")}
-              </span>
-            ) : (
-              <span onClick={() => handleSyncClick(client.id, client.name)}>
-                {t("ReactivateClient")}
-              </span>
-            )}
-          </div>
-        </div>
-      </div>
-
-      <div className="client-clouds-container">
-        <div className="client-clouds-header">
-          <h2>{t("ClientCloudsList")}</h2>
-        </div>
-        <div className="client-clouds">
-          {clientClouds}
-          {clientClouds.length === 0 && (
-            <span className="clouds-not-found">{t("CloudsNotFound")}</span>
-          )}
-          <div className="client-cloud-adding-container">
-            {closeMessage}
-            <CSSTransitionGroup
-              transitionName="example"
-              transitionEnterTimeout={500}
-              transitionLeaveTimeout={300}
-            >
-              {adddingNewCloudContainer}
-            </CSSTransitionGroup>
-          </div>
-        </div>
-
-        {!adddingNewCloudContainer && (
-          <div className="client-cloud-add">
-            <button onClick={() => handleAddCloud()}>
-              <Icon icon="plus" iconType="fa" />
-              {t("AddCloud").toUpperCase()}
-            </button>
-          </div>
-        )}
-      </div>
-      {/* {loading && (
-        <div className="full-screen-loader">
-          <Spinner />
-        </div>
-      )} */}
-    </Aux>
-  );
-};
-export default InfoClient;
+}

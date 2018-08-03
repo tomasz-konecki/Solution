@@ -5,7 +5,8 @@ import {
   LOAD_EMPLOYEES_FAILURE, GET_EMPLOYEE,
   CHANGE_EMPLOYEE_OPERATION_STATUS,
   CHANGE_EMPLOYEE_STATE, LOAD_ASSIGNMENTS, DELETE_QUATER,
-  REACTIVATE_QUATER
+  REACTIVATE_QUATER,
+  CHANGE_EMPLOYEE_SKILL
 } from "../constants";
 import axios from "axios";
 import WebApi from "../api";
@@ -189,14 +190,14 @@ const clearAfterTimeByFuncRef = (funcRef, delay, ...params) => {
   }
 }
 
-export const reactivateQuater = (reactivateQuaterStatus, reactivateQuaterErrors) => {
-  return { type: REACTIVATE_QUATER, reactivateQuaterStatus, reactivateQuaterErrors}
+export const reactivateQuater = (reactivateQuaterStatus, reactivateQuaterErrors, reactivateQuaterMessage) => {
+  return { type: REACTIVATE_QUATER, reactivateQuaterStatus, reactivateQuaterErrors, reactivateQuaterMessage}
 }
 
-export const reactivateQuaterACreator = (quaterId, employeeId) => {
+export const reactivateQuaterACreator = (quaterId, employeeId, message) => {
   return dispatch => { 
     WebApi.quarterTalks.put.reactivate(quaterId).then(response => {
-      dispatch(reactivateQuater(true, []));
+      dispatch(reactivateQuater(true, [], message));
       dispatch(getEmployeePromise(employeeId));
 
       dispatch(clearAfterTimeByFuncRef(reactivateQuater, 5000, null, []));
@@ -204,5 +205,19 @@ export const reactivateQuaterACreator = (quaterId, employeeId) => {
       dispatch(reactivateQuater(false, errorCatcher(error)));
       dispatch(clearAfterTimeByFuncRef(reactivateQuater, 5000, null, []));
     })
+  }
+}
+
+export const changeEmployeeSkill = (changeEmployeeSkillStatus, changeEmployeeSkillErrors) =>{
+     return { type: CHANGE_EMPLOYEE_SKILL, changeEmployeeSkillStatus, changeEmployeeSkillErrors};
+}
+
+export const changeEmployeeSkillACreator = (employeeId, skillId, skillLevel, yearsOfExperience) => {
+  return dispatch => {
+    WebApi.employees.put.skills(employeeId, {skillId, skillLevel, yearsOfExperience})
+      .then(response => {
+        dispatch(changeEmployeeSkill(true, []));
+        
+      })
   }
 }

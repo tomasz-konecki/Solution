@@ -35,7 +35,7 @@ class Quaters extends React.PureComponent{
 
     activateQuaters = quarterId => {
         this.setState({activatingQuater: true});
-        this.props.reactivateQuaterACreator(quarterId, this.props.employeeId);
+        this.props.reactivateQuaterACreator(quarterId, this.props.employeeId, "Aktywowano rozmowę");
     }
     render(){
         const { paginationLimit, quarterTalks, deleteQuaterStatus, deleteQuaterErrors } = this.props;

@@ -37,6 +37,7 @@ class EmployeeSkills extends React.Component{
         const skills = [...this.state.skills];
         skills[arrayElementIndex].markupWidth = (100/this.props.limit)*spanIndex;
         skills[arrayElementIndex].skill.level = spanIndex;
+        //tu strzelić do api
         this.setState({skills: skills});
     }   
     shouldComponentUpdate(nextState){

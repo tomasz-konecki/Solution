@@ -28,8 +28,8 @@ const initialState = {
   deleteQuaterErrors: [],
 
   reactivateQuaterStatus: null,
-  reactivateQuaterErrors: []
-
+  reactivateQuaterErrors: [],
+  reactivateQuaterMesssage: ""
   
 };
 
@@ -65,7 +65,7 @@ export const employeesReducer = (state = initialState, action) => {
       return updateObject(state, { deleteQuaterStatus: action.deleteQuaterStatus, deleteQuaterErrors: action.deleteQuaterErrors })
     case REACTIVATE_QUATER:
       return updateObject(state, { reactivateQuaterStatus: action.reactivateQuaterStatus,
-         reactivateQuaterErrors: action.reactivateQuaterErrors})
+         reactivateQuaterErrors: action.reactivateQuaterErrors, reactivateQuaterMesssage: action.reactivateQuaterMesssage})
       default:
       return state;
   }

@@ -4,7 +4,8 @@ import {
   ASYNC_ENDED,
   LOAD_EMPLOYEES_FAILURE, GET_EMPLOYEE,
   CHANGE_EMPLOYEE_OPERATION_STATUS,
-  CHANGE_EMPLOYEE_STATE, LOAD_ASSIGNMENTS, DELETE_QUATER
+  CHANGE_EMPLOYEE_STATE, LOAD_ASSIGNMENTS, DELETE_QUATER,
+  REACTIVATE_QUATER
 } from "../constants";
 import axios from "axios";
 import WebApi from "../api";
@@ -168,7 +169,7 @@ export const deleteQuaterACreator = (quarterId, employeeId) => {
 
     WebApi.quarterTalks.delete(quarterId).then(response => {
       dispatch(deleteQuater(true, []));
-      dispatch(loadAssignmentsACreator(employeeId));
+      dispatch(getEmployeePromise(employeeId));
 
       dispatch(clearAfterTimeByFuncRef(deleteQuater, 5000, null, []));
       
@@ -185,5 +186,23 @@ const clearAfterTimeByFuncRef = (funcRef, delay, ...params) => {
     setTimeout(() => {
       dispatch(funcRef(...params))
     }, delay);
+  }
+}
+
+export const reactivateQuater = (reactivateQuaterStatus, reactivateQuaterErrors) => {
+  return { type: REACTIVATE_QUATER, reactivateQuaterStatus, reactivateQuaterErrors}
+}
+
+export const reactivateQuaterACreator = (quaterId, employeeId) => {
+  return dispatch => { 
+    WebApi.quarterTalks.put.reactivate(quaterId).then(response => {
+      dispatch(reactivateQuater(true, []));
+      dispatch(getEmployeePromise(employeeId));
+
+      dispatch(clearAfterTimeByFuncRef(reactivateQuater, 5000, null, []));
+    }).catch(error => {
+      dispatch(reactivateQuater(false, errorCatcher(error)));
+      dispatch(clearAfterTimeByFuncRef(reactivateQuater, 5000, null, []));
+    })
   }
 }

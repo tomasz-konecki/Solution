@@ -5,6 +5,9 @@
   margin-top: 15px;
   flex-flow: wrap;
   justify-content: space-between;
+  @media screen and (max-width: 1470px){
+    justify-content: center;
+  }
   .information-for-statuses{
     position: absolute;
     bottom: -150px;
@@ -50,6 +53,14 @@
     display: flex;
     position: relative;
 
+    .fte-bar-container, .degree-bar-container{
+      @media screen and (max-width: 1470px){
+        left: 0;
+        right: 0;
+        margin-left: auto;
+        margin-right: auto;
+      }
+    }
     .fte-bar-container{
       width: 300px;
       bottom: -40px;
@@ -162,5 +173,5 @@
       }
     }
   }
-
+  
 }

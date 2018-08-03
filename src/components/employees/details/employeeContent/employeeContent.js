@@ -7,7 +7,8 @@ import Quaters from '../quaters/quaters';
 import Spinner from '../../../common/spinner/small-spinner';
 const employeeContent = ({employee, editSeniority, employeeErrors, 
   editCapacity, activateEmployee, isChangingEmployeeData, reactivateEmployee, deleteEmployee,
-  deleteQuaterStatus, deleteQuaterErrors, deleteQuaterACreator}) => {
+  deleteQuaterStatus, deleteQuaterErrors, deleteQuaterACreator, 
+  reactivateQuaterACreator, reactivateQuaterStatus, reactivateQuaterErrors}) => {
 
     const status = employee.isDeleted ? "Usunięty" : employee.hasAccount ? "Aktywny" : "Nieaktywny";
 
@@ -91,7 +92,10 @@ const employeeContent = ({employee, editSeniority, employeeErrors,
         }
         
     </div>
-    <Quaters deleteQuaterStatus={deleteQuaterStatus}
+    <Quaters reactivateQuaterACreator={reactivateQuaterACreator}
+    reactivateQuaterStatus={reactivateQuaterStatus}
+    reactivateQuaterErrors={reactivateQuaterErrors}
+    deleteQuaterStatus={deleteQuaterStatus}
     deleteQuaterErrors={deleteQuaterErrors}
     employeeId={employee.id}
     deleteQuaterACreator={deleteQuaterACreator}

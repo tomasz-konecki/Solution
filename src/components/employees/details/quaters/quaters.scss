@@ -2,6 +2,9 @@
   .quaters-container {
     width: 600px;
     position: relative;
+    @media screen and (max-width: 1470px){
+      margin-top: 300px;
+    }
     .normal-btn{
       bottom: -60px;
       left: 0;
@@ -14,9 +17,14 @@
       font-size: 22px;
       text-align: center;
       color: #707070;
+      position: relative;
       span{
         margin-left: 10px;
         color: lightseagreen;;
+      }
+      .small-spiner{  
+        right: 140px;
+        top: -10px;
       }
     }
     .pagination-options{

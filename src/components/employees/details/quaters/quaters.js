@@ -3,6 +3,7 @@ import './quaters.scss';
 import Button from '../../../common/button/button';
 import ConfirmModal from '../../../common/confimModal/confirmModal';
 import Spinner from '../../../common/spinner/spinner';
+import SmallSpinner from '../../../common/spinner/small-spinner';
 import OperationStatusPrompt from '../../../form/operationStatusPrompt/operationStatusPrompt';
 class Quaters extends React.PureComponent{
     state = {
@@ -19,6 +20,8 @@ class Quaters extends React.PureComponent{
         }
         else if(nextProps.deleteQuaterErrors !== this.props.deleteQuaterErrors)
             this.setState({deletingQuater: false});
+        else if(nextProps.reactivateQuaterErrors !== this.props.reactivateQuaterErrors)
+            this.setState({activatingQuater: false});
     }
     
     showDetails = index => {
@@ -30,9 +33,9 @@ class Quaters extends React.PureComponent{
         this.props.deleteQuaterACreator(this.state.listToShowIndex+1, this.props.employeeId);
     }
 
-    activateQuaters = () => {
+    activateQuaters = quarterId => {
         this.setState({activatingQuater: true});
-        
+        this.props.reactivateQuaterACreator(quarterId, this.props.employeeId);
     }
     render(){
         const { paginationLimit, quarterTalks, deleteQuaterStatus, deleteQuaterErrors } = this.props;
@@ -42,12 +45,12 @@ class Quaters extends React.PureComponent{
                 {quarterTalks && 
                     quarterTalks.length > 0 ?
                     <React.Fragment>
-                    <h2>Rozmowy kwartalne <span>({quarterTalks.length})</span></h2>
+                    <h2>Rozmowy kwartalne <span>({quarterTalks.length})</span> { activatingQuater && <SmallSpinner /> }</h2>
                     <ul>
                         {quarterTalks.map((item, index) => {
                             return ( 
                                 (index >= paginationLimit * (currentPage-1) && index < paginationLimit * currentPage) &&   
-                                <li className={item.isDeleted === false ? "is-deleted-quater" : "is-activate-quater"}
+                                <li className={item.isDeleted === true ? "is-deleted-quater" : "is-activate-quater"}
                                 onClick={() => this.showDetails(index)} key={index}>
                                     {index === listToShowIndex && 
                                         <div className="clicked-row"></div>
@@ -80,7 +83,7 @@ class Quaters extends React.PureComponent{
                         }
 
                         {listToShowIndex !== null && quarterTalks[listToShowIndex].isDeleted === true && 
-                            <i onClick={this.activateQuaters} className="fa fa-check"></i>
+                            <i onClick={() => this.activateQuaters(quarterTalks[listToShowIndex].id)} className="fa fa-check"></i>
                         }
 
                         {watchedRecords !== 0 && 

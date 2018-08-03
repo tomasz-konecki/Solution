@@ -416,39 +416,39 @@ const WebApi = {
   oneDrive: {
     get: {
       authBegin: () => {
-        return WebAround.get(`${API_ENDPOINT}/api/onedrive/auth`);
+        return WebAround.get(`${API_ENDPOINT}/onedrive/auth`);
       },
       sendQuertToAuth: code => {
         return WebAround.get(
-          `${API_ENDPOINT}/api/onedrive/authenticated?code=${code}`
+          `${API_ENDPOINT}/onedrive/authenticated?code=${code}`
         );
       }
     },
     post: {
       getFolders: model => {
-        return WebAround.post(`${API_ENDPOINT}/api/onedrive/files`, model);
+        return WebAround.post(`${API_ENDPOINT}/onedrive/files`, model);
       },
       createFolder: model => {
         return WebAround.post(
-          `${API_ENDPOINT}/api/onedrive/createFolder`,
+          `${API_ENDPOINT}/onedrive/createFolder`,
           model
         );
       },
       deleteFolder: model => {
         return WebAround.post(
-          `${API_ENDPOINT}/api/onedrive/deleteFolder`,
+          `${API_ENDPOINT}/onedrive/deleteFolder`,
           model
         );
       },
       updateFolder: model => {
         return WebAround.post(
-          `${API_ENDPOINT}/api/onedrive/updateFolder`,
+          `${API_ENDPOINT}/onedrive/updateFolder`,
           model
         );
       },
       uploadFile: (model, config) => {
         return WebAround.post(
-          `${API_ENDPOINT}/api/onedrive/upload`,
+          `${API_ENDPOINT}/onedrive/upload`,
           model,
           config
         );

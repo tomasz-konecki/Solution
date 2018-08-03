@@ -6,10 +6,17 @@
         font-size: 24px;
         color: #707070;
         padding: 20px 0;
+        @media screen and (max-width: 1470px){
+            text-align: center;
+          }
     }
     .emp-skills-container{
-        width: 500px;
+        width: 400px;
         margin: 25px 0;
+        @media screen and (max-width: 1470px){
+            margin-left: auto;
+            margin-right: auto;
+          }
         .empty-skills{
             background: rgba(0, 0, 0, 0.6);
             width: 400px;

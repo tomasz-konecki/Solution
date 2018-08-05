@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Modal from "react-responsive-modal";
+import PropTypes from "prop-types";
 
-import Aux from "services/auxilary";
 import "./infoClient.scss";
 import BilleniumPleaceholder from "assets/img/small-logo.png";
 import Icon from "../../common/Icon";
@@ -15,7 +15,6 @@ export default class InfoClient extends Component {
   state = {
     shouldAnimate: true,
     addingNewCloud: false,
-    inputValueToAdd: "",
     openCloudAddModal: false,
     openResponsiblePersonAddModal: false
   };
@@ -78,16 +77,16 @@ export default class InfoClient extends Component {
       ? client.name + " logo"
       : "Billeniumm Placeholder";
 
-    if (resultBlockCloud) {
-      closeMessage = resultBlockCloud.errorOccurred() ? (
-        <span className="messageClose" onClick={() => clearResponseCloud()}>
-          x
-        </span>
-      ) : null;
-    }
+    // if (resultBlockCloud) {
+    //   closeMessage = resultBlockCloud.errorOccurred() ? (
+    //     <span className="messageClose" onClick={() => clearResponseCloud()}>
+    //       x
+    //     </span>
+    //   ) : null;
+    // }
 
     return (
-      <Aux>
+      <React.Fragment>
         <div className="client-info-header">
           <div
             style={{ background: `url(${client.imgSrc})` }}
@@ -148,9 +147,18 @@ export default class InfoClient extends Component {
           contentLabel="Add Cloud"
           onClose={this.handleCloudAddToggleModal}
         >
-          <AddCloudModal t={t} />
-        </Modal>;
-      </Aux>
+          <AddCloudModal
+            t={t}
+            handleAddCloud={handleAddCloud}
+            clientId={client.id}
+            resultBlockCloud={resultBlockCloud}
+          />
+        </Modal>
+      </React.Fragment>
     );
   }
 }
+
+InfoClient.propTypes = {
+  handleAddCloud: PropTypes.func.isRequired
+};

@@ -4,10 +4,7 @@ import "./infoClient.scss";
 
 export default class infoClientContainer extends Component {
   state = {
-    shouldAnimate: true,
-    addingNewCloud: false,
-    inputValueToAdd: "",
-    disabled: true
+    shouldAnimate: true
   };
 
   componentWillReceiveProps(nextState) {
@@ -27,28 +24,6 @@ export default class infoClientContainer extends Component {
     }, 800);
   };
 
-  handleAddCloud = () => {
-    this.setState({ addingNewCloud: !this.state.addingNewCloud });
-  };
-
-  handleInputAddCloud = e => {
-    if (e.target.value) {
-      this.setState({ inputValueToAdd: e.target.value, disabled: false });
-    } else {
-      this.setState({ inputValueToAdd: e.target.value, disabled: true });
-    }
-  };
-
-  handleAddCloudSaveChild = () => {
-    if (!this.state.disabled) {
-      this.props.handleAddCloudSave(
-        this.state.inputValueToAdd,
-        this.props.client.id
-      );
-      this.setState({ inputValueToAdd: "" });
-    }
-  };
-
   handleDeleteCloudChild = (cloudId, cloudName) => {
     this.props.handleDeleteCloud(cloudId, cloudName);
   };
@@ -58,12 +33,7 @@ export default class infoClientContainer extends Component {
   };
 
   render() {
-    const {
-      shouldAnimate,
-      addingNewCloud,
-      disabled,
-      inputValueToAdd
-    } = this.state;
+    const { shouldAnimate } = this.state;
     const {
       client,
       t,
@@ -72,7 +42,8 @@ export default class infoClientContainer extends Component {
       handleTimesClick,
       handleSyncClick,
       onEditClient,
-      resultBlockAddClient
+      resultBlockAddClient,
+      handleAddCloud
     } = this.props;
 
     if (shouldAnimate) {
@@ -86,10 +57,7 @@ export default class infoClientContainer extends Component {
         <InfoClient
           client={client}
           t={t}
-          handleAddCloud={this.handleAddCloud}
-          addingNewCloud={addingNewCloud}
-          handleInputAddCloud={this.handleInputAddCloud}
-          handleAddCloudSaveChild={this.handleAddCloudSaveChild}
+          handleAddCloud={handleAddCloud}
           loading={false}
           resultBlockCloud={resultBlockCloud}
           clearResponseCloud={clearResponseCloud}
@@ -97,10 +65,8 @@ export default class infoClientContainer extends Component {
           handleSyncClick={handleSyncClick}
           handleDeleteCloudChild={this.handleDeleteCloudChild}
           handleReactivateCloudChild={this.handleReactivateCloudChild}
-          disabled={disabled}
           onEditClient={onEditClient}
           resultBlockAddClient={resultBlockAddClient}
-          inputValueToAdd={inputValueToAdd}
         />
       </div>
     );

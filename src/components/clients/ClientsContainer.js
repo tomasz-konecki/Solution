@@ -234,7 +234,8 @@ class ClientsContainer extends React.Component {
     });
   };
 
-  handleAddCloudSave = (name, clientId) => {
+  handleAddCloud = (name, clientId) => {
+    console.log("Dodaje chmurjke");
     this.props.clientsActions.addCloud(name, clientId);
   };
 
@@ -311,7 +312,7 @@ class ClientsContainer extends React.Component {
         <InfoClientContainer
           client={client}
           t={t}
-          handleAddCloudSave={this.handleAddCloudSave}
+          handleAddCloud={this.handleAddCloud}
           resultBlockCloud={resultBlockCloud}
           clearResponseCloud={this.props.clientsActions.clearResponseCloud}
           handleTimesClick={this.handleTimesClick}

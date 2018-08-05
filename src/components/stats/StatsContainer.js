@@ -63,12 +63,15 @@ class StatsContainer extends Component {
   };
 
   createDevChart = t => {
+    const { localizations } = this.state;
     let cols = [];
-    Object.entries(this.state.stats.localizations).map(
-      ([_i, { localization, count }], index) => {
-        cols.push([localization, count]);
-      }
-    );
+
+    localizations &&
+      Object.entries(localizations).map(
+        ([_i, { localization, count }], index) => {
+          cols.push([localization, count]);
+        }
+      );
     const data = {
       type: "pie",
       columns: cols
@@ -76,7 +79,7 @@ class StatsContainer extends Component {
 
     const tooltip = {
       format: {
-        value: function (value, ratio, id) {
+        value: function(value, ratio, id) {
           return `${value}`;
         }
       }
@@ -97,7 +100,7 @@ class StatsContainer extends Component {
   createEWPChart = t => {
     let cols = [
       [t("Without"), this.state.stats.employees.withoutProjects],
-      [t("With"), this.state.stats.employees.withProjects],
+      [t("With"), this.state.stats.employees.withProjects]
     ];
     const data = {
       type: "pie",
@@ -106,7 +109,7 @@ class StatsContainer extends Component {
 
     const tooltip = {
       format: {
-        value: function (value, ratio, id) {
+        value: function(value, ratio, id) {
           return `${value}`;
         }
       }
@@ -136,7 +139,7 @@ class StatsContainer extends Component {
 
     const tooltip = {
       format: {
-        value: function (value, ratio, id) {
+        value: function(value, ratio, id) {
           return `${value}`;
         }
       }
@@ -166,15 +169,19 @@ class StatsContainer extends Component {
   };
 
   render() {
-    const { t } = this.props;
-    return (
+    const { replyBlock } = this.props;
+
+    const content = replyBlock ? (
       <IntermediateBlock
         loaded={this.state.loaded}
         render={this.pullDOM}
-        resultBlock={this.props.replyBlock}
+        resultBlock={replyBlock}
         _className="content-container"
       />
+    ) : (
+      "BackEnd Problem"
     );
+    return content;
   }
 }
 

@@ -178,19 +178,16 @@ export const addClient = formData => {
 
 export const addCloud = (name, clientId) => {
   return dispatch => {
-    dispatch(asyncStarted());
     WebApi.clouds
       .post(name, clientId)
       .then(response => {
         if (!response.errorOccurred()) {
           dispatch(addCloudResult(response));
-          dispatch(asyncEnded());
           dispatch(this.loadClients());
         }
       })
       .catch(error => {
         dispatch(addCloudResult(error));
-        dispatch(asyncEnded());
         throw error;
       });
   };

@@ -14,7 +14,10 @@ class AddCloudModal extends PureComponent {
         mode: "text",
         value: "",
         error: "",
-        canBeNull: false
+        canBeNull: false,
+        minLength: 2,
+        maxLength: 20,
+        inputType: "name"
       }
     ],
     isLoading: false
@@ -22,7 +25,12 @@ class AddCloudModal extends PureComponent {
 
   componentWillReceiveProps(nextProps) {
     if (this.props.resultBlockCloud !== nextProps.resultBlockCloud) {
-      this.setState({ isLoading: false });
+      this.setState({ isLoading: false }),
+        nextProps.resultBlockCloud &&
+          nextProps.resultBlockCloud.statusCode() === 200 &&
+          setTimeout(() => {
+            this.props.handleCloudAddCloseModal();
+          }, 3000);
     }
   }
 
@@ -49,21 +57,17 @@ class AddCloudModal extends PureComponent {
           isLoading={isLoading}
           formItems={addCloudToClientFormItems}
           submitResult={{
-            status: resultBlockCloud && !resultBlockCloud.errorOccurred,
-            content:
-              resultBlockCloud && resultBlockCloud.errorOccurred
-                ? "BACKEND PROBLEM"
-                : "WORKING"
+            status: resultBlockCloud
+              ? !resultBlockCloud.errorOccurred()
+                ? true
+                : false
+              : null,
+            content: resultBlockCloud
+              ? !resultBlockCloud.errorOccurred()
+                ? t("CloudAdded")
+                : resultBlockCloud && resultBlockCloud.getMostSignificantText()
+              : null
           }}
-        />
-
-        <IntermediateBlock
-          loaded={true}
-          render={() => {
-            return null;
-          }}
-          resultBlock={resultBlockCloud}
-          spinner="Cube"
         />
       </div>
     );

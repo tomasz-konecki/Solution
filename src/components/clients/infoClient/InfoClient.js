@@ -20,8 +20,14 @@ export default class InfoClient extends Component {
     openResponsiblePersonAddModal: false
   };
 
-  handleCloudAddToggleModal = () => {
-    this.setState({ openCloudAddModal: !this.state.openCloudAddModal });
+  handleCloudAddCloseModal = () => {
+    this.setState({ openCloudAddModal: false });
+    this.props.resultBlockCloud &&
+      this.props.clientsActions.addCloudResult(null);
+  };
+
+  handleCloudAddOpenModal = () => {
+    this.setState({ openCloudAddModal: true });
   };
 
   handleResponsiblePersonAddCloseModal = () => {
@@ -125,7 +131,7 @@ export default class InfoClient extends Component {
             list={client.clouds}
             translateText={cloudsTranslateText}
             handleItemAddModal={this.handleItemAddModal}
-            handleOpenAddItemModal={this.handleCloudAddToggleModal}
+            handleOpenAddItemModal={this.handleCloudAddOpenModal}
           />
         </div>
         <div className="responsible-person-container">
@@ -141,13 +147,14 @@ export default class InfoClient extends Component {
             open={openCloudAddModal}
             classNames={{ modal: "Modal Modal-add-cloud" }}
             contentLabel="Add Cloud"
-            onClose={this.handleCloudAddToggleModal}
+            onClose={this.handleCloudAddCloseModal}
           >
             <AddCloudModal
               t={t}
               handleAddCloud={handleAddCloud}
               clientId={client.id}
               resultBlockCloud={resultBlockCloud}
+              handleCloudAddCloseModal={this.handleCloudAddCloseModal}
             />
           </Modal>
         )}

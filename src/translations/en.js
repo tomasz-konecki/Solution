@@ -98,7 +98,8 @@ const translations = {
     PhoneNumber: "Phone Number",
     Insert: "Insert",
     AddResponsivePerson: "Add Responsible Person",
-    ResponsiblePersonAdded: "Responsible Person has been added."
+    ResponsiblePersonAdded: "Responsible Person has been added.",
+    CloudAdded: "Cloud has been added."
   },
   AddClient: {
     Add: "Add",

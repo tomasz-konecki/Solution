@@ -4,15 +4,59 @@ import PropTypes from "prop-types";
 import "./InfoClientList.scss";
 
 export default class InfoClientList extends Component {
+  state = {
+    list: this.props.list,
+    isDeleted: false
+  };
+
+  componentWillMount() {
+    const list = this.state.list.filter(item => {
+      return item.isDeleted === false;
+    });
+    this.setState({ list });
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (this.props.list !== nextProps.list) {
+      let list;
+      if (!this.state.isDeleted) {
+        list = this.showDeleted(false, nextProps.list);
+      } else {
+        list = this.showDeleted(true, nextProps.list);
+      }
+      this.setState({ list });
+    }
+  }
+
+  showDeleted = (bool, list) => {
+    let newList;
+    if (bool) {
+      newList = list.filter(item => {
+        return item.isDeleted === true;
+      });
+    } else {
+      newList = list.filter(item => {
+        return item.isDeleted === false;
+      });
+    }
+    return newList;
+  };
+
+  handleInputChecked = () => {
+    console.log("siema");
+    this.setState({ isDeleted: !this.state.isDeleted });
+  };
+
   render() {
     const {
       t,
-      list,
       translateText,
       handleOpenAddItemModal,
       handleDeleteInfoList,
       handleReactivateInfoList
     } = this.props;
+
+    const { list, isDeleted } = this.state;
 
     const clientInfoList = list.map((item, index) => {
       return (
@@ -63,6 +107,13 @@ export default class InfoClientList extends Component {
     return (
       <React.Fragment>
         <div className="info-client-list-header">
+          <input
+            type="checkbox"
+            name="show-deleted"
+            id="radio-button"
+            checked={isDeleted}
+            onChange={() => this.handleInputChecked()}
+          />
           <h2>{t(translateText.Header)}</h2>
         </div>
         <div className="info-client-list">

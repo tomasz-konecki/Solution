@@ -4,7 +4,8 @@ import {
   LOGOUT, GET_EMPLOYEE,
   CHANGE_EMPLOYEE_OPERATION_STATUS,
   CHANGE_EMPLOYEE_STATE, LOAD_ASSIGNMENTS,
-  DELETE_QUATER, REACTIVATE_QUATER, CHANGE_EMPLOYEE_SKILLS
+  DELETE_QUATER, REACTIVATE_QUATER, CHANGE_EMPLOYEE_SKILLS,
+  ADD_NEW_SKILLS_TO_EMPLOYEE
 } from "../constants";
 import { updateObject } from '../services/methods';
 const initialState = {
@@ -32,7 +33,10 @@ const initialState = {
   reactivateQuaterMesssage: "",
 
   changeSkillsStatus: null,
-  changeSkillsErrors: []
+  changeSkillsErrors: [],
+
+  addNewSkillsStatus: null,
+  addNewSkillsErrors: []
   
 };
 
@@ -72,6 +76,9 @@ export const employeesReducer = (state = initialState, action) => {
     case CHANGE_EMPLOYEE_SKILLS:
       return updateObject(state, { changeSkillsStatus: action.changeSkillsStatus, 
         changeSkillsErrors: action.changeSkillsErrors})
+    case ADD_NEW_SKILLS_TO_EMPLOYEE:
+      return updateObject(state, { addNewSkillsStatus: action.addNewSkillsStatus, 
+        addNewSkillsErrors: action.addNewSkillsErrors})
        default:
       return state;
   }

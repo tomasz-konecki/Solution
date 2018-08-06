@@ -1,11 +1,17 @@
 import React from 'react'
 import './employeSkills.scss';
 import Skill from './skill';
-import { getRandomColor } from '../../../../services/methods'
+import { getRandomColor, contains } from '../../../../services/methods'
 import Button from '../../../common/button/button';
 import SmallSpinner from '../../../common/spinner/small-spinner';
 import CorrectOperation from '../../../common/correctOperation/correctOperation';
 import Modal from 'react-responsive-modal';
+import { connect } from 'react-redux';
+import { getAllSkillsForEmployee } from '../../../../actions/skillsActions';
+import { addNewSkillsToEmployeeACreator, addNewSkillsToEmployee } from '../../../../actions/employeesActions';
+import Spinner from '../../../common/spinner/spinner';
+import SpinnerButton from '../../../form/spinner-btn/spinner-btn';
+
 const minYearsOfExp = 1;
 const maxYearsOfExp = 28;
 
@@ -28,7 +34,22 @@ class EmployeeSkills extends React.Component{
         skills: createSkillArchitecture(this.props.skills, 
             this.props.limit),
         isChangingSkills: false,
-        numberOfChanges: 0
+        changedIndexes: [],
+        showAddNewSkillsModal: false,
+        isLoadingAllSkills: false,
+        copiedAllSkills: [],
+        skillsToAdd: [],
+
+        showSkillsToAdd: false,
+        showSearchBar: false,
+        searchValue: "",
+
+        searchedSkills: [],
+        isAddingNewSkills: false
+    }
+    componentDidMount(){
+        const { skills, getAllSkillsForEmployee } = this.props;
+        getAllSkillsForEmployee(skills);
     }
     createSpans = arrayElementIndex => {
         const spans = [];
@@ -42,9 +63,14 @@ class EmployeeSkills extends React.Component{
     }
     changeWidthOfSpan = (spanIndex, arrayElementIndex) => {
         const skills = [...this.state.skills];
+        const changedIndexes = [...this.state.changedIndexes];
         skills[arrayElementIndex].markupWidth = (100/this.props.limit)*spanIndex;
         skills[arrayElementIndex].skill.level = spanIndex;
-        this.setState({skills: skills, numberOfChanges: this.state.numberOfChanges + 1});
+
+        if(!contains(arrayElementIndex, changedIndexes))
+            changedIndexes.push(arrayElementIndex);
+
+        this.setState({skills: skills, changedIndexes: changedIndexes});
     }   
     shouldComponentUpdate(nextState){
       if(nextState.skills === this.state.skills || 
@@ -54,27 +80,58 @@ class EmployeeSkills extends React.Component{
       return false;
     }
     componentWillReceiveProps(nextProps){
-      if(this.props.changeSkillsErrors !== nextProps.changeSkillsErrors)
+      if(nextProps.changeSkillsStatus){
+        this.setState({isChangingSkills: false, changedIndexes: []});
+      }
+      else if(this.props.changeSkillsErrors !== nextProps.changeSkillsErrors)
         this.setState({isChangingSkills: false});
-    }
-    
-    downgradeYears = index => {
-        const { skills, numberOfChanges } = this.state;
-        
-        if(skills[index].skill.yearsOfExperience > minYearsOfExp){
-            const skills = [...this.state.skills];
-            const currentYearsOfExp = skills[index].skill.yearsOfExperience;
-            skills[index].skill.yearsOfExperience = currentYearsOfExp - 1;
-            this.setState({skills: skills, numberOfChanges: numberOfChanges + 1});
+      else if(this.props.addNewSkillsErrors !== nextProps.addNewSkillsErrors){
+        this.setState({isAddingNewSkills: false});
+        if(nextProps.addNewSkillsStatus){
+            setTimeout(() => {
+                this.closeModal();
+            }, 3000);
         }
+      }
+      else if(this.props.loadSkillsErrors !== nextProps.loadSkillsErrors){
+          let copiedAllSkills = [];
+          if(nextProps.loadSkillsStatus)
+            copiedAllSkills = this.copySkills(nextProps.loadedSkills)
+          this.setState({isLoadingAllSkills: false, copiedAllSkills: copiedAllSkills});
+      }
+
     }
+    copySkills = skills => {
+        const copiedAllSkills = [];
+        for(let key in skills)
+            copiedAllSkills.push(skills[key]);
+        return copiedAllSkills;
+    }
+    downgradeYears = index => {
+        const { skills } = this.state;
+        this.manageSkillChange(skills[index].skill.yearsOfExperience > minYearsOfExp, false, index);
+    }
+
     increaseYears = index => {
-        const { skills, numberOfChanges } = this.state;
-        if(skills[index].skill.yearsOfExperience < maxYearsOfExp){
+        const { skills } = this.state;
+        this.manageSkillChange(skills[index].skill.yearsOfExperience < maxYearsOfExp, 
+            true, index);
+    }
+    manageSkillChange = (shouldChange, shouldAdd, index) => {
+        if(shouldChange){
             const skills = [...this.state.skills];
+            const changedIndexes = [...this.state.changedIndexes];
             const currentYearsOfExp = skills[index].skill.yearsOfExperience;
-            skills[index].skill.yearsOfExperience = currentYearsOfExp + 1;
-            this.setState({skills: skills, numberOfChanges: numberOfChanges + 1});
+            
+            skills[index].skill.yearsOfExperience = shouldAdd ? currentYearsOfExp + 1 : 
+                currentYearsOfExp - 1;
+
+           
+            if(!contains(index, changedIndexes)){
+                changedIndexes.push(index);
+            }
+      
+            this.setState({skills: skills, changedIndexes: changedIndexes});
         }
     }
     saveSkills = () => {
@@ -83,18 +140,128 @@ class EmployeeSkills extends React.Component{
         this.setState({isChangingSkills: true});
         changeEmployeeSkillsACreator(employeeId, skills);
     }
-   
+    openSkillsModal = () => {
+        const { loadSkillsStatus, getAllSkillsForEmployee, skills } = this.props;
+        const shouldLoadSkillsAgain = loadSkillsStatus === false ? true : false;
+        this.setState({showAddNewSkillsModal: true, 
+            isLoadingAllSkills: shouldLoadSkillsAgain});
+        if(shouldLoadSkillsAgain)
+            getAllSkillsForEmployee(skills);
+    }
+
+    addNewSkill = skillName => {
+        const skillsToAdd = [...this.state.skillsToAdd];
+        const copiedAllSkills = [...this.state.copiedAllSkills];
+        const searchedSkills = [...this.state.searchedSkills];
+
+        const skillToAdd = copiedAllSkills.findIndex(i => {
+            return i.name === skillName
+        });
+        skillsToAdd.push(copiedAllSkills[skillToAdd]);
+        
+        const searchedSkill = searchedSkills.findIndex(i => {
+            return i.name === skillName
+        });
+        searchedSkills.splice(searchedSkill, 1);
+        copiedAllSkills.splice(skillToAdd, 1);
+        this.setState({skillsToAdd: skillsToAdd, copiedAllSkills: copiedAllSkills,  
+            searchedSkills});
+    }
+    changeSkillsState = (skillName, shouldAdd) => {
+        if(shouldAdd)
+            this.addNewSkill(skillName);
+        else
+            this.removeSkillFromAdded(skillName);
+    }
+    removeSkillFromAdded = skillName => {
+        const skillsToAdd = [...this.state.skillsToAdd];
+        const copiedAllSkills = [...this.state.copiedAllSkills];
+        const skillToRemove = skillsToAdd.findIndex(i => {
+            return i.name === skillName
+        });
+        copiedAllSkills.push(skillsToAdd[skillToRemove]);
+        
+        skillsToAdd.splice(skillToRemove, 1);
+        const shouldPushIntoAddCart = skillsToAdd.length !== 0;
+
+        this.setState({skillsToAdd: skillsToAdd, copiedAllSkills: copiedAllSkills,
+            showSkillsToAdd: shouldPushIntoAddCart});
+    }
+    onChange = e => {
+        const valueToSearch = e.target.value.toLowerCase();
+        const { showSkillsToAdd } = this.state;
+        const searchedSkills = [];
+        if(showSkillsToAdd){
+            const skillsToAdd = [...this.state.skillsToAdd];
+            for(let key in skillsToAdd)
+                if(skillsToAdd[key].name.toLowerCase().search(valueToSearch) !== -1)
+                    searchedSkills.push(skillsToAdd[key]);
+        }
+        else{
+            const copiedAllSkills = [...this.state.copiedAllSkills];
+            for(let key in copiedAllSkills)
+                if(copiedAllSkills[key].name.toLowerCase().search(valueToSearch) !== -1)
+                    searchedSkills.push(copiedAllSkills[key]);
+        }
+        this.setState({searchValue: e.target.value, 
+            searchedSkills: searchedSkills});
+    }
+    clearSearchData = () => {
+        this.setState({showSearchBar: false, searchedSkills: [], searchValue: ""});
+    }
+    closeModal = () =>{
+        this.setState({showSearchBar: false, searchedSkills: [], 
+            searchValue: "", showAddNewSkillsModal: false, skillsToAdd: [], 
+            showSkillsToAdd: false});
+        this.props.addNewSkillsToEmployee(null, []);
+    } 
+    
+    showSearchBar = () => {
+        const { showSkillsToAdd, skillsToAdd, copiedAllSkills } = this.state;
+        const whichArrayToCopy = showSkillsToAdd ? [...skillsToAdd] : [...copiedAllSkills];
+
+        this.setState({showSearchBar: true, searchedSkills: whichArrayToCopy});
+    }
+
+    saveNewAddedSkills = () => {
+        const { addNewSkillsToEmployeeACreator, employeeId } = this.props;
+        const { skillsToAdd, skills } = this.state;
+        this.setState({isAddingNewSkills: true});
+        addNewSkillsToEmployeeACreator(skills, skillsToAdd, employeeId);
+    }
+    componentWillUnmount(){ this.props.addNewSkillsToEmployee(null, []); }
+    
     render(){
-        const { skills, isChangingSkills } = this.state;
-        const { changeSkillsStatus } = this.props;
+        const { skills, isChangingSkills, changedIndexes, 
+            showAddNewSkillsModal, isLoadingAllSkills, skillsToAdd, 
+            copiedAllSkills, showSkillsToAdd, showSearchBar, searchValue,
+            searchedSkills, isAddingNewSkills } = this.state;
+        const { changeSkillsStatus, loadSkillsStatus, loadSkillsErrors, loadedSkills,
+            addNewSkillsStatus, addNewSkillsErrors } = this.props;
+
+        const listNameToShow = showSearchBar ? "searchedSkills" : 
+            showSkillsToAdd ? "skillsToAdd" : "copiedAllSkills";
+
+        const iconForSkills = showSkillsToAdd ? <i className="fa fa-minus"></i> : 
+            <i className="fa fa-plus"></i>;
+
         return (
             <section className="employee-skills">
-                <h2>Umiejętności {isChangingSkills && <SmallSpinner />} {changeSkillsStatus === true && <CorrectOperation />}</h2>
+                <h2>Umiejętności 
+                    {isChangingSkills && <SmallSpinner />} 
+                    {changeSkillsStatus === true && <CorrectOperation />}
+                    {!changeSkillsStatus && !isChangingSkills && 
+                        <i onClick={this.openSkillsModal} className="fa fa-plus"></i>
+                    }
+                </h2>
                 <ul className="emp-skills-container">
                     {skills.length > 0 ?
                         skills.map((skill, index) => {
                         return (
                             <Skill 
+                            showSavePrompt={changedIndexes.length > 0 ? 
+                                contains(index, changedIndexes) : false
+                            }
                             increaseYears={() => this.increaseYears(index)}
                             downgradeYears={() => this.downgradeYears(index)}
                             experience={skill.skill.yearsOfExperience}
@@ -112,8 +279,7 @@ class EmployeeSkills extends React.Component{
                         <i className="fa fa-fire"></i>
                     </div>
                     }
-                    {skills && 
-                        skills.length > 0 && 
+                    {changedIndexes.length > 0 && 
                         <Button onClick={this.saveSkills}
                         title="Zapisz zmiany" 
                         mainClass="option-btn green-btn" 
@@ -121,9 +287,111 @@ class EmployeeSkills extends React.Component{
                     }
                     
                 </ul>
+                
+                    <Modal key={1}
+                    open={showAddNewSkillsModal}
+                    classNames={{ modal: "Modal Modal-add-owner" }}
+                    contentLabel="Add skills modal"
+                    onClose={this.closeModal}
+                    >
+                        {isLoadingAllSkills ? <Spinner /> : loadSkillsStatus ? 
+                        <div className="modal-content-container">
+                            {showSearchBar ? 
+                                <header>
+                                    <h3 className="section-heading">
+                                    Wyszukiwarka
+                                    </h3>
+                                    <form>
+                                        <label>Wyszukaj</label>
+                                        <input onChange={e => this.onChange(e)}
+                                        value={searchValue}
+                                        type="text" placeholder={showSkillsToAdd ? 
+                                            "szukasz w dodanych..." : "szukasz we wszystkich..."} />
+                                        <i onClick={this.clearSearchData} className="fa fa-times"></i>
+                                    </form>    
+                                </header> : 
+
+                                <header>
+                                <h3 className="section-heading">
+                                Zarządzaj umiejętnościami
+                                </h3>
+                                <nav>
+                                    {this.state[listNameToShow].length !== 0 && 
+                                    <button onClick={this.showSearchBar}>
+                                        Znajdź 
+                                        <i className="fa fa-search"></i>
+                                    </button>
+                                    }
+                                    
+                                    <button onClick={
+                                        () => this.setState({showSkillsToAdd: !showSkillsToAdd})}>
+                                        {showSkillsToAdd ? "Pokaż wszystkie" : "Pokaż dodane"}
+                                    </button>
+                                </nav>    
+                                </header>
+                            }
+                            {this.state[listNameToShow].length === 0 ? 
+                                <p className="no-data-to-show">Brak danych do wyświetlenia</p>
+                                : 
+                                <ul>
+                                {this.state[listNameToShow].map(skill => {
+                                    return (
+                                        <li onClick={() => this.changeSkillsState(skill.name, !showSkillsToAdd)} 
+                                        key={skill.name}>
+                                            {skill.name}
+                                            {iconForSkills}
+                                        </li>
+                                    );
+                                    })}   
+                                </ul> 
+                            }
+
+                            <SpinnerButton 
+                            submitResult={{
+                                status: addNewSkillsStatus,
+                                content: addNewSkillsStatus ? "Pomyślnie dodano umiejętności" :     
+                                    addNewSkillsErrors[0]
+                            }}
+                            onClickHandler={this.saveNewAddedSkills}
+                            isLoading={isAddingNewSkills}
+                            btnTitle="Zatwierdź zmiany"
+                            />
+                            <div className="counters">
+                                <p><b>Obecnie dodanych: </b><span>{skillsToAdd.length}</span></p>
+                                <p><b>Razem: </b><span>{skills.length + skillsToAdd.length}</span></p>
+                            </div>
+                        </div>
+                        : <p className="empty-data">{loadSkillsErrors[0]}</p>
+                        }
+                    
+                    </Modal>
             </section>
         );
     }
 }
 
-export default EmployeeSkills;
+const mapStateToProps = state => {
+    return {
+        loadedSkills: state.skillsReducer.loadedSkills,
+        loadSkillsStatus: state.skillsReducer.loadSkillsStatus,
+        loadSkillsErrors: state.skillsReducer.loadSkillsErrors,
+
+        addNewSkillsStatus: state.employeesReducer.addNewSkillsStatus,
+        addNewSkillsErrors: state.employeesReducer.addNewSkillsErrors
+    };
+  };
+  
+  const mapDispatchToProps = dispatch => {
+    return {
+        getAllSkillsForEmployee: (currentAddedSkills) => dispatch(getAllSkillsForEmployee(currentAddedSkills)),
+        addNewSkillsToEmployeeACreator: (oldSkills, newSkills, employeeId) => dispatch(addNewSkillsToEmployeeACreator(oldSkills, newSkills, employeeId)),
+        addNewSkillsToEmployee: (status, errors) => dispatch(addNewSkillsToEmployee(status, errors))
+    };
+  };
+  
+  export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(EmployeeSkills);
+
+

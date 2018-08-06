@@ -6,16 +6,20 @@ class EmployeeTable extends React.Component{
     state = {
         isLoadingData: true
     }
+    componentDidMount(){
+        if(!this.props.loadAssignmentsStatus && this.props.employeeStatus){
+            this.props.loadAssignmentsACreator();
+        }
+    }
     componentWillReceiveProps(nextProps){
       if(this.props.loadAssignmentsErrors !== nextProps.loadAssignmentsErrors)
         this.setState({isLoadingData: false});
     }
-    
     render(){
         const { isLoadingData } = this.state;
         const { tableTitle, loadAssignmentsStatus, 
             loadAssignmentsErrors, loadedAssignments, loadAssignmentsClear } = this.props;
-        
+            
         return (
             <div className="employee-table-container">
                 <h2>{tableTitle} {isLoadingData && <Spinner />} </h2>

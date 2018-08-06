@@ -19,11 +19,8 @@ class EmployeeDetailsContainer extends React.Component{
     }
     componentDidMount() {
         const { getEmployeePromise, match} = this.props;
-        getEmployeePromise(match.params.id).then(response => {
-            loadAssignmentsACreator(match.params.id);
-        });
+        getEmployeePromise(match.params.id);
     }
-    
     componentWillReceiveProps(nextProps){
         if(nextProps.employeeErrors !== this.props.employeeErrors)
             this.setState({isLoadingFirstTimeEmployee: false, isChangingEmployeeData: false});
@@ -94,7 +91,9 @@ class EmployeeDetailsContainer extends React.Component{
                         changeEmployeeSkillsACreator={changeEmployeeSkillsACreator}
                         skills={employee.skills} limit={5}/>
 
-                        <EmployeeTable loadAssignmentsClear={this.props.loadAssignmentsClear}
+                        <EmployeeTable 
+                        employeeStatus={employeeStatus}
+                        loadAssignmentsClear={this.props.loadAssignmentsClear}
                         loadAssignmentsACreator={() => this.props.loadAssignmentsACreator(employee.id)}
                         loadAssignmentsStatus={loadAssignmentsStatus}
                         loadAssignmentsErrors={loadAssignmentsErrors}

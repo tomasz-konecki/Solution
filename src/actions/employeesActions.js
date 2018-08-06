@@ -6,13 +6,14 @@ import {
   CHANGE_EMPLOYEE_OPERATION_STATUS,
   CHANGE_EMPLOYEE_STATE, LOAD_ASSIGNMENTS, DELETE_QUATER,
   REACTIVATE_QUATER,
-  CHANGE_EMPLOYEE_SKILLS
+  CHANGE_EMPLOYEE_SKILLS,
+  ADD_NEW_SKILLS_TO_EMPLOYEE
 } from "../constants";
 import axios from "axios";
 import WebApi from "../api";
 import { asyncStarted, asyncEnded } from "./asyncActions";
 import { errorCatcher } from '../services/errorsHandler';
-
+import { populateSkillArrayWithConstData } from '../services/methods';
 export const loadEmployeesSuccess = employees => {
   return {
     type: LOAD_EMPLOYEES_SUCCESS,
@@ -232,5 +233,31 @@ export const changeEmployeeSkillsACreator = (employeeId, currentArray) => {
         dispatch(changeEmployeeSkills(false, errorCatcher(error)));
         dispatch(clearAfterTimeByFuncRef(changeEmployeeSkills, 5000, null, []));
       })
+  }
+}
+
+export const addNewSkillsToEmployee = (addNewSkillsStatus, addNewSkillsErrors) => {
+  return { type: ADD_NEW_SKILLS_TO_EMPLOYEE, addNewSkillsStatus, addNewSkillsErrors}
+}
+
+export const addNewSkillsToEmployeeACreator = (oldSkills, newSkills, employeeId) => {
+  return dispatch => {
+    let model = [];
+    console.log(oldSkills);
+    for(let key in oldSkills){
+      model.push({
+        "skillId": oldSkills[key].skill.id.toString(),
+        "skillLevel": oldSkills[key].skill.level,
+        "yearsOfExperience": oldSkills[key].skill.yearsOfExperience
+      })
+    }
+    model = model.concat(populateSkillArrayWithConstData(newSkills));
+    console.log(model);
+    WebApi.employees.put.skills(employeeId, model).then(response => {
+      dispatch(addNewSkillsToEmployee(true, []));
+      dispatch(getEmployeePromise(employeeId));
+    }).catch(error => {
+      dispatch(addNewSkillsToEmployee(false, errorCatcher(error)));
+    });
   }
 }

@@ -235,8 +235,23 @@ class ClientsContainer extends React.Component {
   };
 
   handleAddCloud = (name, clientId) => {
-    console.log("Dodaje chmurjke");
     this.props.clientsActions.addCloud(name, clientId);
+  };
+
+  handleAddResponsiblePerson = (
+    firstName,
+    lastName,
+    client,
+    email,
+    phoneNumber
+  ) => {
+    this.props.clientsActions.addResponsiblePerson(
+      firstName,
+      lastName,
+      client,
+      email,
+      phoneNumber
+    );
   };
 
   handleDeleteCloud = (id, name) => {
@@ -303,7 +318,13 @@ class ClientsContainer extends React.Component {
     );
   };
   render() {
-    let { resultBlock, resultBlockCloud, t } = this.props;
+    let {
+      resultBlock,
+      resultBlockCloud,
+      resultBlockResponsiblePerson,
+      t,
+      clientsActions
+    } = this.props;
     let { client, loaded } = this.state;
     let infoClient = null;
 
@@ -312,15 +333,18 @@ class ClientsContainer extends React.Component {
         <InfoClientContainer
           client={client}
           t={t}
+          // clearResponseCloud={this.props.clientsActions.clearResponseCloud}
+          // handleTimesClick={this.handleTimesClick}
+          // handleSyncClick={this.handleSyncClick}
+          onEditClient={this.props.clientsActions.editClient}
           handleAddCloud={this.handleAddCloud}
-          resultBlockCloud={resultBlockCloud}
-          clearResponseCloud={this.props.clientsActions.clearResponseCloud}
-          handleTimesClick={this.handleTimesClick}
-          handleSyncClick={this.handleSyncClick}
           handleDeleteCloud={this.handleDeleteCloud}
           handleReactivateCloud={this.handleReactivateCloud}
-          onEditClient={this.props.clientsActions.editClient}
+          handleAddResponsiblePerson={this.handleAddResponsiblePerson}
           resultBlockAddClient={this.props.resultBlockAddClient}
+          resultBlockCloud={resultBlockCloud}
+          resultBlockResponsiblePerson={resultBlockResponsiblePerson}
+          clientsActions={clientsActions}
         />
       );
     }
@@ -345,6 +369,8 @@ ClientsContainer.propTypes = {
   loading: PropTypes.bool,
   type: PropTypes.string,
   resultBlock: PropTypes.object,
+  resultBlockCloud: PropTypes.object,
+  resultBlockResponsiblePerson: PropTypes.object,
   toConfirm: PropTypes.object,
   isWorking: PropTypes.bool,
   async: PropTypes.object
@@ -356,6 +382,8 @@ function mapStateToProps(state) {
     resultBlock: state.clientsReducer.resultBlock,
     resultBlockAddClient: state.clientsReducer.resultBlockAddClient,
     resultBlockCloud: state.clientsReducer.resultBlockCloud,
+    resultBlockResponsiblePerson:
+      state.clientsReducer.resultBlockResponsiblePerson,
     confirmed: state.asyncReducer.confirmed,
     toConfirm: state.asyncReducer.toConfirm,
     isWorking: state.asyncReducer.isWorking,

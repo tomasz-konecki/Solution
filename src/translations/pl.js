@@ -91,7 +91,15 @@ const translations = {
     NoClientDescription: "Brak opisu Klienta",
     CloudRemoved: "Chmura została usunięta",
     ResponsiblePersonList: "Lista Osób Odpowiedzialnych",
-    ResponsiblePersonNotFound: "Nie znaleziono żadnych rekordów."
+    ResponsiblePersonNotFound: "Nie znaleziono żadnych rekordów.",
+    InsertCloudName: "Wpisz nazwę chmury..",
+    FirstName: "Imię",
+    LastName: "Nazwisko",
+    Email: "Email",
+    PhoneNumber: "Numer Telefonu",
+    Insert: "Wprowadź",
+    AddResponsivePerson: "Dodaj Osobę Odpowiedzialną",
+    ResponsiblePersonAdded: "Dodano Osobę Odpowiedzialną."
   },
   AddClient: {
     Add: "Dodaj",

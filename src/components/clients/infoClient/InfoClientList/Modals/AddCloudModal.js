@@ -1,6 +1,7 @@
 import React, { PureComponent } from "react";
 import Form from "../../../../form/form";
 import IntermediateBlock from "../../../../common/IntermediateBlock";
+import PropTypes from "prop-types";
 
 class AddCloudModal extends PureComponent {
   state = {
@@ -9,7 +10,7 @@ class AddCloudModal extends PureComponent {
         title: this.props.t("CloudName"),
         name: "cloudName",
         type: "text",
-        placeholder: this.props.t("InsertCloudName"),
+        placeholder: `${this.props.t("Insert")} ${this.props.t("CloudName")}`,
         mode: "text",
         value: "",
         error: "",
@@ -21,7 +22,6 @@ class AddCloudModal extends PureComponent {
 
   componentWillReceiveProps(nextProps) {
     if (this.props.resultBlockCloud !== nextProps.resultBlockCloud) {
-      console.log("Zmieniam na fgalse");
       this.setState({ isLoading: false });
     }
   }
@@ -32,33 +32,36 @@ class AddCloudModal extends PureComponent {
       handleAddCloud(this.state.addCloudToClientFormItems[0].value, clientId);
   };
 
-  pullDOM = () => {
-    const { t } = this.props;
-    const { addCloudToClientFormItems, isLoading } = this.state;
-
-    return (
-      <Form
-        btnTitle={t("Add")}
-        shouldSubmit={true}
-        onSubmit={this.addCloudHandler}
-        isLoading={isLoading}
-        formItems={addCloudToClientFormItems}
-      />
-    );
-  };
-
   render() {
     const { t, resultBlockCloud } = this.props;
-    console.log(resultBlockCloud);
+    const { addCloudToClientFormItems, isLoading } = this.state;
+
     return (
       <div className="add-client-container">
         <header>
           <h3 className="section-heading">{t("AddCloud")}</h3>
         </header>
 
+        <Form
+          btnTitle={t("Add")}
+          shouldSubmit={true}
+          onSubmit={this.addCloudHandler}
+          isLoading={isLoading}
+          formItems={addCloudToClientFormItems}
+          submitResult={{
+            status: resultBlockCloud && !resultBlockCloud.errorOccurred,
+            content:
+              resultBlockCloud && resultBlockCloud.errorOccurred
+                ? "BACKEND PROBLEM"
+                : "WORKING"
+          }}
+        />
+
         <IntermediateBlock
           loaded={true}
-          render={() => this.pullDOM()}
+          render={() => {
+            return null;
+          }}
           resultBlock={resultBlockCloud}
           spinner="Cube"
         />
@@ -66,5 +69,9 @@ class AddCloudModal extends PureComponent {
     );
   }
 }
+
+AddCloudModal.defaultProps = {
+  resultBlockCloud: null
+};
 
 export default AddCloudModal;

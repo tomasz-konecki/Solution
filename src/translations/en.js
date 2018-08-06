@@ -90,7 +90,15 @@ const translations = {
     NoClientDescription: "No Client Description.",
     CloudRemoved: "Cloud has been removed.",
     ResponsiblePersonList: "Responsible People",
-    ResponsiblePersonNotFound: "Responsible People Not Found."
+    ResponsiblePersonNotFound: "Responsible People Not Found.",
+    InsertCloudName: "Insert cloud name...",
+    FirstName: "First Name",
+    LastName: "Last Name",
+    Email: "Email",
+    PhoneNumber: "Phone Number",
+    Insert: "Insert",
+    AddResponsivePerson: "Add Responsible Person",
+    ResponsiblePersonAdded: "Responsible Person has been added."
   },
   AddClient: {
     Add: "Add",

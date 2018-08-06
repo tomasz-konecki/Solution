@@ -10,6 +10,7 @@ import IntermediateBlock from "../../common/IntermediateBlock";
 import AddEditClient from "../AddEditClient/AddEditClient";
 import InfoClientList from "./InfoClientList/InfoClientList";
 import AddCloudModal from "./InfoClientList/Modals/AddCloudModal";
+import AddResponsiblePersonModal from "./InfoClientList/Modals/AddResponsiblePersonModal";
 
 export default class InfoClient extends Component {
   state = {
@@ -23,10 +24,14 @@ export default class InfoClient extends Component {
     this.setState({ openCloudAddModal: !this.state.openCloudAddModal });
   };
 
-  handleResponsiblePersonAddToggleModal = () => {
-    this.setState({
-      openResponsiblePersonAddModal: !this.state.openResponsiblePersonAddModal
-    });
+  handleResponsiblePersonAddCloseModal = () => {
+    this.setState({ openResponsiblePersonAddModal: false });
+    this.props.resultBlockResponsiblePerson &&
+      this.props.clientsActions.addResponsiblePersonResult(null);
+  };
+
+  handleResponsiblePersonAddOpenModal = () => {
+    this.setState({ openResponsiblePersonAddModal: true });
   };
 
   render() {
@@ -34,10 +39,9 @@ export default class InfoClient extends Component {
       client,
       t,
       handleAddCloud,
-      addingNewCloud,
-      handleInputAddCloud,
-      handleAddCloudSaveChild,
+      handleAddResponsiblePerson,
       resultBlockCloud,
+      resultBlockResponsiblePerson,
       clearResponseCloud,
       handleTimesClick,
       handleSyncClick,
@@ -45,11 +49,10 @@ export default class InfoClient extends Component {
       handleReactivateCloudChild,
       disabled,
       onEditClient,
-      resultBlockAddClient,
-      inputValueToAdd
+      resultBlockAddClient
     } = this.props;
 
-    const { openCloudAddModal } = this.state;
+    const { openCloudAddModal, openResponsiblePersonAddModal } = this.state;
 
     const cloudsTranslateText = {
       Header: "ClientCloudsList",
@@ -76,14 +79,6 @@ export default class InfoClient extends Component {
     client.imgAlt = client.path
       ? client.name + " logo"
       : "Billeniumm Placeholder";
-
-    // if (resultBlockCloud) {
-    //   closeMessage = resultBlockCloud.errorOccurred() ? (
-    //     <span className="messageClose" onClick={() => clearResponseCloud()}>
-    //       x
-    //     </span>
-    //   ) : null;
-    // }
 
     return (
       <React.Fragment>
@@ -138,20 +133,39 @@ export default class InfoClient extends Component {
             t={t}
             list={client.resposiblePersons}
             translateText={responsiblePersonTranslateText}
-            handleOpenAddItemModal={this.handleResponsiblePersonAddToggleModal}
+            handleOpenAddItemModal={this.handleResponsiblePersonAddOpenModal}
           />
         </div>
+        {openCloudAddModal && (
+          <Modal
+            open={openCloudAddModal}
+            classNames={{ modal: "Modal Modal-add-cloud" }}
+            contentLabel="Add Cloud"
+            onClose={this.handleCloudAddToggleModal}
+          >
+            <AddCloudModal
+              t={t}
+              handleAddCloud={handleAddCloud}
+              clientId={client.id}
+              resultBlockCloud={resultBlockCloud}
+            />
+          </Modal>
+        )}
+
         <Modal
-          open={openCloudAddModal}
-          classNames={{ modal: "Modal Modal-add-cloud" }}
-          contentLabel="Add Cloud"
-          onClose={this.handleCloudAddToggleModal}
+          open={openResponsiblePersonAddModal}
+          classNames={{ modal: "Modal Modal-add-responsible-person" }}
+          contentLabel="Add Responsible Person"
+          onClose={this.handleResponsiblePersonAddCloseModal}
         >
-          <AddCloudModal
+          <AddResponsiblePersonModal
             t={t}
-            handleAddCloud={handleAddCloud}
-            clientId={client.id}
-            resultBlockCloud={resultBlockCloud}
+            handleAddResponsiblePerson={handleAddResponsiblePerson}
+            clientName={client.name}
+            resultBlockResponsiblePerson={resultBlockResponsiblePerson}
+            handleResponsiblePersonAddCloseModal={
+              this.handleResponsiblePersonAddCloseModal
+            }
           />
         </Modal>
       </React.Fragment>
@@ -160,5 +174,7 @@ export default class InfoClient extends Component {
 }
 
 InfoClient.propTypes = {
-  handleAddCloud: PropTypes.func.isRequired
+  handleAddCloud: PropTypes.func.isRequired,
+  handleAddResponsiblePerson: PropTypes.func.isRequired,
+  resultBlockResponsiblePerson: PropTypes.object
 };

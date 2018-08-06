@@ -9,6 +9,7 @@ import {
   LOAD_CLIENTS_FAIL,
   ADD_CLIENT_RESULT,
   ADD_CLOUD_RESULT,
+  ADD_RESPONSIBLE_PERSON_RESULT,
   CLEAR_RESPONSE_CLOUD
 } from "../constants";
 
@@ -44,6 +45,13 @@ export const addClientResult = resultBlock => {
 export const addCloudResult = resultBlock => {
   return {
     type: ADD_CLOUD_RESULT,
+    resultBlock
+  };
+};
+
+export const addResponsiblePersonResult = resultBlock => {
+  return {
+    type: ADD_RESPONSIBLE_PERSON_RESULT,
     resultBlock
   };
 };
@@ -188,6 +196,29 @@ export const addCloud = (name, clientId) => {
       })
       .catch(error => {
         dispatch(addCloudResult(error));
+        throw error;
+      });
+  };
+};
+
+export const addResponsiblePerson = (
+  firstName,
+  lastName,
+  client,
+  email,
+  phoneNumber
+) => {
+  return dispatch => {
+    WebApi.responsiblePerson
+      .post(firstName, lastName, client, email, phoneNumber)
+      .then(response => {
+        if (!response.errorOccurred()) {
+          dispatch(addResponsiblePersonResult(response));
+          dispatch(this.loadClients());
+        }
+      })
+      .catch(error => {
+        dispatch(addResponsiblePersonResult(error));
         throw error;
       });
   };

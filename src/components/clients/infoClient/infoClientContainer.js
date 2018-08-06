@@ -43,7 +43,10 @@ export default class infoClientContainer extends Component {
       handleSyncClick,
       onEditClient,
       resultBlockAddClient,
-      handleAddCloud
+      handleAddCloud,
+      handleAddResponsiblePerson,
+      resultBlockResponsiblePerson,
+      clientsActions
     } = this.props;
 
     if (shouldAnimate) {
@@ -58,6 +61,7 @@ export default class infoClientContainer extends Component {
           client={client}
           t={t}
           handleAddCloud={handleAddCloud}
+          handleAddResponsiblePerson={handleAddResponsiblePerson}
           loading={false}
           resultBlockCloud={resultBlockCloud}
           clearResponseCloud={clearResponseCloud}
@@ -67,6 +71,8 @@ export default class infoClientContainer extends Component {
           handleReactivateCloudChild={this.handleReactivateCloudChild}
           onEditClient={onEditClient}
           resultBlockAddClient={resultBlockAddClient}
+          resultBlockResponsiblePerson={resultBlockResponsiblePerson}
+          clientsActions={clientsActions}
         />
       </div>
     );

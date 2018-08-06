@@ -63,7 +63,8 @@ class StatsContainer extends Component {
   };
 
   createDevChart = t => {
-    const { localizations } = this.state;
+    const { stats } = this.state;
+    const localizations = stats.localizations;
     let cols = [];
 
     localizations &&
@@ -169,19 +170,15 @@ class StatsContainer extends Component {
   };
 
   render() {
-    const { replyBlock } = this.props;
-
-    const content = replyBlock ? (
+    const { resultBlock } = this.state;
+    return (
       <IntermediateBlock
         loaded={this.state.loaded}
         render={this.pullDOM}
-        resultBlock={replyBlock}
+        resultBlock={resultBlock}
         _className="content-container"
       />
-    ) : (
-      "BackEnd Problem"
     );
-    return content;
   }
 }
 

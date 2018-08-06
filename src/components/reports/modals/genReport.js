@@ -18,7 +18,6 @@ const genReport = ({
   generateReportStatus,
   generateReportErrors
 }) => {
-  console.log(generateReportStatus);
   return (
     <Modal
       key={1}

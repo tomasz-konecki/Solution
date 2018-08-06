@@ -6,7 +6,7 @@ import {
   CHANGE_EMPLOYEE_OPERATION_STATUS,
   CHANGE_EMPLOYEE_STATE, LOAD_ASSIGNMENTS, DELETE_QUATER,
   REACTIVATE_QUATER,
-  CHANGE_EMPLOYEE_SKILL
+  CHANGE_EMPLOYEE_SKILLS
 } from "../constants";
 import axios from "axios";
 import WebApi from "../api";
@@ -94,7 +94,9 @@ export const deleteEmployee = employeeId => {
 export const reactivateEmployee = employeeId => {
   return dispatch => {
     WebApi.employees.patch.reactivate(employeeId).then(response => {
-      dispatch(getEmployeePromise(employeeId));
+      dispatch(getEmployeePromise(employeeId)).then(secondResponse => {
+        dispatch(loadAssignmentsACreator(employeeId));
+      });
     }).catch(error => {
       dispatch(changeEmployeeState(false, errorCatcher(error), ""));
       dispatch(clearAfterTimeStatus(5000));
@@ -131,6 +133,7 @@ export const activateEmployee = (employeeId, seniority, capacity) => {
     }
     WebApi.employees.post.add(model).then(response => {
       dispatch(getEmployeePromise(employeeId));
+
     }).catch(error => {
       dispatch(changeEmployeeState(false, errorCatcher(error), ""));
       dispatch(clearAfterTimeStatus(5000));
@@ -208,16 +211,26 @@ export const reactivateQuaterACreator = (quaterId, employeeId, message) => {
   }
 }
 
-export const changeEmployeeSkill = (changeEmployeeSkillStatus, changeEmployeeSkillErrors) =>{
-     return { type: CHANGE_EMPLOYEE_SKILL, changeEmployeeSkillStatus, changeEmployeeSkillErrors};
+export const changeEmployeeSkills = (changeSkillsStatus, changeSkillsErrors) =>{
+     return { type: CHANGE_EMPLOYEE_SKILLS, changeSkillsStatus, changeSkillsErrors};
 }
 
-export const changeEmployeeSkillACreator = (employeeId, skillId, skillLevel, yearsOfExperience) => {
+export const changeEmployeeSkillsACreator = (employeeId, currentArray) => {
   return dispatch => {
-    WebApi.employees.put.skills(employeeId, {skillId, skillLevel, yearsOfExperience})
+    const skillsArray = [];
+    for(let key in currentArray){
+      skillsArray.push({
+      "skillId": currentArray[key].skill.id, 
+      "skillLevel": currentArray[key].skill.level, 
+      "yearsOfExperience": currentArray[key].skill.yearsOfExperience});
+    }
+    WebApi.employees.put.skills(employeeId, skillsArray)
       .then(response => {
-        dispatch(changeEmployeeSkill(true, []));
-        
+        dispatch(changeEmployeeSkills(true, []));
+        dispatch(clearAfterTimeByFuncRef(changeEmployeeSkills, 1500, null, []));
+      }).catch(error => {
+        dispatch(changeEmployeeSkills(false, errorCatcher(error)));
+        dispatch(clearAfterTimeByFuncRef(changeEmployeeSkills, 5000, null, []));
       })
   }
 }

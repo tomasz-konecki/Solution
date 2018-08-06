@@ -6,9 +6,6 @@ class EmployeeTable extends React.Component{
     state = {
         isLoadingData: true
     }
-    componentDidMount(){
-      this.props.loadAssignmentsACreator();
-    }
     componentWillReceiveProps(nextProps){
       if(this.props.loadAssignmentsErrors !== nextProps.loadAssignmentsErrors)
         this.setState({isLoadingData: false});
@@ -23,7 +20,7 @@ class EmployeeTable extends React.Component{
             <div className="employee-table-container">
                 <h2>{tableTitle} {isLoadingData && <Spinner />} </h2>
 
-                {loadAssignmentsStatus && 
+                {loadAssignmentsStatus && loadedAssignments.length > 0 && 
                     <table>
                         <thead>
                             <tr>

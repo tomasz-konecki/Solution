@@ -1,6 +1,7 @@
 import React from 'react'
-
-const skill = ({createSpans, skillName, markupWidth, background, arrayElementIndex, experience}) => (
+import Button from '../../../common/button/button';
+const skill = ({createSpans, skillName, markupWidth, 
+    background, arrayElementIndex, experience, increaseYears, downgradeYears}) => (
     <li>
         <label>{skillName}</label>
         <div className="spans-container">
@@ -8,6 +9,11 @@ const skill = ({createSpans, skillName, markupWidth, background, arrayElementInd
             <div style={{width: `${markupWidth}%`, background: `${background}`}} className="progress-markup"></div>
             <div className="years-of-expierience">
                 {experience} <i className="fa fa-clock"></i>
+                <div>
+                    <i onClick={increaseYears} className="fa fa-arrow-up"></i>
+                    <i onClick={downgradeYears} className="fa fa-arrow-down"></i>
+                </div>
+                
             </div>
         </div>
         

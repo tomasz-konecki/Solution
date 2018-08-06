@@ -5,30 +5,60 @@
     h2{
         font-size: 24px;
         color: #707070;
+        position: relative;
         padding: 20px 0;
         @media screen and (max-width: 1470px){
             text-align: center;
-          }
+        }
+        .small-spiner{
+            position: absolute;
+            top: 0;
+            left: 140px;
+        }
+        .correct-operation{
+            left: 130px;
+            top: -15px;
+        }
     }
     .emp-skills-container{
         width: 400px;
+        position: relative;
         margin: 25px 0;
+        .green-btn{
+            width: 150px;
+            position: absolute;
+            left: 0;
+            right: 0;
+            margin: 0 auto;
+            bottom: -125px;
+        }
+    
         @media screen and (max-width: 1470px){
             margin-left: auto;
             margin-right: auto;
           }
         .empty-skills{
-            background: rgba(0, 0, 0, 0.6);
+            background: rgba(0, 0, 0, 0.7);
             width: 400px;
             height: 320px;
             font-size: 22px;
             display: flex;
+            cursor: pointer;
             justify-content: center;
             flex-flow: column;
             border-radius: 5px;
             align-items: center;
             color: white;
-            i{
+            &:hover{
+                background: rgba(0, 0, 0, 0.6);
+            }
+            .fa-plus{
+                color: lightgreen;
+                margin-bottom: 10px;
+                margin-left: 150px;
+                font-size: 12px;
+            }
+            .fa-fire{
                 color: lightgreen;
                 margin-top: 15px;
                 font-size: 26px;
@@ -55,6 +85,15 @@
                     font-size: 18px;
                     i{
                         margin-left: 5px;
+                    }
+                    div{
+                        position: absolute;
+                        margin-left: 5px;
+                        right: -50px;
+                        top: 0;
+                        i{
+                            cursor: pointer;
+                        }
                     }
                 }
                 span{

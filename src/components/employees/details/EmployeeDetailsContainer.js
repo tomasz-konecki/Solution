@@ -5,7 +5,8 @@ import EmployeeContent from './employeeContent/employeeContent';
 import EmployeeTable from './employeeTable/employeeTable';
 import { getEmployeePromise, editStatistics, deleteEmployee, 
     activateEmployee, reactivateEmployee, loadAssignmentsACreator, loadAssignments,
-    deleteQuaterACreator, reactivateQuaterACreator } from '../../../actions/employeesActions';
+    deleteQuaterACreator, reactivateQuaterACreator, 
+    changeEmployeeSkillsACreator } from '../../../actions/employeesActions';
 import Spinner from '../../common/spinner/spinner';
 import OperationStatusPrompt from '../../form/operationStatusPrompt/operationStatusPrompt';
 import Button from '../../common/button/button';
@@ -18,7 +19,9 @@ class EmployeeDetailsContainer extends React.Component{
     }
     componentDidMount() {
         const { getEmployeePromise, match} = this.props;
-        getEmployeePromise(match.params.id);
+        getEmployeePromise(match.params.id).then(response => {
+            loadAssignmentsACreator(match.params.id);
+        });
     }
     
     componentWillReceiveProps(nextProps){
@@ -58,7 +61,8 @@ class EmployeeDetailsContainer extends React.Component{
             employeeOperationErrors, employeeResultMessage, reactivateQuaterMessage,
             loadAssignmentsStatus, loadAssignmentsErrors, loadedAssignments, deleteQuaterStatus,
             deleteQuaterErrors, deleteQuaterACreator, reactivateQuaterACreator, 
-            reactivateQuaterStatus, reactivateQuaterErrors } = this.props;
+            reactivateQuaterStatus, reactivateQuaterErrors, 
+            changeEmployeeSkillsACreator, changeSkillsStatus, changeSkillsErrors } = this.props;
         return (
             <div className="employee-details-container">
                 {isLoadingFirstTimeEmployee ? <Spinner /> : 
@@ -66,7 +70,8 @@ class EmployeeDetailsContainer extends React.Component{
                     <React.Fragment>
                         <h1>Szczegóły pracownika</h1>
                 
-                        <EmployeeContent reactivateQuaterACreator={reactivateQuaterACreator}
+                        <EmployeeContent 
+                        reactivateQuaterACreator={reactivateQuaterACreator}
                         reactivateQuaterStatus={reactivateQuaterStatus}
                         reactivateQuaterErrors={reactivateQuaterErrors}
 
@@ -82,7 +87,12 @@ class EmployeeDetailsContainer extends React.Component{
                         isChangingEmployeeData={isChangingEmployeeData} 
                         reactivateEmployee={this.reactivateEmployee} />
                         
-                        <EmployeeSkills skills={employee.skills} limit={5}/>
+                        <EmployeeSkills 
+                        changeSkillsStatus={changeSkillsStatus}
+                        employeeId={employee.id} 
+                        changeSkillsErrors={changeSkillsErrors}
+                        changeEmployeeSkillsACreator={changeEmployeeSkillsACreator}
+                        skills={employee.skills} limit={5}/>
 
                         <EmployeeTable loadAssignmentsClear={this.props.loadAssignmentsClear}
                         loadAssignmentsACreator={() => this.props.loadAssignmentsACreator(employee.id)}
@@ -116,6 +126,13 @@ class EmployeeDetailsContainer extends React.Component{
                     operationPrompt={reactivateQuaterStatus}
                 />
                 }
+
+                {changeSkillsStatus === false &&  
+                <OperationStatusPrompt
+                    operationPromptContent={changeSkillsErrors[0]}
+                    operationPrompt={changeSkillsStatus}
+                />
+                }
             </div>
         );
     }
@@ -140,7 +157,10 @@ const mapStateToProps = state => {
 
         reactivateQuaterStatus: state.employeesReducer.reactivateQuaterStatus,
         reactivateQuaterErrors: state.employeesReducer.reactivateQuaterErrors,
-        reactivateQuaterMessage: state.employeesReducer.reactivateQuaterMessage
+        reactivateQuaterMessage: state.employeesReducer.reactivateQuaterMessage,
+
+        changeSkillsStatus: state.employeesReducer.changeSkillsStatus,
+        changeSkillsErrors: state.employeesReducer.changeSkillsErrors
     };
   };
   
@@ -154,7 +174,8 @@ const mapStateToProps = state => {
         loadAssignmentsACreator: (employeeId) => dispatch(loadAssignmentsACreator(employeeId)),
         loadAssignmentsClear: (status, errors, assignments) => dispatch(loadAssignments(status, errors, assignments)),
         deleteQuaterACreator: (quarterId, employeeId) => dispatch(deleteQuaterACreator(quarterId, employeeId)),
-        reactivateQuaterACreator: (quaterId, employeeId, message) => dispatch(reactivateQuaterACreator(quaterId, employeeId, message))
+        reactivateQuaterACreator: (quaterId, employeeId, message) => dispatch(reactivateQuaterACreator(quaterId, employeeId, message)),
+        changeEmployeeSkillsACreator: (employeeId, currentArray) => dispatch(changeEmployeeSkillsACreator(employeeId, currentArray))
     };
   };
   

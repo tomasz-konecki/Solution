@@ -79,10 +79,9 @@ export const checkForContains = (currentEmployeeSkills, name) => {
 
 export const populateSkillArrayWithConstData = skills => {
   const newSkills = [];
-  const keys = Object.keys(skills);
-  for(let key in keys){
+  for(let key in skills){
     newSkills.push({
-      "skillId": key,
+      "skillId": skills[key].key,
       "skillLevel": 1,
       "yearsOfExperience": 1
     })

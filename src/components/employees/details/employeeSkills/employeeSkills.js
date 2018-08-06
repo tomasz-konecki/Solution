@@ -86,12 +86,15 @@ class EmployeeSkills extends React.Component{
       else if(this.props.changeSkillsErrors !== nextProps.changeSkillsErrors)
         this.setState({isChangingSkills: false});
       else if(this.props.addNewSkillsErrors !== nextProps.addNewSkillsErrors){
-        this.setState({isAddingNewSkills: false});
         if(nextProps.addNewSkillsStatus){
+            this.setState({skills: createSkillArchitecture(nextProps.skills, 
+                nextProps.limit), isAddingNewSkills: false});
             setTimeout(() => {
                 this.closeModal();
             }, 3000);
         }
+        else
+            this.setState({isAddingNewSkills: false});
       }
       else if(this.props.loadSkillsErrors !== nextProps.loadSkillsErrors){
           let copiedAllSkills = [];
@@ -244,7 +247,7 @@ class EmployeeSkills extends React.Component{
 
         const iconForSkills = showSkillsToAdd ? <i className="fa fa-minus"></i> : 
             <i className="fa fa-plus"></i>;
-
+        
         return (
             <section className="employee-skills">
                 <h2>Umiejętności 

@@ -243,7 +243,6 @@ export const addNewSkillsToEmployee = (addNewSkillsStatus, addNewSkillsErrors) =
 export const addNewSkillsToEmployeeACreator = (oldSkills, newSkills, employeeId) => {
   return dispatch => {
     let model = [];
-    console.log(oldSkills);
     for(let key in oldSkills){
       model.push({
         "skillId": oldSkills[key].skill.id.toString(),
@@ -252,7 +251,7 @@ export const addNewSkillsToEmployeeACreator = (oldSkills, newSkills, employeeId)
       })
     }
     model = model.concat(populateSkillArrayWithConstData(newSkills));
-    console.log(model);
+    
     WebApi.employees.put.skills(employeeId, model).then(response => {
       dispatch(addNewSkillsToEmployee(true, []));
       dispatch(getEmployeePromise(employeeId));

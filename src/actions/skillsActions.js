@@ -82,11 +82,13 @@ export const getAllSkillsForEmployee = currentEmployeeSkills => {
     WebApi.skills.get.all().then(response => {
       const skillsArray = [];
       const { dtoObject } = response.replyBlock.data;
-      
-      for(let k in dtoObject)
-        if(!checkForContains(currentEmployeeSkills, dtoObject[k].name))
-          skillsArray.push(dtoObject[k]);
-        
+      for(let key in dtoObject){
+        if(!checkForContains(currentEmployeeSkills, dtoObject[key].name))
+          skillsArray.push({
+            key: key,
+            name: dtoObject[key].name
+          });
+      }
       dispatch(getAllSkills(skillsArray, true, []));
     }).catch(error => {
       dispatch(getAllSkills([], false, errorCatcher(error)));

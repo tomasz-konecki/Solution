@@ -42,20 +42,21 @@ export default class InfoClient extends Component {
 
   render() {
     const {
-      client,
       t,
-      handleAddCloud,
-      handleAddResponsiblePerson,
-      resultBlockCloud,
-      resultBlockResponsiblePerson,
-      clearResponseCloud,
+      client,
+      resultBlockAddClient,
+      onEditClient,
       handleTimesClick,
       handleSyncClick,
-      handleDeleteCloudChild,
-      handleReactivateCloudChild,
-      disabled,
-      onEditClient,
-      resultBlockAddClient
+      handleAddCloud,
+      handleDeleteCloud,
+      handleReactivateCloud,
+      resultBlockCloud,
+      handleAddResponsiblePerson,
+
+      handleDeleteResponsiblePerson,
+      handleReactivateResponsiblePerson,
+      resultBlockResponsiblePerson
     } = this.props;
 
     const { openCloudAddModal, openResponsiblePersonAddModal } = this.state;
@@ -132,6 +133,8 @@ export default class InfoClient extends Component {
             translateText={cloudsTranslateText}
             handleItemAddModal={this.handleItemAddModal}
             handleOpenAddItemModal={this.handleCloudAddOpenModal}
+            handleDeleteInfoList={handleDeleteCloud}
+            handleReactivateInfoList={handleReactivateCloud}
           />
         </div>
         <div className="responsible-person-container">
@@ -140,6 +143,8 @@ export default class InfoClient extends Component {
             list={client.resposiblePersons}
             translateText={responsiblePersonTranslateText}
             handleOpenAddItemModal={this.handleResponsiblePersonAddOpenModal}
+            handleDeleteInfoList={handleDeleteResponsiblePerson}
+            handleReactivateInfoList={handleReactivateResponsiblePerson}
           />
         </div>
         {openCloudAddModal && (

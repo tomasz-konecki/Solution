@@ -24,27 +24,23 @@ export default class infoClientContainer extends Component {
     }, 800);
   };
 
-  handleDeleteCloudChild = (cloudId, cloudName) => {
-    this.props.handleDeleteCloud(cloudId, cloudName);
-  };
-
-  handleReactivateCloudChild = (cloudId, cloudName) => {
-    this.props.handleReactivateCloud(cloudId, cloudName);
-  };
-
   render() {
     const { shouldAnimate } = this.state;
     const {
       client,
       t,
-      clearResponseCloud,
       resultBlockCloud,
       handleTimesClick,
       handleSyncClick,
       onEditClient,
       resultBlockAddClient,
       handleAddCloud,
+      handleDeleteCloud,
+      handleReactivateCloud,
       handleAddResponsiblePerson,
+
+      handleDeleteResponsiblePerson,
+      handleReactivateResponsiblePerson,
       resultBlockResponsiblePerson,
       clientsActions
     } = this.props;
@@ -58,19 +54,20 @@ export default class infoClientContainer extends Component {
         className={`client-info-container ${shouldAnimate ? "anim-in" : null}`}
       >
         <InfoClient
-          client={client}
           t={t}
-          handleAddCloud={handleAddCloud}
-          handleAddResponsiblePerson={handleAddResponsiblePerson}
-          loading={false}
-          resultBlockCloud={resultBlockCloud}
-          clearResponseCloud={clearResponseCloud}
-          handleTimesClick={handleTimesClick}
-          handleSyncClick={handleSyncClick}
-          handleDeleteCloudChild={this.handleDeleteCloudChild}
-          handleReactivateCloudChild={this.handleReactivateCloudChild}
+          client={client}
           onEditClient={onEditClient}
           resultBlockAddClient={resultBlockAddClient}
+          loading={false}
+          handleTimesClick={handleTimesClick}
+          handleSyncClick={handleSyncClick}
+          handleAddCloud={handleAddCloud}
+          handleDeleteCloud={handleDeleteCloud}
+          handleReactivateCloud={handleReactivateCloud}
+          resultBlockCloud={resultBlockCloud}
+          handleAddResponsiblePerson={handleAddResponsiblePerson}
+          handleDeleteResponsiblePerson={handleDeleteResponsiblePerson}
+          handleReactivateResponsiblePerson={handleReactivateResponsiblePerson}
           resultBlockResponsiblePerson={resultBlockResponsiblePerson}
           clientsActions={clientsActions}
         />

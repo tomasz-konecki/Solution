@@ -226,19 +226,33 @@ export const addResponsiblePerson = (
 
 export const deleteCloud = id => {
   return dispatch => {
-    dispatch(asyncStarted());
     WebApi.clouds
       .delete(id)
       .then(response => {
         if (!response.errorOccurred()) {
           dispatch(setActionConfirmationResult(response));
           dispatch(this.loadClients());
-          dispatch(asyncEnded());
         }
       })
       .catch(error => {
         dispatch(setActionConfirmationResult(error));
-        dispatch(asyncEnded());
+        throw error;
+      });
+  };
+};
+
+export const deleteResponsiblePerson = id => {
+  return dispatch => {
+    WebApi.responsiblePerson
+      .delete(id)
+      .then(response => {
+        if (!response.errorOccurred()) {
+          dispatch(setActionConfirmationResult(response));
+          dispatch(this.loadClients());
+        }
+      })
+      .catch(error => {
+        dispatch(setActionConfirmationResult(error));
         throw error;
       });
   };

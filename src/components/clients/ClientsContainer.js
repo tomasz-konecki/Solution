@@ -69,6 +69,16 @@ class ClientsContainer extends React.Component {
       this.props.async.setActionConfirmationProgress(true);
       this.props.clientsActions.reactivateCloud(nextProps.toConfirm.id);
     }
+    if (this.validatePropsForResponsiblePersonDeletion(nextProps)) {
+      this.props.async.setActionConfirmationProgress(true);
+      this.props.clientsActions.deleteResponsiblePerson(nextProps.toConfirm.id);
+    }
+    if (this.validatePropsForResponsiblePersonReactivation(nextProps)) {
+      this.props.async.setActionConfirmationProgress(true);
+      this.props.clientsActions.reactivateResponsiblePerson(
+        nextProps.toConfirm.id
+      );
+    }
   }
 
   validatePropsForClientDeletion(nextProps) {
@@ -104,6 +114,24 @@ class ClientsContainer extends React.Component {
       !nextProps.isWorking &&
       nextProps.type === ACTION_CONFIRMED &&
       nextProps.toConfirm.key === "reactivateCloud"
+    );
+  }
+
+  validatePropsForResponsiblePersonDeletion(nextProps) {
+    return (
+      nextProps.confirmed &&
+      !nextProps.isWorking &&
+      nextProps.type === ACTION_CONFIRMED &&
+      nextProps.toConfirm.key === "deleteResponsiblePerson"
+    );
+  }
+
+  validatePropsForResponsiblePersonReactivation(nextProps) {
+    return (
+      nextProps.confirmed &&
+      !nextProps.isWorking &&
+      nextProps.type === ACTION_CONFIRMED &&
+      nextProps.toConfirm.key === "reactivateResponsiblePerson"
     );
   }
 
@@ -264,6 +292,16 @@ class ClientsContainer extends React.Component {
     });
   };
 
+  handleDeleteResponsiblePerson = (id, name) => {
+    const { async, t } = this.props;
+    async.setActionConfirmation(true, {
+      key: "deleteResponsiblePerson",
+      string: `${t("RemovingResponsiblePerson")} ${name}`,
+      id: id,
+      successMessage: t("ResponsiblePersonRemoved")
+    });
+  };
+
   handleReactivateCloud = (id, name) => {
     const { async, t } = this.props;
     async.setActionConfirmation(true, {
@@ -271,6 +309,16 @@ class ClientsContainer extends React.Component {
       string: `${t("ReactivatingCloud")} ${name}`,
       id: id,
       successMessage: t("CloudReactivated")
+    });
+  };
+
+  handleReactivateResponsiblePerson = (id, name) => {
+    const { async, t } = this.props;
+    async.setActionConfirmation(true, {
+      key: "reactivateResponsiblePerson",
+      string: `${t("ReactivatingResponsiblePerson")} ${name}`,
+      id: id,
+      successMessage: t("ResponsiblePersonReactivated")
     });
   };
 
@@ -341,6 +389,10 @@ class ClientsContainer extends React.Component {
           handleDeleteCloud={this.handleDeleteCloud}
           handleReactivateCloud={this.handleReactivateCloud}
           handleAddResponsiblePerson={this.handleAddResponsiblePerson}
+          handleDeleteResponsiblePerson={this.handleDeleteResponsiblePerson}
+          handleReactivateResponsiblePerson={
+            this.handleReactivateResponsiblePerson
+          }
           resultBlockAddClient={this.props.resultBlockAddClient}
           resultBlockCloud={resultBlockCloud}
           resultBlockResponsiblePerson={resultBlockResponsiblePerson}

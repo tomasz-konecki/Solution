@@ -1,13 +1,18 @@
 import React, { Component } from "react";
 import Icon from "../../../common/Icon";
 import PropTypes from "prop-types";
-import { CSSTransitionGroup } from "react-transition-group";
 import "./InfoClientList.scss";
-import IntermediateBlock from "../../../common/IntermediateBlock";
 
 export default class InfoClientList extends Component {
   render() {
-    const { t, list, translateText, handleOpenAddItemModal } = this.props;
+    const {
+      t,
+      list,
+      translateText,
+      handleOpenAddItemModal,
+      handleDeleteInfoList,
+      handleReactivateInfoList
+    } = this.props;
 
     const clientInfoList = list.map((item, index) => {
       return (
@@ -20,7 +25,14 @@ export default class InfoClientList extends Component {
           </div>
           <div className="info-list-options">
             {!item.isDeleted ? (
-              <button onClick={() => handleDeleteInfoList(item.id, item.name)}>
+              <button
+                onClick={() =>
+                  handleDeleteInfoList(
+                    item.id,
+                    item.name ? item.name : `${item.firstName} ${item.lastName}`
+                  )
+                }
+              >
                 <Icon
                   icon="times"
                   iconType="fa"
@@ -29,7 +41,12 @@ export default class InfoClientList extends Component {
               </button>
             ) : (
               <button
-                onClick={() => handleReactivateInfoList(item.id, item.name)}
+                onClick={() =>
+                  handleReactivateInfoList(
+                    item.id,
+                    item.name ? item.name : `${item.firstName} ${item.lastName}`
+                  )
+                }
               >
                 <Icon
                   icon="sync-alt"
@@ -42,32 +59,6 @@ export default class InfoClientList extends Component {
         </div>
       );
     });
-
-    // const addingItemToList = (
-    //   <div className="info-list-item">
-    //     <div className="info-list-circle" />
-    //     <div className="info-list-name">
-    //       <input
-    //         onChange={e => handleInputAddCloud(e)}
-    //         onKeyPress={e => {
-    //           if (e.key === "Enter") {
-    //             handleAddCloudSaveChild();
-    //           }
-    //         }}
-    //         placeholder={t(translateText.ItemName)}
-    //         // value={inputValueToAdd}
-    //       />
-    //     </div>
-    //     <div className="info-list-options">
-    //       <button disabled={true}>
-    //         <Icon icon="check" iconType="fa" additionalClass="icon-success" />
-    //       </button>
-    //       <button>
-    //         <Icon icon="times" iconType="fa" additionalClass="icon-danger" />
-    //       </button>
-    //     </div>
-    //   </div>
-    // );
 
     return (
       <React.Fragment>

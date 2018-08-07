@@ -9,6 +9,7 @@ import {
   LOAD_CLIENTS_FAIL,
   ADD_CLIENT_RESULT,
   ADD_CLOUD_RESULT,
+  ADD_RESPONSIBLE_PERSON_RESULT,
   CLEAR_RESPONSE_CLOUD
 } from "../constants";
 
@@ -44,6 +45,13 @@ export const addClientResult = resultBlock => {
 export const addCloudResult = resultBlock => {
   return {
     type: ADD_CLOUD_RESULT,
+    resultBlock
+  };
+};
+
+export const addResponsiblePersonResult = resultBlock => {
+  return {
+    type: ADD_RESPONSIBLE_PERSON_RESULT,
     resultBlock
   };
 };
@@ -178,19 +186,39 @@ export const addClient = formData => {
 
 export const addCloud = (name, clientId) => {
   return dispatch => {
-    dispatch(asyncStarted());
     WebApi.clouds
       .post(name, clientId)
       .then(response => {
         if (!response.errorOccurred()) {
           dispatch(addCloudResult(response));
-          dispatch(asyncEnded());
           dispatch(this.loadClients());
         }
       })
       .catch(error => {
         dispatch(addCloudResult(error));
-        dispatch(asyncEnded());
+        throw error;
+      });
+  };
+};
+
+export const addResponsiblePerson = (
+  firstName,
+  lastName,
+  client,
+  email,
+  phoneNumber
+) => {
+  return dispatch => {
+    WebApi.responsiblePerson
+      .post(firstName, lastName, client, email, phoneNumber)
+      .then(response => {
+        if (!response.errorOccurred()) {
+          dispatch(addResponsiblePersonResult(response));
+          dispatch(this.loadClients());
+        }
+      })
+      .catch(error => {
+        dispatch(addResponsiblePersonResult(error));
         throw error;
       });
   };
@@ -198,19 +226,33 @@ export const addCloud = (name, clientId) => {
 
 export const deleteCloud = id => {
   return dispatch => {
-    dispatch(asyncStarted());
     WebApi.clouds
       .delete(id)
       .then(response => {
         if (!response.errorOccurred()) {
           dispatch(setActionConfirmationResult(response));
           dispatch(this.loadClients());
-          dispatch(asyncEnded());
         }
       })
       .catch(error => {
         dispatch(setActionConfirmationResult(error));
-        dispatch(asyncEnded());
+        throw error;
+      });
+  };
+};
+
+export const deleteResponsiblePerson = id => {
+  return dispatch => {
+    WebApi.responsiblePerson
+      .delete(id)
+      .then(response => {
+        if (!response.errorOccurred()) {
+          dispatch(setActionConfirmationResult(response));
+          dispatch(this.loadClients());
+        }
+      })
+      .catch(error => {
+        dispatch(setActionConfirmationResult(error));
         throw error;
       });
   };

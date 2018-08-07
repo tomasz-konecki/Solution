@@ -65,6 +65,7 @@ const translations = {
     AddUserWhenRequestImperativus: "Add user"
   },
   ClientsContainer: {
+    Add: "Add",
     Name: "Name",
     Options: "Options",
     DeleteClient: "Delete Client",
@@ -79,7 +80,7 @@ const translations = {
     Reactivating: "You are about to reactivate client",
     CloudReactivated: "Cloud has been reactivated",
     Search: "Search",
-    ClientsNotFound: "Clients Not Found",
+    ClientsNotFound: "Clients Not Found.",
     Activated: "Activated",
     NotActivated: "Not Activated",
     ClientCloudsList: "Client's Clouds List",
@@ -87,7 +88,18 @@ const translations = {
     CloudsNotFound: "Clouds not found.",
     CloudName: "Cloud Name",
     NoClientDescription: "No Client Description.",
-    CloudRemoved: "Cloud has been removed."
+    CloudRemoved: "Cloud has been removed.",
+    ResponsiblePersonList: "Responsible People",
+    ResponsiblePersonNotFound: "Responsible People Not Found.",
+    InsertCloudName: "Insert cloud name...",
+    FirstName: "First Name",
+    LastName: "Last Name",
+    Email: "Email",
+    PhoneNumber: "Phone Number",
+    Insert: "Insert",
+    AddResponsivePerson: "Add Responsible Person",
+    ResponsiblePersonAdded: "Responsible Person has been added.",
+    CloudAdded: "Cloud has been added."
   },
   AddClient: {
     Add: "Add",

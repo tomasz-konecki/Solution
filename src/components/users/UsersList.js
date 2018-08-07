@@ -41,48 +41,6 @@ class UsersList extends Component {
     });
   };
 
-  changeUserRoles = () => {
-    const { id, roles } = this.state.user;
-    this.setState(
-      {
-        loading: true
-      },
-      () => {
-        WebApi.users.patch
-          .roles(id, roles)
-          .then(response => {
-            this.setState({
-              responseBlock: response,
-              loading: false
-            });
-            setTimeout(() => {
-              this.handleCloseModal();
-            }, 500);
-          })
-          .catch(error => {
-            if (
-              "userNotFoundError" in
-              error.replyBlock.data.errorObjects[0].errors
-            ) {
-              WebApi.users.post.add(id, roles).then(response => {
-                this.setState({
-                  responseBlock: response,
-                  loading: false
-                });
-                setTimeout(() => {
-                  this.handleCloseModal();
-                }, 500);
-              });
-            }
-            this.setState({
-              responseBlock: error,
-              loading: false
-            });
-          });
-      }
-    );
-  };
-
   handleOpenModal = () => {
     this.setState({ showModal: true });
   };

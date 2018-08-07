@@ -66,6 +66,7 @@ const translations = {
     AddUserWhenRequestImperativus: "Dodaj użytkownika"
   },
   ClientsContainer: {
+    Add: "Dodaj",
     Name: "Nazwa",
     Options: "Opcje",
     DeleteClient: "Usuń Klienta",
@@ -88,7 +89,18 @@ const translations = {
     CloudsNotFound: "Nie znaleziono żadnej chmury.",
     CloudName: "Nazwa Chmury",
     NoClientDescription: "Brak opisu Klienta",
-    CloudRemoved: "Chmura została usunięta"
+    CloudRemoved: "Chmura została usunięta",
+    ResponsiblePersonList: "Lista Osób Odpowiedzialnych",
+    ResponsiblePersonNotFound: "Nie znaleziono żadnych rekordów.",
+    InsertCloudName: "Wpisz nazwę chmury..",
+    FirstName: "Imię",
+    LastName: "Nazwisko",
+    Email: "Email",
+    PhoneNumber: "Numer Telefonu",
+    Insert: "Wprowadź",
+    AddResponsivePerson: "Dodaj Osobę Odpowiedzialną",
+    ResponsiblePersonAdded: "Dodano Osobę Odpowiedzialną.",
+    CloudAdded: "Dodano Chmurę."
   },
   AddClient: {
     Add: "Dodaj",

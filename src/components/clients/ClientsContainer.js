@@ -69,6 +69,16 @@ class ClientsContainer extends React.Component {
       this.props.async.setActionConfirmationProgress(true);
       this.props.clientsActions.reactivateCloud(nextProps.toConfirm.id);
     }
+    if (this.validatePropsForResponsiblePersonDeletion(nextProps)) {
+      this.props.async.setActionConfirmationProgress(true);
+      this.props.clientsActions.deleteResponsiblePerson(nextProps.toConfirm.id);
+    }
+    if (this.validatePropsForResponsiblePersonReactivation(nextProps)) {
+      this.props.async.setActionConfirmationProgress(true);
+      this.props.clientsActions.reactivateResponsiblePerson(
+        nextProps.toConfirm.id
+      );
+    }
   }
 
   validatePropsForClientDeletion(nextProps) {
@@ -104,6 +114,24 @@ class ClientsContainer extends React.Component {
       !nextProps.isWorking &&
       nextProps.type === ACTION_CONFIRMED &&
       nextProps.toConfirm.key === "reactivateCloud"
+    );
+  }
+
+  validatePropsForResponsiblePersonDeletion(nextProps) {
+    return (
+      nextProps.confirmed &&
+      !nextProps.isWorking &&
+      nextProps.type === ACTION_CONFIRMED &&
+      nextProps.toConfirm.key === "deleteResponsiblePerson"
+    );
+  }
+
+  validatePropsForResponsiblePersonReactivation(nextProps) {
+    return (
+      nextProps.confirmed &&
+      !nextProps.isWorking &&
+      nextProps.type === ACTION_CONFIRMED &&
+      nextProps.toConfirm.key === "reactivateResponsiblePerson"
     );
   }
 
@@ -234,8 +262,24 @@ class ClientsContainer extends React.Component {
     });
   };
 
-  handleAddCloudSave = (name, clientId) => {
+  handleAddCloud = (name, clientId) => {
     this.props.clientsActions.addCloud(name, clientId);
+  };
+
+  handleAddResponsiblePerson = (
+    firstName,
+    lastName,
+    client,
+    email,
+    phoneNumber
+  ) => {
+    this.props.clientsActions.addResponsiblePerson(
+      firstName,
+      lastName,
+      client,
+      email,
+      phoneNumber
+    );
   };
 
   handleDeleteCloud = (id, name) => {
@@ -248,6 +292,16 @@ class ClientsContainer extends React.Component {
     });
   };
 
+  handleDeleteResponsiblePerson = (id, name) => {
+    const { async, t } = this.props;
+    async.setActionConfirmation(true, {
+      key: "deleteResponsiblePerson",
+      string: `${t("RemovingResponsiblePerson")} ${name}`,
+      id: id,
+      successMessage: t("ResponsiblePersonRemoved")
+    });
+  };
+
   handleReactivateCloud = (id, name) => {
     const { async, t } = this.props;
     async.setActionConfirmation(true, {
@@ -255,6 +309,16 @@ class ClientsContainer extends React.Component {
       string: `${t("ReactivatingCloud")} ${name}`,
       id: id,
       successMessage: t("CloudReactivated")
+    });
+  };
+
+  handleReactivateResponsiblePerson = (id, name) => {
+    const { async, t } = this.props;
+    async.setActionConfirmation(true, {
+      key: "reactivateResponsiblePerson",
+      string: `${t("ReactivatingResponsiblePerson")} ${name}`,
+      id: id,
+      successMessage: t("ResponsiblePersonReactivated")
     });
   };
 
@@ -302,7 +366,13 @@ class ClientsContainer extends React.Component {
     );
   };
   render() {
-    let { resultBlock, resultBlockCloud, t } = this.props;
+    let {
+      resultBlock,
+      resultBlockCloud,
+      resultBlockResponsiblePerson,
+      t,
+      clientsActions
+    } = this.props;
     let { client, loaded } = this.state;
     let infoClient = null;
 
@@ -311,15 +381,22 @@ class ClientsContainer extends React.Component {
         <InfoClientContainer
           client={client}
           t={t}
-          handleAddCloudSave={this.handleAddCloudSave}
-          resultBlockCloud={resultBlockCloud}
-          clearResponseCloud={this.props.clientsActions.clearResponseCloud}
-          handleTimesClick={this.handleTimesClick}
-          handleSyncClick={this.handleSyncClick}
+          // clearResponseCloud={this.props.clientsActions.clearResponseCloud}
+          // handleTimesClick={this.handleTimesClick}
+          // handleSyncClick={this.handleSyncClick}
+          onEditClient={this.props.clientsActions.editClient}
+          handleAddCloud={this.handleAddCloud}
           handleDeleteCloud={this.handleDeleteCloud}
           handleReactivateCloud={this.handleReactivateCloud}
-          onEditClient={this.props.clientsActions.editClient}
+          handleAddResponsiblePerson={this.handleAddResponsiblePerson}
+          handleDeleteResponsiblePerson={this.handleDeleteResponsiblePerson}
+          handleReactivateResponsiblePerson={
+            this.handleReactivateResponsiblePerson
+          }
           resultBlockAddClient={this.props.resultBlockAddClient}
+          resultBlockCloud={resultBlockCloud}
+          resultBlockResponsiblePerson={resultBlockResponsiblePerson}
+          clientsActions={clientsActions}
         />
       );
     }
@@ -344,6 +421,8 @@ ClientsContainer.propTypes = {
   loading: PropTypes.bool,
   type: PropTypes.string,
   resultBlock: PropTypes.object,
+  resultBlockCloud: PropTypes.object,
+  resultBlockResponsiblePerson: PropTypes.object,
   toConfirm: PropTypes.object,
   isWorking: PropTypes.bool,
   async: PropTypes.object
@@ -355,6 +434,8 @@ function mapStateToProps(state) {
     resultBlock: state.clientsReducer.resultBlock,
     resultBlockAddClient: state.clientsReducer.resultBlockAddClient,
     resultBlockCloud: state.clientsReducer.resultBlockCloud,
+    resultBlockResponsiblePerson:
+      state.clientsReducer.resultBlockResponsiblePerson,
     confirmed: state.asyncReducer.confirmed,
     toConfirm: state.asyncReducer.toConfirm,
     isWorking: state.asyncReducer.isWorking,

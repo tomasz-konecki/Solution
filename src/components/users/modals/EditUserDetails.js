@@ -12,7 +12,7 @@ class EditUserDetails extends Component {
     super(props);
     this.state = {
       loading: false,
-      responseBlock: null,
+      responseBlock: {},
       disabledButton: false
     };
   }
@@ -20,7 +20,7 @@ class EditUserDetails extends Component {
     const { id, roles } = this.props.user;
     this.setState(
       {
-        loading: !this.state.loading,
+        loading: true,
         disabledButton: !this.props.disabledButton
       },
       () => {
@@ -29,10 +29,10 @@ class EditUserDetails extends Component {
           .then(response => {
             this.setState({
               responseBlock: response,
-              loading: !this.state.loading
+              loading: false
             });
             setTimeout(() => {
-              this.props.handleCloseModal();
+              this.props.closeModal();
             }, 1500);
           })
           .catch(error => {
@@ -45,23 +45,25 @@ class EditUserDetails extends Component {
                 .then(response => {
                   this.setState({
                     responseBlock: response,
-                    loading: !this.state.loading
+                    loading: false
                   });
+
                   setTimeout(() => {
-                    this.props.handleCloseModal({ afterClose: "reloadList" });
+                    this.props.closeModal({ afterClose: "reloadList" });
                   }, 1500);
                 })
                 .catch(errorResponse => {
                   this.setState({
                     responseBlock: errorResponse,
-                    loading: !this.state.loading
+                    loading: false
                   });
                 });
+            } else {
+              this.setState({
+                responseBlock: error,
+                loading: false
+              });
             }
-            this.setState({
-              responseBlock: error,
-              loading: !this.state.loading
-            });
           });
       }
     );

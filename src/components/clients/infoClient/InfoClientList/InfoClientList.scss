@@ -1,0 +1,136 @@
+.info-client-list-header {
+  h2 {
+    font-weight: bold;
+    font-size: large;
+    margin-bottom: 20px;
+    position: relative;
+  }
+
+  input {
+    display: none;
+  }
+
+  input[type="checkbox"],
+  input[type="radio"] {
+    position: absolute;
+    visibility: hidden !important;
+  }
+
+  input[type="checkbox"] + h2,
+  input[type="radio"] + h2 {
+    &:before,
+    &:after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      margin-top: -7.5px;
+      box-sizing: border-box;
+    }
+
+    &:before {
+      width: 30px;
+      height: 15px;
+      right: 0px;
+      background: #fff;
+      border: 1px solid #e4e3e1;
+      border-radius: 15px;
+    }
+
+    &:after {
+      width: 15px;
+      height: 15px;
+      right: 15px;
+      background: #006064;
+      border-radius: 50%;
+      transition: all 200ms ease-out;
+    }
+  }
+
+  input[type="checkbox"]:checked + h2,
+  input[type="radio"]:checked + h2 {
+    &:after {
+      right: 0px;
+      background: #00484b;
+    }
+  }
+}
+
+.info-client-list {
+  display: inline-block;
+  width: 100%;
+  .info-list-item {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    margin-top: 10px;
+    .info-list-circle,
+    .info-list-name,
+    .info-list-options {
+      float: left;
+      button {
+        &:nth-child(2) {
+          margin-left: 9px;
+        }
+        &:disabled,
+        &[disabled] {
+          &:hover {
+            i {
+              color: unset;
+              cursor: not-allowed;
+            }
+          }
+        }
+      }
+    }
+
+    .info-list-circle {
+      background-color: #b63b51;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+    }
+    .info-list-name {
+      width: 80%;
+      padding: 0 5%;
+    }
+
+    .info-list-options {
+      width: 10%;
+      text-align: center;
+
+      button {
+        border: none;
+        background: none;
+      }
+    }
+  }
+  .messageClose {
+    position: absolute;
+    font-weight: bold;
+    cursor: pointer;
+  }
+}
+
+.info-item-add {
+  text-align: center;
+  margin-top: 20px;
+
+  button {
+    border: none;
+    background: #8c1b2f;
+    padding: 10px 10px;
+    color: white;
+    cursor: pointer;
+    text-shadow: 1px 1px 1px black;
+    border-radius: 10px;
+    transition: all ease-in-out 0.3s;
+
+    i {
+      margin-right: 5px;
+    }
+
+    &:hover {
+      background-color: #4c0f19;
+    }
+  }
+}

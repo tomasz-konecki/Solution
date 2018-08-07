@@ -46,8 +46,6 @@ function listener() {
 }
 
 const authValidator = response => {
-  console.log(response);
-
   if (response.response === undefined) {
     throw response;
     // store.dispatch(logout());
@@ -597,7 +595,6 @@ class DCMTWebApi {
 
   searchAD(user) {
     return axios
-      .then(console.log("siema"))
       .get(`${API_ENDPOINT}/account/searchAD/${user}`)
       .catch(response => authValidator(response));
   }

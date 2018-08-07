@@ -182,7 +182,7 @@ export default class InfoClient extends Component {
             t={t}
             item={item}
             handleAddResponsiblePerson={handleAddResponsiblePerson}
-            handleEditResponsiblePerson={handleAddResponsiblePerson}
+            handleEditResponsiblePerson={handleEditResponsiblePerson}
             clientName={client.name}
             resultBlockResponsiblePerson={resultBlockResponsiblePerson}
             handleResponsiblePersonAddCloseModal={

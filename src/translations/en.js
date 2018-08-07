@@ -97,12 +97,18 @@ const translations = {
     Email: "Email",
     PhoneNumber: "Phone Number",
     Insert: "Insert",
-    AddResponsivePerson: "Add Responsible Person",
+    AddResponsiblePerson: "Add Responsible Person",
     ResponsiblePersonAdded: "Responsible Person has been added.",
     CloudAdded: "Cloud has been added.",
     EditCloud: "Edit Cloud",
     Save: "Save",
-    CloudEdited: "Cloud's details has been edited."
+    CloudEdited: "Cloud's details has been edited.",
+    ResponsiblePersonEdited: "Responsible Person's details has been edited.",
+    EditResponsiblePerson: "Edit Responsible Person",
+    ReactivatingResponsiblePerson: "Reactivate Responsible Person",
+    ResponsiblePersonReactivated: "Responsible Person has beed reactivated.",
+    RemovingResponsiblePerson: "Removing Responsible Person",
+    ResponsiblePersonRemoved: "Responsible Person has been removed."
   },
   AddClient: {
     Add: "Add",

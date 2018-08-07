@@ -466,18 +466,18 @@ const WebApi = {
       responsiblePersonId,
       firstName,
       lastName,
-      client,
       email,
-      phoneNumber
+      phoneNumber,
+      client
     ) => {
       return WebAround.put(
         `${API_ENDPOINT}/responsiblePersons/${responsiblePersonId}`,
         {
           firstName,
           lastName,
-          client,
           email,
-          phoneNumber
+          phoneNumber,
+          client
         }
       );
     },
@@ -494,6 +494,11 @@ const WebApi = {
       return WebAround.delete(
         `${API_ENDPOINT}/responsiblepersons`,
         params({ responsiblePersonId })
+      );
+    },
+    reactivate: responsiblePersonId => {
+      return WebAround.put(
+        `${API_ENDPOINT}/responsiblepersons/${responsiblePersonId}/reactivate`
       );
     }
   },

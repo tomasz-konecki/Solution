@@ -262,9 +262,9 @@ export const editResponsiblePerson = (
   responsiblePersonId,
   firstName,
   lastName,
-  client,
   email,
-  phoneNumber
+  phoneNumber,
+  client
 ) => {
   return dispatch => {
     WebApi.responsiblePerson
@@ -272,20 +272,18 @@ export const editResponsiblePerson = (
         responsiblePersonId,
         firstName,
         lastName,
-        client,
         email,
-        phoneNumber
+        phoneNumber,
+        client
       )
       .then(response => {
         if (!response.errorOccurred()) {
-          console.log(response);
-          dispatch(setActionConfirmationResult(response));
+          dispatch(addResponsiblePersonResult(response));
           dispatch(this.loadClients());
         }
       })
       .catch(error => {
-        console.log(error);
-        dispatch(setActionConfirmationResult(error));
+        dispatch(addResponsiblePersonResult(error));
         throw error;
       });
   };
@@ -311,6 +309,23 @@ export const deleteResponsiblePerson = id => {
 export const reactivateCloud = id => {
   return dispatch => {
     WebApi.clouds
+      .reactivate(id)
+      .then(response => {
+        if (!response.errorOccurred()) {
+          dispatch(setActionConfirmationResult(response));
+          dispatch(this.loadClients());
+        }
+      })
+      .catch(error => {
+        dispatch(setActionConfirmationResult(error));
+        throw error;
+      });
+  };
+};
+
+export const reactivateResponsiblePerson = id => {
+  return dispatch => {
+    WebApi.responsiblePerson
       .reactivate(id)
       .then(response => {
         if (!response.errorOccurred()) {

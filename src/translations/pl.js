@@ -98,12 +98,18 @@ const translations = {
     Email: "Email",
     PhoneNumber: "Numer Telefonu",
     Insert: "Wprowadź",
-    AddResponsivePerson: "Dodaj Osobę Odpowiedzialną",
+    AddResponsiblePerson: "Dodaj Osobę Odpowiedzialną",
     ResponsiblePersonAdded: "Dodano Osobę Odpowiedzialną.",
     CloudAdded: "Dodano Chmurę.",
     EditCloud: "Edytuj Chmurę",
     Save: "Zapisz",
-    CloudEdited: "Edytowano szczegóły Chmury."
+    CloudEdited: "Edytowano szczegóły Chmury.",
+    ResponsiblePersonEdited: "Edytowano szczegóły Osoby Odpowiedzialnej.",
+    EditResponsiblePerson: "Edytuj Osobę Odpowiedzialną",
+    ReactivatingResponsiblePerson: "Reaktywować Osobę Odpowiedzialną",
+    ResponsiblePersonReactivated: "Osoba Odpowiedzialna została Aktywowana.",
+    RemovingResponsiblePerson: "Usunąć Osobę Odpowiedzialną",
+    ResponsiblePersonRemoved: "Odpowiedzialna Osoba została dezaktywowana."
   },
   AddClient: {
     Add: "Dodaj",

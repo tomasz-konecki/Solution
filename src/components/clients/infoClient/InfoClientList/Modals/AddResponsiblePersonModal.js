@@ -56,7 +56,9 @@ class AddResponsiblePersonModal extends PureComponent {
         type: "text",
         placeholder: `${this.props.t("Insert")} ${this.props.t("PhoneNumber")}`,
         mode: "text",
-        value: this.props.item ? populateValue(this.props.phoneNumber) : "",
+        value: this.props.item
+          ? populateValue(this.props.item.phoneNumber)
+          : "",
         error: "",
         canBeNull: false,
         inputType: "phoneNumber",
@@ -93,11 +95,11 @@ class AddResponsiblePersonModal extends PureComponent {
       item
         ? handleEditResponsiblePerson(
             item.id,
-            addCloudToClientFormItems[0].value,
-            addCloudToClientFormItems[1].value,
-            addCloudToClientFormItems[2].value,
-            addCloudToClientFormItems[3].value,
-            item.clientId
+            addResponsiblePersonToClientFormItems[0].value,
+            addResponsiblePersonToClientFormItems[1].value,
+            addResponsiblePersonToClientFormItems[2].value,
+            addResponsiblePersonToClientFormItems[3].value,
+            clientName
           )
         : handleAddResponsiblePerson(
             addResponsiblePersonToClientFormItems[0].value,
@@ -109,16 +111,18 @@ class AddResponsiblePersonModal extends PureComponent {
   };
 
   render() {
-    const { t, resultBlockResponsiblePerson } = this.props;
+    const { t, resultBlockResponsiblePerson, item } = this.props;
     const { addResponsiblePersonToClientFormItems, isLoading } = this.state;
     return (
       <div className="add-client-container">
         <header>
-          <h3 className="section-heading">{t("AddResponsivePerson")}</h3>
+          <h3 className="section-heading">
+            {item ? t("EditResponsiblePerson") : t("AddResponsiblePerson")}
+          </h3>
         </header>
 
         <Form
-          btnTitle={t("Add")}
+          btnTitle={item ? t("Save") : t("Add")}
           shouldSubmit={true}
           onSubmit={this.addResponsiblePersonHandler}
           isLoading={isLoading}
@@ -131,7 +135,9 @@ class AddResponsiblePersonModal extends PureComponent {
               : null,
             content: resultBlockResponsiblePerson
               ? !resultBlockResponsiblePerson.errorOccurred()
-                ? t("ResponsiblePersonAdded")
+                ? item
+                  ? t("ResponsiblePersonEdited")
+                  : t("ResponsiblePersonAdded")
                 : resultBlockResponsiblePerson &&
                   resultBlockResponsiblePerson.getMostSignificantText()
               : null

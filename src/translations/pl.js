@@ -149,7 +149,8 @@ const translations = {
     ProjectDeleted: "Projekt został usunięty",
     EditProject: "Edytuj projekt",
     DeactivateDeleteEdit: "Deaktywuj/Usuń/Edytuj",
-    SeeMore: "Zobacz więcej"
+    SeeMore: "Zobacz więcej",
+    Deleted: "Usunięte"
   },
   EmployeesList: {
     Name: "Imię",

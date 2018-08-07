@@ -136,6 +136,7 @@ const translations = {
     Activated: "Active",
     NotActivated: "Not activated",
     Closed: "Closed",
+    Deleted: "Deleted",
     SelectStatus: "Select status...",
     CloseProjectImperativus: "Close project",
     CloseProjectInfinitive: "Close project",

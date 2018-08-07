@@ -13,7 +13,7 @@ const persistConfig = {
   key: "root",
   storage,
   blacklist: ["form", "asyncReducer", "projectsReducer", "reportsReducer", "oneDriveReducer", 
-  "skillsReducer", "gDriveReducer"],
+  "skillsReducer", "gDriveReducer", "employeesReducer"],
   migrate: state => {
     if (state !== undefined && state.authReducer !== undefined)
       state.authReducer.loading = false;

@@ -1,0 +1,204 @@
+
+  .quaters-container {
+    width: 600px;
+    position: relative;
+    @media screen and (max-width: 1470px){
+      margin-top: 300px;
+    }
+    .normal-btn{
+      bottom: -60px;
+      left: 0;
+      right: 0;
+      margin: 0 auto;
+      position: absolute;
+    }
+   
+    h2{
+      padding: 15px 0;
+      font-size: 22px;
+      text-align: center;
+      color: #707070;
+      position: relative;
+      span{
+        margin-left: 10px;
+        color: lightseagreen;;
+      }
+      .small-spiner{  
+        right: 140px;
+        top: -10px;
+      }
+    }
+    .pagination-options{
+      width: 400px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: flex-end;
+      font-size: 24px;
+      @media(max-width: 550px){
+        width: 250px;
+      }
+      i{
+        cursor: pointer;
+        margin: 0 20px;
+      }
+      .fa-trash{
+        color: darkred;
+        font-size: 22px;
+      }
+    }
+    .empty-quater-talks{
+      height: 500px;
+      width: 500px;
+      background: rgba(0, 0, 0, 0.7);
+      color: white;
+      display: flex;
+      position: relative;
+      justify-content: center;
+      align-items: center;
+      border-radius: 5px;
+      cursor: pointer;
+      .absoluted{
+        position: absolute;
+        top: 15px;
+        padding: 0;
+        left: 15px;
+        flex-flow: row;
+        width: 250px;
+      }
+      @media screen and (max-width: 1500px){
+        margin: auto;
+      }
+      @media screen and (max-width: 550px){
+        width: 400px;
+        height: 400px;
+        margin-top: 50px;
+      }
+      @media screen and (max-width: 410px){
+        width: 310px;
+        height: 310px;
+      }
+      &:hover{
+        background: rgba(0, 0, 0, 0.6);
+      }
+      div{
+        display: flex;
+        flex-flow: column;
+        align-items: center;
+        span{
+          font-size: 24px;
+        }
+        i{
+          margin-top: 25px;
+          font-size: 32px;
+          color: lightgreen;
+        }
+      }
+    }
+    & > ul{
+      width: 500px;
+      height: 380px;
+      padding: 0 15px;
+      margin: 0 auto;
+      @media(max-width: 550px){
+        width: 310px;
+      }
+      .is-deleted-quater{
+        background: rgba(159, 51, 51, 0.60);
+      }
+      .is-activate-quater{
+        background: rgba(107, 94, 94, 0.60);
+      }
+      & > li{
+        padding: 15px 25px;
+        position: relative;
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        cursor: pointer;
+        margin: 25px 0;
+        &::before{
+          content: '';
+          position: absolute;
+        }
+        &:hover::before{
+          background: #e8e8e8;
+          animation: 0.5s animate-mark ease-in-out forwards;
+          @keyframes animate-mark {
+            0%{
+              width: 0;
+              height: 0;
+              left: 0;
+              transform: rotate(0deg);
+            }
+            100%{
+              left: -10px;
+              transform: rotate(45deg);
+              width: 20px;
+              height: 20px;
+              
+            }
+          }
+        }
+        .clicked-row{
+          width: 20px;
+          height: 20px;
+          position: absolute;
+          left: -10px;
+          transform: rotate(45deg);
+          background: #e8e8e8;
+        }
+        span{
+          b{
+            font-size: 20px;
+            font-weight: bold;
+            color: #156308;
+            margin-right: 15px;
+          }
+        }
+        .aditional-informations{
+          position: absolute;
+          left: -400px;
+          top: 0;
+          color: #707070;
+          width: 360px;
+          background: #fbfbfb;
+          overflow-y: auto;
+          box-sizing: border-box;
+          padding: 15px;
+          animation: 0.5s animate-info-in ease-in-out forwards;
+       
+          ul{
+            & > li{
+              padding-bottom: 10px;
+              border-bottom: 2px solid #707070;
+              p{
+                margin: 7.5px 0;
+                font-size: 18px;
+              }
+              article{
+                padding: 7.5px 2px;
+                line-height: 19px;
+              }
+              
+            }
+          }
+          
+          @keyframes animate-info-in {
+            0%{
+              height: 0;
+            }
+            100%{
+              height: 360px;
+            }
+          }
+        }
+      }
+      & > li:hover{
+        background: rgba(132, 125, 125, 0.54);
+      }
+    }
+    @media(max-width: 1400px){
+      
+    }
+  }

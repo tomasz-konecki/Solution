@@ -1,0 +1,17 @@
+.quater-check-container{
+    margin: 0 auto;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding-left: 75px;
+    margin: 5px 0;
+    label{
+      font-size: 18px;
+      margin: 0 7.5px;
+    }
+    input{
+      width: 15px;
+      cursor: pointer;
+      height: 15px;
+    }
+  }

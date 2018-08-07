@@ -8,5 +8,9 @@
     @media screen and (max-width: 1470px) {
       text-align: center;
     }
+    @media screen and (max-width: 500px) {
+      margin-bottom: 40px;
+      margin-top: 0;
+    }
   }
 }

@@ -9,7 +9,8 @@ const skill = ({
   experience,
   increaseYears,
   downgradeYears,
-  showSavePrompt
+  showSavePrompt,
+  removeSkill
 }) => (
   <li>
     <label>
@@ -27,6 +28,7 @@ const skill = ({
           <i className="fa fa-clock" />
           <i onClick={increaseYears} className="fa fa-arrow-up" />
           <i onClick={downgradeYears} className="fa fa-arrow-down" />
+          <i onClick={removeSkill} className="fa fa-trash"></i>
         </div>
       </div>
     </div>

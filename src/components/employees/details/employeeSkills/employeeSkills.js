@@ -45,7 +45,8 @@ class EmployeeSkills extends React.Component{
         searchValue: "",
 
         searchedSkills: [],
-        isAddingNewSkills: false
+        isAddingNewSkills: false,
+        didUserDeleteSkill: false
     }
     componentDidMount(){
         const { skills, getAllSkillsForEmployee } = this.props;
@@ -81,19 +82,21 @@ class EmployeeSkills extends React.Component{
     }
     componentWillReceiveProps(nextProps){
       if(nextProps.changeSkillsStatus){
-        this.setState({isChangingSkills: false, changedIndexes: []});
+        this.setState({isChangingSkills: false, changedIndexes: [], didUserDeleteSkill: false});
       }
       else if(this.props.changeSkillsErrors !== nextProps.changeSkillsErrors)
         this.setState({isChangingSkills: false});
+      else if(nextProps.skills !== this.props.skills){
+        const newSkills = createSkillArchitecture(nextProps.skills, 
+            nextProps.limit);
+        this.setState({skills: newSkills, isAddingNewSkills: false});
+      }
       else if(this.props.addNewSkillsErrors !== nextProps.addNewSkillsErrors){
-        if(nextProps.addNewSkillsStatus){
-            this.setState({skills: createSkillArchitecture(nextProps.skills, 
-                nextProps.limit), isAddingNewSkills: false});
-            setTimeout(() => {
-                this.closeModal();
-            }, 3000);
-        }
-        else
+            if(nextProps.addNewSkillsStatus){
+                setTimeout(() => {
+                    this.closeModal();
+                }, 2000);
+            }
             this.setState({isAddingNewSkills: false});
       }
       else if(this.props.loadSkillsErrors !== nextProps.loadSkillsErrors){
@@ -232,15 +235,22 @@ class EmployeeSkills extends React.Component{
         this.setState({isAddingNewSkills: true});
         addNewSkillsToEmployeeACreator(skills, skillsToAdd, employeeId);
     }
+
+    removeSkill = index => {
+        const currentSkills = [...this.state.skills];
+        currentSkills.splice(index, 1);
+
+        this.setState({skills: currentSkills, didUserDeleteSkill: true});
+    }
     componentWillUnmount(){ this.props.addNewSkillsToEmployee(null, []); }
     
     render(){
         const { skills, isChangingSkills, changedIndexes, 
             showAddNewSkillsModal, isLoadingAllSkills, skillsToAdd, 
             copiedAllSkills, showSkillsToAdd, showSearchBar, searchValue,
-            searchedSkills, isAddingNewSkills } = this.state;
+            searchedSkills, isAddingNewSkills, didUserDeleteSkill } = this.state;
         const { changeSkillsStatus, loadSkillsStatus, loadSkillsErrors, loadedSkills,
-            addNewSkillsStatus, addNewSkillsErrors } = this.props;
+            addNewSkillsStatus, addNewSkillsErrors, employeeHasAccount, employeeDeleted } = this.props;
 
         const listNameToShow = showSearchBar ? "searchedSkills" : 
             showSkillsToAdd ? "skillsToAdd" : "copiedAllSkills";
@@ -248,20 +258,34 @@ class EmployeeSkills extends React.Component{
         const iconForSkills = showSkillsToAdd ? <i className="fa fa-minus"></i> : 
             <i className="fa fa-plus"></i>;
         
+        const status = employeeDeleted ? "Usunięty" : employeeHasAccount ? 
+            "Aktywny" : "Nieaktywny";
+            
         return (
             <section className="employee-skills">
                 <h2>Umiejętności 
-                    {isChangingSkills && <SmallSpinner />} 
-                    {changeSkillsStatus === true && <CorrectOperation />}
-                    {!changeSkillsStatus && !isChangingSkills && 
+                    <span>
+                    {!changeSkillsStatus && !isChangingSkills && status !== "Nieaktywny" && 
                         <i onClick={this.openSkillsModal} className="fa fa-plus"></i>
                     }
+                    {isChangingSkills && <SmallSpinner />} 
+                    {changeSkillsStatus === true && <CorrectOperation />}
+                    </span>
                 </h2>
                 <ul className="emp-skills-container">
+                    {status === "Nieaktywny" && 
+                        <article className="unactivate-state-prompt">
+
+                        </article>
+                    }
+                    
+
+
                     {skills.length > 0 ?
                         skills.map((skill, index) => {
                         return (
                             <Skill 
+                            removeSkill={() => this.removeSkill(index)}
                             showSavePrompt={changedIndexes.length > 0 ? 
                                 contains(index, changedIndexes) : false
                             }
@@ -276,13 +300,16 @@ class EmployeeSkills extends React.Component{
                             key={skill.skill.id}/>
                         );
                     }) : 
-                    <div className="empty-skills">
-                        <i className="fa fa-plus"></i>
+                    <div onClick={
+                        status !== "Nieaktywny" ? this.openSkillsModal : null} className="empty-skills">
+                        {status !== "Nieaktywny" &&
+                            <i className="fa fa-plus"></i>
+                        }
                         Brak umiejętności
                         <i className="fa fa-fire"></i>
                     </div>
                     }
-                    {changedIndexes.length > 0 && 
+                    {(changedIndexes.length > 0 || didUserDeleteSkill) && 
                         <Button onClick={this.saveSkills}
                         title="Zapisz zmiany" 
                         mainClass="option-btn green-btn" 
@@ -353,7 +380,7 @@ class EmployeeSkills extends React.Component{
                             submitResult={{
                                 status: addNewSkillsStatus,
                                 content: addNewSkillsStatus ? "Pomyślnie dodano umiejętności" :     
-                                    addNewSkillsErrors[0]
+                                addNewSkillsErrors && addNewSkillsErrors[0]
                             }}
                             onClickHandler={this.saveNewAddedSkills}
                             isLoading={isAddingNewSkills}

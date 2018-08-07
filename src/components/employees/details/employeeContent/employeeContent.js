@@ -5,13 +5,15 @@ import DegreeBar from '../degreeBar/degreeBar';
 import Button from '../../../common/button/button';
 import Quaters from '../quaters/quaters';
 import Spinner from '../../../common/spinner/small-spinner';
+
 const employeeContent = ({employee, editSeniority, employeeErrors, 
   editCapacity, activateEmployee, isChangingEmployeeData, reactivateEmployee, deleteEmployee,
   deleteQuaterStatus, deleteQuaterErrors, deleteQuaterACreator, 
-  reactivateQuaterACreator, reactivateQuaterStatus, reactivateQuaterErrors}) => {
+  reactivateQuaterACreator, reactivateQuaterStatus, reactivateQuaterErrors, 
+  }) => {
 
     const status = employee.isDeleted ? "Usunięty" : employee.hasAccount ? "Aktywny" : "Nieaktywny";
-
+    const email = employee.email ? employee.email : "Brak adresu email";
     return (
   <section className="top-content-container">
     <div className="employee-details-bar">
@@ -36,7 +38,7 @@ const employeeContent = ({employee, editSeniority, employeeErrors,
       <div className="right-content">
         <h2>Kontakt</h2>
         <p>
-          Email: <span>{employee.email ? employee.email : "Brak adresu email"}</span>
+          Email: <span>{email}</span>
         </p>
         <p>
           Numer telefonu: <span>{employee.phoneNumber ? employee.phoneNumber : "Nie podano"} </span>
@@ -50,11 +52,9 @@ const employeeContent = ({employee, editSeniority, employeeErrors,
 
       {(employee.hasAccount && !employee.isDeleted) && 
         <React.Fragment>
-          <div className="fte-bar-container">
             <FteBar capacityLeft={employee.baseCapacity} 
             editCapacity={editCapacity} employeeErrors={employeeErrors} />
           
-          </div>
           <div className="degree-bar-container">
           <DegreeBar
               editSeniority={editSeniority}
@@ -81,18 +81,20 @@ const employeeContent = ({employee, editSeniority, employeeErrors,
           }
         </div>
         
-        {status === "Nieaktywny" && 
+        {status !== "Aktywny" && 
           <div className="information-for-statuses">
             <p>Zanim zmienisz status</p>
             <article>
               Zmiana statusów pracownika polega na przypisaniu mu wymiaru czasu pracy oraz poziomu doświadczenia.
-              Pamiętaj, że możesz także zmienić jego status na <b>Usunięty</b> co spowoduje wymazanie dotychczasowych ustawień.
+              Pamiętaj, że możesz także zmienić jego status na <b>Usunięty</b> co spowoduje zablokowanie możliwości edycji.
+              Zmiana statusu na <b>Aktywny</b> pozwoli na ponowną zmiane danych tego pracownika.
             </article>
           </div>
         }
         
     </div>
     <Quaters reactivateQuaterACreator={reactivateQuaterACreator}
+    status={status}
     reactivateQuaterStatus={reactivateQuaterStatus}
     reactivateQuaterErrors={reactivateQuaterErrors}
     deleteQuaterStatus={deleteQuaterStatus}

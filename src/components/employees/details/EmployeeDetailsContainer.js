@@ -30,7 +30,7 @@ class EmployeeDetailsContainer extends React.Component{
     }
     editSeniority = seniority => {
         const { employee, editStatistics } = this.props; 
-        editStatistics(employee.id, seniority, employee.capacityLeft, employee.clouds);
+        editStatistics(employee.id, seniority, employee.baseCapacity, employee.clouds);
     }
     editCapacity = capacity => {
         const { employee, editStatistics } = this.props;
@@ -60,6 +60,7 @@ class EmployeeDetailsContainer extends React.Component{
             deleteQuaterErrors, deleteQuaterACreator, reactivateQuaterACreator, 
             reactivateQuaterStatus, reactivateQuaterErrors, 
             changeEmployeeSkillsACreator, changeSkillsStatus, changeSkillsErrors } = this.props;
+                    
         return (
             <div className="employee-details-container">
                 {isLoadingFirstTimeEmployee ? <Spinner /> : 
@@ -68,6 +69,7 @@ class EmployeeDetailsContainer extends React.Component{
                         <h1>Szczegóły pracownika</h1>
                 
                         <EmployeeContent 
+                        status={status}
                         reactivateQuaterACreator={reactivateQuaterACreator}
                         reactivateQuaterStatus={reactivateQuaterStatus}
                         reactivateQuaterErrors={reactivateQuaterErrors}
@@ -85,6 +87,8 @@ class EmployeeDetailsContainer extends React.Component{
                         reactivateEmployee={this.reactivateEmployee} />
                         
                         <EmployeeSkills 
+                        employeeHasAccount={employee.hasAccount}
+                        employeeDeleted={employee.isDeleted}
                         changeSkillsStatus={changeSkillsStatus}
                         employeeId={employee.id} 
                         changeSkillsErrors={changeSkillsErrors}

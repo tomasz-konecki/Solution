@@ -5,53 +5,108 @@ import ConfirmModal from '../../../common/confimModal/confirmModal';
 import Spinner from '../../../common/spinner/spinner';
 import SmallSpinner from '../../../common/spinner/small-spinner';
 import OperationStatusPrompt from '../../../form/operationStatusPrompt/operationStatusPrompt';
+import Modal from 'react-responsive-modal';
+import ActivateCheckbox from '../others/activateCheckbox';
 class Quaters extends React.PureComponent{
     state = {
+        quarters: null,
         listToShowIndex: null,
         currentPage: 1, 
         watchedRecords: 0,
         showDeleteModal: false,
         deletingQuater: false,
-        activatingQuater: false
+        activatingQuater: false,
+        shouldShowDeleted: false,
+        currentOpenedItemId: null
+    }
+    selectQuartersByState = (state, quartersList) => {
+        const newQuarters = [];
+        for(let i = 0; i < quartersList.length; i++){
+            if(quartersList[i].isDeleted === state)
+                newQuarters.push(quartersList[i]);
+        }
+        return newQuarters;
+    }
+
+    componentDidMount(){
+        const { quarterTalks } = this.props;
+        if(quarterTalks){
+            const quarters = this.selectQuartersByState(this.state.shouldShowDeleted, 
+                quarterTalks);
+            this.setState({quarters: quarters});
+        }
     }
     componentWillReceiveProps(nextProps){
         if(nextProps.deleteQuaterStatus){
-            this.setState({deletingQuater: false, showDeleteModal: false, listToShowIndex: null});
+            const quarters = this.selectQuartersByState(this.state.shouldShowDeleted, 
+                [...nextProps.quarterTalks]);
+            const shouldShowActiveQuarters = quarters.length === 0;
+            this.setState({deletingQuater: false, showDeleteModal: false, 
+                listToShowIndex: null, quarters: quarters, 
+                shouldShowDeleted: shouldShowActiveQuarters,
+                currentOpenedItemId: null});
+        }
+        else if(nextProps.reactivateQuaterStatus){
+            const quarters = this.selectQuartersByState(this.state.shouldShowDeleted, 
+                [...nextProps.quarterTalks]);
+            const shouldShowDeletedQuarters = quarters.length === 0;
+
+            this.setState({quarters: quarters, activatingQuater: false,
+                shouldShowDeleted: shouldShowDeletedQuarters, listToShowIndex: null, 
+                currentOpenedItemId: null});
         }
         else if(nextProps.deleteQuaterErrors !== this.props.deleteQuaterErrors)
             this.setState({deletingQuater: false});
         else if(nextProps.reactivateQuaterErrors !== this.props.reactivateQuaterErrors)
             this.setState({activatingQuater: false});
     }
-    
-    showDetails = index => {
-        const newIndex = this.state.listToShowIndex === index ? null : index;
-        this.setState({listToShowIndex: newIndex})
+    showDetails = (index, itemId) => {
+        const { listToShowIndex, currentOpenedItemId } = this.state;
+        const newIndex = listToShowIndex === index ? null : index;
+        const newItemId = currentOpenedItemId === itemId ? null : itemId;
+        this.setState({listToShowIndex: newIndex, currentOpenedItemId: newItemId})
     }
     deleteQuaters = () => {
         this.setState({deletingQuater: true});
-        this.props.deleteQuaterACreator(this.state.listToShowIndex+1, this.props.employeeId);
+        const { deleteQuaterACreator, employeeId} = this.props;
+        deleteQuaterACreator(this.state.currentOpenedItemId, employeeId);
     }
 
     activateQuaters = quarterId => {
         this.setState({activatingQuater: true});
-        this.props.reactivateQuaterACreator(quarterId, this.props.employeeId, "Aktywowano rozmowę");
+        this.props.reactivateQuaterACreator(quarterId, this.props.employeeId, 
+            "Aktywowano rozmowę");
+    }
+    showDeleted = () => {
+        const { shouldShowDeleted } = this.state;
+        const quarters = this.selectQuartersByState(!shouldShowDeleted, 
+            this.props.quarterTalks);
+        this.setState({shouldShowDeleted: !shouldShowDeleted, quarters: quarters,
+            currentPage: 1, watchedRecords: 0, currentOpenedItemId: null, listToShowIndex: null});
     }
     render(){
-        const { paginationLimit, quarterTalks, deleteQuaterStatus, deleteQuaterErrors } = this.props;
-        const { listToShowIndex, currentPage, watchedRecords, showDeleteModal, deletingQuater, activatingQuater } = this.state;
+        const { paginationLimit, deleteQuaterStatus, deleteQuaterErrors, quarterTalks, status } = this.props;
+        const { listToShowIndex, currentPage, watchedRecords, showDeleteModal, 
+            deletingQuater, activatingQuater, shouldShowDeleted, quarters } = this.state;
+        const shouldShowAddButton = status === "Aktywny" ? 
+            <Button title="Dodaj" mainClass="option-btn normal-btn" /> : null;
+        
         return (
             <div className="quaters-container">
-                {quarterTalks && 
-                    quarterTalks.length > 0 ?
+                {quarters && 
+                    quarters.length > 0 ?
                     <React.Fragment>
-                    <h2>Rozmowy kwartalne <span>({quarterTalks.length})</span> { activatingQuater && <SmallSpinner /> }</h2>
+                    <h2>Rozmowy kwartalne <span>({quarters.length})</span> { activatingQuater && <SmallSpinner /> }</h2>
+                    <ActivateCheckbox 
+                    shouldShowDeleted={shouldShowDeleted}
+                    showDeleted={this.showDeleted} />
+
                     <ul>
-                        {quarterTalks.map((item, index) => {
+                        {quarters.map((item, index) => {
                             return ( 
                                 (index >= paginationLimit * (currentPage-1) && index < paginationLimit * currentPage) &&   
                                 <li className={item.isDeleted === true ? "is-deleted-quater" : "is-activate-quater"}
-                                onClick={() => this.showDetails(index)} key={index}>
+                                onClick={() => this.showDetails(index, item.id)} key={index}>
                                     {index === listToShowIndex && 
                                         <div className="clicked-row"></div>
                                     }
@@ -76,31 +131,35 @@ class Quaters extends React.PureComponent{
                         })} 
                     </ul> 
 
-                    {quarterTalks.length > paginationLimit && 
                     <div className="pagination-options">
-                        {listToShowIndex !== null && quarterTalks[listToShowIndex].isDeleted === false &&
+                        {listToShowIndex !== null && !shouldShowDeleted && status === "Aktywny" && 
                             <i onClick={() => this.setState({showDeleteModal: true})} className="fa fa-trash"></i>
                         }
 
-                        {listToShowIndex !== null && quarterTalks[listToShowIndex].isDeleted === true && 
-                            <i onClick={() => this.activateQuaters(quarterTalks[listToShowIndex].id)} className="fa fa-check"></i>
+                        {listToShowIndex !== null && shouldShowDeleted && status === "Aktywny" && 
+                            <i onClick={() => this.activateQuaters(quarters[listToShowIndex].id)} className="fa fa-check"></i>
                         }
 
-                        {watchedRecords !== 0 && 
+                        {watchedRecords !== 0 && quarters.length > paginationLimit &&
                             <i onClick={() => this.setState({currentPage: currentPage-1, watchedRecords: watchedRecords-paginationLimit})} className="fa fa-arrow-left"></i>
                         }
-                        {watchedRecords - (paginationLimit - (quarterTalks.length % paginationLimit)) + paginationLimit !== quarterTalks.length &&
+                        {quarters.length > paginationLimit && 
+                        watchedRecords - (paginationLimit - (quarters.length % paginationLimit)) + paginationLimit !== quarters.length &&
                             <i onClick={() => this.setState({currentPage: currentPage+1, watchedRecords: watchedRecords+paginationLimit})} className="fa fa-arrow-right"></i>
                         }
                     </div>
-                    }
-                    <Button title="Dodaj" mainClass="option-btn normal-btn" />
+                    {shouldShowAddButton}
                     </React.Fragment> : 
                     <div className="empty-quater-talks">
                         <div>
-                            <span>Brak rozmów kwartalnych</span>
+                            <ActivateCheckbox 
+                            shouldShowDeleted={shouldShowDeleted}
+                            showDeleted={this.showDeleted} 
+                            addClass="absoluted" />
+                            <span>Brak {shouldShowDeleted ? "usuniętych rozmów" : "aktywnych rozmów"} kwartalnych</span>
                             <i className="fa fa-comments"></i>
                         </div>
+                        {shouldShowAddButton}
                     </div>
                 }
 
@@ -118,7 +177,6 @@ class Quaters extends React.PureComponent{
                     operationPrompt={deleteQuaterStatus}
                 />
                 }
-                
           </div>
         );
     }

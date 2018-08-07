@@ -28,6 +28,7 @@ class DegreeBar extends React.Component {
   };
   changeDegreeValue = index => {
     this.setState({ isChanging: true });
+    console.log(seniorities[index]);
     this.props.editSeniority(seniorities[index]);
   };
 

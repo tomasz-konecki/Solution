@@ -67,3 +67,24 @@ export const prepareToLongStringToShow = (optimalLength, incomingWord) => {
   return returnWord;
 
 }
+
+export const checkForContains = (currentEmployeeSkills, name) => {
+  for(let key in currentEmployeeSkills){
+    if(currentEmployeeSkills[key].name === name)
+      return true;
+  }
+  return false;
+}
+
+
+export const populateSkillArrayWithConstData = skills => {
+  const newSkills = [];
+  for(let key in skills){
+    newSkills.push({
+      "skillId": skills[key].key,
+      "skillLevel": 1,
+      "yearsOfExperience": 1
+    })
+  }
+  return newSkills
+}

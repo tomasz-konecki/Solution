@@ -3,7 +3,7 @@ import axios from "axios";
 import WebApi from "../api";
 import { asyncStarted, asyncEnded } from "./asyncActions";
 import { errorCatcher } from '../services/errorsHandler';
-import { isArrayContainsByObjectKey } from '../services/methods';
+import { isArrayContainsByObjectKey, checkForContains } from '../services/methods';
 export const loadSkillsSuccess = skills => {
   return {
     type: LOAD_SKILLS_SUCCESS,
@@ -59,7 +59,6 @@ export const getAllSkills = (loadedSkills, loadSkillsStatus, loadSkillsErrors) =
 
 export const getAllSkillsACreator = currentAddedSkills => {
   return dispatch => {
-    
     WebApi.skills.get.all().then(response => {
       const dtoArray = [];
       const { dtoObject } = response.replyBlock.data;
@@ -77,3 +76,23 @@ export const getAllSkillsACreator = currentAddedSkills => {
     })
   }
 }
+
+export const getAllSkillsForEmployee = currentEmployeeSkills => {
+  return dispatch => {
+    WebApi.skills.get.all().then(response => {
+      const skillsArray = [];
+      const { dtoObject } = response.replyBlock.data;
+      for(let key in dtoObject){
+        if(!checkForContains(currentEmployeeSkills, dtoObject[key].name))
+          skillsArray.push({
+            key: key,
+            name: dtoObject[key].name
+          });
+      }
+      dispatch(getAllSkills(skillsArray, true, []));
+    }).catch(error => {
+      dispatch(getAllSkills([], false, errorCatcher(error)));
+    })
+  }
+}
+

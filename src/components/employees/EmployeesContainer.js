@@ -7,8 +7,9 @@ import * as asyncActions from "../../actions/asyncActions";
 import "../../scss/containers/UsersContainer.scss";
 import { ACTION_CONFIRMED } from "./../../constants";
 import EmployeesList from "./EmployeesList";
-import EmployeeDetailContainer from "./EmployeeDetailContainer";
+import EmployeeDetailsContainer from "./details/EmployeeDetailsContainer";
 import { withRouter, Switch, Route } from "react-router-dom";
+import EmployeeDetailContainer from '../employees/EmployeeDetailContainer';
 
 class EmployeesContainer extends React.Component {
   constructor(props) {
@@ -62,7 +63,7 @@ class EmployeesContainer extends React.Component {
     return (
       <Switch>
         <Route exact path={match.url + ""} render={this.pullEmployeesList} />
-        <Route path={match.url + "/:id"} component={EmployeeDetailContainer} />
+        <Route path={match.url + "/:id"} component={EmployeeDetailsContainer} />
       </Switch>
     );
   }

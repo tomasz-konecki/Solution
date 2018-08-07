@@ -6,6 +6,7 @@ import SmallSpinner from '../spinner/small-spinner';
 import Modal from "react-responsive-modal";
 import Spinner from '../spinner/spinner';
 import { isArrayContainsByObjectKey } from '../../../services/methods';
+import CorrectOperation from '../correctOperation/correctOperation';
 
 class Skills extends Component{
     state = {
@@ -279,7 +280,7 @@ class Skills extends Component{
                     }
 
                     {addSkillsToProjectStatus && !isAddingNewSkills && 
-                        <div className="correct-operation"></div>
+                        <CorrectOperation />
                     }
                 </div>
             </Modal>     

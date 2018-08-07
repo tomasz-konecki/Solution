@@ -1,60 +1,67 @@
 .info-client-list-header {
-  h2 {
-    font-weight: bold;
-    font-size: large;
-    margin-bottom: 20px;
-    position: relative;
+  display: flex;
+  display: flex;
+  align-items: center;
+
+  .info-client-list-header-title {
+    width: 70%;
+    h2 {
+      font-weight: bold;
+      font-size: large;
+    }
   }
 
-  input {
-    display: none;
-  }
-
-  input[type="checkbox"],
-  input[type="radio"] {
-    position: absolute;
-    visibility: hidden !important;
-  }
-
-  input[type="checkbox"] + h2,
-  input[type="radio"] + h2 {
-    &:before,
-    &:after {
-      content: "";
+  .info-client-list-header-input {
+    width: 30%;
+    text-align: right;
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 60px;
+      height: 34px;
+      outline: none;
+    }
+    .switch input {
+      display: none;
       position: absolute;
-      top: 50%;
-      margin-top: -7.5px;
-      box-sizing: border-box;
     }
-
-    &:before {
-      width: 30px;
-      height: 15px;
-      right: 0px;
-      background: #fff;
-      border: 1px solid #e4e3e1;
-      border-radius: 15px;
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #ccc;
+      -webkit-transition: 0.4s;
+      transition: 0.4s;
+      border-radius: 34px;
     }
-
-    &:after {
-      width: 15px;
-      height: 15px;
-      right: 15px;
-      background: #006064;
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 26px;
+      width: 26px;
+      left: 4px;
+      bottom: 4px;
+      background-color: white;
+      -webkit-transition: 0.4s;
+      transition: 0.4s;
       border-radius: 50%;
-      transition: all 200ms ease-out;
     }
-  }
-
-  input[type="checkbox"]:checked + h2,
-  input[type="radio"]:checked + h2 {
-    &:after {
-      right: 0px;
-      background: #00484b;
+    input:checked + .slider {
+      background-color: #2196f3;
+    }
+    input:focus + .slider {
+      box-shadow: 0 0 1px #2196f3;
+    }
+    input:checked + .slider:before {
+      -webkit-transform: translateX(26px);
+      -ms-transform: translateX(26px);
+      transform: translateX(26px);
     }
   }
 }
-
 .info-client-list {
   display: inline-block;
   width: 100%;
@@ -95,7 +102,7 @@
     }
 
     .info-list-options {
-      width: 10%;
+      width: 20%;
       text-align: center;
 
       button {

@@ -171,6 +171,12 @@ const WebApi = {
     post: (name, clientId) => {
       return WebAround.post(`${API_ENDPOINT}/clouds/`, { name, clientId });
     },
+    edit: (cloudId, name, clientId) => {
+      return WebAround.put(`${API_ENDPOINT}/clouds/${cloudId}`, {
+        name,
+        clientId
+      });
+    },
     delete: cloudId => {
       return WebAround.delete(`${API_ENDPOINT}/clouds/${cloudId}`);
     },
@@ -455,6 +461,25 @@ const WebApi = {
           `${API_ENDPOINT}/responsiblepersons/${responsiblePersonId}`
         );
       }
+    },
+    edit: (
+      responsiblePersonId,
+      firstName,
+      lastName,
+      client,
+      email,
+      phoneNumber
+    ) => {
+      return WebAround.put(
+        `${API_ENDPOINT}/responsiblePersons/${responsiblePersonId}`,
+        {
+          firstName,
+          lastName,
+          client,
+          email,
+          phoneNumber
+        }
+      );
     },
     post: (firstName, lastName, client, email, phoneNumber) => {
       return WebAround.post(`${API_ENDPOINT}/responsiblepersons`, {

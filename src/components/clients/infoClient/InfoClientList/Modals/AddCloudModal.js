@@ -3,6 +3,14 @@ import Form from "../../../../form/form";
 import IntermediateBlock from "../../../../common/IntermediateBlock";
 import PropTypes from "prop-types";
 
+const populateValue = item => {
+  let value = "";
+  for (let i = 0; i < item.length; i++) {
+    value += item.charAt(i);
+  }
+  return value;
+};
+
 class AddCloudModal extends PureComponent {
   state = {
     addCloudToClientFormItems: [
@@ -12,7 +20,7 @@ class AddCloudModal extends PureComponent {
         type: "text",
         placeholder: `${this.props.t("Insert")} ${this.props.t("CloudName")}`,
         mode: "text",
-        value: "",
+        value: this.props.item ? populateValue(this.props.item.name) : "",
         error: "",
         canBeNull: false,
         minLength: 2,
@@ -35,23 +43,34 @@ class AddCloudModal extends PureComponent {
   }
 
   addCloudHandler = () => {
-    const { handleAddCloud, clientId } = this.props;
+    const { handleAddCloud, handleEditCloud, clientId, item } = this.props;
+    const { addCloudToClientFormItems } = this.state;
     this.setState({ isLoading: true }),
-      handleAddCloud(this.state.addCloudToClientFormItems[0].value, clientId);
+      item
+        ? handleEditCloud(
+            item.id,
+            addCloudToClientFormItems[0].value,
+            item.clientId
+          )
+        : handleAddCloud(
+            this.state.addCloudToClientFormItems[0].value,
+            clientId
+          );
   };
 
   render() {
-    const { t, resultBlockCloud } = this.props;
+    const { t, resultBlockCloud, item } = this.props;
     const { addCloudToClientFormItems, isLoading } = this.state;
-
     return (
       <div className="add-client-container">
         <header>
-          <h3 className="section-heading">{t("AddCloud")}</h3>
+          <h3 className="section-heading">
+            {item ? t("EditCloud") : t("AddCloud")}
+          </h3>
         </header>
 
         <Form
-          btnTitle={t("Add")}
+          btnTitle={item ? t("Save") : t("Add")}
           shouldSubmit={true}
           onSubmit={this.addCloudHandler}
           isLoading={isLoading}
@@ -64,7 +83,9 @@ class AddCloudModal extends PureComponent {
               : null,
             content: resultBlockCloud
               ? !resultBlockCloud.errorOccurred()
-                ? t("CloudAdded")
+                ? item
+                  ? t("CloudEdited")
+                  : t("CloudAdded")
                 : resultBlockCloud && resultBlockCloud.getMostSignificantText()
               : null
           }}

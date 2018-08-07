@@ -35,10 +35,11 @@ export default class infoClientContainer extends Component {
       onEditClient,
       resultBlockAddClient,
       handleAddCloud,
+      handleEditCloud,
       handleDeleteCloud,
       handleReactivateCloud,
       handleAddResponsiblePerson,
-
+      handleEditResponsiblePerson,
       handleDeleteResponsiblePerson,
       handleReactivateResponsiblePerson,
       resultBlockResponsiblePerson,
@@ -62,10 +63,12 @@ export default class infoClientContainer extends Component {
           handleTimesClick={handleTimesClick}
           handleSyncClick={handleSyncClick}
           handleAddCloud={handleAddCloud}
+          handleEditCloud={handleEditCloud}
           handleDeleteCloud={handleDeleteCloud}
           handleReactivateCloud={handleReactivateCloud}
           resultBlockCloud={resultBlockCloud}
           handleAddResponsiblePerson={handleAddResponsiblePerson}
+          handleEditResponsiblePerson={handleEditResponsiblePerson}
           handleDeleteResponsiblePerson={handleDeleteResponsiblePerson}
           handleReactivateResponsiblePerson={handleReactivateResponsiblePerson}
           resultBlockResponsiblePerson={resultBlockResponsiblePerson}

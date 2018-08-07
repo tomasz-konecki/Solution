@@ -241,6 +241,56 @@ export const deleteCloud = id => {
   };
 };
 
+export const editCloud = (cloudId, name, clientId) => {
+  return dispatch => {
+    WebApi.clouds
+      .edit(cloudId, name, clientId)
+      .then(response => {
+        if (!response.errorOccurred()) {
+          dispatch(addCloudResult(response));
+          dispatch(this.loadClients());
+        }
+      })
+      .catch(error => {
+        dispatch(addCloudResult(error));
+        throw error;
+      });
+  };
+};
+
+export const editResponsiblePerson = (
+  responsiblePersonId,
+  firstName,
+  lastName,
+  client,
+  email,
+  phoneNumber
+) => {
+  return dispatch => {
+    WebApi.responsiblePerson
+      .edit(
+        responsiblePersonId,
+        firstName,
+        lastName,
+        client,
+        email,
+        phoneNumber
+      )
+      .then(response => {
+        if (!response.errorOccurred()) {
+          console.log(response);
+          dispatch(setActionConfirmationResult(response));
+          dispatch(this.loadClients());
+        }
+      })
+      .catch(error => {
+        console.log(error);
+        dispatch(setActionConfirmationResult(error));
+        throw error;
+      });
+  };
+};
+
 export const deleteResponsiblePerson = id => {
   return dispatch => {
     WebApi.responsiblePerson

@@ -17,7 +17,8 @@ export default class InfoClient extends Component {
     shouldAnimate: true,
     addingNewCloud: false,
     openCloudAddModal: false,
-    openResponsiblePersonAddModal: false
+    openResponsiblePersonAddModal: false,
+    item: {}
   };
 
   handleCloudAddCloseModal = () => {
@@ -26,8 +27,8 @@ export default class InfoClient extends Component {
       this.props.clientsActions.addCloudResult(null);
   };
 
-  handleCloudAddOpenModal = () => {
-    this.setState({ openCloudAddModal: true });
+  handleCloudAddOpenModal = item => {
+    this.setState({ item, openCloudAddModal: true });
   };
 
   handleResponsiblePersonAddCloseModal = () => {
@@ -36,8 +37,8 @@ export default class InfoClient extends Component {
       this.props.clientsActions.addResponsiblePersonResult(null);
   };
 
-  handleResponsiblePersonAddOpenModal = () => {
-    this.setState({ openResponsiblePersonAddModal: true });
+  handleResponsiblePersonAddOpenModal = item => {
+    this.setState({ item, openResponsiblePersonAddModal: true });
   };
 
   render() {
@@ -49,17 +50,22 @@ export default class InfoClient extends Component {
       handleTimesClick,
       handleSyncClick,
       handleAddCloud,
+      handleEditCloud,
       handleDeleteCloud,
       handleReactivateCloud,
       resultBlockCloud,
       handleAddResponsiblePerson,
-
+      handleEditResponsiblePerson,
       handleDeleteResponsiblePerson,
       handleReactivateResponsiblePerson,
       resultBlockResponsiblePerson
     } = this.props;
 
-    const { openCloudAddModal, openResponsiblePersonAddModal } = this.state;
+    const {
+      openCloudAddModal,
+      openResponsiblePersonAddModal,
+      item
+    } = this.state;
 
     const cloudsTranslateText = {
       Header: "ClientCloudsList",
@@ -156,7 +162,9 @@ export default class InfoClient extends Component {
           >
             <AddCloudModal
               t={t}
+              item={item}
               handleAddCloud={handleAddCloud}
+              handleEditCloud={handleEditCloud}
               clientId={client.id}
               resultBlockCloud={resultBlockCloud}
               handleCloudAddCloseModal={this.handleCloudAddCloseModal}
@@ -172,7 +180,9 @@ export default class InfoClient extends Component {
         >
           <AddResponsiblePersonModal
             t={t}
+            item={item}
             handleAddResponsiblePerson={handleAddResponsiblePerson}
+            handleEditResponsiblePerson={handleAddResponsiblePerson}
             clientName={client.name}
             resultBlockResponsiblePerson={resultBlockResponsiblePerson}
             handleResponsiblePersonAddCloseModal={

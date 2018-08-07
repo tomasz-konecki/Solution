@@ -100,7 +100,10 @@ const translations = {
     Insert: "Wprowadź",
     AddResponsivePerson: "Dodaj Osobę Odpowiedzialną",
     ResponsiblePersonAdded: "Dodano Osobę Odpowiedzialną.",
-    CloudAdded: "Dodano Chmurę."
+    CloudAdded: "Dodano Chmurę.",
+    EditCloud: "Edytuj Chmurę",
+    Save: "Zapisz",
+    CloudEdited: "Edytowano szczegóły Chmury."
   },
   AddClient: {
     Add: "Dodaj",

@@ -2,6 +2,14 @@ import React, { PureComponent } from "react";
 import Form from "../../../../form/form";
 import PropTypes from "prop-types";
 
+const populateValue = item => {
+  let value = "";
+  for (let i = 0; i < item.length; i++) {
+    value += item.charAt(i);
+  }
+  return value;
+};
+
 class AddResponsiblePersonModal extends PureComponent {
   state = {
     addResponsiblePersonToClientFormItems: [
@@ -11,7 +19,7 @@ class AddResponsiblePersonModal extends PureComponent {
         type: "text",
         placeholder: `${this.props.t("Insert")} ${this.props.t("FirstName")}`,
         mode: "text",
-        value: "",
+        value: this.props.item ? populateValue(this.props.item.firstName) : "",
         error: "",
         canBeNull: false,
         inputType: "firstName",
@@ -24,7 +32,7 @@ class AddResponsiblePersonModal extends PureComponent {
         type: "text",
         placeholder: `${this.props.t("Insert")} ${this.props.t("LastName")}`,
         mode: "text",
-        value: "",
+        value: this.props.item ? populateValue(this.props.item.lastName) : "",
         error: "",
         canBeNull: false,
         inputType: "lastName",
@@ -37,7 +45,7 @@ class AddResponsiblePersonModal extends PureComponent {
         type: "text",
         placeholder: `${this.props.t("Insert")} ${this.props.t("Email")}`,
         mode: "text",
-        value: "",
+        value: this.props.item ? populateValue(this.props.item.email) : "",
         error: "",
         canBeNull: false,
         inputType: "email"
@@ -48,7 +56,7 @@ class AddResponsiblePersonModal extends PureComponent {
         type: "text",
         placeholder: `${this.props.t("Insert")} ${this.props.t("PhoneNumber")}`,
         mode: "text",
-        value: "",
+        value: this.props.item ? populateValue(this.props.phoneNumber) : "",
         error: "",
         canBeNull: false,
         inputType: "phoneNumber",
@@ -74,16 +82,30 @@ class AddResponsiblePersonModal extends PureComponent {
   }
 
   addResponsiblePersonHandler = () => {
-    const { handleAddResponsiblePerson, clientName } = this.props;
+    const {
+      handleAddResponsiblePerson,
+      handleEditResponsiblePerson,
+      clientName,
+      item
+    } = this.props;
     const { addResponsiblePersonToClientFormItems } = this.state;
     this.setState({ isLoading: true }),
-      handleAddResponsiblePerson(
-        addResponsiblePersonToClientFormItems[0].value,
-        addResponsiblePersonToClientFormItems[1].value,
-        clientName,
-        addResponsiblePersonToClientFormItems[2].value,
-        addResponsiblePersonToClientFormItems[3].value
-      );
+      item
+        ? handleEditResponsiblePerson(
+            item.id,
+            addCloudToClientFormItems[0].value,
+            addCloudToClientFormItems[1].value,
+            addCloudToClientFormItems[2].value,
+            addCloudToClientFormItems[3].value,
+            item.clientId
+          )
+        : handleAddResponsiblePerson(
+            addResponsiblePersonToClientFormItems[0].value,
+            addResponsiblePersonToClientFormItems[1].value,
+            clientName,
+            addResponsiblePersonToClientFormItems[2].value,
+            addResponsiblePersonToClientFormItems[3].value
+          );
   };
 
   render() {

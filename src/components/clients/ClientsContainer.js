@@ -266,7 +266,12 @@ class ClientsContainer extends React.Component {
     this.props.clientsActions.addCloud(name, clientId);
   };
 
+  handleEditCloud = (cloudId, name, clientId) => {
+    this.props.clientsActions.editCloud(cloudId, name, clientId);
+  };
+
   handleAddResponsiblePerson = (
+    responsiblePersonId,
     firstName,
     lastName,
     client,
@@ -274,6 +279,25 @@ class ClientsContainer extends React.Component {
     phoneNumber
   ) => {
     this.props.clientsActions.addResponsiblePerson(
+      responsiblePersonId,
+      firstName,
+      lastName,
+      client,
+      email,
+      phoneNumber
+    );
+  };
+
+  handleEditResponsiblePerson = (
+    responsiblePersonId,
+    firstName,
+    lastName,
+    client,
+    email,
+    phoneNumber
+  ) => {
+    this.props.clientsActions.editResponsiblePerson(
+      responsiblePersonId,
       firstName,
       lastName,
       client,
@@ -368,6 +392,7 @@ class ClientsContainer extends React.Component {
   render() {
     let {
       resultBlock,
+      resultBlockAddClient,
       resultBlockCloud,
       resultBlockResponsiblePerson,
       t,
@@ -381,19 +406,18 @@ class ClientsContainer extends React.Component {
         <InfoClientContainer
           client={client}
           t={t}
-          // clearResponseCloud={this.props.clientsActions.clearResponseCloud}
-          // handleTimesClick={this.handleTimesClick}
-          // handleSyncClick={this.handleSyncClick}
-          onEditClient={this.props.clientsActions.editClient}
+          onEditClient={clientsActions.editClient}
           handleAddCloud={this.handleAddCloud}
+          handleEditCloud={this.handleEditCloud}
           handleDeleteCloud={this.handleDeleteCloud}
           handleReactivateCloud={this.handleReactivateCloud}
           handleAddResponsiblePerson={this.handleAddResponsiblePerson}
+          handleEditResponsiblePerson={this.handleEditResponsiblePerson}
           handleDeleteResponsiblePerson={this.handleDeleteResponsiblePerson}
           handleReactivateResponsiblePerson={
             this.handleReactivateResponsiblePerson
           }
-          resultBlockAddClient={this.props.resultBlockAddClient}
+          resultBlockAddClient={resultBlockAddClient}
           resultBlockCloud={resultBlockCloud}
           resultBlockResponsiblePerson={resultBlockResponsiblePerson}
           clientsActions={clientsActions}

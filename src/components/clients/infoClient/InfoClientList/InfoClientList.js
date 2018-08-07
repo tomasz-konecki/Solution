@@ -42,9 +42,14 @@ export default class InfoClientList extends Component {
     return newList;
   };
 
-  handleInputChecked = () => {
-    console.log("siema");
-    this.setState({ isDeleted: !this.state.isDeleted });
+  handleChange = () => {
+    const { isDeleted } = this.state;
+    const { list } = this.props;
+    const isDeletedPom = isDeleted;
+    this.setState({
+      isDeleted: !isDeleted,
+      list: this.showDeleted(!isDeletedPom, list)
+    });
   };
 
   render() {
@@ -99,22 +104,38 @@ export default class InfoClientList extends Component {
                 />
               </button>
             )}
+
+            <button
+              onClick={() =>
+                handleOpenAddItemModal(
+                  item
+                  // item.id,
+                  // item.name ? item.name : `${item.firstName} ${item.lastName}`
+                )
+              }
+            >
+              <Icon icon="edit" iconType="fa" additionalClass="icon-danger" />
+            </button>
           </div>
         </div>
       );
     });
-
     return (
       <React.Fragment>
         <div className="info-client-list-header">
-          <input
-            type="checkbox"
-            name="show-deleted"
-            id="radio-button"
-            checked={isDeleted}
-            onChange={() => this.handleInputChecked()}
-          />
-          <h2>{t(translateText.Header)}</h2>
+          <div className="info-client-list-header-title">
+            <h2>{t(translateText.Header)}</h2>
+          </div>
+          <div className="info-client-list-header-input">
+            <label className="switch">
+              <input
+                type="checkbox"
+                onChange={this.handleChange}
+                checked={!isDeleted}
+              />
+              <div className="slider" />
+            </label>
+          </div>
         </div>
         <div className="info-client-list">
           {clientInfoList}

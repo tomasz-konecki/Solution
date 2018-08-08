@@ -113,9 +113,21 @@ export const addEmployeeToProjectACreator = (empId, projectId, strDate, endDate,
       dispatch(addEmployeeToProject(true, []));
       
       dispatch(getProjectACreator(projectId, onlyActiveAssignments));
+      dispatch(clearAfterTimeByFuncRef(addEmployeeToProject, 5000, null, []));
+      
     }).catch(error => {
       dispatch(addEmployeeToProject(false, errorCatcher(error)));
+      dispatch(clearAfterTimeByFuncRef(addEmployeeToProject, 5000, null, []));
+      
     })
+  }
+}
+
+const clearAfterTimeByFuncRef = (funcRef, delay, ...params) => {
+  return dispatch => {
+    setTimeout(() => {
+      dispatch(funcRef(...params))
+    }, delay);
   }
 }
 
@@ -197,6 +209,8 @@ export const editProjectACreator = (projectId, projectToSend, onlyActiveAssignme
     dispatch(editProjectPromise(projectToSend, projectId)).then(response => {
       dispatch(editProject(true, []));
 
+      dispatch(clearAfterTimeByFuncRef(editProject, 5000, null, []));
+      
       dispatch(getProjectPromise(projectId, onlyActiveAssignments)).then(getProjectResponse => {
         const responsiblePersonKeys = {keys: cutNotNeededKeysFromArray(
           Object.keys(getProjectResponse.responsiblePerson), [0]), 
@@ -209,12 +223,17 @@ export const editProjectACreator = (projectId, projectToSend, onlyActiveAssignme
         dispatch(getProject(getProjectResponse, 
             true, [], responsiblePersonKeys, overViewKeys, []));
 
+      
       }).catch(error => {
         dispatch(getProject(null, 
           false, errorCatcher(error), [], []));
+        dispatch(clearAfterTimeByFuncRef(getProject, 5000, null, null, [], [], []));
+        
       })
     }).catch(error => {
       dispatch(editProject(false, errorCatcher(error)));
+      dispatch(clearAfterTimeByFuncRef(editProject, 5000, null, []));
+      
     })
   }
 }

@@ -90,7 +90,12 @@ class Quaters extends React.PureComponent{
             deletingQuater, activatingQuater, shouldShowDeleted, quarters } = this.state;
         const shouldShowAddButton = status === "Aktywny" ? 
             <Button title="Dodaj" mainClass="option-btn normal-btn" /> : null;
-        
+        let showRightArrowCalculate = null;
+        let shouldShowRightArrow = null;
+        if(quarters){
+            showRightArrowCalculate = watchedRecords - (paginationLimit - (quarters.length % paginationLimit)) + paginationLimit;
+            shouldShowRightArrow = showRightArrowCalculate !== quarters.length && showRightArrowCalculate < paginationLimit;
+        }
         return (
             <div className="quaters-container">
                 {quarters && 
@@ -140,11 +145,10 @@ class Quaters extends React.PureComponent{
                             <i onClick={() => this.activateQuaters(quarters[listToShowIndex].id)} className="fa fa-check"></i>
                         }
 
-                        {watchedRecords !== 0 && quarters.length > paginationLimit &&
+                        {watchedRecords !== 0 && quarters.length > watchedRecords &&
                             <i onClick={() => this.setState({currentPage: currentPage-1, watchedRecords: watchedRecords-paginationLimit})} className="fa fa-arrow-left"></i>
                         }
-                        {quarters.length > paginationLimit && 
-                        watchedRecords - (paginationLimit - (quarters.length % paginationLimit)) + paginationLimit !== quarters.length &&
+                        {shouldShowRightArrow &&
                             <i onClick={() => this.setState({currentPage: currentPage+1, watchedRecords: watchedRecords+paginationLimit})} className="fa fa-arrow-right"></i>
                         }
                     </div>

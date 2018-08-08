@@ -175,8 +175,13 @@ class ProjectDetails extends Component {
     } else if (
       this.props.addEmployeeToProjectErrors !==
       nextProps.addEmployeeToProjectErrors
-    )
-      this.setState({ addEmployeSpinner: false });
+    ){
+      this.setState({ addEmployeSpinner: false }, 
+        nextProps.addEmployeeToProjectStatus ? 
+        () => {
+          this.closeAddEmployeeToProjectModal();
+        } : null);
+    }
   }
 
   createLTEPicker = range => {
@@ -246,6 +251,18 @@ class ProjectDetails extends Component {
     });
     this.props.getProject(this.props.match.params.id, !onlyActiveAssignments);
   };
+   
+  closeAddEmployeeToProjectModal = () => {
+    const addEmployeToProjectFormItems = [...this.state.addEmployeToProjectFormItems];
+    addEmployeToProjectFormItems[2].value = [];
+    addEmployeToProjectFormItems[3].value = "";
+    for(let key in addEmployeToProjectFormItems)
+      addEmployeToProjectFormItems[key].error = "";
+
+    addEmployeToProjectFormItems[2].typedListVal = "";   
+
+    this.setState({addEmployeToProjectFormItems: addEmployeToProjectFormItems, addEmployeModal: false});
+  }
   render() {
     const {
       project,
@@ -266,6 +283,8 @@ class ProjectDetails extends Component {
       isChangingAssignment
     } = this.state;
     const { owner } = WebApi.projects.delete;
+   
+
 
     return (
       <div
@@ -449,6 +468,7 @@ class ProjectDetails extends Component {
                 editProjectErrors={this.props.editProjectErrors}
                 project={project}
                 editProject={this.props.editProject}
+                closeEditProjectModal={this.clearEditModalData}
               />
             </Modal>
 
@@ -475,9 +495,7 @@ class ProjectDetails extends Component {
               open={this.state.addEmployeModal}
               classNames={{ modal: "Modal Modal-add-owner" }}
               contentLabel="Add employee to project modal"
-              onClose={() =>
-                this.setState({ addEmployeModal: !this.state.addEmployeModal })
-              }
+              onClose={this.closeAddEmployeeToProjectModal}
             >
               <header>
                 <h3 className="section-heading">

@@ -33,7 +33,7 @@
     top: 0;
     width: 100%;
     position: fixed;
-    z-index: 10;
+    z-index: 11;
 
     .first-bar {
       height: 9px;
@@ -73,7 +73,6 @@
         padding-top: 0.5em;
         padding-bottom: 0.5em;
         user-select: none;
-        
 
         span {
           visibility: hidden;

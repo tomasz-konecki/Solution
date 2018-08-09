@@ -7,7 +7,7 @@ import DatePicker from "react-datepicker";
 import moment from "moment";
 import PropTypes from "prop-types";
 import { translate } from "react-translate";
-import { Redirect } from 'react-router-dom';
+import { Redirect } from "react-router-dom";
 
 class SmoothTable extends Component {
   constructor(props) {
@@ -191,7 +191,7 @@ class SmoothTable extends Component {
     );
   }
 
-  handleFilterDateChange() { }
+  handleFilterDateChange() {}
 
   toolBoxButton(button, object) {
     return (
@@ -258,7 +258,10 @@ class SmoothTable extends Component {
       }
       case "multiState": {
         let rotated = this.swapKeysForValues(multiState);
-        value = rotated[event.target.value];
+        value =
+          rotated[event.target.value] === "null"
+            ? null
+            : rotated[event.target.value];
         break;
       }
       case "date": {
@@ -266,7 +269,6 @@ class SmoothTable extends Component {
         break;
       }
     }
-
     columnFilters[field] = value;
     columnFiltersLoaders[field] = true;
 
@@ -362,7 +364,7 @@ class SmoothTable extends Component {
           <button onClick={this.removeFilters}>
             {this.props.t("DeleteFilters")}
           </button>
-        </span >
+        </span>
       );
     }
 
@@ -514,6 +516,7 @@ class SmoothTable extends Component {
               column,
               column.type
             )}
+            disabled={this.state.selectedOption === "isDeleted"}
           >
             {Object.values(column.multiState)
               .reverse()
@@ -545,8 +548,8 @@ class SmoothTable extends Component {
             value={
               this.state.columnFilters[column.field] !== ""
                 ? new Date(
-                  this.state.columnFilters[column.field]
-                ).toLocaleDateString()
+                    this.state.columnFilters[column.field]
+                  ).toLocaleDateString()
                 : ""
             }
           />
@@ -701,8 +704,8 @@ class SmoothTable extends Component {
   setToRaports = () => {
     this.setState({
       toRaports: true
-    })
-  }
+    });
+  };
   //http://localhost:8080/main/reports
   render() {
     const { construct } = this.state;
@@ -719,13 +722,20 @@ class SmoothTable extends Component {
       empty = true;
     }
     if (this.state.toRaports === true) {
-      return <Redirect to='/main/reports' />
+      return <Redirect to="/main/reports" />;
     }
     return (
       <div className="smooth-table">
         <div className="d-flex">
           <div className="smooth-operator">{this.generateOperators()}</div>
-          {showRaportButton && <button className="dcmt-button raport-button ml-auto mt-3 mr-3" onClick={this.setToRaports}>{this.props.t("Reports")}</button>}
+          {showRaportButton && (
+            <button
+              className="dcmt-button raport-button ml-auto mt-3 mr-3"
+              onClick={this.setToRaports}
+            >
+              {this.props.t("Reports")}
+            </button>
+          )}
         </div>
         <div className="smooth-loader-top">
           {this.props.loading && <LoaderHorizontal />}

@@ -197,11 +197,13 @@ const WebApi = {
   },
   quarterTalks: {
     delete: quarterId => {
-      return WebAround.delete(`${API_ENDPOINT}/QuarterTalks/${quarterId}`)
+      return WebAround.delete(`${API_ENDPOINT}/QuarterTalks/${quarterId}`);
     },
     put: {
       reactivate: quarterId => {
-        return WebAround.put(`${API_ENDPOINT}/QuarterTalks/Reactivate/${quarterId}`)
+        return WebAround.put(
+          `${API_ENDPOINT}/QuarterTalks/Reactivate/${quarterId}`
+        );
       }
     }
   },
@@ -390,6 +392,11 @@ const WebApi = {
           `${API_ENDPOINT}/reports/developers?hyperlinksOnGDrive=${hyperlinksOnGDrive}&hyperlinksOnOneDrive=${hyperlinksOnOneDrive}`,
           model
         );
+      },
+      cv: employeeId => {
+        return WebAround.post(
+          `${API_ENDPOINT}/reports/cv/${employeeId}?forceIncompletePDF=true`
+        );
       }
     }
   },
@@ -433,29 +440,16 @@ const WebApi = {
         return WebAround.post(`${API_ENDPOINT}/onedrive/files`, model);
       },
       createFolder: model => {
-        return WebAround.post(
-          `${API_ENDPOINT}/onedrive/createFolder`,
-          model
-        );
+        return WebAround.post(`${API_ENDPOINT}/onedrive/createFolder`, model);
       },
       deleteFolder: model => {
-        return WebAround.post(
-          `${API_ENDPOINT}/onedrive/deleteFolder`,
-          model
-        );
+        return WebAround.post(`${API_ENDPOINT}/onedrive/deleteFolder`, model);
       },
       updateFolder: model => {
-        return WebAround.post(
-          `${API_ENDPOINT}/onedrive/updateFolder`,
-          model
-        );
+        return WebAround.post(`${API_ENDPOINT}/onedrive/updateFolder`, model);
       },
       uploadFile: (model, config) => {
-        return WebAround.post(
-          `${API_ENDPOINT}/onedrive/upload`,
-          model,
-          config
-        );
+        return WebAround.post(`${API_ENDPOINT}/onedrive/upload`, model, config);
       }
     }
   },

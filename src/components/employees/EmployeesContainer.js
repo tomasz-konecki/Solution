@@ -19,11 +19,19 @@ class EmployeesContainer extends React.Component {
     this.state = {
       currentPage: 1,
       limit: 15,
-      init: false
+      init: false,
+      employees: []
     };
   }
 
+  componentWillMount = () => {
+    this.pageChange(1);
+  };
+
   componentWillReceiveProps(nextProps) {
+    if (this.props.employees !== nextProps.employees) {
+      this.setState({ employees: nextProps.employees });
+    }
     if (this.validatePropsForAction(nextProps, "activateEmployee")) {
       this.props.async.setActionConfirmationProgress(true);
       this.props.employeeActions.activateEmployeeOnList(
@@ -117,6 +125,8 @@ class EmployeesContainer extends React.Component {
         this.pageChange(this.state.currentPage)
       );
     }
+    console.log(this.props.employees);
+
     return (
       <React.Fragment>
         {this.props.getUserCVStatus === false && (
@@ -126,7 +136,7 @@ class EmployeesContainer extends React.Component {
           />
         )}
         <EmployeesList
-          employees={this.props.employees}
+          employees={this.state.employees}
           currentPage={this.state.currentPage}
           totalPageCount={this.props.totalPageCount}
           pageChange={this.pageChange}

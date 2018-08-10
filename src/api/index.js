@@ -47,15 +47,18 @@ function listener() {
 }
 
 const authValidator = response => {
+  
   if(response.response.config.url.search("onedrive") !== -1){
     const oneDriveToken = JSON.parse(response.response.config.data).token;
     const startPath = "/drive/root:";
-
     store.dispatch(refreshToken(oneDriveToken)).then(response => {
       dispatch(getFolderACreator(response, startPath));
     }).catch(error => {
       store.dispatch(authOneDriveACreator());
     });
+  }
+  else if(response.response.config.url.search("GDrive") !== -1){
+    console.log("Akcja na gDRIVe to sledzenia - dokonczyc")
   }
   else{
     if (response.response === undefined) {

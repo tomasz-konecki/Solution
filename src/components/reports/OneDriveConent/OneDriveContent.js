@@ -118,7 +118,7 @@ class OneDriveContent extends React.PureComponent {
 
     checkForCorrectInputValue = (value, oldValue) => {
         const validationResult = validateInput(value, false, 
-            3,30, "firstName", "nazwa folderu");
+            3,30, "name", "nazwa folderu");
         
         if(oldValue){
             const checkForEqualNames = value === oldValue ? "Nie zmieniono wartości" : "";
@@ -151,7 +151,9 @@ class OneDriveContent extends React.PureComponent {
         }
     }
     openFolder = (folderName, folderId) => {
-        this.setState({folderIsLoadingId: folderId});
+        this.setState({folderIsLoadingId: folderId, 
+            newFolderName: "", newFolderNameError: "", 
+            editFolderError: "", editFolderName: ""});
         const nextPath = this.props.path + "/" + folderName;
         this.props.getFolder(this.props.oneDriveToken, nextPath);
     }
@@ -184,10 +186,6 @@ class OneDriveContent extends React.PureComponent {
         this.setState({currentOpenedFolderDetailName: 
             fileName === this.state.currentOpenedFolderDetailName ? 
             null : fileName})
-    }
-
-    loginAgain = () => {
-
     }
     render(){
         const { isPreparingForLogingIn, isTakingCodeFromApi, currentOpenedFolderDetailName,

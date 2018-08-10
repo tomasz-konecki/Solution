@@ -104,6 +104,12 @@
       .searcher-container {
         position: absolute;
         width: 220px;
+        height: 35px;
+        .fa-search{
+          position: absolute;
+          right: 6px;
+          top: 6px;
+        }
         @media (min-width: 891px) {
           left: 0;
           right: 0;
@@ -122,6 +128,7 @@
         input {
           width: 100%;
           padding: 15px;
+          height: 100%;
           border: none;
           border-radius: 5px;
           font-size: 14px;

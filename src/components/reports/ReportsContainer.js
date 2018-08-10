@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import "./ReportsContainer.scss";
 import { getTeamsACreator, generateReportACreator, generateReport } from "../../actions/reportsActions";
 import { fetchLists, chooseFolder } from '../../actions/persistHelpActions';
+import { getFolders } from '../../actions/oneDriveActions';
 import Spinner from "../common/spinner/spinner";
 import { validateReportPages } from "services/validation";
 import Navigation from "./navigation/navigation";
@@ -80,16 +81,16 @@ class ReportsContainer extends Component {
   };
   deleteTeamFromResultList = index => {
     const addList = [...this.props.addList];
-    const baseList = [...this.props.baseList];
     const helpList = [...this.props.helpList];
     const pagesList = [...this.props.pagesList];
-
+    const baseList = this.findFromList(this.state.valueToSearch,  
+      helpList.concat(addList));
     helpList.push(addList[index]);
-    baseList.push(addList[index]);
     addList.splice(index, 1);
     pagesList.splice(index, 1);
 
     const isListEmpty = addList.length > 0 ? false : true;
+
 
     this.setState({reportModal: !isListEmpty});
     this.props.fetchLists(addList, baseList, helpList, pagesList);
@@ -152,14 +153,18 @@ class ReportsContainer extends Component {
     }
   };
   searchInTeamList = e => {
-    const searchedItems = [];
-    for (let key in this.props.helpList)
-      if (this.props.helpList[key].name.toLowerCase().search(e.target.value.toLowerCase()) !== -1)
-        searchedItems.push(this.props.helpList[key]);
+    const { helpList, addList, fetchLists } = this.props;
+    const searchedItems = this.findFromList(e.target.value, helpList);
     this.setState({valueToSearch: e.target.value});
-    this.props.fetchLists(this.props.addList, searchedItems, this.props.helpList);
+    fetchLists(addList, searchedItems, helpList);
   }
-
+  findFromList = (value, array) => {
+    const searchedItems = [];
+    for (let key in array)
+      if (array[key].name.toLowerCase().search(value.toLowerCase()) !== -1)
+        searchedItems.push(array[key]);
+    return searchedItems;
+  }
   chooseFolderHandler = folder => {
     if(this.props.addList.length > 0)
       this.openReportsModals();
@@ -179,7 +184,13 @@ class ReportsContainer extends Component {
   extendDetailName = id => {  
     this.setState({extendId: id});
   }
- 
+
+  clearDrivesData = endPath => {
+    const { history, chooseFolder, getFoldersClear } = this.props;
+    chooseFolder(null);
+    getFoldersClear([], null, [], "");
+    history.push(startPathname + endPath);
+  }
   render() {
     const { reportModal, spinner, valueToSearch, isReportGenerating, extendId } = this.state;
     const { addList, baseList, folders, pagesList, choosenFolder, generateReportStatus, 
@@ -193,6 +204,7 @@ class ReportsContainer extends Component {
         {spinner || 
           <Navigation
             pathname={pathname}
+            baseList={baseList}
             choosenFolder={choosenFolder}
             addListLength={addList.length}
             baseListLength={baseList.length}
@@ -239,8 +251,8 @@ class ReportsContainer extends Component {
           return (
             <ChooseDriveView 
             goToNonePage={() => push(startPathname)}
-            selectOneDrive={() => push(startPathname + "/onedrive")}
-            selectGDrive={() => push(startPathname + "/gdrive")} />
+            selectOneDrive={() => this.clearDrivesData("/onedrive")}
+            selectGDrive={() => this.clearDrivesData("/gdrive")} />
           )
         }}
         />
@@ -307,6 +319,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     getTeams: () => dispatch(getTeamsACreator()),
+    getFoldersClear: (folders, status, errors, path) => dispatch(getFolders(folders, status, errors, path)),
     fetchLists: (addList, baseList, helpList, pagesList) => dispatch(fetchLists(addList, baseList, helpList, pagesList)),
     chooseFolder: (folderToGenerateReport) => dispatch(chooseFolder(folderToGenerateReport)),
     generateReport: (teamSheets, choosenFolder, pageList, history) => dispatch(generateReportACreator(teamSheets, choosenFolder, pageList, history)),

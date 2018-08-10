@@ -35,7 +35,7 @@ export const loadEmployees = (page = 1, limit = 25, other = {}) => {
   return dispatch => {
     const settings = Object.assign(
       {},
-      { Limit: limit, PageNumber: page, isDeleted: false },
+      { Limit: limit, PageNumber: page, isDeleted: null },
       other
     );
 

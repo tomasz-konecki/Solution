@@ -1,24 +1,42 @@
 import React from "react";
 import Button from "../../common/button/button";
 
-const headerTitles = {"none": "Wybierz drużyny do wygenerowania raportu" ,"drive-select":"Wybór dysku do wygenerowania", 
-"onedrive": "Przegląd folderów One Drive", "gdrive": "Przegląd folderów Google Drive"}
-  
-const navigation = ({addListLength, baseListLength, valueToSearch, searchInTeamList,
-  openReportsModals, changeIntoFoldersView, choosenDriveType, numberOfFolders, 
-  changeIntoTeamsView, choosenFolder }) => {
+const pathnames = ["/main/reports", "/main/reports/choose", "/main/reports/onedrive", 
+"/main/reports/gdrive"];
 
-    const whichCountShouldShow = (choosenDriveType === "none" || choosenDriveType === "drive-select") ? 
+const headerTitles = {[pathnames[0]]: "Wybierz drużyny do wygenerowania raportu" ,
+[pathnames[1]]:"Wybór dysku do wygenerowania", 
+[pathnames[2]]: "Przegląd folderów One Drive", 
+[pathnames[3]]: "Przegląd folderów Google Drive"}
+
+const findIndexFromPathnamesWhichIsEqual = pathname => {
+  if(pathname.search(pathnames[2]) !== -1)
+    return 2;
+
+
+  for(let i = 0; i < pathnames.length; i++){
+    if(pathnames[i] === pathname)
+      return i;
+  }
+  return -1;
+}
+
+const navigation = ({addListLength, baseListLength, valueToSearch, searchInTeamList,
+  openReportsModals, changeIntoFoldersView, numberOfFolders, 
+  changeIntoTeamsView, choosenFolder, pathname }) => {
+
+    const whichCountShouldShow = (pathname === pathnames[0] || pathname === pathnames[1]) ? 
       baseListLength : numberOfFolders;
 
     const shouldLetGenerateReport = addListLength > 0 ? true : false;
 
-    const isStartView = choosenDriveType === "none" ? true : false;
+    const isStartView = pathname === pathnames[0] ? true : false;
 
+    const pathnameIndex = findIndexFromPathnamesWhichIsEqual(pathname);
     return (
     <header>
         <h1>
-          {headerTitles[choosenDriveType]}
+          {headerTitles[pathnames[pathnameIndex]]}
         </h1>
         <nav>
           <div>
@@ -34,7 +52,7 @@ const navigation = ({addListLength, baseListLength, valueToSearch, searchInTeamL
           </div>
 
           <div className="searcher-container">
-            {choosenDriveType === "none" &&
+            {pathname === pathnames[0] &&
               <input
               value={valueToSearch}
               onChange={searchInTeamList}
@@ -46,7 +64,7 @@ const navigation = ({addListLength, baseListLength, valueToSearch, searchInTeamL
 
           <div className="btns-container">
             <Button
-              disable={!shouldLetGenerateReport || !choosenFolder}
+              disable={!shouldLetGenerateReport}
               title="Generowanie"
               onClick={openReportsModals}
               mainClass="generate-raport-btn gen-changed-position btn-brown"

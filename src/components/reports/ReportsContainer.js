@@ -12,13 +12,13 @@ import OneDriveContent from './OneDriveConent/OneDriveContent';
 import { withRouter } from 'react-router';
 import ChooseDriveView from './chooseDriveView/chooseDriveView';
 import GDriveContent from './GDriveContent/GDriveContent';
+import { Route } from 'react-router-dom';
 
-const driveTypes = ["none", "drive-select", "onedrive", "gdrive"];
+const startPathname  = "/main/reports";
 
 class ReportsContainer extends Component {
   state = {
-    choosenDriveType: "none",
-    spinner: true,
+    spinner: this.props.loadTeamsResult ? false : true,
     reportModal: false,
     didPagesHasIncorrectValues: { status: null, error: "" },
     valueToSearch: "",
@@ -27,22 +27,35 @@ class ReportsContainer extends Component {
   }
 
   componentDidMount() {
-    const { search } = this.props.history.location;
-    if(window.location.href.search("#") !== -1){
-      this.setState({choosenDriveType: driveTypes[3], spinner: false});
-    }
-    else if(search !== "" && this.props.addList.length > 0){
-      this.setState({choosenDriveType: driveTypes[2]});
-    }
-    else
-      this.props.getTeams();
+    //this.props.fetchLists([], [],[]);
+    //this.props.chooseFolder(null);
+    const { loadTeamsResult, getTeams, 
+      fetchLists, addList, teams, baseList,
+      helpList} = this.props;
+      if(addList.length === 0){
+        getTeams();
+      }
+      else{
+        fetchLists([...addList], [...helpList], [...helpList]);
+      }
   }
   componentWillReceiveProps(nextProps) {
-    if (this.props.teams !== nextProps.teams && nextProps.teams.length !== 0) {
+    if (this.props.teams !== nextProps.teams) {
       this.setState({spinner: false});
-      this.props.fetchLists([], [...nextProps.teams], [...nextProps.teams]);
-      this.props.chooseFolder(null);
+      if(nextProps.loadTeamsResult && this.props.teams.length === 0)
+        this.props.fetchLists([], [...nextProps.teams], [...nextProps.teams]);
     } 
+    else if(nextProps.generateReportStatus && 
+        nextProps.getFoldersErrors !== this.props.getFoldersErrors && 
+        nextProps.getFoldersStatus){
+      setTimeout(() => {
+        this.setState({reportModal: false});
+      }, 1000);
+    }
+    else if(nextProps.addList.length === 0 &&
+        this.props.history.location.pathname !== startPathname)
+      this.props.history.push(startPathname);
+    
     else
       this.setState({spinner: false, isReportGenerating: false});
   }
@@ -70,16 +83,15 @@ class ReportsContainer extends Component {
     const baseList = [...this.props.baseList];
     const helpList = [...this.props.helpList];
     const pagesList = [...this.props.pagesList];
+
     helpList.push(addList[index]);
     baseList.push(addList[index]);
     addList.splice(index, 1);
     pagesList.splice(index, 1);
 
     const isListEmpty = addList.length > 0 ? false : true;
-    const driveType = isListEmpty ? "none" : this.state.choosenDriveType;
 
-    this.setState({reportModal: !isListEmpty, choosenDriveType: driveType});
-
+    this.setState({reportModal: !isListEmpty});
     this.props.fetchLists(addList, baseList, helpList, pagesList);
   };
 
@@ -154,60 +166,10 @@ class ReportsContainer extends Component {
     
     this.props.chooseFolder(folder);
   }
-
-  putContentIntoVDom = () => {
-    const { reportModal, spinner, choosenDriveType, extendId } = this.state;
-    const { folders, getFoldersStatus, getFoldersErrors, path, 
-      loadTeamsResult, loadTeamsErrors, baseList, choosenFolder } = this.props;
-    
-    switch(choosenDriveType){
-      case driveTypes[1]:
-        return (
-          <ChooseDriveView 
-          goToNonePage={() => this.setState({choosenDriveType: driveTypes[0]})}
-          selectOneDrive={() => this.setState({choosenDriveType: driveTypes[2]})}
-          selectGDrive={() => this.setState({choosenDriveType: driveTypes[3]})} />
-        );
-      case driveTypes[2]:
-        return (
-          <OneDriveContent 
-          path={path}
-          extendDetailName={this.extendDetailName}
-          extendId={extendId}
-          choosenFolder={choosenFolder}
-          folders={folders}
-          getFoldersStatus={getFoldersStatus}
-          getFoldersErrors={getFoldersErrors}
-          search={this.props.history.location.search} 
-          chooseFolder={this.chooseFolderHandler} />
-        );
-      case driveTypes[3]:
-        return ( <GDriveContent 
-           path={path}
-           choosenFolder={choosenFolder}
-           folders={folders}
-           getFoldersStatus={getFoldersStatus}
-           getFoldersErrors={getFoldersErrors}
-           search={this.props.history.location.search} 
-           chooseFolder={this.chooseFolderHandler}
-        /> );
-      break;
-
-      default:
-        return (
-          <ReportsContent 
-          spinner={spinner}
-          loadTeamsResult={loadTeamsResult} 
-          baseList={baseList} 
-          addTeamToResultList={this.addTeamToResultList} 
-          loadTeamsErrors={loadTeamsErrors} />
-        );
-    }
-  }
   generateReportHandler = () => {
-    const { addList, choosenFolder, pagesList } = this.props;
+    const { addList, choosenFolder, pagesList, history, generateReport } = this.props;
     this.setState({isReportGenerating: true});
-    this.props.generateReport(addList, choosenFolder, this.state.choosenDriveType, pagesList);
+    generateReport(addList, choosenFolder, pagesList, history);
   }
 
   closeReportModal = () => {
@@ -219,29 +181,82 @@ class ReportsContainer extends Component {
   }
  
   render() {
-    const { reportModal, choosenDriveType, spinner, valueToSearch, isReportGenerating } = this.state;
-    const { addList, baseList, folders, pagesList, choosenFolder, generateReportStatus, generateReportErrors } = this.props;
+    const { reportModal, spinner, valueToSearch, isReportGenerating, extendId } = this.state;
+    const { addList, baseList, folders, pagesList, choosenFolder, generateReportStatus, 
+      generateReportErrors, getFoldersStatus, getFoldersErrors, path,
+      loadTeamsResult, loadTeamsErrors, history} = this.props;
+    const { push } = history;
+    const { pathname } = history.location;
     return (
       <div className="reports-container">
-
+        
         {spinner || 
           <Navigation
+            pathname={pathname}
             choosenFolder={choosenFolder}
-            choosenDriveType={choosenDriveType}
             addListLength={addList.length}
             baseListLength={baseList.length}
             valueToSearch={valueToSearch}
             numberOfFolders={folders.length}
             searchInTeamList={e => this.searchInTeamList(e)}
             openReportsModals={this.openReportsModals}
-            changeIntoFoldersView={() => this.setState({choosenDriveType: driveTypes[1]})}
-            changeIntoTeamsView={() => this.setState({choosenDriveType: driveTypes[0]})}
+            changeIntoFoldersView={() => push(startPathname + "/choose")}
+            changeIntoTeamsView={() => push(startPathname)}
           />  
         }
         
-        
-        {this.putContentIntoVDom()}
+        <Route path={startPathname + "/gdrive"} render={() => {
+          return (
+            <GDriveContent 
+            path={path}
+            choosenFolder={choosenFolder}
+            folders={folders}
+            getFoldersStatus={getFoldersStatus}
+            getFoldersErrors={getFoldersErrors}
+            search={this.props.history.location.search} 
+            chooseFolder={this.chooseFolderHandler}
+            /> 
+          );
+        }} />
 
+        <Route path={startPathname + "/onedrive"} render={() => {
+          return (
+            <OneDriveContent 
+            generateReportStatus={generateReportStatus}
+            path={path}
+            extendDetailName={this.extendDetailName}
+            extendId={extendId}
+            choosenFolder={choosenFolder}
+            folders={folders}
+            getFoldersStatus={getFoldersStatus}
+            getFoldersErrors={getFoldersErrors}
+            search={this.props.history.location.search} 
+            chooseFolder={this.chooseFolderHandler} />
+            );
+        }} />
+
+        <Route path={startPathname + "/choose"} render={() => {
+          return (
+            <ChooseDriveView 
+            goToNonePage={() => push(startPathname)}
+            selectOneDrive={() => push(startPathname + "/onedrive")}
+            selectGDrive={() => push(startPathname + "/gdrive")} />
+          )
+        }}
+        />
+
+        <Route exact path={startPathname} render={() => {
+          return (
+            <ReportsContent 
+            spinner={spinner}
+            loadTeamsResult={loadTeamsResult} 
+            baseList={baseList} 
+            addTeamToResultList={this.addTeamToResultList} 
+            loadTeamsErrors={loadTeamsErrors} />
+          )
+        }}
+        />
+        
         {
           reportModal && 
           <GenerateReportModal
@@ -249,7 +264,7 @@ class ReportsContainer extends Component {
           isReportGenerating={isReportGenerating}
           generateReportStatus={generateReportStatus}
           generateReportErrors={generateReportErrors}
-
+          startPathname={startPathname}
           shouldOpenModal={reportModal}
           closeModal={this.closeReportModal} 
           addList={addList}
@@ -294,7 +309,7 @@ const mapDispatchToProps = dispatch => {
     getTeams: () => dispatch(getTeamsACreator()),
     fetchLists: (addList, baseList, helpList, pagesList) => dispatch(fetchLists(addList, baseList, helpList, pagesList)),
     chooseFolder: (folderToGenerateReport) => dispatch(chooseFolder(folderToGenerateReport)),
-    generateReport: (teamSheets, choosenFolder, shouldOneDrive, pageList) => dispatch(generateReportACreator(teamSheets, choosenFolder, shouldOneDrive, pageList)),
+    generateReport: (teamSheets, choosenFolder, pageList, history) => dispatch(generateReportACreator(teamSheets, choosenFolder, pageList, history)),
     generateReportClearData: (status, errors) => dispatch(generateReport(status, errors))
     
   };

@@ -116,7 +116,6 @@ class Form extends Component {
       newFormItems[id].value = e.target.value;
     else newFormItems[id].typedListVal = e.target.value;
 
-    console.log(e.target.value);
     newFormItems[id].error = validateInput(
       e.target.value,
       newFormItems[id].canBeNull,

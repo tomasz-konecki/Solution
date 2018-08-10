@@ -1,12 +1,13 @@
-import { GET_TEAMS, GET_USER_CV, GENERATE_REPORT }
+import { GET_TEAMS, GET_USER_CV, GENERATE_REPORT, invalidTokenError }
   from "../constants";
 import WebApi from "../api";
 import { errorCatcher } from '../services/errorsHandler';
 import { asyncStarted, asyncEnded } from "./asyncActions";
-import { getFolderACreator as getOneDriveFolders } from './oneDriveActions';
+import { getFolderACreator as getOneDriveFolders, authOneDriveACreator } from './oneDriveActions';
 import { getFoldersACreator as getGDriveFolders } from './gDriveActions';
 import storeCreator from '../store';
-
+import { clearAfterTimeByFuncRef } from '../services/methods';
+import { sendTokenToGetAuth } from './authActions';
 
 export const getTeams = (teams, loadTeamsResult, loadTeamsErrors) => {
     return {
@@ -51,7 +52,7 @@ export const getUserCVACreator = userId => {
 export const generateReport = (generateReportStatus, generateReportErrors) => {
     return { type: GENERATE_REPORT, generateReportStatus, generateReportErrors }
 }
-export const generateReportACreator = (addList, choosenFolder, shouldOneDrive, pageList) => {
+export const generateReportACreator = (addList, choosenFolder, pageList, history) => {
     return dispatch => {
         const { store }  = storeCreator;
         const state = store.getState();
@@ -62,13 +63,9 @@ export const generateReportACreator = (addList, choosenFolder, shouldOneDrive, p
         for(let i = 0; i < addList.length; i++){
             teamsSheets[addList[i].name] = pageList[i].value;
         }
-        
-        const currentPath = path + "/" + choosenFolder.name;
-     
-
-        const generateOnOneDrive = shouldOneDrive === "onedrive" ? true : false;
+        const currentPath = choosenFolder.parentPath + "/" + choosenFolder.name;
+        const generateOnOneDrive = choosenFolder.parentPath !== undefined ? true : false;
         const generateOnGDrive = !generateOnOneDrive;
-
         let model = {};
         if(generateOnGDrive){
             model = {
@@ -87,16 +84,22 @@ export const generateReportACreator = (addList, choosenFolder, shouldOneDrive, p
         }
         WebApi.reports.post.report(model, generateOnGDrive, generateOnOneDrive).then(response => {
             dispatch(generateReport(true, []));
+            dispatch(clearAfterTimeByFuncRef(generateReport, 2000, null, []));
+            
             if(generateOnGDrive)
                 dispatch(getGDriveFolders(choosenFolder.id, path + "/" + choosenFolder.id));
             
-            else
+            else{
                 dispatch(getOneDriveFolders(token, currentPath));
+                if(history.location.pathname !== "/main/reports/onedrive")
+                    history.push("/main/reports/onedrive");
+            }
             
         }).catch(error => {
             dispatch(generateReport(false, errorCatcher(error)));
+            dispatch(clearAfterTimeByFuncRef(generateReport, 5000, null, [])); 
         })
     }
 }
-const getOneDriveToken = state => { return state.oneDriveReducer.authCodeToken }
+const getOneDriveToken = state => { return state.authReducer.oneDriveToken }
 const getOneDrivePath = state => { return state.oneDriveReducer.path } 

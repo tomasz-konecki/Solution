@@ -4,6 +4,8 @@ import StatusPrompt from "../../common/statusPrompt/statusPrompt";
 import SpinnerButton from "../../form/spinner-btn/spinner-btn";
 import Spinner from "../../common/spinner/spinner";
 import RedirectSpinner from "../../common/spinner/redirect-spinner";
+import { Link } from 'react-router-dom';
+
 const genReport = ({
   shouldOpenModal,
   closeModal,
@@ -16,8 +18,11 @@ const genReport = ({
   generateReport,
   isReportGenerating,
   generateReportStatus,
-  generateReportErrors
+  generateReportErrors,
+  startPathname
+
 }) => {
+  const shouldLetGenerate = (addList.length > 0 && choosenFolder !== null) ? true : false;
   return (
     <Modal
       key={1}
@@ -50,42 +55,53 @@ const genReport = ({
         })}
       </ul>
 
-      {choosenFolder && (
+   
         <div className="choosen-folder-content">
-          <div className="icon-container">
-            <i className="fa fa-folder" />
-            <span onClick={() => window.open(choosenFolder.webUrl)}>
-              Otwórz w <i className="fab fa-google-drive" />
-            </span>
-          </div>
-          <article className="folder-details">
-            {choosenFolder.id && (
-              <p>
-                <span>Identyfikator: </span>
-                <b>{choosenFolder.id}</b>
-              </p>
-            )}
-            {choosenFolder.name && (
-              <p>
-                <span>Nazwa: </span>
-                <b>{choosenFolder.name}</b>
-              </p>
-            )}
-            {choosenFolder.createDateTime && (
-              <p>
-                <span>Data utworzenia: </span>
-                <b>{choosenFolder.createDateTime}</b>
-              </p>
-            )}
-            {choosenFolder.parentPath && (
-              <p>
-                <span>Ścieżka: </span>
-                <b>{choosenFolder.parentPath}</b>
-              </p>
-            )}
-          </article>
-
+          {choosenFolder && 
+            <React.Fragment>
+              <div className="icon-container">
+                <i className="fa fa-folder" />
+                <span onClick={() => window.open(choosenFolder.webUrl)}>
+                  Otwórz w <i className="fab fa-google-drive" />
+                </span>
+              </div>
+              <article className="folder-details">
+                {choosenFolder.id && (
+                  <p>
+                    <span>Identyfikator: </span>
+                    <b>{choosenFolder.id}</b>
+                  </p>
+                )}
+                {choosenFolder.name && (
+                  <p>
+                    <span>Nazwa: </span>
+                    <b>{choosenFolder.name}</b>
+                  </p>
+                )}
+                {choosenFolder.createDateTime && (
+                  <p>
+                    <span>Data utworzenia: </span>
+                    <b>{choosenFolder.createDateTime}</b>
+                  </p>
+                )}
+                {choosenFolder.parentPath && (
+                  <p>
+                    <span>Ścieżka: </span>
+                    <b>{choosenFolder.parentPath}</b>
+                  </p>
+                )}
+              </article>
+            </React.Fragment>
+          }
+          {!shouldLetGenerate && 
+            <article className="gen-report-not-able-to-gen-prompt">
+              Aby wygenerować raport musisz wybrać folder docelowy. Folder docelowy znajdziesz na jednym z dysków
+              umieszczonych w GoogleDrive lub OneDrive.
+              <Link onClick={closeModal} to={startPathname + "/choose"}>Kliknij tutaj</Link>, aby przejść do zakładki szybciej.
+            </article>
+          }
           <SpinnerButton
+            validationResult={shouldLetGenerate}
             submitResult={{
               status: generateReportStatus,
               content: generateReportStatus
@@ -93,11 +109,13 @@ const genReport = ({
                 : generateReportErrors[0]
             }}
             isLoading={isReportGenerating}
-            onClickHandler={generateReport}
+            onClickHandler={(!isReportGenerating && !generateReportStatus) ? 
+              generateReport : null
+              }
             btnTitle="Generuj raport"
           />
         </div>
-      )}
+
     </Modal>
   );
 };

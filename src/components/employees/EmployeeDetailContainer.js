@@ -229,7 +229,6 @@ class EmployeeDetailContainer extends Component {
         WebApi.employees.get.emplo
           .contact(this.props.match.params.id)
           .then(result => {
-            console.log(result);
             this.setState({
               errorBlock: result,
               contactInfo: result.extractData(),
@@ -255,7 +254,6 @@ class EmployeeDetailContainer extends Component {
         WebApi.assignments.get
           .byEmployee(this.props.match.params.id)
           .then(result => {
-            console.log(result);
             this.setState({
               errorBlock: result,
               team: result.extractData()
@@ -329,7 +327,6 @@ class EmployeeDetailContainer extends Component {
     WebApi.employees.get.emplo
       .skills(this.props.match.params.id)
       .then(emploSkills => {
-        console.log(emploSkills);
         this.setState({
           errorBlock: emploSkills,
           skills: emploSkills.extractData(),
@@ -725,7 +722,6 @@ class EmployeeDetailContainer extends Component {
   };
 
   mapTeam = team => {
-    console.log(team);
     return team.map((teamAssignment, index) => {
       let unfurled = this.state.rowUnfurls[index];
       return [

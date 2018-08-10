@@ -82,6 +82,8 @@ export const DELETE_FOLDER = "DELETE_FOLDER";
 export const UPDATE_FOLDER = "UPDATE_FOLDER";
 export const UPLOAD_FILE = "UPLOAD_FILE";
 
+export const invalidTokenError = "Nieprawidłowy token autoryzacyjny do usługi OneDrive.";
+
 // SKILLS
 
 export const GET_ALL_SKILLS = "GET_ALL_SKILLS";

@@ -246,17 +246,6 @@ class Table extends Component{
                     operationPrompt={addFeedbackStatus}
                     />
                 }
-
-                {
-                    loadFeedbackStatus === false &&   
-                    <OperationStatusPrompt
-                    operationPromptContent={
-                        loadFeedbackErrors &&
-                        loadFeedbackErrors[0]
-                    }
-                    operationPrompt={false}
-                    />
-                }
                 
         </div>
         );

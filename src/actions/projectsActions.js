@@ -163,25 +163,36 @@ export const addEmployeeToProjectACreator = (
 ) => {
   return dispatch => {
     const objectToAdd = {
-      employeeId: empId,
-      projectId: projectId,
-      startDate: strDate,
-      endDate: endDate,
-      role: role,
-      assignedCapacity: assignedCapacity / 10,
-      responsibilities: responsibilites
-    };
-    dispatch(addEmployeeToProjectPromise(objectToAdd))
-      .then(response => {
-        dispatch(addEmployeeToProject(true, []));
+      "employeeId": empId,
+      "projectId": projectId,
+      "startDate": strDate,
+      "endDate": endDate,
+      "role": role,
+      "assignedCapacity": assignedCapacity/10,
+      "responsibilities": responsibilites
+    }
+    dispatch(addEmployeeToProjectPromise(objectToAdd)).then(response => {
+      dispatch(addEmployeeToProject(true, []));
+      
+      dispatch(getProjectACreator(projectId, onlyActiveAssignments));
+      dispatch(clearAfterTimeByFuncRef(addEmployeeToProject, 5000, null, []));
+      
+    }).catch(error => {
+      dispatch(addEmployeeToProject(false, errorCatcher(error)));
+      dispatch(clearAfterTimeByFuncRef(addEmployeeToProject, 5000, null, []));
+      
+    })
+  }
+}
 
-        dispatch(getProjectACreator(projectId, onlyActiveAssignments));
-      })
-      .catch(error => {
-        dispatch(addEmployeeToProject(false, errorCatcher(error)));
-      });
-  };
-};
+const clearAfterTimeByFuncRef = (funcRef, delay, ...params) => {
+  return dispatch => {
+    setTimeout(() => {
+      dispatch(funcRef(...params))
+    }, delay);
+  }
+}
+
 
 export const addFeedback = (addFeedbackStatus, addFeedbackErrors) => {
   return {
@@ -273,55 +284,38 @@ export const editProjectACreator = (
   onlyActiveAssignments
 ) => {
   return dispatch => {
-    dispatch(editProjectPromise(projectToSend, projectId))
-      .then(response => {
-        dispatch(editProject(true, []));
+    dispatch(editProjectPromise(projectToSend, projectId)).then(response => {
+      dispatch(editProject(true, []));
 
-        dispatch(getProjectPromise(projectId, onlyActiveAssignments))
-          .then(getProjectResponse => {
-            const responsiblePersonKeys = {
-              keys: cutNotNeededKeysFromArray(
-                Object.keys(getProjectResponse.responsiblePerson),
-                [0]
-              ),
-              names: names
-            };
+      dispatch(clearAfterTimeByFuncRef(editProject, 5000, null, []));
+      
+      dispatch(getProjectPromise(projectId, onlyActiveAssignments)).then(getProjectResponse => {
+        const responsiblePersonKeys = {keys: cutNotNeededKeysFromArray(
+          Object.keys(getProjectResponse.responsiblePerson), [0]), 
+          names: names};
+        
+        const overViewKeys = {keys: cutNotNeededKeysFromArray(
+            Object.keys(getProjectResponse), [0,1,2,7,8,9,10,11]), 
+            names: overViewNames};
+        
+        dispatch(getProject(getProjectResponse, 
+            true, [], responsiblePersonKeys, overViewKeys, []));
 
-            const overViewKeys = {
-              keys: cutNotNeededKeysFromArray(Object.keys(getProjectResponse), [
-                0,
-                1,
-                2,
-                7,
-                8,
-                9,
-                10,
-                11
-              ]),
-              names: overViewNames
-            };
-
-            dispatch(
-              getProject(
-                getProjectResponse,
-                true,
-                [],
-                responsiblePersonKeys,
-                overViewKeys,
-                []
-              )
-            );
-          })
-          .catch(error => {
-            dispatch(getProject(null, false, errorCatcher(error), [], []));
-          });
+      
+      }).catch(error => {
+        dispatch(getProject(null, 
+          false, errorCatcher(error), [], []));
+        dispatch(clearAfterTimeByFuncRef(getProject, 5000, null, null, [], [], []));
+        
       })
-      .catch(error => {
-        dispatch(editProject(false, errorCatcher(error)));
-      });
-  };
-};
-
+    }).catch(error => {
+      dispatch(editProject(false, errorCatcher(error)));
+      dispatch(clearAfterTimeByFuncRef(editProject, 5000, null, []));
+      
+    })
+  }
+}
+     
 export const changeProjectSkills = (
   changeProjectSkillsStatus,
   changeProjectSkillsErrors

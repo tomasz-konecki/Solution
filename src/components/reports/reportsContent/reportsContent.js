@@ -1,9 +1,8 @@
 import React from "react";
 import "./reportsContent.scss";
-import Hoc from "../../../services/auxilary";
 import Spinner from '../../common/spinner/spinner';
 const reportsContent = ({spinner, loadTeamsResult, baseList, addTeamToResultList, loadTeamsErrors}) => (
-  <Hoc>
+  <React.Fragment>
     {spinner ? 
       <Spinner />
       :
@@ -31,7 +30,7 @@ const reportsContent = ({spinner, loadTeamsResult, baseList, addTeamToResultList
       {loadTeamsResult === false && 
         <p className="server-error">{loadTeamsErrors[0]}</p>
       }
-  </Hoc>
+  </React.Fragment>
 );
 
 export default reportsContent;

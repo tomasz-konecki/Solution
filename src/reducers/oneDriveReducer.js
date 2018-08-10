@@ -1,15 +1,11 @@
 import {
-    ONE_DRIVE_AUTH, SEND_CODE_TO_GET_TOKEN, GET_FOLDERS, CREATE_FOLDER, DELETE_FOLDER,
+    ONE_DRIVE_AUTH, GET_FOLDERS, CREATE_FOLDER, DELETE_FOLDER,
     UPDATE_FOLDER, UPLOAD_FILE, SET_PARENT_DETAILS  } from "../constants";
   import { updateObject } from '../services/methods';
   const initialState = {
     authStatus: null,
     authErrors: [],
     authRedirectLink: "",
-
-    authCodeToken: "",
-    authCodeStatus: null,
-    authCodeErrors: [],
 
     folders: [],
     getFoldersStatus: null,
@@ -37,9 +33,6 @@ import {
       case ONE_DRIVE_AUTH:
         return updateObject(state, { authStatus: action.authStatus, 
             authErrors: action.authErrors, authRedirectLink: action.authRedirectLink })
-      case SEND_CODE_TO_GET_TOKEN:
-        return updateObject(state, { authCodeToken: action.authCodeToken, 
-          authCodeStatus: action.authCodeStatus, authCodeErrors: action.authCodeErrors})
       case GET_FOLDERS:
         return updateObject(state, { folders: action.folders, 
           getFoldersStatus: action.getFoldersStatus, getFoldersErrors: action.getFoldersErrors, 

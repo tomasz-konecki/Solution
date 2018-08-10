@@ -3,7 +3,7 @@ import '../OneDriveContent.scss';
 import { connect } from 'react-redux'; 
 import { authOneDriveACreator, sendCodeToGetTokenACreator, createFolderACreator,
     deleteFolderACreator, deleteFolder, updateFolderACreator, 
-    getFolderACreator, uploadFileACreator  
+    getFolderACreator, uploadFileACreator 
 } from '../../../actions/oneDriveActions';
 import Spinner from '../../common/spinner/spinner';
 import Button from '../../common/button/button';
@@ -14,6 +14,8 @@ import FilesList from './FilesList/FilesList';
 import SmallSpinner from '../../common/spinner/small-spinner';
 import FilePicker from '../filePicker/filePicker';
 import OperationStatusPrompt from '../../form/operationStatusPrompt/operationStatusPrompt';
+import { invalidTokenError } from '../../../constants';
+
 const startPath = "/drive/root:";
 
 class OneDriveContent extends React.PureComponent {
@@ -43,26 +45,40 @@ class OneDriveContent extends React.PureComponent {
         newFolderName: "",
         newFolderNameError: ""
     }
+    
+
     componentDidMount(){
-        const { search } = this.props;
-        if(search === ""){
-            this.props.authOneDrive();
+        const { search, oneDriveToken, authCodeStatus, sendCodeToGetToken,
+            authOneDrive, addList, changeIntoTeamsView, getFoldersStatus,
+            getFoldersErrors, generateReportStatus } = this.props;
+        const didODriveTokenIsCreated = authCodeStatus === null || 
+            authCodeStatus === undefined;
+    
+        if(search === "" && didODriveTokenIsCreated){
+            authOneDrive();
         }
-        else{
-            this.setState({isPreparingForLogingIn: false});
-            if(!this.props.authCodeToken){
-                this.setState({isTakingCodeFromApi: true});
-                this.props.sendCodeToGetToken(window.location.href);
-            }
+            
+        else if(search !== "" && didODriveTokenIsCreated){
+            this.setState({isPreparingForLogingIn: false, isTakingCodeFromApi: true}, () => {
+                sendCodeToGetToken(window.location.href);
+            });
+        }
+        else if(generateReportStatus === null){
+            const { getFolder, path } = this.props;
+            getFolder(oneDriveToken, path ? path : "/drive/root:");
         }
     }
     componentWillReceiveProps(nextProps){
         if(nextProps.authErrors !== this.props.authErrors){
-            this.setState({isPreparingForLogingIn: false});
-            window.open(nextProps.authRedirectLink);
+            if(nextProps.authStatus === true)
+                window.location.href = nextProps.authRedirectLink;
+            else 
+                this.setState({isPreparingForLogingIn: false});
         }
+
         else if(nextProps.getFoldersErrors !== this.props.getFoldersErrors){
-            this.setState({isTakingCodeFromApi: false, isAddingFolder: false, 
+            this.setState({isPreparingForLogingIn: false,
+                isTakingCodeFromApi: false, isAddingFolder: false, 
                 showAddingFolderInput: false, isDeletingOrEditingFolder: false, 
                 showDeleteFolderModal: false, currentOpenedFolderToEditId: "", 
                 folderIsLoadingId: "", isGoingBack: false, isUploadingFile: false});
@@ -89,15 +105,15 @@ class OneDriveContent extends React.PureComponent {
         if(!validationResult){
             this.setState({isAddingFolder: true, newFolderNameError: validationResult});
             this.props.createFolder(this.state.newFolderName, 
-                this.props.path, this.props.authCodeToken);
+                this.props.path, this.props.oneDriveToken);
         }
         else
             this.setState({newFolderNameError: validationResult});
     }
     deleteFolder = () => {
         this.setState({isDeletingOrEditingFolder: true});
-        const { authCodeToken, path, choosenFolder } = this.props;
-        this.props.deleteFolder(this.state.folderToDeleteId, authCodeToken, path, choosenFolder);
+        const { oneDriveToken, path, choosenFolder } = this.props;
+        this.props.deleteFolder(this.state.folderToDeleteId, oneDriveToken, path, choosenFolder);
     }
 
     checkForCorrectInputValue = (value, oldValue) => {
@@ -131,13 +147,13 @@ class OneDriveContent extends React.PureComponent {
             const { editFolderName, currentOpenedFolderToEditId } = this.state;
             this.setState({editFolderError: "", isDeletingOrEditingFolder: true});
             this.props.updateFolder(editFolderName, this.state.currentOpenedFolderToEditId, 
-                this.props.authCodeToken, this.props.path);     
+                this.props.oneDriveToken, this.props.path);     
         }
     }
     openFolder = (folderName, folderId) => {
         this.setState({folderIsLoadingId: folderId});
         const nextPath = this.props.path + "/" + folderName;
-        this.props.getFolder(this.props.authCodeToken, nextPath);
+        this.props.getFolder(this.props.oneDriveToken, nextPath);
     }
 
     goToFolderBefore = () => {
@@ -146,14 +162,14 @@ class OneDriveContent extends React.PureComponent {
         const lastIndexOfKey = path.lastIndexOf("/");
         const newPath = path.substring(0, lastIndexOfKey);
 
-        this.props.getFolder(this.props.authCodeToken, newPath);
+        this.props.getFolder(this.props.oneDriveToken, newPath);
     }
 
     handleAddFile = e => { this.setState({fileToUpload: e.target.files}); }
 
     uploadFile = () => {
         this.setState({isUploadingFile: true});
-        this.props.uploadFile(this.props.authCodeToken, this.props.path,
+        this.props.uploadFile(this.props.oneDriveToken, this.props.path,
             this.state.fileToUpload, this.props.folders);
     }
     enableFolderEdit = (currentOpenedFolderToEditId, editFolderName) => {
@@ -169,6 +185,10 @@ class OneDriveContent extends React.PureComponent {
             fileName === this.state.currentOpenedFolderDetailName ? 
             null : fileName})
     }
+
+    loginAgain = () => {
+
+    }
     render(){
         const { isPreparingForLogingIn, isTakingCodeFromApi, currentOpenedFolderDetailName,
             showAddingFolderInput, isAddingFolder, folderNameError, 
@@ -181,11 +201,11 @@ class OneDriveContent extends React.PureComponent {
             createFolderStatus, createFolderErrors, deleteFolderStatus, 
             deleteFolderErrors, updateFolderStatus, updateFolderErrors, 
             uploadFileStatus, uploadFileErrors, chooseFolder, choosenFolder, 
-            extendDetailName, extendId } = this.props;
+            extendDetailName, extendId, authCodeStatus, authErrors, authStatus } = this.props;
         return (
             <div className="drive-content-container">
 
-                {(isPreparingForLogingIn || isTakingCodeFromApi || isGoingBack) || 
+                {authCodeStatus && getFoldersStatus && !isPreparingForLogingIn &&
                     <FilePicker fileToUpload={fileToUpload} uploadFile={this.uploadFile}
                     handleAddFile={e => this.handleAddFile(e)} isUploadingFile={isUploadingFile}/>
                 }
@@ -281,7 +301,9 @@ class OneDriveContent extends React.PureComponent {
                 }
 
                 {getFoldersStatus === false && 
-                    <p className="one-d-error">{getFoldersErrors[0]}</p>
+                    <p className="one-d-error">
+                        {getFoldersErrors[0]}
+                    </p>
                 }
                 
                 <ConfirmModal 
@@ -336,6 +358,13 @@ class OneDriveContent extends React.PureComponent {
                     />
                 }
                 
+                {authStatus === false && 
+                    <OperationStatusPrompt 
+                    key={5} 
+                    operationPromptContent={authErrors[0]}
+                    operationPrompt={false}
+                    />
+                }
             </div>
         );
     }
@@ -347,9 +376,10 @@ const mapStateToProps = state => {
         authErrors: state.oneDriveReducer.authErrors,
         authRedirectLink: state.oneDriveReducer.authRedirectLink,
 
-        authCodeToken: state.oneDriveReducer.authCodeToken,
-        authCodeStatus: state.oneDriveReducer.authCodeStatus,
-        authCodeErrors: state.oneDriveReducer.authCodeErrors,
+        oneDriveToken: state.authReducer.oneDriveToken,
+        authCodeStatus: state.authReducer.authCodeStatus,
+        authCodeErrors: state.authReducer.authCodeErrors,
+        refreshToken: state.authReducer.refreshToken,
 
         createFolderStatus: state.oneDriveReducer.createFolderStatus,
         createFolderErrors: state.oneDriveReducer.createFolderErrors,

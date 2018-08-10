@@ -64,7 +64,11 @@ class ProjectDetailsBlock extends React.PureComponent {
   }
   componentWillReceiveProps(nextProps) {
     if(nextProps.editProjectErrors !== this.props.editProjectErrors){
-      this.setState({isLoading: false});
+      this.setState({isLoading: false}, nextProps.editProjectStatus ? () => {
+        setTimeout(() => {
+          this.props.closeEditProjectModal();
+        }, 2500);
+      } : null);
     }
   }
   

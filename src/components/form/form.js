@@ -23,6 +23,7 @@ class Form extends Component {
     searchedList: [],
     showSearchedList: false
   };
+
   onKeyPress = (e, index, typedVal) => {
     if (e.key === "Enter") this.addItemToList(index, typedVal);
   };
@@ -266,6 +267,9 @@ class Form extends Component {
                   />
                 ) : i.mode === "type-ahead" ? (
                   <div className="type-ah-container">
+                    {this.state.showSearchedList && 
+                      <i onClick={() => this.setState({showSearchedList: false})} className="fa fa-times"></i>
+                    }
                     <input
                       autoComplete="off"
                       onFocus={
@@ -291,10 +295,13 @@ class Form extends Component {
                     {this.state.isServerSearching ? (
                       <SmallSpinner />
                     ) : (
+
+                      this.state.showSearchedList ||
                       <i
                         onClick={() => this.searchOnServer(index)}
                         className="fa fa-search"
                       />
+
                     )}
                     {this.state.searchedList.length === 1 &&
                       !this.state.formItems[index].error && (

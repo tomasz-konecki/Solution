@@ -2,7 +2,6 @@
 .client-clouds-container,
 .responsible-person-container {
   width: 100%;
-  min-height: 200px;
   background-color: #f0f0f075;
   margin-bottom: 40px;
   box-shadow: 0.5px 1px 3px 0px #000000;
@@ -54,7 +53,7 @@
         color: #484848;
       }
       p {
-        word-break: break-all;
+        word-break: break-word;
       }
     }
 

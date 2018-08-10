@@ -105,15 +105,7 @@ export default class InfoClientList extends Component {
               </button>
             )}
 
-            <button
-              onClick={() =>
-                handleOpenAddItemModal(
-                  item
-                  // item.id,
-                  // item.name ? item.name : `${item.firstName} ${item.lastName}`
-                )
-              }
-            >
+            <button onClick={() => handleOpenAddItemModal(item)}>
               <Icon icon="edit" iconType="fa" additionalClass="icon-danger" />
             </button>
           </div>
@@ -127,7 +119,10 @@ export default class InfoClientList extends Component {
             <h2>{t(translateText.Header)}</h2>
           </div>
           <div className="info-client-list-header-input">
-            <label className="switch">
+            <label
+              className="switch"
+              title={!isDeleted ? t("showDeleted") : t("showActive")}
+            >
               <input
                 type="checkbox"
                 onChange={this.handleChange}

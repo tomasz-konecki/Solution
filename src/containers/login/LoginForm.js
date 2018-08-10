@@ -9,10 +9,23 @@ import "../../scss/LoginForm.scss";
 import { push } from "react-router-redux";
 import { translate } from "react-translate";
 import { bindActionCreators } from "redux";
+import { CSSTransitionGroup } from "react-transition-group";
 
 class LoginForm extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      error: ""
+    };
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.error !== this.props.error)
+      this.setState({ error: nextProps.error });
+
+    setTimeout(() => {
+      this.setState({ error: "" });
+    }, 5000);
   }
 
   componentDidMount() {
@@ -28,8 +41,9 @@ class LoginForm extends React.Component {
   }
 
   render() {
-    const { handleSubmit, error, t } = this.props;
-
+    const { handleSubmit, t } = this.props;
+    const { error } = this.state;
+    console.log(error);
     return (
       <div className="login-wrapper">
         <div className="container login-form">
@@ -54,12 +68,20 @@ class LoginForm extends React.Component {
                   required
                 />
               </div>
-
-              <div className="context-container">
-                {error && <strong>{error}</strong>}
+              <CSSTransitionGroup
+                transitionName="error-validation"
+                transitionEnterTimeout={1000}
+                transitionLeaveTimeout={1000}
+              >
+                {error && (
+                  <div className="context-container">
+                    <strong>{error}</strong>
+                  </div>
+                )}
+              </CSSTransitionGroup>
+              <div style={{ height: "7px" }}>
                 {this.props.loading === true && <LoaderHorizontal />}
               </div>
-
               <div className="centric-container">
                 <button className="submitter dcmt-button" type="submit">
                   {t("Login")}

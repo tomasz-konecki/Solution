@@ -109,7 +109,9 @@ const translations = {
     ReactivatingResponsiblePerson: "Reaktywować Osobę Odpowiedzialną",
     ResponsiblePersonReactivated: "Osoba Odpowiedzialna została Aktywowana.",
     RemovingResponsiblePerson: "Usunąć Osobę Odpowiedzialną",
-    ResponsiblePersonRemoved: "Odpowiedzialna Osoba została dezaktywowana."
+    ResponsiblePersonRemoved: "Odpowiedzialna Osoba została dezaktywowana.",
+    showDeleted: "Pokaż usunięte",
+    showActive: "Pokaż aktywne"
   },
   AddClient: {
     Add: "Dodaj",

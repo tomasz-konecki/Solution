@@ -143,11 +143,10 @@ class ProjectsList extends Component {
           field: "status",
           pretty: t("Status"),
           multiState: {
-            100: t("SelectStatus"),
+            null: t("SelectStatus"),
             0: t("Activated"),
             1: t("NotActivated"),
-            2: t("Closed"),
-            isDeleted: t("Deleted")
+            2: t("Closed")
           },
           type: "multiState",
           filter: true
@@ -177,7 +176,8 @@ class ProjectsList extends Component {
                     binaryPermissioner(false)(0)(0)(0)(0)(1)(1)(
                       this.props.binPem
                     )) &&
-                  object.status === 0
+                  object.status === 0 &&
+                  object.isDeleted == false
                 );
               }
             },

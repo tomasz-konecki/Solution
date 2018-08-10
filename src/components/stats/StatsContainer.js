@@ -7,7 +7,7 @@ import IntermediateBlock from "./../common/IntermediateBlock";
 import { translate } from "react-translate";
 
 const SIZE_MOBILE = {
-  width: 300
+  width: 270
 };
 
 const SIZE_DESKTOP = {

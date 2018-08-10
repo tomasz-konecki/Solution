@@ -33,7 +33,7 @@ $activeShadow: 0 0 10px rgba($teal1, 0.5);
   }
 }
 
-.raport-button{
+.raport-button {
   width: 200px;
 }
 
@@ -44,7 +44,7 @@ $activeShadow: 0 0 10px rgba($teal1, 0.5);
   margin: 20px 0 0;
 
   @media screen and (max-width: 500px) {
-    margin-bottom: 20px;
+    margin: 20px auto;
   }
 
   .smooth-table-remove-filters {
@@ -234,7 +234,7 @@ $activeShadow: 0 0 10px rgba($teal1, 0.5);
     }
   }
   @media screen and (max-width: 500px) {
-    padding-bottom: 0px;
+    padding: 0px;
     .smooth-operator {
       height: unset;
 

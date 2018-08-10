@@ -125,7 +125,6 @@ class EmployeesContainer extends React.Component {
         this.pageChange(this.state.currentPage)
       );
     }
-    console.log(this.props.employees);
 
     return (
       <React.Fragment>

@@ -136,6 +136,7 @@ class AddClientModal extends Component {
           <div className="group">
             <label htmlFor="clientName">{t("ClientName")}</label>
             <input
+              style={{ height: "unset !important" }}
               type="text"
               id="clientName"
               name="clientName"
@@ -157,6 +158,7 @@ class AddClientModal extends Component {
 
             <label htmlFor="clientDescription">{t("ClientDescription")}</label>
             <textarea
+              style={{ resize: "vertical", maxHeight: "200px" }}
               type="text"
               id="clientDescription"
               name="clientDescription"

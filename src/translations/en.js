@@ -107,7 +107,9 @@ const translations = {
     ReactivatingResponsiblePerson: "Reactivate Responsible Person",
     ResponsiblePersonReactivated: "Responsible Person has beed reactivated.",
     RemovingResponsiblePerson: "Removing Responsible Person",
-    ResponsiblePersonRemoved: "Responsible Person has been removed."
+    ResponsiblePersonRemoved: "Responsible Person has been removed.",
+    showDeleted: "Show Deleted",
+    showActive: "Show Active"
   },
   AddClient: {
     Add: "Add",

@@ -32,6 +32,9 @@ class EmployeesList extends Component {
       unfurler: EmployeesRowUnfurl,
       showDeletedCheckbox: true,
       showAllCheckbox: true,
+      disabledRowComparator: object => {
+        return object.isDeleted;
+      },
       handles: {
         refresh: () => {
           this.props.pageChange();

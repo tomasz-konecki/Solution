@@ -53,7 +53,6 @@ const translations = {
     ReactivateUserInfinitive: "Reactivate user",
     UserReactivated: "User has been reactivated",
     DeleteUserImperativus: "Delete user",
-    DownloadCV: "Download CV",
     DeleteUserInfinitive: "Delete user",
     DeleteUserRequestImperativus: "Delete user request",
     DeleteUserRequestInfinitive: "Delete user request",
@@ -159,7 +158,15 @@ const translations = {
     Status: "Status",
     AccountActive: "Active",
     AccountInactive: "Inactive",
-    SelectStatus: "Select Status..."
+    SelectStatus: "Select Status...",
+    DownloadCV: "Download CV",
+    Options: "Options",
+    ActivateEmployee: "Activate Employee",
+    EmployeeHasBeenActivated: "Employee has been Activated.",
+    ActivateEmployeeInfinitive: "Activate Employee",
+    DeleteEmployee: "Delete Employee",
+    DeleteEmployeeInfinitive: "Delete Employee",
+    EmployeeHasBeenDeleted: "Employee has been Deleted."
   },
   Confirmation: {
     YouAreAboutTo: "You are about to",

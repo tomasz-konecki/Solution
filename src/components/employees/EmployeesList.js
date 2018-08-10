@@ -10,6 +10,7 @@ import PropTypes from "prop-types";
 import { translate } from "react-translate";
 import "../../scss/components/employees/employeesList.scss";
 import IntermediateBlock from "./../common/IntermediateBlock";
+import binaryPermissioner from "./../../api/binaryPermissioner";
 
 class EmployeesList extends Component {
   constructor(props) {
@@ -29,6 +30,11 @@ class EmployeesList extends Component {
       filterClass: "EmployeeFilter",
       rowDetailUnfurl: true,
       unfurler: EmployeesRowUnfurl,
+      showDeletedCheckbox: true,
+      showAllCheckbox: true,
+      disabledRowComparator: object => {
+        return object.isDeleted;
+      },
       handles: {
         refresh: () => {
           this.props.pageChange();
@@ -75,6 +81,36 @@ class EmployeesList extends Component {
           },
           type: "multiState",
           filter: true
+        },
+        {
+          width: 1,
+          toolBox: [
+            {
+              icon: { icon: "download" },
+              title: t("DownloadCV"),
+              click: object => {
+                this.props.getCV(object.id);
+              },
+              comparator: object => !!object.seniority
+            },
+            {
+              icon: { icon: "plus-square" },
+              title: t("ActivateEmployee"),
+              click: object => {
+                this.props.activateEmployee(object, t);
+              },
+              comparator: object => !object.seniority || object.isDeleted
+            },
+            {
+              icon: { icon: "minus-square" },
+              title: t("DeleteEmployee"),
+              click: object => {
+                this.props.removeEmployee(object, t);
+              },
+              comparator: object => !object.isDeleted && object.seniority
+            }
+          ],
+          pretty: t("Options")
         }
       ]
     };
@@ -106,7 +142,10 @@ EmployeesList.propTypes = {
   currentPage: PropTypes.number.isRequired,
   totalPageCount: PropTypes.number.isRequired,
   loading: PropTypes.bool.isRequired,
-  employees: PropTypes.array
+  employees: PropTypes.array,
+  getCV: PropTypes.func.isRequired,
+  activateEmployee: PropTypes.func.isRequired,
+  removeEmployee: PropTypes.func.isRequired
 };
 
 export default translate("EmployeesList")(EmployeesList);

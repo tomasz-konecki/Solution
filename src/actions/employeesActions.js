@@ -2,9 +2,12 @@ import {
   LOAD_EMPLOYEES_SUCCESS,
   ASYNC_STARTED,
   ASYNC_ENDED,
-  LOAD_EMPLOYEES_FAILURE, GET_EMPLOYEE,
+  LOAD_EMPLOYEES_FAILURE,
+  GET_EMPLOYEE,
   CHANGE_EMPLOYEE_OPERATION_STATUS,
-  CHANGE_EMPLOYEE_STATE, LOAD_ASSIGNMENTS, DELETE_QUATER,
+  CHANGE_EMPLOYEE_STATE,
+  LOAD_ASSIGNMENTS,
+  DELETE_QUATER,
   REACTIVATE_QUATER,
   CHANGE_EMPLOYEE_SKILLS,
   ADD_NEW_SKILLS_TO_EMPLOYEE
@@ -12,8 +15,8 @@ import {
 import axios from "axios";
 import WebApi from "../api";
 import { asyncStarted, asyncEnded } from "./asyncActions";
-import { errorCatcher } from '../services/errorsHandler';
-import { populateSkillArrayWithConstData } from '../services/methods';
+import { errorCatcher } from "../services/errorsHandler";
+import { populateSkillArrayWithConstData } from "../services/methods";
 export const loadEmployeesSuccess = employees => {
   return {
     type: LOAD_EMPLOYEES_SUCCESS,
@@ -32,7 +35,7 @@ export const loadEmployees = (page = 1, limit = 25, other = {}) => {
   return dispatch => {
     const settings = Object.assign(
       {},
-      { Limit: limit, PageNumber: page, IsDeleted: false },
+      { Limit: limit, PageNumber: page, isDeleted: null },
       other
     );
 
@@ -52,211 +55,356 @@ export const loadEmployees = (page = 1, limit = 25, other = {}) => {
   };
 };
 
-
-
-export const changeEmployeeOperationStatus = (employeeStatus, employeeErrors) => {
-  return { type: CHANGE_EMPLOYEE_OPERATION_STATUS, employeeStatus, employeeErrors }
-}
+export const changeEmployeeOperationStatus = (
+  employeeStatus,
+  employeeErrors
+) => {
+  return {
+    type: CHANGE_EMPLOYEE_OPERATION_STATUS,
+    employeeStatus,
+    employeeErrors
+  };
+};
 export const getEmployee = employee => {
-  return { type: GET_EMPLOYEE, employee }
-}
-export const getEmployeePromise = (employeeId) => (dispatch) => {
+  return { type: GET_EMPLOYEE, employee };
+};
+export const getEmployeePromise = employeeId => dispatch => {
   return new Promise(resolve => {
-    WebApi.employees.get.byEmployee(employeeId).then(response => {
-      const { dtoObject } = response.replyBlock.data;
-      dispatch(getEmployee(dtoObject));
-      dispatch(changeEmployeeOperationStatus(true, []));
-      resolve(dtoObject);
-    }).catch(error => {
-      dispatch(changeEmployeeOperationStatus(false, errorCatcher(error)));
-      dispatch(clearAfterTime(5000));
-    })
-  })
-}
+    WebApi.employees.get
+      .byEmployee(employeeId)
+      .then(response => {
+        const { dtoObject } = response.replyBlock.data;
+        dispatch(getEmployee(dtoObject));
+        dispatch(changeEmployeeOperationStatus(true, []));
+        resolve(dtoObject);
+      })
+      .catch(error => {
+        dispatch(changeEmployeeOperationStatus(false, errorCatcher(error)));
+        dispatch(clearAfterTime(5000));
+      });
+  });
+};
 
 const clearAfterTime = delay => {
   return dispatch => {
-      setTimeout(() => {
-        dispatch(changeEmployeeOperationStatus(null, []))
-      }, delay);
-  }
-}
+    setTimeout(() => {
+      dispatch(changeEmployeeOperationStatus(null, []));
+    }, delay);
+  };
+};
 
 export const deleteEmployee = employeeId => {
   return dispatch => {
-    WebApi.employees.delete(employeeId).then(response => {
-      dispatch(getEmployeePromise(employeeId));
-    }).catch(error => {
-      dispatch(changeEmployeeOperationStatus(false, errorCatcher(error)));
-      dispatch(clearAfterTime(5000));
-    });
-  }
-}
+    WebApi.employees
+      .delete(employeeId)
+      .then(response => {
+        dispatch(getEmployeePromise(employeeId));
+      })
+      .catch(error => {
+        dispatch(changeEmployeeOperationStatus(false, errorCatcher(error)));
+        dispatch(clearAfterTime(5000));
+      });
+  };
+};
+
+export const deleteEmployeeOnList = (
+  employeeId,
+  pageChange,
+  setActionConfirmationResult
+) => {
+  return dispatch => {
+    WebApi.employees
+      .delete(employeeId)
+      .then(response => {
+        setActionConfirmationResult(response);
+        pageChange();
+      })
+      .catch(error => {
+        setActionConfirmationResult(error);
+      });
+  };
+};
+
+export const reActivateEmployeeOnList = (
+  employeeId,
+  pageChange,
+  setActionConfirmationResult
+) => {
+  return dispatch => {
+    WebApi.employees.patch
+      .reactivate(employeeId)
+      .then(response => {
+        setActionConfirmationResult(response);
+        pageChange();
+      })
+      .catch(error => {
+        setActionConfirmationResult(error);
+      });
+  };
+};
+
 export const reactivateEmployee = employeeId => {
   return dispatch => {
-    WebApi.employees.patch.reactivate(employeeId).then(response => {
-      dispatch(getEmployeePromise(employeeId)).then(secondResponse => {
-        dispatch(loadAssignmentsACreator(employeeId));
+    WebApi.employees.patch
+      .reactivate(employeeId)
+      .then(response => {
+        dispatch(getEmployeePromise(employeeId)).then(secondResponse => {
+          dispatch(loadAssignmentsACreator(employeeId));
+        });
+      })
+      .catch(error => {
+        dispatch(changeEmployeeState(false, errorCatcher(error), ""));
+        dispatch(clearAfterTimeStatus(5000));
       });
-    }).catch(error => {
-      dispatch(changeEmployeeState(false, errorCatcher(error), ""));
-      dispatch(clearAfterTimeStatus(5000));
-    })
-  }
-}
+  };
+};
 
-export const editStatistics = (employeeId, seniority, capacity, currentClouds) => {
+export const editStatistics = (
+  employeeId,
+  seniority,
+  capacity,
+  currentClouds
+) => {
   return dispatch => {
     const model = {
-        "seniority": seniority,
-        "capacity": capacity,
-        "cloudsIds": currentClouds
-    }
-    WebApi.employees.patch.data(employeeId, model).then(response => {
-      dispatch(getEmployeePromise(employeeId));
-    }).catch(error => {
-      dispatch(changeEmployeeOperationStatus(false, errorCatcher(error)));
-      dispatch(clearAfterTime(5000));
-    })
-  }
-}
+      seniority: seniority,
+      capacity: capacity,
+      cloudsIds: currentClouds
+    };
+    WebApi.employees.patch
+      .data(employeeId, model)
+      .then(response => {
+        dispatch(getEmployeePromise(employeeId));
+      })
+      .catch(error => {
+        dispatch(changeEmployeeOperationStatus(false, errorCatcher(error)));
+        dispatch(clearAfterTime(5000));
+      });
+  };
+};
 
-export const changeEmployeeState = (employeeOperationStatus, employeeOperationErrors, employeeResultMessage) => {
-  return { type: CHANGE_EMPLOYEE_STATE, employeeOperationStatus, employeeOperationErrors, employeeResultMessage}
-}
+export const changeEmployeeState = (
+  employeeOperationStatus,
+  employeeOperationErrors,
+  employeeResultMessage
+) => {
+  return {
+    type: CHANGE_EMPLOYEE_STATE,
+    employeeOperationStatus,
+    employeeOperationErrors,
+    employeeResultMessage
+  };
+};
+
+export const activateEmployeeOnList = (
+  employeeId,
+  seniority,
+  capacity,
+  pageChange,
+  setActionConfirmationResult
+) => {
+  return dispatch => {
+    const model = {
+      id: employeeId,
+      seniority: seniority,
+      capacity: capacity
+    };
+
+    WebApi.employees.post
+      .add(model)
+      .then(response => {
+        setActionConfirmationResult(response);
+        pageChange();
+      })
+      .catch(error => {
+        setActionConfirmationResult(error);
+      });
+  };
+};
 
 export const activateEmployee = (employeeId, seniority, capacity) => {
   return dispatch => {
     const model = {
-      "id": employeeId,
-      "seniority": seniority,
-      "capacity": capacity,
-    }
-    WebApi.employees.post.add(model).then(response => {
-      dispatch(getEmployeePromise(employeeId));
-
-    }).catch(error => {
-      dispatch(changeEmployeeState(false, errorCatcher(error), ""));
-      dispatch(clearAfterTimeStatus(5000));
-    })
-  }
-}
+      id: employeeId,
+      seniority: seniority,
+      capacity: capacity
+    };
+    WebApi.employees.post
+      .add(model)
+      .then(response => {
+        dispatch(getEmployeePromise(employeeId));
+      })
+      .catch(error => {
+        dispatch(changeEmployeeState(false, errorCatcher(error), ""));
+        dispatch(clearAfterTimeStatus(5000));
+      });
+  };
+};
 const clearAfterTimeStatus = delay => {
   return dispatch => {
     setTimeout(() => {
-      dispatch(changeEmployeeState(null, [], ""))
+      dispatch(changeEmployeeState(null, [], ""));
     }, delay);
-}
-}
+  };
+};
 
+export const loadAssignments = (
+  loadAssignmentsStatus,
+  loadAssignmentsErrors,
+  loadedAssignments
+) => {
+  return {
+    type: LOAD_ASSIGNMENTS,
+    loadAssignmentsStatus,
+    loadAssignmentsErrors,
+    loadedAssignments
+  };
+};
 
-export const loadAssignments = (loadAssignmentsStatus, loadAssignmentsErrors, loadedAssignments) => {
-  return { type: LOAD_ASSIGNMENTS, loadAssignmentsStatus, loadAssignmentsErrors, loadedAssignments}
-}
-
-export const loadAssignmentsACreator = (employeeId) => (dispatch) => {
+export const loadAssignmentsACreator = employeeId => dispatch => {
   return new Promise((resolve, reject) => {
-    WebApi.assignments.get.byEmployee(employeeId).then(response => {
-      dispatch(loadAssignments(true, [], response.replyBlock.data.dtoObjects));
-      resolve(response.replyBlock.data.dtoObjects);
-      }).catch(error => {
+    WebApi.assignments.get
+      .byEmployee(employeeId)
+      .then(response => {
+        dispatch(
+          loadAssignments(true, [], response.replyBlock.data.dtoObjects)
+        );
+        resolve(response.replyBlock.data.dtoObjects);
+      })
+      .catch(error => {
         dispatch(loadAssignments(false, errorCatcher(error), []));
         reject(response.replyBlock.data.dtoObjects);
-      })
-    })
-}
+      });
+  });
+};
 
 export const deleteQuater = (deleteQuaterStatus, deleteQuaterErrors) => {
-  return { type: DELETE_QUATER, deleteQuaterStatus, deleteQuaterErrors }
-}
+  return { type: DELETE_QUATER, deleteQuaterStatus, deleteQuaterErrors };
+};
 export const deleteQuaterACreator = (quarterId, employeeId) => {
   return dispatch => {
+    WebApi.quarterTalks
+      .delete(quarterId)
+      .then(response => {
+        dispatch(deleteQuater(true, []));
+        dispatch(getEmployeePromise(employeeId));
 
-    WebApi.quarterTalks.delete(quarterId).then(response => {
-      dispatch(deleteQuater(true, []));
-      dispatch(getEmployeePromise(employeeId));
-
-      dispatch(clearAfterTimeByFuncRef(deleteQuater, 5000, null, []));
-      
-    }).catch(error => {
-      dispatch(deleteQuater(false, errorCatcher(error)));
-      dispatch(clearAfterTimeByFuncRef(deleteQuater, 5000, null, []));
-    })
-    
-  }
-}
+        dispatch(clearAfterTimeByFuncRef(deleteQuater, 5000, null, []));
+      })
+      .catch(error => {
+        dispatch(deleteQuater(false, errorCatcher(error)));
+        dispatch(clearAfterTimeByFuncRef(deleteQuater, 5000, null, []));
+      });
+  };
+};
 
 const clearAfterTimeByFuncRef = (funcRef, delay, ...params) => {
   return dispatch => {
     setTimeout(() => {
-      dispatch(funcRef(...params))
+      dispatch(funcRef(...params));
     }, delay);
-  }
-}
+  };
+};
 
-export const reactivateQuater = (reactivateQuaterStatus, reactivateQuaterErrors, reactivateQuaterMessage) => {
-  return { type: REACTIVATE_QUATER, reactivateQuaterStatus, reactivateQuaterErrors, reactivateQuaterMessage}
-}
+export const reactivateQuater = (
+  reactivateQuaterStatus,
+  reactivateQuaterErrors,
+  reactivateQuaterMessage
+) => {
+  return {
+    type: REACTIVATE_QUATER,
+    reactivateQuaterStatus,
+    reactivateQuaterErrors,
+    reactivateQuaterMessage
+  };
+};
 
 export const reactivateQuaterACreator = (quaterId, employeeId, message) => {
-  return dispatch => { 
-    WebApi.quarterTalks.put.reactivate(quaterId).then(response => {
-      dispatch(reactivateQuater(true, [], message));
-      dispatch(getEmployeePromise(employeeId));
+  return dispatch => {
+    WebApi.quarterTalks.put
+      .reactivate(quaterId)
+      .then(response => {
+        dispatch(reactivateQuater(true, [], message));
+        dispatch(getEmployeePromise(employeeId));
 
-      dispatch(clearAfterTimeByFuncRef(reactivateQuater, 5000, null, []));
-    }).catch(error => {
-      dispatch(reactivateQuater(false, errorCatcher(error)));
-      dispatch(clearAfterTimeByFuncRef(reactivateQuater, 5000, null, []));
-    })
-  }
-}
+        dispatch(clearAfterTimeByFuncRef(reactivateQuater, 5000, null, []));
+      })
+      .catch(error => {
+        dispatch(reactivateQuater(false, errorCatcher(error)));
+        dispatch(clearAfterTimeByFuncRef(reactivateQuater, 5000, null, []));
+      });
+  };
+};
 
-export const changeEmployeeSkills = (changeSkillsStatus, changeSkillsErrors) =>{
-     return { type: CHANGE_EMPLOYEE_SKILLS, changeSkillsStatus, changeSkillsErrors};
-}
+export const changeEmployeeSkills = (
+  changeSkillsStatus,
+  changeSkillsErrors
+) => {
+  return {
+    type: CHANGE_EMPLOYEE_SKILLS,
+    changeSkillsStatus,
+    changeSkillsErrors
+  };
+};
 
 export const changeEmployeeSkillsACreator = (employeeId, currentArray) => {
   return dispatch => {
     const skillsArray = [];
-    for(let key in currentArray){
+    for (let key in currentArray) {
       skillsArray.push({
-      "skillId": currentArray[key].skill.id, 
-      "skillLevel": currentArray[key].skill.level, 
-      "yearsOfExperience": currentArray[key].skill.yearsOfExperience});
+        skillId: currentArray[key].skill.id,
+        skillLevel: currentArray[key].skill.level,
+        yearsOfExperience: currentArray[key].skill.yearsOfExperience
+      });
     }
-    WebApi.employees.put.skills(employeeId, skillsArray)
+    WebApi.employees.put
+      .skills(employeeId, skillsArray)
       .then(response => {
         dispatch(changeEmployeeSkills(true, []));
         dispatch(clearAfterTimeByFuncRef(changeEmployeeSkills, 1500, null, []));
-      }).catch(error => {
+      })
+      .catch(error => {
         dispatch(changeEmployeeSkills(false, errorCatcher(error)));
         dispatch(clearAfterTimeByFuncRef(changeEmployeeSkills, 5000, null, []));
-      })
-  }
-}
+      });
+  };
+};
 
-export const addNewSkillsToEmployee = (addNewSkillsStatus, addNewSkillsErrors) => {
-  return { type: ADD_NEW_SKILLS_TO_EMPLOYEE, addNewSkillsStatus, addNewSkillsErrors}
-}
+export const addNewSkillsToEmployee = (
+  addNewSkillsStatus,
+  addNewSkillsErrors
+) => {
+  return {
+    type: ADD_NEW_SKILLS_TO_EMPLOYEE,
+    addNewSkillsStatus,
+    addNewSkillsErrors
+  };
+};
 
-export const addNewSkillsToEmployeeACreator = (oldSkills, newSkills, employeeId) => {
+export const addNewSkillsToEmployeeACreator = (
+  oldSkills,
+  newSkills,
+  employeeId
+) => {
   return dispatch => {
     let model = [];
-    for(let key in oldSkills){
+    for (let key in oldSkills) {
       model.push({
-        "skillId": oldSkills[key].skill.id.toString(),
-        "skillLevel": oldSkills[key].skill.level,
-        "yearsOfExperience": oldSkills[key].skill.yearsOfExperience
-      })
+        skillId: oldSkills[key].skill.id.toString(),
+        skillLevel: oldSkills[key].skill.level,
+        yearsOfExperience: oldSkills[key].skill.yearsOfExperience
+      });
     }
     model = model.concat(populateSkillArrayWithConstData(newSkills));
-    
-    WebApi.employees.put.skills(employeeId, model).then(response => {
-      dispatch(addNewSkillsToEmployee(true, []));
-      dispatch(getEmployeePromise(employeeId));
-    }).catch(error => {
-      dispatch(addNewSkillsToEmployee(false, errorCatcher(error)));
-    });
-  }
-}
+
+    WebApi.employees.put
+      .skills(employeeId, model)
+      .then(response => {
+        dispatch(addNewSkillsToEmployee(true, []));
+        dispatch(getEmployeePromise(employeeId));
+      })
+      .catch(error => {
+        dispatch(addNewSkillsToEmployee(false, errorCatcher(error)));
+      });
+  };
+};

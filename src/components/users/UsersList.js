@@ -199,16 +199,6 @@ class UsersList extends Component {
               comparator: object =>
                 !object.isDeleted &&
                 binaryPermissioner(false)(0)(0)(0)(0)(0)(1)(this.props.binPem)
-            },
-            {
-              icon: { icon: "download" },
-              title: t("DownloadCV"),
-              click: object => {
-                this.props.getCV(object.id);
-              },
-              comparator: object =>
-                !object.isDeleted &&
-                binaryPermissioner(false)(0)(0)(0)(0)(0)(1)(this.props.binPem)
             }
           ],
           pretty: t("DeleteEdit")

@@ -160,7 +160,15 @@ const translations = {
     Status: "Status",
     AccountActive: "Aktywny",
     AccountInactive: "Nieaktywny",
-    SelectStatus: "Wybierz status..."
+    SelectStatus: "Wybierz status...",
+    DownloadCV: "Pobierz CV",
+    Options: "Opcje",
+    ActivateEmployee: "Aktywuj pracownika",
+    EmployeeHasBeenActivated: "Pracownik został Aktywowany.",
+    ActivateEmployeeInfinitive: "Aktywować pracownika",
+    DeleteEmployee: "Usuń pracownika",
+    DeleteEmployeeInfinitive: "Usunąć pracownika",
+    EmployeeHasBeenDeleted: "Pracownik został Usunięty."
   },
   Confirmation: {
     YouAreAboutTo: "Właśnie chcesz",

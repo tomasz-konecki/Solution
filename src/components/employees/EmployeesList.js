@@ -99,7 +99,7 @@ class EmployeesList extends Component {
               click: object => {
                 this.props.activateEmployee(object, t);
               },
-              comparator: object => !object.seniority
+              comparator: object => !object.seniority || object.isDeleted
             },
             {
               icon: { icon: "minus-square" },

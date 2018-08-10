@@ -131,7 +131,7 @@ export const reActivateEmployeeOnList = (
   setActionConfirmationResult
 ) => {
   return dispatch => {
-    WebApi.employees
+    WebApi.employees.patch
       .reactivate(employeeId)
       .then(response => {
         setActionConfirmationResult(response);

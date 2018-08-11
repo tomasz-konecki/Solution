@@ -29,13 +29,14 @@
       height: 200px;
     }
     @media (max-width: 500px) {
-      height: 250px;
+      height: 300px;
     }
     .btns-container {
-      @media (max-width: 890px) {
+        @media (max-width: 890px) {
         margin-top: 40px;
         margin: 40px auto 0 auto;
       }
+    
     }
     .btns-container button:first-of-type {
       margin-right: 10px;

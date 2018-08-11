@@ -19,8 +19,8 @@ const genReport = ({
   isReportGenerating,
   generateReportStatus,
   generateReportErrors,
-  startPathname
-
+  startPathname,
+  currentPath
 }) => {
   const shouldLetGenerate = (addList.length > 0 && choosenFolder !== null) ? true : false;
   return (
@@ -62,7 +62,9 @@ const genReport = ({
               <div className="icon-container">
                 <i className="fa fa-folder" />
                 <span onClick={() => window.open(choosenFolder.webUrl)}>
-                  Otwórz w <i className="fab fa-google-drive" />
+                  Otwórz w 
+                  <i className={`fab ${currentPath.search(startPathname+"/onedrive") !== -1 ?
+                    "fa-windows" : "fa-google-drive"}`}></i>
                 </span>
               </div>
               <article className="folder-details">

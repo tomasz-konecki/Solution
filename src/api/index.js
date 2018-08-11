@@ -8,7 +8,7 @@ import storeCreator from "./../store";
 import storage from "redux-persist/lib/storage";
 import { push } from "react-router-redux";
 import { logout,  } from "./../actions/authActions";
-import { refreshToken, authOneDriveACreator, getFolderACreator } from '../actions/oneDriveActions';
+import { refreshToken, authOneDrive, getFolderACreator } from '../actions/oneDriveActions';
 import ResponseParser from "./responseParser";
 import Config from "Config";
 
@@ -47,7 +47,6 @@ function listener() {
 }
 
 const authValidator = response => {
-  
   if(response.response.config.url.search("onedrive") !== -1){
     const oneDriveToken = JSON.parse(response.response.config.data).token;
     const startPath = "/drive/root:";

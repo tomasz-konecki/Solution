@@ -14,7 +14,7 @@ import { withRouter } from 'react-router';
 import ChooseDriveView from './chooseDriveView/chooseDriveView';
 import GDriveContent from './GDriveContent/GDriveContent';
 import { Route } from 'react-router-dom';
-
+import { createSignalRConnection } from '../../actions/progressBarActions';
 const startPathname  = "/main/reports";
 
 class ReportsContainer extends Component {
@@ -172,9 +172,11 @@ class ReportsContainer extends Component {
     this.props.chooseFolder(folder);
   }
   generateReportHandler = () => {
-    const { addList, choosenFolder, pagesList, history, generateReport } = this.props;
+    const { addList, choosenFolder, pagesList, history, generateReport, createSignalRConnection } = this.props;
     this.setState({isReportGenerating: true});
-    generateReport(addList, choosenFolder, pagesList, history);
+    createSignalRConnection().then(response => { 
+      generateReport(addList, choosenFolder, pagesList, history);
+    });
   }
 
   closeReportModal = () => {
@@ -272,6 +274,7 @@ class ReportsContainer extends Component {
         {
           reportModal && 
           <GenerateReportModal
+          currentPath={pathname}
           generateReport={this.generateReportHandler}
           isReportGenerating={isReportGenerating}
           generateReportStatus={generateReportStatus}
@@ -323,8 +326,8 @@ const mapDispatchToProps = dispatch => {
     fetchLists: (addList, baseList, helpList, pagesList) => dispatch(fetchLists(addList, baseList, helpList, pagesList)),
     chooseFolder: (folderToGenerateReport) => dispatch(chooseFolder(folderToGenerateReport)),
     generateReport: (teamSheets, choosenFolder, pageList, history) => dispatch(generateReportACreator(teamSheets, choosenFolder, pageList, history)),
-    generateReportClearData: (status, errors) => dispatch(generateReport(status, errors))
-    
+    generateReportClearData: (status, errors) => dispatch(generateReport(status, errors)),
+    createSignalRConnection: () => dispatch(createSignalRConnection())
   };
 };
 

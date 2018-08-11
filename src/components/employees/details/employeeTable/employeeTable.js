@@ -1,7 +1,7 @@
 import React from 'react'
 import './employeeTable.scss';
 import Spinner from '../../../common/spinner/small-spinner';
-
+import EmptyContent from '../../../common/empty-content/empty-content';
 class EmployeeTable extends React.Component{
     state = {
         isLoadingData: true
@@ -51,10 +51,11 @@ class EmployeeTable extends React.Component{
                     </table>
                 }
                 {loadAssignmentsStatus && loadedAssignments.length === 0 && 
-                    <div className="empty-assign">
-                        Puste przypisania
-                        <i className="fa fa-code-branch"></i>
-                    </div>
+                    <EmptyContent sizeClass="assigns-size"
+                    shouldShowTopIcon={false}
+                    content="Puste przypisania"
+                    mainIcon="fa fa-code-branch"
+                    />
                 }
 
                 {loadAssignmentsStatus === false && 

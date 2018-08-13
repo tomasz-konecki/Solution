@@ -11,6 +11,7 @@ import { getAllSkillsForEmployee } from '../../../../actions/skillsActions';
 import { addNewSkillsToEmployeeACreator, addNewSkillsToEmployee } from '../../../../actions/employeesActions';
 import Spinner from '../../../common/spinner/spinner';
 import SpinnerButton from '../../../form/spinner-btn/spinner-btn';
+import EmptyContent from '../../../common/empty-content/empty-content';
 
 const minYearsOfExp = 1;
 const maxYearsOfExp = 28;
@@ -300,24 +301,17 @@ class EmployeeSkills extends React.Component{
                             key={skill.skill.id}/>
                         );
                     }) : 
-                    <div onClick={
-                        status !== "Nieaktywny" ? this.openSkillsModal : null} className="empty-skills">
-                        {status !== "Nieaktywny" &&
-                            <i className="fa fa-plus"></i>
-                        }
-                        Brak umiejętności
-                        <i className="fa fa-fire"></i>
-                    </div>
+                    <EmptyContent sizeClass="skills-size"
+                    action={status !== "Nieaktywny" ? this.openSkillsModal : null} 
+                    shouldShowTopIcon={status !== "Nieaktywny"}
+                    content="Brak umiejętności"
+                    operationIcon="fa fa-plus"
+                    mainIcon="fa fa-fire"
+                    />
                     }
-                    {(changedIndexes.length > 0 || didUserDeleteSkill) && 
-                        <Button onClick={this.saveSkills}
-                        title="Zapisz zmiany" 
-                        mainClass="option-btn green-btn" 
-                        disable={isChangingSkills} />
-                    }
+                
                     
                 </ul>
-                
                     <Modal key={1}
                     open={showAddNewSkillsModal}
                     classNames={{ modal: "Modal Modal-add-owner" }}
@@ -395,6 +389,12 @@ class EmployeeSkills extends React.Component{
                         }
                     
                     </Modal>
+                    {(changedIndexes.length > 0 || didUserDeleteSkill) && 
+                    <Button onClick={this.saveSkills}
+                    title="Zapisz zmiany" 
+                    mainClass="option-btn green-btn" 
+                    disable={isChangingSkills} />
+                    }
             </section>
         );
     }

@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import Spinner from '../../common/spinner/spinner';
 import { getFoldersACreator, deleteFolderACreator, updateFolderACreator,
     createFolderACreator, uploadFileACreator } from '../../../actions/gDriveActions';
-import { loginACreator } from '../../../actions/persistHelpActions';
+import { loginACreator, login } from '../../../actions/persistHelpActions';
 import { deleteFolder, updateFolder, uploadFile } from '../../../actions/oneDriveActions';
 import FilesList from '../OneDriveConent/FilesList/FilesList';
 import '../OneDriveContent.scss';
@@ -34,21 +34,23 @@ class GDriveContent extends React.Component{
 
         fileToUpload: null,
         isUploadingFile: false        
-        
-        
     }
     componentDidMount(){
-        const isAuth = window.location.href.search("#") === -1 ? false : true;
-        if(isAuth && this.props.folders.length === 0){
-            this.props.getFolders(startPath, startPath);
+       // this.props.loginClearData(null, [], "");
+       // Need to wait for Artur Karpinski to fix 500 in GDrive
+        const { loginStatus, folders, getFolders, login } = this.props;
+        if(window.location.href.search("#") === -1){
+            console.log("Siema");
+            login();
         }
-        else
-            this.props.login();
+        else if(folders.length === 0 && loginStatus){
+            getFolders(startPath, startPath);
+        }
     }
     componentWillReceiveProps(nextProps){
-        if(nextProps.loginStatus && window.location.href.search("#") === -1){
+        if(window.location.href.search("#") === -1){
             this.setState({isLoading: false, isDeletingOrEditingFolder: false});
-            window.open(nextProps.redirectUrl);
+            window.location.href = nextProps.redirectUrl;
         }
         else if(nextProps.folders !== this.props.folders || 
             nextProps.editFolderError !== this.props.editFolderError){
@@ -190,7 +192,8 @@ class GDriveContent extends React.Component{
                                 <p className="validation-error">
                                 {editFolderError}</p> 
                             }
-                            <Button
+                            {getFoldersStatus && 
+                                <Button
                                 onClick={!showAddingFolderInput ? () => this.setState({showAddingFolderInput: true}) : null}
                                 disable={isAddingFolder || newFolderNameError}
                                 title={showAddingFolderInput || "Dodaj folder"}
@@ -216,8 +219,10 @@ class GDriveContent extends React.Component{
                                     { showAddingFolderInput && !isAddingFolder && <i onClick={() => this.setState({showAddingFolderInput: false})} 
                                         className="fa fa-times"></i> }
                             </Button>   
+                            }
+                         
 
-                            {path !== startPath && 
+                            {path !== startPath && getFoldersStatus &&
                             <Button 
                             onClick={(this.goToFolderBefore)}
                             mainClass="generate-raport-btn btn-transparent" title="Cofnij">
@@ -366,6 +371,7 @@ const mapStateToProps = state => {
   const mapDispatchToProps = dispatch => {
     return {
         login: () => dispatch(loginACreator()),
+        loginClearData: (status, errors, redirectUrl) => dispatch(login(status, errors, redirectUrl)),
         getFolders: (folderId, path) => dispatch(getFoldersACreator(folderId, path)),
         deleteFolder: (folderId, path, redirectPath, currentChoosenFolder) => dispatch(deleteFolderACreator(folderId, path, redirectPath, currentChoosenFolder)),
         deleteFolderClear: (status, errors) => dispatch(deleteFolder(status, errors)),

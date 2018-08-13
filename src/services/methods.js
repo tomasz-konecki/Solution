@@ -88,3 +88,11 @@ export const populateSkillArrayWithConstData = skills => {
   }
   return newSkills
 }
+
+export const clearAfterTimeByFuncRef = (funcRef, delay, ...params) => {
+  return dispatch => {
+    setTimeout(() => {
+      dispatch(funcRef(...params))
+    }, delay);
+  }
+}

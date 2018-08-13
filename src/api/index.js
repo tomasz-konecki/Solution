@@ -7,7 +7,8 @@ import redux from "redux";
 import storeCreator from "./../store";
 import storage from "redux-persist/lib/storage";
 import { push } from "react-router-redux";
-import { logout } from "./../actions/authActions";
+import { logout,  } from "./../actions/authActions";
+import { refreshToken, authOneDrive, getFolderACreator } from '../actions/oneDriveActions';
 import ResponseParser from "./responseParser";
 import Config from "Config";
 
@@ -46,16 +47,30 @@ function listener() {
 }
 
 const authValidator = response => {
-  if (response.response === undefined) {
+  if(response.response.config.url.search("onedrive") !== -1){
+    const oneDriveToken = JSON.parse(response.response.config.data).token;
+    const startPath = "/drive/root:";
+    store.dispatch(refreshToken(oneDriveToken)).then(response => {
+      dispatch(getFolderACreator(response, startPath));
+    }).catch(error => {
+      store.dispatch(authOneDriveACreator());
+    });
+  }
+  else if(response.response.config.url.search("GDrive") !== -1){
+    console.log("Akcja na gDRIVe to sledzenia - dokonczyc")
+  }
+  else{
+    if (response.response === undefined) {
+      throw response;
+      // store.dispatch(logout());
+      // store.dispatch(push("/"));
+    }
+    if (response.response.status === 401) {
+      store.dispatch(logout());
+      store.dispatch(push("/"));
+    }
     throw response;
-    // store.dispatch(logout());
-    // store.dispatch(push("/"));
   }
-  if (response.response.status === 401) {
-    store.dispatch(logout());
-    store.dispatch(push("/"));
-  }
-  throw response;
 };
 
 const parseSuccess = response => {
@@ -426,13 +441,18 @@ const WebApi = {
   },
   oneDrive: {
     get: {
-      authBegin: () => {
+      getRedirectLink: () => {
         return WebAround.get(`${API_ENDPOINT}/onedrive/auth`);
       },
       sendQuertToAuth: code => {
         return WebAround.get(
           `${API_ENDPOINT}/onedrive/authenticated?code=${code}`
         );
+      },
+      refreshToken: oldToken => {
+        return WebAround.get(
+          `${API_ENDPOINT}/Onedrive/refresh?refresh_token=${oldToken}`
+        )
       }
     },
     post: {

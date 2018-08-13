@@ -3,7 +3,7 @@ import './contactList.scss';
 
 const contactList = props => (
     <section className="contact-list-container">
-        <label>Wybierz z listy kontaktow</label>
+        <label>Osoba odpowiedzialna</label>
         <select value={props.selected} onChange={props.onChange} className="contact-list">
             <optgroup label="Dane kontaktowe">
                 {props.items.map(i => {

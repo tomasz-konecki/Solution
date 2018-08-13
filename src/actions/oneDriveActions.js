@@ -6,6 +6,21 @@ import WebApi from "../api";
 import { changeOperationStatus } from "./asyncActions";
 import { chooseFolder } from './persistHelpActions';
 import { errorCatcher } from "../services/errorsHandler";
+import { sendTokenToGetAuth } from './authActions';
+
+
+export const refreshToken = currentToken => (dispatch) => {
+  return new Promise((resolve, reject) => {
+    WebApi.oneDrive.get.refreshToken(currentToken).then(response => {
+      const { access_token, refresh_token } = response.replyBlock.data.dtoObject;
+      dispatch(sendTokenToGetAuth(access_token, true, [], refresh_token));
+      resolve(access_token);
+    }).catch(error => {
+      dispatch(sendTokenToGetAuth("", null, [], ""));
+      reject(error);
+    })
+  })
+}
 
 export const authOneDrive = (authStatus, authErrors, authRedirectLink) => {
   return {
@@ -19,7 +34,7 @@ export const authOneDrive = (authStatus, authErrors, authRedirectLink) => {
 export const authOneDriveACreator = () => {
   return dispatch => {
     WebApi.oneDrive.get
-      .authBegin()
+      .getRedirectLink()
       .then(response => {
         dispatch(
           authOneDrive(true, [], response.replyBlock.data.dtoObject.link)
@@ -27,20 +42,8 @@ export const authOneDriveACreator = () => {
       })
       .catch(error => {
         dispatch(authOneDrive(false, errorCatcher(error), ""));
+        dispatch(clearAfterTimeByFuncRef(authOneDrive, 5000, null, []));
       });
-  };
-};
-
-export const sendCodeToGetToken = (
-  authCodeToken,
-  authCodeStatus,
-  authCodeErrors
-) => {
-  return {
-    type: SEND_CODE_TO_GET_TOKEN,
-    authCodeToken,
-    authCodeStatus,
-    authCodeErrors
   };
 };
 
@@ -58,10 +61,9 @@ export const sendCodeToGetTokenACreator = url => {
     else
       codeWithoutId = codeWithNotNeededId;
 
-
     dispatch(sendAuthCodePromise(codeWithoutId)).then(response => {
-      const { access_token } = response.replyBlock.data.dtoObject;
-      dispatch(sendCodeToGetToken(access_token, true, []));
+      const { access_token, refresh_token } = response.replyBlock.data.dtoObject;
+      dispatch(sendTokenToGetAuth(access_token, true, [], refresh_token));
 
       dispatch(getFoldersPromise(access_token, null)).then(folders => {
         dispatch(getFolders(folders, true, [], "/drive/root:"));
@@ -94,7 +96,7 @@ export const getFolderACreator = (token, path) => {
 };
 
 export const getFoldersPromise = (token, path) => dispatch => {
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve) => {
     const model = {
       token: token,
       path: path
@@ -106,7 +108,6 @@ export const getFoldersPromise = (token, path) => dispatch => {
       })
       .catch(error => {
         dispatch(getFolders([], false, errorCatcher(error), ""));
-        reject(error);
       });
   });
 };
@@ -119,7 +120,7 @@ export const sendAuthCodePromise = codeWithoutId => dispatch => {
         resolve(response);
       })
       .catch(error => {
-        dispatch(sendCodeToGetToken("", false, errorCatcher(error)));
+        dispatch(sendTokenToGetAuth("", false, errorCatcher(error), ""));
         reject(error);
       });
   });
@@ -220,6 +221,16 @@ export const updateFolderACreator = (newName, folderId, token, path) => {
       });
   };
 };
+
+const clearAfterTimeByFuncRef = (funcRef, delay, ...params) => {
+  return dispatch => {
+    setTimeout(() => {
+      dispatch(funcRef(...params))
+    }, delay);
+  }
+}
+
+
 
 export const uploadFile = (uploadFileStatus, uploadFileErrors) => {
   return {

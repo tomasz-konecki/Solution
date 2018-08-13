@@ -232,7 +232,9 @@ export const activateEmployee = (employeeId, seniority, capacity) => {
     WebApi.employees.post
       .add(model)
       .then(response => {
-        dispatch(getEmployeePromise(employeeId));
+        dispatch(getEmployeePromise(employeeId)).then(() => {
+          dispatch(loadAssignmentsACreator(employeeId))
+        });
       })
       .catch(error => {
         dispatch(changeEmployeeState(false, errorCatcher(error), ""));

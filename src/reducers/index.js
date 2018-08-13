@@ -10,3 +10,4 @@ export * from './oneDriveReducer';
 export * from './persistHelpReducer';
 export * from "./clientsReducer";
 export * from './gDriveReducer';
+export * from './progressBarReducer';

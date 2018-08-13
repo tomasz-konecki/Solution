@@ -74,6 +74,16 @@
         position: relative;
         .fa-search{
             color: grey;
+            cursor: pointer;
+        }
+        .fa-times{
+            position: absolute;
+            font-size: 18px;
+            cursor: pointer;
+            right: 8px;
+            top: 2.5px;
+
+
         }
         .responsibilites-list li:hover{
             background-color: lightgrey;

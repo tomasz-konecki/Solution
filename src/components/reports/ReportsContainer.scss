@@ -29,13 +29,14 @@
       height: 200px;
     }
     @media (max-width: 500px) {
-      height: 250px;
+      height: 300px;
     }
     .btns-container {
-      @media (max-width: 890px) {
+        @media (max-width: 890px) {
         margin-top: 40px;
         margin: 40px auto 0 auto;
       }
+    
     }
     .btns-container button:first-of-type {
       margin-right: 10px;
@@ -104,6 +105,12 @@
       .searcher-container {
         position: absolute;
         width: 220px;
+        height: 35px;
+        .fa-search{
+          position: absolute;
+          right: 6px;
+          top: 6px;
+        }
         @media (min-width: 891px) {
           left: 0;
           right: 0;
@@ -122,6 +129,7 @@
         input {
           width: 100%;
           padding: 15px;
+          height: 100%;
           border: none;
           border-radius: 5px;
           font-size: 14px;
@@ -203,6 +211,22 @@
   margin: 0 auto;
   padding: 5px 25px;
   flex-flow: wrap;
+  .gen-report-not-able-to-gen-prompt{
+    padding: 15px;
+    line-height: 20px;
+    font-style: italic;
+    color: tomato;
+    font-weight: bold;
+    margin-top: 20px;
+    @media(max-width: 500px){
+      margin: 0;
+      padding: 0;
+      line-height: 18px;
+    }
+    a{
+      margin-left: 2.5px;
+    }
+  }
   & > p {
     bottom: -50px;
     font-size: 20px;
@@ -259,6 +283,9 @@
       color: rgba(69, 69, 209, 0.81);
       cursor: pointer;
       margin-left: 5px;
+      i{
+        margin-left: 5px;
+      }
     }
   }
 }

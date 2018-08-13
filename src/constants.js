@@ -82,6 +82,8 @@ export const DELETE_FOLDER = "DELETE_FOLDER";
 export const UPDATE_FOLDER = "UPDATE_FOLDER";
 export const UPLOAD_FILE = "UPLOAD_FILE";
 
+export const invalidTokenError = "Nieprawidłowy token autoryzacyjny do usługi OneDrive.";
+
 // SKILLS
 
 export const GET_ALL_SKILLS = "GET_ALL_SKILLS";
@@ -109,3 +111,6 @@ export const REACTIVATE_QUATER = "REACTIVATE_QUATER";
 export const CHANGE_EMPLOYEE_SKILLS = "CHANGE_EMPLOYEE_SKILLS";
 export const ADD_NEW_SKILLS_TO_EMPLOYEE = "ADD_NEW_SKILLS_TO_EMPLOYEE";
 
+// PROGRESSBAR
+export const SET_IS_STARTED = "SET_IS_STARTED";
+export const SET_PROGRESS_BAR_VALUE = "SET_PROGRESS_BAR_VALUE";

@@ -17,6 +17,7 @@ export const login = (loginStatus, loginErrors, redirectUrl) => {
 export const loginACreator = () => {
     return dispatch => {
         WebApi.gDrive.get.login().then(response => {
+            console.log(response.replyBlock.data.dtoObject);
             const { redirectUri } = response.replyBlock.data.dtoObject;
             dispatch(login(true, [], redirectUri));
         }).catch(error => {

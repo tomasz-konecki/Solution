@@ -22,6 +22,7 @@ export const getFoldersACreator = (folderId, path) => {
             dispatch(setParentDetails(folderId, response.replyBlock.data.goBack));
             dispatch(asyncEnded());
         }).catch(error => {
+            console.log(error.response);
             dispatch(getFolders([], false, errorCatcher(error), ""));
             dispatch(setParentDetails(""));
             dispatch(asyncEnded());

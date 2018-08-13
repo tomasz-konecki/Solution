@@ -6,6 +6,7 @@ import Spinner from '../../../common/spinner/spinner';
 import SmallSpinner from '../../../common/spinner/small-spinner';
 import OperationStatusPrompt from '../../../form/operationStatusPrompt/operationStatusPrompt';
 import Modal from 'react-responsive-modal';
+import EmptyContent from '../../../common/empty-content/empty-content';
 import ActivateCheckbox from '../others/activateCheckbox';
 class Quaters extends React.PureComponent{
     state = {
@@ -90,7 +91,12 @@ class Quaters extends React.PureComponent{
             deletingQuater, activatingQuater, shouldShowDeleted, quarters } = this.state;
         const shouldShowAddButton = status === "Aktywny" ? 
             <Button title="Dodaj" mainClass="option-btn normal-btn" /> : null;
-        
+        let showRightArrowCalculate = null;
+        let shouldShowRightArrow = null;
+        if(quarters){
+            showRightArrowCalculate = watchedRecords - (paginationLimit - (quarters.length % paginationLimit)) + paginationLimit;
+            shouldShowRightArrow = showRightArrowCalculate !== quarters.length && showRightArrowCalculate < paginationLimit;
+        }
         return (
             <div className="quaters-container">
                 {quarters && 
@@ -140,27 +146,21 @@ class Quaters extends React.PureComponent{
                             <i onClick={() => this.activateQuaters(quarters[listToShowIndex].id)} className="fa fa-check"></i>
                         }
 
-                        {watchedRecords !== 0 && quarters.length > paginationLimit &&
+                        {watchedRecords !== 0 && quarters.length > watchedRecords &&
                             <i onClick={() => this.setState({currentPage: currentPage-1, watchedRecords: watchedRecords-paginationLimit})} className="fa fa-arrow-left"></i>
                         }
-                        {quarters.length > paginationLimit && 
-                        watchedRecords - (paginationLimit - (quarters.length % paginationLimit)) + paginationLimit !== quarters.length &&
+                        {shouldShowRightArrow &&
                             <i onClick={() => this.setState({currentPage: currentPage+1, watchedRecords: watchedRecords+paginationLimit})} className="fa fa-arrow-right"></i>
                         }
                     </div>
                     {shouldShowAddButton}
-                    </React.Fragment> : 
-                    <div className="empty-quater-talks">
-                        <div>
-                            <ActivateCheckbox 
-                            shouldShowDeleted={shouldShowDeleted}
-                            showDeleted={this.showDeleted} 
-                            addClass="absoluted" />
-                            <span>Brak {shouldShowDeleted ? "usuniętych rozmów" : "aktywnych rozmów"} kwartalnych</span>
-                            <i className="fa fa-comments"></i>
-                        </div>
-                        {shouldShowAddButton}
-                    </div>
+                    </React.Fragment> :
+                    <EmptyContent sizeClass="quaters-size"
+                    shouldShowTopIcon={status !== "Nieaktywny"}
+                    content={`Brak ${shouldShowDeleted ? "usuniętych rozmów" : "aktywnych rozmów"} kwartalnych`}
+                    operationIcon="fa fa-plus"
+                    mainIcon="fa fa-comments"
+                    />
                 }
 
                

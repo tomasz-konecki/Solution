@@ -12,6 +12,7 @@ import StatsContainer from "../../components/stats/StatsContainer";
 import SkillsContainer from "../../components/skills/SkillsContainer";
 import ReportsContainer from "../../components/reports/ReportsContainer";
 import ClientsContainer from "../../components/clients/ClientsContainer";
+import PromptsCommander from '../../components/promptsCommander/promptsCommander';
 
 class Content extends React.Component {
   constructor(props) {
@@ -32,6 +33,7 @@ class Content extends React.Component {
         <Route path={match.url + "/skills"} component={SkillsContainer} />
         <Route path={match.url + "/reports"} component={ReportsContainer} />
         <div className="content-abs-footer">Billennium 2018</div>
+        <PromptsCommander />
       </div>
     );
   }

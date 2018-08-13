@@ -7,6 +7,7 @@ import { chooseFolder } from './persistHelpActions';
 import { getFolders, setParentDetails, deleteFolder, updateFolder, createFolder, uploadFile } from './oneDriveActions';
 import { loginACreator } from './persistHelpActions';
 import storeCreator from '../store';
+import { clearAfterTimeByFuncRef } from '../services/methods';
 
 export const getFoldersACreator = (folderId, path) => {
     return dispatch => {
@@ -22,7 +23,6 @@ export const getFoldersACreator = (folderId, path) => {
             dispatch(setParentDetails(folderId, response.replyBlock.data.goBack));
             dispatch(asyncEnded());
         }).catch(error => {
-            console.log(error.response);
             dispatch(getFolders([], false, errorCatcher(error), ""));
             dispatch(setParentDetails(""));
             dispatch(asyncEnded());
@@ -44,8 +44,10 @@ export const deleteFolderACreator = (folderId, path, redirectPath, currentChoose
                     dispatch(chooseFolder(null));
             
             dispatch(getFoldersACreator(redirectPath, path));
+            dispatch(clearAfterTimeByFuncRef(deleteFolder, 5000, null, []));
         }).catch(error => {
             dispatch(deleteFolder(false, errorCatcher(error)));
+            dispatch(clearAfterTimeByFuncRef(deleteFolder, 5000, null, []));
             dispatch(asyncEnded());
         })
     }
@@ -60,9 +62,11 @@ export const updateFolderACreator = (name, path, redirectPath, folderId) => {
         }
         WebApi.gDrive.post.updateFolder(model).then(response => {
             dispatch(updateFolder(true, []));
+            dispatch(clearAfterTimeByFuncRef(updateFolder, 5000, null, []));
             dispatch(getFoldersACreator(redirectPath, path));
         }).catch(error => {
             dispatch(updateFolder(false, errorCatcher(error)));
+            dispatch(clearAfterTimeByFuncRef(updateFolder, 5000, null, []));
             dispatch(asyncEnded());
         })
     }
@@ -75,9 +79,13 @@ export const createFolderACreator = (name, parentId, path, redirectPath) => {
         }
         WebApi.gDrive.post.createFolder(model).then(response => {
             dispatch(createFolder(true , []));
+            dispatch(clearAfterTimeByFuncRef(createFolder, 5000, null, []));
+            
             dispatch(getFoldersACreator(redirectPath, path));
         }).catch(error => {
             dispatch(createFolder(false, errorCatcher(error)));
+            dispatch(clearAfterTimeByFuncRef(createFolder, 5000, null, []));
+            
         })
     }
 }

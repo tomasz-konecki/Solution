@@ -217,11 +217,11 @@ class OneDriveContent extends React.PureComponent {
                     <div className="navigation-folders-container">
                         <header>
                             <h3>Aktualna ścieżka: <span>{path}</span></h3>
-                                {newFolderNameError &&
+                                {newFolderNameError && !editFolderError &&
                                     <p className="validation-error">
                                     {newFolderNameError}</p>
                                 }
-                                {editFolderError && 
+                                {editFolderError && !newFolderNameError && 
                                     <p className="validation-error">
                                     {editFolderError}</p> 
                                 }

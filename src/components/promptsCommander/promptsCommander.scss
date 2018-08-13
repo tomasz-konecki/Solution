@@ -1,0 +1,26 @@
+.commander-container{
+    position: fixed;
+    bottom: 75px;
+    left: 40px;
+    z-index: 100;
+    .circle-btns-container{
+        .commander-container{
+            position: relative;
+        }
+        .commander-circle-btn{
+            border-radius: 50%;
+            background: #00484b;
+            color: white;
+            width: 50px;
+            height: 50px;
+            cursor: pointer;
+            font-size: 20px;
+            border: none;
+            transition: 0.5s all ease-in-out;
+        }
+        .commander-circle-btn:hover{
+            transform: scale(1.1);
+        }
+    }
+   
+}

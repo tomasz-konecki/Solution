@@ -11,7 +11,7 @@ import { logout,  } from "./../actions/authActions";
 import { refreshToken, authOneDrive, getFolderACreator } from '../actions/oneDriveActions';
 import ResponseParser from "./responseParser";
 import Config from "Config";
-
+import { loginACreator } from '../actions/persistHelpActions';
 const { store } = storeCreator;
 
 const API_ENDPOINT = Config.serverUrl;
@@ -57,7 +57,7 @@ const authValidator = response => {
     });
   }
   else if(response.response.config.url.search("GDrive") !== -1){
-    console.log("Akcja na gDRIVe to sledzenia - dokonczyc")
+    dispatch(loginACreator());
   }
   else{
     if (response.response === undefined) {

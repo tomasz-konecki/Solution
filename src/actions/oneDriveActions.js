@@ -7,7 +7,7 @@ import { changeOperationStatus } from "./asyncActions";
 import { chooseFolder } from './persistHelpActions';
 import { errorCatcher } from "../services/errorsHandler";
 import { sendTokenToGetAuth } from './authActions';
-
+import { clearAfterTimeByFuncRef } from '../services/methods';
 
 export const refreshToken = currentToken => (dispatch) => {
   return new Promise((resolve, reject) => {
@@ -221,16 +221,6 @@ export const updateFolderACreator = (newName, folderId, token, path) => {
       });
   };
 };
-
-const clearAfterTimeByFuncRef = (funcRef, delay, ...params) => {
-  return dispatch => {
-    setTimeout(() => {
-      dispatch(funcRef(...params))
-    }, delay);
-  }
-}
-
-
 
 export const uploadFile = (uploadFileStatus, uploadFileErrors) => {
   return {

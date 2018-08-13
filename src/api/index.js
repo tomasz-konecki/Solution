@@ -8,7 +8,7 @@ import storeCreator from "./../store";
 import storage from "redux-persist/lib/storage";
 import { push } from "react-router-redux";
 import { logout,  } from "./../actions/authActions";
-import { refreshToken, authOneDriveACreator, getFolderACreator } from '../actions/oneDriveActions';
+import { refreshToken, authOneDrive, getFolderACreator } from '../actions/oneDriveActions';
 import ResponseParser from "./responseParser";
 import Config from "Config";
 
@@ -50,12 +50,14 @@ const authValidator = response => {
   if(response.response.config.url.search("onedrive") !== -1){
     const oneDriveToken = JSON.parse(response.response.config.data).token;
     const startPath = "/drive/root:";
-
     store.dispatch(refreshToken(oneDriveToken)).then(response => {
       dispatch(getFolderACreator(response, startPath));
     }).catch(error => {
       store.dispatch(authOneDriveACreator());
     });
+  }
+  else if(response.response.config.url.search("GDrive") !== -1){
+    console.log("Akcja na gDRIVe to sledzenia - dokonczyc")
   }
   else{
     if (response.response === undefined) {

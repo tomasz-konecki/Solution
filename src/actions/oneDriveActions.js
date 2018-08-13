@@ -17,6 +17,7 @@ export const refreshToken = currentToken => (dispatch) => {
       resolve(access_token);
     }).catch(error => {
       dispatch(sendTokenToGetAuth("", null, [], ""));
+      reject(error);
     })
   })
 }

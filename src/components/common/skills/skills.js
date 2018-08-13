@@ -168,7 +168,7 @@ class Skills extends Component{
             this.props.onlyActiveAssignments);
     }
     closeModal = () => {
-        this.setState({addSkillsModal: false, showAddList: false});
+        this.setState({addSkillsModal: false, showAddList: false, showSearchBar: false});
         this.props.addSkillsToProjectClear(null, []);
     }
     render(){
@@ -237,8 +237,8 @@ class Skills extends Component{
                     
                 </header>
 
-                {isLoadingSkillsForModal && <Spinner />}
-                <div className="modal-container">
+                {isLoadingSkillsForModal ? <Spinner /> : 
+                    <div className="modal-container">
                     {loadSkillsStatus !== null && 
                         loadSkillsStatus ? 
                         <div className="modal-progress-br-container">
@@ -283,6 +283,8 @@ class Skills extends Component{
                         <CorrectOperation />
                     }
                 </div>
+                }
+                
             </Modal>     
             
         </div>

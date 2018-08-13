@@ -6,6 +6,7 @@ import Spinner from '../../../common/spinner/spinner';
 import SmallSpinner from '../../../common/spinner/small-spinner';
 import OperationStatusPrompt from '../../../form/operationStatusPrompt/operationStatusPrompt';
 import Modal from 'react-responsive-modal';
+import EmptyContent from '../../../common/empty-content/empty-content';
 import ActivateCheckbox from '../others/activateCheckbox';
 class Quaters extends React.PureComponent{
     state = {
@@ -153,18 +154,13 @@ class Quaters extends React.PureComponent{
                         }
                     </div>
                     {shouldShowAddButton}
-                    </React.Fragment> : 
-                    <div className="empty-quater-talks">
-                        <div>
-                            <ActivateCheckbox 
-                            shouldShowDeleted={shouldShowDeleted}
-                            showDeleted={this.showDeleted} 
-                            addClass="absoluted" />
-                            <span>Brak {shouldShowDeleted ? "usuniętych rozmów" : "aktywnych rozmów"} kwartalnych</span>
-                            <i className="fa fa-comments"></i>
-                        </div>
-                        {shouldShowAddButton}
-                    </div>
+                    </React.Fragment> :
+                    <EmptyContent sizeClass="quaters-size"
+                    shouldShowTopIcon={status !== "Nieaktywny"}
+                    content={`Brak ${shouldShowDeleted ? "usuniętych rozmów" : "aktywnych rozmów"} kwartalnych`}
+                    operationIcon="fa fa-plus"
+                    mainIcon="fa fa-comments"
+                    />
                 }
 
                

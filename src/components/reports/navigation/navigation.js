@@ -23,7 +23,7 @@ const findIndexFromPathnamesWhichIsEqual = pathname => {
 
 const navigation = ({addListLength, baseListLength, valueToSearch, searchInTeamList,
   openReportsModals, changeIntoFoldersView, numberOfFolders, 
-  changeIntoTeamsView, choosenFolder, pathname }) => {
+  changeIntoTeamsView, choosenFolder, pathname, baseList }) => {
 
     const whichCountShouldShow = (pathname === pathnames[0] || pathname === pathnames[1]) ? 
       baseListLength : numberOfFolders;
@@ -54,11 +54,17 @@ const navigation = ({addListLength, baseListLength, valueToSearch, searchInTeamL
           <div className="searcher-container">
             {pathname === pathnames[0] &&
               <input
+              maxLength={baseList.length === 0 ?
+                valueToSearch.length : null
+              }
               value={valueToSearch}
               onChange={searchInTeamList}
               type="text"
               placeholder="wpisz nazwę drużyny..."
               />
+            }
+            {pathname === pathnames[0] && 
+              <i className="fa fa-search"></i>
             }
           </div>
 

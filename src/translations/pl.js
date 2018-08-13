@@ -373,7 +373,7 @@ const translations = {
     ChooseFile: "Wybierz plik",
     WrongFileType: "Zły format pliku",
     FileIsTooBig: "Za duży plik",
-    WrongAspectRatio: "Obrazek ma zły aspect ratio"
+    WrongAspectRatio: "Obrazek ma złe proporcje"
   }
 };
 

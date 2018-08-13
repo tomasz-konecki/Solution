@@ -194,7 +194,7 @@ class UsersList extends Component {
               icon: { icon: "edit", iconType: "far" },
               title: t("EditUserImperativus"),
               click: object => {
-                this.handleGetUser(object);
+                this.handleGetUser(Object.assign({}, object));
               },
               comparator: object =>
                 !object.isDeleted &&
@@ -265,7 +265,8 @@ class UsersList extends Component {
             handleRoleChange={this.handleRoleChange}
             responseBlock={this.state.responseBlock}
             loading={this.state.loading}
-            changeUserRoles={this.changeUserRoles}
+            pageChange={this.props.pageChange}
+            // changeUserRoles={this.changeUserRoles}
           />
         </Modal>
       </div>

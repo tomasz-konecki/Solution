@@ -20,8 +20,7 @@ class LoginForm extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.error !== this.props.error)
-      this.setState({ error: nextProps.error });
+    this.setState({ error: nextProps.error });
 
     setTimeout(() => {
       this.setState({ error: "" });
@@ -43,7 +42,7 @@ class LoginForm extends React.Component {
   render() {
     const { handleSubmit, t } = this.props;
     const { error } = this.state;
-    console.log(error);
+
     return (
       <div className="login-wrapper">
         <div className="container login-form">
@@ -91,7 +90,13 @@ class LoginForm extends React.Component {
 
             <div className="container">
               <span className="psw">
-                {t("Forgot")} <a href="#">{t("Password")}?</a>
+                {t("Forgot")}{" "}
+                <a
+                  target="_blank"
+                  href="https://adfs.billennium.pl/adfs/portal/updatepassword"
+                >
+                  {t("Password")}?
+                </a>
               </span>
               <span className="psr">
                 <span

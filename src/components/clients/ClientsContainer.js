@@ -26,7 +26,7 @@ class ClientsContainer extends React.Component {
     sortingDirections: {
       name: "asc"
     },
-    checked: null,
+    checked: "",
     loaded: false
   };
 
@@ -346,6 +346,12 @@ class ClientsContainer extends React.Component {
     });
   };
 
+  radioButtonSingleClick = value => {
+    if (value === this.state.checked) {
+      this.setState({ clients: this.props.clients });
+    }
+  };
+
   pullDOM = () => {
     const {
       clientsActions,
@@ -368,6 +374,7 @@ class ClientsContainer extends React.Component {
           <ShowRadioButtons
             t={t}
             radioButtonClick={this.radioButtonClick}
+            radioButtonSingleClick={this.radioButtonSingleClick}
             checked={checked}
           />
         </div>
@@ -421,6 +428,8 @@ class ClientsContainer extends React.Component {
           resultBlockCloud={resultBlockCloud}
           resultBlockResponsiblePerson={resultBlockResponsiblePerson}
           clientsActions={clientsActions}
+          handleTimesClick={this.handleTimesClick}
+          handleSyncClick={this.handleSyncClick}
         />
       );
     }

@@ -18,6 +18,7 @@ class Content extends React.Component {
   constructor(props) {
     super(props);
   }
+//<PromptsCommander />
 
   render() {
     const { match } = this.props;
@@ -33,7 +34,6 @@ class Content extends React.Component {
         <Route path={match.url + "/skills"} component={SkillsContainer} />
         <Route path={match.url + "/reports"} component={ReportsContainer} />
         <div className="content-abs-footer">Billennium 2018</div>
-        <PromptsCommander />
       </div>
     );
   }

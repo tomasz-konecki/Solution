@@ -1,47 +1,21 @@
-.panel-margined{
-    left: 40px;
-}
-.panel-normalized{
-    left: 7.5px;
-}
-.commander-container{
+.comunicates-btn{
     position: fixed;
+    left: 7.5px;
+    background: #006064;
+    width: 50px;
+    height: 50px;
+    color: white;
     bottom: 75px;
-    transition: 0.5s all ease-in-out;
+    border: none;
+    border-radius: 50%;
+}
+.comunicates-window{
+    background: #006064;
+    height: 100vh;
+    left: 0;
     z-index: 100;
-    .commander-content{
-        background: #00484b;
-        width: 400px;
-        height: 250px;
-        position: fixed;
-        bottom: 75px;
-        left: 50px;
-    }
-    .circle-btns-container{
-        .commander-container{
-            position: relative;
-        }
-        .commander-circle-btn{
-            border-radius: 50%;
-            z-index: 10;
-            background: #006064;
-            color: white;
-            cursor: pointer;
-        }
-        .hover-btn:hover{
-            background: #00484b;
-        }
-        .commander-circle-btn{
-            width: 50px;
-            height: 50px;
-            font-size: 20px;
-            border: none;
-            transition: 0.5s all ease-in-out;
-        }
-        .commander-circle-btn:focus{
-            outline: none;
-        }
-       
-    }
-   
+    position: fixed;
+    width: 150px;
+    bottom: 0;
+
 }

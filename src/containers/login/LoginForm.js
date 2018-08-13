@@ -15,16 +15,15 @@ class LoginForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      error: ""
+      error: "",
+      singleTimout: null
     };
   }
 
   componentWillReceiveProps(nextProps) {
-    this.setState({ error: nextProps.error });
-
-    setTimeout(() => {
-      this.setState({ error: "" });
-    }, 5000);
+    if (nextProps.error && this.state.error !== nextProps.error) {
+      this.setState({ error: nextProps.error });
+    }
   }
 
   componentDidMount() {
@@ -67,17 +66,6 @@ class LoginForm extends React.Component {
                   required
                 />
               </div>
-              <CSSTransitionGroup
-                transitionName="error-validation"
-                transitionEnterTimeout={1000}
-                transitionLeaveTimeout={1000}
-              >
-                {error && (
-                  <div className="context-container">
-                    <strong>{error}</strong>
-                  </div>
-                )}
-              </CSSTransitionGroup>
               <div style={{ height: "7px" }}>
                 {this.props.loading === true && <LoaderHorizontal />}
               </div>
@@ -93,7 +81,7 @@ class LoginForm extends React.Component {
                 {t("Forgot")}{" "}
                 <a
                   target="_blank"
-                  href="https://adfs.billennium.pl/adfs/portal/updatepassword"
+                  href="https://support.billennium.pl/Users/Account/RequestLostPassword"
                 >
                   {t("Password")}?
                 </a>
@@ -111,6 +99,17 @@ class LoginForm extends React.Component {
             </div>
           </form>
         </div>
+        <CSSTransitionGroup
+          transitionName="error-validation"
+          transitionEnterTimeout={1000}
+          transitionLeaveTimeout={1000}
+        >
+          {error && (
+            <div className="context-container">
+              <strong>{error}</strong>
+            </div>
+          )}
+        </CSSTransitionGroup>
       </div>
     );
   }

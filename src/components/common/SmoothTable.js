@@ -635,6 +635,7 @@ class SmoothTable extends Component {
                 key={index + column.field}
                 className="smooth-cell"
                 style={{ width: column.width + "%" }}
+                title={object.name}
               >
                 {this.generateCell(column, object)}
               </td>

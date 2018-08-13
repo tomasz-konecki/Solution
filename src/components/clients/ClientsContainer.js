@@ -348,7 +348,7 @@ class ClientsContainer extends React.Component {
 
   radioButtonSingleClick = value => {
     if (value === this.state.checked) {
-      this.setState({ clients: this.props.clients });
+      this.setState({ clients: this.props.clients, checked: "" });
     }
   };
 

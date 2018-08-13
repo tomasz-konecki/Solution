@@ -59,8 +59,8 @@ const translations = {
     UserDeleted: "User has been deleted",
     UserRequestDeleted: "Account request has been deleted",
     EditUserImperativus: "Edit user",
-    DeleteEdit: "Delete/Edit",
-    DeleteAdd: "Delete/Add",
+    DeleteEdit: "Options",
+    DeleteAdd: "Options",
     AddUserWhenRequestImperativus: "Add user"
   },
   ClientsContainer: {
@@ -272,12 +272,13 @@ const translations = {
     Add: "Add"
   },
   UserDetailsBlock: {
-    EditUsersData: "Edit users data",
+    UserData: "User's details",
     Name: "Name",
     Surname: "Surname",
     Email: "Email",
     Phone: "Phone",
-    Roles: "Roles"
+    Roles: "Roles",
+    EditRoles: "Edit roles"
   },
   UserRoleAssigner: {
     Developer: "Developer",

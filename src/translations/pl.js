@@ -61,8 +61,8 @@ const translations = {
     UserRequestDeleted:
       "Prośba o utworzenie konta użytkownika została usunięta",
     EditUserImperativus: "Edytuj użytkownika",
-    DeleteEdit: "Usuń/Edytuj",
-    DeleteAdd: "Usuń/Dodaj",
+    DeleteEdit: "Opcje",
+    DeleteAdd: "Opcje",
     AddUserWhenRequestImperativus: "Dodaj użytkownika"
   },
   ClientsContainer: {
@@ -273,12 +273,13 @@ const translations = {
     Add: "Dodaj"
   },
   UserDetailsBlock: {
-    EditUsersData: "Edycja danych użytkownika",
+    UserData: "Szczegóły użytkownika",
     Name: "Imię",
     Surname: "Nazwisko",
     Email: "Email",
     Phone: "Telefon",
-    Roles: "Role"
+    Roles: "Role",
+    EditRoles: "Edycja ról"
   },
   UserRoleAssigner: {
     Developer: "Developer",

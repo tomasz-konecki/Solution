@@ -96,11 +96,15 @@ export default class InfoClient extends Component {
     return (
       <React.Fragment>
         <div className="client-info-header">
-          <div
-            style={{ background: `url(${client.imgSrc})` }}
-            className="client-info-logo"
-            title={client.imgAlt}
-          />
+          <div className="client-info-logo-parent">
+            <div
+              style={{
+                background: `url(${client.imgSrc}) no-repeat center center`
+              }}
+              className="client-info-logo"
+              title={client.imgAlt}
+            />
+          </div>
           <div className="client-info-details">
             <div className="client-info-details-more">
               <h1>{client.name}</h1>

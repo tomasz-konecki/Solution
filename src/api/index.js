@@ -304,7 +304,7 @@ const WebApi = {
     put: foreignLanguageId => {}
   },
   projects: {
-    get: (projectId, onlyActiveAssignments) => {
+    get: (projectId, onlyActiveAssignments = true) => {
       return WebAround.get(
         `${API_ENDPOINT}/projects/${projectId}?onlyActiveAssignments=${onlyActiveAssignments}`
       );

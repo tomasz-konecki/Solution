@@ -107,7 +107,7 @@ class UsersContainer extends React.Component {
     );
   }
 
-  pageChange(page, other) {
+  pageChange(page = this.state.currentPage, other) {
     this.setState(
       {
         currentPage: page

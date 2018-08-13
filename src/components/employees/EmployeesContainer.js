@@ -9,7 +9,6 @@ import { ACTION_CONFIRMED } from "./../../constants";
 import EmployeesList from "./EmployeesList";
 import EmployeeDetailsContainer from "./details/EmployeeDetailsContainer";
 import { withRouter, Switch, Route } from "react-router-dom";
-import EmployeeDetailContainer from "../employees/EmployeeDetailContainer";
 import { getUserCVACreator, getUserCv } from "../../actions/reportsActions";
 import OperationLoader from "../common/operationLoader/operationLoader";
 

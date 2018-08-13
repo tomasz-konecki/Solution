@@ -2,16 +2,24 @@
   .quaters-container {
     width: 600px;
     position: relative;
-    @media screen and (max-width: 1470px){
-      margin-top: 300px;
+    .quater-check-container{
+      position: absolute;
+      bottom: -50px;
+      right: 115px;
+
     }
     .normal-btn{
-      bottom: -60px;
+      bottom: -120px;
       left: 0;
       right: 0;
       margin: 0 auto;
+      background: #1C7744;
       position: absolute;
     }
+    @media screen and (max-width: 1470px){
+      margin-top: 300px;
+    }
+   
    
     h2{
       padding: 15px 0;
@@ -112,6 +120,7 @@
           position: absolute;
           left: -400px;
           top: 0;
+          z-index: 10;
           color: #707070;
           width: 360px;
           background: #fbfbfb;

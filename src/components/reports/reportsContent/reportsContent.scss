@@ -11,6 +11,7 @@
         height: 125px;
         margin: 10px;
         display: flex;
+        position: relative;
         padding: 5px;
         box-sizing: border-box;
         text-align: center;
@@ -20,16 +21,30 @@
         @media(max-width: 1000px){
           font-size: 14px;
         }
+        div{
+          position: absolute;
+          width: 100%;
+          font-size: 18px;
+          top: 2.5px;
+          text-align: right;
+          b{
+            margin: 0 5px;
+          }
+        }
       }
       .caffel-on{
         cursor: pointer;
         background: #e8e8e8;
+        div{
+          color: green;
+        }
       }
       .caffel-on:hover {
         background: lightblue;
       }
       .caffel-off{
-        background: #C5BDBD;
+        background: none;
+        border: 2px solid gainsboro;
       }
     }
   }

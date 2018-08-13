@@ -334,23 +334,6 @@ const translations = {
     Begun: "Begun",
     Ends: "Ends"
   },
-  EmployeeDetailContainer: {
-    ErrorOccuredSHNBS: "Error occured, skills have not been sent",
-    NoSkills: "No skills here",
-    Active: "Active",
-    Inactive: "Inactive",
-    Title: "Title",
-    Seniority: "Seniority",
-    Localization: "Localization",
-    Email: "Email",
-    Phone: "Phone #",
-    Capacity: "Capacity",
-    Cancel: "Cancel",
-    Add: "Add",
-    Save: "Save",
-    Activate: "Activate",
-    Edit: "Edit"
-  },
   AssignsContainer: {
     LastName: "Last/Name",
     Position: "Position",

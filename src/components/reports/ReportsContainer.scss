@@ -157,6 +157,17 @@
     justify-content: space-between;
     padding: 2.5px 0;
     align-items: center;
+    label{
+      position: relative;
+      b{
+        position: absolute;
+        right: -50px;
+        top: -1px;
+        i{
+          margin-right: 5px;
+        }
+      }
+    }
     input {
       width: 50px;
       border-radius: 5px;
@@ -164,7 +175,7 @@
         width: 35px;
       }
     }
-    i {
+    & > i {
       color: red;
       right: 80px;
       bottom: 15px;

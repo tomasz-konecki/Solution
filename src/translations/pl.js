@@ -335,23 +335,6 @@ const translations = {
     Begun: "Rozpoczął",
     Ends: "Zakończy"
   },
-  EmployeeDetailContainer: {
-    ErrorOccuredSHNBS: "Wystąpił błąd, umiejętności nie zostały przesłane",
-    NoSkills: "Brak umiejętności",
-    Active: "Aktywny",
-    Inactive: "Nieaktywny",
-    Title: "Stanowisko",
-    Seniority: "Stopień",
-    Localization: "Lokalizacja",
-    Email: "Email",
-    Phone: "Telefon",
-    Capacity: "Capacity",
-    Cancel: "Anuluj",
-    Add: "Dodaj",
-    Save: "Zapisz",
-    Activate: "Aktywuj",
-    Edit: "Edytuj"
-  },
   AssignsContainer: {
     LastName: "Imię/Nazwisko",
     Position: "Stanowisko",

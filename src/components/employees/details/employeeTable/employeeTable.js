@@ -21,7 +21,7 @@ class EmployeeTable extends React.Component{
             loadAssignmentsErrors, loadedAssignments, loadAssignmentsClear } = this.props;
             
         return (
-            <div className="employee-table-container">
+            <div className="table-container emp-table">
                 <h2>{tableTitle} {isLoadingData && <Spinner />} </h2>
 
                 {loadAssignmentsStatus && loadedAssignments.length > 0 && 

@@ -19,6 +19,10 @@ const reportsContent = ({spinner, loadTeamsResult, baseList, addTeamToResultList
                     key={i.name}
                     className={`caffel ${i.numberOfMemberInDB > 0 ? "caffel-on" : "caffel-off"}`}
                   >
+                    <div>
+                      <i className="fa fa-users"></i>
+                      <b>{i.numberOfMemberInDB}</b>
+                    </div>
                     {i.name}
                   </div>
                 );

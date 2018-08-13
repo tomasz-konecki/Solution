@@ -97,16 +97,7 @@ class LeftMenu extends React.Component {
           iconType="fas"
           title={t("Projects")}
         />
-        {binaryPermissioner(false)(0)(1)(0)(1)(1)(1)(this.props.binPem) ? (
-          <VerticalMenuElement
-            match={match}
-            extended={extended}
-            path="/assigns"
-            icon="pencil-alt"
-            iconType="fas"
-            title={t("Assign")}
-          />
-        ) : null}
+    
         {this.props.pem.hasAdministrativeAccess ? (
           <VerticalMenuElement
             match={match}
@@ -148,3 +139,16 @@ LeftMenu.propTypes = {
 export default withRouter(
   connect(mapStateToProps)(translate("LeftMenu")(LeftMenu))
 );
+
+
+/*
+    {binaryPermissioner(false)(0)(1)(0)(1)(1)(1)(this.props.binPem) ? (
+          <VerticalMenuElement
+            match={match}
+            extended={extended}
+            path="/assigns"
+            icon="pencil-alt"
+            iconType="fas"
+            title={t("Assign")}
+          />
+        ) : null}*/

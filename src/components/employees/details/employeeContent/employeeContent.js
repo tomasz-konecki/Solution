@@ -12,14 +12,14 @@ const employeeContent = ({employee, editSeniority, employeeErrors,
   reactivateQuaterACreator, reactivateQuaterStatus, reactivateQuaterErrors, 
   }) => {
 
-    const status = employee.isDeleted ? "Usunięty" : employee.hasAccount ? "Aktywny" : "Nieaktywny";
+    const status = employee.isDeleted ? "Usunięty" : employee.seniority ? "Aktywny" : "Nieaktywny";
     const email = employee.email ? employee.email : "Brak adresu email";
     return (
   <section className="top-content-container">
     <div className="employee-details-bar">
       <div className="left-content">
         <header>
-          <span className={(employee.hasAccount && !employee.isDeleted) ? "has-acc" : "no-acc"}>
+          <span className={(employee.seniority && !employee.isDeleted) ? "has-acc" : "no-acc"}>
             {status}
           </span>
           <div className="icon-container">
@@ -50,7 +50,7 @@ const employeeContent = ({employee, editSeniority, employeeErrors,
       </div>
       
 
-      {(employee.hasAccount && !employee.isDeleted) && 
+      {(employee.seniority && !employee.isDeleted) && 
         <React.Fragment>
             <FteBar capacityLeft={employee.baseCapacity} 
             editCapacity={editCapacity} employeeErrors={employeeErrors} />
@@ -93,6 +93,7 @@ const employeeContent = ({employee, editSeniority, employeeErrors,
         }
         
     </div>
+    {console.log(status)}
     <Quaters reactivateQuaterACreator={reactivateQuaterACreator}
     status={status}
     reactivateQuaterStatus={reactivateQuaterStatus}

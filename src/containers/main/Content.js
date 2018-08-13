@@ -6,7 +6,6 @@ import UsersContainer from "../../components/users/UsersContainer";
 import ProjectsContainer from "../../components/projects/ProjectsContainer";
 import Confirmation from "./../../components/common/modals/Confirmation";
 import EmployeesContainer from "./../../components/employees/EmployeesContainer";
-import EmployeeDetailContainer from "./../../components/employees/EmployeeDetailContainer";
 import AssignsContainer from "./../../components/assign/AssignsContainer";
 import StatsContainer from "../../components/stats/StatsContainer";
 import SkillsContainer from "../../components/skills/SkillsContainer";
@@ -15,11 +14,6 @@ import ClientsContainer from "../../components/clients/ClientsContainer";
 import PromptsCommander from '../../components/promptsCommander/promptsCommander';
 
 class Content extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-//<PromptsCommander />
-
   render() {
     const { match } = this.props;
     return (
@@ -33,6 +27,7 @@ class Content extends React.Component {
         <Route path={match.url + "/assigns"} component={AssignsContainer} />
         <Route path={match.url + "/skills"} component={SkillsContainer} />
         <Route path={match.url + "/reports"} component={ReportsContainer} />
+      
         <div className="content-abs-footer">Billennium 2018</div>
       </div>
     );

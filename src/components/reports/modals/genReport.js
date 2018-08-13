@@ -39,7 +39,7 @@ const genReport = ({
               className={pagesList[index].error ? "inc-list-item" : null}
               key={index}
             >
-              <b>{i.name}</b>
+              <label>{i.name} <b><i className="fa fa-users"></i>{i.numberOfMemberInDB}</b></label>
               <i
                 onClick={() => deleteTeamFromResultList(index)}
                 className="fa fa-minus"

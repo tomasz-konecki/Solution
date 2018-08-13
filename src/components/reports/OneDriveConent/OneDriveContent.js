@@ -17,6 +17,7 @@ import OperationStatusPrompt from '../../form/operationStatusPrompt/operationSta
 import { invalidTokenError } from '../../../constants';
 
 const startPath = "/drive/root:";
+const tryToEditAndAddFolderError = "Nie można jednocześnie edytować i dodwać folderów";
 
 class OneDriveContent extends React.PureComponent {
     state = {
@@ -118,7 +119,7 @@ class OneDriveContent extends React.PureComponent {
 
     checkForCorrectInputValue = (value, oldValue) => {
         const validationResult = validateInput(value, false, 
-            3,30, "name", "nazwa folderu");
+            3,30, "folderName", "nazwa folderu");
         
         if(oldValue){
             const checkForEqualNames = value === oldValue ? "Nie zmieniono wartości" : "";
@@ -153,13 +154,15 @@ class OneDriveContent extends React.PureComponent {
     openFolder = (folderName, folderId) => {
         this.setState({folderIsLoadingId: folderId, 
             newFolderName: "", newFolderNameError: "", 
-            editFolderError: "", editFolderName: ""});
+            editFolderError: "", editFolderName: "", currentOpenedFolderToEditId: ""});
         const nextPath = this.props.path + "/" + folderName;
         this.props.getFolder(this.props.oneDriveToken, nextPath);
     }
 
     goToFolderBefore = () => {
-        this.setState({isGoingBack: true});
+        this.setState({isGoingBack: true, 
+            newFolderName: "", newFolderNameError: "", 
+            editFolderError: "", editFolderName: "", currentOpenedFolderToEditId: ""});
         const { path } = {...this.props};
         const lastIndexOfKey = path.lastIndexOf("/");
         const newPath = path.substring(0, lastIndexOfKey);
@@ -202,13 +205,11 @@ class OneDriveContent extends React.PureComponent {
             extendDetailName, extendId, authCodeStatus, authErrors, authStatus } = this.props;
         return (
             <div className="drive-content-container">
-
                 {authCodeStatus && getFoldersStatus && !isPreparingForLogingIn &&
                     <FilePicker fileToUpload={fileToUpload} uploadFile={this.uploadFile}
                     handleAddFile={e => this.handleAddFile(e)} isUploadingFile={isUploadingFile}/>
                 }
                 
-
                 {(isPreparingForLogingIn || isTakingCodeFromApi || isGoingBack) ? <Spinner /> : 
                     getFoldersStatus !== null && 
                     

@@ -73,7 +73,10 @@ class GDriveContent extends React.Component{
         this.props.getFolders(folderId, this.props.path + "/" + folderName);
     }
     goToFolderBefore = () => {
-        this.setState({isLoading: true});
+        this.setState({isLoading: true, newFolderName: "", 
+        newFolderNameError: "", currentOpenedFolderToEditId: "",
+        folderNameError: "", editFolderName: "", showAddingFolderInput: false});
+        
         const { path, goBackPath } = this.props;
         const indexOfLastSlash = path.lastIndexOf("/");
         const newPath = path.substring(0, indexOfLastSlash);
@@ -100,7 +103,7 @@ class GDriveContent extends React.Component{
 
     checkForCorrectInputValue = (value, oldValue) => {
         const validationResult = validateInput(value, false, 
-            3,30, "name", "nazwa folderu");
+            3,30, "folderName", "nazwa folderu");
         
         if(oldValue){
             const checkForEqualNames = value === oldValue ? "Nie zmieniono wartości" : "";

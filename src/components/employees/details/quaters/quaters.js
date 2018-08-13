@@ -91,22 +91,17 @@ class Quaters extends React.PureComponent{
             deletingQuater, activatingQuater, shouldShowDeleted, quarters } = this.state;
         const shouldShowAddButton = status === "Aktywny" ? 
             <Button title="Dodaj" mainClass="option-btn normal-btn" /> : null;
-        let showRightArrowCalculate = null;
-        let shouldShowRightArrow = null;
-        if(quarters){
-            showRightArrowCalculate = watchedRecords - (paginationLimit - (quarters.length % paginationLimit)) + paginationLimit;
-            shouldShowRightArrow = showRightArrowCalculate !== quarters.length && showRightArrowCalculate < paginationLimit;
-        }
         return (
             <div className="quaters-container">
+                <ActivateCheckbox 
+                    shouldShowDeleted={shouldShowDeleted}
+                    showDeleted={this.showDeleted} />
                 {quarters && 
                     quarters.length > 0 ?
                     <React.Fragment>
+                    {console.log(Math.ceil(quarters.length / paginationLimit))}
+                    
                     <h2>Rozmowy kwartalne <span>({quarters.length})</span> { activatingQuater && <SmallSpinner /> }</h2>
-                    <ActivateCheckbox 
-                    shouldShowDeleted={shouldShowDeleted}
-                    showDeleted={this.showDeleted} />
-
                     <ul>
                         {quarters.map((item, index) => {
                             return ( 
@@ -149,7 +144,8 @@ class Quaters extends React.PureComponent{
                         {watchedRecords !== 0 && quarters.length > watchedRecords &&
                             <i onClick={() => this.setState({currentPage: currentPage-1, watchedRecords: watchedRecords-paginationLimit})} className="fa fa-arrow-left"></i>
                         }
-                        {shouldShowRightArrow &&
+
+                        {currentPage < Math.ceil(quarters.length / paginationLimit) &&
                             <i onClick={() => this.setState({currentPage: currentPage+1, watchedRecords: watchedRecords+paginationLimit})} className="fa fa-arrow-right"></i>
                         }
                     </div>

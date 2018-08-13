@@ -90,6 +90,7 @@ class SmoothTable extends Component {
   }
 
   handleInputChange(event) {
+    this.removeFilters();
     const target = event.target;
     const value = target.type === "checkbox" ? target.checked : target.value;
     const name = target.name;

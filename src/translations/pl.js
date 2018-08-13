@@ -273,12 +273,13 @@ const translations = {
     Add: "Dodaj"
   },
   UserDetailsBlock: {
-    EditUsersData: "Edycja danych użytkownika",
+    UserData: "Szczegóły użytkownika",
     Name: "Imię",
     Surname: "Nazwisko",
     Email: "Email",
     Phone: "Telefon",
-    Roles: "Role"
+    Roles: "Role",
+    EditRoles: "Edycja ról"
   },
   UserRoleAssigner: {
     Developer: "Developer",

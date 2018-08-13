@@ -542,6 +542,9 @@ $activeShadow: 0 0 10px rgba($teal1, 0.5);
     }
 
     .smooth-cell {
+      max-width: 500px;
+      overflow: hidden;
+      text-overflow: ellipsis;
       position: relative;
       line-height: 2rem;
       white-space: nowrap;
@@ -549,10 +552,17 @@ $activeShadow: 0 0 10px rgba($teal1, 0.5);
       font-size: 18px;
       @media screen and (max-width: 500px) {
         font-size: 14px;
+        max-width: 100px;
       }
 
       @media screen and (max-width: 900px) {
         font-size: 13px;
+        max-width: 200px;
+      }
+
+      @media screen and (min-width: 900px) {
+        font-size: 14px;
+        max-width: 300px;
       }
 
       &:first-of-type {

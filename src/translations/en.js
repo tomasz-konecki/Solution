@@ -59,8 +59,8 @@ const translations = {
     UserDeleted: "User has been deleted",
     UserRequestDeleted: "Account request has been deleted",
     EditUserImperativus: "Edit user",
-    DeleteEdit: "Delete/Edit",
-    DeleteAdd: "Delete/Add",
+    DeleteEdit: "Options",
+    DeleteAdd: "Options",
     AddUserWhenRequestImperativus: "Add user"
   },
   ClientsContainer: {

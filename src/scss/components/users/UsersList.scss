@@ -1,5 +1,6 @@
 .users-list-container {
   @media screen and (max-width: 500px) {
+    margin-left: 10px;
     tbody tr:first-child,
     th:first-child,
     th:nth-child(4),

@@ -61,8 +61,8 @@ const translations = {
     UserRequestDeleted:
       "Prośba o utworzenie konta użytkownika została usunięta",
     EditUserImperativus: "Edytuj użytkownika",
-    DeleteEdit: "Usuń/Edytuj",
-    DeleteAdd: "Usuń/Dodaj",
+    DeleteEdit: "Opcje",
+    DeleteAdd: "Opcje",
     AddUserWhenRequestImperativus: "Dodaj użytkownika"
   },
   ClientsContainer: {

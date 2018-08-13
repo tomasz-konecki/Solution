@@ -1,26 +1,47 @@
+.panel-margined{
+    left: 40px;
+}
+.panel-normalized{
+    left: 7.5px;
+}
 .commander-container{
     position: fixed;
     bottom: 75px;
-    left: 40px;
+    transition: 0.5s all ease-in-out;
     z-index: 100;
+    .commander-content{
+        background: #00484b;
+        width: 400px;
+        height: 250px;
+        position: fixed;
+        bottom: 75px;
+        left: 50px;
+    }
     .circle-btns-container{
         .commander-container{
             position: relative;
         }
         .commander-circle-btn{
             border-radius: 50%;
-            background: #00484b;
+            z-index: 10;
+            background: #006064;
             color: white;
+            cursor: pointer;
+        }
+        .hover-btn:hover{
+            background: #00484b;
+        }
+        .commander-circle-btn{
             width: 50px;
             height: 50px;
-            cursor: pointer;
             font-size: 20px;
             border: none;
             transition: 0.5s all ease-in-out;
         }
-        .commander-circle-btn:hover{
-            transform: scale(1.1);
+        .commander-circle-btn:focus{
+            outline: none;
         }
+       
     }
    
 }

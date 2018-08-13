@@ -1,36 +1,36 @@
 import React from 'react'
 import './promptsCommander.scss';
 import { connect } from 'react-redux';
+import { changeShowGlobal } from '../../actions/progressBarActions';
 class PromptsCommander extends React.Component{
-    state = {
-
-    }
     render(){
+        const { shouldShowGlobal, changeShowGlobal } = this.props;
+        const shouldTakeButtonFromLeft = shouldShowGlobal ? "panel-margined" : "panel-normalized"
         return (
-            <div className="commander-container">
+            <div className={`commander-container ${shouldTakeButtonFromLeft}`}>
                 <div className="circle-btns-container">
-                    <button className="commander-circle-btn">
+                    <button onClick={() => changeShowGlobal(!shouldShowGlobal)}
+                         className={`commander-circle-btn ${shouldShowGlobal ? "hover-btn" : null}`}>
                         <i className="fa fa-cogs"></i>
                     </button>
-                    <span className="stats-icon"></span>
-                    <span className="stats-icon"></span>
                 </div>
-                
-                
-                <div className="commander-content">
-                    <nav></nav>
-                    <div></div>
-                </div>
+        
+               
 
             </div>
         );
     }
 }
 
-
 const mapStateToProps = state => {
     return {
+        shouldShowGlobal: state.progressBarReducer.shouldShowGlobal
     };
   };
-  export default connect(mapStateToProps, null)(PromptsCommander);
+  const mapDispatchToProps = dispatch => {
+    return {
+        changeShowGlobal: (shouldShowGlobal) => dispatch(changeShowGlobal(shouldShowGlobal))
+    };
+  };
+  export default connect(mapStateToProps, mapDispatchToProps)(PromptsCommander);
   

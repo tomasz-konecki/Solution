@@ -1,5 +1,5 @@
 import {
-  SET_IS_STARTED, SET_PROGRESS_BAR_VALUE
+  SET_IS_STARTED, SET_PROGRESS_BAR_VALUE, CHANGE_SHOULD_SHOW_GLOBAL
 } from "../constants";
 import { HubConnectionBuilder, HttpTransportType } from '@aspnet/signalr'; 
 import storeCreator from '../store';
@@ -23,7 +23,9 @@ export const setProgressValue = (percentage, message) => {
     type: SET_PROGRESS_BAR_VALUE, percentage, message
   }
 }
-
+export const changeShowGlobal = shouldShowGlobal => {
+  return { type: CHANGE_SHOULD_SHOW_GLOBAL, shouldShowGlobal }
+}
 const connectionError = "Wystąpił błąd podczas konfiguracji wskaźnika postępu";
 
 export const createSignalRConnection = () => (dispatch) => {

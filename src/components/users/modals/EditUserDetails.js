@@ -27,10 +27,11 @@ class EditUserDetails extends Component {
         WebApi.users.patch
           .roles(id, roles)
           .then(response => {
-            this.setState({
-              responseBlock: response,
-              loading: false
-            });
+            this.props.pageChange(),
+              this.setState({
+                responseBlock: response,
+                loading: false
+              });
             setTimeout(() => {
               this.props.closeModal();
             }, 1500);
@@ -114,7 +115,8 @@ EditUserDetails.propTypes = {
   handleCloseModal: PropTypes.func,
   handleRoleChange: PropTypes.func.isRequired,
   responseBlock: PropTypes.object,
-  loading: PropTypes.bool
+  loading: PropTypes.bool,
+  pageChange: PropTypes.func
 };
 
 export default translate("EditUserDetails")(EditUserDetails);

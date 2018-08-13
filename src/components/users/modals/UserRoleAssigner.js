@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import CheckBox from "../../common/CheckBox";
-import PropTypes from 'prop-types';
-import { translate } from 'react-translate';
+import PropTypes from "prop-types";
+import { translate } from "react-translate";
 
 class UserRoleAssigner extends Component {
   constructor(props) {

@@ -3,13 +3,14 @@ import "./ShowRadioButtons.scss";
 
 export default class ShowRadioButtons extends Component {
   render() {
-    const { t, radioButtonClick, checked } = this.props;
+    const { t, radioButtonClick, checked, radioButtonSingleClick } = this.props;
     return (
       <div className="show-clients-container">
         <form>
           <span className="smooth-radio-span">
             <input
               onChange={e => radioButtonClick(e.target.value)}
+              onClick={e => radioButtonSingleClick(e.target.value)}
               name="show-clients"
               className="toggle toggle-left"
               id="show-activated"
@@ -26,6 +27,7 @@ export default class ShowRadioButtons extends Component {
           </span>
           <span className="smooth-radio-span">
             <input
+              onClick={e => radioButtonSingleClick(e.target.value)}
               onChange={e => radioButtonClick(e.target.value)}
               name="show-clients"
               className="toggle toggle-right"

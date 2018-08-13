@@ -3,8 +3,8 @@ import LoaderHorizontal from "./../../common/LoaderHorizontal";
 import ResultBlock from "./../../common/ResultBlock";
 import ProjectDetailsBlock from "./ProjectDetailsBlock";
 import WebApi from "../../../api";
-import PropTypes from 'prop-types';
-import { translate } from 'react-translate';
+import PropTypes from "prop-types";
+import { translate } from "react-translate";
 
 class EditProjectDetails extends Component {
   constructor(props) {
@@ -12,11 +12,12 @@ class EditProjectDetails extends Component {
     this.state = { loading: false };
   }
 
-  editProject = project => {
+  editProject = (projectId, project) => {
     this.setState({ loading: true });
-    WebApi.projects.put.project(project.id, project)
+    WebApi.projects.put
+      .project(projectId, project)
       .then(response => {
-        if(this.props.updateProjectsOnSuccess){
+        if (this.props.updateProjectsOnSuccess) {
           this.props.projectActions.loadProjects(
             this.props.currentPage,
             this.props.limit
@@ -37,7 +38,6 @@ class EditProjectDetails extends Component {
         });
       });
   };
-
 
   render() {
     const { t } = this.props;
@@ -73,7 +73,7 @@ EditProjectDetails.propTypes = {
   limit: PropTypes.number,
   closeModal: PropTypes.func.isRequired,
   project: PropTypes.object,
-  updateProjectsOnSuccess: PropTypes.bool,
+  updateProjectsOnSuccess: PropTypes.bool
 };
 
 export default translate("EditProjectDetails")(EditProjectDetails);

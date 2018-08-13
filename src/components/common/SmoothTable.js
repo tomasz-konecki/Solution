@@ -496,7 +496,6 @@ class SmoothTable extends Component {
             name={"__SEARCH_" + column.field}
             value={this.state.columnFilters[column.field]}
             placeholder={this.props.t("Search") + " " + column.pretty}
-            required
             onChange={this.deepenFunction(
               this.handleColumnFilterChange,
               column,
@@ -518,11 +517,13 @@ class SmoothTable extends Component {
             )}
             disabled={this.state.selectedOption === "isDeleted"}
           >
-            {Object.values(column.multiState)
-              .reverse()
-              .map((stateValue, index) => {
-                return <option key={index}>{stateValue}</option>;
-              })}
+            {this.state.selectedOption === "isDeleted"
+              ? "-"
+              : Object.values(column.multiState)
+                  .reverse()
+                  .map((stateValue, index) => {
+                    return <option key={index}>{stateValue}</option>;
+                  })}
           </select>
         );
       }

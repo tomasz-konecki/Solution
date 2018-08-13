@@ -22,7 +22,7 @@ const inActive = "Nieaktywny";
 class ProjectDetailsBlock extends React.PureComponent {
       state = {
         editProjectArray: [
-          {title: "Nazwa", type: "text", placeholder: "wprowadź nazwę projektu...", value: "", error: "", inputType: "name", minLength: 3, maxLength: 125, canBeNull: false},
+          {title: "Nazwa", type: "text", placeholder: "wprowadź nazwę projektu...", value: "", error: "", inputType: null, minLength: 3, maxLength: 250, canBeNull: false},
           {title: "Opis", type: "text", placeholder: "wprowadź opis projektu...", mode: "textarea", value: "", error: "", inputType: null, minLength: 3, maxLength: 1500, canBeNull: false},
           {title: "Klient", type: "text", placeholder: "wprowadź klienta...", mode: "drop-down-with-data", value: "", error: "", inputType: "client", minLength: 3, maxLength: 100, canBeNull: false},
           {title: "Data rozpoczęcia", name: "startDate", type: "text", placeholder: "wprowadź datę rozpoczęcia projektu...", mode: "date-picker", value: "", error: "", canBeBefore: true},

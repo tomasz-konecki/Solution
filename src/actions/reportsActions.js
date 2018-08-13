@@ -105,12 +105,13 @@ export const generateReportACreator = (addList, choosenFolder, pageList, history
                 "oneDrivePath": currentPath
             } 
         }
+
         WebApi.reports.post.report(model, generateOnGDrive, generateOnOneDrive).then(response => {
-            dispatch(generateReport(true, []));
+          dispatch(generateReport(true, []));
             dispatch(clearAfterTimeByFuncRef(generateReport, 2000, null, []));
-            
-            if(generateOnGDrive)
-                dispatch(getGDriveFolders(choosenFolder.id, path + "/" + choosenFolder.id));
+            if(generateOnGDrive){
+              dispatch(getGDriveFolders(choosenFolder.id, path + "/" + choosenFolder.id));
+            }
             
             else{
                 dispatch(getOneDriveFolders(token, currentPath));

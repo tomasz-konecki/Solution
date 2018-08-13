@@ -8,10 +8,8 @@
       flex-flow: wrap;
       .caffel {
         width: 125px;
-        background-color: #e8e8e8;
         height: 125px;
         margin: 10px;
-        cursor: pointer;
         display: flex;
         padding: 5px;
         box-sizing: border-box;
@@ -23,8 +21,15 @@
           font-size: 14px;
         }
       }
-      .caffel:hover {
-        background-color: lightblue;
+      .caffel-on{
+        cursor: pointer;
+        background: #e8e8e8;
+      }
+      .caffel-on:hover {
+        background: lightblue;
+      }
+      .caffel-off{
+        background: #C5BDBD;
       }
     }
   }

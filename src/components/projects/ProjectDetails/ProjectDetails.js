@@ -307,7 +307,7 @@ class ProjectDetails extends Component {
                 )}
 
                 <i className="fa fa-briefcase fa-2x" />
-                <b>{project.name}</b>
+                <b title={project.name}>{project.name.length > 60 ? project.name.slice(0, 40) + "..." : project.name}</b>
               </h1>
               <nav>
                 <button

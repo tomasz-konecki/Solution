@@ -12,9 +12,12 @@ const reportsContent = ({spinner, loadTeamsResult, baseList, addTeamToResultList
               baseList.map(i => {
                 return (
                   <div
-                    onClick={() => addTeamToResultList(i.name)}
+                    onClick={i.numberOfMemberInDB > 0 ?
+                      () => addTeamToResultList(i.name) : 
+                      null
+                      }
                     key={i.name}
-                    className="caffel"
+                    className={`caffel ${i.numberOfMemberInDB > 0 ? "caffel-on" : "caffel-off"}`}
                   >
                     {i.name}
                   </div>

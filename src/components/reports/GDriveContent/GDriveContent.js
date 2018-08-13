@@ -13,6 +13,7 @@ import OperationLoader from '../../common/operationLoader/operationLoader';
 import { validateInput } from '../../../services/validation';
 import SmallSpinner from '../../common/spinner/small-spinner';
 import FilePicker from '../filePicker/filePicker';
+import OperationStatusPrompt from '../../form/operationStatusPrompt/operationStatusPrompt';
 const startPath = "root";
 
 class GDriveContent extends React.Component{
@@ -36,11 +37,8 @@ class GDriveContent extends React.Component{
         isUploadingFile: false        
     }
     componentDidMount(){
-       // this.props.loginClearData(null, [], "");
-       // Need to wait for Artur Karpinski to fix 500 in GDrive
         const { loginStatus, folders, getFolders, login } = this.props;
         if(window.location.href.search("#") === -1){
-            console.log("Siema");
             login();
         }
         else if(folders.length === 0 && loginStatus){
@@ -69,7 +67,9 @@ class GDriveContent extends React.Component{
         }
     }
     openFolder = (folderName, folderId) => {
-        this.setState({folderIsLoadingId: folderId});
+        this.setState({folderIsLoadingId: folderId, newFolderName: "", 
+            newFolderNameError: "", currentOpenedFolderToEditId: "",
+            folderNameError: "", editFolderName: "", showAddingFolderInput: false});
         this.props.getFolders(folderId, this.props.path + "/" + folderName);
     }
     goToFolderBefore = () => {
@@ -184,13 +184,13 @@ class GDriveContent extends React.Component{
                     <div className="navigation-folders-container">
                         <header>
                             <h3>Aktualna ścieżka: <span>{path}</span></h3>
-                            {newFolderNameError &&
+                            {newFolderNameError && !folderNameError && 
                                 <p className="validation-error">
                                 {newFolderNameError}</p>
                             }
-                            {editFolderError && 
+                            {folderNameError && !newFolderNameError &&
                                 <p className="validation-error">
-                                {editFolderError}</p> 
+                                {folderNameError}</p> 
                             }
                             {getFoldersStatus && 
                                 <Button

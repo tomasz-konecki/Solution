@@ -1,4 +1,4 @@
-import { SET_IS_STARTED, SET_PROGRESS_BAR_VALUE } from "../constants";
+import { SET_IS_STARTED, SET_PROGRESS_BAR_VALUE, CHANGE_SHOULD_SHOW_GLOBAL } from "../constants";
 import { updateObject } from '../services/methods';
 const initialState = {
   isStarted: false,
@@ -17,6 +17,8 @@ const initialState = {
       case SET_PROGRESS_BAR_VALUE:
         return updateObject(state, { percentage: action.percentage, 
           message: action.message })
+      case CHANGE_SHOULD_SHOW_GLOBAL:
+        return updateObject(state, { shouldShowGlobal: action.shouldShowGlobal })
       default:
         return state;
     }

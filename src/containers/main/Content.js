@@ -27,7 +27,7 @@ class Content extends React.Component {
         <Route path={match.url + "/assigns"} component={AssignsContainer} />
         <Route path={match.url + "/skills"} component={SkillsContainer} />
         <Route path={match.url + "/reports"} component={ReportsContainer} />
-      
+        <PromptsCommander />
         <div className="content-abs-footer">Billennium 2018</div>
       </div>
     );

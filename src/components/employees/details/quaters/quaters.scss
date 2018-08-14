@@ -128,13 +128,23 @@
           box-sizing: border-box;
           padding: 15px;
           animation: 0.5s animate-info-in ease-in-out forwards;
-       
+          @media(max-width: 1425px){
+            left: 0;
+            right: 0;
+            margin: 0 auto;
+            width: 310px;
+            bottom: 60px;
+            top: unset;
+          }
+          @media(max-width: 550px){
+            width: 100%;
+          }
           ul{
             & > li{
               padding-bottom: 10px;
               border-bottom: 2px solid #707070;
               p{
-                margin: 7.5px 0;
+                margin: 15px 0 7.5px 0;
                 font-size: 18px;
               }
               article{
@@ -158,8 +168,5 @@
       & > li:hover{
         background: rgba(132, 125, 125, 0.54);
       }
-    }
-    @media(max-width: 1400px){
-      
     }
   }

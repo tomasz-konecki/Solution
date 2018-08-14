@@ -271,6 +271,9 @@ class SmoothTable extends Component {
       }
     }
     columnFilters[field] = value;
+    field === "hasAccount" &&
+      value === "true" &&
+      this.setState({ selectedOption: "showActivated" });
     columnFiltersLoaders[field] = true;
 
     this.setState(
@@ -291,6 +294,7 @@ class SmoothTable extends Component {
                 columnFiltersLoaders
               },
               () => {
+                console.log(this.state);
                 this.props.construct.pageChange(1, this.generateSettings());
               }
             );
@@ -354,7 +358,6 @@ class SmoothTable extends Component {
             name="search"
             value={this.state.searchQuery}
             placeholder={this.props.t("Search")}
-            required
             onChange={this.handleQueryChange}
             className={inputClasses.join(" ")}
           />

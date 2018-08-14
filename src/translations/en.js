@@ -20,6 +20,10 @@ const translations = {
     Skills: "Skills",
     Reports: "Reports"
   },
+  NotFound404: {
+    PageNotFound: "Page Not Found",
+    PageNotFoundText: "You don't want to be here..."
+  },
   SmoothTable: {
     Search: "Search",
     DeleteFilters: "Delete filters",

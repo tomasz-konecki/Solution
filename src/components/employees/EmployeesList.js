@@ -77,7 +77,7 @@ class EmployeesList extends Component {
           multiState: {
             true: t("AccountActive"),
             false: t("AccountInactive"),
-            "": t("SelectStatus")
+            null: t("SelectStatus")
           },
           type: "multiState",
           filter: true

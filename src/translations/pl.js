@@ -7,6 +7,10 @@ const translations = {
     Forgot: "Zapomniałeś",
     Password: "hasła"
   },
+  NotFound404: {
+    PageNotFound: "Nie znaleziono strony",
+    PageNotFoundText: "Nie chcesz tutaj być..."
+  },
   TopBar: {
     Logout: "Wyloguj"
   },

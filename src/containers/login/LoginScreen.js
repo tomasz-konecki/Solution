@@ -7,7 +7,7 @@ import { connect } from "react-redux";
 import { push } from "react-router-redux";
 import { authSuccess } from "actions/authActions";
 import { withRouter } from 'react-router-dom';
-
+import PromptCommander from '../../components/promptsCommander/promptsCommander';
 class LoginScreen extends React.Component {
   constructor(props) {
     super(props);
@@ -23,7 +23,8 @@ class LoginScreen extends React.Component {
 
   render() {
     return (
-      <div className="login-screen">
+      <div className="login-screen">  
+        <PromptCommander />
         <Logo size="vector_cut" container />
         <LoginForm languageSwitch={this.props.languageSwitch} />
       </div>

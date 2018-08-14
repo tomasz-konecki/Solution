@@ -99,7 +99,6 @@ class Quaters extends React.PureComponent{
                 {quarters && 
                     quarters.length > 0 ?
                     <React.Fragment>
-                    {console.log(Math.ceil(quarters.length / paginationLimit))}
                     
                     <h2>Rozmowy kwartalne <span>({quarters.length})</span> { activatingQuater && <SmallSpinner /> }</h2>
                     <ul>

@@ -7,7 +7,7 @@ import {
 import WebApi from "../api";
 import { errorCatcher } from "../services/errorsHandler";
 import { asyncStarted, asyncEnded } from "./asyncActions";
-
+import { setIsStarted } from './progressBarActions';
 import {
   getFolderACreator as getOneDriveFolders,
   authOneDriveACreator
@@ -116,11 +116,12 @@ export const generateReportACreator = (
       };
     }
 
+    dispatch(setIsStarted(true, "Generowanie raportu"));
     WebApi.reports.post
       .report(model, generateOnGDrive, generateOnOneDrive)
       .then(response => {
+        dispatch(setIsStarted(false, ""));
         dispatch(generateReport(true, []));
-        dispatch(clearAfterTimeByFuncRef(generateReport, 2000, null, []));
         if (generateOnGDrive) {
           dispatch(
             getGDriveFolders(choosenFolder.id, path + "/" + choosenFolder.id)
@@ -132,49 +133,10 @@ export const generateReportACreator = (
         }
       })
       .catch(error => {
+        dispatch(setIsStarted(false));
         dispatch(generateReport(false, errorCatcher(error)));
-        dispatch(clearAfterTimeByFuncRef(generateReport, 5000, null, []));
       });
   };
-  const currentPath = choosenFolder.parentPath + "/" + choosenFolder.name;
-  const generateOnOneDrive =
-    choosenFolder.parentPath !== undefined ? true : false;
-  const generateOnGDrive = !generateOnOneDrive;
-  let model = {};
-  if (generateOnGDrive) {
-    model = {
-      teamsSheets: teamsSheets,
-      folderId: choosenFolder.id
-    };
-  } else {
-    model = {
-      teamsSheets: teamsSheets,
-      folderId: choosenFolder.id,
-      folderName: choosenFolder.name,
-      oneDriveToken: token,
-      oneDrivePath: currentPath
-    };
-  }
-  WebApi.reports.post
-    .report(model, generateOnGDrive, generateOnOneDrive)
-    .then(response => {
-      dispatch(generateReport(true, []));
-      dispatch(clearAfterTimeByFuncRef(generateReport, 2000, null, []));
-
-      if (generateOnGDrive)
-        dispatch(
-          getGDriveFolders(choosenFolder.id, path + "/" + choosenFolder.id)
-        );
-      else {
-        dispatch(getOneDriveFolders(token, currentPath));
-        if (history.location.pathname !== "/main/reports/onedrive")
-          history.push("/main/reports/onedrive");
-      }
-    })
-    .catch(error => {
-      dispatch(generateReport(false, errorCatcher(error)));
-      dispatch(clearAfterTimeByFuncRef(generateReport, 5000, null, []));
-    });
 };
 
 const getOneDriveToken = state => {

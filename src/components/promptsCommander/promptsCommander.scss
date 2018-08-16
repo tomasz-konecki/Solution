@@ -1,3 +1,38 @@
+.btn-finalized{
+    animation: 1s animate-btn-fin-color ease-in-out infinite;
+    @keyframes animate-btn-fin-color{
+        0%{
+            background: #e8e8e8;
+            color: mediumseagreen;
+        }
+        50%{
+            background: mediumseagreen;
+            color: white;
+        }
+        100%{
+            background: #e8e8e8; 
+            color: mediumseagreen;
+        }
+    }
+}
+.btn-op-failed{
+    animation: 1s animate-btn-fail-color ease-in-out infinite;
+    @keyframes animate-btn-fail-color{
+        0%{
+            background: #e8e8e8;
+            color: red;
+        }
+        50%{
+            background: red;
+            color: white;
+        }
+        100%{
+            background: #e8e8e8;
+            color: red;
+        }
+    }
+}
+
 .btn-expanded{
     color: black;
     right: 480px;
@@ -12,33 +47,11 @@
     & > div{
         border: 4px solid #e8e8e8;
     }
-    & > article{
-        position: absolute;
-        font-size: 16px;
-        right: -350px;
-        width: 350px;
-        top: 0;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        border-radius: 5px;
-        height: 100%;
-        @media(max-width: 460px){
-            font-size: 14px;
-            width: 240px;
-            right: -260px;
-        }   
-        b{
-            font-weight: bold;
-            margin-left: 5px;
-           
-        }
-    }
 }
-.btn-exp-activated{
+.btn-br-top{
     & > div{
-        animation: 2s animate-loader-in ease-in-out infinite;
-        @keyframes animate-loader-in {
+        animation: 2s animate-top-br ease-in-out infinite;
+        @keyframes animate-top-br{
             0%{
                 border-top-color: #e8e8e8;
                 transform: rotate(0deg);
@@ -53,17 +66,75 @@
         }
     }
 }
-.btn-col-activated{
-    animation: 1s animate-btn-coll ease-in-out infinite;
-    @keyframes animate-btn-coll {
-        0%{
-            transform: scale(1);
+.btn-br-right{
+    & > div{
+        animation: 2s animate-right-br ease-in-out infinite;
+        @keyframes animate-right-br {
+            0%{
+                border-right-color: #e8e8e8;
+                border-top-color: #e8e8e8;
+                transform: rotate(0deg);
+            }
+            50%{
+                border-right-color: tomato;
+                border-top-color: tomato;
+            }                   
+            100%{
+                border-right-color: #e8e8e8;
+                border-top-color: #e8e8e8;
+                transform: rotate(360deg);
+            }
         }
-        50%{
-            transform: scale(1.1);
+    }
+}
+.btn-br-bot{
+    & > div{
+        animation: 2s animate-bot-br ease-in-out infinite;
+        @keyframes animate-bot-br {
+            0%{
+                border-bottom-color: #e8e8e8;
+                border-right-color: #e8e8e8;
+                border-top-color: #e8e8e8;
+                transform: rotate(0deg);
+            }
+            50%{
+                border-bottom-color: tomato;
+                border-right-color: tomato;
+                border-top-color: tomato;
+            }
+            100%{
+                border-bottom-color: #e8e8e8;
+                border-right-color: #e8e8e8;
+                border-top-color: #e8e8e8;
+                transform: rotate(360deg);
+            }
         }
-        100%{
-            transform: scale(1);
+    }
+}
+.btn-br-left{
+    & > div{
+        animation: 2s animate-left-br ease-in-out infinite;
+        @keyframes animate-left-br {
+            0%{
+                border-bottom-color: #e8e8e8;
+                border-right-color: #e8e8e8;
+                border-top-color: #e8e8e8;
+                border-left-color: #e8e8e8;
+                transform: rotate(0deg);
+            }
+            50%{
+                border-bottom-color: tomato;
+                border-right-color: tomato;
+                border-top-color: tomato;
+                border-left-color: tomato;
+            }
+            100%{
+                border-bottom-color: #e8e8e8;
+                border-right-color: #e8e8e8;
+                border-top-color: #e8e8e8;
+                border-left-color: #e8e8e8;
+                transform: rotate(360deg);
+            }
         }
     }
 }
@@ -76,6 +147,9 @@
         right: 30px;
         bottom: 30px;
     }
+    & > div{
+        border: 4px solid #006064;
+    }
 }
 .comunicates-btn{
     position: fixed;
@@ -87,6 +161,9 @@
     cursor: pointer;
     z-index: 101;
     border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     @media(max-width: 460px){
         bottom: 8px;
     }
@@ -124,6 +201,32 @@
     }
     @media(max-width: 460px){
         width: 290px;
+    }
+    .operations-messages{
+        width: 95%;
+        padding: 0 15px;
+        display: flex;
+        margin-left: auto;
+        align-items: center;
+        height: 65px;
+        article{
+            display: flex;
+            flex-flow: column;
+            justify-content: center;
+            b{
+                font-weight: bold;
+            }
+        }
+        p{
+            letter-spacing: 1.5px;
+            font-weight: bold;
+        }
+        .status-ok{
+            color: mediumseagreen;
+        }
+        .status-off{
+            color: red;
+        }  
     }
     footer{
         width: 95%;

@@ -119,3 +119,6 @@ export const CHANGE_SHOULD_SHOW_GLOBAL = "CHANGE_SHOULD_SHOW_GLOBAL";
 // QUARTERTALKs
 export const ADD_QUARTER_TALK = "ADD_QUARTER_TALK";
 export const GET_QUESTIONS = "GET_QUESTIONS";
+export const SET_SIGNAL_R_CONNECTION_RESULT = "SET_SIGNAL_R_CONNECTION_RESULT";
+export const connectionError = "Wystąpił błąd podczas konfiguracji wskaźnika postępu";
+export const GENERATE_HUB_CONNECTION = "GENERATE_HUB_CONNECTION";

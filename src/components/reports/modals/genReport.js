@@ -20,7 +20,8 @@ const genReport = ({
   generateReportStatus,
   generateReportErrors,
   startPathname,
-  currentPath
+  currentPath,
+  isStarted
 }) => {
   const shouldLetGenerate = (addList.length > 0 && choosenFolder !== null) ? true : false;
   return (
@@ -41,7 +42,7 @@ const genReport = ({
             >
               <label>{i.name} <b><i className="fa fa-users"></i>{i.numberOfMemberInDB}</b></label>
               <i
-                onClick={() => deleteTeamFromResultList(index)}
+                onClick={!isStarted ? () => deleteTeamFromResultList(index) : null}
                 className="fa fa-minus"
               />
               <input
@@ -95,7 +96,7 @@ const genReport = ({
               </article>
             </React.Fragment>
           }
-          {!shouldLetGenerate && 
+          {!shouldLetGenerate && !isStarted && 
             <article className="gen-report-not-able-to-gen-prompt">
               Aby wygenerować raport musisz wybrać folder docelowy. Folder docelowy znajdziesz na jednym z dysków
               umieszczonych w GoogleDrive lub OneDrive.
@@ -110,8 +111,8 @@ const genReport = ({
                 ? "Pomyślnie wygenerowano raport"
                 : generateReportErrors[0]
             }}
-            isLoading={isReportGenerating}
-            onClickHandler={(!isReportGenerating && !generateReportStatus) ? 
+            isLoading={isReportGenerating || isStarted}
+            onClickHandler={(!isReportGenerating && !generateReportStatus && !isStarted) ? 
               generateReport : null
               }
             btnTitle="Generuj raport"

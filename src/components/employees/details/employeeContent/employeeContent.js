@@ -93,7 +93,6 @@ const employeeContent = ({employee, editSeniority, employeeErrors,
         }
         
     </div>
-    {console.log(status)}
     <Quaters reactivateQuaterACreator={reactivateQuaterACreator}
     status={status}
     reactivateQuaterStatus={reactivateQuaterStatus}

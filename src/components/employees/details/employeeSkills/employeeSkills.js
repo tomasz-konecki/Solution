@@ -261,12 +261,11 @@ class EmployeeSkills extends React.Component{
         
         const status = employeeDeleted ? "Usunięty" : employeeHasAccount ? 
             "Aktywny" : "Nieaktywny";
-            
         return (
             <section className="employee-skills">
                 <h2>Umiejętności 
                     <span>
-                    {!changeSkillsStatus && !isChangingSkills && status !== "Nieaktywny" && 
+                    {!changeSkillsStatus && !isChangingSkills && status === "Aktywny" && 
                         <i onClick={this.openSkillsModal} className="fa fa-plus"></i>
                     }
                     {isChangingSkills && <SmallSpinner />} 
@@ -279,8 +278,6 @@ class EmployeeSkills extends React.Component{
 
                         </article>
                     }
-                    
-
 
                     {skills.length > 0 ?
                         skills.map((skill, index) => {
@@ -310,7 +307,6 @@ class EmployeeSkills extends React.Component{
                     />
                     }
                 
-                    
                 </ul>
                     <Modal key={1}
                     open={showAddNewSkillsModal}

@@ -14,12 +14,12 @@ class MainContainer extends React.Component {
 
   render() {
     const { match } = this.props;
-
     return (
       <div>
         <div className="wrapper">
           <Header history={this.props.history} />
           <Content match={match} />
+       
         </div>
       </div>
     );

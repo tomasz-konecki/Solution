@@ -87,7 +87,7 @@ class EmployeeDetailsContainer extends React.Component{
                         reactivateEmployee={this.reactivateEmployee} />
                         
                         <EmployeeSkills 
-                        employeeHasAccount={employee.hasAccount}
+                        employeeHasAccount={employee.seniority}
                         employeeDeleted={employee.isDeleted}
                         changeSkillsStatus={changeSkillsStatus}
                         employeeId={employee.id} 

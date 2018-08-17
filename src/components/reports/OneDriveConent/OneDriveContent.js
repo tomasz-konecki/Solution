@@ -14,7 +14,8 @@ import FilesList from './FilesList/FilesList';
 import SmallSpinner from '../../common/spinner/small-spinner';
 import FilePicker from '../filePicker/filePicker';
 import OperationStatusPrompt from '../../form/operationStatusPrompt/operationStatusPrompt';
-import { invalidTokenError } from '../../../constants';
+import { invalidTokenError, notRecognizedError, oldTokenComunicate } from '../../../constants';
+import { refreshPage } from '../../../services/methods';
 
 const startPath = "/drive/root:";
 const tryToEditAndAddFolderError = "Nie można jednocześnie edytować i dodwać folderów";
@@ -23,7 +24,7 @@ class OneDriveContent extends React.PureComponent {
     state = {
         isPreparingForLogingIn: true,
         isTakingCodeFromApi: false,
-        currentOpenedFolderDetailName: null,
+        currentOpenedFileDetailId: null,
 
         showAddingFolderInput: false,
         folderNameError: "",
@@ -151,11 +152,11 @@ class OneDriveContent extends React.PureComponent {
                 this.props.oneDriveToken, this.props.path);     
         }
     }
-    openFolder = (folderName, folderId) => {
-        this.setState({folderIsLoadingId: folderId, 
+    openFolder = folder => {
+        this.setState({folderIsLoadingId: folder.id, 
             newFolderName: "", newFolderNameError: "", 
             editFolderError: "", editFolderName: "", currentOpenedFolderToEditId: ""});
-        const nextPath = this.props.path + "/" + folderName;
+        const nextPath = this.props.path + "/" + folder.name;
         this.props.getFolder(this.props.oneDriveToken, nextPath);
     }
 
@@ -186,12 +187,12 @@ class OneDriveContent extends React.PureComponent {
             folderToDeleteId: folderId});
     }
     onFileClick = fileName => {
-        this.setState({currentOpenedFolderDetailName: 
-            fileName === this.state.currentOpenedFolderDetailName ? 
+        this.setState({currentOpenedFileDetailId: 
+            fileName === this.state.currentOpenedFileDetailId ? 
             null : fileName})
     }
     render(){
-        const { isPreparingForLogingIn, isTakingCodeFromApi, currentOpenedFolderDetailName,
+        const { isPreparingForLogingIn, isTakingCodeFromApi, currentOpenedFileDetailId,
             showAddingFolderInput, isAddingFolder, folderNameError, 
             showDeleteFolderModal, folderToDeleteId, isDeletingOrEditingFolder, 
             currentOpenedFolderToEditId, editFolderName, editFolderError, 
@@ -203,6 +204,7 @@ class OneDriveContent extends React.PureComponent {
             deleteFolderErrors, updateFolderStatus, updateFolderErrors, 
             uploadFileStatus, uploadFileErrors, chooseFolder, choosenFolder, 
             extendDetailName, extendId, authCodeStatus, authErrors, authStatus } = this.props;
+
         return (
             <div className="drive-content-container">
                 {authCodeStatus && getFoldersStatus && !isPreparingForLogingIn &&
@@ -217,7 +219,12 @@ class OneDriveContent extends React.PureComponent {
 
                     <div className="navigation-folders-container">
                         <header>
-                            <h3>Aktualna ścieżka: <span>{path}</span></h3>
+                            <h3>Aktualna ścieżka: 
+                                <span>{path} 
+                                   
+                                </span>
+                            </h3>
+
                                 {newFolderNameError && !editFolderError &&
                                     <p className="validation-error">
                                     {newFolderNameError}</p>
@@ -280,7 +287,7 @@ class OneDriveContent extends React.PureComponent {
                             folderIsLoadingId={folderIsLoadingId}
                             folders={folders}
                             editFolderName={editFolderName}
-                            currentOpenedFolderDetailName={currentOpenedFolderDetailName}
+                            currentOpenedFileDetailId={currentOpenedFileDetailId}
                             currentOpenedFolderToEditId={currentOpenedFolderToEditId}
                             onEditFolder={this.onEditFolder}
                             editFolderError={editFolderError}
@@ -301,7 +308,9 @@ class OneDriveContent extends React.PureComponent {
 
                 {getFoldersStatus === false && 
                     <p className="one-d-error">
-                        {getFoldersErrors[0]}
+                        {getFoldersErrors[0] === notRecognizedError ? 
+                        oldTokenComunicate : getFoldersErrors[0]}
+                        <span onClick={refreshPage}>Odśwież</span>
                     </p>
                 }
                 
@@ -364,6 +373,9 @@ class OneDriveContent extends React.PureComponent {
                     operationPrompt={false}
                     />
                 }
+
+
+                
             </div>
         );
     }

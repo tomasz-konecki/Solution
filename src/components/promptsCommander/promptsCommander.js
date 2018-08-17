@@ -3,6 +3,8 @@ import './promptsCommander.scss';
 import { connect } from 'react-redux';
 import { changeShowGlobal, setProgressValue } from '../../actions/progressBarActions';
 import { generateReport } from '../../actions/reportsActions';
+import SideBarProgressContent from './sideBarProgressContent';
+import SmallProgressBar from './smallProgressBar/smallProgressBar';
 const items = [
     {name: "Powiadomienie 1", content: "dasd asds asdsa sad sasa as asdsa sasa asdsadasdadsadsdsa dsad asa sadasd as sa...", date: "19-12-1994 16:45", 
     isShowed: true},
@@ -22,6 +24,17 @@ const items = [
     isShowed: true}
 ]
 class PromptsCommander extends React.Component{
+    componentDidMount(){
+        if(!this.props.barType)
+            window.addEventListener('beforeunload', this.handleExitFromPageWhenGeneratingReport);
+    }
+    handleExitFromPageWhenGeneratingReport = e => {
+        if(this.props.isStarted){
+            const confirmationMessage = '';
+            e.returnValue = confirmationMessage;
+            return confirmationMessage;   
+        }
+    }
     componentDidUpdate(){
         if(this.props.generateReportStatus && this.props.percentage === 100)
             this.props.setProgressValue(0, "");
@@ -43,67 +56,29 @@ class PromptsCommander extends React.Component{
             return "btn-br-left";
         else return "";
     }
+    componentWillUnmount() {
+        if(!this.props.barType)
+            window.removeEventListener('beforeunload', this.handleExitFromPageWhenGeneratingReport);
+    }
     render(){
         const { shouldShowGlobal, changeShowGlobal, isStarted, percentage, message,
             operationName, connectingSinalRStatus, connectionSignalRErrors, 
-            generateReportStatus, generateReportErrors} = this.props;
-        const menuClass = shouldShowGlobal ? "menu-expanded" : "menu-collapsed";
-        const btnClass = shouldShowGlobal ? "btn-expanded" : "btn-collapsed";
-
-        const btnBorderClass = isStarted ?
-            this.createClassesForLoader(percentage) : null;
-        
-        const btnResultClass = generateReportStatus ? "btn-finalized" : generateReportStatus === false ? "btn-op-failed" : null;
-
-        const btnIcon = generateReportStatus ? "fa-check" : generateReportStatus === false ? "fa-times" : "fa-bell";
+            generateReportStatus, generateReportErrors, barType } = this.props;
         return (
             <React.Fragment>
-                <div className={`comunicates-window ${menuClass}`}>
-                    <header>
-                        <span>Powiadomienia</span>
-                    </header>
-                    <ul className="notifictions">
-                        {items.map(i => {
-                            return (
-                                <li key={i.name}>
-                                    <i className={`fa ${i.isShowed ? "fa-check" : "fa-times"}`}></i>
-                                    <div className="not-content">
-                                        <b>{i.name}</b> {i.content}
-                                        <p>{i.date} <b>1000 dni temu</b></p>
-                                    </div>
-                                </li>
-                            );
-                        })}
-                    </ul>
-                    
-                    <footer>
-                        <button className="showed-btn">
-                            Odczytane <i className="fa fa-check"></i>
-                        </button>
-                        <button className="not-showed-btn">
-                            Nieodczytane <i className="fa fa-times"></i>
-                        </button>
-                    </footer>
-                    <div className="operations-messages">
-                        {isStarted && shouldShowGlobal && 
-                            <article>
-                                {operationName}  {(percentage)}%<b> {message}</b>
-                            </article>
-                        }
-                        {generateReportStatus !== null && 
-                            <p className={generateReportStatus ? "status-ok" : "status-off"}>{generateReportStatus ? 
-                                "Pomyślnie wygenerowano raport" :
-                                generateReportErrors[0]}</p>
-                        }
-                    </div>
-                </div> 
-               
-                <button title="Komunikaty" 
-                    onClick={this.togleSideBarHandler} 
-                    className={`comunicates-btn ${btnResultClass} ${btnClass} ${btnBorderClass}`}>
-                    <i className={`fa ${btnIcon}`}></i>
-                    <div/>
-                </button>
+                {barType === undefined ? 
+                    <SideBarProgressContent 
+                    items={items} message={message}
+                    shouldShowGlobal={shouldShowGlobal}
+                    createClassesForLoader={this.createClassesForLoader} percentage={percentage}
+                    generateReportStatus={generateReportStatus}
+                    isStarted={isStarted} operationName={operationName}
+                    generateReportErrors={generateReportErrors}
+                    togleSideBarHandler={this.togleSideBarHandler} /> : 
+
+                    <SmallProgressBar message={message} percentage={percentage} />
+                }
+                
             </React.Fragment>
         );
     }

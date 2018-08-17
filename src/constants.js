@@ -81,7 +81,8 @@ export const CREATE_FOLDER = "CREATE_FOLDER";
 export const DELETE_FOLDER = "DELETE_FOLDER";
 export const UPDATE_FOLDER = "UPDATE_FOLDER";
 export const UPLOAD_FILE = "UPLOAD_FILE";
-
+export const notRecognizedError = "Ups, coś poszło nie tak";
+export const oldTokenComunicate = "Wystąpił problem podczas pobierania zawartości katalogu OneDrive. Prawdopodobnie jest to związane z wygaśnięciem okresu dostępu. Odśwież stronę by zalogować się jeszcze raz bądź kliknij w poniższy przycisk"; 
 export const invalidTokenError = "Nieprawidłowy token autoryzacyjny do usługi OneDrive.";
 
 // SKILLS

@@ -102,3 +102,7 @@ export function generateSortFunction(key){
     return b[key] - a[key];
   }
 } 
+
+export const refreshPage = () => {
+  window.location.href = window.location.href;
+}

@@ -57,6 +57,7 @@ class ReportsContainer extends Component {
       setTimeout(() => {
         this.setState({reportModal: false});
         this.props.generateReportClearData(null, []);
+        this.props.chooseFolder(null);
       }, 1000);
     }
     else if(nextProps.addList.length === 0 &&
@@ -190,7 +191,11 @@ class ReportsContainer extends Component {
   }
 
   closeReportModal = () => {
-    this.props.generateReportClearData(null, []);
+    const { isStarted, chooseFolder, generateReportClearData } = this.props;
+    if(!isStarted)
+      chooseFolder(null);
+    
+    generateReportClearData(null, []);
     this.setState({reportModal: false});
   }
   extendDetailName = id => {  
@@ -203,6 +208,7 @@ class ReportsContainer extends Component {
     getFoldersClear([], null, [], "");
     history.push(startPathname + endPath);
   }
+
   render() {
     const { reportModal, spinner, valueToSearch, isReportGenerating, extendId } = this.state;
     const { addList, baseList, folders, pagesList, choosenFolder, generateReportStatus, 

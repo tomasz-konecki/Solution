@@ -34,7 +34,7 @@ class GDriveContent extends React.Component{
         isAddingFolder: false,
 
         fileToUpload: null,
-        isUploadingFile: false        
+        isUploadingFile: false
     }
     componentDidMount(){
         const { loginStatus, folders, getFolders, login } = this.props;
@@ -66,11 +66,11 @@ class GDriveContent extends React.Component{
                 isLoading: false});
         }
     }
-    openFolder = (folderName, folderId) => {
-        this.setState({folderIsLoadingId: folderId, newFolderName: "", 
+    openFolder = folder => {
+        this.setState({folderIsLoadingId: folder.id, newFolderName: "", 
             newFolderNameError: "", currentOpenedFolderToEditId: "",
             folderNameError: "", editFolderName: "", showAddingFolderInput: false});
-        this.props.getFolders(folderId, this.props.path + "/" + folderName);
+        this.props.getFolders(folder.id, this.props.path + "/" + folder.name);
     }
     goToFolderBefore = () => {
         this.setState({isLoading: true, newFolderName: "", 
@@ -166,7 +166,7 @@ class GDriveContent extends React.Component{
     }
 
     handleAddFile = e => { this.setState({fileToUpload: e.target.files}); }
-    
+ 
     render(){
         const { isLoading, folderIsLoadingId, showDeleteModal,
             folderToDeleteId, currentOpenedFolderToEditId, editFolderName, isEditingFolder, 
@@ -254,7 +254,7 @@ class GDriveContent extends React.Component{
                             openFolder={this.openFolder} 
                             folderIsLoadingId={folderIsLoadingId} 
                             showDeleteFolderModal={this.showDeleteFolderModal} 
-                            onFileClick={null}
+                            onFileClick={this.onFileClick}
                             />
                         }
 

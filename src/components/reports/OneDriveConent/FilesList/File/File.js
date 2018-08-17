@@ -4,7 +4,7 @@ import { prepareToLongStringToShow } from '../../../../../services/methods';
 import DetailExpander from '../../../../common/detail/detail';
 
 const file = ({folder, openFolder, editFolderError, isDeletingOrEditingFolder, 
-    onSubmit, currentOpenedFolderDetailName, showDeleteFolderModal, onStateChange,
+    onSubmit, currentOpenedFileDetailId, showDeleteFolderModal, onStateChange,
     onEditFolder, onChangeFolderName, currentOpenedFolderToEditId, 
     enableFolderEdit, editFolderName, closeEditingFolderName, onFileClick, 
     chooseFolder, choosenFolder, extendId, extendDetailName }) => {
@@ -15,11 +15,14 @@ const file = ({folder, openFolder, editFolderError, isDeletingOrEditingFolder,
         parentPath = prepareToLongStringToShow(11, folder.parentPath);
 
     return (
-    <li onDoubleClick={folder.type !== "file" ? () => openFolder(folder.name, folder.id) : null}
+    <li onDoubleClick={folder.type !== "file" ? () => openFolder(folder) : null}
     className={choosenFolder ? folder.id === choosenFolder.id ? "selected-folder" : null : null}
 
         onClick={folder.type === "file" ? 
-            () => onFileClick(folder.name) : null}
+            folder.size ? 
+            () => onFileClick(folder.id) : 
+            () => window.open(folder.webUrl)
+            : null}
         key={folder.name}>
 
         {(currentOpenedFolderToEditId === folder.id && folder.type !== "file") ? 
@@ -45,7 +48,7 @@ const file = ({folder, openFolder, editFolderError, isDeletingOrEditingFolder,
         }
         
         {folder.type !== "file" && 
-        <i onClick={() => openFolder(folder.name, folder.id)} className="fa fa-folder-open"></i>
+        <i onClick={() => openFolder(folder)} className="fa fa-folder-open"></i>
         }
 
         {folder.type !== "file" && 
@@ -62,7 +65,7 @@ const file = ({folder, openFolder, editFolderError, isDeletingOrEditingFolder,
             </div>
         }
 
-        {(folder.name === currentOpenedFolderDetailName && folder.type === "file") && 
+        {(folder.id === currentOpenedFileDetailId && folder.type === "file") && 
             <div className="file-details">
                 <p><b>Typ</b><span>{folder.type}</span></p>
                 <p><b>Rozmiar</b><span>{folder.size}</span></p>
@@ -76,7 +79,7 @@ const file = ({folder, openFolder, editFolderError, isDeletingOrEditingFolder,
                 </DetailExpander>
                 }
                 
-                <a href={folder.webUrl}>Otwórz</a>
+                <span onClick={() => window.open(folder.webUrl)}>Otwórz</span>
             </div>
         }
         

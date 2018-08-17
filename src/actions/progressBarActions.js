@@ -1,26 +1,31 @@
 import {
   SET_IS_STARTED,
   SET_PROGRESS_BAR_VALUE,
-  CHANGE_SHOULD_SHOW_GLOBAL
+  CHANGE_SHOULD_SHOW_GLOBAL,
+  SET_SIGNAL_R_CONNECTION_RESULT
 } from "../constants";
 import { HubConnectionBuilder, HttpTransportType } from "@aspnet/signalr";
-import storeCreator from "../store";
 import Config from "Config";
+import { connectionError } from '../constants';
+import storeCreator from "../store";
 
-const { store } = storeCreator;
-const state = store.getState();
-const getIsStarted = state => {
-  return state.progressBarReducer.isStarted;
-};
 
-const isStarted = getIsStarted(state);
-
-export const setIsStarted = isStarted => {
+export const setIsStarted = (isStarted, operationName) => {
   return {
     type: SET_IS_STARTED,
-    isStarted
+    isStarted,
+    operationName,
+    
   };
 };
+export const setSignalRConnectionStatus = (connectingSinalRStatus, connectionSignalRErrors, hubConnection) => {
+  return {
+    type: SET_SIGNAL_R_CONNECTION_RESULT,
+    connectingSinalRStatus,
+    connectionSignalRErrors,
+    hubConnection
+  }
+}
 
 export const setProgressValue = (percentage, message) => {
   return {
@@ -32,26 +37,41 @@ export const setProgressValue = (percentage, message) => {
 export const changeShowGlobal = shouldShowGlobal => {
   return { type: CHANGE_SHOULD_SHOW_GLOBAL, shouldShowGlobal };
 };
-const connectionError = "Wystąpił błąd podczas konfiguracji wskaźnika postępu";
+
+const { store } = storeCreator;
 
 export const createSignalRConnection = () => dispatch => {
   return new Promise(resolve => {
-    const HubConnection = new HubConnectionBuilder()
+    const state = store.getState();
+    const signalRConnectionStatus = getSignalRConnectionStatus(state);
+    let HubConnection = getHubConnection(state);
+
+    if(!HubConnection || !signalRConnectionStatus){
+      HubConnection = new HubConnectionBuilder()
       .withUrl(Config.serverUrl + "/progress", {
-        transport: HttpTransportType.WebSockets
-      })
-      .build();
-
+        transport: HttpTransportType.LongPolling
+      }).build();
+      
+      HubConnection.start().then(() => {
+        dispatch(setSignalRConnectionStatus(true, [], HubConnection));
+      }).catch(() => {
+        dispatch(setSignalRConnectionStatus(false, [connectionError], null));
+      });
+      
+    }
     HubConnection.on("SendProgress", (message, percentage) => {
-      if (!isStarted) {
-        dispatch(setIsStarted(isStarted));
         dispatch(setProgressValue(percentage, message));
-      } else {
-        dispatch(setProgressValue(percentage, message));
-      }
+        if(percentage === 100)
+          dispatch(setProgressValue(percentage, "Trwa finalizowanie operacji"));
     });
-
-    HubConnection.start();
+   
     resolve();
   });
 };
+
+const getHubConnection = state => {
+  return state.progressBarReducer.hubConnection;
+};
+const getSignalRConnectionStatus = state => {
+  return state.progressBarReducer.connectingSinalRStatus;
+}

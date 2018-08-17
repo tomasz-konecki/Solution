@@ -7,9 +7,7 @@ class EmployeeTable extends React.Component{
         isLoadingData: true
     }
     componentDidMount(){
-        if(!this.props.loadAssignmentsStatus && this.props.employeeStatus){
-            this.props.loadAssignmentsACreator();
-        }
+        this.props.loadAssignmentsACreator();
     }
     componentWillReceiveProps(nextProps){
       if(this.props.loadAssignmentsErrors !== nextProps.loadAssignmentsErrors)
@@ -61,7 +59,7 @@ class EmployeeTable extends React.Component{
                 {loadAssignmentsStatus === false && 
                     <p className="asign-error">{loadAssignmentsErrors[0]}</p>
                 }
-                
+           
             </div>
         );
     }

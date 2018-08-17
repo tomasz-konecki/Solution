@@ -15,6 +15,7 @@ import ChooseDriveView from './chooseDriveView/chooseDriveView';
 import GDriveContent from './GDriveContent/GDriveContent';
 import { Route } from 'react-router-dom';
 import { createSignalRConnection } from '../../actions/progressBarActions';
+import { generateSortFunction } from '../../services/methods';
 const startPathname  = "/main/reports";
 
 class ReportsContainer extends Component {
@@ -43,14 +44,20 @@ class ReportsContainer extends Component {
   componentWillReceiveProps(nextProps) {
     if (this.props.teams !== nextProps.teams) {
       this.setState({spinner: false});
-      if(nextProps.loadTeamsResult && this.props.teams.length === 0)
-        this.props.fetchLists([], [...nextProps.teams], [...nextProps.teams]);
+      if(nextProps.loadTeamsResult && this.props.teams.length === 0){
+        const sortFunction = generateSortFunction("numberOfMemberInDB");
+
+        const sortedTeams = [...nextProps.teams].sort(sortFunction);
+        this.props.fetchLists([], sortedTeams, sortedTeams);
+      }
     } 
     else if(nextProps.generateReportStatus && 
         nextProps.getFoldersErrors !== this.props.getFoldersErrors && 
-        nextProps.getFoldersStatus){
+        nextProps.getFoldersStatus && this.state.reportModal){
       setTimeout(() => {
         this.setState({reportModal: false});
+        this.props.generateReportClearData(null, []);
+        this.props.chooseFolder(null);
       }, 1000);
     }
     else if(nextProps.addList.length === 0 &&
@@ -60,6 +67,7 @@ class ReportsContainer extends Component {
     else
       this.setState({spinner: false, isReportGenerating: false});
   }
+
 
   addTeamToResultList = name => {
     const addList = [...this.props.addList];
@@ -84,16 +92,19 @@ class ReportsContainer extends Component {
     const helpList = [...this.props.helpList];
     const pagesList = [...this.props.pagesList];
     const baseList = this.findFromList(this.state.valueToSearch,  
-      helpList.concat(addList));
+    helpList.concat(addList));
     helpList.push(addList[index]);
     addList.splice(index, 1);
     pagesList.splice(index, 1);
 
     const isListEmpty = addList.length > 0 ? false : true;
-
+    
+    const sortFunction = generateSortFunction("numberOfMemberInDB");
+    const sortedHelpList = helpList.sort(sortFunction);
+    const sortedBaseList = baseList.sort(sortFunction);
 
     this.setState({reportModal: !isListEmpty});
-    this.props.fetchLists(addList, baseList, helpList, pagesList);
+    this.props.fetchLists(addList, sortedBaseList, sortedHelpList, pagesList);
   };
 
   validateForError = () => {
@@ -180,7 +191,11 @@ class ReportsContainer extends Component {
   }
 
   closeReportModal = () => {
-    this.props.generateReportClearData(null, []);
+    const { isStarted, chooseFolder, generateReportClearData } = this.props;
+    if(!isStarted)
+      chooseFolder(null);
+    
+    generateReportClearData(null, []);
     this.setState({reportModal: false});
   }
   extendDetailName = id => {  
@@ -193,11 +208,12 @@ class ReportsContainer extends Component {
     getFoldersClear([], null, [], "");
     history.push(startPathname + endPath);
   }
+
   render() {
     const { reportModal, spinner, valueToSearch, isReportGenerating, extendId } = this.state;
     const { addList, baseList, folders, pagesList, choosenFolder, generateReportStatus, 
       generateReportErrors, getFoldersStatus, getFoldersErrors, path,
-      loadTeamsResult, loadTeamsErrors, history} = this.props;
+      loadTeamsResult, loadTeamsErrors, history, isStarted} = this.props;
     const { push } = history;
     const { pathname } = history.location;
     return (
@@ -288,6 +304,7 @@ class ReportsContainer extends Component {
           onChangeReportPages={e => this.onChangeReportPages(e)}
           didPagesHasIncorrectValues={this.state.didPagesHasIncorrectValues.status}
           choosenFolder={choosenFolder}
+          isStarted={isStarted}
           />
         }
 
@@ -314,8 +331,9 @@ const mapStateToProps = state => {
     choosenFolder: state.persistHelpReducer.folderToGenerateReport,
 
     generateReportStatus: state.reportsReducer.generateReportStatus,
-    generateReportErrors: state.reportsReducer.generateReportErrors
+    generateReportErrors: state.reportsReducer.generateReportErrors,
 
+    isStarted: state.progressBarReducer.isStarted
   };
 };
 

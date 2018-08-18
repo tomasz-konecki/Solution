@@ -9,16 +9,8 @@ class NotFound404 extends Component {
     show: false
   };
 
-  // componentDidMount() {
-  //   this.setState({ show: true });
-  // }
-
-  onClickHandler = () => {
-    this.setState({ show: !this.state.show });
-  };
   render() {
     const { t } = this.props;
-    const { show } = this.state;
     const content = (
       <div id="not-found-container">
         <div id="not-found-header">
@@ -34,7 +26,7 @@ class NotFound404 extends Component {
       </div>
     );
 
-    return <React.Fragment>{show && content}</React.Fragment>;
+    return <React.Fragment>{content}</React.Fragment>;
   }
 }
 export default connect()(translate("NotFound404")(NotFound404));

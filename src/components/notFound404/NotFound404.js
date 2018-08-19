@@ -1,14 +1,10 @@
-import React, { Component } from "react";
+import React, { PureComponent } from "react";
 import { translate } from "react-translate";
 import { connect } from "react-redux";
 import { CSSTransitionGroup } from "react-transition-group";
 import "./NotFound404.scss";
 
-class NotFound404 extends Component {
-  state = {
-    show: false
-  };
-
+class NotFound404 extends PureComponent {
   render() {
     const { t } = this.props;
     const content = (

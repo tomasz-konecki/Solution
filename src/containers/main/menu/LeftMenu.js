@@ -97,7 +97,7 @@ class LeftMenu extends React.Component {
           iconType="fas"
           title={t("Projects")}
         />
-    
+
         {this.props.pem.hasAdministrativeAccess ? (
           <VerticalMenuElement
             match={match}
@@ -116,6 +116,16 @@ class LeftMenu extends React.Component {
             icon="file-alt"
             iconType="fas"
             title={t("Reports")}
+          />
+        ) : null}
+        {this.props.pem.hasAdministrativeAccess ? (
+          <VerticalMenuElement
+            match={match}
+            extended={extended}
+            path="/import-cv"
+            icon="archive"
+            iconType="fas"
+            title={t("ImportCV")}
           />
         ) : null}
       </ul>
@@ -139,7 +149,6 @@ LeftMenu.propTypes = {
 export default withRouter(
   connect(mapStateToProps)(translate("LeftMenu")(LeftMenu))
 );
-
 
 /*
     {binaryPermissioner(false)(0)(1)(0)(1)(1)(1)(this.props.binPem) ? (

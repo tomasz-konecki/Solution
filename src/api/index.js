@@ -7,11 +7,15 @@ import redux from "redux";
 import storeCreator from "./../store";
 import storage from "redux-persist/lib/storage";
 import { push } from "react-router-redux";
-import { logout,  } from "./../actions/authActions";
-import { refreshToken, authOneDrive, getFolderACreator } from '../actions/oneDriveActions';
+import { logout } from "./../actions/authActions";
+import {
+  refreshToken,
+  authOneDrive,
+  getFolderACreator
+} from "../actions/oneDriveActions";
 import ResponseParser from "./responseParser";
 import Config from "Config";
-import { loginACreator } from '../actions/persistHelpActions';
+import { loginACreator } from "../actions/persistHelpActions";
 const { store } = storeCreator;
 
 const API_ENDPOINT = Config.serverUrl;
@@ -47,19 +51,20 @@ function listener() {
 }
 
 const authValidator = response => {
-  if(response.response.config.url.search("onedrive") !== -1){
+  if (response.response.config.url.search("onedrive") !== -1) {
     const oneDriveToken = JSON.parse(response.response.config.data).token;
     const startPath = "/drive/root:";
-    store.dispatch(refreshToken(oneDriveToken)).then(response => {
-      dispatch(getFolderACreator(response, startPath));
-    }).catch(error => {
-      store.dispatch(authOneDriveACreator());
-    });
-  }
-  else if(response.response.config.url.search("GDrive") !== -1){
+    store
+      .dispatch(refreshToken(oneDriveToken))
+      .then(response => {
+        dispatch(getFolderACreator(response, startPath));
+      })
+      .catch(error => {
+        store.dispatch(authOneDriveACreator());
+      });
+  } else if (response.response.config.url.search("GDrive") !== -1) {
     dispatch(loginACreator());
-  }
-  else{
+  } else {
     if (response.response === undefined) {
       throw response;
       // store.dispatch(logout());
@@ -415,6 +420,11 @@ const WebApi = {
       }
     }
   },
+  CvImport: {
+    post: files => {
+      return WebAround.post(`${API_ENDPOINT}/CvImport/ImportCv`, files);
+    }
+  },
   gDrive: {
     get: {
       login: () => {
@@ -452,7 +462,7 @@ const WebApi = {
       refreshToken: oldToken => {
         return WebAround.get(
           `${API_ENDPOINT}/Onedrive/refresh?refresh_token=${oldToken}`
-        )
+        );
       }
     },
     post: {

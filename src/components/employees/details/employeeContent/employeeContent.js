@@ -140,20 +140,21 @@ const employeeContent = ({
               ponowną zmiane danych tego pracownika.
             </article>
           </div>
-        }    
-    </div>
-    <Quaters reactivateQuaterACreator={reactivateQuaterACreator}
-    status={status}
-    reactivateQuaterStatus={reactivateQuaterStatus}
-    reactivateQuaterErrors={reactivateQuaterErrors}
-    deleteQuaterStatus={deleteQuaterStatus}
-    deleteQuaterErrors={deleteQuaterErrors}
-    employeeId={employee.id}
-    deleteQuaterACreator={deleteQuaterACreator}
-    paginationLimit={5} 
-    quarterTalks={employee.quarterTalks}/>
-    
-  </section>
+        )}
+      </div>
+      <Quaters
+        reactivateQuaterACreator={reactivateQuaterACreator}
+        status={status}
+        reactivateQuaterStatus={reactivateQuaterStatus}
+        reactivateQuaterErrors={reactivateQuaterErrors}
+        deleteQuaterStatus={deleteQuaterStatus}
+        deleteQuaterErrors={deleteQuaterErrors}
+        employeeId={employee.id}
+        deleteQuaterACreator={deleteQuaterACreator}
+        paginationLimit={5}
+        quarterTalks={employee.quarterTalks}
+      />
+    </section>
   );
 };
 

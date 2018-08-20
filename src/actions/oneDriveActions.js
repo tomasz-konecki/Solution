@@ -8,6 +8,12 @@ import { chooseFolder } from './persistHelpActions';
 import { errorCatcher } from "../services/errorsHandler";
 import { sendTokenToGetAuth } from './authActions';
 import { clearAfterTimeByFuncRef } from '../services/methods';
+import storeCreator from "./../store";
+
+const { store } = storeCreator;
+const selectSortType = state =>
+  state.persistHelpReducer.driveSortType
+
 
 export const refreshToken = currentToken => (dispatch) => {
   return new Promise((resolve, reject) => {
@@ -90,7 +96,9 @@ export const getFolders = (
 export const getFolderACreator = (token, path) => {
   return dispatch => {
     dispatch(getFoldersPromise(token, path)).then(response => {
-      dispatch(getFolders(response, true, [], path));
+      const sortType = selectSortType(store.getState());
+      
+      dispatch(getFolders(sortType ? response.reverse() : response, true, [], path));
     });
   };
 };

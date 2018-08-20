@@ -97,9 +97,9 @@ export const clearAfterTimeByFuncRef = (funcRef, delay, ...params) => {
   }
 }
 
-export function generateSortFunction(key){
+export function generateSortFunction(key, ascending){
   return function sortByKey(a, b){
-    return b[key] - a[key];
+    return ascending ? a[key] - b[key] : b[key] - a[key];
   }
 } 
 

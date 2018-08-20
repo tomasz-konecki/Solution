@@ -1,6 +1,7 @@
 import React from 'react'
 import './employeeTable.scss';
 import Spinner from '../../../common/spinner/small-spinner';
+import { withRouter } from 'react-router-dom';
 import EmptyContent from '../../../common/empty-content/empty-content';
 class EmployeeTable extends React.Component{
     state = {
@@ -16,7 +17,8 @@ class EmployeeTable extends React.Component{
     render(){
         const { isLoadingData } = this.state;
         const { tableTitle, loadAssignmentsStatus, 
-            loadAssignmentsErrors, loadedAssignments, loadAssignmentsClear } = this.props;
+            loadAssignmentsErrors, loadedAssignments, loadAssignmentsClear,
+            history } = this.props;
             
         return (
             <div className="table-container emp-table">
@@ -36,7 +38,7 @@ class EmployeeTable extends React.Component{
                         <tbody>
                             {loadedAssignments.map(assign => {
                                 return (
-                                    <tr key={assign.assignmentId}>
+                                    <tr onClick={() => history.push(`/main/projects/${assign.projectId}`)} key={assign.assignmentId}>
                                         <td>{assign.createdBy}</td>
                                         <td>{assign.projectName}</td>
                                         <td>{assign.role}</td>
@@ -65,4 +67,4 @@ class EmployeeTable extends React.Component{
     }
 }
 
-export default EmployeeTable;
+export default withRouter(EmployeeTable);

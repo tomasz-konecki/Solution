@@ -176,7 +176,9 @@ class GDriveContent extends React.Component{
             folders, path, deleteFolderStatus, deleteFolderErrors, loading, 
             updateFolderStatus, updateFolderErrors,
             createFolderStatus, createFolderErrors, uploadFileErrors,
-            uploadFileStatus, choosenFolder, extendDetailName, extendId } = this.props;
+            uploadFileStatus, choosenFolder, extendDetailName, extendId,
+            driveSortType, changeSortBy } = this.props;
+
         return (
             <div 
                 className="drive-content-container">
@@ -239,6 +241,8 @@ class GDriveContent extends React.Component{
                             </p> : 
 
                             <FilesList 
+                            driveSortType={driveSortType}
+                            sortList={() => changeSortBy(folders, driveSortType, path)}
                             choosenFolder={choosenFolder}
                             chooseFolder={this.props.chooseFolder}
                             editFolderError={folderNameError}

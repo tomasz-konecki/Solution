@@ -1,6 +1,8 @@
-import { FETCH_LISTS, CHOOSE_FOLDER_TO_GENERATE_REPORT, G_DRIVE_LOGIN, FETCH_FORM_CLIENTS }
+import { FETCH_LISTS, CHOOSE_FOLDER_TO_GENERATE_REPORT, G_DRIVE_LOGIN, FETCH_FORM_CLIENTS,
+    CHANGE_SORT_BY }
 from "../constants";
 import WebApi from '../api/index';
+import { getFolders } from './oneDriveActions';
 import { errorCatcher } from '../services/errorsHandler';
 export const fetchLists = (addList, baseList, helpList, pagesList) => {
     return { type: FETCH_LISTS, addList, baseList, helpList, pagesList }
@@ -38,4 +40,15 @@ export const fetchFormClientsACreator = () => {
         });
     }
     
+}
+
+export const changeSortBy = driveSortType => {
+    return { type: CHANGE_SORT_BY, driveSortType }
+}
+
+export const changeSortByACreator = (listToSort, sortType, currentPath) => {
+    return dispatch => {
+        dispatch(changeSortBy(!sortType));
+        dispatch(getFolders(listToSort.reverse(), true, [], currentPath));
+    }
 }

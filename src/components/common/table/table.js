@@ -8,6 +8,8 @@ import { connect } from 'react-redux';
 import { addFeedbackACreator, getFeedbacksACreator, addFeedback, getFeedbacks } from '../../../actions/projectsActions';
 import Spinner from 'components/common/spinner/spinner';
 import OperationStatusPrompt from '../../form/operationStatusPrompt/operationStatusPrompt';
+import { withRouter } from 'react-router-dom';
+
 class Table extends Component{
     state = {
         trs: [], 
@@ -56,23 +58,25 @@ class Table extends Component{
             for(let i = 0; i <= id; i++){
                 teamRows.push(this.state.trs[i]);
             }
+            const { items, history } = this.props;
             teamRows.push(
                 <tr key="uniq" className="detail-table-header">
                     <td>
                         <ul className="detail-team-list">
-                            <h5>{this.props.items[id].email} 
+                            <h5><span onClick={() => history.push(`/main/employees/${items[id].employeeId}`)}>
+                                {items[id].email} <i className="fa fa-info-circle"></i></span>
                                 <b>
-                                    <i id="str-date">Data rozpoczęcia: {this.props.items[id].startDate.slice(0, 10)}</i>
-                                    <i id="ed-date">Data zakończenia: {this.props.items[id].endDate.slice(0, 10)}</i>
+                                    <i id="str-date">Data rozpoczęcia: {items[id].startDate.slice(0, 10)}</i>
+                                    <i id="ed-date">Data zakończenia: {items[id].endDate.slice(0, 10)}</i>
                                 </b>
                             </h5>
-                            <li>Dodany do projektu przez: <b>{this.props.items[id].createdBy}</b> w <i className="moment-date">
-                                {this.props.items[id].createdAt.slice(0, 10)}
-                              ({moment().diff(this.props.items[id].createdAt.slice(0, 10), 'days')} dni temu)</i></li>
+                            <li>Dodany do projektu przez: <b>{items[id].createdBy}</b> w <i className="moment-date">
+                                {items[id].createdAt.slice(0, 10)}
+                              ({moment().diff(items[id].createdAt.slice(0, 10), 'days')} dni temu)</i></li>
                             
                             <p>Lista obowiązków: </p>
                             <li className="responsibilities-list">
-                                {this.props.items[id].responsibilities.map(i => {
+                                {items[id].responsibilities.map(i => {
                                     return <i key={i}>{i}</i>
                                 })}
 
@@ -272,5 +276,5 @@ const mapDispatchToProps = dispatch => {
     };
   }
        
-export default connect(mapStateToProps, mapDispatchToProps)(Table);
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Table));
   

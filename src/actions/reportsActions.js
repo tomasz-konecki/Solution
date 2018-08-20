@@ -153,8 +153,6 @@ export const generateReportACreator = (
           );
         } else {
           dispatch(getOneDriveFolders(token, currentPath));
-          if (history.location.pathname !== "/main/reports/onedrive")
-            history.push("/main/reports/onedrive");
         }
       })
       .catch(error => {

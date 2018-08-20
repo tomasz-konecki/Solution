@@ -203,12 +203,14 @@ class OneDriveContent extends React.PureComponent {
             createFolderStatus, createFolderErrors, deleteFolderStatus, 
             deleteFolderErrors, updateFolderStatus, updateFolderErrors, 
             uploadFileStatus, uploadFileErrors, chooseFolder, choosenFolder, 
-            extendDetailName, extendId, authCodeStatus, authErrors, authStatus } = this.props;
+            extendDetailName, extendId, authCodeStatus, authErrors, authStatus,
+            changeSortBy, driveSortType } = this.props;
 
         return (
             <div className="drive-content-container">
                 {authCodeStatus && getFoldersStatus && !isPreparingForLogingIn &&
-                    <FilePicker fileToUpload={fileToUpload} uploadFile={this.uploadFile}
+                    <FilePicker sortList={null}
+                    fileToUpload={fileToUpload} uploadFile={this.uploadFile}
                     handleAddFile={e => this.handleAddFile(e)} isUploadingFile={isUploadingFile}/>
                 }
                 
@@ -280,6 +282,8 @@ class OneDriveContent extends React.PureComponent {
                             </p> : 
 
                             <FilesList 
+                            driveSortType={driveSortType}
+                            sortList={() => changeSortBy(folders, driveSortType, path)}
                             extendDetailName={extendDetailName}
                             extendId={extendId}
                             chooseFolder={chooseFolder}
@@ -402,7 +406,9 @@ const mapStateToProps = state => {
         updateFolderErrors: state.oneDriveReducer.updateFolderErrors,
 
         uploadFileStatus: state.oneDriveReducer.uploadFileStatus,
-        uploadFileErrors: state.oneDriveReducer.uploadFileErrors
+        uploadFileErrors: state.oneDriveReducer.uploadFileErrors,
+
+
     };
   };
 

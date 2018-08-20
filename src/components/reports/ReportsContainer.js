@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import "./ReportsContainer.scss";
 import { getTeamsACreator, generateReportACreator, generateReport } from "../../actions/reportsActions";
-import { fetchLists, chooseFolder } from '../../actions/persistHelpActions';
+import { fetchLists, chooseFolder, changeSortByACreator } from '../../actions/persistHelpActions';
 import { getFolders } from '../../actions/oneDriveActions';
 import Spinner from "../common/spinner/spinner";
 import { validateReportPages } from "services/validation";
@@ -213,7 +213,7 @@ class ReportsContainer extends Component {
     const { reportModal, spinner, valueToSearch, isReportGenerating, extendId } = this.state;
     const { addList, baseList, folders, pagesList, choosenFolder, generateReportStatus, 
       generateReportErrors, getFoldersStatus, getFoldersErrors, path,
-      loadTeamsResult, loadTeamsErrors, history, isStarted} = this.props;
+      loadTeamsResult, loadTeamsErrors, history, isStarted, driveSortType, changeSortBy} = this.props;
     const { push } = history;
     const { pathname } = history.location;
     return (
@@ -238,6 +238,8 @@ class ReportsContainer extends Component {
         <Route path={startPathname + "/gdrive"} render={() => {
           return (
             <GDriveContent 
+            driveSortType={driveSortType}
+            changeSortBy={changeSortBy}
             path={path}
             choosenFolder={choosenFolder}
             folders={folders}
@@ -252,6 +254,8 @@ class ReportsContainer extends Component {
         <Route path={startPathname + "/onedrive"} render={() => {
           return (
             <OneDriveContent 
+            driveSortType={driveSortType}
+            changeSortBy={changeSortBy}
             generateReportStatus={generateReportStatus}
             path={path}
             extendDetailName={this.extendDetailName}
@@ -333,7 +337,9 @@ const mapStateToProps = state => {
     generateReportStatus: state.reportsReducer.generateReportStatus,
     generateReportErrors: state.reportsReducer.generateReportErrors,
 
-    isStarted: state.progressBarReducer.isStarted
+    isStarted: state.progressBarReducer.isStarted,
+
+    driveSortType: state.persistHelpReducer.driveSortType
   };
 };
 
@@ -345,7 +351,8 @@ const mapDispatchToProps = dispatch => {
     chooseFolder: (folderToGenerateReport) => dispatch(chooseFolder(folderToGenerateReport)),
     generateReport: (teamSheets, choosenFolder, pageList, history) => dispatch(generateReportACreator(teamSheets, choosenFolder, pageList, history)),
     generateReportClearData: (status, errors) => dispatch(generateReport(status, errors)),
-    createSignalRConnection: () => dispatch(createSignalRConnection())
+    createSignalRConnection: () => dispatch(createSignalRConnection()),
+    changeSortBy: (listToSort, sortType, path) => dispatch(changeSortByACreator(listToSort, sortType, path))
   };
 };
 

@@ -7,6 +7,10 @@ const translations = {
     Forgot: "Zapomniałeś",
     Password: "hasła"
   },
+  NotFound404: {
+    PageNotFound: "Nie znaleziono strony",
+    PageNotFoundText: "Nie chcesz tutaj być..."
+  },
   TopBar: {
     Logout: "Wyloguj"
   },
@@ -18,7 +22,8 @@ const translations = {
     Assign: "Przypisz",
     Stats: "Statystyki",
     Skills: "Umiejętności",
-    Reports: "Raporty"
+    Reports: "Raporty",
+    ImportCV: "Import CV"
   },
   SmoothTable: {
     Search: "Szukaj",
@@ -33,13 +38,16 @@ const translations = {
     Reports: "Raporty"
   },
   StatsContainer: {
-    DevLocalization: "Lokalizacja Developerów",
+    DevLocalization: "Lokalizacja Pracowników",
     EmployeesWithoutProjects: "Pracownicy bez projektów",
     Without: "BEZ",
     With: "Z",
     ActiveProjects: "Aktywne Projekty",
     Active: "Aktywne",
-    Archive: "Archiwalne"
+    Archive: "Archiwalne",
+    EmployeesFTE: "FTE Pracowników",
+    UnUsed: "Wolne",
+    Used: "Zajęte"
   },
   UsersList: {
     Add: "Dodaj",
@@ -171,6 +179,16 @@ const translations = {
     DeleteEmployee: "Usuń pracownika",
     DeleteEmployeeInfinitive: "Usunąć pracownika",
     EmployeeHasBeenDeleted: "Pracownik został Usunięty."
+  },
+  ImportCVContainer: {
+    Name: "Nazwa",
+    Size: "Rozmiar",
+    LastModifiedDate: "Data ostatniej modyfikacji",
+    Actions: "Akcje",
+    SelectFiles: "Wybierz pliki",
+    DropHere: "Przeciągnij pliki lub wciśnij przycisk poniżej.",
+    OnlyDocx: "Akceptowane są jedynie pliki z rozszerzeniem .docx",
+    Import: "Importuj"
   },
   Confirmation: {
     YouAreAboutTo: "Właśnie chcesz",

@@ -17,6 +17,7 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { LANGUAGE_CHANGE } from "../constants";
 import { withRouter } from "react-router-dom";
+import NotFound404 from "../components/notFound404/NotFound404";
 
 class App extends Component {
   constructor(props) {
@@ -69,6 +70,7 @@ class App extends Component {
             component={Home}
             history={this.props.history}
           />
+          <Route component={NotFound404} />
         </Switch>
       </TranslatorProvider>
     );

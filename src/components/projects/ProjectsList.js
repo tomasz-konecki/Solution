@@ -67,6 +67,7 @@ class ProjectsList extends Component {
       unfurler: ProjectRowUnfurl,
       showDeletedCheckbox: true,
       showAllCheckbox: true,
+      redirectPath: "/main/projects/",
       disabledRowComparator: object => {
         return object.isDeleted;
       },

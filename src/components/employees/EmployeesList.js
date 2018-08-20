@@ -32,6 +32,7 @@ class EmployeesList extends Component {
       unfurler: EmployeesRowUnfurl,
       showDeletedCheckbox: true,
       showAllCheckbox: true,
+      redirectPath: "/main/employees/",
       disabledRowComparator: object => {
         return object.isDeleted;
       },
@@ -77,7 +78,7 @@ class EmployeesList extends Component {
           multiState: {
             true: t("AccountActive"),
             false: t("AccountInactive"),
-            "": t("SelectStatus")
+            null: t("SelectStatus")
           },
           type: "multiState",
           filter: true
@@ -115,16 +116,19 @@ class EmployeesList extends Component {
       ]
     };
     let render = () => (
-      <div>
-        <SmoothTable
-          currentPage={this.props.currentPage}
-          totalPageCount={this.props.totalPageCount}
-          loading={this.props.loading}
-          data={this.props.employees}
-          construct={construct}
-          showRaportButton={true}
-        />
-      </div>
+      console.log(this.props),
+      (
+        <div>
+          <SmoothTable
+            currentPage={this.props.currentPage}
+            totalPageCount={this.props.totalPageCount}
+            loading={this.props.loading}
+            data={this.props.employees}
+            construct={construct}
+            showRaportButton={true}
+          />
+        </div>
+      )
     );
     return (
       <IntermediateBlock

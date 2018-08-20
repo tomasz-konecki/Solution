@@ -96,3 +96,13 @@ export const clearAfterTimeByFuncRef = (funcRef, delay, ...params) => {
     }, delay);
   }
 }
+
+export function generateSortFunction(key, ascending){
+  return function sortByKey(a, b){
+    return ascending ? a[key] - b[key] : b[key] - a[key];
+  }
+} 
+
+export const refreshPage = () => {
+  window.location.href = window.location.href;
+}

@@ -71,6 +71,7 @@ export const FETCH_LISTS = "FETCH_LISTS";
 export const CHOOSE_FOLDER_TO_GENERATE_REPORT =
   "CHOOSE_FOLDER_TO_GENERATE_REPORT";
 export const FETCH_FORM_CLIENTS = "FETCH_FORM_CLIENTS";
+export const CHANGE_SORT_BY = "CHANGE_SORT_BY";
 
 // ONEDRIVE
 
@@ -81,7 +82,8 @@ export const CREATE_FOLDER = "CREATE_FOLDER";
 export const DELETE_FOLDER = "DELETE_FOLDER";
 export const UPDATE_FOLDER = "UPDATE_FOLDER";
 export const UPLOAD_FILE = "UPLOAD_FILE";
-
+export const notRecognizedError = "Ups, coś poszło nie tak";
+export const oldTokenComunicate = "Wystąpił problem podczas pobierania zawartości katalogu OneDrive. Prawdopodobnie jest to związane z wygaśnięciem okresu dostępu. Odśwież stronę by zalogować się jeszcze raz bądź kliknij w poniższy przycisk"; 
 export const invalidTokenError = "Nieprawidłowy token autoryzacyjny do usługi OneDrive.";
 
 // SKILLS
@@ -115,3 +117,10 @@ export const ADD_NEW_SKILLS_TO_EMPLOYEE = "ADD_NEW_SKILLS_TO_EMPLOYEE";
 export const SET_IS_STARTED = "SET_IS_STARTED";
 export const SET_PROGRESS_BAR_VALUE = "SET_PROGRESS_BAR_VALUE";
 export const CHANGE_SHOULD_SHOW_GLOBAL = "CHANGE_SHOULD_SHOW_GLOBAL";
+
+// QUARTERTALKs
+export const ADD_QUARTER_TALK = "ADD_QUARTER_TALK";
+export const GET_QUESTIONS = "GET_QUESTIONS";
+export const SET_SIGNAL_R_CONNECTION_RESULT = "SET_SIGNAL_R_CONNECTION_RESULT";
+export const connectionError = "Wystąpił błąd podczas konfiguracji wskaźnika postępu";
+export const GENERATE_HUB_CONNECTION = "GENERATE_HUB_CONNECTION";

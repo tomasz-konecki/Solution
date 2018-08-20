@@ -21,6 +21,7 @@ class Content extends React.Component {
     return (
       <div className="content">
         <Confirmation />
+      <PromptsCommander />
         <Switch>
           <Route exact path={match.url} component={StatsContainer} />
           <Route path={match.url + "/users"} component={UsersContainer} />

@@ -1,0 +1,26 @@
+.small-progress-bar{
+    position: absolute;
+    width: 100%;
+    bottom: -71px;
+    display: flex;
+    flex-flow: column;
+    left: 0;
+    .progress-state{
+        height: 35px;
+        background: mediumseagreen;
+        transition: 0.5s all ease-in-out;
+        padding-right: 5px;
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        span{
+            color: white;
+        }
+    }
+    .progress-message{
+        margin: 10px 0;
+        color: white;
+        width: 100%;
+        padding: 0 10px;
+    }
+}

@@ -1,10 +1,13 @@
 import React from 'react'
 import './operationStatusPrompt.scss';
 
-const operationStatusPrompt = props => (
-    <div className={`operation-prompt ${props.operationPrompt === true ? 
+const operationStatusPrompt = ({closePrompt, operationPrompt, operationPromptContent}) => (
+    <div className={`operation-prompt ${operationPrompt === true ? 
     "operation-ok" : "operation-false"}`}>
-        {props.operationPromptContent}
+        {operationPromptContent}
+        {closePrompt && 
+            <i onClick={closePrompt} className="fa fa-times"></i>
+        }
     </div>
 );
 export default operationStatusPrompt;

@@ -7,7 +7,7 @@ import {
 import WebApi from "../api";
 import { errorCatcher } from "../services/errorsHandler";
 import { asyncStarted, asyncEnded } from "./asyncActions";
-
+import { setIsStarted } from './progressBarActions';
 import {
   getFolderACreator as getOneDriveFolders,
   authOneDriveACreator
@@ -16,6 +16,7 @@ import { getFoldersACreator as getGDriveFolders } from "./gDriveActions";
 import storeCreator from "../store";
 import { clearAfterTimeByFuncRef } from "../services/methods";
 import { sendTokenToGetAuth } from "./authActions";
+import { chooseFolder } from './persistHelpActions';
 
 export const getTeams = (teams, loadTeamsResult, loadTeamsErrors) => {
   return {
@@ -91,90 +92,74 @@ export const generateReportACreator = (
     const state = store.getState();
     const token = getOneDriveToken(state);
     const path = getOneDrivePath(state);
+    const parentId = getParentId(state);
+
 
     const teamsSheets = {};
     for (let i = 0; i < addList.length; i++) {
       teamsSheets[addList[i].name] = pageList[i].value;
     }
-    const currentPath = choosenFolder.parentPath + "/" + choosenFolder.name;
-    const generateOnOneDrive =
-      choosenFolder.parentPath !== undefined ? true : false;
-    const generateOnGDrive = !generateOnOneDrive;
-    let model = {};
-    if (generateOnGDrive) {
-      model = {
-        teamsSheets: teamsSheets,
-        folderId: choosenFolder.id
-      };
-    } else {
-      model = {
-        teamsSheets: teamsSheets,
-        folderId: choosenFolder.id,
-        folderName: choosenFolder.name,
-        oneDriveToken: token,
-        oneDrivePath: currentPath
-      };
-    }
+    const currentPath = choosenFolder ? choosenFolder.parentPath + "/" + choosenFolder.name : path;
+    const generateOnOneDrive = history.location.pathname.search("onedrive") !== -1 ?
+      true : false;
 
+    const generateOnGDrive = !generateOnOneDrive;
+    
+    let model = {};
+    if(choosenFolder){
+      if (generateOnGDrive) {
+        model = {
+          teamsSheets: teamsSheets,
+          folderId: choosenFolder.id
+        };
+      } else {
+        model = {
+          teamsSheets: teamsSheets,
+          folderId: choosenFolder.id,
+          folderName: choosenFolder.name,
+          oneDriveToken: token,
+          oneDrivePath: currentPath
+        };
+      }
+    }
+    else{
+      if(generateOnGDrive){
+        model = {
+          teamsSheets: teamsSheets,
+          folderId: parentId
+        }
+      }
+      else{
+        model = {
+          teamsSheets: teamsSheets,
+          folderId: null,
+          folderName: null,
+          oneDriveToken: token,
+          oneDrivePath: currentPath
+        };
+      }
+      
+    }
+    dispatch(setIsStarted(true, "Generowanie raportu"));
     WebApi.reports.post
       .report(model, generateOnGDrive, generateOnOneDrive)
       .then(response => {
+        dispatch(setIsStarted(false, ""));
         dispatch(generateReport(true, []));
-        dispatch(clearAfterTimeByFuncRef(generateReport, 2000, null, []));
         if (generateOnGDrive) {
           dispatch(
-            getGDriveFolders(choosenFolder.id, path + "/" + choosenFolder.id)
+            getGDriveFolders(choosenFolder ? chooseFolder.id : parentId, 
+              choosenFolder ? path + "/" + choosenFolder.id : "root")
           );
         } else {
           dispatch(getOneDriveFolders(token, currentPath));
-          if (history.location.pathname !== "/main/reports/onedrive")
-            history.push("/main/reports/onedrive");
         }
       })
       .catch(error => {
+        dispatch(setIsStarted(false));
         dispatch(generateReport(false, errorCatcher(error)));
-        dispatch(clearAfterTimeByFuncRef(generateReport, 5000, null, []));
       });
   };
-  const currentPath = choosenFolder.parentPath + "/" + choosenFolder.name;
-  const generateOnOneDrive =
-    choosenFolder.parentPath !== undefined ? true : false;
-  const generateOnGDrive = !generateOnOneDrive;
-  let model = {};
-  if (generateOnGDrive) {
-    model = {
-      teamsSheets: teamsSheets,
-      folderId: choosenFolder.id
-    };
-  } else {
-    model = {
-      teamsSheets: teamsSheets,
-      folderId: choosenFolder.id,
-      folderName: choosenFolder.name,
-      oneDriveToken: token,
-      oneDrivePath: currentPath
-    };
-  }
-  WebApi.reports.post
-    .report(model, generateOnGDrive, generateOnOneDrive)
-    .then(response => {
-      dispatch(generateReport(true, []));
-      dispatch(clearAfterTimeByFuncRef(generateReport, 2000, null, []));
-
-      if (generateOnGDrive)
-        dispatch(
-          getGDriveFolders(choosenFolder.id, path + "/" + choosenFolder.id)
-        );
-      else {
-        dispatch(getOneDriveFolders(token, currentPath));
-        if (history.location.pathname !== "/main/reports/onedrive")
-          history.push("/main/reports/onedrive");
-      }
-    })
-    .catch(error => {
-      dispatch(generateReport(false, errorCatcher(error)));
-      dispatch(clearAfterTimeByFuncRef(generateReport, 5000, null, []));
-    });
 };
 
 const getOneDriveToken = state => {
@@ -183,3 +168,7 @@ const getOneDriveToken = state => {
 const getOneDrivePath = state => {
   return state.oneDriveReducer.path;
 };
+
+const getParentId = state => {
+  return state.oneDriveReducer.parentId
+}

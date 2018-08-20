@@ -216,6 +216,11 @@ const WebApi = {
     post: () => {}
   },
   quarterTalks: {
+    get: {
+      questions: () => {
+        return WebAround.get(`${API_ENDPOINT}/QuarterTalks/questions`);
+      }
+    },
     delete: quarterId => {
       return WebAround.delete(`${API_ENDPOINT}/QuarterTalks/${quarterId}`);
     },
@@ -224,6 +229,11 @@ const WebApi = {
         return WebAround.put(
           `${API_ENDPOINT}/QuarterTalks/Reactivate/${quarterId}`
         );
+      }
+    },
+    post: {
+      createQuarter: model => {
+        return WebAround.post(`${API_ENDPOINT}/QuarterTalks`, model);
       }
     }
   },

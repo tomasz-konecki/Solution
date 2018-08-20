@@ -158,6 +158,36 @@ class StatsContainer extends Component {
     );
   };
 
+  createFTEChart = t => {
+    let cols = [
+      [t("UnUsed"), this.state.stats.employeesFte.unusedFte],
+      [t("Used"), this.state.stats.employeesFte.usedFte]
+    ];
+    const data = {
+      type: "pie",
+      columns: cols
+    };
+
+    const tooltip = {
+      format: {
+        value: function(value, ratio, id) {
+          return `${value}`;
+        }
+      }
+    };
+
+    return (
+      <span className="chart-container">
+        <span>{t("EmployeesFTE")}</span>
+        <C3Chart
+          data={data}
+          size={this.state.windowWidth < 500 ? SIZE_MOBILE : SIZE_DESKTOP}
+          tooltip={tooltip}
+        />
+      </span>
+    );
+  };
+
   pullDOM = () => {
     const { t } = this.props;
     return (
@@ -165,6 +195,7 @@ class StatsContainer extends Component {
         {this.createDevChart(t)}
         {this.createEWPChart(t)}
         {this.createPAChart(t)}
+        {this.createFTEChart(t)}
       </div>
     );
   };

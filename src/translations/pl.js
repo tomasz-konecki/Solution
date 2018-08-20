@@ -44,7 +44,10 @@ const translations = {
     With: "Z",
     ActiveProjects: "Aktywne Projekty",
     Active: "Aktywne",
-    Archive: "Archiwalne"
+    Archive: "Archiwalne",
+    EmployeesFTE: "FTE Pracowników",
+    UnUsed: "Wolne",
+    Used: "Zajęte"
   },
   UsersList: {
     Add: "Dodaj",

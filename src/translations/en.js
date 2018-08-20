@@ -44,7 +44,10 @@ const translations = {
     With: "With",
     ActiveProjects: "Active Projects",
     Active: "Active",
-    Archive: "Archive"
+    Archive: "Archive",
+    EmployeesFTE: "Employees FTE",
+    UnUsed: "UnUsed",
+    Used: "Used"
   },
   UsersList: {
     Add: "Add",

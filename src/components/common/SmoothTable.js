@@ -305,18 +305,23 @@ class SmoothTable extends Component {
   }
 
   handleRowClick(object, index, event) {
-    const { keyField } = this.props.construct;
-    const { rowUnfurls } = this.state;
-
-    if (rowUnfurls[index] === undefined) {
-      rowUnfurls[index] = true;
+    const { redirectPath } = this.props.construct;
+    if (redirectPath) {
+      this.setState({ rowClickedId: object.id });
     } else {
-      rowUnfurls[index] = !rowUnfurls[index];
-    }
+      const { keyField } = this.props.construct;
+      const { rowUnfurls } = this.state;
 
-    this.setState({
-      rowUnfurls
-    });
+      if (rowUnfurls[index] === undefined) {
+        rowUnfurls[index] = true;
+      } else {
+        rowUnfurls[index] = !rowUnfurls[index];
+      }
+
+      this.setState({
+        rowUnfurls
+      });
+    }
   }
 
   removeFilters() {
@@ -730,6 +735,14 @@ class SmoothTable extends Component {
     if (this.state.toRaports === true) {
       return <Redirect to="/main/reports" />;
     }
+    if (this.state.rowClickedId) {
+      return (
+        <Redirect
+          to={this.props.construct.redirectPath + this.state.rowClickedId}
+        />
+      );
+    }
+
     return (
       <div className="smooth-table">
         <div className="d-flex">

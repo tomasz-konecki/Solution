@@ -4,39 +4,49 @@ import Dropzone from "react-dropzone";
 import Icon from "../common/Icon";
 
 import WebApi from "../../api/index";
+import LoaderCircular from "../common/LoaderCircular";
+import { translate } from "react-translate";
 
 import "./ImportCVContainer.scss";
 
-export default class ImportCVContainer extends Component {
+class ImportCVContainer extends Component {
   constructor() {
     super();
     this.state = {
       accepted: [],
-      rejected: []
+      rejected: [],
+      resultBlock: {}
     };
   }
 
   onImportButtonClick = () => {
     const { accepted } = this.state;
 
-    const array = accepted.map(item => {
-      return item.preview;
+    this.setState({ loading: true });
+
+    const formData = new FormData();
+
+    accepted.map(item => {
+      formData.append("files", item);
     });
 
-    console.log(array);
-
-    let fd = new FormData();
-    fd.append("files", array);
-
-    // for (var i = 0; i < accepted.length; i++) {
-    //   fd.append("files", accepted[i]);
-    // }
-
-    console.log(accepted);
-    console.log(fd);
-    WebApi.CvImport.post(fd)
-      .then(result => console.log(result))
-      .catch(error => console.log(error.result));
+    WebApi.CvImport.post(formData)
+      .then(
+        result => (
+          console.log(result),
+          this.setState({
+            loading: false,
+            accepted: [],
+            resultBlock: {}
+          })
+        )
+      )
+      .catch(
+        error => (
+          console.log(error),
+          this.setState({ loading: false, resultBlock: error })
+        )
+      );
   };
 
   handleDeleteItem = index => {
@@ -48,8 +58,8 @@ export default class ImportCVContainer extends Component {
   };
 
   render() {
-    const { accepted } = this.state;
-    console.log(accepted);
+    const { accepted, loading, resultBlock } = this.state;
+    const { t } = this.props;
 
     let lp = 1;
 
@@ -61,23 +71,23 @@ export default class ImportCVContainer extends Component {
             <div className="table_cell">{lp++}</div>
           </div>
           <div className="table_small">
-            <div className="table_cell">Name</div>
+            <div className="table_cell">{t("Name")}</div>
             <div className="table_cell">
               <a href={item.preview}>{item.name}</a>
             </div>
           </div>
           <div className="table_small">
-            <div className="table_cell">Size</div>
-            <div className="table_cell">{item.size / 1024} KB</div>
+            <div className="table_cell">{t("Size")}</div>
+            <div className="table_cell">{Math.ceil(item.size / 1024)} KB</div>
           </div>
           <div className="table_small">
-            <div className="table_cell">Last Modified Date</div>
+            <div className="table_cell">{t("LastModifiedDate")}</div>
             <div className="table_cell">
               {item.lastModifiedDate.toLocaleDateString()}
             </div>
           </div>
           <div className="table_small">
-            <div className="table_cell">Actions</div>
+            <div className="table_cell">{t("Actions")}</div>
             <div className="table_cell">
               <button onClick={() => this.handleDeleteItem(index)}>
                 <Icon
@@ -94,19 +104,33 @@ export default class ImportCVContainer extends Component {
 
     const importButton =
       accepted.length !== 0 ? (
-        <button onClick={this.onImportButtonClick}>Import</button>
+        <div className="import-button-container">
+          <button className="dcmt-button" onClick={this.onImportButtonClick}>
+            {t("Import")}
+          </button>
+        </div>
       ) : null;
 
     return (
       <React.Fragment>
         <div className="import-cv-container content-container">
+          {loading && (
+            <div className="import-cv-loader">
+              <LoaderCircular />
+            </div>
+          )}
+          {!!resultBlock.errorOccurred &&
+            !resultBlock.extractData() && (
+              <div className="import-cv-loader">{resultBlock.message}</div>
+            )}
+
           <div className="table" id="results">
             <div className="theader">
               <div className="table_header">#</div>
-              <div className="table_header">Name</div>
-              <div className="table_header">Size</div>
-              <div className="table_header">Last Modified Date</div>
-              <div className="table_header">Actions</div>
+              <div className="table_header">{t("Name")}</div>
+              <div className="table_header">{t("Size")}</div>
+              <div className="table_header">{t("LastModifiedDate")}</div>
+              <div className="table_header">{t("Actions")}</div>
             </div>
             {items}
           </div>
@@ -124,12 +148,16 @@ export default class ImportCVContainer extends Component {
               });
             }}
           >
-            <p>Drop files here to import. Or use the button bellow.</p>
-            <p>Only .doc or .docx files.</p>
-            <button>Select files</button>
+            <p>{t("DropHere")}</p>
+            <p>{t("OnlyDocx")}</p>
+            <button style={{ marginTop: "10px" }} className="dcmt-button">
+              {t("SelectFiles")}
+            </button>
           </Dropzone>
         </div>
       </React.Fragment>
     );
   }
 }
+
+export default translate("ImportCVContainer")(ImportCVContainer);

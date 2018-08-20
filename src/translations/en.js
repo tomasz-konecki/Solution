@@ -18,7 +18,8 @@ const translations = {
     Assign: "Assign",
     Stats: "Statistics",
     Skills: "Skills",
-    Reports: "Reports"
+    Reports: "Reports",
+    ImportCV: "Import CV"
   },
   NotFound404: {
     PageNotFound: "Page Not Found",
@@ -37,7 +38,7 @@ const translations = {
     Reports: "Reports"
   },
   StatsContainer: {
-    DevLocalization: "Developers Localization",
+    DevLocalization: "Employees Localization",
     EmployeesWithoutProjects: "Employees Without Projects",
     Without: "Without",
     With: "With",
@@ -173,6 +174,16 @@ const translations = {
     DeleteEmployee: "Delete Employee",
     DeleteEmployeeInfinitive: "Delete Employee",
     EmployeeHasBeenDeleted: "Employee has been Deleted."
+  },
+  ImportCVContainer: {
+    Name: "Name",
+    Size: "Size",
+    LastModifiedDate: "Last Modified Date",
+    Actions: "Actions",
+    SelectFiles: "Select Files",
+    DropHere: "Drop files here to import. Or use the button bellow.",
+    OnlyDocx: "Allowed are only .docx files.",
+    Import: "Import"
   },
   Confirmation: {
     YouAreAboutTo: "You are about to",

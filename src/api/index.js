@@ -422,7 +422,13 @@ const WebApi = {
   },
   CvImport: {
     post: files => {
-      return WebAround.post(`${API_ENDPOINT}/CvImport/ImportCv`, files);
+      return WebAround.post(
+        `${API_ENDPOINT}/CvImport/ImportCv`,
+        files
+        // {
+        //   headers: { "Content-Type": "multipart/form-data" }
+        // }
+      );
     }
   },
   gDrive: {

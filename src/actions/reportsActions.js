@@ -148,8 +148,7 @@ export const generateReportACreator = (
         dispatch(generateReport(true, []));
         if (generateOnGDrive) {
           dispatch(
-            getGDriveFolders(choosenFolder ? chooseFolder.id : parentId, 
-              choosenFolder ? path + "/" + choosenFolder.id : "root")
+            getGDriveFolders(parentId ? parentId : "root", path)
           );
         } else {
           dispatch(getOneDriveFolders(token, currentPath));

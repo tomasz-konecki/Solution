@@ -1,6 +1,4 @@
-input[type="text"],
-input[type="password"],
-.manual-input {
+.manual-input, input[type="text"], input[type="password"] {
   // display: inline-block;
   padding: 0 10px;
   border: none;

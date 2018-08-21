@@ -103,6 +103,17 @@ export function generateSortFunction(key, ascending){
   }
 } 
 
+export function sortStrings(key){
+  return function(a,b){
+    var x = a[key].toLowerCase();
+    var y = b[key].toLowerCase();
+
+    return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+  }
+}
+
+
 export const refreshPage = () => {
   window.location.href = window.location.href;
 }
+

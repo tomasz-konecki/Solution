@@ -232,18 +232,13 @@
   }
   .counters {
     position: absolute;
-    bottom: -75px;
+    bottom: -40px;
     width: 100%;
     text-align: right;
     font-size: 18px;
     & > p {
       padding: 7.5px;
-    }
-    & > p:first-of-type {
       color: lightgreen;
-    }
-    & > p:last-of-type {
-      color: tomato;
     }
   }
   ul {

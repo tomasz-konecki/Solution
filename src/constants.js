@@ -90,6 +90,7 @@ export const invalidTokenError = "Nieprawidłowy token autoryzacyjny do usługi 
 
 export const GET_ALL_SKILLS = "GET_ALL_SKILLS";
 export const ADD_SKILLS_TO_PROJECT = "ADD_SKILLS_TO_PROJECT";
+export const ADD_NEW_SKILL = "ADD_NEW_SKILL";
 
 //GDRIVE
 

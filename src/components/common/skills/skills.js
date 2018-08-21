@@ -177,7 +177,7 @@ class Skills extends Component{
             listToAddForProject } = this.state;
             
         const { loadSkillsStatus, loadSkillsErrors, title, changeProjectSkillsErrors, changeProjectSkillsStatus,
-            addSkillsToProjectStatus, addSkillsToProjectErrors } = this.props;
+            addSkillsToProjectStatus, addSkillsToProjectErrors, items: propsItems } = this.props;
         return(
         <div className="progress-bars-container">
             <h3>{title}
@@ -266,7 +266,7 @@ class Skills extends Component{
                         : 
                         <p className="server-error">{loadSkillsErrors[0]}</p>
                     }
-                    {isLoadingSkillsForModal || 
+                    {!isLoadingSkillsForModal && listToAddForProject.length > 0 &&
                     <button disabled={isAddingNewSkills} onClick={this.addSkillsToProject} className="option-btn green-btn">
                         Zatwierdź
                         {isAddingNewSkills && 

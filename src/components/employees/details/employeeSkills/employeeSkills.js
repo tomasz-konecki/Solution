@@ -273,12 +273,6 @@ class EmployeeSkills extends React.Component{
                     </span>
                 </h2>
                 <ul className="emp-skills-container">
-                    {status === "Nieaktywny" && 
-                        <article className="unactivate-state-prompt">
-
-                        </article>
-                    }
-
                     {skills.length > 0 ?
                         skills.map((skill, index) => {
                         return (
@@ -377,8 +371,9 @@ class EmployeeSkills extends React.Component{
                             btnTitle="Zatwierdź zmiany"
                             />
                             <div className="counters">
-                                <p><b>Obecnie dodanych: </b><span>{skillsToAdd.length}</span></p>
-                                <p><b>Razem: </b><span>{skills.length + skillsToAdd.length}</span></p>
+                                {skillsToAdd.length > 0 && 
+                                    <p><b>Nowe umiejętności: </b><span>{skillsToAdd.length}</span></p>
+                                }
                             </div>
                         </div>
                         : <p className="empty-data">{loadSkillsErrors[0]}</p>

@@ -2,8 +2,8 @@ import React from 'react'
 import './serverError.scss';
 
 
-const serverError = ({message}) => (
-    <p className="server-error">
+const serverError = ({message, errorClass}) => (
+    <p className={!errorClass ? "server-error" : errorClass}>
         {message}
     </p>
 );

@@ -93,19 +93,21 @@ class ProjectDetailsBlock extends React.PureComponent {
       this.goForClient();
     });
 
+
     const editProjectArray = [...this.state.editProjectArray];
-    const keys = mapObjectKeysToArrayByGivenIndexes(this.props.project, [
-      1,
-      2,
-      3,
-      4,
-      5
-    ]);
-    for (let i = 0; i < keys.length; i++) {
-      editProjectArray[i].value = this.props.project[keys[i]];
-    }
-    this.setState({ editProjectArray: editProjectArray });
+    const { project } = this.props;
+    const indexes = [1,2,3,4,5];
+
+    this.setState({ editProjectArray: this.putDataIntoArray(project, indexes, editProjectArray) });
   }
+  putDataIntoArray = (baseObject, indexes, arrayToChange) => {
+    const keys = mapObjectKeysToArrayByGivenIndexes(baseObject, indexes);
+    for(let i = 0; i < keys.length; i++)
+      arrayToChange[i].value = baseObject[keys[i]];
+    return arrayToChange;
+  }
+
+
   componentWillReceiveProps(nextProps) {
     if(nextProps.editProjectErrors !== this.props.editProjectErrors){
       this.setState({isLoading: false}, nextProps.editProjectStatus ? () => {

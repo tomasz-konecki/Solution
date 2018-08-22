@@ -116,19 +116,16 @@ class EmployeesList extends Component {
       ]
     };
     let render = () => (
-      console.log(this.props),
-      (
-        <div>
-          <SmoothTable
-            currentPage={this.props.currentPage}
-            totalPageCount={this.props.totalPageCount}
-            loading={this.props.loading}
-            data={this.props.employees}
-            construct={construct}
-            showRaportButton={true}
-          />
-        </div>
-      )
+      <div>
+        <SmoothTable
+          currentPage={this.props.currentPage}
+          totalPageCount={this.props.totalPageCount}
+          loading={this.props.loading}
+          data={this.props.employees}
+          construct={construct}
+          showRaportButton={true}
+        />
+      </div>
     );
     return (
       <IntermediateBlock

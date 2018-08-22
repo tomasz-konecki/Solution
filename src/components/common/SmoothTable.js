@@ -294,7 +294,6 @@ class SmoothTable extends Component {
                 columnFiltersLoaders
               },
               () => {
-                console.log(this.state);
                 this.props.construct.pageChange(1, this.generateSettings());
               }
             );

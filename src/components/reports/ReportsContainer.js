@@ -228,6 +228,7 @@ class ReportsContainer extends Component {
     history.push(startPathname + endPath);
   };
 
+  
   render() {
     const {
       reportModal,

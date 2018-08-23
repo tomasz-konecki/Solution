@@ -449,6 +449,9 @@ const WebApi = {
       }
     },
     post: {
+      generateShareLink: model => {
+        return WebAround.post(`${API_ENDPOINT}/GDrive/GenerateShareLink`, model);
+      },
       getFolders: model => {
         return WebAround.post(`${API_ENDPOINT}/GDrive/Get`, model);
       },
@@ -483,6 +486,9 @@ const WebApi = {
       }
     },
     post: {
+      generateShareLink: model => {
+        return WebAround.post(`${API_ENDPOINT}/onedrive/share`, model);
+      },
       getFolders: model => {
         return WebAround.post(`${API_ENDPOINT}/onedrive/files`, model);
       },

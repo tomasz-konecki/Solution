@@ -3,7 +3,8 @@ import '../OneDriveContent.scss';
 import { connect } from 'react-redux'; 
 import { authOneDriveACreator, sendCodeToGetTokenACreator, createFolderACreator,
     deleteFolderACreator, deleteFolder, updateFolderACreator, 
-    getFolderACreator, uploadFileACreator 
+    getFolderACreator, uploadFileACreator,
+    generateShareLinkACreator, generateShareLink
 } from '../../../actions/oneDriveActions';
 import Spinner from '../../common/spinner/spinner';
 import Button from '../../common/button/button';
@@ -16,7 +17,7 @@ import FilePicker from '../filePicker/filePicker';
 import OperationStatusPrompt from '../../form/operationStatusPrompt/operationStatusPrompt';
 import { invalidTokenError, notRecognizedError, oldTokenComunicate } from '../../../constants';
 import { refreshPage } from '../../../services/methods';
-
+import GenerateLinkModal from '../modals/generateLinkModal';
 const startPath = "/drive/root:";
 const tryToEditAndAddFolderError = "Nie można jednocześnie edytować i dodwać folderów";
 
@@ -45,7 +46,9 @@ class OneDriveContent extends React.PureComponent {
         isUploadingFile: false,
 
         newFolderName: "",
-        newFolderNameError: ""
+        newFolderNameError: "",
+
+        folderToGenerateShareLink: null
     }
     
 
@@ -191,21 +194,40 @@ class OneDriveContent extends React.PureComponent {
             fileName === this.state.currentOpenedFileDetailId ? 
             null : fileName})
     }
+
+    chooseFolderToCreateShareLink = (file, e) => {
+        e.stopPropagation();        
+        
+        this.setState({folderToGenerateShareLink: file});
+        const { oneDriveToken, generateShareLinkACreator } = this.props;
+        generateShareLinkACreator(oneDriveToken, file.id);
+    }
+    closeShareLinkModal = () => {
+        this.setState({folderToGenerateShareLink: null});
+        setTimeout(() => {
+            this.props.generateShareLinkClear(null, [], "");
+        }, 500);
+    }
+    copyLink = () => {
+       window.open(this.props.generatedShareLink);
+       this.closeShareLinkModal();
+    }
+   
     render(){
         const { isPreparingForLogingIn, isTakingCodeFromApi, currentOpenedFileDetailId,
             showAddingFolderInput, isAddingFolder, folderNameError, 
             showDeleteFolderModal, folderToDeleteId, isDeletingOrEditingFolder, 
             currentOpenedFolderToEditId, editFolderName, editFolderError, 
             folderIsLoadingId, isGoingBack, fileToUpload, isUploadingFile,
-            newFolderName, newFolderNameError } = this.state;
+            newFolderName, newFolderNameError, folderToGenerateShareLink } = this.state;
 
         const { folders, getFoldersStatus, getFoldersErrors, path, 
             createFolderStatus, createFolderErrors, deleteFolderStatus, 
             deleteFolderErrors, updateFolderStatus, updateFolderErrors, 
             uploadFileStatus, uploadFileErrors, chooseFolder, choosenFolder, 
             extendDetailName, extendId, authCodeStatus, authErrors, authStatus,
-            changeSortBy, driveSortType } = this.props;
-
+            changeSortBy, driveSortType, generateShareLinkStatus, generateShareLinkErrors,
+            generatedShareLink } = this.props;
         return (
             <div className="drive-content-container">
                 {authCodeStatus && getFoldersStatus && !isPreparingForLogingIn &&
@@ -282,6 +304,7 @@ class OneDriveContent extends React.PureComponent {
                             </p> : 
 
                             <FilesList 
+                            chooseFolderToCreateShareLink={this.chooseFolderToCreateShareLink}
                             driveSortType={driveSortType}
                             sortList={() => changeSortBy(folders, driveSortType, path)}
                             extendDetailName={extendDetailName}
@@ -377,9 +400,14 @@ class OneDriveContent extends React.PureComponent {
                     operationPrompt={false}
                     />
                 }
-
-
-                
+                <GenerateLinkModal copyLink={this.copyLink} 
+                path={path}
+                isOneDrive={true}
+                fileToShare={folderToGenerateShareLink}
+                generateShareLinkStatus={generateShareLinkStatus}
+                generateShareLinkErrors={generateShareLinkErrors} generatedShareLink={generatedShareLink}
+                closeModal={this.closeShareLinkModal}
+                shouldOpenModal={folderToGenerateShareLink !== null} />
             </div>
         );
     }
@@ -408,6 +436,9 @@ const mapStateToProps = state => {
         uploadFileStatus: state.oneDriveReducer.uploadFileStatus,
         uploadFileErrors: state.oneDriveReducer.uploadFileErrors,
 
+        generateShareLinkStatus: state.oneDriveReducer.generateShareLinkStatus, 
+        generateShareLinkErrors: state.oneDriveReducer.generateShareLinkErrors, 
+        generatedShareLink: state.oneDriveReducer.generatedShareLink
 
     };
   };
@@ -421,7 +452,9 @@ const mapStateToProps = state => {
         deleteFolderClear: (status, errors) => dispatch(deleteFolder(status, errors)),
         updateFolder: (newName, folderId, token, path) => dispatch(updateFolderACreator(newName, folderId, token, path)),
         getFolder: (token, path) => dispatch(getFolderACreator(token, path)),
-        uploadFile: (token, path, file, currentFilesList) => dispatch(uploadFileACreator(token, path, file, currentFilesList))
+        uploadFile: (token, path, file, currentFilesList) => dispatch(uploadFileACreator(token, path, file, currentFilesList)),
+        generateShareLinkACreator: (token, fileId) => dispatch(generateShareLinkACreator(token, fileId)),
+        generateShareLinkClear: (status, errors, link) => dispatch(generateShareLink(status, errors, link))
     };
   };
   

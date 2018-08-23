@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux';
 import Spinner from '../../common/spinner/spinner';
 import { getFoldersACreator, deleteFolderACreator, updateFolderACreator,
-    createFolderACreator, uploadFileACreator } from '../../../actions/gDriveActions';
+    createFolderACreator, uploadFileACreator, generateGDriveShareLink, generateGDriveShareLinkACreator } from '../../../actions/gDriveActions';
 import { loginACreator, login } from '../../../actions/persistHelpActions';
 import { deleteFolder, updateFolder, uploadFile } from '../../../actions/oneDriveActions';
 import FilesList from '../OneDriveConent/FilesList/FilesList';
@@ -14,6 +14,7 @@ import { validateInput } from '../../../services/validation';
 import SmallSpinner from '../../common/spinner/small-spinner';
 import FilePicker from '../filePicker/filePicker';
 import OperationStatusPrompt from '../../form/operationStatusPrompt/operationStatusPrompt';
+import GenerateLinkModal from '../modals/generateLinkModal';
 const startPath = "root";
 
 class GDriveContent extends React.Component{
@@ -34,7 +35,9 @@ class GDriveContent extends React.Component{
         isAddingFolder: false,
 
         fileToUpload: null,
-        isUploadingFile: false
+        isUploadingFile: false,
+
+        folderToGenerateShareLink: null
     }
     componentDidMount(){
         const { loginStatus, folders, getFolders, login } = this.props;
@@ -166,18 +169,36 @@ class GDriveContent extends React.Component{
     }
 
     handleAddFile = e => { this.setState({fileToUpload: e.target.files}); }
- 
+    
+    chooseFolderToCreateShareLink = (file, e) => {
+        e.stopPropagation();        
+        this.setState({folderToGenerateShareLink: file});
+        this.props.generateGDriveShareLinkACreator(file.id);
+    }
+    closeShareLinkModal = () => {
+        this.setState({folderToGenerateShareLink: null});
+        setTimeout(() => {
+            this.props.generateGDriveShareLinkClear(null, [], "");
+        }, 500);
+    }
+    copyLink = () => {
+       window.open(this.props.generatedGDriveSharedLink);
+       this.closeShareLinkModal();
+    }
+   
+
     render(){
         const { isLoading, folderIsLoadingId, showDeleteModal,
             folderToDeleteId, currentOpenedFolderToEditId, editFolderName, isEditingFolder, 
             showAddingFolderInput, folderNameError, isAddingFolder, newFolderName, 
-            newFolderNameError, isUploadingFile, fileToUpload, editFolderError } = this.state;
+            newFolderNameError, isUploadingFile, fileToUpload, editFolderError, folderToGenerateShareLink } = this.state;
         const { loginStatus, loginErrors, getFoldersStatus, getFoldersErrors, 
             folders, path, deleteFolderStatus, deleteFolderErrors, loading, 
             updateFolderStatus, updateFolderErrors,
             createFolderStatus, createFolderErrors, uploadFileErrors,
             uploadFileStatus, choosenFolder, extendDetailName, extendId,
-            driveSortType, changeSortBy } = this.props;
+            driveSortType, changeSortBy, generateGDriveShareLinkStatus, generateGDriveShareLinkErrors,
+            generatedGDriveSharedLink } = this.props;
 
         return (
             <div 
@@ -241,6 +262,7 @@ class GDriveContent extends React.Component{
                             </p> : 
 
                             <FilesList 
+                            chooseFolderToCreateShareLink={this.chooseFolderToCreateShareLink}
                             driveSortType={driveSortType}
                             sortList={() => changeSortBy(folders, driveSortType, path)}
                             choosenFolder={choosenFolder}
@@ -346,6 +368,14 @@ class GDriveContent extends React.Component{
                     operationPrompt={uploadFileStatus}
                     />
                 }
+
+                <GenerateLinkModal copyLink={this.copyLink} 
+                path={path}
+                fileToShare={folderToGenerateShareLink}
+                generateShareLinkStatus={generateGDriveShareLinkStatus}
+                generateShareLinkErrors={generateGDriveShareLinkErrors} generatedShareLink={generatedGDriveSharedLink}
+                closeModal={this.closeShareLinkModal}
+                shouldOpenModal={folderToGenerateShareLink !== null} />
             </div>
         );
     }
@@ -371,7 +401,11 @@ const mapStateToProps = state => {
         uploadFileStatus: state.oneDriveReducer.uploadFileStatus,
         uploadFileErrors: state.oneDriveReducer.uploadFileErrors,
 
-        loading: state.asyncReducer.loading
+        loading: state.asyncReducer.loading,
+
+        generateGDriveShareLinkStatus: state.gDriveReducer.generateGDriveShareLinkStatus,
+        generateGDriveShareLinkErrors: state.gDriveReducer.generateGDriveShareLinkErrors,
+        generatedGDriveSharedLink: state.gDriveReducer.generatedGDriveSharedLink
     };
   };
   
@@ -386,7 +420,9 @@ const mapStateToProps = state => {
         updateFolderClear: (status, errors) => dispatch(updateFolder(status, errors)),
         createFolder: (name, parentId, path, redirectPath) => dispatch(createFolderACreator(name, parentId, path, redirectPath)),
         uploadFile: (path, file, parentId) => dispatch(uploadFileACreator(path, file, parentId)),
-        clearUploadFile: (status, errors) => dispatch(uploadFile(status, errors))
+        clearUploadFile: (status, errors) => dispatch(uploadFile(status, errors)),
+        generateGDriveShareLinkACreator: (folderId) => dispatch(generateGDriveShareLinkACreator(folderId)),
+        generateGDriveShareLinkClear: (status, errors, link) => dispatch(generateGDriveShareLink(status, errors, link))
     };
   };
   

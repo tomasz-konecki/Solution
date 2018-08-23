@@ -5,7 +5,7 @@ import './modal.scss';
 import ServerError from '../../common/serverError/serverError';
 import Button from '../../common/button/button';
 const generateReportModal = ({shouldOpenModal, closeModal, generateShareLinkStatus, generateShareLinkErrors,
-    generatedShareLink, fileToShare, path, copyLink}) => (
+    generatedShareLink, fileToShare, path, copyLink, isOneDrive}) => (
     <Modal
     key={1}
     open={shouldOpenModal}
@@ -26,8 +26,8 @@ const generateReportModal = ({shouldOpenModal, closeModal, generateShareLinkStat
                     <div>
                         <figure>
                             <i className={`fa ${fileToShare.type === "folder" ? "fa-folder" : "fa-file"}`}></i>
-                            <span>Otwórz w 
-                                <i className={`fab ${path.search("/onedrive") !== -1 ?
+                            <span onClick={copyLink}>Otwórz w 
+                                <i className={`fab ${isOneDrive ?
                                 "fa-windows" : "fa-google-drive"}`}>
                                 </i>
                             </span>

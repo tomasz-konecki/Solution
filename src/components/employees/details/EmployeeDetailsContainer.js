@@ -26,6 +26,11 @@ class EmployeeDetailsContainer extends React.Component{
             this.setState({isLoadingFirstTimeEmployee: false, isChangingEmployeeData: false});
         else if(nextProps.employeeOperationStatus === false)
             this.setState({isChangingEmployeeData: false});
+        else if(nextProps.match !== this.props.match)
+        {
+            this.setState({isLoadingFirstTimeEmployee: true});
+            this.props.getEmployeePromise(nextProps.match.params.id);    
+        }
      
     }
     editSeniority = seniority => {
@@ -60,7 +65,7 @@ class EmployeeDetailsContainer extends React.Component{
             deleteQuaterErrors, deleteQuaterACreator, reactivateQuaterACreator, 
             reactivateQuaterStatus, reactivateQuaterErrors, 
             changeEmployeeSkillsACreator, changeSkillsStatus, changeSkillsErrors } = this.props;
-                    
+        
         return (
             <div className="employee-details-container">
                 {isLoadingFirstTimeEmployee ? <Spinner /> : 

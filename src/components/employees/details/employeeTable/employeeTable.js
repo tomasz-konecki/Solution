@@ -13,6 +13,11 @@ class EmployeeTable extends React.Component{
     componentWillReceiveProps(nextProps){
       if(this.props.loadAssignmentsErrors !== nextProps.loadAssignmentsErrors)
         this.setState({isLoadingData: false});
+        else if(nextProps.match !== this.props.match)
+        {
+            this.setState({isLoadingData: true});
+            this.props.loadAssignmentsACreator();   
+        }
     }
     render(){
         const { isLoadingData } = this.state;

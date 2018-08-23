@@ -6,6 +6,7 @@ import Button from "../../../common/button/button";
 import Quaters from "../quaters/quaters";
 import Spinner from "../../../common/spinner/small-spinner";
 import Icon from "../../../common/Icon";
+import { Link } from 'react-router-dom';
 
 const employeeContent = ({
   employee,
@@ -31,8 +32,9 @@ const employeeContent = ({
   const email = employee.email ? (
     <a href={"mailto:" + employee.email}>{employee.email}</a>
   ) : (
-    "Brak adresu email"
-  );
+      "Brak adresu email"
+    );
+  const employeeLink = "/main/employees/";
 
   return (
     <section className="top-content-container">
@@ -62,27 +64,47 @@ const employeeContent = ({
         </div>
 
         <div className="right-content">
-          <h2>Kontakt</h2>
-          <p>
+          <h2>Szczegóły</h2>
+          {email && <p>
             Email: <span>{email}</span>
-          </p>
-          <p>
+          </p>}
+          {employee.phoneNumber && <p>
             Numer telefonu:
             <span>
-              {employee.phoneNumber ? employee.phoneNumber : "Nie podano"}
+              {employee.phoneNumber}
             </span>
-          </p>
-          <p>
+          </p>}
+          {employee.localization && <p>
             Lokalizacja:
             <span>
-              {employee.localization ? employee.localization : "Nie podano"}
+              {employee.localization}
             </span>
-          </p>
+          </p>}
           {employee.skypeId && (
             <a href={"skype:" + employee.skypeId + "?add"}>
               <Icon icon="skype" iconType="fab" />
             </a>
           )}
+          <div className="managerHierarchy">
+            {(employee.manager || employee.managersManager) &&
+              <h2>Przełożeni</h2>
+            }
+            {employee.managersManager &&
+              <React.Fragment>
+                <Link to={employeeLink + employee.managersManager.id}>{employee.managersManager.fullName}</Link>
+                <Icon icon="angle-down" />
+              </React.Fragment>
+            }
+            {employee.manager &&
+              <React.Fragment>
+                <Link to={employeeLink + employee.manager.id}>{employee.manager.fullName}</Link>
+                <Icon icon="angle-down" />
+              </React.Fragment>
+            }
+            {(employee.manager || employee.managersManager) &&
+              <div>{`${employee.firstName} ${employee.lastName}`}</div>
+            }
+          </div>
         </div>
 
         {employee.seniority &&
@@ -116,17 +138,17 @@ const employeeContent = ({
               {isChangingEmployeeData && <Spinner />}
             </Button>
           ) : (
-            <Button
-              disable={isChangingEmployeeData}
-              onClick={
-                status === "Usunięty" ? reactivateEmployee : activateEmployee
-              }
-              title="Aktywuj"
-              mainClass="option-btn green-btn"
-            >
-              {isChangingEmployeeData && <Spinner />}
-            </Button>
-          )}
+              <Button
+                disable={isChangingEmployeeData}
+                onClick={
+                  status === "Usunięty" ? reactivateEmployee : activateEmployee
+                }
+                title="Aktywuj"
+                mainClass="option-btn green-btn"
+              >
+                {isChangingEmployeeData && <Spinner />}
+              </Button>
+            )}
         </div>
 
         {status !== "Aktywny" && (

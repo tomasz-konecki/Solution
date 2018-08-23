@@ -1,4 +1,4 @@
-import { GET_FOLDERS }
+import { GET_FOLDERS, GENERATE_G_DRIVE_SHARE_LINK }
 from "../constants";
 import WebApi from "../api";
 import { errorCatcher } from '../services/errorsHandler';
@@ -105,4 +105,18 @@ export const uploadFileACreator = (path, file, parentId) => {
             dispatch(uploadFile(false, errorCatcher(error)));
         })
     }
+}
+
+
+export const generateGDriveShareLink = (generateGDriveShareLinkStatus, generateGDriveShareLinkErrors, generatedGDriveSharedLink) => {
+    return { type: GENERATE_G_DRIVE_SHARE_LINK, generateGDriveShareLinkStatus, generateGDriveShareLinkErrors, generatedGDriveSharedLink }
+}
+
+export const generateGDriveShareLinkACreator = id => (dispatch) =>  {
+    WebApi.gDrive.post.generateShareLink({id: id}).then(response => {
+        const { shareLink } = response.replyBlock.data.dtoObject;
+        dispatch(generateGDriveShareLink(true, [], shareLink));
+    }).catch(error => {
+        dispatch(generateGDriveShareLink(false, errorCatcher(error), ""));
+    })
 }

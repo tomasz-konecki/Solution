@@ -116,7 +116,6 @@ class EmployeesList extends Component {
       ]
     };
     let render = () => (
-      console.log(this.props),
       (
         <div>
           <SmoothTable

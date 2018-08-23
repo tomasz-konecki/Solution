@@ -209,6 +209,7 @@ class ReportsContainer extends Component {
     history.push(startPathname + endPath);
   }
 
+  
   render() {
     const { reportModal, spinner, valueToSearch, isReportGenerating, extendId } = this.state;
     const { addList, baseList, folders, pagesList, choosenFolder, generateReportStatus, 

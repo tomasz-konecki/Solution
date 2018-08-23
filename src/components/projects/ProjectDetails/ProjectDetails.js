@@ -241,7 +241,6 @@ class ProjectDetails extends Component {
   };
   componentWillUnmount() {
     this.props.clearProjectData(null, null, [], [], []);
-    this.props.getAllSkillsDataClear([], null, []);
   }
   togleActiveAssign = () => {
     const { onlyActiveAssignments } = this.state;

@@ -1,6 +1,7 @@
 
 import { ONE_DRIVE_AUTH, SEND_CODE_TO_GET_TOKEN, GET_FOLDERS, CREATE_FOLDER, DELETE_FOLDER,
-    UPDATE_FOLDER, UPLOAD_FILE, SET_PARENT_DETAILS } from "../constants";
+    UPDATE_FOLDER, UPLOAD_FILE, SET_PARENT_DETAILS,
+    GENERATE_SHARE_LINK } from "../constants";
 
 import WebApi from "../api";
 import { changeOperationStatus } from "./asyncActions";
@@ -9,11 +10,23 @@ import { errorCatcher } from "../services/errorsHandler";
 import { sendTokenToGetAuth } from './authActions';
 import { clearAfterTimeByFuncRef } from '../services/methods';
 import storeCreator from "./../store";
-
 const { store } = storeCreator;
 const selectSortType = state =>
   state.persistHelpReducer.driveSortType
 
+
+export const generateShareLink = (generateShareLinkStatus, generateShareLinkErrors, generatedShareLink) => {
+  return { type: GENERATE_SHARE_LINK, generateShareLinkStatus, generateShareLinkErrors, generatedShareLink }
+}
+
+export const generateShareLinkACreator = (token, fileId) => (dispatch) => {
+  WebApi.oneDrive.post.generateShareLink({token, fileId}).then(response => {
+    const { shareLink } = response.replyBlock.data.dtoObject;
+    dispatch(generateShareLink(true, [], shareLink));
+  }).catch(error => {
+    dispatch(generateShareLink(false, errorCatcher(error), ""));
+  })
+}
 
 export const refreshToken = currentToken => (dispatch) => {
   return new Promise((resolve, reject) => {

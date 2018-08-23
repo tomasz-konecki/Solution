@@ -33,7 +33,6 @@ class ImportCVContainer extends Component {
     WebApi.CvImport.post(formData)
       .then(
         result => (
-          console.log(result),
           this.setState({
             loading: false,
             accepted: [],
@@ -43,7 +42,6 @@ class ImportCVContainer extends Component {
       )
       .catch(
         error => (
-          console.log(error),
           this.setState({ loading: false, resultBlock: error })
         )
       );

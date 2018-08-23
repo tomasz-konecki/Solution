@@ -3,7 +3,7 @@ import File from './File/File';
 import FolderLoader from '../../../common/spinner/folder-loader';
 import Button from '../../../common/button/button';
 
-const FilesList = ({folders, folderIsLoadingId, sortList, driveSortType, ...content}) => {
+const FilesList = ({folders, folderIsLoadingId, sortList, driveSortType, chooseFolderToCreateShareLink, ...content}) => {
     return (
     <ul className="current-folders">
         <Button 
@@ -15,7 +15,7 @@ const FilesList = ({folders, folderIsLoadingId, sortList, driveSortType, ...cont
             return (
                 folderIsLoadingId === folder.id ? 
                 <FolderLoader key={folder.id} /> : 
-                <File {...content} folder={folder} key={folder.id} />
+                <File {...content} folder={folder} key={folder.id} chooseFolderToCreateShareLink={chooseFolderToCreateShareLink} />
             );
         })}
     </ul> 

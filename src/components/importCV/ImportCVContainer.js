@@ -31,20 +31,14 @@ class ImportCVContainer extends Component {
     });
 
     WebApi.CvImport.post(formData)
-      .then(
-        result => (
-          this.setState({
-            loading: false,
-            accepted: [],
-            resultBlock: {}
-          })
-        )
+      .then(result =>
+        this.setState({
+          loading: false,
+          accepted: [],
+          resultBlock: {}
+        })
       )
-      .catch(
-        error => (
-          this.setState({ loading: false, resultBlock: error })
-        )
-      );
+      .catch(error => this.setState({ loading: false, resultBlock: error }));
   };
 
   handleDeleteItem = index => {

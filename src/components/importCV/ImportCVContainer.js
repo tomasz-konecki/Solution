@@ -34,8 +34,7 @@ class ImportCVContainer extends Component {
       .then(result =>
         this.setState({
           loading: false,
-          accepted: [],
-          resultBlock: {}
+          resultBlock: result.extractData()
         })
       )
       .catch(error => this.setState({ loading: false, resultBlock: error }));
@@ -54,42 +53,62 @@ class ImportCVContainer extends Component {
     const { t } = this.props;
 
     let lp = 1;
+    let lp2 = 0;
+
+    console.log(resultBlock);
 
     const items = accepted.map((item, index) => {
       return (
-        <div key={index} className="table_row">
-          <div className="table_small">
-            <div className="table_cell">#</div>
-            <div className="table_cell">{lp++}</div>
-          </div>
-          <div className="table_small">
-            <div className="table_cell">{t("Name")}</div>
-            <div className="table_cell">
-              <a href={item.preview}>{item.name}</a>
+        <div className="table_item" key={index}>
+          <div className="table_row">
+            <div className="table_small">
+              <div className="table_cell">#</div>
+              <div className="table_cell">{lp++}</div>
+            </div>
+            <div className="table_small">
+              <div className="table_cell">{t("Name")}</div>
+              <div className="table_cell">
+                <a href={item.preview}>{item.name}</a>
+              </div>
+            </div>
+            <div className="table_small">
+              <div className="table_cell">{t("Size")}</div>
+              <div className="table_cell">{Math.ceil(item.size / 1024)} KB</div>
+            </div>
+            <div className="table_small">
+              <div className="table_cell">{t("LastModifiedDate")}</div>
+              <div className="table_cell">
+                {item.lastModifiedDate.toLocaleDateString()}
+              </div>
+            </div>
+            <div className="table_small">
+              <div className="table_cell">{t("Actions")}</div>
+              <div className="table_cell">
+                <button onClick={() => this.handleDeleteItem(index)}>
+                  <Icon
+                    additionalClass="icon-danger"
+                    icon="times"
+                    iconType="fa"
+                  />
+                </button>
+              </div>
             </div>
           </div>
-          <div className="table_small">
-            <div className="table_cell">{t("Size")}</div>
-            <div className="table_cell">{Math.ceil(item.size / 1024)} KB</div>
-          </div>
-          <div className="table_small">
-            <div className="table_cell">{t("LastModifiedDate")}</div>
-            <div className="table_cell">
-              {item.lastModifiedDate.toLocaleDateString()}
+          {!resultBlock.result && (
+            <div className="table_row">
+              <div className="table_cell" />
+              <div className="table_small">
+                <div className="table_cell">{t("Result")}</div>
+                <div className="table_cell">
+                  {/* {resultBlock.result[lp - 2].result} */}
+                  siema
+                </div>
+              </div>
+              <div className="table_cell" />
+              <div className="table_cell" />
+              <div className="table_cell" />
             </div>
-          </div>
-          <div className="table_small">
-            <div className="table_cell">{t("Actions")}</div>
-            <div className="table_cell">
-              <button onClick={() => this.handleDeleteItem(index)}>
-                <Icon
-                  additionalClass="icon-danger"
-                  icon="times"
-                  iconType="fa"
-                />
-              </button>
-            </div>
-          </div>
+          )}
         </div>
       );
     });

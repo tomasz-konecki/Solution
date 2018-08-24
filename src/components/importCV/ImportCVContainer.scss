@@ -33,6 +33,30 @@
   font-weight: 400;
   position: relative;
 
+  .theader > .table_header:first-child,
+  .theader > .table_header:last-child,
+  #results
+    > div.table_item
+    > div:nth-child(1)
+    > div:nth-child(1)
+    > div:nth-child(2),
+  #results
+    > div.table_item
+    > div:nth-child(1)
+    > div:nth-child(1)
+    > div:nth-child(6) {
+    width: 1%;
+  }
+
+  #results
+    > div.table_item
+    > div.table_row
+    > div:nth-child(3)
+    > div:nth-child(2),
+  #results > div.theader > div:nth-child(3) {
+    width: 5%;
+  }
+
   a {
     display: table-cell;
     width: 100%;
@@ -44,6 +68,10 @@
     border: none;
     background: none;
   }
+}
+
+.table_item {
+  display: contents;
 }
 
 .table_row {

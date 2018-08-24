@@ -437,7 +437,7 @@ class ClientsContainer extends React.Component {
 
     return (
       <div className="content-container clients-container">
-        {loaded === false ? (
+        {loaded ? (
           <React.Fragment>
             <div className="clients-list-container">
               <IntermediateBlock

@@ -189,12 +189,17 @@ const WebApi = {
     }
   },
   clouds: {
-    post: (name, clientId) => {
-      return WebAround.post(`${API_ENDPOINT}/clouds/`, { name, clientId });
+    post: (name, fields, clientId) => {
+      return WebAround.post(`${API_ENDPOINT}/clouds/`, {
+        name,
+        fields,
+        clientId
+      });
     },
-    edit: (cloudId, name, clientId) => {
+    edit: (cloudId, name, fields, clientId) => {
       return WebAround.put(`${API_ENDPOINT}/clouds/${cloudId}`, {
         name,
+        fields,
         clientId
       });
     },
@@ -450,7 +455,10 @@ const WebApi = {
     },
     post: {
       generateShareLink: model => {
-        return WebAround.post(`${API_ENDPOINT}/GDrive/GenerateShareLink`, model);
+        return WebAround.post(
+          `${API_ENDPOINT}/GDrive/GenerateShareLink`,
+          model
+        );
       },
       getFolders: model => {
         return WebAround.post(`${API_ENDPOINT}/GDrive/Get`, model);

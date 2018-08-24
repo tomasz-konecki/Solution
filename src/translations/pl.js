@@ -119,7 +119,10 @@ const translations = {
     RemovingResponsiblePerson: "Usunąć Osobę Odpowiedzialną",
     ResponsiblePersonRemoved: "Odpowiedzialna Osoba została dezaktywowana.",
     showDeleted: "Pokaż usunięte",
-    showActive: "Pokaż aktywne"
+    showActive: "Pokaż aktywne",
+    NewInputLabel: "Nazwa Pola",
+    NewInputValue: "Wartośc Pola",
+    AddInput: "Dodaj pole"
   },
   AddClient: {
     Add: "Dodaj",
@@ -188,7 +191,9 @@ const translations = {
     SelectFiles: "Wybierz pliki",
     DropHere: "Przeciągnij pliki lub wciśnij przycisk poniżej.",
     OnlyDocx: "Akceptowane są jedynie pliki z rozszerzeniem .docx",
-    Import: "Importuj"
+    Import: "Importuj",
+    Imported: "Zaimportowano",
+    Result: "Rezultat importu"
   },
   Confirmation: {
     YouAreAboutTo: "Właśnie chcesz",

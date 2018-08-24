@@ -263,12 +263,12 @@ class ClientsContainer extends React.Component {
     });
   };
 
-  handleAddCloud = (name, clientId) => {
-    this.props.clientsActions.addCloud(name, clientId);
+  handleAddCloud = (name, fields, clientId) => {
+    this.props.clientsActions.addCloud(name, fields, clientId);
   };
 
-  handleEditCloud = (cloudId, name, clientId) => {
-    this.props.clientsActions.editCloud(cloudId, name, clientId);
+  handleEditCloud = (cloudId, name, fields, clientId) => {
+    this.props.clientsActions.editCloud(cloudId, name, fields, clientId);
   };
 
   handleAddResponsiblePerson = (

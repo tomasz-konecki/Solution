@@ -53,17 +53,24 @@ class ImportCVContainer extends Component {
     const { t } = this.props;
 
     let lp = 1;
-    let lp2 = 0;
-
-    console.log(resultBlock);
 
     const items = accepted.map((item, index) => {
+      lp++;
+
+      const rowClass = resultBlock.result
+        ? resultBlock.result[lp - 2]
+          ? resultBlock.result[lp - 2].result.includes("pomyślnie")
+            ? "import_succes"
+            : "import_fail"
+          : ""
+        : "";
+
       return (
         <div className="table_item" key={index}>
-          <div className="table_row">
+          <div className={`table_row  ${rowClass}`}>
             <div className="table_small">
               <div className="table_cell">#</div>
-              <div className="table_cell">{lp++}</div>
+              <div className="table_cell">{lp - 1}</div>
             </div>
             <div className="table_small">
               <div className="table_cell">{t("Name")}</div>
@@ -94,21 +101,21 @@ class ImportCVContainer extends Component {
               </div>
             </div>
           </div>
-          {!resultBlock.result && (
-            <div className="table_row">
-              <div className="table_cell" />
-              <div className="table_small">
-                <div className="table_cell">{t("Result")}</div>
-                <div className="table_cell">
-                  {/* {resultBlock.result[lp - 2].result} */}
-                  siema
+          {resultBlock.result &&
+            resultBlock.result[lp - 2] && (
+              <div className="table_row">
+                <div className="table_result" />
+                <div className="table_small">
+                  <div className="table_cell">{t("Result")}</div>
+                  <div className="table_cell">
+                    {resultBlock.result[lp - 2].result}
+                  </div>
                 </div>
+                <div className="table_result" />
+                <div className="table_result" />
+                <div className="table_result" />
               </div>
-              <div className="table_cell" />
-              <div className="table_cell" />
-              <div className="table_cell" />
-            </div>
-          )}
+            )}
         </div>
       );
     });
@@ -119,6 +126,15 @@ class ImportCVContainer extends Component {
           <button className="dcmt-button" onClick={this.onImportButtonClick}>
             {t("Import")}
           </button>
+
+          {resultBlock.result && (
+            <div className="import-details-container">
+              <span>
+                {t("Imported")} {resultBlock.successfullyAddedFilesCount}/
+                {resultBlock.totalFilesCount}
+              </span>
+            </div>
+          )}
         </div>
       ) : null;
 
@@ -134,7 +150,6 @@ class ImportCVContainer extends Component {
             !resultBlock.extractData() && (
               <div className="import-cv-loader">{resultBlock.message}</div>
             )}
-
           <div className="table" id="results">
             <div className="theader">
               <div className="table_header">#</div>

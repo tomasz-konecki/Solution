@@ -2,8 +2,12 @@
   height: 100%;
   position: relative;
 
+  .notDisplayed {
+    display: none;
+  }
+
   .new-section-input {
-    margin-bottom: 10px;
+    margin-bottom: 5px;
     label {
       margin: 3px 0;
       width: 32%;

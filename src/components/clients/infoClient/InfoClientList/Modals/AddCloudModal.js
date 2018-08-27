@@ -42,6 +42,13 @@ class AddCloudModal extends PureComponent {
     }
   }
 
+  componentDidMount() {
+    const { item } = this.props;
+    if (item && item.fields.length > 0) {
+      this.setState({ newInputValues: item.fields, newInput: true });
+    }
+  }
+
   handleAddInput = () => {
     const { newInputValues } = this.state;
 
@@ -96,7 +103,7 @@ class AddCloudModal extends PureComponent {
     let newInputContent = newInput
       ? newInputValues.map((item, index) => {
           return (
-            <div key={index}>
+            <div style={{ marginBottom: "10px" }} key={index}>
               <section className="new-section-input">
                 <label>{t("NewInputLabel")}</label>
                 <input
@@ -117,6 +124,8 @@ class AddCloudModal extends PureComponent {
           );
         })
       : null;
+
+    const buttonClass = newInputValues.length >= 3 ? "notDisplayed" : null;
     return (
       <div className="add-client-container">
         <header>
@@ -169,7 +178,7 @@ class AddCloudModal extends PureComponent {
           <button
             disabled={newInputValues.length >= 3}
             onClick={this.handleAddInput}
-            className="dcmt-button"
+            className={`dcmt-button  ${buttonClass}`}
           >
             {t("AddInput")}
           </button>

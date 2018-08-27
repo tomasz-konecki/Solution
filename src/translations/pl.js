@@ -231,6 +231,16 @@ const translations = {
     Add: "Dodaj"
   },
   AddProjectScreen: {
+    AddProject: "Dodaj Projekt",
+    Next: "Dalej",
+    Insert: "Wpisz",
+    Name: "Imię",
+    Surname: "Nazwisko",
+    Phone: "Telefon",
+    SelectPeopleToContact: "Wybierz Ludzi do kontaktu",
+    ProjectHasBeenAdded: "Projekt został dodany. Jesteś przekierowywany...",
+    Back: "Cofnij",
+    ResponsiblePerson: "Odpowiedzialna Osoba",
     ProjectName: "Nazwa projektu",
     CannotContainSpecial: "Nazwa projektu nie może zawierać znaków specjalnych",
     Description: "Opis",

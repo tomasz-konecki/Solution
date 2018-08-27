@@ -19,6 +19,8 @@ import Form from "../form/form";
 import moment from "moment";
 import { validateInput } from "../../services/validation";
 import ContactList from "../../components/common/contactList/contactList";
+import { translate } from "react-translate";
+
 const ClientId = 2;
 
 class ProjectsContainer extends React.Component {
@@ -31,9 +33,11 @@ class ProjectsContainer extends React.Component {
       init: false,
       addNewProjectArray: [
         {
-          title: "Nazwa",
+          title: this.props.t("ProjectName"),
           type: "text",
-          placeholder: "wprowadź nazwę projektu...",
+          placeholder: `${this.props.t("Insert")} ${this.props.t(
+            "ProjectName"
+          )}`,
           value: "",
           error: "",
           inputType: "name",
@@ -42,9 +46,11 @@ class ProjectsContainer extends React.Component {
           canBeNull: false
         },
         {
-          title: "Opis",
+          title: this.props.t("Description"),
           type: "text",
-          placeholder: "wprowadź opis projektu...",
+          placeholder: `${this.props.t("Insert")} ${this.props.t(
+            "Description"
+          )}`,
           mode: "textarea",
           value: "",
           error: "",
@@ -54,9 +60,9 @@ class ProjectsContainer extends React.Component {
           canBeNull: false
         },
         {
-          title: "Klient",
+          title: this.props.t("Client"),
           type: "text",
-          placeholder: "wprowadź klienta...",
+          placeholder: `${this.props.t("Insert")} ${this.props.t("Client")}`,
           mode: "drop-down-with-data",
           value: "",
           error: "",
@@ -66,20 +72,20 @@ class ProjectsContainer extends React.Component {
           canBeNull: false
         },
         {
-          title: "Data rozpoczęcia",
+          title: this.props.t("StartDate"),
           name: "startDate",
           type: "text",
-          placeholder: "wprowadź datę rozpoczęcia projektu...",
+          placeholder: `${this.props.t("Insert")} ${this.props.t("StartDate")}`,
           mode: "date-picker",
           value: moment(),
           error: "",
           canBeBefore: true
         },
         {
-          title: "Data zakończenia ",
+          title: this.props.t("EndDate"),
           name: "endDate",
           type: "text",
-          placeholder: "wprowadź datę zakończenia projektu...",
+          placeholder: `${this.props.t("Insert")} ${this.props.t("EndDate")}`,
           mode: "date-picker",
           value: moment(),
           error: "",
@@ -90,7 +96,8 @@ class ProjectsContainer extends React.Component {
         {
           title: "Email",
           type: "text",
-          placeholder: "wprowadź adres email...",
+          placeholder: `${this.props.t("Insert")} Email
+          `,
           value: "",
           error: "",
           inputType: "email",
@@ -99,9 +106,9 @@ class ProjectsContainer extends React.Component {
           canBeNull: false
         },
         {
-          title: "Imię",
+          title: this.props.t("Name"),
           type: "text",
-          placeholder: "wprowadź imię...",
+          placeholder: `${this.props.t("Insert")} ${this.props.t("Name")}`,
           value: "",
           error: "",
           inputType: "firstName",
@@ -110,9 +117,9 @@ class ProjectsContainer extends React.Component {
           canBeNull: false
         },
         {
-          title: "Nazwisko",
+          title: this.props.t("Surname"),
           type: "text",
-          placeholder: "wprowadź nazwisko...",
+          placeholder: `${this.props.t("Insert")} ${this.props.t("Surname")}`,
           value: "",
           error: "",
           inputType: "lastName",
@@ -121,9 +128,9 @@ class ProjectsContainer extends React.Component {
           canBeNull: false
         },
         {
-          title: "Numer telefonu",
+          title: this.props.t("Phone"),
           type: "text",
-          placeholder: "wprowadź numer telefonu...",
+          placeholder: `${this.props.t("Insert")} ${this.props.t("Phone")}`,
           value: "",
           inputType: "phoneNumber",
           error: "",
@@ -133,7 +140,7 @@ class ProjectsContainer extends React.Component {
         }
       ],
       openFirstForm: true,
-      selected: "Wybierz osoby do kontaktu",
+      selected: this.props.t("SelectPeopleToContact"),
       responsiblePersons: [],
       isLoading: false
     };
@@ -347,7 +354,7 @@ class ProjectsContainer extends React.Component {
       responsiblePersons,
       isLoading
     } = this.state;
-    const { createProjectStatus, createProjectErrors } = this.props;
+    const { t, createProjectStatus, createProjectErrors } = this.props;
     const today = new Date();
     if (!this.state.init) {
       this.setState(
@@ -391,12 +398,12 @@ class ProjectsContainer extends React.Component {
           onClose={() => this.setState({ showModal: false })}
         >
           <header>
-            <h3>Dodaj projekt</h3>
+            <h3>{t("AddProject")}</h3>
           </header>
 
           {openFirstForm ? (
             <Form
-              btnTitle="Dalej"
+              btnTitle={t("Next")}
               key={1}
               shouldSubmit={false}
               dateIndexesToCompare={[3, 4]}
@@ -409,7 +416,7 @@ class ProjectsContainer extends React.Component {
             />
           ) : (
             <Form
-              btnTitle="Dodaj"
+              btnTitle={t("Add")}
               key={2}
               shouldSubmit={true}
               formItems={responsiblePersonsArray}
@@ -418,7 +425,7 @@ class ProjectsContainer extends React.Component {
               submitResult={{
                 status: createProjectStatus,
                 content: createProjectStatus
-                  ? "Pomyślnie dodano projekt. Jesteś przekierowywany..."
+                  ? t("ProjectHasBeenAdded")
                   : createProjectErrors && createProjectErrors[0]
               }}
             >
@@ -427,7 +434,7 @@ class ProjectsContainer extends React.Component {
                 type="button"
                 className="come-back-btn"
               >
-                Cofnij
+                {t("Back")}
               </button>
 
               {responsiblePersons.length > 0 && (
@@ -435,6 +442,7 @@ class ProjectsContainer extends React.Component {
                   selected={selected}
                   onChange={e => this.fetchContactDateByOtherClient(e)}
                   items={responsiblePersons}
+                  t={this.props.t}
                 />
               )}
             </Form>
@@ -502,4 +510,4 @@ ProjectsContainer.propTypes = {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withRouter(ProjectsContainer));
+)(translate("AddProjectScreen")(withRouter(ProjectsContainer)));

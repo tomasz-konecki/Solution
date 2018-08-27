@@ -183,6 +183,7 @@ const translations = {
     DeleteEmployeeInfinitive: "Usunąć pracownika",
     EmployeeHasBeenDeleted: "Pracownik został Usunięty."
   },
+  EmployeeDetails: {},
   ImportCVContainer: {
     Name: "Nazwa",
     Size: "Rozmiar",

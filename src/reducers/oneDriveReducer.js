@@ -1,6 +1,7 @@
 import {
     ONE_DRIVE_AUTH, GET_FOLDERS, CREATE_FOLDER, DELETE_FOLDER,
-    UPDATE_FOLDER, UPLOAD_FILE, SET_PARENT_DETAILS  } from "../constants";
+    UPDATE_FOLDER, UPLOAD_FILE, SET_PARENT_DETAILS,
+    GENERATE_SHARE_LINK  } from "../constants";
   import { updateObject } from '../services/methods';
   const initialState = {
     authStatus: null,
@@ -25,7 +26,11 @@ import {
     updateFolderErrors: [],
 
     uploadFileStatus: null,
-    uploadFileErrors: []
+    uploadFileErrors: [],
+
+    generateShareLinkStatus: null,
+    generateShareLinkErrors: [],
+    generatedShareLink: ""
   };
   
   export const oneDriveReducer = (state = initialState, action) => {
@@ -51,8 +56,10 @@ import {
           uploadFileErrors: action.uploadFileErrors })
       case SET_PARENT_DETAILS:
         return updateObject(state, { parentId: action.parentId, goBackPath: action.goBackPath })
+      case GENERATE_SHARE_LINK:
+        return updateObject(state, { generateShareLinkStatus: action.generateShareLinkStatus, 
+          generateShareLinkErrors: action.generateShareLinkErrors, generatedShareLink: action.generatedShareLink })
       default:
         return state;
     }
   };
-  

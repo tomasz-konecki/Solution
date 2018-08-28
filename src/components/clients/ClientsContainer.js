@@ -15,6 +15,7 @@ import AddEditClient from "./AddEditClient/AddEditClient";
 import SearchClient from "./searchClient/SearchClient";
 import ShowRadioButtons from "./ShowRadioButtons/ShowRadioButtons";
 import InfoClientContainer from "./infoClient/infoClientContainer";
+import Spinner from "../common/LoaderCircular";
 
 import "../../scss/components/clients/ClientsContainer.scss";
 
@@ -262,12 +263,12 @@ class ClientsContainer extends React.Component {
     });
   };
 
-  handleAddCloud = (name, clientId) => {
-    this.props.clientsActions.addCloud(name, clientId);
+  handleAddCloud = (name, fields, clientId) => {
+    this.props.clientsActions.addCloud(name, fields, clientId);
   };
 
-  handleEditCloud = (cloudId, name, clientId) => {
-    this.props.clientsActions.editCloud(cloudId, name, clientId);
+  handleEditCloud = (cloudId, name, fields, clientId) => {
+    this.props.clientsActions.editCloud(cloudId, name, fields, clientId);
   };
 
   handleAddResponsiblePerson = (
@@ -436,14 +437,20 @@ class ClientsContainer extends React.Component {
 
     return (
       <div className="content-container clients-container">
-        <div className="clients-list-container">
-          <IntermediateBlock
-            loaded={loaded}
-            render={() => this.pullDOM()}
-            resultBlock={resultBlock}
-          />
-        </div>
-        <div className="clients-info">{infoClient}</div>
+        {loaded ? (
+          <React.Fragment>
+            <div className="clients-list-container">
+              <IntermediateBlock
+                loaded={loaded}
+                render={() => this.pullDOM()}
+                resultBlock={resultBlock}
+              />
+            </div>
+            <div className="clients-info">{infoClient}</div>
+          </React.Fragment>
+        ) : (
+          <Spinner />
+        )}
       </div>
     );
   }

@@ -51,31 +51,32 @@ function listener() {
 }
 
 const authValidator = response => {
-  if (response.response.config.url.search("onedrive") !== -1) {
-    const oneDriveToken = JSON.parse(response.response.config.data).token;
-    const startPath = "/drive/root:";
-    store
-      .dispatch(refreshToken(oneDriveToken))
-      .then(response => {
-        dispatch(getFolderACreator(response, startPath));
-      })
-      .catch(error => {
-        store.dispatch(authOneDriveACreator());
-      });
-  } else if (response.response.config.url.search("GDrive") !== -1) {
-    dispatch(loginACreator());
-  } else {
-    if (response.response === undefined) {
-      throw response;
-      // store.dispatch(logout());
-      // store.dispatch(push("/"));
-    }
-    if (response.response.status === 401) {
+  if (response.response) {
+    if (response.response.status === 401 || response.response === undefined) {
       store.dispatch(logout());
       store.dispatch(push("/"));
+    } else {
+      if (response.response.config.url.search("onedrive") !== -1) {
+        const oneDriveToken = JSON.parse(response.response.config.data).token;
+        const startPath = "/drive/root:";
+        store
+          .dispatch(refreshToken(oneDriveToken))
+          .then(response => {
+            dispatch(getFolderACreator(response, startPath));
+          })
+          .catch(error => {
+            store.dispatch(authOneDriveACreator());
+          });
+      } else if (response.response.config.url.search("GDrive") !== -1) {
+        dispatch(loginACreator());
+      }
     }
-    throw response;
+  } else {
+    store.dispatch(logout());
+    store.dispatch(push("/"));
   }
+
+  // throw response;
 };
 
 const parseSuccess = response => {
@@ -188,12 +189,17 @@ const WebApi = {
     }
   },
   clouds: {
-    post: (name, clientId) => {
-      return WebAround.post(`${API_ENDPOINT}/clouds/`, { name, clientId });
+    post: (name, fields, clientId) => {
+      return WebAround.post(`${API_ENDPOINT}/clouds/`, {
+        name,
+        fields,
+        clientId
+      });
     },
-    edit: (cloudId, name, clientId) => {
+    edit: (cloudId, name, fields, clientId) => {
       return WebAround.put(`${API_ENDPOINT}/clouds/${cloudId}`, {
         name,
+        fields,
         clientId
       });
     },
@@ -448,6 +454,12 @@ const WebApi = {
       }
     },
     post: {
+      generateShareLink: model => {
+        return WebAround.post(
+          `${API_ENDPOINT}/GDrive/GenerateShareLink`,
+          model
+        );
+      },
       getFolders: model => {
         return WebAround.post(`${API_ENDPOINT}/GDrive/Get`, model);
       },
@@ -482,6 +494,9 @@ const WebApi = {
       }
     },
     post: {
+      generateShareLink: model => {
+        return WebAround.post(`${API_ENDPOINT}/onedrive/share`, model);
+      },
       getFolders: model => {
         return WebAround.post(`${API_ENDPOINT}/onedrive/files`, model);
       },

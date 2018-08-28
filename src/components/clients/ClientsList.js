@@ -23,7 +23,7 @@ const ClientsList = ({
     );
   });
 
-  const content = !loading ? (
+  const content = (
     <table className="client-list-table">
       <thead>
         <tr className="client-list-table-header">
@@ -40,8 +40,6 @@ const ClientsList = ({
       </thead>
       <tbody>{listOfClients}</tbody>
     </table>
-  ) : (
-    <Spinner />
   );
   return <React.Fragment>{content}</React.Fragment>;
 };

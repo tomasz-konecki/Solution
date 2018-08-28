@@ -1,9 +1,9 @@
-import { LOAD_SKILLS_SUCCESS, SKILL_ADDED, GET_ALL_SKILLS } from "../constants";
+import { LOAD_SKILLS_SUCCESS, SKILL_ADDED, GET_ALL_SKILLS, ADD_NEW_SKILL } from "../constants";
 import axios from "axios";
 import WebApi from "../api";
 import { asyncStarted, asyncEnded } from "./asyncActions";
 import { errorCatcher } from '../services/errorsHandler';
-import { isArrayContainsByObjectKey, checkForContains } from '../services/methods';
+import { isArrayContainsByObjectKey, checkForContains, generateSortFunction, sortStrings } from '../services/methods';
 export const loadSkillsSuccess = skills => {
   return {
     type: LOAD_SKILLS_SUCCESS,
@@ -70,12 +70,13 @@ export const getAllSkillsACreator = currentAddedSkills => {
             }
         }
       }
-      dispatch(getAllSkills(dtoArray, true, []));
+      dispatch(getAllSkills(dtoArray.sort(sortStrings("name")), true, []));
     }).catch(error => {
       dispatch(getAllSkills([], false, errorCatcher(error)));
     })
   }
 }
+
 
 export const getAllSkillsForEmployee = currentEmployeeSkills => {
   return dispatch => {
@@ -89,10 +90,22 @@ export const getAllSkillsForEmployee = currentEmployeeSkills => {
             name: dtoObject[key].name
           });
       }
-      dispatch(getAllSkills(skillsArray, true, []));
+
+      dispatch(getAllSkills(skillsArray.sort(sortStrings("name")), true, []));
     }).catch(error => {
       dispatch(getAllSkills([], false, errorCatcher(error)));
     })
   }
 }
 
+export const addNewSkill = (addNewSkillStatus, addNewSkillErrors) => {
+  return { type: ADD_NEW_SKILL, addNewSkillStatus, addNewSkillErrors}
+}
+
+export const addNewSkillACreator = name => (dispatch) => {
+    WebApi.skills.post(name).then(response => {
+      dispatch(addNewSkill(true, []));
+    }).catch(error => {
+      dispatch(addNewSkill(false, errorCatcher(error)));
+    })
+}

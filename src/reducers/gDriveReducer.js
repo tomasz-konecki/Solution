@@ -1,16 +1,17 @@
-import { GET_GDRIVE_FOLDERS } from "../constants";
+import { GENERATE_G_DRIVE_SHARE_LINK } from "../constants";
 import { updateObject } from "../services/methods";
 const initialState = {
-  folders: [],
-  getFoldersStatus: null,
-  getFoldersErrors: []
+  generateGDriveShareLinkStatus: null,
+  generateGDriveShareLinkErrors: [],
+  generatedGDriveSharedLink: ""
 };
 
 export const gDriveReducer = (state = initialState, action) => {
   switch (action.type) {
-    case GET_GDRIVE_FOLDERS:
-      return updateObject(state, { folders: action.folders, 
-        getFoldersStatus: action.getFoldersStatus, getFoldersErrors: action.getFoldersErrors })
+    case GENERATE_G_DRIVE_SHARE_LINK:
+      return updateObject(state, { generateGDriveShareLinkStatus: action.generateGDriveShareLinkStatus,
+        generateGDriveShareLinkErrors: action.generateGDriveShareLinkErrors, generatedGDriveSharedLink: 
+        action.generatedGDriveSharedLink })
     default:
       return state;
   }

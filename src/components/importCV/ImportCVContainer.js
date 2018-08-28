@@ -31,22 +31,13 @@ class ImportCVContainer extends Component {
     });
 
     WebApi.CvImport.post(formData)
-      .then(
-        result => (
-          console.log(result),
-          this.setState({
-            loading: false,
-            accepted: [],
-            resultBlock: {}
-          })
-        )
+      .then(result =>
+        this.setState({
+          loading: false,
+          resultBlock: result.extractData()
+        })
       )
-      .catch(
-        error => (
-          console.log(error),
-          this.setState({ loading: false, resultBlock: error })
-        )
-      );
+      .catch(error => this.setState({ loading: false, resultBlock: error }));
   };
 
   handleDeleteItem = index => {
@@ -64,40 +55,67 @@ class ImportCVContainer extends Component {
     let lp = 1;
 
     const items = accepted.map((item, index) => {
+      lp++;
+
+      const rowClass = resultBlock.result
+        ? resultBlock.result[lp - 2]
+          ? resultBlock.result[lp - 2].result.includes("pomyślnie")
+            ? "import_succes"
+            : "import_fail"
+          : ""
+        : "";
+
       return (
-        <div key={index} className="table_row">
-          <div className="table_small">
-            <div className="table_cell">#</div>
-            <div className="table_cell">{lp++}</div>
-          </div>
-          <div className="table_small">
-            <div className="table_cell">{t("Name")}</div>
-            <div className="table_cell">
-              <a href={item.preview}>{item.name}</a>
+        <div className="table_item" key={index}>
+          <div className={`table_row  ${rowClass}`}>
+            <div className="table_small">
+              <div className="table_cell">#</div>
+              <div className="table_cell">{lp - 1}</div>
+            </div>
+            <div className="table_small">
+              <div className="table_cell">{t("Name")}</div>
+              <div className="table_cell">
+                <a href={item.preview}>{item.name}</a>
+              </div>
+            </div>
+            <div className="table_small">
+              <div className="table_cell">{t("Size")}</div>
+              <div className="table_cell">{Math.ceil(item.size / 1024)} KB</div>
+            </div>
+            <div className="table_small">
+              <div className="table_cell">{t("LastModifiedDate")}</div>
+              <div className="table_cell">
+                {item.lastModifiedDate.toLocaleDateString()}
+              </div>
+            </div>
+            <div className="table_small">
+              <div className="table_cell">{t("Actions")}</div>
+              <div className="table_cell">
+                <button onClick={() => this.handleDeleteItem(index)}>
+                  <Icon
+                    additionalClass="icon-danger"
+                    icon="times"
+                    iconType="fa"
+                  />
+                </button>
+              </div>
             </div>
           </div>
-          <div className="table_small">
-            <div className="table_cell">{t("Size")}</div>
-            <div className="table_cell">{Math.ceil(item.size / 1024)} KB</div>
-          </div>
-          <div className="table_small">
-            <div className="table_cell">{t("LastModifiedDate")}</div>
-            <div className="table_cell">
-              {item.lastModifiedDate.toLocaleDateString()}
-            </div>
-          </div>
-          <div className="table_small">
-            <div className="table_cell">{t("Actions")}</div>
-            <div className="table_cell">
-              <button onClick={() => this.handleDeleteItem(index)}>
-                <Icon
-                  additionalClass="icon-danger"
-                  icon="times"
-                  iconType="fa"
-                />
-              </button>
-            </div>
-          </div>
+          {resultBlock.result &&
+            resultBlock.result[lp - 2] && (
+              <div className="table_row">
+                <div className="table_result" />
+                <div className="table_small">
+                  <div className="table_cell">{t("Result")}</div>
+                  <div className="table_cell">
+                    {resultBlock.result[lp - 2].result}
+                  </div>
+                </div>
+                <div className="table_result" />
+                <div className="table_result" />
+                <div className="table_result" />
+              </div>
+            )}
         </div>
       );
     });
@@ -108,6 +126,15 @@ class ImportCVContainer extends Component {
           <button className="dcmt-button" onClick={this.onImportButtonClick}>
             {t("Import")}
           </button>
+
+          {resultBlock.result && (
+            <div className="import-details-container">
+              <span>
+                {t("Imported")} {resultBlock.successfullyAddedFilesCount}/
+                {resultBlock.totalFilesCount}
+              </span>
+            </div>
+          )}
         </div>
       ) : null;
 
@@ -123,7 +150,6 @@ class ImportCVContainer extends Component {
             !resultBlock.extractData() && (
               <div className="import-cv-loader">{resultBlock.message}</div>
             )}
-
           <div className="table" id="results">
             <div className="theader">
               <div className="table_header">#</div>

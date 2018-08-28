@@ -125,6 +125,14 @@
                 cursor: pointer;
                 font-weight: bold;
                 transition: 0.3s all ease-in-out;
+                .fa-share-alt-square{
+                    position: absolute;
+                    left: 0;
+                    right: 0;
+                    margin: 0 auto;
+                    bottom: 7.5px;
+                    font-size: 20px;
+                }
                 @media(max-width: 400px){
                     width: 250px;
                     height: 250px;
@@ -204,6 +212,17 @@
                     bottom: 0;
                     left: 0;
                     width: 60px;
+                    .fa-share-alt-square{
+                        bottom: 5px;
+                        color: #256FA5;
+                        left: 57px;
+                        font-size: 20px;
+                        @media(max-width: 400px){
+                            font-size: 40px;
+                            left: 115px;
+                            bottom: 10px;
+                        }
+                    }
                 }
                 i{
                     position: absolute;
@@ -227,10 +246,11 @@
                     font-size: 20px;
                     @media(max-width: 400px){
                         font-size: 40px;
-                        left: 70px;
+                        left: 60px;
                         bottom: 10px;
                     }
                 }
+                
                 .file-details{
                     z-index: 1;
                     position: absolute;
@@ -254,6 +274,7 @@
                         margin-top: 45px;
                         display: block;
                     }
+                
                 }
             }
         }

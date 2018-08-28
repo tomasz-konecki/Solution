@@ -184,10 +184,10 @@ export const addClient = formData => {
   };
 };
 
-export const addCloud = (name, clientId) => {
+export const addCloud = (name, fields, clientId) => {
   return dispatch => {
     WebApi.clouds
-      .post(name, clientId)
+      .post(name, fields, clientId)
       .then(response => {
         if (!response.errorOccurred()) {
           dispatch(addCloudResult(response));
@@ -241,10 +241,10 @@ export const deleteCloud = id => {
   };
 };
 
-export const editCloud = (cloudId, name, clientId) => {
+export const editCloud = (cloudId, name, fields, clientId) => {
   return dispatch => {
     WebApi.clouds
-      .edit(cloudId, name, clientId)
+      .edit(cloudId, name, fields, clientId)
       .then(response => {
         if (!response.errorOccurred()) {
           dispatch(addCloudResult(response));

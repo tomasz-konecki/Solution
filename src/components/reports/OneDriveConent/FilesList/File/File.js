@@ -7,7 +7,7 @@ const file = ({folder, openFolder, editFolderError, isDeletingOrEditingFolder,
     onSubmit, currentOpenedFileDetailId, showDeleteFolderModal, onStateChange,
     onEditFolder, onChangeFolderName, currentOpenedFolderToEditId, 
     enableFolderEdit, editFolderName, closeEditingFolderName, onFileClick, 
-    chooseFolder, choosenFolder, extendId, extendDetailName }) => {
+    chooseFolder, choosenFolder, extendId, extendDetailName, chooseFolderToCreateShareLink }) => {
 
 
     let parentPath = null
@@ -62,9 +62,19 @@ const file = ({folder, openFolder, editFolderError, isDeletingOrEditingFolder,
                 
                 <i onClick={() => enableFolderEdit(folder.id, folder.name)}
                     className="fa fa-pen-square"></i>
+
+                <i onClick={e => chooseFolderToCreateShareLink(folder, e)} className="fa fa-share-alt-square">
+                </i>
             </div>
         }
-
+        
+        
+        {folder.type === "file" && 
+            <i onClick={e => chooseFolderToCreateShareLink(folder, e)} className="fa fa-share-alt-square">
+            </i> 
+        }
+       
+      
         {(folder.id === currentOpenedFileDetailId && folder.type === "file") && 
             <div className="file-details">
                 <p><b>Typ</b><span>{folder.type}</span></p>
@@ -79,6 +89,7 @@ const file = ({folder, openFolder, editFolderError, isDeletingOrEditingFolder,
                 </DetailExpander>
                 }
                 
+
                 <span onClick={() => window.open(folder.webUrl)}>Otwórz</span>
             </div>
         }

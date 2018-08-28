@@ -117,7 +117,10 @@ const translations = {
     RemovingResponsiblePerson: "Removing Responsible Person",
     ResponsiblePersonRemoved: "Responsible Person has been removed.",
     showDeleted: "Show Deleted",
-    showActive: "Show Active"
+    showActive: "Show Active",
+    NewInputLabel: "Input Label",
+    NewInputValue: "Input Value",
+    AddInput: "Add Input"
   },
   AddClient: {
     Add: "Add",
@@ -186,7 +189,9 @@ const translations = {
     SelectFiles: "Select Files",
     DropHere: "Drop files here to import. Or use the button bellow.",
     OnlyDocx: "Allowed are only .docx files.",
-    Import: "Import"
+    Import: "Import",
+    Imported: "Imported",
+    Result: "Import Result"
   },
   Confirmation: {
     YouAreAboutTo: "You are about to",
@@ -224,6 +229,16 @@ const translations = {
     Add: "Add"
   },
   AddProjectScreen: {
+    AddProject: "Add Project",
+    Next: "Next",
+    Insert: "Insert",
+    Name: "Name",
+    Surname: "Surname",
+    Phone: "Phone",
+    SelectPeopleToContact: "Select People to contact",
+    ProjectHasBeenAdded: "Project has been added. You are redirected...",
+    Back: "Back",
+    ResponsiblePerson: "Responsible Person",
     ProjectName: "Project name",
     CannotContainSpecial: "Project name cannot contain special characters",
     Description: "Description",

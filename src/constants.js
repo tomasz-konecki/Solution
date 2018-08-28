@@ -74,7 +74,7 @@ export const FETCH_FORM_CLIENTS = "FETCH_FORM_CLIENTS";
 export const CHANGE_SORT_BY = "CHANGE_SORT_BY";
 
 // ONEDRIVE
-
+export const GENERATE_SHARE_LINK = "GENERATE_SHARE_LINK";
 export const ONE_DRIVE_AUTH = "ONE_DRIVE_AUTH";
 export const SEND_CODE_TO_GET_TOKEN = "SEND_CODE_TO_GET_TOKEN";
 export const GET_FOLDERS = "GET_FOLDERS";
@@ -90,14 +90,15 @@ export const invalidTokenError = "Nieprawidłowy token autoryzacyjny do usługi 
 
 export const GET_ALL_SKILLS = "GET_ALL_SKILLS";
 export const ADD_SKILLS_TO_PROJECT = "ADD_SKILLS_TO_PROJECT";
+export const ADD_NEW_SKILL = "ADD_NEW_SKILL";
 
 //GDRIVE
 
 export const G_DRIVE_LOGIN = "G_DRIVE_LOGIN";
-export const GET_GDRIVE_FOLDERS = "GET_GDRIVE_FOLDERS";
 export const G_DRIVE_DELETE = "G_DRIVE_DELETE";
 export const G_DRIVE_CREATE = "G_DRIVE_CREATE";
 export const SET_PARENT_DETAILS = "SET_PARENT_DETAILS";
+export const GENERATE_G_DRIVE_SHARE_LINK = "GENERATE_G_DRIVE_SHARE_LINK";
 
 
 //EMPLOYEES

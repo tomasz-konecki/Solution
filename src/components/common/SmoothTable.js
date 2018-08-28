@@ -294,7 +294,6 @@ class SmoothTable extends Component {
                 columnFiltersLoaders
               },
               () => {
-                console.log(this.state);
                 this.props.construct.pageChange(1, this.generateSettings());
               }
             );
@@ -717,7 +716,6 @@ class SmoothTable extends Component {
       toRaports: true
     });
   };
-  //http://localhost:8080/main/reports
   render() {
     const { construct } = this.state;
     const { showRaportButton } = this.props;

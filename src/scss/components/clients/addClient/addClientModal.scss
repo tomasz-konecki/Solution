@@ -1,6 +1,31 @@
 .add-client-container {
   height: 100%;
   position: relative;
+
+  .notDisplayed {
+    display: none;
+  }
+
+  .new-section-input {
+    margin-bottom: 5px;
+    label {
+      margin: 3px 0;
+      width: 32%;
+      font-size: 14px;
+      text-align: center;
+    }
+    input {
+      width: 68%;
+      font-size: 12px;
+      border-radius: 4px;
+      outline: none;
+      transition: 0.5s all ease-in-out;
+      border: 1px solid #20b2a9 !important;
+      height: calc(1.3525rem + 2px) !important;
+      padding: 12.5px !important;
+    }
+  }
+
   .add-client-container-left,
   .add-client-container-right {
     display: block;

@@ -20,22 +20,72 @@ const active = "Aktywny";
 const inActive = "Nieaktywny";
 
 class ProjectDetailsBlock extends React.PureComponent {
-      state = {
-        editProjectArray: [
-          {title: "Nazwa", type: "text", placeholder: "wprowadź nazwę projektu...", value: "", error: "", inputType: null, minLength: 3, maxLength: 250, canBeNull: false},
-          {title: "Opis", type: "text", placeholder: "wprowadź opis projektu...", mode: "textarea", value: "", error: "", inputType: null, minLength: 3, maxLength: 1500, canBeNull: false},
-          {title: "Klient", type: "text", placeholder: "wprowadź klienta...", mode: "drop-down-with-data", value: "", error: "", inputType: "client", minLength: 3, maxLength: 100, canBeNull: false},
-          {title: "Data rozpoczęcia", name: "startDate", type: "text", placeholder: "wprowadź datę rozpoczęcia projektu...", mode: "date-picker", value: "", error: "", canBeBefore: true},
-          {title: "Data zakończenia ", name: "endDate", type: "text", placeholder: "wprowadź datę zakończenia projektu...", mode: "date-picker", value: "", error: "", canBeBefore: false},
-        ],
-        fetchedClients: [],
-        clientsWhichMatch: [],
-        isAutocorrect: false,
-        fetchClientsError: "",
-        autoCorrect: true,
-        isLoading: false,
+  state = {
+    editProjectArray: [
+      {
+        title: "Nazwa",
+        type: "text",
+        placeholder: "wprowadź nazwę projektu...",
+        value: "",
+        error: "",
+        inputType: null,
+        minLength: 3,
+        maxLength: 250,
+        canBeNull: false
+      },
+      {
+        title: "Opis",
+        type: "text",
+        placeholder: "wprowadź opis projektu...",
+        mode: "textarea",
+        value: "",
+        error: "",
+        inputType: null,
+        minLength: 3,
+        maxLength: 1500,
+        canBeNull: false
+      },
+      {
+        title: "Klient",
+        type: "text",
+        placeholder: "wprowadź klienta...",
+        mode: "drop-down-with-data",
+        value: "",
+        error: "",
+        inputType: "client",
+        minLength: 3,
+        maxLength: 100,
+        canBeNull: false
+      },
+      {
+        title: "Data rozpoczęcia",
+        name: "startDate",
+        type: "text",
+        placeholder: "wprowadź datę rozpoczęcia projektu...",
+        mode: "date-picker",
+        value: "",
+        error: "",
+        canBeBefore: true
+      },
+      {
+        title: "Data zakończenia ",
+        name: "endDate",
+        type: "text",
+        placeholder: "wprowadź datę zakończenia projektu...",
+        mode: "date-picker",
+        value: "",
+        error: "",
+        canBeBefore: false
+      }
+    ],
+    fetchedClients: [],
+    clientsWhichMatch: [],
+    isAutocorrect: false,
+    fetchClientsError: "",
+    autoCorrect: true,
+    isLoading: false,
 
-        responsiblePersons: [],
+    responsiblePersons: [],
     responsiblePersonArray: [
       {
         title: "Email",
@@ -94,25 +144,36 @@ class ProjectDetailsBlock extends React.PureComponent {
     });
 
     const editProjectArray = [...this.state.editProjectArray];
-    const keys = mapObjectKeysToArrayByGivenIndexes(this.props.project, [
-      1,
-      2,
-      3,
-      4,
-      5
-    ]);
-    for (let i = 0; i < keys.length; i++) {
-      editProjectArray[i].value = this.props.project[keys[i]];
-    }
-    this.setState({ editProjectArray: editProjectArray });
+    const { project } = this.props;
+    const indexes = [1, 2, 3, 4, 5];
+
+    this.setState({
+      editProjectArray: this.putDataIntoArray(
+        project,
+        indexes,
+        editProjectArray
+      )
+    });
   }
+  putDataIntoArray = (baseObject, indexes, arrayToChange) => {
+    const keys = mapObjectKeysToArrayByGivenIndexes(baseObject, indexes);
+    for (let i = 0; i < keys.length; i++)
+      arrayToChange[i].value = baseObject[keys[i]];
+    return arrayToChange;
+  };
+
   componentWillReceiveProps(nextProps) {
-    if(nextProps.editProjectErrors !== this.props.editProjectErrors){
-      this.setState({isLoading: false}, nextProps.editProjectStatus ? () => {
-        setTimeout(() => {
-          this.props.closeEditProjectModal();
-        }, 2500);
-      } : null);
+    if (nextProps.editProjectErrors !== this.props.editProjectErrors) {
+      this.setState(
+        { isLoading: false },
+        nextProps.editProjectStatus
+          ? () => {
+              setTimeout(() => {
+                this.props.closeEditProjectModal();
+              }, 2500);
+            }
+          : null
+      );
     }
   }
 
@@ -249,17 +310,17 @@ class ProjectDetailsBlock extends React.PureComponent {
 
         {this.state.showContactForm ? (
           <Form
-            btnTitle="Prześlij"
+            btnTitle={t("Send")}
             key={1}
             shouldSubmit={true}
             onSubmit={this.handleSubmit}
             formItems={this.state.responsiblePersonArray}
-            formTitle="Dane kontaktowe do klienta"
+            formTitle={t("ClientContactData")}
             isLoading={this.state.isLoading}
             submitResult={{
               status: editProjectStatus,
               content: editProjectStatus
-                ? "Pomyślnie dokonano edycji projektu"
+                ? t("ProjectHasBeenEdited")
                 : editProjectErrors && editProjectErrors[0]
             }}
           >
@@ -268,7 +329,7 @@ class ProjectDetailsBlock extends React.PureComponent {
               type="button"
               className="come-back-btn"
             >
-              Cofnij
+              {t("Back")}
             </button>
             {this.state.responsiblePersons &&
             this.state.responsiblePersons.length > 0 ? (
@@ -276,6 +337,7 @@ class ProjectDetailsBlock extends React.PureComponent {
                 selected={this.state.selected}
                 onChange={e => this.fetchContactDateByOtherClient(e)}
                 items={this.state.responsiblePersons}
+                t={this.props.t}
               />
             ) : null}
           </Form>
@@ -285,7 +347,7 @@ class ProjectDetailsBlock extends React.PureComponent {
             dateIndexesToCompare={[3, 4]}
             onSubmit={this.changeForm}
             shouldSubmit={false}
-            btnTitle="Dalej"
+            btnTitle={t("Next")}
             isLoading={this.state.isLoading}
             endDate={this.props.estimatedEndDate}
             formItems={this.state.editProjectArray}

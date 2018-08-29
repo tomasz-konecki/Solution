@@ -91,7 +91,7 @@ class ReportsContainer extends Component {
     const addList = [...this.props.addList];
     const helpList = [...this.props.helpList];
     const baseList = [...this.props.baseList];
-    var pagesList = this.props.pagesList ? 
+    var pagesList = this.props.pagesList ?
       [...this.props.pagesList] : [];
     const index = this.props.baseList.findIndex(i => {
       return i.name === name;
@@ -105,7 +105,7 @@ class ReportsContainer extends Component {
     helpList.splice(helpListIndex, 1);
     addList.push(this.props.baseList[index]);
     baseList.splice(helpBaseListIndex, 1);
-    pagesList.push({value: 1, error: ""}); //przetestować
+    pagesList.push({ value: 1, error: "" }); //przetestować
     this.props.fetchLists(addList, baseList, helpList, pagesList);
   };
   deleteTeamFromResultList = index => {
@@ -167,6 +167,8 @@ class ReportsContainer extends Component {
     console.log("pagesList", pagesList);
     fetchLists(addList, baseList, helpList, pagesList);
   };
+
+
   onChangeReportPages = e => {
     const index = Number(e.target.id);
     const pagesList = [...this.props.pagesList];
@@ -241,16 +243,20 @@ class ReportsContainer extends Component {
     history.push(startPathname + endPath);
   };
   chooseRecentReport = teamSheets => {
-    const helpList = [...this.props.helpList];
-    const baseList = [...this.props.baseList];
-    var pagesList = this.props.pagesList ? 
-    [...this.props.pagesList] : [];
-    const length = this.props.addList.length;
+    var helpList = [...this.props.helpList];
+    var baseList = [...this.props.baseList];
+    var pagesList = this.props.pagesList ?
+      [...this.props.pagesList] : [];
+    var addList = [...this.props.addList]; //problem: to dane sprzed deleteTeamFrom...
+    const length = addList.length;
     for (let i = 0; i < length; i++) //clears addList
     {
-      this.deleteTeamFromResultList(0);
+      var result = deleteAddedTeamAndReturn({addList, helpList, pagesList});
+      helpList = result.helpList;
+      baseList = result.baseList;
+      pagesList = result.pagesList;
+      addList = result.addList;
     }
-    const addList = [...this.props.addList]; //problem: to dane sprzed deleteTeamFrom...
     for (let teamSheet of teamSheets) {
       const index = this.props.baseList.findIndex(i => {
         return i.name === teamSheet.team;
@@ -269,7 +275,20 @@ class ReportsContainer extends Component {
     pagesList = [...pagesList, ...newPagesList];
     this.props.fetchLists(addList, baseList, helpList, pagesList);
   }
+  deleteAddedTeamAndReturn = ({ addList, helpList, pagesList }) => {
+    const baseList = this.findFromList(
+      this.state.valueToSearch,
+      helpList.concat(addList)
+    );
+    helpList.push(addList[0]);
+    addList.splice(0, 1);
+    pagesList.splice(0, 1);
 
+    const sortFunction = generateSortFunction("numberOfMemberInDB");
+    const sortedHelpList = helpList.sort(sortFunction);
+    const sortedBaseList = baseList.sort(sortFunction);
+    return {addList, sortedBaseList, sortedHelpList, pagesList};
+  }
 
   render() {
     const {

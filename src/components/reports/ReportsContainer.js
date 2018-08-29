@@ -91,6 +91,8 @@ class ReportsContainer extends Component {
     const addList = [...this.props.addList];
     const helpList = [...this.props.helpList];
     const baseList = [...this.props.baseList];
+    var pagesList = this.props.pagesList ? 
+      [...this.props.pagesList] : [];
     const index = this.props.baseList.findIndex(i => {
       return i.name === name;
     });
@@ -103,7 +105,8 @@ class ReportsContainer extends Component {
     helpList.splice(helpListIndex, 1);
     addList.push(this.props.baseList[index]);
     baseList.splice(helpBaseListIndex, 1);
-    this.props.fetchLists(addList, baseList, helpList);
+    pagesList.push({value: 1, error: ""}); //przetestować
+    this.props.fetchLists(addList, baseList, helpList, pagesList);
   };
   deleteTeamFromResultList = index => {
     const addList = [...this.props.addList];
@@ -142,11 +145,15 @@ class ReportsContainer extends Component {
   };
 
   openReportsModals = () => {
-    const pagesList = [];
+    //const pagesList = [];
     const { addList, baseList, helpList, fetchLists } = this.props;
+    var pagesList;
+    if (this.props.pagesList && this.props.pagesList.length > 0)
+      pagesList = [...this.props.pagesList];
+    else pagesList = addList.map(() => ({ value: 1, error: "" }))
 
-    for (let i = 0; i < this.props.addList.length; i++)
-      pagesList[i] = { value: 1, error: "" };
+    // for (let i = 0; i < this.props.addList.length; i++)
+    //   pagesList[i] = { value: 1, error: "" };
     const didPagesHasIncorrectValues = {
       ...this.state.didPagesHasIncorrectValues
     };
@@ -157,6 +164,7 @@ class ReportsContainer extends Component {
       reportModal: true,
       didPagesHasIncorrectValues: didPagesHasIncorrectValues
     });
+    console.log("pagesList", pagesList);
     fetchLists(addList, baseList, helpList, pagesList);
   };
   onChangeReportPages = e => {
@@ -233,13 +241,16 @@ class ReportsContainer extends Component {
     history.push(startPathname + endPath);
   };
   chooseRecentReport = teamSheets => {
-    const addList = [...this.props.addList];
     const helpList = [...this.props.helpList];
     const baseList = [...this.props.baseList];
-    for (let i = 0; i < this.props.addList.length; i++) //clears addList
+    var pagesList = this.props.pagesList ? 
+    [...this.props.pagesList] : [];
+    const length = this.props.addList.length;
+    for (let i = 0; i < length; i++) //clears addList
     {
       this.deleteTeamFromResultList(0);
     }
+    const addList = [...this.props.addList]; //problem: to dane sprzed deleteTeamFrom...
     for (let teamSheet of teamSheets) {
       const index = this.props.baseList.findIndex(i => {
         return i.name === teamSheet.team;
@@ -254,9 +265,9 @@ class ReportsContainer extends Component {
       addList.push(this.props.baseList[index]);
       baseList.splice(helpBaseListIndex, 1);
     }
-    console.log(addList);
-    var pages = teamSheets.map(teamsheet => ({ value: teamsheet.sheet, error: "" })); //set pages
-    this.props.fetchLists(addList, baseList, helpList, pages);
+    var newPagesList = teamSheets.map(teamsheet => ({ value: teamsheet.sheet, error: "" })); //set new pages from db
+    pagesList = [...pagesList, ...newPagesList];
+    this.props.fetchLists(addList, baseList, helpList, pagesList);
   }
 
 

@@ -238,7 +238,7 @@ class ReportsContainer extends Component {
     const baseList = [...this.props.baseList];
     for (let i = 0; i < this.props.addList.length; i++) //clears addList
     {
-      this.deleteTeamFromResultList(i);
+      this.deleteTeamFromResultList(0);
     }
     for (let teamSheet of teamSheets) {
       const index = this.props.baseList.findIndex(i => {
@@ -254,11 +254,9 @@ class ReportsContainer extends Component {
       addList.push(this.props.baseList[index]);
       baseList.splice(helpBaseListIndex, 1);
     }
-    console.log(teamSheets);
-    this.props.fetchLists(addList, baseList, helpList);
-
+    console.log(addList);
     var pages = teamSheets.map(teamsheet => ({ value: teamsheet.sheet, error: "" })); //set pages
-    fetchLists(addList, baseList, helpList, pages);
+    this.props.fetchLists(addList, baseList, helpList, pages);
   }
 
 

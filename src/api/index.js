@@ -420,7 +420,11 @@ const WebApi = {
         return WebAround.get(
           `${API_ENDPOINT}/reports/developers?fileName=${fileName}`
         );
-      }
+      },
+      recentReports: numberOfReports => 
+        WebAround.get(
+          `${API_ENDPOINT}/reports/recent?numberOfReports=${numberOfReports}`
+        )
     },
     post: {
       report: (model, hyperlinksOnGDrive, hyperlinksOnOneDrive) => {

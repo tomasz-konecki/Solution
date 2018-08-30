@@ -247,11 +247,11 @@ class ReportsContainer extends Component {
     var baseList = [...this.props.baseList];
     var pagesList = this.props.pagesList ?
       [...this.props.pagesList] : [];
-    var addList = [...this.props.addList]; //problem: to dane sprzed deleteTeamFrom...
+    var addList = [...this.props.addList];
     const length = addList.length;
     for (let i = 0; i < length; i++) //clears addList
     {
-      var result = deleteAddedTeamAndReturn({addList, helpList, pagesList});
+      var result = this.deleteAddedTeamAndReturn({addList, helpList, pagesList});
       helpList = result.helpList;
       baseList = result.baseList;
       pagesList = result.pagesList;
@@ -287,7 +287,7 @@ class ReportsContainer extends Component {
     const sortFunction = generateSortFunction("numberOfMemberInDB");
     const sortedHelpList = helpList.sort(sortFunction);
     const sortedBaseList = baseList.sort(sortFunction);
-    return {addList, sortedBaseList, sortedHelpList, pagesList};
+    return {addList, baseList: sortedBaseList, helpList:sortedHelpList, pagesList};
   }
 
   render() {

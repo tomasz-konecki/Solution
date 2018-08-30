@@ -248,7 +248,8 @@ class ReportsContainer extends Component {
     const pagesList = teamSheets.map(teamsheet => ({ value: teamsheet.sheet, error: "" }));
     const addList = teamSheets.map(teamsheet => ({name: teamsheet.team, numberOfMemberInDB: teamsheet.sheet}));
     const addedLength = addList.length;
-    console.log("adding ", addedLength);
+    helpList.push(...this.props.addList);
+    baseList.push(...this.props.addList);
     for (let i = 0; i < addedLength; i++)
     {
       const baseIndex = baseList.findIndex(x => x.name === addList[i].name);

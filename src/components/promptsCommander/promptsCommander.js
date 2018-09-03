@@ -63,11 +63,13 @@ class PromptsCommander extends React.Component{
     render(){
         const { shouldShowGlobal, changeShowGlobal, isStarted, percentage, message,
             operationName, connectingSinalRStatus, connectionSignalRErrors, 
-            generateReportStatus, generateReportErrors, barType } = this.props;
+            generateReportStatus, generateReportErrors, barType, gDriveLoginStatus, oneDriveLoginStatus } = this.props;
         return (
             <React.Fragment>
                 {barType === undefined ? 
                     <SideBarProgressContent 
+                    oneDriveLoginStatus={oneDriveLoginStatus}
+                    gDriveLoginStatus={gDriveLoginStatus}
                     items={items} message={message}
                     shouldShowGlobal={shouldShowGlobal}
                     createClassesForLoader={this.createClassesForLoader} percentage={percentage}
@@ -97,7 +99,11 @@ const mapStateToProps = state => {
         message: state.progressBarReducer.message,
 
         generateReportStatus: state.reportsReducer.generateReportStatus,
-        generateReportErrors: state.reportsReducer.generateReportErrors
+        generateReportErrors: state.reportsReducer.generateReportErrors,
+
+        oneDriveLoginStatus: state.authReducer.oneDriveToken,
+        gDriveLoginStatus: state.persistHelpReducer.loginStatus
+        
     };
   };
   const mapDispatchToProps = dispatch => {

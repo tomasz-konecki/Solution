@@ -94,13 +94,17 @@ const employeeContent = ({
             }
             {employee.managersManager &&
               <React.Fragment>
-                <Link to={employeeLink + employee.managersManager.id}>{employee.managersManager.fullName}</Link>
+                <div>
+                  {employee.managersManager.fullName}
+                </div>
                 <Icon icon="angle-down" />
               </React.Fragment>
             }
             {employee.manager &&
               <React.Fragment>
-                <Link to={employeeLink + employee.manager.id}>{employee.manager.fullName}</Link>
+                <div>
+                  {employee.manager.fullName}
+                </div>
                 <Icon icon="angle-down" />
               </React.Fragment>
             }

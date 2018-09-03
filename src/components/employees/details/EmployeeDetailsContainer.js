@@ -1,66 +1,38 @@
 import React from 'react'
 import './EmployeeDetailsContainer.scss';
 import { connect } from 'react-redux';
-import { bindActionCreators } from "redux";
-import { withRouter } from "react-router-dom";
-import * as asyncActions from "../../../actions/asyncActions";
 import EmployeeContent from './employeeContent/employeeContent';
 import EmployeeTable from './employeeTable/employeeTable';
-import { getEmployeePromise, loadCertificates, deleteCertificate, addCertificate, editCertificate, editStatistics, deleteEmployee, 
+import { getEmployeePromise, editStatistics, deleteEmployee, 
     activateEmployee, reactivateEmployee, loadAssignmentsACreator, loadAssignments,
     deleteQuaterACreator, reactivateQuaterACreator, 
     changeEmployeeSkillsACreator } from '../../../actions/employeesActions';
 import Spinner from '../../common/spinner/spinner';
 import OperationStatusPrompt from '../../form/operationStatusPrompt/operationStatusPrompt';
+import Button from '../../common/button/button';
 import EmployeeSkills from './employeeSkills/employeeSkills';
-import EmployeeCertificates from './employeeCertificates/employeeCertificates';
-import { ACTION_CONFIRMED } from "./../../../constants";
 
 class EmployeeDetailsContainer extends React.Component{
-    constructor(props) {
-        super(props);
-        this.state = {
-            isLoadingFirstTimeEmployee: true,
-            isChangingEmployeeData: false
-        };
-      }
-
-    componentDidMount() {
-        const { getEmployeePromise, loadCertificates, match} = this.props;
-        getEmployeePromise(match.params.id);
-        loadCertificates(match.params.id);
+    state = {
+        isLoadingFirstTimeEmployee: true,
+        isChangingEmployeeData: false
     }
-
+    componentDidMount() {
+        const { getEmployeePromise, match} = this.props;
+        getEmployeePromise(match.params.id);
+    }
     componentWillReceiveProps(nextProps){
-        if (this.validatePropsForAction(nextProps, "deleteCertificate")) {
-            console.log("Employee details container : " + this.props.toConfirm.certificate.id);
-            this.props.async.setActionConfirmationProgress(true);
-            this.props.deleteCertificate(this.props.toConfirm.certificate.id, this.props.match.params.id);
-          }
-
-        if(nextProps.employeeErrors !== this.props.employeeErrors){
+        if(nextProps.employeeErrors !== this.props.employeeErrors)
             this.setState({isLoadingFirstTimeEmployee: false, isChangingEmployeeData: false});
-        }
-        else if(nextProps.employeeOperationStatus === false){
+        else if(nextProps.employeeOperationStatus === false)
             this.setState({isChangingEmployeeData: false});
-        }/*
         else if(nextProps.match !== this.props.match)
         {
-            console.log("nextProps.match : " + nextProps.match)
             this.setState({isLoadingFirstTimeEmployee: true});
             this.props.getEmployeePromise(nextProps.match.params.id);    
-        }*/
+        }
+     
     }
-
-    validatePropsForAction(nextProps, action) {
-        return (
-          nextProps.confirmed &&
-          !nextProps.isWorking &&
-          nextProps.type === ACTION_CONFIRMED &&
-          nextProps.toConfirm.key === action
-        );
-      }
-
     editSeniority = seniority => {
         const { employee, editStatistics } = this.props; 
         editStatistics(employee.id, seniority, employee.baseCapacity, employee.clouds);
@@ -85,15 +57,6 @@ class EmployeeDetailsContainer extends React.Component{
         deleteEmployee(employee.id);
     }
 
-    deleteCertificate = (certificate, message, successMessage) => {
-        this.props.async.setActionConfirmation(true, {
-          key: "deleteCertificate",
-          string: `${message} : ${certificate.name}`,
-          certificate,
-          successMessage: successMessage
-        });
-      };
-
     render(){
         const { isLoadingFirstTimeEmployee, isChangingEmployeeData } = this.state;
         const { employeeStatus, employeeErrors, employee, employeeOperationStatus, 
@@ -101,7 +64,7 @@ class EmployeeDetailsContainer extends React.Component{
             loadAssignmentsStatus, loadAssignmentsErrors, loadedAssignments, deleteQuaterStatus,
             deleteQuaterErrors, deleteQuaterACreator, reactivateQuaterACreator, 
             reactivateQuaterStatus, reactivateQuaterErrors, 
-            changeEmployeeSkillsACreator, changeSkillsStatus, changeSkillsErrors, certificates } = this.props;
+            changeEmployeeSkillsACreator, changeSkillsStatus, changeSkillsErrors } = this.props;
         
         return (
             <div className="employee-details-container">
@@ -126,7 +89,7 @@ class EmployeeDetailsContainer extends React.Component{
                         employeeErrors={employeeErrors} 
                         activateEmployee={this.activateEmployee} 
                         isChangingEmployeeData={isChangingEmployeeData} 
-                        reactivateEmployee={this.reactivateEmployee}/>
+                        reactivateEmployee={this.reactivateEmployee} />
                         
                         <EmployeeSkills 
                         employeeHasAccount={employee.seniority}
@@ -146,19 +109,6 @@ class EmployeeDetailsContainer extends React.Component{
                         loadedAssignments={loadedAssignments}
                         tableTitle="Aktywne projekty" 
                         />
-                        
-                        <EmployeeCertificates
-                        certificates={certificates}
-                        loadCertificatesStatus={this.props.loadCertificatesStatus}
-                        loadCertificatesErrors={this.props.loadCertificatesErrors}
-                        loadCertificates={this.props.loadCertificates}
-                        addCertificate={this.props.addCertificate}
-                        editCertificate={this.props.editCertificate}
-                        deleteCertificate={this.deleteCertificate}
-                        userId={this.props.match.params.id}
-                        resultBlockAddCertificate={this.props.resultBlockAddCertificate}
-                        />
-                        
                     </React.Fragment>
                 }
 
@@ -210,11 +160,6 @@ const mapStateToProps = state => {
         loadAssignmentsErrors: state.employeesReducer.loadAssignmentsErrors,
         loadedAssignments: state.employeesReducer.loadedAssignments,
 
-        loadCertificatesStatus: state.employeesReducer.loadCertificatesStatus,
-        loadCertificatesErrors: state.employeesReducer.loadCertificatesErrors,
-        certificates: state.employeesReducer.certificates,
-        resultBlockAddCertificate: state.employeesReducer.resultBlockAddCertificate,
-        
         deleteQuaterStatus: state.employeesReducer.deleteQuaterStatus,
         deleteQuaterErrors: state.employeesReducer.deleteQuaterErrors,
 
@@ -223,24 +168,12 @@ const mapStateToProps = state => {
         reactivateQuaterMessage: state.employeesReducer.reactivateQuaterMessage,
 
         changeSkillsStatus: state.employeesReducer.changeSkillsStatus,
-        changeSkillsErrors: state.employeesReducer.changeSkillsErrors,
-
-        resultBlock: state.employeesReducer.resultBlock,
-        loading: state.asyncReducer.loading,
-        confirmed: state.asyncReducer.confirmed,
-        toConfirm: state.asyncReducer.toConfirm,
-        isWorking: state.asyncReducer.isWorking,
-        type: state.asyncReducer.type,
+        changeSkillsErrors: state.employeesReducer.changeSkillsErrors
     };
   };
   
   const mapDispatchToProps = dispatch => {
     return {
-        async: bindActionCreators(asyncActions, dispatch),
-        addCertificate: (certificate, userId) => dispatch(addCertificate(certificate, userId)),
-        editCertificate: (certificateId, newCretificate, userId) =>dispatch(editCertificate(certificateId, newCretificate, userId)),
-        deleteCertificate: (certificateId, employeeId) => dispatch(deleteCertificate(certificateId, employeeId)),
-        loadCertificates: (employeeId) => dispatch(loadCertificates(employeeId)),
         getEmployeePromise: (employeeId) => dispatch(getEmployeePromise(employeeId)),
         editStatistics: (employeeId, seniority, capacity, currentClouds) => dispatch(editStatistics(employeeId, seniority, capacity, currentClouds)),
         deleteEmployee: (employeeId) => dispatch(deleteEmployee(employeeId)),
@@ -257,5 +190,5 @@ const mapStateToProps = state => {
   export default connect(
     mapStateToProps,
     mapDispatchToProps
-  )(withRouter(EmployeeDetailsContainer));
+  )(EmployeeDetailsContainer);
   

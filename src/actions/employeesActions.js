@@ -10,14 +10,11 @@ import {
   DELETE_QUATER,
   REACTIVATE_QUATER,
   CHANGE_EMPLOYEE_SKILLS,
-  ADD_NEW_SKILLS_TO_EMPLOYEE,
-  CHANGE_CERTIFICATES_GET_STATUS,
-  ADD_CERTIFICATE_RESULT,
-  GET_CERTYFICATES,
+  ADD_NEW_SKILLS_TO_EMPLOYEE
 } from "../constants";
 import axios from "axios";
 import WebApi from "../api";
-import { asyncStarted, asyncEnded, setActionConfirmationResult } from "./asyncActions";
+import { asyncStarted, asyncEnded } from "./asyncActions";
 import { errorCatcher } from "../services/errorsHandler";
 import { populateSkillArrayWithConstData } from "../services/methods";
 export const loadEmployeesSuccess = employees => {
@@ -33,6 +30,7 @@ export const loadEmployeesFailure = resultBlock => {
     resultBlock
   };
 };
+
 export const loadEmployees = (page = 1, limit = 25, other = {}) => {
   return dispatch => {
     const settings = Object.assign(
@@ -53,37 +51,6 @@ export const loadEmployees = (page = 1, limit = 25, other = {}) => {
       .catch(error => {
         dispatch(loadEmployeesFailure(error));
         dispatch(asyncEnded());
-      });
-  };
-};
-
-export const changeLoadCertificatesStatus = (loadCertificatesStatus, loadCertificatesErrors) => {
-  return {
-    type: CHANGE_CERTIFICATES_GET_STATUS,
-    loadCertificatesStatus,
-    loadCertificatesErrors
-  }
-}
-
-export const getCertificates = certificates => {
-  return {
-    type: GET_CERTYFICATES,
-    certificates
-  }
-}
-
-export const loadCertificates = employeeId => {
-  return dispatch => {
-    WebApi.certificates.get
-      .byEmployee(employeeId)
-      .then(response => {
-        if (!response.errorOccurred()) {
-          dispatch(getCertificates(response.extractData()));
-          dispatch(changeLoadCertificatesStatus(true, []))
-        }
-      })
-      .catch(error => {
-        dispatch(changeLoadCertificatesStatus(false, errorCatcher(error)));
       });
   };
 };
@@ -443,68 +410,3 @@ export const addNewSkillsToEmployeeACreator = (
       });
   };
 };
-
-export const addCertificateResult = resultBlockAddCertificate => {
-  return {
-    type: ADD_CERTIFICATE_RESULT,
-    resultBlockAddCertificate
-  };
-};
-
-export const deleteCertificate = (certificateId, employeeId) => {
-  return dispatch => {
-    WebApi.certificates.delete
-      .deleteById(certificateId)
-      .then(response => {
-        dispatch(setActionConfirmationResult(response));
-        dispatch(loadCertificates(employeeId));
-      })
-      .catch(error => {
-        dispatch(setActionConfirmationResult(error));
-      });
-  };
-};
-
-export const addCertificate = (cretificate, userId) => {
-  return dispatch => {
-    WebApi.certificates.post.add(cretificate)
-        .then(response => {
-          dispatch(addCertificateResult(response));
-
-          setTimeout(() => {
-            dispatch(addCertificateResult(null));
-            dispatch(loadCertificates(userId));
-          }, 2000);
-          
-        })
-        .catch(error => {
-          dispatch(addCertificateResult(error));
-          setTimeout(() => {
-            dispatch(addCertificateResult(null));
-          }, 2000);
-          throw error;
-        });
-  };
-};
-
-export const editCertificate = (certificateId, newCretificate, userId) => {
-  return dispatch => {
-    WebApi.certificates.put.update(certificateId, newCretificate)
-        .then(response => {
-          dispatch(addCertificateResult(response));
-
-          setTimeout(() => {
-            dispatch(addCertificateResult(null));
-            dispatch(loadCertificates(userId));
-          }, 2000);
-        })
-        .catch(error => {
-          dispatch(addCertificateResult(error));
-          setTimeout(() => {
-            dispatch(addCertificateResult(null));
-          }, 2000);
-          throw error;
-        });
-  };
-};
-

@@ -183,28 +183,6 @@ const translations = {
     DeleteEmployeeInfinitive: "Usunąć pracownika",
     EmployeeHasBeenDeleted: "Pracownik został Usunięty."
   },
-  EmployeeCertificates: {
-    Name: "Nazwa",
-    Description: "Opis",
-    Date: "Data",
-    Options: "Opcje",
-    Edit: "Edytuj",
-    Delete: "Usuń",
-    Title: "Certyfikaty",
-    Deleting: "Usunąć certyfikat",
-    SuccesfullDelete: "Pomyślnie usunięto certyfikat"
-  },
-  EmployeeAddCertificate: {
-    Add: "Dodaj",
-    Name: "Nazwa certifikatu",
-    Description: "Opis",
-    Date: "Data",
-    CertificateAddedSuccessfully: "Certyfikat dodany poprawnie",
-    CertificateEditedSuccessfully: "Certyfikat edytowamy poprawnie",
-    AddingCertificate: "Dodawanie certyfikatu",
-    EditingCertificate: "Edytowanie certyfikatu",
-    Edit: "Zapisz"
-  },
   ImportCVContainer: {
     Name: "Nazwa",
     Size: "Rozmiar",

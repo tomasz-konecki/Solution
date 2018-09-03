@@ -65,6 +65,7 @@ export const CREATE_PROJECT = "CREATE_PROJECT";
 export const GET_TEAMS = "GET_TEAMS";
 export const GET_USER_CV = "GET_USER_CV";
 export const GENERATE_REPORT = "GENERATE_REPORT";
+export const GET_RECENT_REPORTS = "GET_RECENT_REPORTS";
 
 // PERSIST HELPER
 export const FETCH_LISTS = "FETCH_LISTS";

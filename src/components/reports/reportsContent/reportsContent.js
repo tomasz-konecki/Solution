@@ -1,6 +1,7 @@
 import React from "react";
 import "./reportsContent.scss";
 import Spinner from "../../common/LoaderCircular";
+import Icon from "../../common/Icon";
 const reportsContent = ({
   spinner,
   loadTeamsResult,
@@ -12,7 +13,8 @@ const reportsContent = ({
     {spinner ? (
       <Spinner />
     ) : (
-      <div className="reports-content-container">
+      <div className="reports-content-container">     
+        <h1>Wszystkie teamy</h1>
         <div className="caffels-container">
           {baseList.length > 0 ? (
             baseList.map(i => {

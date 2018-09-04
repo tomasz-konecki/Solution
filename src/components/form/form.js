@@ -206,6 +206,7 @@ class Form extends Component {
     this.setState({ formItems: formItems });
   };
   render() {
+    const { enableButtonAfterTransactionEnd = false } = this.props;
     return (
       <form
         onSubmit={this.props.shouldSubmit ? e => this.onSubmit(e) : null}
@@ -267,9 +268,14 @@ class Form extends Component {
                   />
                 ) : i.mode === "type-ahead" ? (
                   <div className="type-ah-container">
-                    {this.state.showSearchedList && 
-                      <i onClick={() => this.setState({showSearchedList: false})} className="fa fa-times"></i>
-                    }
+                    {this.state.showSearchedList && (
+                      <i
+                        onClick={() =>
+                          this.setState({ showSearchedList: false })
+                        }
+                        className="fa fa-times"
+                      />
+                    )}
                     <input
                       autoComplete="off"
                       onFocus={
@@ -295,13 +301,12 @@ class Form extends Component {
                     {this.state.isServerSearching ? (
                       <SmallSpinner />
                     ) : (
-
-                      this.state.showSearchedList ||
-                      <i
-                        onClick={() => this.searchOnServer(index)}
-                        className="fa fa-search"
-                      />
-
+                      this.state.showSearchedList || (
+                        <i
+                          onClick={() => this.searchOnServer(index)}
+                          className="fa fa-search"
+                        />
+                      )
                     )}
                     {this.state.searchedList.length === 1 &&
                       !this.state.formItems[index].error && (
@@ -405,6 +410,7 @@ class Form extends Component {
           shouldSubmit={this.props.shouldSubmit}
           btnTitle={this.props.btnTitle}
           submitResult={this.props.submitResult}
+          enableButtonAfterTransactionEnd={enableButtonAfterTransactionEnd}
         />
       </form>
     );

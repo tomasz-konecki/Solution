@@ -5,37 +5,44 @@
   margin-top: 15px;
   flex-flow: wrap;
   justify-content: space-between;
-  .information-for-statuses{
+
+  .skype {
+    display: inline-block;
+    text-align: center;
+    width: 100%;
+  }
+
+  .information-for-statuses {
     position: absolute;
     bottom: -150px;
     color: #707070;
-    @media(max-width: 725px){
+    @media (max-width: 725px) {
       position: static;
       margin-top: 30px;
     }
-    p{
+    p {
       font-size: 22px;
       padding: 10px 0;
     }
-    article{
+    article {
       font-size: 18px;
       line-height: 22px;
-      b:first-of-type{
+      b:first-of-type {
         color: red;
       }
-      b:last-of-type{
+      b:last-of-type {
         color: darkcyan;
       }
     }
   }
-  @media screen and (max-width: 1470px){
+  @media screen and (max-width: 1470px) {
     justify-content: center;
   }
-  @media screen and (max-width: 450px){
+  @media screen and (max-width: 450px) {
     padding: 0;
   }
- 
-  .emp-btns-container{
+
+  .emp-btns-container {
     position: absolute;
     left: 0;
     bottom: -280px;
@@ -44,13 +51,17 @@
     display: flex;
     margin: 0 auto;
     justify-content: center;
+
+    @media screen and (max-width: 1470px) {
+      bottom: -380px;
+    }
   }
-  .option-btn{
+  .option-btn {
     border-radius: 29px;
     width: 160px;
     margin: 15px;
     position: relative;
-    .small-spiner{
+    .small-spiner {
       right: -35px;
       top: 10px;
     }
@@ -64,37 +75,50 @@
     justify-content: space-between;
     display: flex;
     position: relative;
-    .fte-bar-container, .degree-bar-container{
-      @media screen and (max-width: 1470px){
+    .fte-bar-container,
+    .edit-skypeid-form,
+    .degree-bar-container {
+      @media screen and (max-width: 1470px) {
         left: 0;
         right: 0;
         margin-left: auto;
         margin-right: auto;
       }
     }
-    @media screen and (max-width: 764px){
+    @media screen and (max-width: 764px) {
       flex-flow: wrap;
       height: auto;
     }
-    .fte-bar-container{
+    .fte-bar-container {
       width: 300px;
       bottom: -80px;
       left: 5px;
       position: absolute;
     }
-    @media screen and (max-width: 400px){
-      & > .fte-bar-container{
+    @media screen and (max-width: 400px) {
+      & > .fte-bar-container {
         left: 0 !important;
         width: 100% !important;
       }
     }
-   
 
-    .degree-bar-container{
+    .degree-bar-container {
       position: absolute;
       width: 120px;
       left: 5px;
       bottom: -160px;
+    }
+    .edit-skypeid-form {
+      position: absolute;
+      width: 300px;
+      left: 320px;
+      bottom: -161px;
+      height: 124px;
+
+      @media screen and (max-width: 1470px) {
+        bottom: -326px;
+        left: 0px;
+      }
     }
     .left-content {
       border-right: 2px solid #707070;
@@ -140,22 +164,22 @@
           width: 100%;
         }
       }
-      @media screen and (max-width: 764px){
-       width: 100%;
-       border-right: none;
-       border-bottom: 2px solid #707070;
-       margin-bottom: 25px;
+      @media screen and (max-width: 764px) {
+        width: 100%;
+        border-right: none;
+        border-bottom: 2px solid #707070;
+        margin-bottom: 25px;
       }
       & > p {
         color: #707070;
         text-align: center;
         margin-top: 15px;
-        @media screen and (max-width: 764px){
+        @media screen and (max-width: 764px) {
           margin-bottom: 25px;
         }
       }
-      @media screen and (max-width: 550px){
-        & > header span{
+      @media screen and (max-width: 550px) {
+        & > header span {
           top: -10px;
           right: -10px;
           font-size: 16px;
@@ -163,10 +187,10 @@
         & > header .icon-container p {
           font-size: 17px;
         }
-        & > header .icon-container figure{
+        & > header .icon-container figure {
           width: 50px;
           height: 50px;
-          i{
+          i {
             font-size: 20px;
           }
         }
@@ -182,19 +206,17 @@
         margin: 0 auto;
         border-radius: 22px;
         color: white;
-        @media screen and (max-width: 764px){
+        @media screen and (max-width: 764px) {
           margin: 25px auto;
         }
       }
-     
-        .has-acc{
-          color: #00ae6d; 
-        }
-        .no-acc{
-          color: red;
-        }
 
-        
+      .has-acc {
+        color: #00ae6d;
+      }
+      .no-acc {
+        color: red;
+      }
     }
     .right-content {
       width: 48%;
@@ -214,10 +236,10 @@
         padding: 10px;
         cursor: pointer;
       }
-      @media screen and (max-width: 764px){
+      @media screen and (max-width: 764px) {
         width: 100%;
         margin-bottom: 40px;
-        & > button{
+        & > button {
           bottom: -40px;
         }
       }
@@ -227,8 +249,8 @@
         font-size: 15px;
         justify-content: space-between;
       }
-      @media screen and (max-width: 500px){
-        & > p{
+      @media screen and (max-width: 500px) {
+        & > p {
           flex-flow: wrap;
         }
       }
@@ -237,29 +259,28 @@
         font-size: 24px;
         color: #707070;
       }
-      
-      
+
       button:hover {
         border-color: lightseagreen;
       }
     }
   }
-  .managerHierarchy{
+  .managerHierarchy {
     display: flex;
     flex-flow: column nowrap;
     align-items: center;
     padding-top: 15px;
-    h2{
+    h2 {
       margin-bottom: 15px;
     }
-    .fas{
+    .fas {
       font-size: 24px;
       opacity: 0.8;
     }
-    div{
-      &:not(:last-child){
-      opacity: 0.8;
+    div {
+      &:not(:last-child) {
+        opacity: 0.8;
+      }
     }
-  }
   }
 }

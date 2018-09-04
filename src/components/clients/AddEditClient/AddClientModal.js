@@ -157,7 +157,7 @@ class AddClientModal extends Component {
 
             <label htmlFor="clientDescription">{t("ClientDescription")}</label>
             <textarea
-              style={{ resize: "vertical", maxHeight: "200px" }}
+              style={{ resize: "vertical", maxHeight: "120px" }}
               type="text"
               id="clientDescription"
               name="clientDescription"
@@ -168,6 +168,7 @@ class AddClientModal extends Component {
               value={this.state.inputValue.clientDescription}
               onChange={textarea => this.handleInputChange(textarea)}
             />
+
             <CSSTransitionGroup
               transitionName="error-validation"
               transitionEnterTimeout={1000}

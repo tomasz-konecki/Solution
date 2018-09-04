@@ -11,15 +11,20 @@ import {
   REACTIVATE_QUATER,
   CHANGE_EMPLOYEE_SKILLS,
   ADD_NEW_SKILLS_TO_EMPLOYEE,
+  UPDATE_EMPLOYEE_SKYPE_ID,
   CHANGE_CERTIFICATES_GET_STATUS,
   ADD_CERTIFICATE_RESULT,
-  GET_CERTYFICATES,
+  GET_CERTYFICATES
 } from "../constants";
-import axios from "axios";
 import WebApi from "../api";
-import { asyncStarted, asyncEnded, setActionConfirmationResult } from "./asyncActions";
+import {
+  asyncStarted,
+  asyncEnded,
+  setActionConfirmationResult
+} from "./asyncActions";
 import { errorCatcher } from "../services/errorsHandler";
 import { populateSkillArrayWithConstData } from "../services/methods";
+
 export const loadEmployeesSuccess = employees => {
   return {
     type: LOAD_EMPLOYEES_SUCCESS,
@@ -33,6 +38,42 @@ export const loadEmployeesFailure = resultBlock => {
     resultBlock
   };
 };
+
+export const updateSkypeResult = (resultBlock, loading) => {
+  return {
+    type: UPDATE_EMPLOYEE_SKYPE_ID,
+    resultBlock,
+    loading
+  };
+};
+
+export const updateSkype = (skypeId, employeeId) => {
+  return dispatch => {
+    dispatch(updateSkypeResult(null, true));
+    WebApi.employees.put
+      .updateSkype(skypeId, employeeId)
+      .then(response => {
+        if (!response.errorOccurred()) {
+          dispatch(updateSkypeResult(response, false)),
+            dispatch(clearUpdateSkypeAfterTime(5000));
+        }
+      })
+      .catch(error => {
+        dispatch(updateSkypeResult(error, false)).then(
+          clearUpdateSkypeAfterTime(5000)
+        );
+      });
+  };
+};
+
+const clearUpdateSkypeAfterTime = delay => {
+  return dispatch => {
+    setTimeout(() => {
+      dispatch(updateSkypeResult(null, false));
+    }, delay);
+  };
+};
+
 export const loadEmployees = (page = 1, limit = 25, other = {}) => {
   return dispatch => {
     const settings = Object.assign(
@@ -57,20 +98,23 @@ export const loadEmployees = (page = 1, limit = 25, other = {}) => {
   };
 };
 
-export const changeLoadCertificatesStatus = (loadCertificatesStatus, loadCertificatesErrors) => {
+export const changeLoadCertificatesStatus = (
+  loadCertificatesStatus,
+  loadCertificatesErrors
+) => {
   return {
     type: CHANGE_CERTIFICATES_GET_STATUS,
     loadCertificatesStatus,
     loadCertificatesErrors
-  }
-}
+  };
+};
 
 export const getCertificates = certificates => {
   return {
     type: GET_CERTYFICATES,
     certificates
-  }
-}
+  };
+};
 
 export const loadCertificates = employeeId => {
   return dispatch => {
@@ -79,7 +123,7 @@ export const loadCertificates = employeeId => {
       .then(response => {
         if (!response.errorOccurred()) {
           dispatch(getCertificates(response.extractData()));
-          dispatch(changeLoadCertificatesStatus(true, []))
+          dispatch(changeLoadCertificatesStatus(true, []));
         }
       })
       .catch(error => {
@@ -98,9 +142,11 @@ export const changeEmployeeOperationStatus = (
     employeeErrors
   };
 };
+
 export const getEmployee = employee => {
   return { type: GET_EMPLOYEE, employee };
 };
+
 export const getEmployeePromise = employeeId => dispatch => {
   return new Promise(resolve => {
     WebApi.employees.get
@@ -266,7 +312,7 @@ export const activateEmployee = (employeeId, seniority, capacity) => {
       .add(model)
       .then(response => {
         dispatch(getEmployeePromise(employeeId)).then(() => {
-          dispatch(loadAssignmentsACreator(employeeId))
+          dispatch(loadAssignmentsACreator(employeeId));
         });
       })
       .catch(error => {
@@ -316,6 +362,7 @@ export const loadAssignmentsACreator = employeeId => dispatch => {
 export const deleteQuater = (deleteQuaterStatus, deleteQuaterErrors) => {
   return { type: DELETE_QUATER, deleteQuaterStatus, deleteQuaterErrors };
 };
+
 export const deleteQuaterACreator = (quarterId, employeeId) => {
   return dispatch => {
     WebApi.quarterTalks
@@ -467,44 +514,44 @@ export const deleteCertificate = (certificateId, employeeId) => {
 
 export const addCertificate = (cretificate, userId) => {
   return dispatch => {
-    WebApi.certificates.post.add(cretificate)
-        .then(response => {
-          dispatch(addCertificateResult(response));
+    WebApi.certificates.post
+      .add(cretificate)
+      .then(response => {
+        dispatch(addCertificateResult(response));
 
-          setTimeout(() => {
-            dispatch(addCertificateResult(null));
-            dispatch(loadCertificates(userId));
-          }, 2000);
-          
-        })
-        .catch(error => {
-          dispatch(addCertificateResult(error));
-          setTimeout(() => {
-            dispatch(addCertificateResult(null));
-          }, 2000);
-          throw error;
-        });
+        setTimeout(() => {
+          dispatch(addCertificateResult(null));
+          dispatch(loadCertificates(userId));
+        }, 2000);
+      })
+      .catch(error => {
+        dispatch(addCertificateResult(error));
+        setTimeout(() => {
+          dispatch(addCertificateResult(null));
+        }, 2000);
+        throw error;
+      });
   };
 };
 
 export const editCertificate = (certificateId, newCretificate, userId) => {
   return dispatch => {
-    WebApi.certificates.put.update(certificateId, newCretificate)
-        .then(response => {
-          dispatch(addCertificateResult(response));
+    WebApi.certificates.put
+      .update(certificateId, newCretificate)
+      .then(response => {
+        dispatch(addCertificateResult(response));
 
-          setTimeout(() => {
-            dispatch(addCertificateResult(null));
-            dispatch(loadCertificates(userId));
-          }, 2000);
-        })
-        .catch(error => {
-          dispatch(addCertificateResult(error));
-          setTimeout(() => {
-            dispatch(addCertificateResult(null));
-          }, 2000);
-          throw error;
-        });
+        setTimeout(() => {
+          dispatch(addCertificateResult(null));
+          dispatch(loadCertificates(userId));
+        }, 2000);
+      })
+      .catch(error => {
+        dispatch(addCertificateResult(error));
+        setTimeout(() => {
+          dispatch(addCertificateResult(null));
+        }, 2000);
+        throw error;
+      });
   };
 };
-

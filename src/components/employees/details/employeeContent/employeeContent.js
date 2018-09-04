@@ -6,7 +6,8 @@ import Button from "../../../common/button/button";
 import Quaters from "../quaters/quaters";
 import Spinner from "../../../common/spinner/small-spinner";
 import Icon from "../../../common/Icon";
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
+import Form from "../../../form/form";
 
 const employeeContent = ({
   employee,
@@ -22,18 +23,23 @@ const employeeContent = ({
   deleteQuaterACreator,
   reactivateQuaterACreator,
   reactivateQuaterStatus,
-  reactivateQuaterErrors
+  reactivateQuaterErrors,
+  t,
+  editSkypeFormItems,
+  editSkypeId,
+  skypeIdAddLoading,
+  updateSkypeIdResult
 }) => {
   const status = employee.isDeleted
-    ? "Usunięty"
+    ? t("Deleted")
     : employee.seniority
-      ? "Aktywny"
-      : "Nieaktywny";
+      ? t("Active")
+      : t("NotActive");
   const email = employee.email ? (
     <a href={"mailto:" + employee.email}>{employee.email}</a>
   ) : (
-      "Brak adresu email"
-    );
+    t("EmailMissing")
+  );
   const employeeLink = "/main/employees/";
 
   const profilePhoto = "http://10.255.20.241/ProfilePhotos/"+employee.id+".jpg";
@@ -55,58 +61,66 @@ const employeeContent = ({
               </span>
               <div className="icon-container">
                {imgContent}
-              <p>{employee.roles ? employee.roles[0] : "Brak roli"}</p>
+              <p>{employee.roles ? employee.roles[0] :  t("RoleMissing")}</p>
             </div>
             <h2> {employee.firstName + " " + employee.lastName} </h2>
             </header>
 
           <div className="seniority">
-            {employee.seniority ? employee.seniority : "Brak stopnia"}
+            {employee.seniority ? employee.seniority : t("NoLevel")}
           </div>
           <p>{employee.title}</p>
         </div>
 
         <div className="right-content">
-          <h2>Szczegóły</h2>
-          {email && <p>
-            Email: <span>{email}</span>
-          </p>}
-          {employee.phoneNumber && <p>
-            Numer telefonu:
-            <span>
-              {employee.phoneNumber}
-            </span>
-          </p>}
-          {employee.localization && <p>
-            Lokalizacja:
-            <span>
-              {employee.localization}
-            </span>
-          </p>}
-          {employee.skypeId && (
-            <a href={"skype:" + employee.skypeId + "?add"}>
+          <h2>{t("Details")}</h2>
+          {email && (
+            <p>
+              Email: <span>{email}</span>
+            </p>
+          )}
+          {employee.phoneNumber && (
+            <p>
+              {t("Phone")}:<span>{employee.phoneNumber}</span>
+            </p>
+          )}
+          {employee.localization && (
+            <p>
+              {t("Localization")}:<span>{employee.localization}</span>
+            </p>
+          )}
+          {editSkypeFormItems[0].value && (
+            <a
+              title={`${t("CallSkype")} ${editSkypeFormItems[0].value}`}
+              className="skype"
+              href={"skype:" + editSkypeFormItems[0].value + "?add"}
+            >
               <Icon icon="skype" iconType="fab" />
             </a>
           )}
           <div className="managerHierarchy">
-            {(employee.manager || employee.managersManager) &&
-              <h2>Przełożeni</h2>
-            }
-            {employee.managersManager &&
+            {(employee.manager || employee.managersManager) && (
+              <h2>{t("Superiors")}</h2>
+            )}
+            {employee.managersManager && (
               <React.Fragment>
-                <Link to={employeeLink + employee.managersManager.id}>{employee.managersManager.fullName}</Link>
+                <Link to={employeeLink + employee.managersManager.id}>
+                  {employee.managersManager.fullName}
+                </Link>
                 <Icon icon="angle-down" />
               </React.Fragment>
-            }
-            {employee.manager &&
+            )}
+            {employee.manager && (
               <React.Fragment>
-                <Link to={employeeLink + employee.manager.id}>{employee.manager.fullName}</Link>
+                <Link to={employeeLink + employee.manager.id}>
+                  {employee.manager.fullName}
+                </Link>
                 <Icon icon="angle-down" />
               </React.Fragment>
-            }
-            {(employee.manager || employee.managersManager) &&
+            )}
+            {(employee.manager || employee.managersManager) && (
               <div>{`${employee.firstName} ${employee.lastName}`}</div>
-            }
+            )}
           </div>
         </div>
 
@@ -127,43 +141,62 @@ const employeeContent = ({
                   range={4}
                 />
               </div>
+
+              <div className="edit-skypeid-form">
+                <Form
+                  onSubmit={editSkypeId}
+                  formItems={editSkypeFormItems}
+                  btnTitle={t("Save")}
+                  isLoading={skypeIdAddLoading}
+                  submitResult={{
+                    status:
+                      updateSkypeIdResult && updateSkypeIdResult.errorOccurred
+                        ? !updateSkypeIdResult.errorOccurred()
+                          ? true
+                          : false
+                        : null,
+                    content:
+                      updateSkypeIdResult && updateSkypeIdResult.errorOccurred
+                        ? !updateSkypeIdResult.errorOccurred()
+                          ? t("SkypeIdUpdated")
+                          : updateSkypeIdResult &&
+                            updateSkypeIdResult.getMostSignificantText()
+                        : null
+                  }}
+                  enableButtonAfterTransactionEnd={true}
+                />
+              </div>
             </React.Fragment>
           )}
 
         <div className="emp-btns-container">
-          {status === "Aktywny" ? (
+          {status === t("Active") ? (
             <Button
               mainClass="option-btn option-very-dang"
-              title="Usuń"
+              title={t("Delete")}
               disable={isChangingEmployeeData}
               onClick={deleteEmployee}
             >
               {isChangingEmployeeData && <Spinner />}
             </Button>
           ) : (
-              <Button
-                disable={isChangingEmployeeData}
-                onClick={
-                  status === "Usunięty" ? reactivateEmployee : activateEmployee
-                }
-                title="Aktywuj"
-                mainClass="option-btn green-btn"
-              >
-                {isChangingEmployeeData && <Spinner />}
-              </Button>
-            )}
+            <Button
+              disable={isChangingEmployeeData}
+              onClick={
+                status === t("Deleted") ? reactivateEmployee : activateEmployee
+              }
+              title={t("Activate")}
+              mainClass="option-btn green-btn"
+            >
+              {isChangingEmployeeData && <Spinner />}
+            </Button>
+          )}
         </div>
 
-        {status !== "Aktywny" && (
+        {status !== t("Active") && (
           <div className="information-for-statuses">
-            <p>Zanim zmienisz status</p>
-            <article>
-              Zmiana statusów pracownika polega na przypisaniu mu wymiaru czasu
-              pracy oraz poziomu doświadczenia. Pamiętaj, że możesz także
-              zmienić jego status na <b>Usunięty</b> co spowoduje zablokowanie
-              możliwości edycji. Zmiana statusu na <b>Aktywny</b> pozwoli na
-              ponowną zmiane danych tego pracownika.
-            </article>
+            <p>{t("BeforeYouChangeStatus")}</p>
+            <article>{t("BeforeYouChangeStatusContent")}</article>
           </div>
         )}
       </div>

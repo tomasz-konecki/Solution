@@ -319,6 +319,12 @@ const WebApi = {
           `${API_ENDPOINT}/employees/${employeeId}`,
           languagesArray
         );
+      },
+      updateSkype: (skypeId, employeeId) => {
+        return WebAround.put(`${API_ENDPOINT}/employees/UpdateSkype`, {
+          skypeId,
+          employeeId
+        });
       }
     },
     patch: {

@@ -35,7 +35,8 @@ class ReportsContainer extends Component {
     didPagesHasIncorrectValues: { status: null, error: "" },
     valueToSearch: "",
     isReportGenerating: false,
-    extendId: ""
+    extendId: "",
+    saveAsFavorite: false
   };
 
   componentDidMount() {
@@ -221,7 +222,7 @@ class ReportsContainer extends Component {
     } = this.props;
     this.setState({ isReportGenerating: true });
     createSignalRConnection().then(response => {
-      generateReport(addList, choosenFolder, pagesList, history);
+      generateReport(addList, choosenFolder, pagesList, history, this.state.saveAsFavorite);
     });
   };
 
@@ -298,6 +299,9 @@ class ReportsContainer extends Component {
     //pagesList = [...pagesList, ...newPagesList];
     this.props.fetchLists(addList, baseList, helpList, newPagesList);
     */
+  }
+  toggleAddToFavorites = e => {
+    this.setState({saveAsFavorite: e.target.checked});
   }
 
   render() {
@@ -444,6 +448,7 @@ class ReportsContainer extends Component {
             }
             choosenFolder={choosenFolder}
             isStarted={isStarted}
+            addToFavorites={this.toggleAddToFavorites}
           />
         )}
       </div>
@@ -492,9 +497,9 @@ const mapDispatchToProps = dispatch => {
       dispatch(fetchLists(addList, baseList, helpList, pagesList)),
     chooseFolder: folderToGenerateReport =>
       dispatch(chooseFolder(folderToGenerateReport)),
-    generateReport: (teamSheets, choosenFolder, pageList, history) =>
+    generateReport: (teamSheets, choosenFolder, pageList, history, saveAsFavorite) =>
       dispatch(
-        generateReportACreator(teamSheets, choosenFolder, pageList, history)
+        generateReportACreator(teamSheets, choosenFolder, pageList, history, saveAsFavorite)
       ),
     generateReportClearData: (status, errors) =>
       dispatch(generateReport(status, errors)),

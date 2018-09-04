@@ -446,7 +446,7 @@ const WebApi = {
       },
       recentReports: numberOfReports => 
         WebAround.get(
-          `${API_ENDPOINT}/reports/recent?numberOfReports=${numberOfReports}`
+          `${API_ENDPOINT}/reports/recentAndFavorites?numberOfReports=${numberOfReports}`
         )
     },
     post: {

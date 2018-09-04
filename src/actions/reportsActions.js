@@ -111,7 +111,8 @@ export const generateReportACreator = (
   addList,
   choosenFolder,
   pageList,
-  history
+  history,
+  saveAsFavorite
 ) => {
   return dispatch => {
     const { store } = storeCreator;
@@ -161,7 +162,8 @@ export const generateReportACreator = (
           folderId: null,
           folderName: null,
           oneDriveToken: token,
-          oneDrivePath: currentPath
+          oneDrivePath: currentPath,
+          saveAsFavorite: saveAsFavorite
         };
       }
 

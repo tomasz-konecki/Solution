@@ -1,7 +1,11 @@
-import { GET_TEAMS, GET_USER_CV, GENERATE_REPORT  } from "../constants";
+import { GET_TEAMS, GET_USER_CV, GENERATE_REPORT, GET_RECENT_REPORTS  } from "../constants";
 import { updateObject } from '../services/methods';
 
 const initialState = {
+  recentReports: [],
+  recentReportsStatus: null,
+  recentReportsErrors: [],
+
   teams: [],
   loadTeamsResult: null,
   loadTeamsErrors: [],
@@ -26,6 +30,11 @@ export const reportsReducer = (state = initialState, action) => {
     case GENERATE_REPORT:
         return updateObject(state, { generateReportStatus: action.generateReportStatus, 
           generateReportErrors: action.generateReportErrors })
+    case GET_RECENT_REPORTS:
+          return updateObject(state, { recentReports: action.reports,
+            recentReportsStatus: action.recentReportsStatus,
+            recentReportsErrors: action.recentReportsErrors
+          })
     default:
       return state;
   }

@@ -42,26 +42,29 @@ const employeeContent = ({
   );
   const employeeLink = "/main/employees/";
 
-  return (
-    <section className="top-content-container">
-      <div className="employee-details-bar">
-        <div className="left-content">
-          <header>
-            <span
-              className={
-                employee.seniority && !employee.isDeleted ? "has-acc" : "no-acc"
-              }
-            >
-              {status}
-            </span>
-            <div className="icon-container">
-              <figure>
-                <i className="fa fa-user" />
-              </figure>
-              <p>{employee.roles ? employee.roles[0] : t("RoleMissing")}</p>
+  const profilePhoto = "http://10.255.20.241/ProfilePhotos/"+employee.id+".jpg";
+  const imgContent =  employee.profilePhoto ? <img src={profilePhoto}/> :  <figure>
+  <i className="fa fa-user" />
+  </figure>;
+   
+    return (
+      <section className="top-content-container">
+        <div className="employee-details-bar">
+          <div className="left-content">
+            <header>
+              <span
+                className={
+                  employee.seniority && !employee.isDeleted ? "has-acc" : "no-acc"
+                }
+              >
+                {status}
+              </span>
+              <div className="icon-container">
+               {imgContent}
+              <p>{employee.roles ? employee.roles[0] :  t("RoleMissing")}</p>
             </div>
             <h2> {employee.firstName + " " + employee.lastName} </h2>
-          </header>
+            </header>
 
           <div className="seniority">
             {employee.seniority ? employee.seniority : t("NoLevel")}

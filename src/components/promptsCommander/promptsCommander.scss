@@ -261,15 +261,26 @@
         }
     }
     header{
-        padding: 15px;
+        padding: 15px 30px;
         display: flex;
         background: #006064;
-        justify-content: space-around;
-        span{
-            background: none;
-            border: none;
+        justify-content: space-between;
+        span:first-of-type{
             color: white;
             font-weight: bold;
+        }
+        span:last-of-type{
+            display: flex;
+            align-items: center;
+            i{
+                margin: 0 10px;
+            }
+            .cor-status{
+                color: lightgreen;
+            }
+            .err-status{
+                color: red;
+            }
         }
     }
     .notifictions{

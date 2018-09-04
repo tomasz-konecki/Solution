@@ -4,12 +4,14 @@ import {
   LOGOUT,
   GET_EMPLOYEE,
   CHANGE_EMPLOYEE_OPERATION_STATUS,
-  CHANGE_EMPLOYEE_STATE,
-  LOAD_ASSIGNMENTS,
-  DELETE_QUATER,
-  REACTIVATE_QUATER,
-  CHANGE_EMPLOYEE_SKILLS,
+  CHANGE_EMPLOYEE_STATE, LOAD_ASSIGNMENTS,
+  DELETE_QUATER, REACTIVATE_QUATER, CHANGE_EMPLOYEE_SKILLS,
   ADD_NEW_SKILLS_TO_EMPLOYEE,
+  CHANGE_CERTIFICATES_GET_STATUS,
+  GET_CERTYFICATES,
+  ADD_CERTIFICATE_RESULT,
+  GET_CERTIFICATES_FAILURE,
+  GET_CERTIFICATES_SUCCESS,
   UPDATE_EMPLOYEE_SKYPE_ID
 } from "../constants";
 import { updateObject } from "../services/methods";
@@ -46,7 +48,12 @@ const initialState = {
   updateSkypeIdResult: {
     resultBlock: null,
     loading: false
-  }
+  },
+  
+  loadCertificatesStatus: null,
+  loadAssignmentsErrors: [],
+  certificates: []
+
 };
 
 export const employeesReducer = (state = initialState, action) => {
@@ -89,11 +96,14 @@ export const employeesReducer = (state = initialState, action) => {
         employeeResultMessage: action.employeeResultMessage
       });
     case LOAD_ASSIGNMENTS:
-      return updateObject(state, {
-        loadAssignmentsStatus: action.loadAssignmentsStatus,
-        loadAssignmentsErrors: action.loadAssignmentsErrors,
-        loadedAssignments: action.loadedAssignments
-      });
+      return updateObject(state, { loadAssignmentsStatus: action.loadAssignmentsStatus, loadAssignmentsErrors: action.loadAssignmentsErrors, 
+        loadedAssignments: action.loadedAssignments})
+    case CHANGE_CERTIFICATES_GET_STATUS:
+      return updateObject(state, { loadCertificatesStatus: action.loadCertificatesStatus, loadCertificatesErrors: action.loadCertificatesErrors})
+    case GET_CERTYFICATES:
+      return updateObject(state, { certificates: action.certificates})
+    case ADD_CERTIFICATE_RESULT:
+      return updateObject(state, {resultBlockAddCertificate: action.resultBlockAddCertificate})
     case DELETE_QUATER:
       return updateObject(state, {
         deleteQuaterStatus: action.deleteQuaterStatus,

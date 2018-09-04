@@ -1,0 +1,42 @@
+.recent-reports{
+    padding: 15px;
+    .centerCell{
+        text-align: center;
+    }
+    .expandButton{
+        display: flex;
+        cursor: pointer;
+        .fas{
+            width: 15px;
+        }
+    }
+    th{
+        font-weight: bold;
+        padding: 10px;
+        padding-top: 20px;
+        border-bottom: 2px solid #707070;
+    }
+    td{
+        padding: 5px;
+        padding-right: 10px;
+        border-bottom:2px solid #707070
+    }
+    .innerCell{
+        border: none;
+    }
+    .recentReport{
+        .generateCell{
+            border: none;
+            text-align: center;
+            vertical-align: middle;
+            padding-left: 20px;
+            h2{
+                color: white;
+                padding: 10px;
+                border-radius: 5px;
+                background-color: #82b541;
+                cursor: pointer;
+            }
+        }
+    }
+}

@@ -1,10 +1,17 @@
 import React from "react";
 import "./EmployeeDetailsContainer.scss";
 import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import { withRouter } from "react-router-dom";
+import * as asyncActions from "../../../actions/asyncActions";
 import EmployeeContent from "./employeeContent/employeeContent";
 import EmployeeTable from "./employeeTable/employeeTable";
 import {
   getEmployeePromise,
+  loadCertificates,
+  deleteCertificate,
+  addCertificate,
+  editCertificate,
   editStatistics,
   deleteEmployee,
   activateEmployee,
@@ -18,45 +25,66 @@ import {
 } from "../../../actions/employeesActions";
 import Spinner from "../../common/spinner/spinner";
 import OperationStatusPrompt from "../../form/operationStatusPrompt/operationStatusPrompt";
-import Button from "../../common/button/button";
 import EmployeeSkills from "./employeeSkills/employeeSkills";
+import EmployeeCertificates from "./employeeCertificates/employeeCertificates";
+import { ACTION_CONFIRMED } from "./../../../constants";
 import { translate } from "react-translate";
 
 class EmployeeDetailsContainer extends React.Component {
-  state = {
-    isLoadingFirstTimeEmployee: true,
-    isChangingEmployeeData: false,
-    editSkypeFormItems: [
-      {
-        title: "SkypeId",
-        type: "text",
-        placeholder: this.props.t("InsertSkypeId"),
-        mode: "text",
-        value: "",
-        error: "",
-        inputType: null,
-        minLength: 3,
-        maxLength: 20,
-        canBeNull: false
-      }
-    ]
-  };
-  componentDidMount() {
-    const { getEmployeePromise, match } = this.props;
-    getEmployeePromise(match.params.id);
+  constructor(props) {
+    super(props);
+    this.state = {
+      isLoadingFirstTimeEmployee: true,
+      isChangingEmployeeData: false,
+      editSkypeFormItems: [
+        {
+          title: "SkypeId",
+          type: "text",
+          placeholder: this.props.t("InsertSkypeId"),
+          mode: "text",
+          value: "",
+          error: "",
+          inputType: null,
+          minLength: 3,
+          maxLength: 20,
+          canBeNull: false
+        }
+      ]
+    };
   }
+
+  componentDidMount() {
+    const { getEmployeePromise, loadCertificates, match } = this.props;
+    getEmployeePromise(match.params.id);
+    loadCertificates(match.params.id);
+  }
+
   componentWillReceiveProps(nextProps) {
-    if (nextProps.employeeErrors !== this.props.employeeErrors)
+    if (this.validatePropsForAction(nextProps, "deleteCertificate")) {
+      console.log(
+        "Employee details container : " + this.props.toConfirm.certificate.id
+      );
+      this.props.async.setActionConfirmationProgress(true);
+      this.props.deleteCertificate(
+        this.props.toConfirm.certificate.id,
+        this.props.match.params.id
+      );
+    }
+
+    if (nextProps.employeeErrors !== this.props.employeeErrors) {
       this.setState({
         isLoadingFirstTimeEmployee: false,
         isChangingEmployeeData: false
       });
-    else if (nextProps.employeeOperationStatus === false)
+    } else if (nextProps.employeeOperationStatus === false) {
       this.setState({ isChangingEmployeeData: false });
-    else if (nextProps.match !== this.props.match) {
-      this.setState({ isLoadingFirstTimeEmployee: true });
-      this.props.getEmployeePromise(nextProps.match.params.id);
-    }
+    } /*
+        else if(nextProps.match !== this.props.match)
+        {
+            console.log("nextProps.match : " + nextProps.match)
+            this.setState({isLoadingFirstTimeEmployee: true});
+            this.props.getEmployeePromise(nextProps.match.params.id);    
+        }*/
     if (nextProps.employee.skypeId && !this.state.editSkypeFormItems[0].value) {
       let form = this.state.editSkypeFormItems;
       form[0].value = nextProps.employee.skypeId;
@@ -65,27 +93,20 @@ class EmployeeDetailsContainer extends React.Component {
       });
     }
   }
-  editSeniority = seniority => {
-    const { employee, editStatistics } = this.props;
-    editStatistics(
-      employee.id,
-      seniority,
-      employee.baseCapacity,
-      employee.clouds
+
+  validatePropsForAction(nextProps, action) {
+    return (
+      nextProps.confirmed &&
+      !nextProps.isWorking &&
+      nextProps.type === ACTION_CONFIRMED &&
+      nextProps.toConfirm.key === action
     );
-  };
+  }
 
   editCapacity = capacity => {
     const { employee, editStatistics } = this.props;
     editStatistics(employee.id, employee.seniority, capacity, employee.clouds);
   };
-
-  editSkypeId = () => {
-    const { employee, updateSkype } = this.props;
-    const { value } = this.state.editSkypeFormItems[0];
-    updateSkype(value, employee.id);
-  };
-
   activateEmployee = () => {
     const { employee, activateEmployee } = this.props;
     this.setState({ isChangingEmployeeData: true });
@@ -100,6 +121,31 @@ class EmployeeDetailsContainer extends React.Component {
     this.setState({ isChangingEmployeeData: true });
     const { employee, deleteEmployee } = this.props;
     deleteEmployee(employee.id);
+  };
+
+  editSeniority = seniority => {
+    const { employee, editStatistics } = this.props;
+    editStatistics(
+      employee.id,
+      seniority,
+      employee.baseCapacity,
+      employee.clouds
+    );
+  };
+
+  deleteCertificate = (certificate, message, successMessage) => {
+    this.props.async.setActionConfirmation(true, {
+      key: "deleteCertificate",
+      string: `${message} : ${certificate.name}`,
+      certificate,
+      successMessage: successMessage
+    });
+  };
+
+  editSkypeId = () => {
+    const { employee, updateSkype } = this.props;
+    const { value } = this.state.editSkypeFormItems[0];
+    updateSkype(value, employee.id);
   };
 
   render() {
@@ -186,6 +232,18 @@ class EmployeeDetailsContainer extends React.Component {
                 loadedAssignments={loadedAssignments}
                 tableTitle={t("ActiveProjects")}
               />
+
+              <EmployeeCertificates
+                certificates={certificates}
+                loadCertificatesStatus={this.props.loadCertificatesStatus}
+                loadCertificatesErrors={this.props.loadCertificatesErrors}
+                loadCertificates={this.props.loadCertificates}
+                addCertificate={this.props.addCertificate}
+                editCertificate={this.props.editCertificate}
+                deleteCertificate={this.deleteCertificate}
+                userId={this.props.match.params.id}
+                resultBlockAddCertificate={this.props.resultBlockAddCertificate}
+              />
             </React.Fragment>
           )
         )}
@@ -245,6 +303,11 @@ const mapStateToProps = state => {
     loadAssignmentsStatus: state.employeesReducer.loadAssignmentsStatus,
     loadAssignmentsErrors: state.employeesReducer.loadAssignmentsErrors,
     loadedAssignments: state.employeesReducer.loadedAssignments,
+
+    loadCertificatesStatus: state.employeesReducer.loadCertificatesStatus,
+    loadCertificatesErrors: state.employeesReducer.loadCertificatesErrors,
+    certificates: state.employeesReducer.certificates,
+    resultBlockAddCertificate: state.employeesReducer.resultBlockAddCertificate,
 
     deleteQuaterStatus: state.employeesReducer.deleteQuaterStatus,
     deleteQuaterErrors: state.employeesReducer.deleteQuaterErrors,

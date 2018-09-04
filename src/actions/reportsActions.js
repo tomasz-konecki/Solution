@@ -2,7 +2,9 @@ import {
   GET_TEAMS,
   GET_USER_CV,
   GENERATE_REPORT,
-  invalidTokenError
+  invalidTokenError,
+  GET_RECENT_REPORTS,
+  ASYNC_STARTED
 } from "../constants";
 import WebApi from "../api";
 import { errorCatcher } from "../services/errorsHandler";
@@ -77,6 +79,30 @@ export const getUserCVACreator = userId => {
       });
   };
 };
+export const getRecentReports = (
+  reports, 
+  recentReportsStatus, 
+  recentReportsErrors) => ({
+    type: GET_RECENT_REPORTS,
+    reports,
+    recentReportsStatus,
+    recentReportsErrors
+})
+export const getRecentReportsACreator = numberOfReports => dispatch => {
+  dispatch(asyncStarted());
+  WebApi.reports.get.recentReports(numberOfReports)
+    .then(response => {
+      dispatch(
+        getRecentReports(response.replyBlock.data.dtoObjects, true, [])
+      );
+      dispatch(asyncEnded());
+    })
+    .catch(error => {
+      dispatch(
+        getRecentReports([], false, errorCatcher(error))
+      );
+    })
+}
 
 export const generateReport = (generateReportStatus, generateReportErrors) => {
   return { type: GENERATE_REPORT, generateReportStatus, generateReportErrors };
@@ -104,9 +130,9 @@ export const generateReportACreator = (
       true : false;
 
     const generateOnGDrive = !generateOnOneDrive;
-    
+
     let model = {};
-    if(choosenFolder){
+    if (choosenFolder) {
       if (generateOnGDrive) {
         model = {
           teamsSheets: teamsSheets,
@@ -122,14 +148,14 @@ export const generateReportACreator = (
         };
       }
     }
-    else{
-      if(generateOnGDrive){
+    else {
+      if (generateOnGDrive) {
         model = {
           teamsSheets: teamsSheets,
           folderId: parentId
         }
       }
-      else{
+      else {
         model = {
           teamsSheets: teamsSheets,
           folderId: null,
@@ -138,7 +164,7 @@ export const generateReportACreator = (
           oneDrivePath: currentPath
         };
       }
-      
+
     }
     dispatch(setIsStarted(true, "Generowanie raportu"));
     WebApi.reports.post

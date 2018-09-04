@@ -3,7 +3,6 @@ import Button from "../../common/button/button";
 import { validateInput } from "../../../services/validation";
 import IntermediateBlock from "../../common/IntermediateBlock";
 import { CSSTransitionGroup } from "react-transition-group";
-
 import "../../../scss/components/clients/addClient/addClientModal.scss";
 import BilleniumPleaceholder from "assets/img/small-logo.png";
 import FileInput from "components/common/inputs/fileInput/fileInput";

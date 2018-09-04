@@ -183,7 +183,31 @@ const translations = {
     DeleteEmployeeInfinitive: "Usunąć pracownika",
     EmployeeHasBeenDeleted: "Pracownik został Usunięty."
   },
-  EmployeeDetails: {},
+  EmployeeDetails: {
+    EmployeeDetails: "Szczegóły Pracownika",
+    Active: "Aktywny",
+    NotActive: "Nieaktywny",
+    Deleted: "Usunięty",
+    Details: "Szczegóły",
+    Localization: "Lokalizacja",
+    Phone: "Telefon",
+    Superiors: "Przełożeni",
+    EmailMissing: "Brak email'a",
+    RoleMissing: "Brak roli",
+    NoLevel: "Brak poziomu",
+    CallSkype: "Zadzwoń Skype",
+    InsertSkypeId: "Wpisz SkypeId",
+    SkypeIdUpdated: "Zaktualizowano SkypeId",
+    Activate: "Aktywuj",
+    BeforeYouChangeStatus: "Zanim zmnienisz status!",
+    BeforeYouChangeStatusContent: `Zmiana statusów pracownika polega na przypisaniu mu wymiaru czasu
+              pracy oraz poziomu doświadczenia. Pamiętaj, że możesz także
+              zmienić jego status na <b>Usunięty</b> co spowoduje zablokowanie
+              możliwości edycji. Zmiana statusu na <b>Aktywny</b> pozwoli na
+              ponowną zmiane danych tego pracownika.`,
+    Save: "Zapisz",
+    Delete: "Usuń"
+  },
   ImportCVContainer: {
     Name: "Nazwa",
     Size: "Rozmiar",

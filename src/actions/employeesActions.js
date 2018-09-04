@@ -10,13 +10,14 @@ import {
   DELETE_QUATER,
   REACTIVATE_QUATER,
   CHANGE_EMPLOYEE_SKILLS,
-  ADD_NEW_SKILLS_TO_EMPLOYEE
+  ADD_NEW_SKILLS_TO_EMPLOYEE,
+  UPDATE_EMPLOYEE_SKYPE_ID
 } from "../constants";
-import axios from "axios";
 import WebApi from "../api";
 import { asyncStarted, asyncEnded } from "./asyncActions";
 import { errorCatcher } from "../services/errorsHandler";
 import { populateSkillArrayWithConstData } from "../services/methods";
+
 export const loadEmployeesSuccess = employees => {
   return {
     type: LOAD_EMPLOYEES_SUCCESS,
@@ -28,6 +29,41 @@ export const loadEmployeesFailure = resultBlock => {
   return {
     type: LOAD_EMPLOYEES_FAILURE,
     resultBlock
+  };
+};
+
+export const updateSkypeResult = (resultBlock, loading) => {
+  return {
+    type: UPDATE_EMPLOYEE_SKYPE_ID,
+    resultBlock,
+    loading
+  };
+};
+
+export const updateSkype = (skypeId, employeeId) => {
+  return dispatch => {
+    dispatch(updateSkypeResult(null, true));
+    WebApi.employees.put
+      .updateSkype(skypeId, employeeId)
+      .then(response => {
+        if (!response.errorOccurred()) {
+          dispatch(updateSkypeResult(response, false)),
+            dispatch(clearUpdateSkypeAfterTime(5000));
+        }
+      })
+      .catch(error => {
+        dispatch(updateSkypeResult(error, false)).then(
+          clearUpdateSkypeAfterTime(5000)
+        );
+      });
+  };
+};
+
+const clearUpdateSkypeAfterTime = delay => {
+  return dispatch => {
+    setTimeout(() => {
+      dispatch(updateSkypeResult(null, false));
+    }, delay);
   };
 };
 
@@ -65,9 +101,11 @@ export const changeEmployeeOperationStatus = (
     employeeErrors
   };
 };
+
 export const getEmployee = employee => {
   return { type: GET_EMPLOYEE, employee };
 };
+
 export const getEmployeePromise = employeeId => dispatch => {
   return new Promise(resolve => {
     WebApi.employees.get
@@ -233,7 +271,7 @@ export const activateEmployee = (employeeId, seniority, capacity) => {
       .add(model)
       .then(response => {
         dispatch(getEmployeePromise(employeeId)).then(() => {
-          dispatch(loadAssignmentsACreator(employeeId))
+          dispatch(loadAssignmentsACreator(employeeId));
         });
       })
       .catch(error => {
@@ -283,6 +321,7 @@ export const loadAssignmentsACreator = employeeId => dispatch => {
 export const deleteQuater = (deleteQuaterStatus, deleteQuaterErrors) => {
   return { type: DELETE_QUATER, deleteQuaterStatus, deleteQuaterErrors };
 };
+
 export const deleteQuaterACreator = (quarterId, employeeId) => {
   return dispatch => {
     WebApi.quarterTalks

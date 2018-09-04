@@ -181,6 +181,31 @@ const translations = {
     DeleteEmployeeInfinitive: "Delete Employee",
     EmployeeHasBeenDeleted: "Employee has been Deleted."
   },
+  EmployeeDetails: {
+    EmployeeDetails: "Employee's Details",
+    Active: "Active",
+    NotActive: "Not Active",
+    Deleted: "Deleted",
+    Details: "Details",
+    Localization: "Localization",
+    Phone: "Phone",
+    Superiors: "Superiors",
+    EmailMissing: "Email is missing.",
+    RoleMissing: "Role is missing.",
+    NoLevel: "No level",
+    CallSkype: "Call Skype",
+    InsertSkypeId: "Insert SkypeId",
+    SkypeIdUpdated: "SkypeId has been updated.",
+    Activate: "Activate",
+    BeforeYouChangeStatus: "Before you change Employee's status!",
+    BeforeYouChangeStatusContent: `Changing the status of an employee consists in assigning him the time dimension work and experience level. Remember that you can also change its status to 
+      Removed
+     which will block it editing options. Changing the status to 
+      Active
+     will allow you to re-change the data of this employee.`,
+    Save: "Save",
+    Delete: "Delete"
+  },
   ImportCVContainer: {
     Name: "Name",
     Size: "Size",

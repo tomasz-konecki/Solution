@@ -13,7 +13,8 @@ import {
   loadAssignments,
   deleteQuaterACreator,
   reactivateQuaterACreator,
-  changeEmployeeSkillsACreator
+  changeEmployeeSkillsACreator,
+  updateSkype
 } from "../../../actions/employeesActions";
 import Spinner from "../../common/spinner/spinner";
 import OperationStatusPrompt from "../../form/operationStatusPrompt/operationStatusPrompt";
@@ -29,7 +30,7 @@ class EmployeeDetailsContainer extends React.Component {
       {
         title: "SkypeId",
         type: "text",
-        placeholder: this.props.t("Insert SkypeId"),
+        placeholder: this.props.t("InsertSkypeId"),
         mode: "text",
         value: "",
         error: "",
@@ -43,8 +44,6 @@ class EmployeeDetailsContainer extends React.Component {
   componentDidMount() {
     const { getEmployeePromise, match } = this.props;
     getEmployeePromise(match.params.id);
-
-    // this.props.employee.skypeId ? this.props.employee.skypeId : "",
   }
   componentWillReceiveProps(nextProps) {
     if (nextProps.employeeErrors !== this.props.employeeErrors)
@@ -58,6 +57,13 @@ class EmployeeDetailsContainer extends React.Component {
       this.setState({ isLoadingFirstTimeEmployee: true });
       this.props.getEmployeePromise(nextProps.match.params.id);
     }
+    if (nextProps.employee.skypeId && !this.state.editSkypeFormItems[0].value) {
+      let form = this.state.editSkypeFormItems;
+      form[0].value = nextProps.employee.skypeId;
+      this.setState({
+        editSkypeFormItems: form
+      });
+    }
   }
   editSeniority = seniority => {
     const { employee, editStatistics } = this.props;
@@ -68,14 +74,18 @@ class EmployeeDetailsContainer extends React.Component {
       employee.clouds
     );
   };
+
   editCapacity = capacity => {
     const { employee, editStatistics } = this.props;
     editStatistics(employee.id, employee.seniority, capacity, employee.clouds);
   };
+
   editSkypeId = () => {
-    const { value } = this.state.editSkypeFormItems;
-    console.log(value);
+    const { employee, updateSkype } = this.props;
+    const { value } = this.state.editSkypeFormItems[0];
+    updateSkype(value, employee.id);
   };
+
   activateEmployee = () => {
     const { employee, activateEmployee } = this.props;
     this.setState({ isChangingEmployeeData: true });
@@ -93,7 +103,6 @@ class EmployeeDetailsContainer extends React.Component {
   };
 
   render() {
-    console.log(this.props);
     const {
       isLoadingFirstTimeEmployee,
       isChangingEmployeeData,
@@ -119,7 +128,8 @@ class EmployeeDetailsContainer extends React.Component {
       changeEmployeeSkillsACreator,
       changeSkillsStatus,
       changeSkillsErrors,
-      t
+      t,
+      updateSkypeIdResult
     } = this.props;
 
     return (
@@ -150,6 +160,8 @@ class EmployeeDetailsContainer extends React.Component {
                 editSkypeFormItems={editSkypeFormItems}
                 editSkypeId={this.editSkypeId}
                 t={t}
+                skypeIdAddLoading={updateSkypeIdResult.loading}
+                updateSkypeIdResult={updateSkypeIdResult.resultBlock}
               />
 
               <EmployeeSkills
@@ -242,7 +254,9 @@ const mapStateToProps = state => {
     reactivateQuaterMessage: state.employeesReducer.reactivateQuaterMessage,
 
     changeSkillsStatus: state.employeesReducer.changeSkillsStatus,
-    changeSkillsErrors: state.employeesReducer.changeSkillsErrors
+    changeSkillsErrors: state.employeesReducer.changeSkillsErrors,
+
+    updateSkypeIdResult: state.employeesReducer.updateSkypeIdResult
   };
 };
 
@@ -264,7 +278,9 @@ const mapDispatchToProps = dispatch => {
     reactivateQuaterACreator: (quaterId, employeeId, message) =>
       dispatch(reactivateQuaterACreator(quaterId, employeeId, message)),
     changeEmployeeSkillsACreator: (employeeId, currentArray) =>
-      dispatch(changeEmployeeSkillsACreator(employeeId, currentArray))
+      dispatch(changeEmployeeSkillsACreator(employeeId, currentArray)),
+    updateSkype: (skypeId, employeeId) =>
+      dispatch(updateSkype(skypeId, employeeId))
   };
 };
 

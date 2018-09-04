@@ -26,7 +26,9 @@ const employeeContent = ({
   reactivateQuaterErrors,
   t,
   editSkypeFormItems,
-  editSkypeId
+  editSkypeId,
+  skypeIdAddLoading,
+  updateSkypeIdResult
 }) => {
   const status = employee.isDeleted
     ? t("Deleted")
@@ -84,11 +86,11 @@ const employeeContent = ({
               {t("Localization")}:<span>{employee.localization}</span>
             </p>
           )}
-          {employee.skypeId && (
+          {editSkypeFormItems[0].value && (
             <a
-              title={`${t("CallSkype")} ${employee.skypeId}`}
+              title={`${t("CallSkype")} ${editSkypeFormItems[0].value}`}
               className="skype"
-              href={"skype:" + employee.skypeId + "?add"}
+              href={"skype:" + editSkypeFormItems[0].value + "?add"}
             >
               <Icon icon="skype" iconType="fab" />
             </a>
@@ -142,6 +144,23 @@ const employeeContent = ({
                   onSubmit={editSkypeId}
                   formItems={editSkypeFormItems}
                   btnTitle={t("Save")}
+                  isLoading={skypeIdAddLoading}
+                  submitResult={{
+                    status:
+                      updateSkypeIdResult && updateSkypeIdResult.errorOccurred
+                        ? !updateSkypeIdResult.errorOccurred()
+                          ? true
+                          : false
+                        : null,
+                    content:
+                      updateSkypeIdResult && updateSkypeIdResult.errorOccurred
+                        ? !updateSkypeIdResult.errorOccurred()
+                          ? t("SkypeIdUpdated")
+                          : updateSkypeIdResult &&
+                            updateSkypeIdResult.getMostSignificantText()
+                        : null
+                  }}
+                  enableButtonAfterTransactionEnd={true}
                 />
               </div>
             </React.Fragment>
@@ -174,13 +193,7 @@ const employeeContent = ({
         {status !== t("Active") && (
           <div className="information-for-statuses">
             <p>{t("BeforeYouChangeStatus")}</p>
-            <article>
-              Zmiana statusów pracownika polega na przypisaniu mu wymiaru czasu
-              pracy oraz poziomu doświadczenia. Pamiętaj, że możesz także
-              zmienić jego status na <b>Usunięty</b> co spowoduje zablokowanie
-              możliwości edycji. Zmiana statusu na <b>Aktywny</b> pozwoli na
-              ponowną zmiane danych tego pracownika.
-            </article>
+            <article>{t("BeforeYouChangeStatusContent")}</article>
           </div>
         )}
       </div>

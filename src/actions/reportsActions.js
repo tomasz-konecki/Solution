@@ -3,7 +3,7 @@ import {
   GET_USER_CV,
   GENERATE_REPORT,
   invalidTokenError,
-  GET_RECENT_REPORTS,
+  GET_FAVORITE_AND_RECENT_REPORTS,
   ASYNC_STARTED
 } from "../constants";
 import WebApi from "../api";
@@ -79,27 +79,27 @@ export const getUserCVACreator = userId => {
       });
   };
 };
-export const getRecentReports = (
+export const getRecentAndFavoriteReports = (
   reports, 
-  recentReportsStatus, 
-  recentReportsErrors) => ({
-    type: GET_RECENT_REPORTS,
+  reportsStatus, 
+  reportsErrors) => ({
+    type: GET_FAVORITE_AND_RECENT_REPORTS,
     reports,
-    recentReportsStatus,
-    recentReportsErrors
+    reportsStatus,
+    reportsErrors
 })
-export const getRecentReportsACreator = numberOfReports => dispatch => {
+export const getRecentAndFavoriteReportsACreator = numberOfReports => dispatch => {
   dispatch(asyncStarted());
   WebApi.reports.get.recentReports(numberOfReports)
     .then(response => {
       dispatch(
-        getRecentReports(response.replyBlock.data.dtoObjects, true, [])
+        getRecentAndFavoriteReports(response.replyBlock.data.dtoObject, true, [])
       );
       dispatch(asyncEnded());
     })
     .catch(error => {
       dispatch(
-        getRecentReports([], false, errorCatcher(error))
+        getRecentAndFavoriteReports([], false, errorCatcher(error))
       );
     })
 }

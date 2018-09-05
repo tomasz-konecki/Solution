@@ -204,7 +204,30 @@ const translations = {
       Active
      will allow you to re-change the data of this employee.`,
     Save: "Save",
-    Delete: "Delete"
+    Delete: "Delete",
+    ActiveProjects: "Active Projects",
+    Skills: "Skills",
+    Missing: "Missing",
+    Assignments: "Assignments",
+    ProfilePhoto: "Profile photo"
+  },
+  Quaters: {
+    Add: "Add",
+    Active: "Active",
+    NotActive: "Not Active",
+    QuarterTalk: "Quarter Talk",
+    QuaterTalks: "Quarter Talks",
+    Missing: "Missing",
+    Deleted: "Deleted",
+    Delete: "Delete",
+    DeleteQuarterTalkConfirmation:
+      "You are about to delete Quarter Talk. Are you sure?",
+    OperationSuccessful: "Operation Succes",
+    QuarterTalkAdded: "Quarter Talk has been added",
+    QuarterTalkActivated: "Quarter Talk has been activated"
+  },
+  ActivateCheckbox: {
+    ShowDeleted: "Show Deleted"
   },
   EmployeeCertificates: {
     Name: "Name",

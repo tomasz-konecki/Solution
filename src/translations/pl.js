@@ -206,7 +206,31 @@ const translations = {
               możliwości edycji. Zmiana statusu na <b>Aktywny</b> pozwoli na
               ponowną zmiane danych tego pracownika.`,
     Save: "Zapisz",
-    Delete: "Usuń"
+    Delete: "Usuń",
+    ActiveProjects: "Aktywne Projekty",
+    Skills: "Umiejętności",
+    Missing: "Brak",
+    Assignments: "Przypisania",
+    ProfilePhoto: "Zdjęcie profilowe"
+  },
+  Quaters: {
+    Add: "Dodaj",
+    Active: "Aktywny",
+    NotActive: "Nieaktywny",
+    QuarterTalk: "Rozmowa kwartalna",
+    QuaterTalks: "Rozmowy kwartalne",
+    Missing: "Brak",
+    Deleted: "Usuniętych",
+    Active: "Aktywnych",
+    Delete: "Usuń",
+    DeleteQuarterTalkConfirmation:
+      "Czy jestes pewny, że chcesz usunąć rozmowę?",
+    OperationSuccessful: "Pomyślnie wykonano operację",
+    QuarterTalkAdded: "Pomyślnie dodano rozmowę kwartalną",
+    QuarterTalkActivated: "Aktywowano rozmowę kwartalną"
+  },
+  ActivateCheckbox: {
+    ShowDeleted: "Pokaż usunięte"
   },
   EmployeeCertificates: {
     Name: "Nazwa",

@@ -40,31 +40,37 @@ const employeeContent = ({
   ) : (
     t("EmailMissing")
   );
-  const employeeLink = "/main/employees/";
 
-  const profilePhoto = "http://10.255.20.241/ProfilePhotos/"+employee.id+".jpg";
-  const imgContent =  employee.profilePhoto ? <img src={profilePhoto}/> :  <figure>
-  <i className="fa fa-user" />
-  </figure>;
-   
-    return (
-      <section className="top-content-container">
-        <div className="employee-details-bar">
-          <div className="left-content">
-            <header>
-              <span
-                className={
-                  employee.seniority && !employee.isDeleted ? "has-acc" : "no-acc"
-                }
-              >
-                {status}
-              </span>
-              <div className="icon-container">
-               {imgContent}
-              <p>{employee.roles ? employee.roles[0] :  t("RoleMissing")}</p>
+  const title = `${t("ProfilePhoto")} ${employee.id} `;
+
+  const profilePhoto =
+    "http://10.255.20.241/ProfilePhotos/" + employee.id + ".jpg";
+  const imgContent = employee.profilePhoto ? (
+    <img alt={title} title={title} src={profilePhoto} />
+  ) : (
+    <figure>
+      <i className="fa fa-user" />
+    </figure>
+  );
+
+  return (
+    <section className="top-content-container">
+      <div className="employee-details-bar">
+        <div className="left-content">
+          <header>
+            <span
+              className={
+                employee.seniority && !employee.isDeleted ? "has-acc" : "no-acc"
+              }
+            >
+              {status}
+            </span>
+            <div className="icon-container">
+              {imgContent}
+              <p>{employee.roles ? employee.roles[0] : t("RoleMissing")}</p>
             </div>
             <h2> {employee.firstName + " " + employee.lastName} </h2>
-            </header>
+          </header>
 
           <div className="seniority">
             {employee.seniority ? employee.seniority : t("NoLevel")}
@@ -104,17 +110,13 @@ const employeeContent = ({
             )}
             {employee.managersManager && (
               <React.Fragment>
-                <Link to={employeeLink + employee.managersManager.id}>
-                  {employee.managersManager.fullName}
-                </Link>
+                {employee.managersManager.fullName}
                 <Icon icon="angle-down" />
               </React.Fragment>
             )}
             {employee.manager && (
               <React.Fragment>
-                <Link to={employeeLink + employee.manager.id}>
-                  {employee.manager.fullName}
-                </Link>
+                {employee.manager.fullName}
                 <Icon icon="angle-down" />
               </React.Fragment>
             )}

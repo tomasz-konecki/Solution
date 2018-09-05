@@ -29,6 +29,7 @@ import EmployeeSkills from "./employeeSkills/employeeSkills";
 import EmployeeCertificates from "./employeeCertificates/employeeCertificates";
 import { ACTION_CONFIRMED } from "./../../../constants";
 import { translate } from "react-translate";
+import NotFound404 from "../../notFound404/NotFound404";
 
 class EmployeeDetailsContainer extends React.Component {
   constructor(props) {
@@ -61,9 +62,6 @@ class EmployeeDetailsContainer extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     if (this.validatePropsForAction(nextProps, "deleteCertificate")) {
-      console.log(
-        "Employee details container : " + this.props.toConfirm.certificate.id
-      );
       this.props.async.setActionConfirmationProgress(true);
       this.props.deleteCertificate(
         this.props.toConfirm.certificate.id,
@@ -188,6 +186,8 @@ class EmployeeDetailsContainer extends React.Component {
       <div className="employee-details-container">
         {isLoadingFirstTimeEmployee ? (
           <Spinner />
+        ) : !employeeStatus ? (
+          <NotFound404 type={"MissingEmployee"} />
         ) : (
           employeeStatus && (
             <React.Fragment>
@@ -255,10 +255,11 @@ class EmployeeDetailsContainer extends React.Component {
         )}
 
         {employeeStatus === false && (
-          <OperationStatusPrompt
-            operationPromptContent={employeeErrors[0]}
-            operationPrompt={false}
-          />
+          <NotFound404 type={"MissingEmployee"} />
+          // <OperationStatusPrompt
+          //   operationPromptContent={employeeErrors[0]}
+          //   operationPrompt={false}
+          // />
         )}
 
         {employeeOperationStatus !== null &&

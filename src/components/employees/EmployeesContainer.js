@@ -11,6 +11,7 @@ import EmployeeDetailsContainer from "./details/EmployeeDetailsContainer";
 import { withRouter, Switch, Route } from "react-router-dom";
 import { getUserCVACreator, getUserCv } from "../../actions/reportsActions";
 import OperationLoader from "../common/operationLoader/operationLoader";
+import NotFound404 from "../notFound404/NotFound404";
 
 class EmployeesContainer extends React.Component {
   constructor(props) {
@@ -146,6 +147,7 @@ class EmployeesContainer extends React.Component {
       <Switch>
         <Route exact path={match.url + ""} render={this.pullEmployeesList} />
         <Route path={match.url + "/:id"} component={EmployeeDetailsContainer} />
+        <Route component={NotFound404} />
       </Switch>
     );
   }

@@ -53,6 +53,26 @@ const employeeContent = ({
     </figure>
   );
 
+const callSkype = editSkypeFormItems[0].value ? (
+    <a
+      title={`${t("CallSkype")} ${editSkypeFormItems[0].value}`}
+      className="skype"
+      href={"skype:" + editSkypeFormItems[0].value + "?add"}
+    >
+      <Icon icon="skype" iconType="fab" />
+      <span className="skypeId">{editSkypeFormItems[0].value}</span>
+    </a>
+  )   : (
+  <a
+  title={`${t("CallBusinessSkype")} ${employee.email}`}
+  className="skype"
+  href={"sip:<" + employee.email + ">"}
+>
+  <Icon icon="skype" iconType="fab" />
+  <span className="skypeId">Skype for Business</span>
+</a>
+)
+
   return (
     <section className="top-content-container">
       <div className="employee-details-bar">
@@ -69,7 +89,10 @@ const employeeContent = ({
               {imgContent}
               <p>{employee.roles ? employee.roles[0] : t("RoleMissing")}</p>
             </div>
-            <h2> {employee.firstName + " " + employee.lastName} </h2>
+            <div>
+            <h2> {employee.firstName + " " + employee.lastName + " "}</h2>
+            {callSkype}
+            </div>
           </header>
 
           <div className="seniority">
@@ -94,15 +117,6 @@ const employeeContent = ({
             <p>
               {t("Localization")}:<span>{employee.localization}</span>
             </p>
-          )}
-          {editSkypeFormItems[0].value && (
-            <a
-              title={`${t("CallSkype")} ${editSkypeFormItems[0].value}`}
-              className="skype"
-              href={"skype:" + editSkypeFormItems[0].value + "?add"}
-            >
-              <Icon icon="skype" iconType="fab" />
-            </a>
           )}
           <div className="managerHierarchy">
             {(employee.manager || employee.managersManager) && (

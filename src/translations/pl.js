@@ -196,6 +196,7 @@ const translations = {
     RoleMissing: "Brak roli",
     NoLevel: "Brak poziomu",
     CallSkype: "Zadzwoń Skype",
+    CallBusinessSkype: "Zadzwoń Skype for Business",
     InsertSkypeId: "Wpisz SkypeId",
     SkypeIdUpdated: "Zaktualizowano SkypeId",
     Activate: "Aktywuj",

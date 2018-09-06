@@ -461,6 +461,11 @@ const WebApi = {
           `${API_ENDPOINT}/reports/cv/${employeeId}?forceIncompletePDF=true`
         );
       }
+    },
+    delete: {
+      report: reportId => WebAround.delete(
+        `${API_ENDPOINT}/reports/unfavorite/${reportId}`
+      )
     }
   },
   CvImport: {

@@ -9,16 +9,14 @@ class reportPresets extends Component {
     onExpandClick = () => {
         this.setState({ expanded: !this.state.expanded });
     }
-    onChooseClick = (reportId) => {
-
-    }
     render() {
         const {
             chooseRecentReport,
             getRecentReports,
             reports,
             reportsStatus,
-            reportsErrors
+            reportsErrors,
+            onDelete
         } = this.props;
         const collapsedIcon = <Icon icon="caret-right" />
         const expandedIcon = <Icon icon="caret-down" />
@@ -47,7 +45,10 @@ class reportPresets extends Component {
                                                         <td className="innerCell">{teamSheet.team}</td>
                                                         <td className="innerCell centerCell">{teamSheet.sheet}</td>
                                                         {i == 0 && <td rowSpan={report.teamSheets.length} className="generateCell">
-                                                            <h2 onClick={() => chooseRecentReport(report.teamSheets)}>Wybierz te teamy</h2>
+                                                            <div>
+                                                                <div onClick={() => chooseRecentReport(report.teamSheets)}>Wybierz te teamy</div>
+                                                                {onDelete && <div onClick={() => onDelete(report.id)}>Usuń</div>}
+                                                            </div>
                                                         </td>}
                                                     </tr>)
                                             }

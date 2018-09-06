@@ -4,7 +4,8 @@ import {
   GENERATE_REPORT,
   invalidTokenError,
   GET_FAVORITE_AND_RECENT_REPORTS,
-  ASYNC_STARTED
+  ASYNC_STARTED,
+  UNFAVORITE_REPORT
 } from "../constants";
 import WebApi from "../api";
 import { errorCatcher } from "../services/errorsHandler";
@@ -80,28 +81,66 @@ export const getUserCVACreator = userId => {
   };
 };
 export const getRecentAndFavoriteReports = (
-  reports, 
-  reportsStatus, 
+  reports,
+  reportsStatus,
   reportsErrors) => ({
     type: GET_FAVORITE_AND_RECENT_REPORTS,
     reports,
     reportsStatus,
     reportsErrors
-})
+  })
 export const getRecentAndFavoriteReportsACreator = numberOfReports => dispatch => {
   dispatch(asyncStarted());
+  console.log("Calling get");
   WebApi.reports.get.recentReports(numberOfReports)
     .then(response => {
       dispatch(
         getRecentAndFavoriteReports(response.replyBlock.data.dtoObject, true, [])
       );
+      console.log("Get finished");
       dispatch(asyncEnded());
     })
     .catch(error => {
       dispatch(
         getRecentAndFavoriteReports([], false, errorCatcher(error))
       );
+      dispatch(asyncEnded());
     })
+}
+
+export const unfavoriteReport = (
+  unfavoriteStatus,
+  unfavoriteErrors
+) => ({
+  type: UNFAVORITE_REPORT,
+  unfavoriteStatus,
+  unfavoriteErrors
+})
+export const unfavoriteReportAPromise = (reportId) => (dispatch) => {
+  return new Promise((resolve, reject) => {
+    console.log("Calling delete");
+    WebApi.reports.delete.report(reportId).then(response => {
+      dispatch(
+        unfavoriteReport(true, [])
+      );
+      dispatch(asyncEnded());
+      console.log("Delete finished");
+      resolve(response);
+    }).catch(error => {
+      dispatch(
+        unfavoriteReport(false, errorCatcher(error))
+      );
+      reject(error);
+    })
+  })
+}
+export const unfavoriteReportACreator = reportId => {
+  return dispatch => {
+    dispatch(asyncStarted());
+    unfavoriteReportAPromise(reportId)(dispatch).then(response => {
+      getRecentAndFavoriteReportsACreator(5)(dispatch);
+    });
+  }
 }
 
 export const generateReport = (generateReportStatus, generateReportErrors) => {
@@ -185,6 +224,7 @@ export const generateReportACreator = (
       .catch(error => {
         dispatch(setIsStarted(false));
         dispatch(generateReport(false, errorCatcher(error)));
+        getRecentAndFavoriteReportsACreator(5);
       });
   };
 };

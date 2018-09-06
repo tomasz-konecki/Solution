@@ -1,4 +1,4 @@
-import { GET_TEAMS, GET_USER_CV, GENERATE_REPORT, GET_FAVORITE_AND_RECENT_REPORTS  } from "../constants";
+import { GET_TEAMS, GET_USER_CV, GENERATE_REPORT, GET_FAVORITE_AND_RECENT_REPORTS, UNFAVORITE_REPORT  } from "../constants";
 import { updateObject } from '../services/methods';
 
 const initialState = {
@@ -15,7 +15,10 @@ const initialState = {
   getUserCVErrors: [],
 
   generateReportStatus: null,
-  generateReportErrors: []
+  generateReportErrors: [],
+
+  unfavoriteStatus: null,
+  unfavoriteErrors: []
 };
 
 export const reportsReducer = (state = initialState, action) => {
@@ -35,6 +38,9 @@ export const reportsReducer = (state = initialState, action) => {
             reportsStatus: action.reportsStatus,
             reportsErrors: action.reportsErrors
           })
+    case UNFAVORITE_REPORT:
+          return updateObject(state, { unfavoriteStatus: action.unfavoriteStatus, 
+            unfavoriteErrors: action.unfavoriteErrors})
     default:
       return state;
   }

@@ -5,7 +5,8 @@ import {
   getTeamsACreator,
   generateReportACreator,
   generateReport,
-  getRecentAndFavoriteReportsACreator
+  getRecentAndFavoriteReportsACreator,
+  unfavoriteReportACreator
 } from "../../actions/reportsActions";
 import {
   fetchLists,
@@ -248,19 +249,18 @@ class ReportsContainer extends Component {
     let helpList = [...this.props.helpList];
     let baseList = [...this.props.baseList];
     const pagesList = teamSheets.map(teamsheet => ({ value: teamsheet.sheet, error: "" }));
-    const addList = teamSheets.map(teamsheet => ({name: teamsheet.team, numberOfMemberInDB: teamsheet.sheet}));
+    const addList = teamSheets.map(teamsheet => ({ name: teamsheet.team, numberOfMemberInDB: teamsheet.sheet }));
     const addedLength = addList.length;
     helpList.push(...this.props.addList);
     baseList.push(...this.props.addList);
-    for (let i = 0; i < addedLength; i++)
-    {
+    for (let i = 0; i < addedLength; i++) {
       const baseIndex = baseList.findIndex(x => x.name === addList[i].name);
       console.log(baseIndex);
       baseList.splice(baseIndex, 1);
       const helpIndex = helpList.findIndex(x => x.name === addList[i].name);
       console.log(helpIndex);
       helpList.splice(helpIndex, 1);
-    } 
+    }
 
     this.props.fetchLists(addList, baseList, helpList, pagesList);
 
@@ -302,7 +302,11 @@ class ReportsContainer extends Component {
     */
   }
   toggleAddToFavorites = e => {
-    this.setState({saveAsFavorite: e.target.checked});
+    this.setState({ saveAsFavorite: e.target.checked });
+  }
+  unfavorite = reportId => {
+    this.props.unfavoriteReport(reportId);
+    this.props.getRecentAndFavoriteReports(5);
   }
 
   render() {
@@ -414,10 +418,12 @@ class ReportsContainer extends Component {
           render={() => {
             return (
               <React.Fragment>
-                <ReportPresets chooseRecentReport={this.chooseRecentReport} reports={reports.favoriteReports} reportsStatus={reportsStatus} reportsErrors={reportsErrors}>
+                <ReportPresets chooseRecentReport={this.chooseRecentReport} reports={reports.favoriteReports}
+                  reportsStatus={reportsStatus} reportsErrors={reportsErrors} onDelete={this.unfavorite}>
                   <h1>Ulubione raporty</h1>
                 </ReportPresets>
-                <ReportPresets chooseRecentReport={this.chooseRecentReport} reports={reports.recentReports} reportsStatus={reportsStatus} reportsErrors={reportsErrors}>
+                <ReportPresets chooseRecentReport={this.chooseRecentReport} reports={reports.recentReports}
+                  reportsStatus={reportsStatus} reportsErrors={reportsErrors}>
                   <h1>Ostatnie raporty</h1>
                 </ReportPresets>
                 <ReportsContent
@@ -485,7 +491,10 @@ const mapStateToProps = state => {
 
     isStarted: state.progressBarReducer.isStarted,
 
-    driveSortType: state.persistHelpReducer.driveSortType
+    driveSortType: state.persistHelpReducer.driveSortType,
+
+    unfavoriteStatus: state.reportsReducer.unfavoriteStatus,
+    unfavoriteErrors: state.reportsReducer.unfavoriteErrors
   };
 };
 
@@ -508,7 +517,9 @@ const mapDispatchToProps = dispatch => {
       dispatch(generateReport(status, errors)),
     createSignalRConnection: () => dispatch(createSignalRConnection()),
     changeSortBy: (listToSort, sortType, path) =>
-      dispatch(changeSortByACreator(listToSort, sortType, path))
+      dispatch(changeSortByACreator(listToSort, sortType, path)),
+    unfavoriteReport: reportId => 
+      dispatch(unfavoriteReportACreator(reportId))
   };
 };
 

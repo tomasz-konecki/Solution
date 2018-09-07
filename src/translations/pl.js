@@ -183,6 +183,78 @@ const translations = {
     DeleteEmployeeInfinitive: "Usunąć pracownika",
     EmployeeHasBeenDeleted: "Pracownik został Usunięty."
   },
+  EmployeeDetails: {
+    EmployeeDetails: "Szczegóły Pracownika",
+    Active: "Aktywny",
+    NotActive: "Nieaktywny",
+    Deleted: "Usunięty",
+    Details: "Szczegóły",
+    Localization: "Lokalizacja",
+    Phone: "Telefon",
+    Superiors: "Przełożeni",
+    EmailMissing: "Brak email'a",
+    RoleMissing: "Brak roli",
+    NoLevel: "Brak poziomu",
+    CallSkype: "Zadzwoń Skype",
+    CallBusinessSkype: "Zadzwoń Skype for Business",
+    InsertSkypeId: "Wpisz SkypeId",
+    SkypeIdUpdated: "Zaktualizowano SkypeId",
+    Activate: "Aktywuj",
+    BeforeYouChangeStatus: "Zanim zmnienisz status!",
+    BeforeYouChangeStatusContent: `Zmiana statusów pracownika polega na przypisaniu mu wymiaru czasu
+              pracy oraz poziomu doświadczenia. Pamiętaj, że możesz także
+              zmienić jego status na <b>Usunięty</b> co spowoduje zablokowanie
+              możliwości edycji. Zmiana statusu na <b>Aktywny</b> pozwoli na
+              ponowną zmiane danych tego pracownika.`,
+    Save: "Zapisz",
+    Delete: "Usuń",
+    ActiveProjects: "Aktywne Projekty",
+    Skills: "Umiejętności",
+    Missing: "Brak",
+    Assignments: "Przypisania",
+    ProfilePhoto: "Zdjęcie profilowe"
+  },
+  Quaters: {
+    Add: "Dodaj",
+    Active: "Aktywny",
+    NotActive: "Nieaktywny",
+    QuarterTalk: "Rozmowa kwartalna",
+    QuaterTalks: "Rozmowy kwartalne",
+    Missing: "Brak",
+    Deleted: "Usuniętych",
+    Active: "Aktywnych",
+    Delete: "Usuń",
+    DeleteQuarterTalkConfirmation:
+      "Czy jestes pewny, że chcesz usunąć rozmowę?",
+    OperationSuccessful: "Pomyślnie wykonano operację",
+    QuarterTalkAdded: "Pomyślnie dodano rozmowę kwartalną",
+    QuarterTalkActivated: "Aktywowano rozmowę kwartalną"
+  },
+  ActivateCheckbox: {
+    ShowDeleted: "Pokaż usunięte"
+  },
+  EmployeeCertificates: {
+    Name: "Nazwa",
+    Description: "Opis",
+    Date: "Data",
+    Options: "Opcje",
+    Edit: "Edytuj",
+    Delete: "Usuń",
+    Title: "Certyfikaty",
+    Deleting: "Usunąć certyfikat",
+    SuccesfullDelete: "Pomyślnie usunięto certyfikat"
+  },
+  EmployeeAddCertificate: {
+    Add: "Dodaj",
+    Name: "Nazwa certifikatu",
+    Description: "Opis",
+    Date: "Data",
+    CertificateAddedSuccessfully: "Certyfikat dodany poprawnie",
+    CertificateEditedSuccessfully: "Certyfikat edytowamy poprawnie",
+    AddingCertificate: "Dodawanie certyfikatu",
+    EditingCertificate: "Edytowanie certyfikatu",
+    Edit: "Zapisz"
+  },
   ImportCVContainer: {
     Name: "Nazwa",
     Size: "Rozmiar",

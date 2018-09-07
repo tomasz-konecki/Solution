@@ -67,6 +67,7 @@ export const CHANGE_GET_SUGGEST_EMPLOYEES_STATUS = "CHANGE_GET_SUGGEST_EMPLOYEES
 export const GET_TEAMS = "GET_TEAMS";
 export const GET_USER_CV = "GET_USER_CV";
 export const GENERATE_REPORT = "GENERATE_REPORT";
+export const GET_RECENT_REPORTS = "GET_RECENT_REPORTS";
 
 // PERSIST HELPER
 export const FETCH_LISTS = "FETCH_LISTS";
@@ -85,8 +86,10 @@ export const DELETE_FOLDER = "DELETE_FOLDER";
 export const UPDATE_FOLDER = "UPDATE_FOLDER";
 export const UPLOAD_FILE = "UPLOAD_FILE";
 export const notRecognizedError = "Ups, coś poszło nie tak";
-export const oldTokenComunicate = "Wystąpił problem podczas pobierania zawartości katalogu OneDrive. Prawdopodobnie jest to związane z wygaśnięciem okresu dostępu. Odśwież stronę by zalogować się jeszcze raz bądź kliknij w poniższy przycisk"; 
-export const invalidTokenError = "Nieprawidłowy token autoryzacyjny do usługi OneDrive.";
+export const oldTokenComunicate =
+  "Wystąpił problem podczas pobierania zawartości katalogu OneDrive. Prawdopodobnie jest to związane z wygaśnięciem okresu dostępu. Odśwież stronę by zalogować się jeszcze raz bądź kliknij w poniższy przycisk";
+export const invalidTokenError =
+  "Nieprawidłowy token autoryzacyjny do usługi OneDrive.";
 
 // SKILLS
 
@@ -102,19 +105,27 @@ export const G_DRIVE_CREATE = "G_DRIVE_CREATE";
 export const SET_PARENT_DETAILS = "SET_PARENT_DETAILS";
 export const GENERATE_G_DRIVE_SHARE_LINK = "GENERATE_G_DRIVE_SHARE_LINK";
 
-
 //EMPLOYEES
 
 export const EDIT_EMPLOYEES_DETAILS = "EDIT_EMPLOYEES_DETAILS";
 
 export const GET_EMPLOYEE = "GET_EMPLOYEE";
-export const CHANGE_EMPLOYEE_OPERATION_STATUS = "CHANGE_EMPLOYEE_OPERATION_STATUS";
+export const CHANGE_EMPLOYEE_OPERATION_STATUS =
+  "CHANGE_EMPLOYEE_OPERATION_STATUS";
 export const CHANGE_EMPLOYEE_STATE = "CHANGE_EMPLOYEE_STATE";
 export const LOAD_ASSIGNMENTS = "LOAD_ASSIGNMENTS";
 export const DELETE_QUATER = "DELETE_QUATER";
 export const REACTIVATE_QUATER = "REACTIVATE_QUATER";
 export const CHANGE_EMPLOYEE_SKILLS = "CHANGE_EMPLOYEE_SKILLS";
 export const ADD_NEW_SKILLS_TO_EMPLOYEE = "ADD_NEW_SKILLS_TO_EMPLOYEE";
+export const UPDATE_EMPLOYEE_SKYPE_ID = "UPDATE_EMPLOYEE_SKYPE_ID";
+
+//export const GET_CERTIFICATES_SUCCESS = "GET_CERTIFICATES_SUCCESS";
+//export const GET_CERTIFICATES_FAILURE = "GET_CERTIFICATES_FAILURE";
+
+export const GET_CERTYFICATES = "GET_CERTYFICATES";
+export const CHANGE_CERTIFICATES_GET_STATUS = "CHANGE_CERTIFICATES_GET_STATUS";
+export const ADD_CERTIFICATE_RESULT = "ADD_CERTIFICATE_RESULT";
 
 // PROGRESSBAR
 export const SET_IS_STARTED = "SET_IS_STARTED";
@@ -125,5 +136,6 @@ export const CHANGE_SHOULD_SHOW_GLOBAL = "CHANGE_SHOULD_SHOW_GLOBAL";
 export const ADD_QUARTER_TALK = "ADD_QUARTER_TALK";
 export const GET_QUESTIONS = "GET_QUESTIONS";
 export const SET_SIGNAL_R_CONNECTION_RESULT = "SET_SIGNAL_R_CONNECTION_RESULT";
-export const connectionError = "Wystąpił błąd podczas konfiguracji wskaźnika postępu";
+export const connectionError =
+  "Wystąpił błąd podczas konfiguracji wskaźnika postępu";
 export const GENERATE_HUB_CONNECTION = "GENERATE_HUB_CONNECTION";

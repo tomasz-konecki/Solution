@@ -181,6 +181,76 @@ const translations = {
     DeleteEmployeeInfinitive: "Delete Employee",
     EmployeeHasBeenDeleted: "Employee has been Deleted."
   },
+  EmployeeDetails: {
+    EmployeeDetails: "Employee's Details",
+    Active: "Active",
+    NotActive: "Not Active",
+    Deleted: "Deleted",
+    Details: "Details",
+    Localization: "Localization",
+    Phone: "Phone",
+    Superiors: "Superiors",
+    EmailMissing: "Email is missing.",
+    RoleMissing: "Role is missing.",
+    NoLevel: "No level",
+    CallSkype: "Call Skype",
+    InsertSkypeId: "Insert SkypeId",
+    SkypeIdUpdated: "SkypeId has been updated.",
+    Activate: "Activate",
+    BeforeYouChangeStatus: "Before you change Employee's status!",
+    BeforeYouChangeStatusContent: `Changing the status of an employee consists in assigning him the time dimension work and experience level. Remember that you can also change its status to 
+      Removed
+     which will block it editing options. Changing the status to 
+      Active
+     will allow you to re-change the data of this employee.`,
+    Save: "Save",
+    Delete: "Delete",
+    ActiveProjects: "Active Projects",
+    Skills: "Skills",
+    Missing: "Missing",
+    Assignments: "Assignments",
+    ProfilePhoto: "Profile photo"
+  },
+  Quaters: {
+    Add: "Add",
+    Active: "Active",
+    NotActive: "Not Active",
+    QuarterTalk: "Quarter Talk",
+    QuaterTalks: "Quarter Talks",
+    Missing: "Missing",
+    Deleted: "Deleted",
+    Delete: "Delete",
+    DeleteQuarterTalkConfirmation:
+      "You are about to delete Quarter Talk. Are you sure?",
+    OperationSuccessful: "Operation Succes",
+    QuarterTalkAdded: "Quarter Talk has been added",
+    QuarterTalkActivated: "Quarter Talk has been activated"
+  },
+  ActivateCheckbox: {
+    ShowDeleted: "Show Deleted"
+  },
+  EmployeeCertificates: {
+    Name: "Name",
+    Description: "Description",
+    Date: "Date",
+    Options: "Options",
+    Edit: "Edit",
+    Delete: "Delete",
+    Title: "Certyficates",
+    Deleting: "Delete certificate",
+    SuccesfullDelete: "Succesfully deleted certificate"
+  },
+  EmployeeAddCertificate: {
+    Add: "Add",
+    Name: "Certificate name",
+    Description: "Description",
+    Date: "Date",
+    CertificateAddedSuccessfully: "Certyficate added succesfully",
+    CertificateEditedSuccessfully: "Certificate edited succesfully",
+    AddingCertificate: "Adding certyficate",
+    EditingCertificate: "Editing certyficate",
+    Edit: "Save"
+  },
   ImportCVContainer: {
     Name: "Name",
     Size: "Size",

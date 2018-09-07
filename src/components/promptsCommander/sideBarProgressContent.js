@@ -1,10 +1,12 @@
 import React from "react";
 
 const sideProgressBar = ({ items, shouldShowGlobal, createClassesForLoader, percentage, message,
-    generateReportStatus, isStarted, operationName, generateReportErrors, togleSideBarHandler }) => {
+    generateReportStatus, isStarted, operationName, generateReportErrors, togleSideBarHandler, oneDriveLoginStatus,
+    gDriveLoginStatus }) => {
 
   const menuClass = shouldShowGlobal ? "menu-expanded" : "menu-collapsed";
   const btnClass = shouldShowGlobal ? "btn-expanded" : "btn-collapsed";
+  const didLocationIsOnGDrive = window.location.href.search("gdrive") !== -1 ? true : false;
 
   const btnBorderClass = isStarted
     ? createClassesForLoader(percentage)
@@ -22,6 +24,11 @@ const sideProgressBar = ({ items, shouldShowGlobal, createClassesForLoader, perc
       <div className={`comunicates-window ${menuClass}`}>
         <header>
           <span>Powiadomienia</span>
+          <span>
+            <i className="cor-status">emp</i>
+            <i className={`fab fa-windows ${oneDriveLoginStatus ? "cor-status" : "err-status"}`}></i>
+            <i className={`fab fa-google-drive ${(gDriveLoginStatus && didLocationIsOnGDrive) ? "cor-status" : "err-status"}`}></i>
+          </span>
         </header>
         <ul className="notifictions">
           {items.map(i => {

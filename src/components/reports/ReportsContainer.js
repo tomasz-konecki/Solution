@@ -4,7 +4,8 @@ import "./ReportsContainer.scss";
 import {
   getTeamsACreator,
   generateReportACreator,
-  generateReport
+  generateReport,
+  getRecentReportsACreator
 } from "../../actions/reportsActions";
 import {
   fetchLists,
@@ -16,6 +17,7 @@ import Spinner from "../common/spinner/spinner";
 import { validateReportPages } from "services/validation";
 import Navigation from "./navigation/navigation";
 import GenerateReportModal from "./modals/genReport";
+import RecentReports from "./recentReports/recentReports";
 import ReportsContent from "./reportsContent/reportsContent";
 import OneDriveContent from "./OneDriveConent/OneDriveContent";
 import { withRouter } from "react-router";
@@ -28,7 +30,7 @@ const startPathname = "/main/reports";
 
 class ReportsContainer extends Component {
   state = {
-    spinner: this.props.loadTeamsResult ? false : true,
+    spinner: this.props.loadTeamsResult && this.props.recentReportsStatus ? false : true,
     reportModal: false,
     didPagesHasIncorrectValues: { status: null, error: "" },
     valueToSearch: "",
@@ -42,12 +44,14 @@ class ReportsContainer extends Component {
     const {
       loadTeamsResult,
       getTeams,
+      getRecentReports,
       fetchLists,
       addList,
       teams,
       baseList,
       helpList
     } = this.props;
+    getRecentReports(5);
     if (addList.length === 0) {
       getTeams();
     } else {
@@ -55,7 +59,8 @@ class ReportsContainer extends Component {
     }
   }
   componentWillReceiveProps(nextProps) {
-    if (this.props.teams !== nextProps.teams) {
+    if (this.props.teams !== nextProps.teams
+      || this.props.recentReports !== nextProps.recentReports) {
       this.setState({ spinner: false });
       if (nextProps.loadTeamsResult && this.props.teams.length === 0) {
         const sortFunction = generateSortFunction("numberOfMemberInDB");
@@ -86,6 +91,8 @@ class ReportsContainer extends Component {
     const addList = [...this.props.addList];
     const helpList = [...this.props.helpList];
     const baseList = [...this.props.baseList];
+    var pagesList = this.props.pagesList ?
+      [...this.props.pagesList] : [];
     const index = this.props.baseList.findIndex(i => {
       return i.name === name;
     });
@@ -98,7 +105,8 @@ class ReportsContainer extends Component {
     helpList.splice(helpListIndex, 1);
     addList.push(this.props.baseList[index]);
     baseList.splice(helpBaseListIndex, 1);
-    this.props.fetchLists(addList, baseList, helpList);
+    pagesList.push({ value: 1, error: "" }); //przetestować
+    this.props.fetchLists(addList, baseList, helpList, pagesList);
   };
   deleteTeamFromResultList = index => {
     const addList = [...this.props.addList];
@@ -106,7 +114,7 @@ class ReportsContainer extends Component {
     const pagesList = [...this.props.pagesList];
     const baseList = this.findFromList(
       this.state.valueToSearch,
-      helpList.concat(addList)
+      helpList.concat(addList[index])
     );
     helpList.push(addList[index]);
     addList.splice(index, 1);
@@ -137,11 +145,15 @@ class ReportsContainer extends Component {
   };
 
   openReportsModals = () => {
-    const pagesList = [];
+    //const pagesList = [];
     const { addList, baseList, helpList, fetchLists } = this.props;
+    var pagesList;
+    if (this.props.pagesList && this.props.pagesList.length > 0)
+      pagesList = [...this.props.pagesList];
+    else pagesList = addList.map(() => ({ value: 1, error: "" }))
 
-    for (let i = 0; i < this.props.addList.length; i++)
-      pagesList[i] = { value: 1, error: "" };
+    // for (let i = 0; i < this.props.addList.length; i++)
+    //   pagesList[i] = { value: 1, error: "" };
     const didPagesHasIncorrectValues = {
       ...this.state.didPagesHasIncorrectValues
     };
@@ -152,8 +164,11 @@ class ReportsContainer extends Component {
       reportModal: true,
       didPagesHasIncorrectValues: didPagesHasIncorrectValues
     });
+    console.log("pagesList", pagesList);
     fetchLists(addList, baseList, helpList, pagesList);
   };
+
+
   onChangeReportPages = e => {
     const index = Number(e.target.id);
     const pagesList = [...this.props.pagesList];
@@ -227,8 +242,64 @@ class ReportsContainer extends Component {
     getFoldersClear([], null, [], "");
     history.push(startPathname + endPath);
   };
+  chooseRecentReport = teamSheets => {
+    let helpList = [...this.props.helpList];
+    let baseList = [...this.props.baseList];
+    const pagesList = teamSheets.map(teamsheet => ({ value: teamsheet.sheet, error: "" }));
+    const addList = teamSheets.map(teamsheet => ({name: teamsheet.team, numberOfMemberInDB: teamsheet.sheet}));
+    const addedLength = addList.length;
+    helpList.push(...this.props.addList);
+    baseList.push(...this.props.addList);
+    for (let i = 0; i < addedLength; i++)
+    {
+      const baseIndex = baseList.findIndex(x => x.name === addList[i].name);
+      console.log(baseIndex);
+      baseList.splice(baseIndex, 1);
+      const helpIndex = helpList.findIndex(x => x.name === addList[i].name);
+      console.log(helpIndex);
+      helpList.splice(helpIndex, 1);
+    } 
 
-  
+    this.props.fetchLists(addList, baseList, helpList, pagesList);
+
+
+    /*
+    var helpList = [...this.props.helpList];
+    var baseList = [...this.props.baseList];
+    var pagesList = this.props.pagesList ?
+      [...this.props.pagesList] : [];
+    var addList = [...this.props.addList];
+    const length = addList.length;
+    console.log("length",length);
+    helpList.concat(addList); //albo helplist?
+    addList = [];
+    baseList = this.findFromList(
+      this.state.valueToSearch,
+      helpList
+    );
+    const sortFunction = generateSortFunction("numberOfMemberInDB");
+    const sortedHelpList = helpList.sort(sortFunction);
+    const sortedBaseList = baseList.sort(sortFunction);
+    for (let teamSheet of teamSheets) {
+      const index = this.props.baseList.findIndex(i => {
+        return i.name === teamSheet.team;
+      });
+      const helpListIndex = this.props.helpList.findIndex(i => {
+        return i.name === teamSheet.team;
+      });
+      const helpBaseListIndex = this.props.baseList.findIndex(i => {
+        return i.name === teamSheet.team;
+      });
+      helpList.splice(helpListIndex, 1);
+      addList.push(this.props.baseList[index]);
+      baseList.splice(helpBaseListIndex, 1);
+    }
+    var newPagesList = teamSheets.map(teamsheet => ({ value: teamsheet.sheet, error: "" })); //set new pages from db
+    //pagesList = [...pagesList, ...newPagesList];
+    this.props.fetchLists(addList, baseList, helpList, newPagesList);
+    */
+  }
+
   render() {
     const {
       reportModal,
@@ -253,7 +324,10 @@ class ReportsContainer extends Component {
       history,
       isStarted,
       driveSortType,
-      changeSortBy
+      changeSortBy,
+      recentReportsStatus,
+      recentReports,
+      recentReportsErrors
     } = this.props;
     const { push } = history;
     const { pathname } = history.location;
@@ -334,13 +408,19 @@ class ReportsContainer extends Component {
           path={startPathname}
           render={() => {
             return (
-              <ReportsContent
-                spinner={spinner}
-                loadTeamsResult={loadTeamsResult}
-                baseList={baseList}
-                addTeamToResultList={this.addTeamToResultList}
-                loadTeamsErrors={loadTeamsErrors}
-              />
+              <React.Fragment>
+                <RecentReports chooseRecentReport={this.chooseRecentReport} recentReports={recentReports} recentReportsStatus={recentReportsStatus} recentReportsErrors={recentReportsErrors} />
+                <ReportsContent
+                  spinner={spinner}
+                  loadTeamsResult={loadTeamsResult}
+                  baseList={baseList}
+                  addTeamToResultList={this.addTeamToResultList}
+                  loadTeamsErrors={loadTeamsErrors}
+                  recentReportsStatus={recentReportsStatus}
+                  recentReports={recentReports}
+                  recentReportsErrors={recentReportsErrors}
+                />
+              </React.Fragment>
             );
           }}
         />
@@ -377,6 +457,10 @@ const mapStateToProps = state => {
     loadTeamsResult: state.reportsReducer.loadTeamsResult,
     loadTeamsErrors: state.reportsReducer.loadTeamsErrors,
 
+    recentReports: state.reportsReducer.recentReports,
+    recentReportsStatus: state.reportsReducer.recentReportsStatus,
+    recentReportsErrors: state.reportsReducer.recentReportsErrors,
+
     folders: state.oneDriveReducer.folders,
     getFoldersStatus: state.oneDriveReducer.getFoldersStatus,
     getFoldersErrors: state.oneDriveReducer.getFoldersErrors,
@@ -400,6 +484,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     getTeams: () => dispatch(getTeamsACreator()),
+    getRecentReports: numberOfReports =>
+      dispatch(getRecentReportsACreator(numberOfReports)),
     getFoldersClear: (folders, status, errors, path) =>
       dispatch(getFolders(folders, status, errors, path)),
     fetchLists: (addList, baseList, helpList, pagesList) =>

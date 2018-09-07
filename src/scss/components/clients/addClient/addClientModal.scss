@@ -53,6 +53,11 @@
   }
 
   .add-client-container-left {
+    div[contenteditable] {
+      border: 1px solid black;
+      max-height: 200px;
+      overflow: auto;
+    }
     .add-client-input-error {
       color: red !important;
       border: red 1px solid !important;

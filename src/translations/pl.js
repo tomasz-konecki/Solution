@@ -230,6 +230,29 @@ const translations = {
     QuarterTalkAdded: "Pomyślnie dodano rozmowę kwartalną",
     QuarterTalkActivated: "Aktywowano rozmowę kwartalną"
   },
+  EmployeeSkills: {
+    Skills: "Umiejętności",
+    NoSkills: "Brak umiejętności",
+    ManageSkills: "Zarządzaj umiejętnościami",
+    Find: "Znajdź",
+    ShowAdded: "Pokaż dodane",
+    ShowAll: "Pokaż wszystkie",
+    NoDataToShow: "Brak danych do wyświetlenia",
+    NewSkills: "Nowe umiejętności",
+    ApproveChanges: "Zatwierdź zmiany",
+    SkillsAddedSuccessfull: "Pomyślnie dodano umiejętności",
+    Search: "Wyszukaj",
+    SearchInAdded: "szukasz w dodanych...",
+    SearchInAll: "szukasz we wszystkich...",
+  },
+  EmployeeTable: {
+    AddedBy: "Dodany przez",
+    Project: "Projekt",
+    Role: "Rola",
+    StartDate: "Data rozpoczęcia",
+    EndDate: "Data zakoczenia",
+    EmptyAssignments: "Puste przypisania",
+  },
   ActivateCheckbox: {
     ShowDeleted: "Pokaż usunięte"
   },

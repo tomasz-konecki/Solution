@@ -194,6 +194,7 @@ const translations = {
     RoleMissing: "Role is missing.",
     NoLevel: "No level",
     CallSkype: "Call Skype",
+    CallBusinessSkype: "Call Business Skype",
     InsertSkypeId: "Insert SkypeId",
     SkypeIdUpdated: "SkypeId has been updated.",
     Activate: "Activate",
@@ -225,6 +226,29 @@ const translations = {
     OperationSuccessful: "Operation Succes",
     QuarterTalkAdded: "Quarter Talk has been added",
     QuarterTalkActivated: "Quarter Talk has been activated"
+  },
+  EmployeeSkills: {
+    Skills: "Skills",
+    NoSkills: "No skills",
+    ManageSkills: "Manage skills",
+    Find: "Find",
+    ShowAdded: "Show added",
+    ShowAll: "Show All",
+    NoDataToShow: "No data to show",
+    NewSkills: "New skills",
+    ApproveChanges: "Approve changes",
+    SkillsAddedSuccessfull: "Skills added successfull",
+    Search: "Search",
+    SearchInAdded: "search in added...",
+    SearchInAll: "search in all..."
+  },
+  EmployeeTable: {
+    AddedBy: "Added by",
+    Project: "Project",
+    Role: "Role",
+    StartDate: "Start date",
+    EndDate: "End date",
+    EmptyAssignments: "Empty assignments",
   },
   ActivateCheckbox: {
     ShowDeleted: "Show Deleted"

@@ -18,6 +18,7 @@ import Form from "../../form/form";
 import ProgressPicker from "../../common/progressPicker/progressPicker";
 import { validateInput } from "../../../services/validation";
 import { errorCatcher } from "../../../services/errorsHandler";
+import { getRandomColor } from '../../../services/methods';
 import OperationStatusPrompt from "../../form/operationStatusPrompt/operationStatusPrompt";
 import { connect } from "react-redux";
 import {
@@ -31,7 +32,9 @@ import {
   addSkillsToProject,
   editProject,
   changeProjectStateACreator,
-  clearProjectState
+  clearProjectState,
+  getSuggestEmployeesACreator,
+
 } from "../../../actions/projectsActions";
 import {
   getAllSkillsACreator,
@@ -42,6 +45,8 @@ import { changeOperationStatus } from "../../../actions/asyncActions";
 import ConfirmModal from "../../common/confimModal/confirmModal";
 import ServerError from "../../common/serverError/serverError";
 import WebApi from "../../../api/index";
+import employeeTable from "../../employees/details/employeeTable/employeeTable";
+import { translate } from "react-translate";
 const workerNames = [
   "Nazwa",
   "Rola",
@@ -53,6 +58,10 @@ const workerNames = [
 
 class ProjectDetails extends Component {
   state = {
+    items: [],
+    currentOpenedRow: -1,
+    matches: false,
+    isDeleted:false,
     isLoadingProject: true,
     editModal: false,
     deleteProjectModal: false,
@@ -130,7 +139,12 @@ class ProjectDetails extends Component {
       this.props.match.params.id,
       this.state.onlyActiveAssignments
     );
+    const { getSuggest } = this.props;
+    getSuggest(this.props.match.params.id);
   }
+
+
+
   changeOnlyActiveAssignments = () => {
     const { onlyActiveAssignments } = this.state;
     const { id } = this.props.match.params;
@@ -175,12 +189,12 @@ class ProjectDetails extends Component {
     } else if (
       this.props.addEmployeeToProjectErrors !==
       nextProps.addEmployeeToProjectErrors
-    ){
-      this.setState({ addEmployeSpinner: false }, 
-        nextProps.addEmployeeToProjectStatus ? 
-        () => {
-          this.closeAddEmployeeToProjectModal();
-        } : null);
+    ) {
+      this.setState({ addEmployeSpinner: false },
+        nextProps.addEmployeeToProjectStatus ?
+          () => {
+            this.closeAddEmployeeToProjectModal();
+          } : null);
     }
   }
 
@@ -250,18 +264,46 @@ class ProjectDetails extends Component {
     });
     this.props.getProject(this.props.match.params.id, !onlyActiveAssignments);
   };
-   
+
   closeAddEmployeeToProjectModal = () => {
     const addEmployeToProjectFormItems = [...this.state.addEmployeToProjectFormItems];
     addEmployeToProjectFormItems[2].value = [];
     addEmployeToProjectFormItems[3].value = "";
-    for(let key in addEmployeToProjectFormItems)
+    for (let key in addEmployeToProjectFormItems)
       addEmployeToProjectFormItems[key].error = "";
 
-    addEmployeToProjectFormItems[2].typedListVal = "";   
+    addEmployeToProjectFormItems[2].typedListVal = "";
 
-    this.setState({addEmployeToProjectFormItems: addEmployeToProjectFormItems, addEmployeModal: false});
+    this.setState({ addEmployeToProjectFormItems: addEmployeToProjectFormItems, addEmployeModal: false });
   }
+  handleChange = () => {
+    const { matches } = this.state;
+    this.setState({
+      matches: !matches,
+      currentOpenedRow: -1
+    });
+  };
+  createProgressBtns = (number, color, startVal, index, listName) => {
+    const btnsArray = [];
+    const items  = [...this.state[listName]];
+    for(let i = 0; i < number; i++){
+        btnsArray.push(
+        <span style={{backgroundColor: i+1 <= startVal ? `${color}` : null}} 
+        key={i}>
+            {i+1 === startVal ? <i>{startVal/5 * 100}%</i> : null}
+        </span>);
+    }
+    return btnsArray;
+}
+addEmployee = employeeId =>{
+  const addEmployeToProjectFormItems = [...this.state.addEmployeToProjectFormItems];
+
+  addEmployeToProjectFormItems[3].value = employeeId;
+  this.setState({
+    addEmployeModal: !this.state.addEmployeModal,
+    addEmployeToProjectFormItems: addEmployeToProjectFormItems
+  })
+}
   render() {
     const {
       project,
@@ -272,18 +314,22 @@ class ProjectDetails extends Component {
       loadProjectErrors,
       changeProjectState,
       changeProjectStateStatus,
-      changeProjectStateErrors
+      changeProjectStateErrors,
+      getSuggestEmployeesStatus,
+      suggestEmployees
     } = this.props;
 
     const { reactivate, close } = WebApi.projects.put;
     const {
       projectStatus,
       onlyActiveAssignments,
-      isChangingAssignment
+      isChangingAssignment,
+      matches,
+      currentOpenedRow
     } = this.state;
     const { owner } = WebApi.projects.delete;
-   
 
+    console.log("REEEEEEEEEEEENDER", this.props);
 
     return (
       <div
@@ -294,6 +340,7 @@ class ProjectDetails extends Component {
         }
         className="project-details-container"
       >
+
         {this.state.isLoadingProject && <OperationLoader isLoading={true} />}
         {loadProjectStatus && (
           <Aux>
@@ -387,49 +434,24 @@ class ProjectDetails extends Component {
                     return (
                       <button key={i.id} className="owner-btn">
                         {i.fullName}
-                        {project.owners.length > 1 && 
+                        {project.owners.length > 1 &&
                           <i
-                          onClick={() =>
-                            changeProjectState(owner, "deleteOwner", {
-                              projectId: project.id,
-                              ownerId: project.owners[index].id,
-                              onlyActiveAssignments: onlyActiveAssignments
-                            })
-                          }
+                            onClick={() =>
+                              changeProjectState(owner, "deleteOwner", {
+                                projectId: project.id,
+                                ownerId: project.owners[index].id,
+                                onlyActiveAssignments: onlyActiveAssignments
+                              })
+                            }
                           >
-                          Usuń
+                            Usuń
                         </i>
                         }
-                        
+
                       </button>
                     );
                   })}
                 </div>
-              </div>
-
-              <div className="right-project-spec">
-                <div className="a-asign-container">
-                  <label>Pokaż aktywne przypisania</label>
-                  <input
-                    type="checkbox"
-                    checked={onlyActiveAssignments}
-                    onChange={this.togleActiveAssign}
-                  />
-                </div>
-
-                <Table
-                  projectId={project.id}
-                  items={project.team}
-                  title="Zespół projektowy"
-                  thds={workerNames}
-                  emptyMsg="Ten projekt nie ma jeszcze pracowników"
-                  togleAddEmployeeModal={() =>
-                    this.setState({
-                      addEmployeModal: !this.state.addEmployeModal
-                    })
-                  }
-                />
-
                 <Skills
                   onlyActiveAssignments={onlyActiveAssignments}
                   projectId={project.id}
@@ -451,6 +473,160 @@ class ProjectDetails extends Component {
                   addSkillsToProjectErrors={this.props.addSkillsToProjectErrors}
                   addSkillsToProjectClear={this.props.addSkillsToProjectClear}
                 />
+              </div>
+
+              <div className="right-project-spec">
+                <div className="a-asign-container">
+                  <label>Pokaż aktywne przypisania</label>
+                  <input
+                    type="checkbox"
+                    checked={onlyActiveAssignments}
+                    onChange={this.togleActiveAssign}
+                  />
+                </div>
+
+                <Table
+                  key={0}
+                  projectId={project.id}
+                  items={project.team}
+                  title="Zespół projektowy"
+                  thds={workerNames}
+                  emptyMsg="Ten projekt nie ma jeszcze pracowników"
+                  togleAddEmployeeModal={() =>
+                    this.setState({
+                      addEmployeModal: !this.state.addEmployeModal
+                    })
+                  }
+                />
+                
+                    <div className="table-container table">
+                    {suggestEmployees && 
+                      <label
+                      className="switch"
+                      title={!matches ? "showDeleted" : "showActive"}
+                    >
+                      <input
+                        type="checkbox"
+                        onChange={this.handleChange}
+                        checked={!matches}
+                      />
+                      <div className="slider" />
+                    </label>
+                    
+                    }
+                  
+                  {suggestEmployees && matches && getSuggestEmployeesStatus &&
+                    <div><h3>Employee with free capacity</h3>
+                    <table key={2}>
+                      
+                      <thead>
+                        <tr>
+                          <th>Employee</th>
+                          <th>Left Capacity</th>
+                          <th>Capacity</th>                          
+                          <th>Seniority</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {suggestEmployees.allEmployees.map((employee, index) => {
+                          return (
+                            <React.Fragment>
+                              <tr onClick={() => this.setState({ currentOpenedRow: index })} key={employee.fullName}>
+                                <td>{employee.fullName}</td>
+                                <td>{employee.leftCapacity}</td>
+                                <td>{employee.capacity}</td>                               
+                                <td>{employee.seniority}</td>
+                                <td><i className="fa fa-plus" onClick={() => this.addEmployee(employee.id)}></i></td>
+
+
+                              </tr>
+                              {currentOpenedRow === index &&
+                                <tr className="abs-td">
+                                  {employee.employeeSkills.length > 0 ?
+                                    <td colSpan="5">{employee.employeeSkills.map( skill =>{
+                                      return(
+                                        <React.Fragment>
+                                          <div  
+                                            key={skill.skills.skillId} className="progress-bar-container">
+                                                <b>{skill.skills.skillName}</b>
+                                                <ProgressPicker 
+                                                    createResult={this.createProgressBtns(5, getRandomColor(), skill.skillLevel, index, "items")}
+                                                />                                               
+                                            </div>
+                                                                         
+                                        </React.Fragment>
+                                      );
+                                      })}
+                                    </td>
+                                    : <td colSpan="5" className="noSkills">"No skills to show"</td>
+                                  }
+                                </tr>
+                              }
+                            </React.Fragment>
+                          );
+                        })}
+                      </tbody>
+                    </table>
+                    </div>
+                  }
+                  {suggestEmployees && !matches && getSuggestEmployeesStatus &&
+                  <div>
+                    <h3>Employees with free capacity and skills matched to this project</h3>
+                    <table key={1}>
+                      <thead>
+                        <tr>
+                          <th>Employee</th>
+                          <th>Left Capacity</th>
+                          <th>Capacity</th>                        
+                          <th>Seniority</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {suggestEmployees.matchedEmployees.map((employee, index) => {
+                          return (
+                            <React.Fragment>
+                              <tr onClick={() => currentOpenedRow === index ? this.setState({ currentOpenedRow: -1 }) :this.setState({ currentOpenedRow: index })} key={employee.id}>
+                                <td>{employee.fullName}</td>
+                                <td>{employee.leftCapacity}</td>
+                                <td>{employee.capacity}</td>                             
+                                <td>{employee.seniority}</td>
+                                <td><i className="fa fa-plus" onClick={() => this.addEmployee(employee.id)}></i></td>
+
+
+                              </tr>
+                              {currentOpenedRow === index &&
+                                <tr className="abs-td">
+                                  {employee.employeeSkills.length > 0 ?
+                                    <td colSpan="5">                      
+                                        {employee.employeeSkills.map( (skill, index) =>{
+                                          return(
+                                            <React.Fragment>
+                                              <div  
+                                                key={skill.skills.skillId} className="progress-bar-container">
+                                                    {skill.matched ? <h3>{skill.skills.skillName}</h3> : <h4>{skill.skills.skillName}</h4>}
+                                                    <ProgressPicker 
+                                                        createResult={this.createProgressBtns(5, getRandomColor(), skill.skillLevel, index, "items")}
+                                                    />                                               
+                                                </div>
+                                                                            
+                                            </React.Fragment>
+                                          );
+                                          })}
+                                    </td>
+                                    : <td colSpan="5" className="noSkills">"No skills to show"</td>
+                                  }
+                                </tr>
+                              }
+                            </React.Fragment>
+                          );
+                        })}
+                      </tbody>
+                    </table>
+                    </div>
+                  }
+                </div>
+
+
               </div>
             </main>
 
@@ -529,7 +705,7 @@ class ProjectDetails extends Component {
                     addEmployeeToProjectStatus
                       ? "Pomyślnie dodano pracownika do projektu"
                       : addEmployeeToProjectErrors &&
-                        addEmployeeToProjectErrors[0]
+                      addEmployeeToProjectErrors[0]
                   }
                   operationPrompt={addEmployeeToProjectStatus}
                 />
@@ -558,6 +734,8 @@ class ProjectDetails extends Component {
 }
 const mapStateToProps = state => {
   return {
+    getSuggestEmployeesStatus: state.projectsReducer.getSuggestEmployeesStatus,
+    suggestEmployees: state.projectsReducer.suggestEmployees,
     project: state.projectsReducer.project,
     loadProjectStatus: state.projectsReducer.loadProjectStatus,
     loadProjectErrors: state.projectsReducer.loadProjectErrors,
@@ -647,7 +825,10 @@ const mapDispatchToProps = dispatch => {
     changeProjectState: (funcName, currentOperation, model) =>
       dispatch(changeProjectStateACreator(funcName, currentOperation, model)),
 
-    clearProjectState: () => dispatch(clearProjectState())
+    clearProjectState: () => dispatch(clearProjectState()),
+
+    getSuggest: projectId =>
+      dispatch(getSuggestEmployeesACreator(projectId)),
   };
 };
 

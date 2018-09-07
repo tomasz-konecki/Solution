@@ -340,10 +340,17 @@ const WebApi = {
     put: foreignLanguageId => {}
   },
   projects: {
-    get: (projectId, onlyActiveAssignments = true) => {
-      return WebAround.get(
-        `${API_ENDPOINT}/projects/${projectId}?onlyActiveAssignments=${onlyActiveAssignments}`
-      );
+    get: {
+      projects: (projectId, onlyActiveAssignments = true) => {
+        return WebAround.get(
+          `${API_ENDPOINT}/projects/${projectId}?onlyActiveAssignments=${onlyActiveAssignments}`
+        );
+      },
+      suggestEmployees: projectId =>{
+        return WebAround.get(
+          `${API_ENDPOINT}/projects/EmployeeWithFreeCapacity?projectId=${projectId}`
+        )
+      },
     },
     post: {
       list: (settings = {}) => {

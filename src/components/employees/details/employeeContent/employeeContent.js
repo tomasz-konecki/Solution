@@ -49,10 +49,10 @@ const employeeContent = ({
               {status}
             </span>
             <div className="icon-container">
-              <figure>
+            <figure>
                 <i className="fa fa-user" />
-              </figure>
-              <p>{employee.roles ? employee.roles[0] : "Brak roli"}</p>
+            </figure>              
+            <p>{employee.roles ? employee.roles[0] : "Brak roli"}</p>
             </div>
             <h2> {employee.firstName + " " + employee.lastName} </h2>
           </header>

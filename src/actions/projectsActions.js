@@ -11,7 +11,9 @@ import {
   EDIT_PROJECT,
   ADD_SKILLS_TO_PROJECT,
   CHANGE_PROJECT_STATE,
-  CREATE_PROJECT
+  CREATE_PROJECT,
+  GET_SUGGEST_EMPLOYEES,
+  CHANGE_GET_SUGGEST_EMPLOYEES_STATUS,
 } from "../constants";
 import axios from "axios";
 import WebApi from "../api";
@@ -90,8 +92,8 @@ export const getProject = (
 
 export const getProjectACreator = (projectId, onlyActiveAssignments) => {
   return dispatch => {
-    WebApi.projects
-      .get(projectId, onlyActiveAssignments)
+    WebApi.projects.get
+      .projects(projectId, onlyActiveAssignments)
       .then(response => {
         const responsiblePersonKeys = {
           keys: cutNotNeededKeysFromArray(
@@ -267,8 +269,8 @@ const editProjectPromise = (projectToSend, projectId) => dispatch => {
 };
 const getProjectPromise = (projectId, onlyActiveAssignments) => dispatch => {
   return new Promise((resolve, reject) => {
-    WebApi.projects
-      .get(projectId, onlyActiveAssignments)
+    WebApi.projects.get
+      .projects(projectId, onlyActiveAssignments)
       .then(response => {
         resolve(response.replyBlock.data.dtoObject);
       })
@@ -491,6 +493,33 @@ export const createProjectACreator = (
       })
       .catch(error => {
         dispatch(createProject(false, errorCatcher(error)));
+      });
+  };
+};
+
+export const getSuggestEmployeesStatus = (getSuggestEmployeesStatus, getSuggestEmployeesError) =>{
+  return {
+    type: CHANGE_GET_SUGGEST_EMPLOYEES_STATUS,
+    getSuggestEmployeesStatus,
+    getSuggestEmployeesError
+  }
+}
+export const getSuggestEmployees = suggestEmployees =>{
+  console.log("c",suggestEmployees);
+  return {type: GET_SUGGEST_EMPLOYEES, suggestEmployees}
+}
+
+export const getSuggestEmployeesACreator = projectId =>{
+  return dispatch => {
+    WebApi.projects.get.suggestEmployees(projectId)
+      .then(response =>{
+        if(!response.errorOccurred()){
+          dispatch(getSuggestEmployees(response.extractData()));
+          dispatch(getSuggestEmployeesStatus(true,[]));
+        }
+      })
+      .catch(error => {
+        dispatch(getSuggestEmployeesStatus(false,errorCatcher(error)));
       });
   };
 };

@@ -10,7 +10,9 @@ import {
   CHANGE_PROJECT_SKILLS,
   ADD_SKILLS_TO_PROJECT, 
   CHANGE_PROJECT_STATE,
-  CREATE_PROJECT
+  CREATE_PROJECT,
+  GET_SUGGEST_EMPLOYEES,
+  CHANGE_GET_SUGGEST_EMPLOYEES_STATUS,
 } from "../constants";
 import { updateObject } from '../services/methods';
 const initialState = {
@@ -52,7 +54,12 @@ const initialState = {
   currentOperation: "",
 
   createProjectStatus: null,
-  createProjectErrors: []
+  createProjectErrors: [],
+
+  getSuggestEmployeesStatus: null,
+  getSuggestEmployeesError: [],
+
+  suggestEmployees: {},
 };
 
 export const projectsReducer = (state = initialState, action) => {
@@ -106,6 +113,10 @@ export const projectsReducer = (state = initialState, action) => {
     case CREATE_PROJECT:
       return updateObject(state, { createProjectStatus: action.createProjectStatus, 
         createProjectErrors: action.createProjectErrors})
+    case GET_SUGGEST_EMPLOYEES:
+      return updateObject(state, { suggestEmployees: action.suggestEmployees})
+    case CHANGE_GET_SUGGEST_EMPLOYEES_STATUS:
+      return updateObject(state, { getSuggestEmployeesStatus: action.getSuggestEmployeesStatus, getSuggestEmployeesError: action.getSuggestEmployeesError})
     default:
       return state;
   }

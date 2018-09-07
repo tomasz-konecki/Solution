@@ -64,12 +64,12 @@ const callSkype = editSkypeFormItems[0].value ? (
     </a>
   )   : (
   <a
-  title={`${t("CallBusinessSkype")} ${employee.email}`}
+  title={`${t("CallBusinessSkype")}`}
   className="skype"
   href={"sip:<" + employee.email + ">"}
 >
-  <Icon icon="skype" iconType="fab" />
-  <span className="skypeId">Skype for Business</span>
+  <img src="/public/img/skypeforbusiness.jpeg" class="businessSkypeIcon"/>
+  <span className="skypeId"> {employee.email} </span>
 </a>
 )
 

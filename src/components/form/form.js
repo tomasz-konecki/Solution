@@ -253,14 +253,13 @@ class Form extends Component {
                 ) : i.mode === "drop-down-with-data" ? (
                   <DataList
                     key={index}
-                    disabled={i.disable}
                     identity={i.inputType}
                     dataToMap={i.dataToMap}
                     onChange={e => this.onChangeInput(e, index, i.inputType)}
                     value={i.value}
                     placeholder={i.placeholder}
                     error={i.error}
-                    onBlur={this.props.onBlur}
+                    onBlur={i.inputType === "client" ? this.props.onBlur : null}
                   />
                   
                 ) : i.mode === "date-picker" ? (

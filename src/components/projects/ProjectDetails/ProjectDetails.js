@@ -22,6 +22,7 @@ import { getRandomColor } from '../../../services/methods';
 import OperationStatusPrompt from "../../form/operationStatusPrompt/operationStatusPrompt";
 import { connect } from "react-redux";
 import {
+  getContactPersonDataACreator,
   getProjectACreator,
   addEmployeeToProjectACreator,
   addEmployeeToProject,
@@ -632,7 +633,7 @@ addEmployee = employeeId =>{
             <Modal
               key={1}
               open={this.state.editModal}
-              classNames={{ modal: "Modal Modal-add-owner" }}
+              classNames={{ modal: "Modal Modal-add-project" }}
               contentLabel="Edit project modal"
               onClose={this.clearEditModalData}
             >
@@ -641,6 +642,7 @@ addEmployee = employeeId =>{
                 editProjectStatus={this.props.editProjectStatus}
                 editProjectErrors={this.props.editProjectErrors}
                 project={project}
+                getContactPersonDataACreator={this.props.getContactPersonDataACreator}
                 editProject={this.props.editProject}
                 closeEditProjectModal={this.clearEditModalData}
               />
@@ -768,6 +770,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
+    getContactPersonDataACreator: (clientId) => dispatch(getContactPersonDataACreator(clientId)),
     getProject: (projectId, onlyActiveAssignments) =>
       dispatch(getProjectACreator(projectId, onlyActiveAssignments)),
     editProject: (projectId, projectToSend, onlyActiveAssignments) =>

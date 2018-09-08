@@ -294,6 +294,7 @@ class ProjectsContainer extends React.Component {
 
       projectActions.getContactPersonDataACreator(addNewProjectFormValues[clientIdInForm].
         dataToMap[indexOfMatchedClient].id).then(response => {
+
         if(response.length > 0){
           let responsiblePersons = [];
           const responsiblePersonFormValues = [...this.state.responsiblePersonFormValues];
@@ -307,11 +308,12 @@ class ProjectsContainer extends React.Component {
           
           this.setState({
             responsiblePersons: responsiblePersons,
-            responsiblePersonFormValues: responsiblePersonFormValues,
-            isLoading: false
+            responsiblePersonFormValues: responsiblePersonFormValues
           });
         }
-      }).catch(() => {
+
+        this.setState({isLoading: false});
+      }).catch(error => {
         this.setState({ isLoading: false });
       })
 
@@ -339,7 +341,8 @@ class ProjectsContainer extends React.Component {
     this.setState({ isLoading: true });
     const { responsiblePersonFormValues } = this.state;
     const addNewProjectFormValues = [...this.state.addNewProjectFormValues];
-    const { history, match, projectActions } = this.props;
+    const { history, match, projectActions, clientsActions } = this.props;
+
     projectActions.createProjectACreator(
       addNewProjectFormValues,
       responsiblePersonFormValues

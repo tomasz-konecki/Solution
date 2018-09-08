@@ -9,11 +9,10 @@ export const validateInput = (
   inputType,
   inputTitle
 ) => {
-  if (!canBeNull && inputValue === "") {
+  if (!canBeNull && inputValue.length === 0) {
     return "Wartość pola " + inputTitle + " nie może być pusta";
   }
-  
-  if (canBeNull && inputValue !== "" && minLength && inputValue.replace(/ /g, "").length < minLength) {
+  if (inputValue !== "" && minLength && inputValue.replace(/ /g, "").length < minLength) {
     return "Wartość pola " + inputTitle + " ma za mało znaków";
   }
 

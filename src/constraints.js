@@ -4,6 +4,7 @@ const constraints = {
     number: /[0-9]/,
     client: /(.*?)/,
     cloud: /(.*?)/,
+    roleInProject: /(.*?)/,
     firstName: /^[A-Z][a-zżźćńółęąśŻŹĆĄŚĘŁÓŃ]+$/i,
     folderName: /^[A-Z _.a-z0-9żźćńółęąśŻŹĆĄŚĘŁÓŃ]+$/i,
     lastName: /^[-a-zżźćńółęąśŻŹĆĄŚĘŁÓŃ]+$/i,

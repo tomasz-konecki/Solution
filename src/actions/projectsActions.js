@@ -287,6 +287,9 @@ export const editProjectACreator = (
   onlyActiveAssignments
 ) => {
   return dispatch => {
+    console.log(projectToSend);
+    console.log(onlyActiveAssignments);
+
     dispatch(editProjectPromise(projectToSend, projectId)).then(response => {
       dispatch(editProject(true, []));
 
@@ -463,7 +466,7 @@ export const createProject = (createProjectStatus, createProjectErrors) => {
   return { type: CREATE_PROJECT, createProjectStatus, createProjectErrors };
 };
 
-export const createProjectACreator = (firstArray, secondArray) => dispatch =>  {
+export const createProjectACreator = (firstArray, secondArray) => dispatch => {
   return new Promise((resolve, reject) => {
     const model = {
       name: firstArray[0].value,
@@ -531,7 +534,7 @@ export const getContactPersonDataACreator = clientId => dispatch => {
       resolve(dtoObjects);
     }).catch(error => {
       dispatch(getContactPersonData([], false, errorCatcher(error)));
-      reject();
+      reject(error);
     })
   })
 }

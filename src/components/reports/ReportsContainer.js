@@ -164,7 +164,6 @@ class ReportsContainer extends Component {
       reportModal: true,
       didPagesHasIncorrectValues: didPagesHasIncorrectValues
     });
-    console.log("pagesList", pagesList);
     fetchLists(addList, baseList, helpList, pagesList);
   };
 
@@ -253,10 +252,8 @@ class ReportsContainer extends Component {
     for (let i = 0; i < addedLength; i++)
     {
       const baseIndex = baseList.findIndex(x => x.name === addList[i].name);
-      console.log(baseIndex);
       baseList.splice(baseIndex, 1);
       const helpIndex = helpList.findIndex(x => x.name === addList[i].name);
-      console.log(helpIndex);
       helpList.splice(helpIndex, 1);
     } 
 

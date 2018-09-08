@@ -329,7 +329,6 @@ addEmployee = employeeId =>{
     } = this.state;
     const { owner } = WebApi.projects.delete;
 
-    console.log("REEEEEEEEEEEENDER", this.props);
 
     return (
       <div

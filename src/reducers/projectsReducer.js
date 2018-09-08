@@ -13,6 +13,7 @@ import {
   CREATE_PROJECT,
   GET_SUGGEST_EMPLOYEES,
   CHANGE_GET_SUGGEST_EMPLOYEES_STATUS,
+  GET_CONTACT_PERSON_DATA
 } from "../constants";
 import { updateObject } from '../services/methods';
 const initialState = {
@@ -60,10 +61,17 @@ const initialState = {
   getSuggestEmployeesError: [],
 
   suggestEmployees: {},
+
+  contactPersonData: [],
+  getContactPersonDataStatus: null,
+  getContactPersonDataErrors: []
 };
 
 export const projectsReducer = (state = initialState, action) => {
   switch (action.type) {
+    case GET_CONTACT_PERSON_DATA:
+      return updateObject(state, { contactPersonData: action.contactPersonData, getContactPersonDataStatus: action.getContactPersonDataStatus, 
+        getContactPersonDataErrors: action.getContactPersonDataErrors })
     case LOAD_PROJECTS_SUCCESS:
       return {
         projects: action.projects.results,

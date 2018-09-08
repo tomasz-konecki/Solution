@@ -14,6 +14,7 @@ import {
   CREATE_PROJECT,
   GET_SUGGEST_EMPLOYEES,
   CHANGE_GET_SUGGEST_EMPLOYEES_STATUS,
+  GET_CONTACT_PERSON_DATA
 } from "../constants";
 import axios from "axios";
 import WebApi from "../api";
@@ -462,41 +463,33 @@ export const createProject = (createProjectStatus, createProjectErrors) => {
   return { type: CREATE_PROJECT, createProjectStatus, createProjectErrors };
 };
 
-export const createProjectACreator = (
-  firstArray,
-  secondArray,
-  history,
-  url
-) => {
-  return dispatch => {
+export const createProjectACreator = (firstArray, secondArray) => dispatch =>  {
+  return new Promise((resolve, reject) => {
     const model = {
       name: firstArray[0].value,
       description: firstArray[1].value,
-      client: firstArray[2].value,
+      client: firstArray[3].value ? firstArray[3].value : firstArray[2].value,
       responsiblePerson: {
         firstName: secondArray[1].value,
         lastName: secondArray[2].value,
         email: secondArray[0].value,
         phoneNumber: secondArray[3].value
       },
-      startDate: firstArray[3].value,
-      estimatedEndDate: firstArray[4].value
+      startDate: firstArray[4].value,
+      estimatedEndDate: firstArray[5].value
     };
     WebApi.projects.post
       .add(model)
       .then(response => {
         dispatch(createProject(true, []));
-
-        setTimeout(() => {
-          history.push(url + "/" + response.replyBlock.data.dtoObject.id);
-        }, 1500);
+        resolve(response.replyBlock.data.dtoObject);
       })
       .catch(error => {
         dispatch(createProject(false, errorCatcher(error)));
+        reject(error);
       });
-  };
-};
-
+  })
+}
 export const getSuggestEmployeesStatus = (getSuggestEmployeesStatus, getSuggestEmployeesError) =>{
   return {
     type: CHANGE_GET_SUGGEST_EMPLOYEES_STATUS,
@@ -505,7 +498,6 @@ export const getSuggestEmployeesStatus = (getSuggestEmployeesStatus, getSuggestE
   }
 }
 export const getSuggestEmployees = suggestEmployees =>{
-  console.log("c",suggestEmployees);
   return {type: GET_SUGGEST_EMPLOYEES, suggestEmployees}
 }
 
@@ -523,3 +515,23 @@ export const getSuggestEmployeesACreator = projectId =>{
       });
   };
 };
+
+
+export const getContactPersonData = (contactPersonData, getContactPersonDataStatus, getContactPersonDataErrors) => {
+  return {
+    type: GET_CONTACT_PERSON_DATA, contactPersonData, getContactPersonDataStatus, getContactPersonDataErrors
+  }
+}
+
+export const getContactPersonDataACreator = clientId => dispatch => {
+  return new Promise((resolve, reject) => {
+    WebApi.responsiblePerson.get.byClient(clientId).then(response => {
+      const { dtoObjects } = response.replyBlock.data;
+      dispatch(getContactPersonData(dtoObjects, true, []));
+      resolve(dtoObjects);
+    }).catch(error => {
+      dispatch(getContactPersonData([], false, errorCatcher(error)));
+      reject();
+    })
+  })
+}

@@ -3,6 +3,7 @@ const constraints = {
     name: /^[0-9a-z\s-]+$/i,
     number: /[0-9]/,
     client: /(.*?)/,
+    cloud: /(.*?)/,
     firstName: /^[A-Z][a-zżźćńółęąśŻŹĆĄŚĘŁÓŃ]+$/i,
     folderName: /^[A-Z _.a-z0-9żźćńółęąśŻŹĆĄŚĘŁÓŃ]+$/i,
     lastName: /^[-a-zżźćńółęąśŻŹĆĄŚĘŁÓŃ]+$/i,

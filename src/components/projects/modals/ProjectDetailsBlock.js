@@ -191,23 +191,25 @@ class ProjectDetailsBlock extends React.PureComponent {
       isLoading: true,
       editProjectResult: { content: "", status: null }
     });
+    const { editProjectArray, responsiblePersonArray } = this.state;
+    const { project, onlyActiveAssignments, editProject } = this.props;
     const projectToSend = {
-      name: this.state.editProjectArray[0].value,
-      description: this.state.editProjectArray[1].value,
-      client: this.state.editProjectArray[3].value ? this.state.editProjectArray[3].value : this.state.editProjectArray[2].value,
+      name: editProjectArray[0].value,
+      description: editProjectArray[1].value,
+      client: editProjectArray[3].value ? editProjectArray[3].value : editProjectArray[2].value,
       responsiblePerson: {
-        firstName: this.state.responsiblePersonArray[1].value,
-        lastName: this.state.responsiblePersonArray[2].value,
-        email: this.state.responsiblePersonArray[0].value,
-        phoneNumber: this.state.responsiblePersonArray[3].value
+        firstName: responsiblePersonArray[1].value,
+        lastName: responsiblePersonArray[2].value,
+        email: responsiblePersonArray[0].value,
+        phoneNumber: responsiblePersonArray[3].value
       },
-      startDate: moment(this.state.editProjectArray[4].value).format(),
-      estimatedEndDate: moment(this.state.editProjectArray[5].value).format()
+      startDate: moment(editProjectArray[4].value).format(),
+      estimatedEndDate: moment(editProjectArray[5].value).format()
     };
-    this.props.editProject(
-      this.props.project.id,
+    editProject(
+      project.id,
       projectToSend,
-      this.props.onlyActiveAssignments
+      onlyActiveAssignments
     );
   };
 

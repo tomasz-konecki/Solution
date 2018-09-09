@@ -115,18 +115,22 @@ class ProjectDetails extends Component {
       },
       {
         title: "Rola w projekcie",
-        canBeNull: true,
+        canBeNull: false,
+        minLength: 3,
+        maxLength: 100,
+        error: "",
         type: "text",
-        placeholder: "wprowadź role w projekcie...",
-        mode: "select",
-        value: "Developer",
-        selectValues: [
-          "Developer",
-          "Tradesman",
-          "Human Resources",
-          "Team Leader",
-          "Administrator",
-          "Manager"
+        placeholder: "wybierz lub wpisz role w projekcie...",
+        mode: "type-and-select",
+        value: "",
+        inputType: "roleInProject",
+        dataToMap: [
+          {name: "Developer", id: 0},
+          {name: "Tradesman", id: 1},
+          {name: "Human Resources", id: 2},
+          {name: "Team Leader", id: 3},
+          {name: "Administrator", id: 4},
+          {name: "Manager", id: 5}
         ]
       }
     ],
@@ -221,15 +225,11 @@ class ProjectDetails extends Component {
 
   addEmployeeToProject = () => {
     this.setState({ addEmployeSpinner: true });
-    this.props.addEmployeeToProject(
-      this.state.addEmployeToProjectFormItems[3].value,
-      this.props.project.id,
-      this.state.addEmployeToProjectFormItems[0].value,
-      this.state.addEmployeToProjectFormItems[1].value,
-      this.state.addEmployeToProjectFormItems[4].value,
-      this.state.lteVal,
-      this.state.addEmployeToProjectFormItems[2].value,
-      this.state.onlyActiveAssignments
+    const { addEmployeToProjectFormItems, lteVal, onlyActiveAssignments } = this.state;
+    const { project, addEmployeeToProject } = this.props;
+    addEmployeeToProject( addEmployeToProjectFormItems[3].value,project.id,
+      addEmployeToProjectFormItems[0].value, addEmployeToProjectFormItems[1].value, addEmployeToProjectFormItems[4].value,
+      lteVal, addEmployeToProjectFormItems[2].value, onlyActiveAssignments
     );
   };
 

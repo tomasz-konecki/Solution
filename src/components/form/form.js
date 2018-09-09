@@ -409,7 +409,19 @@ class Form extends Component {
                       );
                     })}
                   </select>
-                ) : null}
+                ) : i.mode === "type-and-select" ? 
+
+                <DataList
+                    key={index}
+                    identity={i.inputType}
+                    dataToMap={i.dataToMap}
+                    onChange={e => this.onChangeInput(e, index, i.inputType)}
+                    value={i.value}
+                    placeholder={i.placeholder}
+                    error={i.error}
+                    onBlur={i.inputType === "client" ? this.props.onBlur : null}
+                  /> :
+                null}
 
                 <p className="form-error">
                   <span>{i.error}</span>

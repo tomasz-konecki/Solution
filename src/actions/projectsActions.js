@@ -142,50 +142,25 @@ export const addEmployeeToProject = (
     addEmployeeToProjectErrors
   };
 };
-const addEmployeeToProjectPromise = objectToAdd => dispatch => {
-  return new Promise((resolve, reject) => {
-    WebApi.assignments
-      .post(objectToAdd)
-      .then(response => {
-        resolve(response);
-      })
-      .catch(error => {
-        reject(error);
-      });
-  });
-};
-export const addEmployeeToProjectACreator = (
-  empId,
-  projectId,
-  strDate,
-  endDate,
-  role,
-  assignedCapacity,
-  responsibilites,
-  onlyActiveAssignments
-) => {
-  return dispatch => {
-    const objectToAdd = {
-      "employeeId": empId,
-      "projectId": projectId,
-      "startDate": strDate,
-      "endDate": endDate,
-      "role": role,
-      "assignedCapacity": assignedCapacity/10,
-      "responsibilities": responsibilites
-    }
-    dispatch(addEmployeeToProjectPromise(objectToAdd)).then(response => {
-      dispatch(addEmployeeToProject(true, []));
-      
-      dispatch(getProjectACreator(projectId, onlyActiveAssignments));
-      dispatch(clearAfterTimeByFuncRef(addEmployeeToProject, 5000, null, []));
-      
-    }).catch(error => {
-      dispatch(addEmployeeToProject(false, errorCatcher(error)));
-      dispatch(clearAfterTimeByFuncRef(addEmployeeToProject, 5000, null, []));
-      
-    })
-  }
+export const addEmployeeToProjectACreator = (empId, projectId, strDate, endDate, role, assignedCapacity,
+  responsibilites, onlyActiveAssignments ) => dispatch => { 
+      const assignmentModel = {
+        "employeeId": empId,
+        "projectId": projectId,
+        "startDate": strDate,
+        "endDate": endDate,
+        "role": role,
+        "assignedCapacity": assignedCapacity/10,
+        "responsibilities": responsibilites
+      }
+      WebApi.assignments.post(assignmentModel).then(response => {
+        dispatch(addEmployeeToProject(true, []));
+        dispatch(getProjectACreator(projectId, onlyActiveAssignments));
+      }).catch(error => {
+        dispatch(addEmployeeToProject(false, errorCatcher(error)));
+      }).then(
+        dispatch(clearAfterTimeByFuncRef(addEmployeeToProject, 5000, null, []))
+      );
 }
 
 const clearAfterTimeByFuncRef = (funcRef, delay, ...params) => {
@@ -195,7 +170,6 @@ const clearAfterTimeByFuncRef = (funcRef, delay, ...params) => {
     }, delay);
   }
 }
-
 
 export const addFeedback = (addFeedbackStatus, addFeedbackErrors) => {
   return {
@@ -287,9 +261,6 @@ export const editProjectACreator = (
   onlyActiveAssignments
 ) => {
   return dispatch => {
-    console.log(projectToSend);
-    console.log(onlyActiveAssignments);
-
     dispatch(editProjectPromise(projectToSend, projectId)).then(response => {
       dispatch(editProject(true, []));
 

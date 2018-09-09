@@ -363,7 +363,10 @@ const translations = {
     StartDate: "Data rozpoczęcia",
     EndDate: "Data zakończenia",
     Today: "Dzisiaj",
-    Confirm: "Potwierdź"
+    Confirm: "Potwierdź",
+    Next: "Dalej",
+    Send: "Potwierdź",
+    Back: "Wróć"    
   },
   ResponsiblePersonBlock: {
     NameNoSpecial: "Imię nie może zawierać znaków specjalnych ani cyfr.",

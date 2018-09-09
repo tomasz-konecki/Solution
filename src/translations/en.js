@@ -359,7 +359,10 @@ const translations = {
     StartDate: "Start date",
     EndDate: "End date",
     Today: "Today",
-    Confirm: "Confirm"
+    Confirm: "Confirm",
+    Next: "Next",
+    Send: "Send",
+    Back: "Back"
   },
   ResponsiblePersonBlock: {
     NameNoSpecial: "Name cannot contain either special characters or digits.",

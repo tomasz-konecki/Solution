@@ -337,11 +337,14 @@ const translations = {
     CannotContainSpecial: "Project name cannot contain special characters",
     Description: "Description",
     Client: "Client",
+    Cloud: "Choose cloud",
     ContactPerson: "Responsible person",
     StartDate: "Start date",
     EndDate: "End Date",
     ProjectAddedSuccessfully: "Project added successfully",
-    Add: "Add"
+    Add: "Add",
+    CloudPlaceHolder: "Add own cloud or choose from list",
+    ClientPlaceHolder: "Add own client or choose from list"
   },
   EditProjectDetails: {
     ProjectSuccessfullyEdited: "Project edited successfully"
@@ -356,7 +359,10 @@ const translations = {
     StartDate: "Start date",
     EndDate: "End date",
     Today: "Today",
-    Confirm: "Confirm"
+    Confirm: "Confirm",
+    Next: "Next",
+    Send: "Send",
+    Back: "Back"
   },
   ResponsiblePersonBlock: {
     NameNoSpecial: "Name cannot contain either special characters or digits.",

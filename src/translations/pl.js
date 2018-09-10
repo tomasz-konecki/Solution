@@ -340,11 +340,15 @@ const translations = {
     CannotContainSpecial: "Nazwa projektu nie może zawierać znaków specjalnych",
     Description: "Opis",
     Client: "Klient",
+    Cloud: "Wybierz chmure",
     ContactPerson: "Osoba do kontaktu",
     StartDate: "Data rozpoczęcia",
     EndDate: "Data zakończenia",
     ProjectAddedSuccessfully: "Projekt dodano pomyślnie",
-    Add: "Dodaj"
+    Add: "Dodaj",
+    CloudPlaceHolder: "wpisz własną lub wybierz chmure z listy",
+    ClientPlaceHolder: "wpisz własnego klienta lub wybierz z listy"
+    
   },
   EditProjectDetails: {
     ProjectSuccessfullyEdited: "Projekt edytowano pomyślnie"
@@ -359,7 +363,10 @@ const translations = {
     StartDate: "Data rozpoczęcia",
     EndDate: "Data zakończenia",
     Today: "Dzisiaj",
-    Confirm: "Potwierdź"
+    Confirm: "Potwierdź",
+    Next: "Dalej",
+    Send: "Potwierdź",
+    Back: "Wróć"    
   },
   ResponsiblePersonBlock: {
     NameNoSpecial: "Imię nie może zawierać znaków specjalnych ani cyfr.",

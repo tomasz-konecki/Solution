@@ -36,12 +36,10 @@ class ClientsContainer extends React.Component {
   };
 
   componentWillReceiveProps(nextProps) {
-    const { client } = this.state;
-
     if (nextProps.clients !== this.props.clients) {
       const updatedClient = nextProps.clients.filter(clientItem => {
-        return Object.getOwnPropertyNames(client).length !== 0
-          ? clientItem.id === client.id
+        return Object.getOwnPropertyNames(nextProps.clients).length !== 0
+          ? clientItem.id === nextProps.clients[0].id
           : {};
       });
 

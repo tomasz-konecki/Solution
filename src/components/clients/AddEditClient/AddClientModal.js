@@ -3,7 +3,6 @@ import Button from "../../common/button/button";
 import { validateInput } from "../../../services/validation";
 import IntermediateBlock from "../../common/IntermediateBlock";
 import { CSSTransitionGroup } from "react-transition-group";
-
 import "../../../scss/components/clients/addClient/addClientModal.scss";
 import BilleniumPleaceholder from "assets/img/small-logo.png";
 import FileInput from "components/common/inputs/fileInput/fileInput";
@@ -158,7 +157,7 @@ class AddClientModal extends Component {
 
             <label htmlFor="clientDescription">{t("ClientDescription")}</label>
             <textarea
-              style={{ resize: "vertical", maxHeight: "200px" }}
+              style={{ resize: "vertical", maxHeight: "120px" }}
               type="text"
               id="clientDescription"
               name="clientDescription"
@@ -169,6 +168,7 @@ class AddClientModal extends Component {
               value={this.state.inputValue.clientDescription}
               onChange={textarea => this.handleInputChange(textarea)}
             />
+
             <CSSTransitionGroup
               transitionName="error-validation"
               transitionEnterTimeout={1000}

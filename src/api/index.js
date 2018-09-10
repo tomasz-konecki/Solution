@@ -16,6 +16,7 @@ import {
 import ResponseParser from "./responseParser";
 import Config from "Config";
 import { loginACreator } from "../actions/persistHelpActions";
+import { Certificate } from "crypto";
 const { store } = storeCreator;
 
 const API_ENDPOINT = Config.serverUrl;
@@ -243,6 +244,28 @@ const WebApi = {
       }
     }
   },
+  certificates: {
+    get: {
+      byEmployee: employeeId => {
+        return WebAround.get(`${API_ENDPOINT}/certificates/employee/${employeeId}`)
+      }
+    },
+    post: {
+      add: certificateModel => {
+        return WebAround.post(`${API_ENDPOINT}/certificates`, certificateModel);
+      }
+    },
+    put: {
+      update: (certificateId, certificateModel) => {
+        return WebAround.put(`${API_ENDPOINT}/certificates/${certificateId}`, certificateModel);
+      }
+    },
+    delete: {
+      deleteById: certificateId => {
+        return WebAround.delete(`${API_ENDPOINT}/certificates/${certificateId}`);
+      }
+    }
+  },
   employees: {
     get: {
       byEmployee: employeeId => {
@@ -296,6 +319,12 @@ const WebApi = {
           `${API_ENDPOINT}/employees/${employeeId}`,
           languagesArray
         );
+      },
+      updateSkype: (skypeId, employeeId) => {
+        return WebAround.put(`${API_ENDPOINT}/employees/UpdateSkype`, {
+          skypeId,
+          employeeId
+        });
       }
     },
     patch: {

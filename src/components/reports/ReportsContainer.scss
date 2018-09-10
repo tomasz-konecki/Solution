@@ -216,7 +216,7 @@
 }
 
 .choosen-folder-content {
-  display: flex;
+  // display: flex;
   min-height: 50%;
   margin: 0 auto;
   padding: 5px 25px;
@@ -227,7 +227,7 @@
     font-style: italic;
     color: tomato;
     font-weight: bold;
-    margin-top: 20px;
+    // margin-top: 20px;
     @media (max-width: 500px) {
       margin: 0;
       padding: 0;

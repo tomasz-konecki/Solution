@@ -1,10 +1,10 @@
-import { GET_TEAMS, GET_USER_CV, GENERATE_REPORT, GET_RECENT_REPORTS  } from "../constants";
+import { GET_TEAMS, GET_USER_CV, GENERATE_REPORT, GET_FAVORITE_AND_RECENT_REPORTS, UNFAVORITE_REPORT  } from "../constants";
 import { updateObject } from '../services/methods';
 
 const initialState = {
-  recentReports: [],
-  recentReportsStatus: null,
-  recentReportsErrors: [],
+  reports: [],
+  reportsStatus: null,
+  reportsErrors: [],
 
   teams: [],
   loadTeamsResult: null,
@@ -15,7 +15,10 @@ const initialState = {
   getUserCVErrors: [],
 
   generateReportStatus: null,
-  generateReportErrors: []
+  generateReportErrors: [],
+
+  unfavoriteStatus: null,
+  unfavoriteErrors: []
 };
 
 export const reportsReducer = (state = initialState, action) => {
@@ -30,11 +33,14 @@ export const reportsReducer = (state = initialState, action) => {
     case GENERATE_REPORT:
         return updateObject(state, { generateReportStatus: action.generateReportStatus, 
           generateReportErrors: action.generateReportErrors })
-    case GET_RECENT_REPORTS:
-          return updateObject(state, { recentReports: action.reports,
-            recentReportsStatus: action.recentReportsStatus,
-            recentReportsErrors: action.recentReportsErrors
+    case GET_FAVORITE_AND_RECENT_REPORTS:
+          return updateObject(state, { reports: action.reports,
+            reportsStatus: action.reportsStatus,
+            reportsErrors: action.reportsErrors
           })
+    case UNFAVORITE_REPORT:
+          return updateObject(state, { unfavoriteStatus: action.unfavoriteStatus, 
+            unfavoriteErrors: action.unfavoriteErrors})
     default:
       return state;
   }

@@ -459,7 +459,7 @@ const WebApi = {
       },
       recentReports: numberOfReports => 
         WebAround.get(
-          `${API_ENDPOINT}/reports/recent?numberOfReports=${numberOfReports}`
+          `${API_ENDPOINT}/reports/recentAndFavorites?numberOfReports=${numberOfReports}`
         )
     },
     post: {
@@ -474,6 +474,11 @@ const WebApi = {
           `${API_ENDPOINT}/reports/cv/${employeeId}?forceIncompletePDF=true`
         );
       }
+    },
+    delete: {
+      report: reportId => WebAround.delete(
+        `${API_ENDPOINT}/reports/unfavorite/${reportId}`
+      )
     }
   },
   CvImport: {

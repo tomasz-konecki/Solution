@@ -4,7 +4,7 @@ import { authSuccess, authStart, authStop } from "../actions/authActions";
 import { push } from "react-router-redux";
 import axios from "axios";
 import * as jwtDecode from "jwt-decode";
-import * as Promise from "bluebird";
+import * as Promise from "bluebird/js/browser/bluebird.core.min.js";
 import WebApi from "../api";
 //
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));

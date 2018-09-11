@@ -1,9 +1,9 @@
 const webpack = require("webpack");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const OptimizeJsPlugin = require("optimize-js-plugin");
-//const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const path = require("path");
-var CompressionPlugin = require('compression-webpack-plugin');
+// var CompressionPlugin = require('compression-webpack-plugin');
 const env = process.env.NODE_ENV || "development";
 
 const plugins = [
@@ -12,7 +12,7 @@ const plugins = [
     filename: "index.html",
     inject: "body"
   })
-  //new BundleAnalyzerPlugin()
+  // new BundleAnalyzerPlugin()
 ];
 
 if (env == "production") {

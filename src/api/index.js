@@ -1,6 +1,6 @@
 import axios from "axios";
-import * as jwtDecode from "jwt-decode";
-import {resolve} from "bluebird";
+// import * as jwtDecode from "jwt-decode";
+import { resolve as BluebirdResolve }  from "bluebird/js/browser/bluebird.core.min.js";
 import * as usersMocks from "./mock/users";
 import * as projectsMocks from "./mock/projects";
 import redux from "redux";
@@ -83,7 +83,7 @@ const authValidator = response => {
 const parseSuccess = response => {
   let parser = new ResponseParser(response);
   parser.parse();
-  return resolve(parser);
+  return BluebirdResolve(parser);
 };
 
 const parseFailure = response => {
@@ -1010,47 +1010,47 @@ class DCMTMockApi extends DCMTWebApi {
   }
 
   auth(username, password) {
-    return resolve({
+    return BluebirdResolve({
       email: "jane.doe@kappa.com",
       extra: "Jane Doe"
     });
   }
 
   getUsers(page, simulateError = false) {
-    return resolve(
+    return BluebirdResolve(
       this.pretendResponse(usersMocks.UsersObject(page), simulateError)
     );
   }
 
   searchAD(user, simulateError = false) {
-    return resolve(
+    return BluebirdResolve(
       this.pretendResponse(usersMocks.ActiveDirectory(user, simulateError))
     );
   }
 
   addUser(id, role, simulateError = false) {
-    return resolve(this.pretendResponse(null, simulateError));
+    return BluebirdResolve(this.pretendResponse(null, simulateError));
   }
 
   getUser(id, simulateError = false) {
-    return resolve(
+    return BluebirdResolve(
       this.pretendResponse(usersMocks.UserObject(id, simulateError))
     );
   }
 
   changeUserRole(id, role, simulateError = false) {
-    return resolve(this.pretendResponse(null, simulateError));
+    return BluebirdResolve(this.pretendResponse(null, simulateError));
   }
 
   deleteUser(id, simulateError = false) {
-    return resolve(this.pretendResponse(null, simulateError));
+    return BluebirdResolve(this.pretendResponse(null, simulateError));
   }
 
   addProject(
     { projectName, description, client, responsiblePerson, startDate, endDate },
     simulateError = false
   ) {
-    return resolve(this.pretendResponse(null, simulateError));
+    return BluebirdResolve(this.pretendResponse(null, simulateError));
   }
 
   editProject(
@@ -1063,27 +1063,27 @@ class DCMTMockApi extends DCMTWebApi {
     estimatedEndDate,
     simulateError = false
   ) {
-    return resolve(this.pretendResponse(null, simulateError));
+    return BluebirdResolve(this.pretendResponse(null, simulateError));
   }
 
   deleteProject(id, simulateError = false) {
-    return resolve(this.pretendResponse(null, simulateError));
+    return BluebirdResolve(this.pretendResponse(null, simulateError));
   }
 
   getProjects(page, simulateError = false) {
-    return resolve(
+    return BluebirdResolve(
       this.pretendResponse(projectsMocks.ProjectsObject(page), simulateError)
     );
   }
 
   getProject(id, simulateError = false) {
-    return resolve(
+    return BluebirdResolve(
       this.pretendResponse(projectsMocks.ProjectObject(id, simulateError))
     );
   }
 
   addOwner(id, simulateError = false) {
-    return resolve(this.pretendResponse(null, simulateError));
+    return BluebirdResolve(this.pretendResponse(null, simulateError));
   }
 }
 

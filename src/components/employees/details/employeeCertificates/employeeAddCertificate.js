@@ -111,17 +111,17 @@ class EmployeeAddCertificate extends React.Component{
     handleSubmit = event => {
         event.preventDefault();
         this.setState({
-          isLoading: true, 
+          isLoading: true,
           isFormValid: false
         });
-    
-        {this.state.editing 
-            ? 
-            this.props.editCertificate(this.state.certificateId, this.createNewCertificate(), this.props.userId) 
-            : 
-            this.props.addCertificate(this.createNewCertificate(),this.props.userId) 
+
+        {this.state.editing
+            ?
+            this.props.editCertificate(this.state.certificateId, this.createNewCertificate(), this.props.userId)
+            :
+            this.props.addCertificate(this.createNewCertificate(),this.props.userId)
         }
-        
+
       };
 
     handleDate = date => {
@@ -137,7 +137,7 @@ class EmployeeAddCertificate extends React.Component{
                 {this.state.editing ? <h3>{t("EditingCertificate")} : </h3> : <h3 >{t("AddingCertificate")} : </h3>}
             </header>
             <form onSubmit={this.handleSubmit}>
-                
+
                 <div className="form-group row">
                     <label htmlFor="projectName" className="col-sm-3 col-form-label">
                         {t("Name")}
@@ -152,7 +152,7 @@ class EmployeeAddCertificate extends React.Component{
                             this.handleChange(e);
                             }}
                     />
-                    
+
                         <CSSTransitionGroup
                         transitionName="error-validation"
                         transitionEnterTimeout={500}
@@ -167,7 +167,7 @@ class EmployeeAddCertificate extends React.Component{
                 </div>
                 <div className="form-group row">
                     <label htmlFor="projectName" className="col-sm-3 col-form-label">
-                        {t("Description")} 
+                        {t("Description")}
                     </label>
                     <div className="col-sm-9">
                     <textarea
@@ -224,8 +224,8 @@ class EmployeeAddCertificate extends React.Component{
                     }
                     </div>
                     <div className="project-submit-container col-sm-3">
-                    
-                    <Button 
+
+                    <Button
                         disable={!this.state.isFormValid}
                         mainClass={["dcmt-button"]}
                     >
@@ -245,7 +245,7 @@ class EmployeeAddCertificate extends React.Component{
 
         if (this.props.resultBlockAddCertificate) {
             if (this.props.resultBlockAddCertificate.replyBlock.status === 200) {
-                
+
               info = (
                 <CSSTransitionGroup
                   transitionName="example"
@@ -268,7 +268,7 @@ class EmployeeAddCertificate extends React.Component{
                 setTimeout(() => {
                     this.props.closeModal()
                   }, 2000);
-                
+
               }
           }
 

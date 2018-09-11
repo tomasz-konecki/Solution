@@ -7,7 +7,7 @@ import ProjectSkill from './ProjectSkill';
 import ProjectOwner from './ProjectOwner';
 import SkillsSelect from './../skills/SkillsSelect';
 import AddProjectOwner from './modals/AddProjectOwner';
-import * as _ from 'lodash';
+//import * as _ from 'lodash';
 import * as asyncActions from "../../actions/asyncActions";
 import { SET_ACTION_CONFIRMATION_RESULT, SET_ACTION_CONFIRMATION } from '../../constants';
 import { translate } from 'react-translate';

@@ -21,7 +21,8 @@ import {
   deleteQuaterACreator,
   reactivateQuaterACreator,
   changeEmployeeSkillsACreator,
-  updateSkype
+  updateSkype,
+  getCertificates
 } from "../../../actions/employeesActions";
 import Spinner from "../../common/spinner/spinner";
 import OperationStatusPrompt from "../../form/operationStatusPrompt/operationStatusPrompt";
@@ -63,10 +64,7 @@ class EmployeeDetailsContainer extends React.Component {
   componentWillReceiveProps(nextProps) {
     if (this.validatePropsForAction(nextProps, "deleteCertificate")) {
       this.props.async.setActionConfirmationProgress(true);
-      this.props.deleteCertificate(
-        this.props.toConfirm.certificate.id,
-        this.props.match.params.id
-      );
+      this.props.deleteCertificate(this.props.toConfirm.certificate.id, this.props.match.params.id);
     }
 
     if (nextProps.employeeErrors !== this.props.employeeErrors) {
@@ -81,7 +79,7 @@ class EmployeeDetailsContainer extends React.Component {
         {
             console.log("nextProps.match : " + nextProps.match)
             this.setState({isLoadingFirstTimeEmployee: true});
-            this.props.getEmployeePromise(nextProps.match.params.id);    
+            this.props.getEmployeePromise(nextProps.match.params.id);
         }*/
     if (nextProps.employee) {
       if (
@@ -212,8 +210,8 @@ class EmployeeDetailsContainer extends React.Component {
                 editSkypeFormItems={editSkypeFormItems}
                 editSkypeId={this.editSkypeId}
                 t={t}
-                skypeIdAddLoading={updateSkypeIdResult.loading}
-                updateSkypeIdResult={updateSkypeIdResult.resultBlock}
+                skypeIdAddLoading={updateSkypeIdResult && updateSkypeIdResult.loading}
+                updateSkypeIdResult={updateSkypeIdResult && updateSkypeIdResult.resultBlock}
               />
 
               <EmployeeSkills
@@ -326,12 +324,19 @@ const mapStateToProps = state => {
     changeSkillsStatus: state.employeesReducer.changeSkillsStatus,
     changeSkillsErrors: state.employeesReducer.changeSkillsErrors,
 
-    updateSkypeIdResult: state.employeesReducer.updateSkypeIdResult
+    updateSkypeIdResult: state.employeesReducer.updateSkypeIdResult,
+
+    resultBlock: state.employeesReducer.resultBlock,
+    confirmed: state.asyncReducer.confirmed,
+    toConfirm: state.asyncReducer.toConfirm,
+    isWorking: state.asyncReducer.isWorking,
+    type: state.asyncReducer.type,
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
+    async: bindActionCreators(asyncActions, dispatch),
     getEmployeePromise: employeeId => dispatch(getEmployeePromise(employeeId)),
     editStatistics: (employeeId, seniority, capacity, currentClouds) =>
       dispatch(editStatistics(employeeId, seniority, capacity, currentClouds)),
@@ -351,7 +356,10 @@ const mapDispatchToProps = dispatch => {
       dispatch(changeEmployeeSkillsACreator(employeeId, currentArray)),
     updateSkype: (skypeId, employeeId) =>
       dispatch(updateSkype(skypeId, employeeId)),
-    loadCertificates: url => dispatch(loadCertificates(url))
+    loadCertificates: employeeId => dispatch(loadCertificates(employeeId)),
+    addCertificate: (certificate,userId) => dispatch(addCertificate(certificate,userId)),
+    editCertificate: (certificateId, certificate, userId) => dispatch(editCertificate(certificateId,certificate,userId)),
+    deleteCertificate: (certificateId, userId) => dispatch(deleteCertificate(certificateId, userId))
   };
 };
 

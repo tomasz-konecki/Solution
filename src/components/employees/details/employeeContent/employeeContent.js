@@ -68,7 +68,7 @@ const callSkype = editSkypeFormItems[0].value ? (
   className="skype"
   href={"sip:<" + employee.email + ">"}
 >
-  <img src="/public/img/skypeforbusiness.jpeg" class="businessSkypeIcon"/>
+  <img src="/public/img/skypeforbusiness.jpeg" className="businessSkypeIcon"/>
   <span className="skypeId"> {employee.email} </span>
 </a>
 )

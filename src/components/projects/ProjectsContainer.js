@@ -3,6 +3,7 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import * as projectsActions from "../../actions/projectsActions";
+import { loadClients } from '../../actions/clientsActions';
 import * as asyncActions from "../../actions/asyncActions";
 import * as persistHelpActions from "../../actions/persistHelpActions";
 import Modal from "react-responsive-modal";
@@ -20,8 +21,10 @@ import moment from "moment";
 import { validateInput } from "../../services/validation";
 import ContactList from "../../components/common/contactList/contactList";
 import { translate } from "react-translate";
+import { clearDataOfForm } from '../../services/methods';
 
 const ClientId = 2;
+const CloudId = 3;
 
 class ProjectsContainer extends React.Component {
   constructor(props) {
@@ -31,7 +34,7 @@ class ProjectsContainer extends React.Component {
       currentPage: 1,
       limit: 15,
       init: false,
-      addNewProjectArray: [
+      addNewProjectFormValues: [
         {
           title: this.props.t("ProjectName"),
           type: "text",
@@ -62,14 +65,29 @@ class ProjectsContainer extends React.Component {
         {
           title: this.props.t("Client"),
           type: "text",
-          placeholder: `${this.props.t("Insert")} ${this.props.t("Client")}`,
+          placeholder: this.props.t("ClientPlaceHolder"),
           mode: "drop-down-with-data",
           value: "",
           error: "",
           inputType: "client",
-          minLength: 3,
-          maxLength: 100,
-          canBeNull: false
+          minLength: 1,
+          maxLength: 150,
+          canBeNull: false,
+          dataToMap: []
+        },
+        {
+          title: this.props.t("Cloud"),
+          type: "text",
+          placeholder: this.props.t("CloudPlaceHolder"),
+          mode: "drop-down-with-data",
+          value: "",
+          error: "",
+          inputType: "cloud",
+          minLength: 1,
+          maxLength: 150,
+          canBeNull: true,
+          dataToMap: [],
+          disable: true
         },
         {
           title: this.props.t("StartDate"),
@@ -92,7 +110,7 @@ class ProjectsContainer extends React.Component {
           canBeBefore: false
         }
       ],
-      responsiblePersonsArray: [
+      responsiblePersonFormValues: [
         {
           title: "Email",
           type: "text",
@@ -150,27 +168,12 @@ class ProjectsContainer extends React.Component {
     this.pageChange = this.pageChange.bind(this);
   }
 
-  componentDidMount() {
-    const { fetchStatus, persistHelpActions } = this.props;
-    if (!fetchStatus) persistHelpActions.fetchFormClientsACreator();
-  }
-  onChangeClient = event => {
-    const addNewProjectArray = [...this.state.addNewProjectArray];
-    addNewProjectArray[ClientId].value = event.target.value;
-    addNewProjectArray[ClientId].error = validateInput(
-      event.target.value,
-      addNewProjectArray[ClientId].canBeNull,
-      addNewProjectArray[ClientId].minLength,
-      addNewProjectArray[ClientId].maxLength,
-      addNewProjectArray[ClientId].inputType,
-      addNewProjectArray[ClientId].title
-    );
-
-    this.setState({
-      addNewProjectArray: addNewProjectArray
-    });
-  };
   componentWillReceiveProps(nextProps) {
+    if(nextProps.clients !== this.props.clients){
+      const addNewProjectFormValues = [...this.state.addNewProjectFormValues];
+      addNewProjectFormValues[ClientId].dataToMap = [...nextProps.clients];
+      this.setState({addNewProjectFormValues: addNewProjectFormValues});
+    }
     if (this.validatePropsForAction(nextProps, "deleteProject")) {
       this.props.async.setActionConfirmationProgress(true);
       WebApi.projects.delete
@@ -237,7 +240,7 @@ class ProjectsContainer extends React.Component {
       this.setState({ isLoading: false });
     }
   }
-
+  
   validatePropsForAction(nextProps, action) {
     return (
       nextProps.confirmed &&
@@ -262,7 +265,7 @@ class ProjectsContainer extends React.Component {
   }
 
   handleOpenModal() {
-    persistHelpActions.fetchFormClientsACreator();
+    this.props.loadClients();
     this.setState({ showModal: true });
   }
 
@@ -270,85 +273,94 @@ class ProjectsContainer extends React.Component {
     this.setState({ showModal: false });
   }
   changeForm = () => {
+    this.goForClient();
     this.setState({ openFirstForm: !this.state.openFirstForm });
   };
 
   goForClient = () => {
-    const { fetchedFormClients } = this.props;
-    const { responsiblePersonsArray, addNewProjectArray } = this.state;
+    const clientIdInForm = 2;
+ 
+    const { projectActions } = this.props;
+    const addNewProjectFormValues = [...this.state.addNewProjectFormValues];
 
-    const index = fetchedFormClients.findIndex(i => {
-      return i.name === addNewProjectArray[ClientId].value;
+    const indexOfMatchedClient = addNewProjectFormValues[clientIdInForm].dataToMap.findIndex(i => {
+      return i.name === addNewProjectFormValues[clientIdInForm].value
     });
-    if (index !== -1) {
-      this.setState({ isLoading: true });
-      WebApi.responsiblePerson.get
-        .byClient(fetchedFormClients[index].id)
-        .then(response => {
-          if (response.replyBlock.data.dtoObjects.length > 0) {
-            let responsiblePersons = [];
 
-            responsiblePersons = responsiblePersons.concat(
-              response.replyBlock.data.dtoObjects
-            );
-            const responsiblePersonsArray = [
-              ...this.state.responsiblePersonsArray
-            ];
-            responsiblePersonsArray[0].value =
-              response.replyBlock.data.dtoObjects[0].email;
-            responsiblePersonsArray[1].value =
-              response.replyBlock.data.dtoObjects[0].firstName;
-            responsiblePersonsArray[2].value =
-              response.replyBlock.data.dtoObjects[0].lastName;
-            responsiblePersonsArray[3].value =
-              response.replyBlock.data.dtoObjects[0].phoneNumber;
+    const allClientsContainsGivenClient = indexOfMatchedClient !== -1;
+    
+    if(allClientsContainsGivenClient){
+      this.setState({isLoading: true});
 
-            this.setState({
-              responsiblePersons: responsiblePersons,
-              responsiblePersonsArray: responsiblePersonsArray,
-              isLoading: false
-            });
-          } else this.setState({ isLoading: false });
-        })
-        .catch(error => {
-          this.setState({ isLoading: false });
-        });
+      projectActions.getContactPersonDataACreator(addNewProjectFormValues[clientIdInForm].
+        dataToMap[indexOfMatchedClient].id).then(response => {
+
+        if(response.length > 0){
+          let responsiblePersons = [];
+          const responsiblePersonFormValues = [...this.state.responsiblePersonFormValues];
+          
+          responsiblePersons = responsiblePersons.concat(response);
+
+          responsiblePersonFormValues[0].value = response[0].email;
+          responsiblePersonFormValues[1].value = response[0].firstName;
+          responsiblePersonFormValues[2].value = response[0].lastName;
+          responsiblePersonFormValues[3].value = response[0].phoneNumber;
+          
+          this.setState({
+            responsiblePersons: responsiblePersons,
+            responsiblePersonFormValues: responsiblePersonFormValues
+          });
+        }
+
+        this.setState({isLoading: false});
+      }).catch(error => {
+        this.setState({ isLoading: false });
+      })
+
     }
-  };
+  }
 
   fetchContactDateByOtherClient = e => {
     const { responsiblePersons } = this.state;
     const index = responsiblePersons.findIndex(i => {
       return i.firstName === e.target.value;
     });
-    const responsiblePersonsArray = [...this.state.responsiblePersonsArray];
-    responsiblePersonsArray[0].value = responsiblePersons[index].email;
-    responsiblePersonsArray[1].value = responsiblePersons[index].firstName;
-    responsiblePersonsArray[2].value = responsiblePersons[index].lastName;
-    responsiblePersonsArray[3].value = responsiblePersons[index].phoneNumber;
+    const responsiblePersonFormValues = [...this.state.responsiblePersonFormValues];
+    responsiblePersonFormValues[0].value = responsiblePersons[index].email;
+    responsiblePersonFormValues[1].value = responsiblePersons[index].firstName;
+    responsiblePersonFormValues[2].value = responsiblePersons[index].lastName;
+    responsiblePersonFormValues[3].value = responsiblePersons[index].phoneNumber;
 
     this.setState({
-      responsiblePersonsArray: responsiblePersonsArray,
+      responsiblePersonFormValues: responsiblePersonFormValues,
       selected: responsiblePersons[index].firstName
     });
   };
 
   handleSubmit = () => {
     this.setState({ isLoading: true });
-    const { responsiblePersonsArray, addNewProjectArray } = this.state;
-    const { history, match, projectActions } = this.props;
+    const { responsiblePersonFormValues } = this.state;
+    const addNewProjectFormValues = [...this.state.addNewProjectFormValues];
+    const { history, match, projectActions, clientsActions } = this.props;
+
     projectActions.createProjectACreator(
-      addNewProjectArray,
-      responsiblePersonsArray,
-      history,
-      match.url
-    );
+      addNewProjectFormValues,
+      responsiblePersonFormValues
+    ).then(response => {
+      clearDataOfForm(addNewProjectFormValues);
+      addNewProjectFormValues[CloudId].disable = true;
+      setTimeout(() => {
+        this.setState({showModal: false, openFirstForm: true, addNewProjectFormValues: addNewProjectFormValues});
+        projectActions.createProject(null, []);
+        history.push(match.url + "/" + response.id);
+      }, 1500);
+    });
   };
 
   pullDOM = () => {
     const {
-      addNewProjectArray,
-      responsiblePersonsArray,
+      addNewProjectFormValues,
+      responsiblePersonFormValues,
       openFirstForm,
       selected,
       responsiblePersons,
@@ -393,7 +405,7 @@ class ProjectsContainer extends React.Component {
         <Modal
           key={1}
           open={this.state.showModal}
-          classNames={{ modal: "Modal Modal-add-owner" }}
+          classNames={{ modal: `Modal ${openFirstForm ? "Modal-add-project" : ""}` }}
           contentLabel="Add project modal"
           onClose={() => this.setState({ showModal: false })}
         >
@@ -408,10 +420,9 @@ class ProjectsContainer extends React.Component {
               shouldSubmit={false}
               dateIndexesToCompare={[3, 4]}
               onSubmit={this.changeForm}
-              formItems={addNewProjectArray}
+              cloudIdInForm={CloudId}
+              formItems={addNewProjectFormValues}
               endDate={today.getDate()}
-              clientsWhichMatch={this.props.fetchedFormClients}
-              onChangeClient={event => this.onChangeClient(event)}
               onBlur={this.goForClient}
             />
           ) : (
@@ -419,7 +430,7 @@ class ProjectsContainer extends React.Component {
               btnTitle={t("Add")}
               key={2}
               shouldSubmit={true}
-              formItems={responsiblePersonsArray}
+              formItems={responsiblePersonFormValues}
               onSubmit={this.handleSubmit}
               isLoading={isLoading}
               submitResult={{
@@ -472,13 +483,18 @@ function mapStateToProps(state) {
     toConfirm: state.asyncReducer.toConfirm,
     isWorking: state.asyncReducer.isWorking,
     type: state.asyncReducer.type,
+    clients: state.clientsReducer.clients,
 
     fetchedFormClients: state.persistHelpReducer.fetchedFormClients,
     fetchStatus: state.persistHelpReducer.fetchStatus,
     fetchError: state.persistHelpReducer.fetchError,
 
     createProjectStatus: state.projectsReducer.createProjectStatus,
-    createProjectErrors: state.projectsReducer.createProjectErrors
+    createProjectErrors: state.projectsReducer.createProjectErrors,
+    
+    contactPersonData: state.projectsReducer.contactPersonData,
+    getContactPersonDataStatus: state.projectsReducer.getContactPersonDataStatus,
+    getContactPersonDataErrors: state.projectsReducer.getContactPersonDataErrors
   };
 }
 
@@ -486,7 +502,8 @@ function mapDispatchToProps(dispatch) {
   return {
     projectActions: bindActionCreators(projectsActions, dispatch),
     async: bindActionCreators(asyncActions, dispatch),
-    persistHelpActions: bindActionCreators(persistHelpActions, dispatch)
+    persistHelpActions: bindActionCreators(persistHelpActions, dispatch),
+    loadClients: () => dispatch(loadClients())
   };
 }
 

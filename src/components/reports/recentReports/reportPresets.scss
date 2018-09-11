@@ -27,15 +27,22 @@
     .recentReport{
         .generateCell{
             border: none;
-            text-align: center;
-            vertical-align: middle;
-            padding-left: 20px;
-            h2{
+            div{
+                display: flex;
+                text-align: center;
+                vertical-align: middle;
+                padding-left: 20px;
+                div{
                 color: white;
                 padding: 10px;
+                margin-right: 5px;
                 border-radius: 5px;
                 background-color: #82b541;
                 cursor: pointer;
+                &:nth-child(2){
+                    background-color: darkred;
+                }
+            }
             }
         }
     }

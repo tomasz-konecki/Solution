@@ -109,6 +109,8 @@ class Form extends Component {
 
     this.setState({ formItems: newFormItems, validationResult: shouldSubmit });
   };
+
+
   onChangeInput = (e, id, type) => {
     const newFormItems = [...this.state.formItems];
 
@@ -124,6 +126,20 @@ class Form extends Component {
       newFormItems[id].inputType,
       newFormItems[id].title
     );
+
+    if(type === "client"){
+      const indexOfMatchedClient = newFormItems[id].dataToMap.findIndex(i => {
+        return i.name === e.target.value
+      });
+      const { cloudIdInForm } = this.props;
+      
+      if(indexOfMatchedClient !== -1){
+
+        const cloudsInClient = newFormItems[id].dataToMap[indexOfMatchedClient].clouds;
+        newFormItems[cloudIdInForm].dataToMap = cloudsInClient;
+      }
+      newFormItems[cloudIdInForm].disable = newFormItems[id].error !== "";
+    }
 
     this.setState({
       newFormItems: newFormItems,
@@ -214,7 +230,7 @@ class Form extends Component {
       >
         {this.state.formItems.map((i, index) => {
           return (
-            <section className="input-container" key={i.title}>
+            <section style={{display: i.disable === true ? 'none' : 'flex'}} className="input-container" key={i.title}>
               <label>{i.title}</label>
               <div className="right-form-container">
                 {!i.mode || i.mode === "text" ? (
@@ -236,13 +252,16 @@ class Form extends Component {
                   />
                 ) : i.mode === "drop-down-with-data" ? (
                   <DataList
-                    dataToMap={this.props.clientsWhichMatch}
-                    onChange={this.props.onChangeClient}
+                    key={index}
+                    identity={i.inputType}
+                    dataToMap={i.dataToMap}
+                    onChange={e => this.onChangeInput(e, index, i.inputType)}
                     value={i.value}
                     placeholder={i.placeholder}
                     error={i.error}
-                    onBlur={this.props.onBlur}
+                    onBlur={i.inputType === "client" ? this.props.onBlur : null}
                   />
+                  
                 ) : i.mode === "date-picker" ? (
                   <DatePicker
                     style={{ width: "100%" }}
@@ -390,7 +409,19 @@ class Form extends Component {
                       );
                     })}
                   </select>
-                ) : null}
+                ) : i.mode === "type-and-select" ? 
+
+                <DataList
+                    key={index}
+                    identity={i.inputType}
+                    dataToMap={i.dataToMap}
+                    onChange={e => this.onChangeInput(e, index, i.inputType)}
+                    value={i.value}
+                    placeholder={i.placeholder}
+                    error={i.error}
+                    onBlur={i.inputType === "client" ? this.props.onBlur : null}
+                  /> :
+                null}
 
                 <p className="form-error">
                   <span>{i.error}</span>

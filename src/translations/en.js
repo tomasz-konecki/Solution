@@ -194,6 +194,7 @@ const translations = {
     RoleMissing: "Role is missing.",
     NoLevel: "No level",
     CallSkype: "Call Skype",
+    CallBusinessSkype: "Call Business Skype",
     InsertSkypeId: "Insert SkypeId",
     SkypeIdUpdated: "SkypeId has been updated.",
     Activate: "Activate",
@@ -225,6 +226,29 @@ const translations = {
     OperationSuccessful: "Operation Succes",
     QuarterTalkAdded: "Quarter Talk has been added",
     QuarterTalkActivated: "Quarter Talk has been activated"
+  },
+  EmployeeSkills: {
+    Skills: "Skills",
+    NoSkills: "No skills",
+    ManageSkills: "Manage skills",
+    Find: "Find",
+    ShowAdded: "Show added",
+    ShowAll: "Show All",
+    NoDataToShow: "No data to show",
+    NewSkills: "New skills",
+    ApproveChanges: "Approve changes",
+    SkillsAddedSuccessfull: "Skills added successfull",
+    Search: "Search",
+    SearchInAdded: "search in added...",
+    SearchInAll: "search in all..."
+  },
+  EmployeeTable: {
+    AddedBy: "Added by",
+    Project: "Project",
+    Role: "Role",
+    StartDate: "Start date",
+    EndDate: "End date",
+    EmptyAssignments: "Empty assignments",
   },
   ActivateCheckbox: {
     ShowDeleted: "Show Deleted"
@@ -313,11 +337,14 @@ const translations = {
     CannotContainSpecial: "Project name cannot contain special characters",
     Description: "Description",
     Client: "Client",
+    Cloud: "Choose cloud",
     ContactPerson: "Responsible person",
     StartDate: "Start date",
     EndDate: "End Date",
     ProjectAddedSuccessfully: "Project added successfully",
-    Add: "Add"
+    Add: "Add",
+    CloudPlaceHolder: "Add own cloud or choose from list",
+    ClientPlaceHolder: "Add own client or choose from list"
   },
   EditProjectDetails: {
     ProjectSuccessfullyEdited: "Project edited successfully"
@@ -332,7 +359,10 @@ const translations = {
     StartDate: "Start date",
     EndDate: "End date",
     Today: "Today",
-    Confirm: "Confirm"
+    Confirm: "Confirm",
+    Next: "Next",
+    Send: "Send",
+    Back: "Back"
   },
   ResponsiblePersonBlock: {
     NameNoSpecial: "Name cannot contain either special characters or digits.",

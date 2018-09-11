@@ -10,7 +10,10 @@ import {
   CHANGE_PROJECT_SKILLS,
   ADD_SKILLS_TO_PROJECT, 
   CHANGE_PROJECT_STATE,
-  CREATE_PROJECT
+  CREATE_PROJECT,
+  GET_SUGGEST_EMPLOYEES,
+  CHANGE_GET_SUGGEST_EMPLOYEES_STATUS,
+  GET_CONTACT_PERSON_DATA
 } from "../constants";
 import { updateObject } from '../services/methods';
 const initialState = {
@@ -52,11 +55,23 @@ const initialState = {
   currentOperation: "",
 
   createProjectStatus: null,
-  createProjectErrors: []
+  createProjectErrors: [],
+
+  getSuggestEmployeesStatus: null,
+  getSuggestEmployeesError: [],
+
+  suggestEmployees: {},
+
+  contactPersonData: [],
+  getContactPersonDataStatus: null,
+  getContactPersonDataErrors: []
 };
 
 export const projectsReducer = (state = initialState, action) => {
   switch (action.type) {
+    case GET_CONTACT_PERSON_DATA:
+      return updateObject(state, { contactPersonData: action.contactPersonData, getContactPersonDataStatus: action.getContactPersonDataStatus, 
+        getContactPersonDataErrors: action.getContactPersonDataErrors })
     case LOAD_PROJECTS_SUCCESS:
       return {
         projects: action.projects.results,
@@ -106,6 +121,10 @@ export const projectsReducer = (state = initialState, action) => {
     case CREATE_PROJECT:
       return updateObject(state, { createProjectStatus: action.createProjectStatus, 
         createProjectErrors: action.createProjectErrors})
+    case GET_SUGGEST_EMPLOYEES:
+      return updateObject(state, { suggestEmployees: action.suggestEmployees})
+    case CHANGE_GET_SUGGEST_EMPLOYEES_STATUS:
+      return updateObject(state, { getSuggestEmployeesStatus: action.getSuggestEmployeesStatus, getSuggestEmployeesError: action.getSuggestEmployeesError})
     default:
       return state;
   }

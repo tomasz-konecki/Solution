@@ -22,7 +22,8 @@ const genReport = ({
   generateReportErrors,
   startPathname,
   currentPath,
-  isStarted
+  isStarted,
+  addToFavorites
 }) => {
   const isUrlDifferentFromFoldersUrl = (currentPath.search("onedrive") === -1 && currentPath.search("gdrive")) === -1;
   const shouldLetGenerate = (addList.length > 0 && !isUrlDifferentFromFoldersUrl) ? true : false;
@@ -121,8 +122,13 @@ const genReport = ({
               }
             btnTitle="Generuj raport"
           />
+        {shouldLetGenerate &&
+        <React.Fragment>
+          <input disabled={!shouldLetGenerate} type="checkbox" id="saveAsFavoriteCheckbox" onChange={addToFavorites}/>
+          <label htmlFor="saveAsFavoriteCheckbox">Dodaj ten raport do ulubionych</label>
+        </React.Fragment>
+        }
         </div>
-        
         {isStarted && 
           <PromptsCommander barType="small-progress" />
         }

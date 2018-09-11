@@ -6,12 +6,6 @@
   flex-flow: wrap;
   justify-content: space-between;
 
-  .skype {
-    display: inline-block;
-    text-align: center;
-    width: 100%;
-  }
-
   .information-for-statuses {
     position: absolute;
     bottom: -150px;
@@ -163,6 +157,26 @@
           padding: 18px 0 0 15px;
           width: 100%;
         }
+        .skype {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          width: 100%;
+          padding: 15px 5px 10px 5px;
+          text-decoration: none;
+        }
+        .skypeId{
+          position: unset !important;
+          font-size: 15px;
+          margin-left: 5px;
+        }
+        .skypeId:hover{
+          text-decoration: underline;
+        }
+        .businessSkypeIcon{
+          width: 20px;
+        }
+
       }
       @media screen and (max-width: 764px) {
         width: 100%;

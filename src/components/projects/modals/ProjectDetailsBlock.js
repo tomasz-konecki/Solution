@@ -45,18 +45,35 @@ class ProjectDetailsBlock extends React.PureComponent {
         maxLength: 1500,
         canBeNull: false
       },
+
       {
         title: "Klient",
         type: "text",
-        placeholder: "wprowadź klienta...",
+        placeholder: "wpisz nazwę klienta bądź wybierz z listy",
         mode: "drop-down-with-data",
         value: "",
         error: "",
         inputType: "client",
-        minLength: 3,
-        maxLength: 100,
-        canBeNull: false
+        minLength: 1,
+        maxLength: 150,
+        canBeNull: false,
+        dataToMap: []
       },
+      {
+        title: "Wybierz chmurę",
+        type: "text",
+        placeholder: "Wpisz nazwę chmury lub wybierz z listy",
+        mode: "drop-down-with-data",
+        value: "",
+        error: "",
+        inputType: "cloud",
+        minLength: 1,
+        maxLength: 150,
+        canBeNull: true,
+        dataToMap: [],
+        disable: false
+      },
+
       {
         title: "Data rozpoczęcia",
         name: "startDate",
@@ -78,11 +95,8 @@ class ProjectDetailsBlock extends React.PureComponent {
         canBeBefore: false
       }
     ],
-    fetchedClients: [],
-    clientsWhichMatch: [],
     isAutocorrect: false,
     fetchClientsError: "",
-    autoCorrect: true,
     isLoading: false,
 
     responsiblePersons: [],
@@ -139,29 +153,24 @@ class ProjectDetailsBlock extends React.PureComponent {
 
   componentDidMount() {
     WebApi.clients.get.all().then(response => {
-      this.setState({ fetchedClients: response.replyBlock.data.dtoObjects });
-      this.goForClient();
+      const editProjectArray = [...this.state.editProjectArray];
+      editProjectArray[2].dataToMap = response.replyBlock.data.dtoObjects;
+      this.setState({ editProjectArray: editProjectArray });
     });
 
     const editProjectArray = [...this.state.editProjectArray];
     const { project } = this.props;
-    const indexes = [1, 2, 3, 4, 5];
+
+    editProjectArray[0].value = project.name;
+    editProjectArray[1].value = project.description;
+    editProjectArray[2].value = project.client;
+    editProjectArray[4].value = project.startDate;
+    editProjectArray[5].value = project.estimatedEndDate;
 
     this.setState({
-      editProjectArray: this.putDataIntoArray(
-        project,
-        indexes,
-        editProjectArray
-      )
+      editProjectArray: editProjectArray
     });
   }
-  putDataIntoArray = (baseObject, indexes, arrayToChange) => {
-    const keys = mapObjectKeysToArrayByGivenIndexes(baseObject, indexes);
-    for (let i = 0; i < keys.length; i++)
-      arrayToChange[i].value = baseObject[keys[i]];
-    return arrayToChange;
-  };
-
   componentWillReceiveProps(nextProps) {
     if (nextProps.editProjectErrors !== this.props.editProjectErrors) {
       this.setState(
@@ -182,89 +191,64 @@ class ProjectDetailsBlock extends React.PureComponent {
       isLoading: true,
       editProjectResult: { content: "", status: null }
     });
+    const { editProjectArray, responsiblePersonArray } = this.state;
+    const { project, onlyActiveAssignments, editProject } = this.props;
     const projectToSend = {
-      name: this.state.editProjectArray[0].value,
-      description: this.state.editProjectArray[1].value,
-      client: this.state.editProjectArray[2].value,
+      name: editProjectArray[0].value,
+      description: editProjectArray[1].value,
+      client: editProjectArray[3].value ? editProjectArray[3].value : editProjectArray[2].value,
       responsiblePerson: {
-        firstName: this.state.responsiblePersonArray[1].value,
-        lastName: this.state.responsiblePersonArray[2].value,
-        email: this.state.responsiblePersonArray[0].value,
-        phoneNumber: this.state.responsiblePersonArray[3].value
+        firstName: responsiblePersonArray[1].value,
+        lastName: responsiblePersonArray[2].value,
+        email: responsiblePersonArray[0].value,
+        phoneNumber: responsiblePersonArray[3].value
       },
-      startDate: moment(this.state.editProjectArray[3].value).format(),
-      estimatedEndDate: moment(this.state.editProjectArray[4].value).format()
+      startDate: moment(editProjectArray[4].value).format(),
+      estimatedEndDate: moment(editProjectArray[5].value).format()
     };
-    this.props.editProject(
-      this.props.project.id,
+    editProject(
+      project.id,
       projectToSend,
-      this.props.onlyActiveAssignments
+      onlyActiveAssignments
     );
-  };
-  onChangeClient = event => {
-    const ClientId = 2;
-    const editProjectArray = [...this.state.editProjectArray];
-    editProjectArray[ClientId].value = event.target.value;
-    editProjectArray[ClientId].error = validateInput(
-      event.target.value,
-      editProjectArray[ClientId].canBeNull,
-      editProjectArray[ClientId].minLength,
-      editProjectArray[ClientId].maxLength,
-      editProjectArray[ClientId].inputType,
-      editProjectArray[ClientId].title
-    );
-    const clientsWhichMatch = [];
-    if (this.state.fetchedClients.length > 0 && this.state.autoCorrect) {
-      for (let key in this.state.fetchedClients) {
-        if (this.state.fetchedClients[key].name) {
-          if (
-            this.state.fetchedClients[key].name.search(event.target.value) !==
-            -1
-          ) {
-            clientsWhichMatch.push(this.state.fetchedClients[key]);
-          }
-        }
-      }
-    }
-    this.setState({
-      editProjectArray: editProjectArray,
-      clientsWhichMatch: clientsWhichMatch
-    });
   };
 
   goForClient = () => {
-    const index = this.state.fetchedClients.findIndex(i => {
-      return i.name === this.state.editProjectArray[2].value;
+    const clientIdInForm = 2;
+    const { getContactPersonDataACreator } = this.props;
+    const editProjectArray = [...this.state.editProjectArray];
+   
+    const indexOfMatchedClient = editProjectArray[clientIdInForm].dataToMap.findIndex(i => {
+      return i.name === editProjectArray[clientIdInForm].value
     });
-    if (index !== -1) {
-      WebApi.responsiblePerson.get
-        .byClient(this.state.fetchedClients[index].id)
-        .then(response => {
-          if (response.replyBlock.data.dtoObjects.length > 0) {
-            let responsiblePersons = [];
-
-            responsiblePersons = responsiblePersons.concat(
-              response.replyBlock.data.dtoObjects
-            );
-            const responsiblePersonArray = [
-              ...this.state.responsiblePersonArray
-            ];
-            responsiblePersonArray[0].value =
-              response.replyBlock.data.dtoObjects[0].email;
-            responsiblePersonArray[1].value =
-              response.replyBlock.data.dtoObjects[0].firstName;
-            responsiblePersonArray[2].value =
-              response.replyBlock.data.dtoObjects[0].lastName;
-            responsiblePersonArray[3].value =
-              response.replyBlock.data.dtoObjects[0].phoneNumber;
-
-            this.setState({
-              responsiblePersons: responsiblePersons,
-              responsiblePersonArray: responsiblePersonArray
-            });
-          }
-        });
-    }
+    const allClientsContainsGivenClient = indexOfMatchedClient !== -1;
+       
+    if(allClientsContainsGivenClient){
+      this.setState({isLoading: true});
+   
+      getContactPersonDataACreator(editProjectArray[clientIdInForm].
+        dataToMap[indexOfMatchedClient].id).then(response => {
+          if(response.length > 0){
+             let responsiblePersons = [];
+             const responsiblePersonArray = [...this.state.responsiblePersonArray];
+             
+             responsiblePersons = responsiblePersons.concat(response);
+   
+             responsiblePersonArray[0].value = response[0].email;
+             responsiblePersonArray[1].value = response[0].firstName;
+             responsiblePersonArray[2].value = response[0].lastName;
+             responsiblePersonArray[3].value = response[0].phoneNumber;
+             
+             this.setState({
+               responsiblePersons: responsiblePersons,
+               responsiblePersonArray: responsiblePersonArray
+             });
+           }
+           this.setState({isLoading: false});
+         }).catch(() => {
+           this.setState({ isLoading: false });
+         })
+       }
   };
   changeForm = () => {
     this.setState({
@@ -348,11 +332,11 @@ class ProjectDetailsBlock extends React.PureComponent {
             onSubmit={this.changeForm}
             shouldSubmit={false}
             btnTitle={t("Next")}
+            cloudIdInForm={3}
             isLoading={this.state.isLoading}
             endDate={this.props.estimatedEndDate}
             formItems={this.state.editProjectArray}
             clientsWhichMatch={this.state.clientsWhichMatch}
-            onChangeClient={event => this.onChangeClient(event)}
             onBlur={this.goForClient}
           />
         )}

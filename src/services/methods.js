@@ -117,3 +117,16 @@ export const refreshPage = () => {
   window.location.href = window.location.href;
 }
 
+export const clearDataOfForm = formItems => {
+  for(let key in formItems){
+    if(formItems[key].mode !== "date-picker"){
+      formItems[key].value = "";
+    }
+    else{
+      formItems[key].value = moment();
+    }
+
+    formItems[key].error = "";
+  }
+}
+

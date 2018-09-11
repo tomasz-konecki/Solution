@@ -12,6 +12,7 @@ import { addNewSkillsToEmployeeACreator, addNewSkillsToEmployee } from '../../..
 import Spinner from '../../../common/spinner/spinner';
 import SpinnerButton from '../../../form/spinner-btn/spinner-btn';
 import EmptyContent from '../../../common/empty-content/empty-content';
+import { translate } from "react-translate";
 
 const minYearsOfExp = 1;
 const maxYearsOfExp = 28;
@@ -251,7 +252,7 @@ class EmployeeSkills extends React.Component{
             copiedAllSkills, showSkillsToAdd, showSearchBar, searchValue,
             searchedSkills, isAddingNewSkills, didUserDeleteSkill } = this.state;
         const { changeSkillsStatus, loadSkillsStatus, loadSkillsErrors, loadedSkills,
-            addNewSkillsStatus, addNewSkillsErrors, employeeHasAccount, employeeDeleted } = this.props;
+            addNewSkillsStatus, addNewSkillsErrors, employeeHasAccount, employeeDeleted, t } = this.props;
 
         const listNameToShow = showSearchBar ? "searchedSkills" : 
             showSkillsToAdd ? "skillsToAdd" : "copiedAllSkills";
@@ -263,7 +264,7 @@ class EmployeeSkills extends React.Component{
             "Aktywny" : "Nieaktywny";
         return (
             <section className="employee-skills">
-                <h2>Umiejętności 
+                <h2> {t("Skills")}
                     <span>
                     {!changeSkillsStatus && !isChangingSkills && status === "Aktywny" && 
                         <i onClick={this.openSkillsModal} className="fa fa-plus"></i>
@@ -295,7 +296,7 @@ class EmployeeSkills extends React.Component{
                     <EmptyContent sizeClass="skills-size"
                     action={status !== "Nieaktywny" ? this.openSkillsModal : null} 
                     shouldShowTopIcon={status !== "Nieaktywny"}
-                    content="Brak umiejętności"
+                    content={t("NoSkills")}
                     operationIcon="fa fa-plus"
                     mainIcon="fa fa-fire"
                     />
@@ -313,39 +314,39 @@ class EmployeeSkills extends React.Component{
                             {showSearchBar ? 
                                 <header>
                                     <h3 className="section-heading">
-                                    Wyszukiwarka
+                                    {t("Search")}
                                     </h3>
                                     <form>
-                                        <label>Wyszukaj</label>
+                                        <label>{t("Search")}</label>
                                         <input onChange={e => this.onChange(e)}
                                         value={searchValue}
                                         type="text" placeholder={showSkillsToAdd ? 
-                                            "szukasz w dodanych..." : "szukasz we wszystkich..."} />
+                                            t("SearchInAdded") : t("SearchInAll")} />
                                         <i onClick={this.clearSearchData} className="fa fa-times"></i>
                                     </form>    
                                 </header> : 
 
                                 <header>
                                 <h3 className="section-heading">
-                                Zarządzaj umiejętnościami
+                                {t("ManageSkills")}
                                 </h3>
                                 <nav>
                                     {this.state[listNameToShow].length !== 0 && 
                                     <button onClick={this.showSearchBar}>
-                                        Znajdź 
+                                        {t("Find")}
                                         <i className="fa fa-search"></i>
                                     </button>
                                     }
                                     
                                     <button onClick={
                                         () => this.setState({showSkillsToAdd: !showSkillsToAdd})}>
-                                        {showSkillsToAdd ? "Pokaż wszystkie" : "Pokaż dodane"}
+                                        {showSkillsToAdd ? t("ShowAll") : t("ShowAdded") }
                                     </button>
                                 </nav>    
                                 </header>
                             }
                             {this.state[listNameToShow].length === 0 ? 
-                                <p className="no-data-to-show">Brak danych do wyświetlenia</p>
+                                <p className="no-data-to-show"> {t("NoDataToShow")} </p>
                                 : 
                                 <ul>
                                 {this.state[listNameToShow].map(skill => {
@@ -363,16 +364,16 @@ class EmployeeSkills extends React.Component{
                             <SpinnerButton 
                             submitResult={{
                                 status: addNewSkillsStatus,
-                                content: addNewSkillsStatus ? "Pomyślnie dodano umiejętności" :     
+                                content: addNewSkillsStatus ? t("SkillsAddedSuccessfull") :     
                                 addNewSkillsErrors && addNewSkillsErrors[0]
                             }}
                             onClickHandler={this.saveNewAddedSkills}
                             isLoading={isAddingNewSkills}
-                            btnTitle="Zatwierdź zmiany"
+                            btnTitle={t("ApproveChanges")}
                             />
                             <div className="counters">
                                 {skillsToAdd.length > 0 && 
-                                    <p><b>Nowe umiejętności: </b><span>{skillsToAdd.length}</span></p>
+                                    <p><b>{t("NewSkills")}: </b><span>{skillsToAdd.length}</span></p>
                                 }
                             </div>
                         </div>
@@ -413,6 +414,6 @@ const mapStateToProps = state => {
   export default connect(
     mapStateToProps,
     mapDispatchToProps
-  )(EmployeeSkills);
+  )(translate("EmployeeSkills")(EmployeeSkills));
 
 

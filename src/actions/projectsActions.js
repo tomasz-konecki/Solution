@@ -11,7 +11,10 @@ import {
   EDIT_PROJECT,
   ADD_SKILLS_TO_PROJECT,
   CHANGE_PROJECT_STATE,
-  CREATE_PROJECT
+  CREATE_PROJECT,
+  GET_SUGGEST_EMPLOYEES,
+  CHANGE_GET_SUGGEST_EMPLOYEES_STATUS,
+  GET_CONTACT_PERSON_DATA
 } from "../constants";
 import axios from "axios";
 import WebApi from "../api";
@@ -90,8 +93,8 @@ export const getProject = (
 
 export const getProjectACreator = (projectId, onlyActiveAssignments) => {
   return dispatch => {
-    WebApi.projects
-      .get(projectId, onlyActiveAssignments)
+    WebApi.projects.get
+      .projects(projectId, onlyActiveAssignments)
       .then(response => {
         const responsiblePersonKeys = {
           keys: cutNotNeededKeysFromArray(
@@ -139,50 +142,25 @@ export const addEmployeeToProject = (
     addEmployeeToProjectErrors
   };
 };
-const addEmployeeToProjectPromise = objectToAdd => dispatch => {
-  return new Promise((resolve, reject) => {
-    WebApi.assignments
-      .post(objectToAdd)
-      .then(response => {
-        resolve(response);
-      })
-      .catch(error => {
-        reject(error);
-      });
-  });
-};
-export const addEmployeeToProjectACreator = (
-  empId,
-  projectId,
-  strDate,
-  endDate,
-  role,
-  assignedCapacity,
-  responsibilites,
-  onlyActiveAssignments
-) => {
-  return dispatch => {
-    const objectToAdd = {
-      "employeeId": empId,
-      "projectId": projectId,
-      "startDate": strDate,
-      "endDate": endDate,
-      "role": role,
-      "assignedCapacity": assignedCapacity/10,
-      "responsibilities": responsibilites
-    }
-    dispatch(addEmployeeToProjectPromise(objectToAdd)).then(response => {
-      dispatch(addEmployeeToProject(true, []));
-      
-      dispatch(getProjectACreator(projectId, onlyActiveAssignments));
-      dispatch(clearAfterTimeByFuncRef(addEmployeeToProject, 5000, null, []));
-      
-    }).catch(error => {
-      dispatch(addEmployeeToProject(false, errorCatcher(error)));
-      dispatch(clearAfterTimeByFuncRef(addEmployeeToProject, 5000, null, []));
-      
-    })
-  }
+export const addEmployeeToProjectACreator = (empId, projectId, strDate, endDate, role, assignedCapacity,
+  responsibilites, onlyActiveAssignments ) => dispatch => { 
+      const assignmentModel = {
+        "employeeId": empId,
+        "projectId": projectId,
+        "startDate": strDate,
+        "endDate": endDate,
+        "role": role,
+        "assignedCapacity": assignedCapacity/10,
+        "responsibilities": responsibilites
+      }
+      WebApi.assignments.post(assignmentModel).then(response => {
+        dispatch(addEmployeeToProject(true, []));
+        dispatch(getProjectACreator(projectId, onlyActiveAssignments));
+      }).catch(error => {
+        dispatch(addEmployeeToProject(false, errorCatcher(error)));
+      }).then(
+        dispatch(clearAfterTimeByFuncRef(addEmployeeToProject, 5000, null, []))
+      );
 }
 
 const clearAfterTimeByFuncRef = (funcRef, delay, ...params) => {
@@ -192,7 +170,6 @@ const clearAfterTimeByFuncRef = (funcRef, delay, ...params) => {
     }, delay);
   }
 }
-
 
 export const addFeedback = (addFeedbackStatus, addFeedbackErrors) => {
   return {
@@ -267,8 +244,8 @@ const editProjectPromise = (projectToSend, projectId) => dispatch => {
 };
 const getProjectPromise = (projectId, onlyActiveAssignments) => dispatch => {
   return new Promise((resolve, reject) => {
-    WebApi.projects
-      .get(projectId, onlyActiveAssignments)
+    WebApi.projects.get
+      .projects(projectId, onlyActiveAssignments)
       .then(response => {
         resolve(response.replyBlock.data.dtoObject);
       })
@@ -460,37 +437,75 @@ export const createProject = (createProjectStatus, createProjectErrors) => {
   return { type: CREATE_PROJECT, createProjectStatus, createProjectErrors };
 };
 
-export const createProjectACreator = (
-  firstArray,
-  secondArray,
-  history,
-  url
-) => {
-  return dispatch => {
+export const createProjectACreator = (firstArray, secondArray) => dispatch => {
+  return new Promise((resolve, reject) => {
     const model = {
       name: firstArray[0].value,
       description: firstArray[1].value,
-      client: firstArray[2].value,
+      client: firstArray[3].value ? firstArray[3].value : firstArray[2].value,
       responsiblePerson: {
         firstName: secondArray[1].value,
         lastName: secondArray[2].value,
         email: secondArray[0].value,
         phoneNumber: secondArray[3].value
       },
-      startDate: firstArray[3].value,
-      estimatedEndDate: firstArray[4].value
+      startDate: firstArray[4].value,
+      estimatedEndDate: firstArray[5].value
     };
     WebApi.projects.post
       .add(model)
       .then(response => {
         dispatch(createProject(true, []));
-
-        setTimeout(() => {
-          history.push(url + "/" + response.replyBlock.data.dtoObject.id);
-        }, 1500);
+        resolve(response.replyBlock.data.dtoObject);
       })
       .catch(error => {
         dispatch(createProject(false, errorCatcher(error)));
+        reject(error);
+      });
+  })
+}
+export const getSuggestEmployeesStatus = (getSuggestEmployeesStatus, getSuggestEmployeesError) =>{
+  return {
+    type: CHANGE_GET_SUGGEST_EMPLOYEES_STATUS,
+    getSuggestEmployeesStatus,
+    getSuggestEmployeesError
+  }
+}
+export const getSuggestEmployees = suggestEmployees =>{
+  return {type: GET_SUGGEST_EMPLOYEES, suggestEmployees}
+}
+
+export const getSuggestEmployeesACreator = projectId =>{
+  return dispatch => {
+    WebApi.projects.get.suggestEmployees(projectId)
+      .then(response =>{
+        if(!response.errorOccurred()){
+          dispatch(getSuggestEmployees(response.extractData()));
+          dispatch(getSuggestEmployeesStatus(true,[]));
+        }
+      })
+      .catch(error => {
+        dispatch(getSuggestEmployeesStatus(false,errorCatcher(error)));
       });
   };
 };
+
+
+export const getContactPersonData = (contactPersonData, getContactPersonDataStatus, getContactPersonDataErrors) => {
+  return {
+    type: GET_CONTACT_PERSON_DATA, contactPersonData, getContactPersonDataStatus, getContactPersonDataErrors
+  }
+}
+
+export const getContactPersonDataACreator = clientId => dispatch => {
+  return new Promise((resolve, reject) => {
+    WebApi.responsiblePerson.get.byClient(clientId).then(response => {
+      const { dtoObjects } = response.replyBlock.data;
+      dispatch(getContactPersonData(dtoObjects, true, []));
+      resolve(dtoObjects);
+    }).catch(error => {
+      dispatch(getContactPersonData([], false, errorCatcher(error)));
+      reject(error);
+    })
+  })
+}

@@ -3,6 +3,8 @@ import './employeeTable.scss';
 import Spinner from '../../../common/spinner/small-spinner';
 import { withRouter } from 'react-router-dom';
 import EmptyContent from '../../../common/empty-content/empty-content';
+import { translate } from "react-translate";
+
 class EmployeeTable extends React.Component{
     state = {
         isLoadingData: true
@@ -23,7 +25,7 @@ class EmployeeTable extends React.Component{
         const { isLoadingData } = this.state;
         const { tableTitle, loadAssignmentsStatus, 
             loadAssignmentsErrors, loadedAssignments, loadAssignmentsClear,
-            history } = this.props;
+            history, t } = this.props;
             
         return (
             <div className="table-container emp-table">
@@ -33,11 +35,11 @@ class EmployeeTable extends React.Component{
                     <table>
                         <thead>
                             <tr>
-                                <th>Dodany przez</th>
-                                <th>Projekt</th>
-                                <th>Rola</th>
-                                <th>Data rozpoczęcia</th>
-                                <th>Data zakończenia</th>
+                                <th>{t("AddedBy")}</th>
+                                <th>{t("Project")}</th>
+                                <th>{t("Role")}</th>
+                                <th>{t("StartDate")}</th>
+                                <th>{t("EndDate")}</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -58,7 +60,7 @@ class EmployeeTable extends React.Component{
                 {loadAssignmentsStatus && loadedAssignments.length === 0 && 
                     <EmptyContent sizeClass="assigns-size"
                     shouldShowTopIcon={false}
-                    content="Puste przypisania"
+                    content={t("EmptyAssignments")}
                     mainIcon="fa fa-code-branch"
                     />
                 }
@@ -72,4 +74,4 @@ class EmployeeTable extends React.Component{
     }
 }
 
-export default withRouter(EmployeeTable);
+export default withRouter(translate("EmployeeTable")(EmployeeTable));

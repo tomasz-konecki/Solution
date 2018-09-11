@@ -3,7 +3,7 @@
     position: relative;
     display: flex;
     flex-flow: column;
-    height: 100%;
+    
     align-items: center;
    
         
@@ -19,6 +19,7 @@
         transition: 0.5 all ease-in-out;
         position: relative;
         tr {
+            position: relative;
             @media(max-width: 560px){
                 font-size: 0.7rem;
             }

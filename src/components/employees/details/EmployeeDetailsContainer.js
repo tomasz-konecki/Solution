@@ -210,8 +210,8 @@ class EmployeeDetailsContainer extends React.Component {
                 editSkypeFormItems={editSkypeFormItems}
                 editSkypeId={this.editSkypeId}
                 t={t}
-                skypeIdAddLoading={updateSkypeIdResult.loading}
-                updateSkypeIdResult={updateSkypeIdResult.resultBlock}
+                skypeIdAddLoading={updateSkypeIdResult && updateSkypeIdResult.loading}
+                updateSkypeIdResult={updateSkypeIdResult && updateSkypeIdResult.resultBlock}
               />
 
               <EmployeeSkills

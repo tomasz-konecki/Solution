@@ -1,6 +1,7 @@
 const webpack = require("webpack");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const OptimizeJsPlugin = require("optimize-js-plugin");
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const path = require("path");
 const env = process.env.NODE_ENV || "development";
 
@@ -9,14 +10,19 @@ const plugins = [
     template: "./public/index.ejs",
     filename: "index.html",
     inject: "body"
-  })
+  }),
+  new BundleAnalyzerPlugin()
 ];
 
-if (env === "production") {
+if (env == "production") {
   plugins.push(
     new webpack.optimize.UglifyJsPlugin(),
     new OptimizeJsPlugin({
       sourceMap: false
+    }),
+    new webpack.ContextReplacementPlugin(/moment[/\\]locale$/, /pl|en/),
+    new webpack.DefinePlugin({
+      'process.env.NODE_ENV': JSON.stringify('production')
     })
   );
 }

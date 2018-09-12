@@ -230,14 +230,16 @@ export const editProject = (editProjectStatus, editProjectErrors) => {
     editProjectErrors
   };
 };
-const editProjectPromise = (projectToSend, projectId) => dispatch => {
+export const editProjectPromise = (projectToSend, projectId) => dispatch => {
   return new Promise((resolve, reject) => {
     WebApi.projects.put
       .project(projectId, projectToSend)
       .then(response => {
+        dispatch(editProject(true, []));
         resolve(response);
       })
       .catch(error => {
+        dispatch(editProject(false, errorCatcher(error)));
         reject(error);
       });
   });
@@ -262,8 +264,6 @@ export const editProjectACreator = (
 ) => {
   return dispatch => {
     dispatch(editProjectPromise(projectToSend, projectId)).then(response => {
-      dispatch(editProject(true, []));
-
       dispatch(clearAfterTimeByFuncRef(editProject, 5000, null, []));
       
       dispatch(getProjectPromise(projectId, onlyActiveAssignments)).then(getProjectResponse => {
@@ -283,13 +283,10 @@ export const editProjectACreator = (
         dispatch(getProject(null, 
           false, errorCatcher(error), [], []));
         dispatch(clearAfterTimeByFuncRef(getProject, 5000, null, null, [], [], []));
-        
       })
     }).catch(error => {
-      dispatch(editProject(false, errorCatcher(error)));
       dispatch(clearAfterTimeByFuncRef(editProject, 5000, null, []));
-      
-    })
+    });
   }
 }
      

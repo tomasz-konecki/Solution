@@ -312,14 +312,6 @@ const translations = {
     Error: "Błąd",
     OK: ""
   },
-  EmployeesRowUnfurl: {
-    ActivateEmployee: "Aktywuj pracownika",
-    Confirm: "Potwierdź",
-    Cancel: "Anuluj",
-    Edit: "Edytuj",
-    Save: "Zapisz",
-    Add: "Dodaj"
-  },
   AddProjectOwner: {
     AddOwner: "Dodaj właściciela",
     OwnersAddedSuccessfully: "Właścicieli dodano pomyślnie",
@@ -350,9 +342,6 @@ const translations = {
     ClientPlaceHolder: "wpisz własnego klienta lub wybierz z listy"
     
   },
-  EditProjectDetails: {
-    ProjectSuccessfullyEdited: "Projekt edytowano pomyślnie"
-  },
   ProjectDetailsBlock: {
     EditProjectData: "Edycja danych projektu",
     ProjectName: "Nazwa projektu",
@@ -366,14 +355,9 @@ const translations = {
     Confirm: "Potwierdź",
     Next: "Dalej",
     Send: "Potwierdź",
-    Back: "Wróć"    
-  },
-  ResponsiblePersonBlock: {
-    NameNoSpecial: "Imię nie może zawierać znaków specjalnych ani cyfr.",
-    SurnameNoSpecial: "Nazwisko nie może zawierać znaków specjalnych ani cyfr.",
-    EmailToBeValid:
-      "Adres email powinien mieć odpowiednią strukturę, np. me@mydomain.com.",
-    NumberValid: "Numer telefonu powinien zawierać od 9 do 11 cyfr."
+    Back: "Wróć",
+    ResponsiblePerson: "Osoba odpowiedzialna",
+    ProjectHasBeenEdited: "Projekt został pomyślnie edytowany"
   },
   ProjectRowUnfurl: {
     OwnersList: "Lista właścicieli",
@@ -470,16 +454,6 @@ const translations = {
     ResponsibleFor: "Odpowiedzialny za",
     Begun: "Rozpoczął",
     Ends: "Zakończy"
-  },
-  AssignsContainer: {
-    LastName: "Imię/Nazwisko",
-    Position: "Stanowisko",
-    Skills: "Umiejętności(po przecinku)",
-    MinLevelAbove: "Minimalny poziom powyż.",
-    MinExperience: "Min. lat doświadczenia",
-    Name: "Nazwa",
-    Projects: "Projekty",
-    Employees: "Pracownicy"
   },
   SkillsContainer: {
     Deletion: "Usuwanie",

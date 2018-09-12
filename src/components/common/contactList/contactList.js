@@ -1,5 +1,7 @@
 import React from "react";
 import "./contactList.scss";
+import { translate } from "react-translate";
+
 
 const contactList = props => (
   <section className="contact-list-container">
@@ -22,4 +24,4 @@ const contactList = props => (
   </section>
 );
 
-export default contactList;
+export default translate("ProjectDetailsBlock")(contactList);

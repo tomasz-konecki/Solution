@@ -7,10 +7,8 @@ import { loadClients } from '../../actions/clientsActions';
 import * as asyncActions from "../../actions/asyncActions";
 import * as persistHelpActions from "../../actions/persistHelpActions";
 import Modal from "react-responsive-modal";
-import AddProjectScreen from "../../components/projects/modals/AddProjectScreen";
 import ProjectsList from "../../components/projects/ProjectsList";
 import WebApi from "../../api/";
-import ProjectDetailContainer from "./ProjectDetailContainer";
 import "../../scss/containers/ProjectsContainer.scss";
 import { fetchFormClientsACreator } from "../../actions/persistHelpActions";
 import { ACTION_CONFIRMED } from "./../../constants";
@@ -379,6 +377,7 @@ class ProjectsContainer extends React.Component {
     return (
       <div>
         <ProjectsList
+          push={this.props.history.push}
           openAddProjectModal={this.handleOpenModal}
           projects={this.props.projects}
           currentPage={this.state.currentPage}
@@ -388,20 +387,6 @@ class ProjectsContainer extends React.Component {
           projectActions={this.props.projectActions}
           limit={this.state.limit}
         />
-
-        {/* <Modal
-          open={this.state.showModal}
-          classNames={{ modal: "Modal Modal-projects" }}
-          contentLabel="Projects test modal"
-          onClose={this.handleCloseModal}
-        >
-          <AddProjectScreen
-            projectActions={this.props.projectActions}
-            limit={this.state.limit}
-            currentPage={this.state.currentPage}
-            closeModal={this.handleCloseModal}
-          /> */}
-
         <Modal
           key={1}
           open={this.state.showModal}

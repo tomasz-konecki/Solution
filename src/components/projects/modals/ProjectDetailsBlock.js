@@ -5,7 +5,6 @@ import DatePicker from "react-datepicker";
 import moment from "moment";
 import "../../../scss/components/projects/modals/ProjectDetailsBlock.scss";
 import "react-datepicker/dist/react-datepicker.css";
-import ResponsiblePersonBlock from "./ResponsiblePersonBlock";
 import constraints from "../../../constraints";
 import PropTypes from "prop-types";
 import { translate } from "react-translate";
@@ -192,7 +191,7 @@ class ProjectDetailsBlock extends React.PureComponent {
       editProjectResult: { content: "", status: null }
     });
     const { editProjectArray, responsiblePersonArray } = this.state;
-    const { project, onlyActiveAssignments, editProject } = this.props;
+    const { project, onlyActiveAssignments, editProject, shouldOnlyEdit } = this.props;
     const projectToSend = {
       name: editProjectArray[0].value,
       description: editProjectArray[1].value,
@@ -206,11 +205,23 @@ class ProjectDetailsBlock extends React.PureComponent {
       startDate: moment(editProjectArray[4].value).format(),
       estimatedEndDate: moment(editProjectArray[5].value).format()
     };
-    editProject(
-      project.id,
-      projectToSend,
-      onlyActiveAssignments
-    );
+
+    console.log(projectToSend);
+    
+    if(!shouldOnlyEdit){
+      editProject(
+        project.id,
+        projectToSend,
+        onlyActiveAssignments
+      );
+    }
+    else{
+      editProject(
+        projectToSend,
+        project.id
+      );
+    }
+   
   };
 
   goForClient = () => {

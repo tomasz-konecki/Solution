@@ -5,7 +5,6 @@ import { connect } from "react-redux";
 import Confirmation from "../common/modals/Confirmation";
 import { setActionConfirmation } from "../../actions/asyncActions";
 import Modal from "react-responsive-modal";
-import EmployeesRowUnfurl from "./EmployeesRowUnfurl";
 import PropTypes from "prop-types";
 import { translate } from "react-translate";
 import "../../scss/components/employees/employeesList.scss";
@@ -29,7 +28,6 @@ class EmployeesList extends Component {
       filtering: true,
       filterClass: "EmployeeFilter",
       rowDetailUnfurl: true,
-      unfurler: EmployeesRowUnfurl,
       showDeletedCheckbox: true,
       showAllCheckbox: true,
       redirectPath: "/main/employees/",

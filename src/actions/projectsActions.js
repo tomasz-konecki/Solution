@@ -103,15 +103,13 @@ export const getProjectACreator = (projectId, onlyActiveAssignments) => {
           ),
           names: names
         };
-
         const overViewKeys = {
           keys: cutNotNeededKeysFromArray(
             Object.keys(response.replyBlock.data.dtoObject),
-            [0, 1, 2, 7, 8, 9, 10, 11]
+            [0, 1, 2, ,4, 8, 9, 10, 11, 12, 13]
           ),
           names: overViewNames
         };
-
         dispatch(
           getProject(
             response.replyBlock.data.dtoObject,
@@ -272,7 +270,7 @@ export const editProjectACreator = (
           names: names};
         
         const overViewKeys = {keys: cutNotNeededKeysFromArray(
-            Object.keys(getProjectResponse), [0,1,2,7,8,9,10,11]), 
+            Object.keys(getProjectResponse), [0, 1, 2, ,4, 8, 9, 10, 11, 12, 13]), 
             names: overViewNames};
         
         dispatch(getProject(getProjectResponse, 

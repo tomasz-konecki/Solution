@@ -56,7 +56,6 @@ class Confirmation extends Component {
 
   render() {
     const { t } = this.props;
-    console.log(this.state.resultBlock);
     return (
       <div>
         <Modal

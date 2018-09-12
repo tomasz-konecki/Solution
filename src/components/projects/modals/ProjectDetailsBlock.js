@@ -206,7 +206,6 @@ class ProjectDetailsBlock extends React.PureComponent {
       estimatedEndDate: moment(editProjectArray[5].value).format()
     };
 
-    console.log(projectToSend);
     
     if(!shouldOnlyEdit){
       editProject(

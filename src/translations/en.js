@@ -21,6 +21,11 @@ const translations = {
     Reports: "Reports",
     ImportCV: "Import CV"
   },
+  PreferedRoles: {
+    ChooseRoles: "Choose your prefered roles",
+    SavedSuccessfully: "Successfully saved selected roles",
+    Save: "Save"
+  },
   NotFound404: {
     PageNotFound: "Page Not Found",
     PageNotFoundText: "You don't want to be here..."
@@ -199,9 +204,9 @@ const translations = {
     SkypeIdUpdated: "SkypeId has been updated.",
     Activate: "Activate",
     BeforeYouChangeStatus: "Before you change Employee's status!",
-    BeforeYouChangeStatusContent: `Changing the status of an employee consists in assigning him the time dimension work and experience level. Remember that you can also change its status to 
+    BeforeYouChangeStatusContent: `Changing the status of an employee consists in assigning him the time dimension work and experience level. Remember that you can also change its status to
       Removed
-     which will block it editing options. Changing the status to 
+     which will block it editing options. Changing the status to
       Active
      will allow you to re-change the data of this employee.`,
     Save: "Save",

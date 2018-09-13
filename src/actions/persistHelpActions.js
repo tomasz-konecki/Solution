@@ -3,7 +3,7 @@ import { FETCH_LISTS, CHOOSE_FOLDER_TO_GENERATE_REPORT, G_DRIVE_LOGIN, FETCH_FOR
 from "../constants";
 import WebApi from '../api/index';
 import { getFolders } from './oneDriveActions';
-import { errorCatcher } from '../services/errorsHandler';
+import { errorCatcher, errorCatcherForLogin } from '../services/errorsHandler';
 export const fetchLists = (addList, baseList, helpList, pagesList) => {
     return { type: FETCH_LISTS, addList, baseList, helpList, pagesList }
 }
@@ -27,7 +27,6 @@ export const loginACreator = () => {
     }
 }
 
-
 export const fetchFormClients = (fetchedFormClients, fetchStatus, fetchError) => {
     return { type: FETCH_FORM_CLIENTS, fetchedFormClients, fetchStatus, fetchError}
 }
@@ -40,7 +39,7 @@ export const fetchFormClientsACreator = () => {
             dispatch(fetchFormClients([], false, errorCatcher(error)));
         });
     }
-    
+
 }
 
 export const changeSortBy = driveSortType => {

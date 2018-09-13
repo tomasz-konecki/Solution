@@ -5,18 +5,25 @@ import * as languageActions from "../../actions/languageActions";
 import PropTypes from "prop-types";
 import submit from "../../auth/submit";
 import LoaderHorizontal from "../../components/common/LoaderHorizontal";
+import Modal from 'react-responsive-modal';
 import "../../scss/LoginForm.scss";
 import { push } from "react-router-redux";
 import { translate } from "react-translate";
 import { bindActionCreators } from "redux";
 import { CSSTransitionGroup } from "react-transition-group";
+import { clearAccountRequest } from "../../actions/authActions";
+import AddPreferedRoles from "./AddPreferedRolesModal";
+import loadRoles from '../../actions/usersActions';
 
 class LoginForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       error: "",
-      singleTimout: null
+      singleTimout: null,
+      showPreferedRolesModal: false,
+      userId: null,
+      userIdSaved: null
     };
   }
 
@@ -24,18 +31,42 @@ class LoginForm extends React.Component {
     if (nextProps.error && this.state.error !== nextProps.error) {
       this.setState({ error: nextProps.error });
     }
+
+    if(nextProps.accountRequest && this.state.showPreferedRolesModal !== nextProps.accountRequest){
+      if(this.state.userIdSaved !== this.state.userId){
+        this.setState({
+          showPreferedRolesModal: nextProps.accountRequest,
+          userIdSaved: this.state.userId
+        })
+      }
+    }
   }
 
   componentDidMount() {
     if (this.props.isAuthenticated) {
       this.props.dispatch(push("/main"));
     }
+    this.props.clearAccountRequest();
   }
 
   languageSwitch(language) {
     return event => {
       this.props.lang.languageChange(language);
     };
+  }
+
+  closePreferedRolesModal = () => {
+    this.setState({
+      showPreferedRolesModal: false
+    })
+  }
+
+  handleUserIdChange = (e) => {
+    let value = e.target.value;
+
+    this.setState({
+      userId: value
+    })
   }
 
   render() {
@@ -49,6 +80,7 @@ class LoginForm extends React.Component {
             <div className="container login-details">
               <div className="user-container">
                 <Field
+                  onChange={this.handleUserIdChange}
                   component="input"
                   type="text"
                   placeholder={t("EnterUsername")}
@@ -110,6 +142,20 @@ class LoginForm extends React.Component {
             </div>
           )}
         </CSSTransitionGroup>
+
+        <Modal
+              key={1}
+              open={this.state.showPreferedRolesModal}
+              classNames={{ modal: "Modal Modal-add-owner" }}
+              contentLabel="Choose prefered roles"
+              onClose={this.closePreferedRolesModal}
+          >
+              <AddPreferedRoles
+                userId={this.state.userId}
+                closeModal={this.closePreferedRolesModal}
+              />
+        </Modal>
+
       </div>
     );
   }
@@ -119,13 +165,15 @@ const mapStateToProps = state => {
   return {
     loading: state.authReducer.loading,
     isAuthenticated: state.authReducer.isAuthenticated,
-    tokenExpirationDate: state.authReducer.tokens.tokenExpirationDate
+    tokenExpirationDate: state.authReducer.tokens.tokenExpirationDate,
+    accountRequest: state.authReducer.accountRequest,
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    lang: bindActionCreators(languageActions, dispatch)
+    lang: bindActionCreators(languageActions, dispatch),
+    clearAccountRequest: () => dispatch(clearAccountRequest()),
   };
 };
 

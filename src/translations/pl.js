@@ -25,6 +25,11 @@ const translations = {
     Reports: "Raporty",
     ImportCV: "Import CV"
   },
+  PreferedRoles: {
+    ChooseRoles: "Wybierz preferowane role w serwisie",
+    SavedSuccessfully: "Poprawnie zapisano wybrane role",
+    Save: "Zapisz"
+  },
   SmoothTable: {
     Search: "Szukaj",
     DeleteFilters: "Usuń filtry",
@@ -348,7 +353,7 @@ const translations = {
     Add: "Dodaj",
     CloudPlaceHolder: "wpisz własną lub wybierz chmure z listy",
     ClientPlaceHolder: "wpisz własnego klienta lub wybierz z listy"
-    
+
   },
   EditProjectDetails: {
     ProjectSuccessfullyEdited: "Projekt edytowano pomyślnie"
@@ -366,7 +371,7 @@ const translations = {
     Confirm: "Potwierdź",
     Next: "Dalej",
     Send: "Potwierdź",
-    Back: "Wróć"    
+    Back: "Wróć"
   },
   ResponsiblePersonBlock: {
     NameNoSpecial: "Imię nie może zawierać znaków specjalnych ani cyfr.",

@@ -17,7 +17,8 @@ const initialState = {
   oneDriveToken: "",
   authCodeStatus: null,
   authCodeErrors: [],
-  refreshToken: ""
+  refreshToken: "",
+  accountRequest: false
 };
 
 let pem = (userBlock) => {
@@ -47,7 +48,7 @@ let binPem = (userBlock) => {
 export const authReducer = (state = initialState, action) => {
   switch (action.type) {
     case types.SEND_CODE_TO_GET_TOKEN:
-      return updateObject(state, { oneDriveToken: action.oneDriveToken, 
+      return updateObject(state, { oneDriveToken: action.oneDriveToken,
         authCodeStatus: action.authCodeStatus, authCodeErrors: action.authCodeErrors,
         refreshToken: action.refreshToken })
     case types.AUTH_SUCCESS:
@@ -76,6 +77,16 @@ export const authReducer = (state = initialState, action) => {
         tokens: {},
         language: "pl"
       };
+    case types.AUTH_ERROR_ACCOUNT_REQUEST:
+      return {
+        ...state,
+        accountRequest: true
+      };
+    case types.AUTH_CLEAR_ACCOUNT_REQUEST:
+      return {
+        ...state,
+        accountRequest: false
+      }
     default:
       return state;
   }

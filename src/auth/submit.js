@@ -1,6 +1,6 @@
 import { SubmissionError } from "redux-form";
 import { connect } from "react-redux";
-import { authSuccess, authStart, authStop } from "../actions/authActions";
+import { authSuccess, authStart, authStop, authAccountRequest } from "../actions/authActions";
 import { push } from "react-router-redux";
 import axios from "axios";
 import * as jwtDecode from "jwt-decode";
@@ -16,6 +16,10 @@ const errorHandler = dispatch => error => {
     error.response.data.errorOccurred === true
   ) {
     const { errorObjects } = error.response.data;
+    if(errorObjects[0].model === "Account request added")
+    {
+      dispatch(authAccountRequest());
+    }
     throw new SubmissionError({
       _error: errorObjects[0].errors[Object.keys(errorObjects[0].errors)[0]]
     });

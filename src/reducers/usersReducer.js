@@ -1,9 +1,12 @@
-import { LOAD_USERS_SUCCESS, LOAD_USERS_FAIL, LOGOUT } from "../constants";
+import { LOAD_USERS_SUCCESS, LOAD_USERS_FAIL, LOGOUT, GET_ROLES, CHANGE_ROLES_GET_STATUS, SEND_ROLES_RESULT } from "../constants";
 
 const initialState = {
   users: [],
   currentPage: 1,
-  totalPageCount: 1
+  totalPageCount: 1,
+  roles: [],
+  loadRolesErrors: [],
+  loadRolesStatus: false
 };
 
 export const usersReducer = (state = initialState, action) => {
@@ -26,6 +29,22 @@ export const usersReducer = (state = initialState, action) => {
         currentPage: 1,
         totalPageCount: 1
       };
+    case GET_ROLES:
+      return {
+        ...state,
+        roles: action.roles.names
+      };
+    case CHANGE_ROLES_GET_STATUS:
+      return {
+        ...state,
+        loadRolesStatus: action.loadRolesStatus,
+        loadRolesErrors: action.loadRolesErrors
+      };
+    case SEND_ROLES_RESULT:
+      return {
+        ...state,
+        resultBlockAddRoles: action.resultBlockAddRoles
+      }
     default:
       return state;
   }

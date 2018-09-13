@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import "bootstrap/dist/css/bootstrap-grid.min.css";
+import "bootstrap/dist/css/bootstrap.min.css";
 import * as languageActions from "../actions/languageActions";
 
 import { Route, Switch, BrowserRouter } from "react-router";

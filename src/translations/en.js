@@ -314,14 +314,6 @@ const translations = {
     Error: "Error",
     OK: ""
   },
-  EmployeesRowUnfurl: {
-    ActivateEmployee: "Activate employee",
-    Confirm: "Confirm",
-    Cancel: "Cancel",
-    Edit: "Edit",
-    Save: "Save",
-    Add: "Add"
-  },
   AddProjectOwner: {
     AddOwner: "Add owner",
     OwnersAddedSuccessfully: "Owners added successfully",
@@ -351,9 +343,6 @@ const translations = {
     CloudPlaceHolder: "Add own cloud or choose from list",
     ClientPlaceHolder: "Add own client or choose from list"
   },
-  EditProjectDetails: {
-    ProjectSuccessfullyEdited: "Project edited successfully"
-  },
   ProjectDetailsBlock: {
     EditProjectData: "Edit project data",
     ProjectName: "Project name",
@@ -367,15 +356,9 @@ const translations = {
     Confirm: "Confirm",
     Next: "Next",
     Send: "Send",
-    Back: "Back"
-  },
-  ResponsiblePersonBlock: {
-    NameNoSpecial: "Name cannot contain either special characters or digits.",
-    SurnameNoSpecial:
-      "Surname cannot contain either special characters or digits.",
-    EmailToBeValid:
-      "Email address should have the appropriate structure ie. someone@something.com",
-    NumberValid: "Phone number must contain 9 to 11 digits"
+    Back: "Back",
+    ResponsiblePerson: "Responsible person",
+    ProjectHasBeenEdited: "Project was correctly edited"
   },
   ProjectRowUnfurl: {
     OwnersList: "Owners",
@@ -472,16 +455,6 @@ const translations = {
     ResponsibleFor: "Responsible for",
     Begun: "Begun",
     Ends: "Ends"
-  },
-  AssignsContainer: {
-    LastName: "Last/Name",
-    Position: "Position",
-    Skills: "Skills(comma-separated)",
-    MinLevelAbove: "Min level above:",
-    MinExperience: "Min. years of exp. of.",
-    Name: "Name",
-    Projects: "Projects",
-    Employees: "Employees"
   },
   SkillsContainer: {
     Deletion: "Deletion",

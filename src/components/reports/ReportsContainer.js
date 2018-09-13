@@ -260,43 +260,6 @@ class ReportsContainer extends Component {
     }
 
     this.props.fetchLists(addList, baseList, helpList, pagesList);
-
-
-    /*
-    var helpList = [...this.props.helpList];
-    var baseList = [...this.props.baseList];
-    var pagesList = this.props.pagesList ?
-      [...this.props.pagesList] : [];
-    var addList = [...this.props.addList];
-    const length = addList.length;
-    console.log("length",length);
-    helpList.concat(addList); //albo helplist?
-    addList = [];
-    baseList = this.findFromList(
-      this.state.valueToSearch,
-      helpList
-    );
-    const sortFunction = generateSortFunction("numberOfMemberInDB");
-    const sortedHelpList = helpList.sort(sortFunction);
-    const sortedBaseList = baseList.sort(sortFunction);
-    for (let teamSheet of teamSheets) {
-      const index = this.props.baseList.findIndex(i => {
-        return i.name === teamSheet.team;
-      });
-      const helpListIndex = this.props.helpList.findIndex(i => {
-        return i.name === teamSheet.team;
-      });
-      const helpBaseListIndex = this.props.baseList.findIndex(i => {
-        return i.name === teamSheet.team;
-      });
-      helpList.splice(helpListIndex, 1);
-      addList.push(this.props.baseList[index]);
-      baseList.splice(helpBaseListIndex, 1);
-    }
-    var newPagesList = teamSheets.map(teamsheet => ({ value: teamsheet.sheet, error: "" })); //set new pages from db
-    //pagesList = [...pagesList, ...newPagesList];
-    this.props.fetchLists(addList, baseList, helpList, newPagesList);
-    */
   }
   toggleAddToFavorites = e => {
     this.setState({ saveAsFavorite: e.target.checked });

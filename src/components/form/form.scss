@@ -37,6 +37,7 @@
     }
     textarea{
         resize: none;
+        font-family: inherit;
     }
     input:focus, textarea:focus{
         -webkit-box-shadow: -1px 1px 24px -2px rgb(71, 138, 160);

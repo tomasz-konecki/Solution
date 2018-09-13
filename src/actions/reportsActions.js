@@ -91,13 +91,11 @@ export const getRecentAndFavoriteReports = (
   })
 export const getRecentAndFavoriteReportsACreator = numberOfReports => dispatch => {
   dispatch(asyncStarted());
-  console.log("Calling get");
   WebApi.reports.get.recentReports(numberOfReports)
     .then(response => {
       dispatch(
         getRecentAndFavoriteReports(response.replyBlock.data.dtoObject, true, [])
       );
-      console.log("Get finished");
       dispatch(asyncEnded());
     })
     .catch(error => {
@@ -118,13 +116,11 @@ export const unfavoriteReport = (
 })
 export const unfavoriteReportAPromise = (reportId) => (dispatch) => {
   return new Promise((resolve, reject) => {
-    console.log("Calling delete");
     WebApi.reports.delete.report(reportId).then(response => {
       dispatch(
         unfavoriteReport(true, [])
       );
       dispatch(asyncEnded());
-      console.log("Delete finished");
       resolve(response);
     }).catch(error => {
       dispatch(

@@ -10,8 +10,6 @@ import Spinner from "../../common/spinner/spinner";
 import Modal from "react-responsive-modal";
 import Table from "../../common/table/table";
 import ProjectDetailsBlock from "../modals/ProjectDetailsBlock";
-import AddEmployeeToProject from "../../employees/modals/AddEmployeeToProject";
-import AssignmentModal from "../../assign/AssignmentModal";
 import OperationLoader from "../../common/operationLoader/operationLoader";
 import moment from "moment";
 import Form from "../../form/form";

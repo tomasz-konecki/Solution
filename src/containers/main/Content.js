@@ -6,7 +6,6 @@ import UsersContainer from "../../components/users/UsersContainer";
 import ProjectsContainer from "../../components/projects/ProjectsContainer";
 import Confirmation from "./../../components/common/modals/Confirmation";
 import EmployeesContainer from "./../../components/employees/EmployeesContainer";
-import AssignsContainer from "./../../components/assign/AssignsContainer";
 import StatsContainer from "../../components/stats/StatsContainer";
 import SkillsContainer from "../../components/skills/SkillsContainer";
 import ReportsContainer from "../../components/reports/ReportsContainer";
@@ -31,7 +30,6 @@ class Content extends React.Component {
             component={EmployeesContainer}
           />
           <Route path={match.url + "/projects"} component={ProjectsContainer} />
-          <Route path={match.url + "/assigns"} component={AssignsContainer} />
           <Route path={match.url + "/skills"} component={SkillsContainer} />
           <Route path={match.url + "/reports"} component={ReportsContainer} />
           <Route

@@ -1,8 +1,7 @@
 import React, { Component } from "react";
 import WebApi from "../../api";
-// import * as d3 from "d3";
 import C3Chart from "react-c3js";
-import "c3/c3.css";
+import "c3/c3.min.css";
 import IntermediateBlock from "./../common/IntermediateBlock";
 import { translate } from "react-translate";
 

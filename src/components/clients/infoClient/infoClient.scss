@@ -20,7 +20,10 @@
   margin-bottom: 40px;
   box-shadow: 0.5px 1px 3px 0px #000000;
 
-  .client-info-logo,
+  .client-info-logo {
+    margin: 5px;
+  }
+
   .client-info-details {
     display: inline-block;
   }

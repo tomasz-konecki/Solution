@@ -165,6 +165,18 @@ const WebApi = {
       );
     }
   },
+  roles: {
+    get: {
+      getAll: () => {
+        return WebAround.get(`${API_ENDPOINT}/role`)
+      }
+    },
+    post: {
+      add: (userRoles) => {
+        return WebAround.post(`${API_ENDPOINT}/account/preferedRoles`, userRoles)
+      }
+    }
+  },
   clients: {
     get: {
       all: () => {
@@ -457,7 +469,7 @@ const WebApi = {
           `${API_ENDPOINT}/reports/developers?fileName=${fileName}`
         );
       },
-      recentReports: numberOfReports => 
+      recentReports: numberOfReports =>
         WebAround.get(
           `${API_ENDPOINT}/reports/recentAndFavorites?numberOfReports=${numberOfReports}`
         )

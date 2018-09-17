@@ -25,6 +25,11 @@ const translations = {
     Reports: "Raporty",
     ImportCV: "Import CV"
   },
+  PreferedRoles: {
+    ChooseRoles: "Wybierz preferowane role w serwisie",
+    SavedSuccessfully: "Poprawnie zapisano wybrane role",
+    Save: "Zapisz"
+  },
   SmoothTable: {
     Search: "Szukaj",
     DeleteFilters: "Usuń filtry",
@@ -340,7 +345,7 @@ const translations = {
     Add: "Dodaj",
     CloudPlaceHolder: "wpisz własną lub wybierz chmure z listy",
     ClientPlaceHolder: "wpisz własnego klienta lub wybierz z listy"
-    
+
   },
   ProjectDetailsBlock: {
     EditProjectData: "Edycja danych projektu",
@@ -355,6 +360,14 @@ const translations = {
     Confirm: "Potwierdź",
     Next: "Dalej",
     Send: "Potwierdź",
+    Back: "Wróć"
+  },
+  ResponsiblePersonBlock: {
+    NameNoSpecial: "Imię nie może zawierać znaków specjalnych ani cyfr.",
+    SurnameNoSpecial: "Nazwisko nie może zawierać znaków specjalnych ani cyfr.",
+    EmailToBeValid:
+      "Adres email powinien mieć odpowiednią strukturę, np. me@mydomain.com.",
+    NumberValid: "Numer telefonu powinien zawierać od 9 do 11 cyfr.",
     Back: "Wróć",
     ResponsiblePerson: "Osoba odpowiedzialna",
     ProjectHasBeenEdited: "Projekt został pomyślnie edytowany"

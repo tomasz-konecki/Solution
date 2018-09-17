@@ -28,6 +28,7 @@ import { Route } from "react-router-dom";
 import { createSignalRConnection } from "../../actions/progressBarActions";
 import { generateSortFunction } from "../../services/methods";
 const startPathname = "/main/reports";
+import moment from "moment";
 
 class ReportsContainer extends Component {
   state = {
@@ -37,7 +38,9 @@ class ReportsContainer extends Component {
     valueToSearch: "",
     isReportGenerating: false,
     extendId: "",
-    saveAsFavorite: false
+    saveAsFavorite: false,
+    availableUntilToggle: false,
+    availableUntilDate: moment()
   };
 
   componentDidMount() {
@@ -51,7 +54,7 @@ class ReportsContainer extends Component {
       addList,
       teams,
       baseList,
-      helpList
+      helpList,
     } = this.props;
     getRecentAndFavoriteReports(5);
     if (addList.length === 0) {
@@ -268,6 +271,13 @@ class ReportsContainer extends Component {
     this.props.unfavoriteReport(reportId);
     this.props.getRecentAndFavoriteReports(5);
   }
+  handleAvailableUntilToggle = e => {
+    var newValue = e.target.checked;
+    this.setState({availableUntilToggle: newValue});
+  }
+  handleAvailableUntil = value => {
+    this.setState({availableUntilDate: value});
+  }
 
   render() {
     const {
@@ -418,6 +428,10 @@ class ReportsContainer extends Component {
             choosenFolder={choosenFolder}
             isStarted={isStarted}
             addToFavorites={this.toggleAddToFavorites}
+            handleAvailableUntilToggle = {this.handleAvailableUntilToggle}
+            handleAvailableUntil={this.handleAvailableUntil}
+            availableUntilStartDate={moment()}
+            availableUntilDate={this.state.availableUntilDate}
           />
         )}
       </div>

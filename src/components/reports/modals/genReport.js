@@ -6,6 +6,7 @@ import Spinner from "../../common/spinner/spinner";
 import RedirectSpinner from "../../common/spinner/redirect-spinner";
 import { Link } from 'react-router-dom';
 import PromptsCommander from '../../promptsCommander/promptsCommander';
+import DatePicker from "react-datepicker";
 
 const genReport = ({
   shouldOpenModal,
@@ -23,7 +24,11 @@ const genReport = ({
   startPathname,
   currentPath,
   isStarted,
-  addToFavorites
+  addToFavorites,
+  handleAvailableUntilToggle,
+  handleAvailableUntil,
+  availableUntilDate,
+  availableUntilStartDate
 }) => {
   const isUrlDifferentFromFoldersUrl = (currentPath.search("onedrive") === -1 && currentPath.search("gdrive")) === -1;
   const shouldLetGenerate = (addList.length > 0 && !isUrlDifferentFromFoldersUrl) ? true : false;
@@ -59,7 +64,7 @@ const genReport = ({
           );
         })}
       </ul>
-
+     
    
         <div className="choosen-folder-content">
               {choosenFolder && 
@@ -123,8 +128,24 @@ const genReport = ({
             btnTitle="Generuj raport"
           />
         {shouldLetGenerate &&
+          <div className="availableUntil">
+            <input type="checkbox" id="availableUntilCheckbox" onChange={handleAvailableUntilToggle}/>
+            <label htmlFor="availableUntilCheckbox">Tylko pracownicy dostępni do:</label>
+            <DatePicker 
+              startDate={availableUntilStartDate}
+              selected={availableUntilDate}
+              selectsEnd
+              onChange={handleAvailableUntil}
+              locale="pl"
+              dateFormat="DD/MM/YYYY"
+              showMonthDropdown
+              showYearDropdown
+              dropdownMode="select"
+              />
+          </div>}
+        {shouldLetGenerate &&
         <React.Fragment>
-          <input disabled={!shouldLetGenerate} type="checkbox" id="saveAsFavoriteCheckbox" onChange={addToFavorites}/>
+          <input type="checkbox" id="saveAsFavoriteCheckbox" onChange={addToFavorites}/>
           <label htmlFor="saveAsFavoriteCheckbox">Dodaj ten raport do ulubionych</label>
         </React.Fragment>
         }

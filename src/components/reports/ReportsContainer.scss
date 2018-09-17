@@ -298,4 +298,11 @@
       }
     }
   }
+  .availableUntil{
+    display: flex;
+    align-items: baseline;
+    label{
+      margin-right: 10px;
+    }
+  }
 }

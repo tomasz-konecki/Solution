@@ -74,9 +74,8 @@ class EmployeesList extends Component {
           field: "hasAccount",
           pretty: t("Status"),
           multiState: {
-            true: t("AccountActive"),
             false: t("AccountInactive"),
-            null: t("SelectStatus")
+            true: t("AccountActive")
           },
           type: "multiState",
           filter: true

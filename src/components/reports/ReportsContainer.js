@@ -65,7 +65,7 @@ class ReportsContainer extends Component {
   }
   componentWillReceiveProps(nextProps) {
     if (this.props.teams !== nextProps.teams
-      || this.props.reports !== nextProps.reports) {
+      /* || this.props.reports !== nextProps.reports */) {
       this.setState({ spinner: false });
       if (nextProps.loadTeamsResult && this.props.teams.length === 0) {
         const sortFunction = generateSortFunction("numberOfMemberInDB");
@@ -226,7 +226,7 @@ class ReportsContainer extends Component {
     } = this.props;
     this.setState({ isReportGenerating: true });
     createSignalRConnection().then(response => {
-      generateReport(addList, choosenFolder, pagesList, history, this.state.saveAsFavorite);
+      generateReport(addList, choosenFolder, pagesList, history, this.state.saveAsFavorite, this.state.availableUntilToggle ? this.state.availableUntilDate : null);
     });
   };
 
@@ -483,9 +483,9 @@ const mapDispatchToProps = dispatch => {
       dispatch(fetchLists(addList, baseList, helpList, pagesList)),
     chooseFolder: folderToGenerateReport =>
       dispatch(chooseFolder(folderToGenerateReport)),
-    generateReport: (teamSheets, choosenFolder, pageList, history, saveAsFavorite) =>
+    generateReport: (teamSheets, choosenFolder, pageList, history, saveAsFavorite, availableUntil) =>
       dispatch(
-        generateReportACreator(teamSheets, choosenFolder, pageList, history, saveAsFavorite)
+        generateReportACreator(teamSheets, choosenFolder, pageList, history, saveAsFavorite, availableUntil)
       ),
     generateReportClearData: (status, errors) =>
       dispatch(generateReport(status, errors)),

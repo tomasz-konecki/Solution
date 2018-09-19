@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import WebApi from "../../api";
-import C3Chart from "react-c3js";
+import Chart from "react-c3-component";
 import "c3/c3.min.css";
 import IntermediateBlock from "./../common/IntermediateBlock";
 import { translate } from "react-translate";
@@ -79,7 +79,7 @@ class StatsContainer extends Component {
 
     const tooltip = {
       format: {
-        value: function(value, ratio, id) {
+        value: function (value, ratio, id) {
           return `${value}`;
         }
       }
@@ -88,10 +88,12 @@ class StatsContainer extends Component {
     return (
       <span className="chart-container">
         <span>{t("DevLocalization")}</span>
-        <C3Chart
-          data={data}
-          size={this.state.windowWidth < 500 ? SIZE_MOBILE : SIZE_DESKTOP}
-          tooltip={tooltip}
+        <Chart
+          config={{
+            data,
+            size: this.state.windowWidth < 500 ? SIZE_MOBILE : SIZE_DESKTOP,
+            tooltip
+          }}
         />
       </span>
     );
@@ -109,7 +111,7 @@ class StatsContainer extends Component {
 
     const tooltip = {
       format: {
-        value: function(value, ratio, id) {
+        value: function (value, ratio, id) {
           return `${value}`;
         }
       }
@@ -118,10 +120,12 @@ class StatsContainer extends Component {
     return (
       <span className="chart-container">
         <span>{t("EmployeesWithoutProjects")}</span>
-        <C3Chart
-          data={data}
-          size={this.state.windowWidth < 500 ? SIZE_MOBILE : SIZE_DESKTOP}
-          tooltip={tooltip}
+        <Chart
+          config={{
+            data,
+            size: this.state.windowWidth < 500 ? SIZE_MOBILE : SIZE_DESKTOP,
+            tooltip
+          }}
         />
       </span>
     );
@@ -139,7 +143,7 @@ class StatsContainer extends Component {
 
     const tooltip = {
       format: {
-        value: function(value, ratio, id) {
+        value: function (value, ratio, id) {
           return `${value}`;
         }
       }
@@ -148,10 +152,12 @@ class StatsContainer extends Component {
     return (
       <span className="chart-container">
         <span>{t("ActiveProjects")}</span>
-        <C3Chart
-          data={data}
-          size={this.state.windowWidth < 500 ? SIZE_MOBILE : SIZE_DESKTOP}
-          tooltip={tooltip}
+        <Chart
+          config={{
+            data,
+            size: this.state.windowWidth < 500 ? SIZE_MOBILE : SIZE_DESKTOP,
+            tooltip
+          }}
         />
       </span>
     );
@@ -169,7 +175,7 @@ class StatsContainer extends Component {
 
     const tooltip = {
       format: {
-        value: function(value, ratio, id) {
+        value: function (value, ratio, id) {
           return `${value}`;
         }
       }
@@ -178,10 +184,12 @@ class StatsContainer extends Component {
     return (
       <span className="chart-container">
         <span>{t("EmployeesFTE")}</span>
-        <C3Chart
-          data={data}
-          size={this.state.windowWidth < 500 ? SIZE_MOBILE : SIZE_DESKTOP}
-          tooltip={tooltip}
+        <Chart
+          config={{
+            data,
+            size: this.state.windowWidth < 500 ? SIZE_MOBILE : SIZE_DESKTOP,
+            tooltip
+          }}
         />
       </span>
     );

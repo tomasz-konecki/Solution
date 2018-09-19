@@ -28,6 +28,7 @@ import { Route } from "react-router-dom";
 import { createSignalRConnection } from "../../actions/progressBarActions";
 import { generateSortFunction } from "../../services/methods";
 const startPathname = "/main/reports";
+import moment from "moment";
 
 class ReportsContainer extends Component {
   state = {
@@ -37,7 +38,9 @@ class ReportsContainer extends Component {
     valueToSearch: "",
     isReportGenerating: false,
     extendId: "",
-    saveAsFavorite: false
+    saveAsFavorite: false,
+    availableUntilToggle: false,
+    availableUntilDate: moment()
   };
 
   componentDidMount() {
@@ -51,7 +54,7 @@ class ReportsContainer extends Component {
       addList,
       teams,
       baseList,
-      helpList
+      helpList,
     } = this.props;
     getRecentAndFavoriteReports(5);
     if (addList.length === 0) {
@@ -62,7 +65,7 @@ class ReportsContainer extends Component {
   }
   componentWillReceiveProps(nextProps) {
     if (this.props.teams !== nextProps.teams
-      || this.props.reports !== nextProps.reports) {
+      /* || this.props.reports !== nextProps.reports */) {
       this.setState({ spinner: false });
       if (nextProps.loadTeamsResult && this.props.teams.length === 0) {
         const sortFunction = generateSortFunction("numberOfMemberInDB");
@@ -223,7 +226,7 @@ class ReportsContainer extends Component {
     } = this.props;
     this.setState({ isReportGenerating: true });
     createSignalRConnection().then(response => {
-      generateReport(addList, choosenFolder, pagesList, history, this.state.saveAsFavorite);
+      generateReport(addList, choosenFolder, pagesList, history, this.state.saveAsFavorite, this.state.availableUntilToggle ? this.state.availableUntilDate : null);
     });
   };
 
@@ -267,6 +270,13 @@ class ReportsContainer extends Component {
   unfavorite = reportId => {
     this.props.unfavoriteReport(reportId);
     this.props.getRecentAndFavoriteReports(5);
+  }
+  handleAvailableUntilToggle = e => {
+    var newValue = e.target.checked;
+    this.setState({availableUntilToggle: newValue});
+  }
+  handleAvailableUntil = value => {
+    this.setState({availableUntilDate: value});
   }
 
   render() {
@@ -418,6 +428,10 @@ class ReportsContainer extends Component {
             choosenFolder={choosenFolder}
             isStarted={isStarted}
             addToFavorites={this.toggleAddToFavorites}
+            handleAvailableUntilToggle = {this.handleAvailableUntilToggle}
+            handleAvailableUntil={this.handleAvailableUntil}
+            availableUntilStartDate={moment()}
+            availableUntilDate={this.state.availableUntilDate}
           />
         )}
       </div>
@@ -469,9 +483,9 @@ const mapDispatchToProps = dispatch => {
       dispatch(fetchLists(addList, baseList, helpList, pagesList)),
     chooseFolder: folderToGenerateReport =>
       dispatch(chooseFolder(folderToGenerateReport)),
-    generateReport: (teamSheets, choosenFolder, pageList, history, saveAsFavorite) =>
+    generateReport: (teamSheets, choosenFolder, pageList, history, saveAsFavorite, availableUntil) =>
       dispatch(
-        generateReportACreator(teamSheets, choosenFolder, pageList, history, saveAsFavorite)
+        generateReportACreator(teamSheets, choosenFolder, pageList, history, saveAsFavorite, availableUntil)
       ),
     generateReportClearData: (status, errors) =>
       dispatch(generateReport(status, errors)),

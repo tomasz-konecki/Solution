@@ -133,6 +133,7 @@ const genReport = ({
             <label htmlFor="availableUntilCheckbox">Tylko pracownicy dostępni do:</label>
             <DatePicker 
               startDate={availableUntilStartDate}
+              minDate={availableUntilStartDate}
               selected={availableUntilDate}
               selectsEnd
               onChange={handleAvailableUntil}

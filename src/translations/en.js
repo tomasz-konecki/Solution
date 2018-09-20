@@ -5,7 +5,8 @@ const translations = {
     EnterPassword: "Enter password",
     Login: "Login",
     Forgot: "Forgot",
-    Password: "password"
+    Password: "password",
+    CloseModalMessage: "Are you sure you don't want to choose prefered roles ? \nThis operation can be performed only once !"
   },
   TopBar: {
     Logout: "Logout"

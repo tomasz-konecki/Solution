@@ -5,7 +5,8 @@ const translations = {
     EnterPassword: "Podaj hasło",
     Login: "Zaloguj",
     Forgot: "Zapomniałeś",
-    Password: "hasła"
+    Password: "hasła",
+    CloseModalMessage: 'Czy na pewno nie chcesz wybrać preferowanych roli w serwisie ? \nTej operacji nie można powtórzyć !'
   },
   NotFound404: {
     PageNotFound: "Nie znaleziono strony",

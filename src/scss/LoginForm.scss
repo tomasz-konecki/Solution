@@ -1,6 +1,11 @@
 @import "./3rd/Loader";
 @import "./ColorSchema";
 
+.Modal-add-owner {
+  width: 270px !important;
+  height: 380px !important;
+}
+
 .login-screen {
   background: $main-color;
 }

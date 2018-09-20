@@ -32,8 +32,8 @@ class LoginForm extends React.Component {
       this.setState({ error: nextProps.error });
     }
 
-    if(nextProps.accountRequest && this.state.showPreferedRolesModal !== nextProps.accountRequest){
-      if(this.state.userIdSaved !== this.state.userId){
+    if (nextProps.accountRequest && this.state.showPreferedRolesModal !== nextProps.accountRequest) {
+      if (this.state.userIdSaved !== this.state.userId) {
         this.setState({
           showPreferedRolesModal: nextProps.accountRequest,
           userIdSaved: this.state.userId
@@ -144,16 +144,16 @@ class LoginForm extends React.Component {
         </CSSTransitionGroup>
 
         <Modal
-              key={1}
-              open={this.state.showPreferedRolesModal}
-              classNames={{ modal: "Modal Modal-add-owner" }}
-              contentLabel="Choose prefered roles"
-              onClose={this.closePreferedRolesModal}
-          >
-              <AddPreferedRoles
-                userId={this.state.userId}
-                closeModal={this.closePreferedRolesModal}
-              />
+          key={1}
+          open={this.state.showPreferedRolesModal}
+          classNames={{ modal: "Modal Modal-add-owner" }}
+          contentLabel="Choose prefered roles"
+          onClose={this.closePreferedRolesModal}
+        >
+          <AddPreferedRoles
+            userId={this.state.userId}
+            closeModal={this.closePreferedRolesModal}
+          />
         </Modal>
 
       </div>

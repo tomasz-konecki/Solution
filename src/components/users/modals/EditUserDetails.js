@@ -13,7 +13,8 @@ class EditUserDetails extends Component {
     this.state = {
       loading: false,
       responseBlock: {},
-      disabledButton: false
+      disabledButton: false,
+      addedNewUser: false
     };
   }
   changeUserRoles = () => {
@@ -46,6 +47,7 @@ class EditUserDetails extends Component {
                 .then(response => {
                   this.setState({
                     responseBlock: response,
+                    addedNewUser: true,
                     loading: false
                   });
 
@@ -99,7 +101,7 @@ class EditUserDetails extends Component {
             <ResultBlock
               type="modalInParent"
               errorOnly={false}
-              successMessage={t("RolesSuccessfullyEdited")}
+              successMessage={this.state.addedNewUser ? t("UserSuccesfullyAdded") : t("RolesSuccessfullyEdited")}
               errorBlock={this.state.responseBlock}
             />
           </div>

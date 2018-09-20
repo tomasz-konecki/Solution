@@ -377,7 +377,8 @@ const translations = {
   },
   EditUserDetails: {
     Confirm: "Confirm",
-    RolesSuccessfullyEdited: "Roles edited successfully"
+    RolesSuccessfullyEdited: "Roles edited successfully",
+    UserSuccesfullyAdded: "Successfully added new user"
   },
   StageOne: {
     SearchAD: "Search Active Directory",

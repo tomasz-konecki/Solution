@@ -77,7 +77,7 @@ const authValidator = response => {
     store.dispatch(push("/"));
   }
 
-  // throw response;
+  throw response;
 };
 
 const parseSuccess = response => {
@@ -132,7 +132,7 @@ const WebAround = {
   patch: (path, payload) => {
     return axios
       .patch(path, payload)
-      .then(response => parseSuccess(response))
+      .then(response =>  parseSuccess(response))
       .catch(response => authValidator(response))
       .catch(response => parseFailure(response));
   }
@@ -698,8 +698,8 @@ const WebApi = {
     patch: {
       roles: (userId, roles) => {
         return WebAround.patch(`${API_ENDPOINT}/account`, {
-          id: userId,
-          roles
+          Id: userId,
+          Roles: roles
         });
       },
       reactivate: userId => {

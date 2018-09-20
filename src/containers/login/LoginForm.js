@@ -55,6 +55,12 @@ class LoginForm extends React.Component {
     };
   }
 
+  automaticlyCloseModal = () => {
+    this.setState({
+      showPreferedRolesModal: false
+    })
+  }
+
   closePreferedRolesModal = (t) => {
     if(window.confirm(t("CloseModalMessage"))) {
       this.setState({
@@ -154,7 +160,7 @@ class LoginForm extends React.Component {
         >
           <AddPreferedRoles
             userId={this.state.userId}
-            closeModal={() => this.closePreferedRolesModal(t)}
+            closeModal={() => this.automaticlyCloseModal()}
           />
         </Modal>
 

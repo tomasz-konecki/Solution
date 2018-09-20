@@ -4,6 +4,7 @@ import IntermediateBlock from "../../components/common/IntermediateBlock";
 import { loadRoles, addRoles } from '../../actions/usersActions';
 import { CSSTransitionGroup } from "react-transition-group";
 import { translate } from 'react-translate';
+import './AddPreferedRoles.scss';
 
 class AddPreferedRoles extends React.Component {
   constructor(props) {
@@ -17,13 +18,13 @@ class AddPreferedRoles extends React.Component {
   }
 
   componentWillReceiveProps(nextProps, prevProps) {
-    if(nextProps.loadRolesStatus && nextProps.loadRolesStatus === true){
+    if (nextProps.loadRolesStatus && nextProps.loadRolesStatus === true) {
       this.setState({
         loadedRoles: nextProps.loadRolesStatus
       })
     }
 
-    if(nextProps.userId && nextProps.userId === prevProps.userId){
+    if (nextProps.userId && nextProps.userId === prevProps.userId) {
       this.props.closeModal();
     }
   }
@@ -32,29 +33,29 @@ class AddPreferedRoles extends React.Component {
     const item = e.target.name;
     const isChecked = e.target.checked;
     this.setState(
-        prevState => ({ choosenRoles: prevState.choosenRoles.set(item, isChecked) }),
-        () => {
-          const userRoles = {
-            id: this.props.userId,
-            roles: []
-          };
+      prevState => ({ choosenRoles: prevState.choosenRoles.set(item, isChecked) }),
+      () => {
+        const userRoles = {
+          id: this.props.userId,
+          roles: []
+        };
 
-          for (let [key, value] of this.state.choosenRoles.entries()) {
-            if (value === true)
-              userRoles.roles.push(key)
-          }
-
-          if(userRoles.roles.length > 0){
-            this.setState({
-              buttonDisabled: false
-            })
-          }else{
-            this.setState({
-              buttonDisabled: true
-            })
-          }
+        for (let [key, value] of this.state.choosenRoles.entries()) {
+          if (value === true)
+            userRoles.roles.push(key)
         }
-      );
+
+        if (userRoles.roles.length > 0) {
+          this.setState({
+            buttonDisabled: false
+          })
+        } else {
+          this.setState({
+            buttonDisabled: true
+          })
+        }
+      }
+    );
   };
 
   handleSubmit = e => {
@@ -82,20 +83,24 @@ class AddPreferedRoles extends React.Component {
 
   pullDom = (t) => {
     return (
-      <div>
-        <header>
+      <div className="all">
+        <div className="header">
+          <header>
             {t("ChooseRoles")}
-        </header>
+          </header>
+        </div>
         <form onSubmit={this.handleSubmit}>
-          {this.state.loadedRoles && this.props.roles.map((role) => {
-                return (
-                  <div key={role}>
-                    <input type="checkbox" name={role} onChange={this.handleChange} checked={this.state.choosenRoles.get(role) || false} />
-                    <label htmlFor="role">{role}</label>
-                  </div>
-                )
+          <div className="center">
+            {this.state.loadedRoles && this.props.roles.map((role) => {
+              return (
+                <div key={role}>
+                  <input type="checkbox" name={role} onChange={this.handleChange} checked={this.state.choosenRoles.get(role) || false} />
+                  <label htmlFor="role">{role}</label>
+                </div>
+              )
             })}
-            <button type="submit" disabled={this.state.buttonDisabled}>{t("Save")}</button>
+            <button className="submit" type="submit" disabled={this.state.buttonDisabled}>{t("Save")}</button>
+          </div>
         </form>
       </div>
     )
@@ -116,7 +121,7 @@ class AddPreferedRoles extends React.Component {
             transitionEnter={false}
             transitionLeave={false}
           >
-            <div className="certificate-modified-success">
+            <div className="saved">
               <span>
                 {t("SavedSuccessfully")}
               </span>
@@ -124,12 +129,12 @@ class AddPreferedRoles extends React.Component {
           </CSSTransitionGroup>
         );
       }
-      if(this.state.isLoading){
-          setTimeout(() => {
-              this.props.closeModal()
-            }, 2000);
+      if (this.state.isLoading) {
+        setTimeout(() => {
+          this.props.closeModal()
+        }, 2000);
 
-        }
+      }
     }
 
     return (

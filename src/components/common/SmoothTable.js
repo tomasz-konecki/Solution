@@ -304,23 +304,28 @@ class SmoothTable extends Component {
   }
 
   handleRowClick(object, index, event) {
-    const { redirectPath } = this.props.construct;
-    if (redirectPath) {
-      this.setState({ rowClickedId: object.id });
+    if(object.hasAccount == false) {
+      alert("Pracownik jest nie aktywny")
     } else {
-      const { keyField } = this.props.construct;
-      const { rowUnfurls } = this.state;
-
-      if (rowUnfurls[index] === undefined) {
-        rowUnfurls[index] = true;
+      const { redirectPath } = this.props.construct;
+      if (redirectPath) {
+        this.setState({ rowClickedId: object.id });
       } else {
-        rowUnfurls[index] = !rowUnfurls[index];
-      }
+        const { keyField } = this.props.construct;
+        const { rowUnfurls } = this.state;
 
-      this.setState({
-        rowUnfurls
-      });
+        if (rowUnfurls[index] === undefined) {
+          rowUnfurls[index] = true;
+        } else {
+          rowUnfurls[index] = !rowUnfurls[index];
+        }
+
+        this.setState({
+          rowUnfurls
+        });
+      }
     }
+
   }
 
   removeFilters() {
@@ -632,8 +637,8 @@ class SmoothTable extends Component {
     payload.push(
       <tr
         key={object[construct.keyField]}
-        className={classes.join(" ")}
-        onClick={this.deepenFunction(this.handleRowClick, object, index)}
+        className={object.hasAccount ? classes.join(" ") : (classes.push("unset-pointer"), classes.join(" "))}
+        onClick={object.hasAccount ? this.deepenFunction(this.handleRowClick, object, index) : null}
       >
         {construct.columns.map((column, index) => {
           if (column.field !== undefined) {

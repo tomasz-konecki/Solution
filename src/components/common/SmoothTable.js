@@ -744,7 +744,7 @@ class SmoothTable extends Component {
     return (
       <div className="smooth-table">
         <div className="d-flex">
-          <div className="smooth-operator">{this.generateOperators()}</div>
+          <div className="smooth-operator">{this.generateOperators()}
           {showRaportButton && (
             <button
               className="dcmt-button raport-button ml-auto mt-3 mr-3"
@@ -753,6 +753,7 @@ class SmoothTable extends Component {
               {this.props.t("Reports")}
             </button>
           )}
+          </div>
         </div>
         <div className="smooth-loader-top">
           {this.props.loading && <LoaderHorizontal />}

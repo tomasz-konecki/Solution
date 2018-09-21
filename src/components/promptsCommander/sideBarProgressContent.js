@@ -1,8 +1,9 @@
 import React from "react";
+import { translate } from 'react-translate';
 
 const sideProgressBar = ({ items, shouldShowGlobal, createClassesForLoader, percentage, message,
     generateReportStatus, isStarted, operationName, generateReportErrors, togleSideBarHandler, oneDriveLoginStatus,
-    gDriveLoginStatus }) => {
+    gDriveLoginStatus, t }) => {
 
   const menuClass = shouldShowGlobal ? "menu-expanded" : "menu-collapsed";
   const btnClass = shouldShowGlobal ? "btn-expanded" : "btn-collapsed";
@@ -23,7 +24,7 @@ const sideProgressBar = ({ items, shouldShowGlobal, createClassesForLoader, perc
     <React.Fragment>
       <div className={`comunicates-window ${menuClass}`}>
         <header>
-          <span>Powiadomienia</span>
+          <span>{t("Notifications")}</span>
           <span>
             <i className="cor-status">emp</i>
             <i className={`fab fa-windows ${oneDriveLoginStatus ? "cor-status" : "err-status"}`}></i>
@@ -48,10 +49,10 @@ const sideProgressBar = ({ items, shouldShowGlobal, createClassesForLoader, perc
 
         <footer>
           <button className="showed-btn">
-            Odczytane <i className="fa fa-check" />
+            {t("Read")} <i className="fa fa-check" />
           </button>
           <button className="not-showed-btn">
-            Nieodczytane <i className="fa fa-times" />
+            {t("Unread")} <i className="fa fa-times" />
           </button>
         </footer>
         <div className="operations-messages">
@@ -64,7 +65,7 @@ const sideProgressBar = ({ items, shouldShowGlobal, createClassesForLoader, perc
           {generateReportStatus !== null && (
             <p className={generateReportStatus ? "status-ok" : "status-off"}>
               {generateReportStatus
-                ? "Pomyślnie wygenerowano raport"
+                ? t("SuccessFullyGeneratedReport")
                 : generateReportErrors[0]}
             </p>
           )}
@@ -83,4 +84,4 @@ const sideProgressBar = ({ items, shouldShowGlobal, createClassesForLoader, perc
   );
 };
 
-export default sideProgressBar;
+export default (translate("SideProgressBar")(sideProgressBar));

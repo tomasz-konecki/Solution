@@ -90,15 +90,15 @@ class AddPreferedRoles extends React.Component {
           </header>
         </div>
         <form onSubmit={this.handleSubmit}>
-          <div className="center">
-            {this.state.loadedRoles && this.props.roles.map((role) => {
-              return (
-                <div key={role}>
-                  <input type="checkbox" name={role} onChange={this.handleChange} checked={this.state.choosenRoles.get(role) || false} />
-                  <label htmlFor="role">{role}</label>
-                </div>
-              )
-            })}
+          {this.state.loadedRoles && this.props.roles.map((role) => {
+            return (
+              <div key={role} className="role">
+                <input type="checkbox" name={role} onChange={this.handleChange} checked={this.state.choosenRoles.get(role) || false} />
+                <label htmlFor="role">{role}</label>
+              </div>
+            )
+          })}
+          <div className="text-center">
             <button className="submit" type="submit" disabled={this.state.buttonDisabled}>{t("Save")}</button>
           </div>
         </form>

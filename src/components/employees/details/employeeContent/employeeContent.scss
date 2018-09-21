@@ -154,15 +154,16 @@
         h2 {
           font-size: 20px;
           color: #707070;
-          padding: 18px 0 0 15px;
+          padding: 18px 0 10px 15px;
           width: 100%;
         }
+        .skypeDiv {
+          display: inline;
+        }
         .skype {
-          display: inline-flex;
+          display: inline;
           align-items: center;
           justify-content: center;
-          width: 100%;
-          padding: 15px 5px 10px 5px;
           text-decoration: none;
         }
         .skypeId{
@@ -175,6 +176,31 @@
         }
         .businessSkypeIcon{
           width: 20px;
+          position: absolute;
+          top: 0;
+          left: 0;
+        }
+        .pencilIcon{
+          cursor: pointer;
+        }
+        .skypeDiv button{
+          margin: 5px auto 0 auto;
+          padding: 3px;
+          width: 40%;
+          height: 30px;
+          position: relative;
+        }
+        .skypeDiv .form-error span{
+          right: -5px;
+          top: 35px;
+          width: 150px;
+        }
+        .universal-form-container{
+          padding: 10px;
+        }
+        .skypeDiv .correct-status{
+          top: 110px;
+          left: 50px;
         }
 
       }

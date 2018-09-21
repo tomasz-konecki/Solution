@@ -74,13 +74,7 @@ class EmployeeDetailsContainer extends React.Component {
       });
     } else if (nextProps.employeeOperationStatus === false) {
       this.setState({ isChangingEmployeeData: false });
-    } /*
-        else if(nextProps.match !== this.props.match)
-        {
-            console.log("nextProps.match : " + nextProps.match)
-            this.setState({isLoadingFirstTimeEmployee: true});
-            this.props.getEmployeePromise(nextProps.match.params.id);
-        }*/
+    }
     if (nextProps.employee) {
       if (
         nextProps.employee.skypeId &&
@@ -254,10 +248,6 @@ class EmployeeDetailsContainer extends React.Component {
 
         {employeeStatus === false && (
           <NotFound404 type={"MissingEmployee"} />
-          // <OperationStatusPrompt
-          //   operationPromptContent={employeeErrors[0]}
-          //   operationPrompt={false}
-          // />
         )}
 
         {employeeOperationStatus !== null &&

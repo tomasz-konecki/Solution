@@ -8,6 +8,7 @@ import Spinner from "../../../common/spinner/small-spinner";
 import Icon from "../../../common/Icon";
 import { Link } from "react-router-dom";
 import Form from "../../../form/form";
+import CallSkype from "./callSkype";
 
 const employeeContent = ({
   employee,
@@ -53,25 +54,27 @@ const employeeContent = ({
     </figure>
   );
 
-const callSkype = editSkypeFormItems[0].value ? (
-    <a
-      title={`${t("CallSkype")} ${editSkypeFormItems[0].value}`}
-      className="skype"
-      href={"skype:" + editSkypeFormItems[0].value + "?add"}
-    >
-      <Icon icon="skype" iconType="fab" />
-      <span className="skypeId">{editSkypeFormItems[0].value}</span>
-    </a>
-  )   : (
-  <a
-  title={`${t("CallBusinessSkype")}`}
-  className="skype"
-  href={"sip:<" + employee.email + ">"}
->
-  <img src="/public/img/skypeforbusiness.jpeg" className="businessSkypeIcon"/>
-  <span className="skypeId"> {employee.email} </span>
-</a>
-)
+// const callSkype = editSkypeFormItems[0].value ? (
+//     <a
+//       title={`${t("CallSkype")} ${editSkypeFormItems[0].value}`}
+//       className="skype"
+//       href={"skype:" + editSkypeFormItems[0].value + "?add"}
+//     >
+//       <Icon icon="skype" iconType="fab" />
+//       <span className="skypeId">{editSkypeFormItems[0].value}</span>
+
+//       <input type="text" />
+//     </a>
+//   )   : (
+//   <a
+//   title={`${t("CallBusinessSkype")}`}
+//   className="skype"
+//   href={"sip:<" + employee.email + ">"}
+//   >
+//   <img src="/public/img/skypeforbusiness.jpeg" className="businessSkypeIcon"/>
+//   <span className="skypeId"> Skype for Business </span>
+// </a>
+// )
 
   return (
     <section className="top-content-container">
@@ -89,9 +92,17 @@ const callSkype = editSkypeFormItems[0].value ? (
               {imgContent}
               <p>{employee.roles ? employee.roles[0] : t("RoleMissing")}</p>
             </div>
-            <div>
+            <div className="text-center" style={{width: "100%" }}>
             <h2> {employee.firstName + " " + employee.lastName + " "}</h2>
-            {callSkype}
+            {/* {callSkype} */}
+            <CallSkype 
+              editSkypeFormItems={editSkypeFormItems} 
+              employee={employee}
+              editSkypeId={editSkypeId}
+              skypeIdAddLoading={skypeIdAddLoading}
+              updateSkypeIdResult={updateSkypeIdResult}
+              t={t} />
+
             </div>
           </header>
 
@@ -158,7 +169,7 @@ const callSkype = editSkypeFormItems[0].value ? (
                 />
               </div>
 
-              <div className="edit-skypeid-form">
+              {/* <div className="edit-skypeid-form">
                 <Form
                   onSubmit={editSkypeId}
                   formItems={editSkypeFormItems}
@@ -180,8 +191,8 @@ const callSkype = editSkypeFormItems[0].value ? (
                         : null
                   }}
                   enableButtonAfterTransactionEnd={true}
-                />
-              </div>
+                /> */}
+              {/* </div> */}
             </React.Fragment>
           )}
 

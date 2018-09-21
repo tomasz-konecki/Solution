@@ -470,6 +470,12 @@ const translations = {
     WrongFileType: "Wrong File Type",
     FileIsTooBig: "File is too big",
     WrongAspectRatio: "Image has wrong aspect ratio"
+  },
+  SideProgressBar: {
+    Notifications: "Notifications",
+    SuccessFullyGeneratedReport: "Successfully generated report",
+    Read: "Read",
+    Unread: "Unread"
   }
 };
 

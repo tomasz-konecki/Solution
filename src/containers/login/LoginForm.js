@@ -154,7 +154,7 @@ class LoginForm extends React.Component {
         <Modal
           key={1}
           open={this.state.showPreferedRolesModal}
-          classNames={{ modal: "Modal Modal-add-owner" }}
+          classNames={{ modal: "Modal Modal-prefered-roles" }}
           contentLabel="Choose prefered roles"
           onClose={() => this.closePreferedRolesModal(t)}
         >

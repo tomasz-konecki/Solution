@@ -482,6 +482,12 @@ const translations = {
     WrongFileType: "Zły format pliku",
     FileIsTooBig: "Za duży plik",
     WrongAspectRatio: "Obrazek ma złe proporcje"
+  },
+  SideProgressBar: {
+    Notifications: "Powiadomienia",
+    SuccessFullyGeneratedReport: "Pomyślnie wygenerowano raport",
+    Read: "Odczytane",
+    Unread: "Nieodczytane"
   }
 };
 

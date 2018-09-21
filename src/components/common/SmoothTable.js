@@ -151,6 +151,8 @@ class SmoothTable extends Component {
           mainFilter[this.props.construct.filterClass][fieldName] = keyval[1];
       });
     }
+
+    this.props.getSettings(Object.assign({}, this.state.sortingSettings, mainFilter));
     return Object.assign({}, this.state.sortingSettings, mainFilter);
   }
 

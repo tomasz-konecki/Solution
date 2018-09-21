@@ -6,13 +6,8 @@
     bottom: -50px;
     right: 115px;
   }
-  .normal-btn {
-    bottom: -120px;
-    left: 0;
-    right: 0;
-    margin: 0 auto;
-    background: #1c7744;
-    position: absolute;
+  .q-btn-holder {
+    padding: 10px;
   }
   @media screen and (max-width: 1470px) {
     margin-top: 400px;
@@ -166,24 +161,102 @@
   }
 }
 
-.modal-add-quarter {
+
+.plan-quarter-modal{
   width: 1200px !important;
   height: 750px !important;
   @media (max-width: 500px) {
     height: 98% !important;
   }
-  .questions-container {
-    width: 100%;
-    height: 94%;
-    position: relative;
-    .server-error {
-      position: absolute;
-      width: 100%;
-      height: 50px;
-      text-align: center;
-      top: 0;
-      bottom: 0;
-      margin: auto 0;
+  h3{
+      text-align: left;
+  }
+  .calendar{
+    h2{
+      padding: 10px;
+      color: gray;
+      span{
+        color: lightcoral;
+      }
     }
+    .hours{
+      display: flex;
+      padding: 40px 0;
+      justify-content: center;
+      .fa-plus{
+        color: #60A360;
+      }
+      .add-hour-btn{
+        width: 160px;
+        background: transparent;
+        border: none;
+        border-left: 2px solid transparent;
+        border-right: 2px solid transparent;
+        cursor: pointer;
+        transition: .5s all;
+        &:hover{
+          width: 180px;
+          margin: 0 10px;
+          border-color: tomato;
+        }
+      }
+      & > div{
+        animation: .5s animate-in forwards;
+        opacity: 0;
+        padding: 0 10px;
+        display: flex;
+        & > div{
+          position: relative;
+          span{
+            position: absolute;
+            top: -15px;
+            font-size: 12px;
+            color: tomato;
+            letter-spacing: 1.25px;
+            font-weight: bold;
+          }
+        }
+        @for $i from 2 through 20 {
+          & {
+            &:nth-child(#{$i}) {
+              animation-delay: $i * (1s / 18);
+            }
+          }
+        }
+        i{
+          margin-left: 5px;
+        }
+      }
+      .start-or-end-time{
+        font-size: 30px;
+        color: #A8BAAE;
+      }
+      .highlighter{
+        &::after{
+          content: '';
+          display: block;
+          height: 100%;
+          width: 25px;
+          border-bottom: 3px solid transparent;
+          transition: .5s all;
+        }
+        &:hover::after{
+            cursor: pointer;
+            width: 40px;
+            border-bottom-color: tomato;
+        }
+        @keyframes animate-in{
+          0%{
+            opacity: 0;
+            transform: translateX(-15px);
+          }
+          100%{
+            opacity: 1;
+            transform: translateX(0);
+          }
+        }
+      }
+    }
+
   }
 }

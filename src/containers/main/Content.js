@@ -13,7 +13,7 @@ import ClientsContainer from "../../components/clients/ClientsContainer";
 import PromptsCommander from "../../components/promptsCommander/promptsCommander";
 import ImportCVContainer from "../../components/importCV/ImportCVContainer";
 import NotFound404 from "../../components/notFound404/NotFound404";
-
+import AddQuarter from '../../components/employees/details/quaters/addQuarter/addQuarter.jsx';
 class Content extends React.Component {
   render() {
     const { match } = this.props;
@@ -25,10 +25,17 @@ class Content extends React.Component {
           <Route exact path={match.url} component={StatsContainer} />
           <Route path={match.url + "/users"} component={UsersContainer} />
           <Route path={match.url + "/clients"} component={ClientsContainer} />
+          <Route exact
+            path={match.url + "/employees/addquarter/:id"}
+            component={AddQuarter}
+          />
           <Route
             path={match.url + "/employees"}
             component={EmployeesContainer}
           />
+
+          
+       
           <Route path={match.url + "/projects"} component={ProjectsContainer} />
           <Route path={match.url + "/skills"} component={SkillsContainer} />
           <Route path={match.url + "/reports"} component={ReportsContainer} />

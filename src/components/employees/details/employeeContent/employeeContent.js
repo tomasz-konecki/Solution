@@ -28,7 +28,8 @@ const employeeContent = ({
   editSkypeFormItems,
   editSkypeId,
   skypeIdAddLoading,
-  updateSkypeIdResult
+  updateSkypeIdResult,
+  getEmployeePromise
 }) => {
   const status = employee.isDeleted
     ? t("Deleted")
@@ -217,6 +218,7 @@ const callSkype = editSkypeFormItems[0].value ? (
         )}
       </div>
       <Quaters
+        getEmployeePromise={getEmployeePromise}
         reactivateQuaterACreator={reactivateQuaterACreator}
         status={status}
         reactivateQuaterStatus={reactivateQuaterStatus}

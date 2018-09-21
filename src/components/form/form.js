@@ -3,7 +3,7 @@ import "./form.scss";
 import DatePicker from "react-datepicker";
 import { translate } from "react-translate";
 import moment from "moment";
-import { validateInput, validateDate } from "../../services/validation";
+import { validateInput, validateDate, validateDateIsNotFromPast } from "../../services/validation";
 import DataList from "./dataList/dataList";
 import { contains } from "../../services/methods";
 import SpinnerButton from "./spinner-btn/spinner-btn";
@@ -105,6 +105,15 @@ class Form extends Component {
       for (let i = 0; i < validationResult.length; i++)
         newFormItems[dateIndexesToCompare[i]].error = validationResult[i];
       if (validationResult[0]) shouldSubmit = false;
+    }
+
+    if(newFormItems[id].checkIfDateIsfromPast){
+      const result = validateDateIsNotFromPast(newFormItems[id].value);
+      newFormItems[id].error = result;
+    }
+
+    if(newFormItems[id].callBackFunc){
+      newFormItems[id].callBackFunc();
     }
 
     this.setState({ formItems: newFormItems, validationResult: shouldSubmit });
@@ -248,7 +257,7 @@ class Form extends Component {
                     id={index}
                     value={i.value}
                     onChange={e => this.onChangeInput(e, index)}
-                    placeholder={i.placeholder}
+                    placeholder={i.placeholder ? i.placeholder : ""}
                   />
                 ) : i.mode === "drop-down-with-data" ? (
                   <DataList

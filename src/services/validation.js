@@ -19,6 +19,7 @@ export const validateInput = (
   if (maxLength && inputValue.replace(/ /g, "").length > maxLength) {
     return "Wartość pola " + inputTitle + " ma za dużo znaków";
   }
+
   if (inputType && !canBeNull) {
     if (!RegexPatterns.projetctFormPattern[inputType].test(inputValue)) {
       return "Nieprawidłowy format pola";
@@ -44,3 +45,12 @@ export const validateReportPages = value => {
 
   return "";
 };
+
+export const validateDateIsNotFromPast = givenDate => {
+  const dateNow = moment();
+  if(moment(givenDate, 'DD-MM-YYYY').isBefore(dateNow)){
+    return "Podana data nie może odnosić do przeszlości";
+  }
+
+  return "";
+}

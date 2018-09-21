@@ -177,6 +177,7 @@ class EmployeeDetailsContainer extends React.Component {
       changeSkillsErrors,
       t,
       updateSkypeIdResult,
+      getEmployeePromise,
       certificates
     } = this.props;
 
@@ -192,6 +193,7 @@ class EmployeeDetailsContainer extends React.Component {
               <h1>{t("EmployeeDetails")}</h1>
 
               <EmployeeContent
+                getEmployee={getEmployeePromise}
                 status={status}
                 reactivateQuaterACreator={reactivateQuaterACreator}
                 reactivateQuaterStatus={reactivateQuaterStatus}

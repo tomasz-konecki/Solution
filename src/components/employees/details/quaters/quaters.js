@@ -9,14 +9,29 @@ import Modal from "react-responsive-modal";
 import EmptyContent from "../../../common/empty-content/empty-content";
 import ActivateCheckbox from "../others/activateCheckbox";
 import { connect } from "react-redux";
-import {
-  addQuarterTalkACreator,
-  addQuarterTalk,
-  getQuarterQuestionsACreator
-} from "../../../../actions/quarterTalks";
+import moment from 'moment';
 import ServerError from "../../../common/serverError/serverError";
 import Form from "../../../form/form";
 import { translate } from "react-translate";
+import { withRouter } from 'react-router';
+import LoadHandlingWrapper from '../../../../hocs/handleLoadingContent.jsx';
+import { getReservedDatesACreator, getReservedDates, planQuarter, planQuarterACreator } from '../../../../actions/quarterTalks';
+
+const createQuestionsForm = questions => {
+  const copiedQuestions = [...questions];
+  const formItems = [];
+  const objectToAdd = {
+    title: "", mode: "textarea", value: "", error: "", canBeNull: true, maxLength: 300,
+  }
+  for(let i = 0; i < copiedQuestions.length; i++){
+    const copiedObject = {...objectToAdd};
+    copiedObject.title = copiedQuestions[i].question;
+    copiedObject['id'] = copiedQuestions[i].id;
+    formItems.push(copiedObject);
+    
+  }
+  return formItems;
+}
 
 class Quaters extends React.PureComponent {
   state = {
@@ -29,7 +44,27 @@ class Quaters extends React.PureComponent {
     activatingQuater: false,
     shouldShowDeleted: false,
     currentOpenedItemId: null,
-    showAddQuarterModal: false
+    openPlanQuaterModal: false,
+    getFreeDatesLoading: false,
+    wasChangedData: 0,
+
+    planQuarterFormItems: [
+      { title: "Data odbycia", mode: 'date-picker', error: "", callBackFunc: () => this.getQuartersByDate(),
+        value: moment().locale("pl"), canBeNull: false, checkIfDateIsfromPast: true },
+      {
+        title: "Kwartał", mode: "type-and-select", value: "", error: "", canBeNull: false,
+        type: "text",
+        inputType: "number",
+        placeholder: "wybierz lub wpisz kwartał...",
+        dataToMap: [
+            {name: "1", id: 1},
+            {name: "2", id: 2},
+            {name: "3", id: 3},
+            {name: "4", id: 4}
+        ]
+      },
+    ],
+    isPlanningQuarter: false
   };
   selectQuartersByState = (state, quartersList) => {
     const newQuarters = [];
@@ -124,60 +159,86 @@ class Quaters extends React.PureComponent {
       listToShowIndex: null
     });
   };
-  openAddQuarterModal = () => {
-    const { getQuestionsStatus, getQuarterQuestionsACreator } = this.props;
-    this.setState({ showAddQuarterModal: true });
-    if (getQuestionsStatus === null) getQuarterQuestionsACreator();
-  };
-  addQuarter = () => {
-    const { addQuarterTalkACreator, employeeId } = this.props;
-    const model = {};
-    addQuarterTalkACreator(model, employeeId);
-  };
-  closeAddQuarterModal = () => {
-    this.setState({ showAddQuarterModal: false });
-  };
+
+  putOperationButtonsInDom = () => {
+    const { t, history, status, employeeId } = this.props;
+    if(status === "Aktywny"){
+      return (
+        <React.Fragment>
+          <Button
+            onClick={() => history.push(`/main/employees/addquarter/${employeeId}`)}
+            title={t("Add")}
+            mainClass="option-btn normal-btn rel-btn"
+          />
+          <Button
+            onClick={this.openPlanQuarterModal}
+            title="Zaplanuj rozmowę"
+            mainClass="option-btn normal-btn rel-btn"
+          />
+        </React.Fragment>
+      );
+    }
+    return null;
+  }
+
+  openPlanQuarterModal = () => {
+    this.setState({openPlanQuaterModal: true, getFreeDatesLoading: true});
+    const { getReservedDatesACreator, employeeId } = this.props;
+    getReservedDatesACreator(employeeId).then(() => {
+
+      this.setState({getFreeDatesLoading: false})
+      
+    }).catch(() => this.setState({getFreeDatesLoading: false}));
+  }
+
+  closePlanQuarterModal = () => {
+    this.setState({openPlanQuaterModal: false}, () => {
+      this.props.clearReservedDates();
+      this.props.planQuarterClear();
+    });
+  }
+
+  planQuarter = () => {
+    this.setState({isPlanningQuarter: true});
+    const { planQuarterACreator, employeeId } = this.props;
+    const { planQuarterFormItems } = this.state;
+    planQuarterACreator(employeeId, planQuarterFormItems).then(() => {
+      this.setState({isPlanningQuarter: false});
+    }).catch(() => this.setState({isPlanningQuarter: false}))
+  }
+
+  getQuartersByDate = () => {
+   this.setState({wasChangedData: this.state.wasChangedData+1});
+  }
+
+  filterQuarters = () => {
+    const { reservedDates: items } = this.props;
+    const planQuarterFormItems = [...this.state.planQuarterFormItems];
+    
+
+    if(items.length > 0){
+      const selectedDate = planQuarterFormItems[0].value.format().slice(0, 10);
+    
+      return items.filter(item => {
+        return item.date === selectedDate;
+      })
+    }
+
+    return items;
+  }
 
   render() {
-    const {
-      paginationLimit,
-      deleteQuaterStatus,
-      deleteQuaterErrors,
-      quarterTalks,
-      status,
-      addQuarterTalkStatus,
-      addQuarterTalkErrors,
-      addQuarterTalkClear,
-      getQuestionsStatus,
-      getQuestionsErrors,
-      questions,
-      t
-    } = this.props;
-    const {
-      listToShowIndex,
-      currentPage,
-      watchedRecords,
-      showDeleteModal,
-      deletingQuater,
-      activatingQuater,
-      shouldShowDeleted,
-      quarters,
-      showAddQuarterModal
+    const { reservedDates, getDatesStatus, getDatesErrors, clearReservedDates,planQuarterStatus, planQuarterErrors,
+      paginationLimit, deleteQuaterStatus, deleteQuaterErrors, quarterTalks, status, t, employeeId } = this.props;
+    const {openPlanQuaterModal, getFreeDatesLoading, planQuarterFormItems, isPlanningQuarter, showedReservedDates,
+      listToShowIndex, currentPage, watchedRecords, showDeleteModal, deletingQuater, activatingQuater, shouldShowDeleted, quarters
     } = this.state;
-    const shouldShowAddButton =
-      status === t("Active") ? (
-        <Button
-          onClick={this.openAddQuarterModal}
-          title={t("Add")}
-          mainClass="option-btn normal-btn"
-        />
-      ) : null;
+    const shouldShowOperationButtons = this.putOperationButtonsInDom();
+
+    const filteredQuarters = this.filterQuarters();
     return (
       <div className="quaters-container">
-        <ActivateCheckbox
-          shouldShowDeleted={shouldShowDeleted}
-          showDeleted={this.showDeleted}
-        />
+        
         {quarters && quarters.length > 0 ? (
           <React.Fragment>
             <h2>
@@ -271,7 +332,6 @@ class Quaters extends React.PureComponent {
                 />
               )}
             </div>
-            {shouldShowAddButton}
           </React.Fragment>
         ) : (
           <EmptyContent
@@ -284,7 +344,14 @@ class Quaters extends React.PureComponent {
             mainIcon="fa fa-comments"
           />
         )}
-
+        <div className="q-btn-holder">
+          <ActivateCheckbox
+            shouldShowDeleted={shouldShowDeleted}
+            showDeleted={this.showDeleted}
+          />
+          {this.putOperationButtonsInDom()}
+        </div>
+        
         <ConfirmModal
           operationName={t("Delete")}
           operation={this.deleteQuaters}
@@ -307,76 +374,110 @@ class Quaters extends React.PureComponent {
             />
           )}
 
-        {addQuarterTalkStatus !== null &&
-          addQuarterTalkStatus !== undefined && (
-            <OperationStatusPrompt
-              closePrompt={() => addQuarterTalkClear(null, [])}
-              operationPromptContent={
-                addQuarterTalkStatus
-                  ? t("QuarterTalkAdded")
-                  : addQuarterTalkErrors[0]
-              }
-              operationPrompt={addQuarterTalkStatus}
-            />
-          )}
-
         <Modal
-          open={showAddQuarterModal}
-          classNames={{ modal: "modal-add-quarter Modal" }}
-          contentLabel={`${t("Add")} ${t("QuarterTalk")}`}
-          onClose={this.closeAddQuarterModal}
+          open={openPlanQuaterModal}
+          classNames={{ modal: "Modal plan-quarter-modal" }}
+          contentLabel="Plan quarter modal"
+          onClose={this.closePlanQuarterModal}
         >
           <header>
-            <h3 className="section-heading">{`${t("Add")} ${t(
-              "QuarterTalk"
-            )}`}</h3>
+            <h3 className="section-heading">
+              Dodaj pracownika do projektu
+            </h3>
           </header>
+          <LoadHandlingWrapper errors={getDatesErrors} closePrompt={clearReservedDates} operationStatus={getDatesStatus} isLoading={getFreeDatesLoading}>
+              <Form
+                btnTitle="Zaplanuj"
+                shouldSubmit={true}
+                onSubmit={this.planQuarter}
+                isLoading={isPlanningQuarter}
+                formItems={planQuarterFormItems}
+                enableButtonAfterTransactionEnd={true}
+                  submitResult={{
+                    status: planQuarterStatus,
+                    content: planQuarterStatus ? "Pomyślnie zaplanowano rozmowe kwartalną" :
+                      planQuarterErrors[0]
+                    }}
+                />
+                <div className="calendar">
+                  <h2>Liczba rozmów w dniu <span>{planQuarterFormItems[0].value.format('dddd')}</span> wynosi: {filteredQuarters.length === 0 ? filteredQuarters.length : 
+                    filteredQuarters.length-2}
+                  </h2>
+                  <div className="hours">
+                    {filteredQuarters.map((date, index) => {
+                      return (
+                        <div key={index} className={`${date.hours && "highlighter"} ${date.isHelpOnly && "start-or-end-time"}`}>
+                          {date.time} <div><i className="fa fa-clock"></i><span>{date.willLastTo}</span></div>
+                          {date.hours && <i className="fa fa-plus"></i>}
+                        </div>
+                      );
+                    })}
 
-          {getQuestionsStatus === null ? (
-            <Spinner />
-          ) : (
-            <div className="questions-container">
-              {getQuestionsStatus === false ? (
-                <ServerError message={getQuestionsErrors[0]} />
-              ) : (
-                questions.map(question => {
-                  return (
-                    <section key={question.question}>
-                      <label>{question.question}</label>
-                    </section>
-                  );
-                })
-              )}
-            </div>
-          )}
+                    {filteredQuarters.length === 0 && 
+                    <React.Fragment>
+                      <div className="start-or-end-time">
+                          06:00 <div><i className="fa fa-clock"></i></div>
+                      </div>
+                      <button className="add-hour-btn">Dodaj godzinę</button>
+                      <div className="start-or-end-time">
+                          20:00 <div><i className="fa fa-clock"></i></div>
+                      </div>
+                    </React.Fragment>
+                    }
+                  </div>
+                </div>
+
+          </LoadHandlingWrapper>
+
         </Modal>
       </div>
     );
   }
 }
+/*
+   <div className="reserved-dates">
+                {reservedDates.map(date => {
+                  return (
+                    <div key={date.dateTime}>{date.date} {date.time}</div>
+                  );
+                })}
+              </div>
+  <Form
+                btnTitle="Dodaj"
+                shouldSubmit={true}
+                onSubmit={this.addQuarter}
+                isLoading={isAddingQuarter}
+                formItems={addQuarterItems}
+                enableButtonAfterTransactionEnd={true}
+                submitResult={{
+                    status: addQuarterTalkStatus,
+                    content: addQuarterTalkStatus ? "Pomyślnie utworzono rozmowę kwartalną" :
+                        addQuarterTalkErrors[0]
+                }}
+                />*/
 
 const mapStateToProps = state => {
   return {
-    addQuarterTalkStatus: state.quarterTalks.addQuarterTalkStatus,
-    addQuarterTalkErrors: state.quarterTalks.addQuarterTalkErrors,
+    reservedDates: state.quarterTalks.reservedDates, 
+    getDatesStatus: state.quarterTalks.getDatesStatus, 
+    getDatesErrors: state.quarterTalks.getDatesErrors,
 
-    getQuestionsStatus: state.quarterTalks.getQuestionsStatus,
-    getQuestionsErrors: state.quarterTalks.getQuestionsErrors,
-    questions: state.quarterTalks.questions
+    planQuarterStatus: state.quarterTalks.planQuarterStatus,
+    planQuarterErrors: state.quarterTalks.planQuarterErrors
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    addQuarterTalkACreator: (model, employeeId) =>
-      dispatch(addQuarterTalkACreator(model, employeeId)),
-    addQuarterTalkClear: (status, errors) =>
-      dispatch(addQuarterTalk(status, errors)),
-    getQuarterQuestionsACreator: () => dispatch(getQuarterQuestionsACreator())
+    getReservedDatesACreator: (employeeId) => dispatch(getReservedDatesACreator(employeeId)),
+    clearReservedDates: () => dispatch(getReservedDates([], null, [])),
+
+    planQuarterACreator: (employeeId, formItems) => dispatch(planQuarterACreator(employeeId, formItems)),
+    planQuarterClear: () => dispatch(planQuarter(null, [])),
   };
 };
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(translate("Quaters")(Quaters));
+)(translate("Quaters")(withRouter(Quaters)));

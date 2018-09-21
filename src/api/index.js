@@ -238,6 +238,9 @@ const WebApi = {
     get: {
       questions: () => {
         return WebAround.get(`${API_ENDPOINT}/QuarterTalks/questions`);
+      },
+      reservedDates: (employeeId) => {
+        return WebAround.get(`${API_ENDPOINT}/QuarterTalks/GetReservedDates/` + employeeId);
       }
     },
     delete: quarterId => {
@@ -253,6 +256,9 @@ const WebApi = {
     post: {
       createQuarter: model => {
         return WebAround.post(`${API_ENDPOINT}/QuarterTalks`, model);
+      },
+      planQuarter: model => {
+        return WebAround.post(`${API_ENDPOINT}/QuarterTalks/Planned`, model);
       }
     }
   },

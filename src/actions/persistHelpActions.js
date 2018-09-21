@@ -33,7 +33,6 @@ export const fetchFormClients = (fetchedFormClients, fetchStatus, fetchError) =>
 export const fetchFormClientsACreator = () => {
     return dispatch => {
         WebApi.clients.get.all().then(response => {
-            console.log(response);
             dispatch(fetchFormClients(response.replyBlock.data.dtoObjects, true, []));
         }).catch(error => {
             dispatch(fetchFormClients([], false, errorCatcher(error)));

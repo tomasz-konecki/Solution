@@ -171,6 +171,10 @@
   h3{
       text-align: left;
   }
+  & > nav{
+    padding: 10px;
+    border-top: 1px solid grey;
+  }
   .calendar{
     h2{
       padding: 10px;
@@ -185,6 +189,9 @@
       justify-content: center;
       .fa-plus{
         color: #60A360;
+        position: absolute;
+        font-size: 16px;
+        right: 15px;
       }
       .add-hour-btn{
         width: 160px;

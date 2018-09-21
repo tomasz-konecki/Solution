@@ -399,10 +399,14 @@ class Quaters extends React.PureComponent {
                       planQuarterErrors[0]
                     }}
                 />
+                <nav>
+                    <Button title="Zajęte dni" mainClass="option-btn normal-btn"/>
+                </nav>
                 <div className="calendar">
                   <h2>Liczba rozmów w dniu <span>{planQuarterFormItems[0].value.format('dddd')}</span> wynosi: {filteredQuarters.length === 0 ? filteredQuarters.length : 
                     filteredQuarters.length-2}
                   </h2>
+                  
                   <div className="hours">
                     {filteredQuarters.map((date, index) => {
                       return (

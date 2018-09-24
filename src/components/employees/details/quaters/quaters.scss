@@ -187,6 +187,43 @@
       display: flex;
       padding: 40px 0;
       justify-content: center;
+      .time-input-container{
+        width: 100px;
+        position: relative;
+        box-sizing: border-box;
+        .fa-times{
+          position: absolute;
+          top: -20px;
+          right: 5px;
+          cursor: pointer;
+          font-size: 14px;
+        }
+        .fa-check{
+          position: absolute;
+          bottom: -22px;
+          right: 5px;
+          cursor: pointer;
+          color: mediumseagreen;
+          font-size: 16px;
+        }
+        input{
+          width: 100%;
+          font-family: inherit;
+          font-size: 17px;
+          transition: .5s all;
+          padding: 0 10px;
+          border: none;
+          border-left: 2px solid #A8BAAE;
+          border-right: 2px solid #A8BAAE;
+          &:focus{
+            outline: none;
+          }
+          &:hover{
+            border-color: tomato;
+            transform: scale(1.05);
+          }
+        }
+      }
       .fa-plus{
         color: #60A360;
         position: absolute;
@@ -205,6 +242,9 @@
           width: 180px;
           margin: 0 10px;
           border-color: tomato;
+        }
+        &:focus{
+          outline: none;
         }
       }
       & > div{

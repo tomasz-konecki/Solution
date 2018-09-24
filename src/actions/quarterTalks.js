@@ -115,7 +115,7 @@ export const getReservedDates = (reservedDates, getDatesStatus, getDatesErrors) 
 
         const difference = startMomentedDate.diff(moment(endFullDate,"DD-MM-YYYY HH:mm"));
         const hours = Math.abs(moment.duration(difference).hours());
-        console.log(hours);
+        
         if(hours > 0)
             listOfTimesWithStartAndEndTimes[i].hours = hours;
         

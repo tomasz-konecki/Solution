@@ -7,7 +7,8 @@ export const validateInput = (
   minLength,
   maxLength,
   inputType,
-  inputTitle
+  inputTitle,
+  range
 ) => {
   if (!canBeNull && inputValue.length === 0) {
     return "Wartość pola " + inputTitle + " nie może być pusta";
@@ -18,6 +19,23 @@ export const validateInput = (
 
   if (maxLength && inputValue.replace(/ /g, "").length > maxLength) {
     return "Wartość pola " + inputTitle + " ma za dużo znaków";
+  }
+
+  if(range && inputValue.length > 0){
+    const timeValueWithDate = "10-12-1994" + inputValue;
+    const momentFormatTime = moment(timeValueWithDate,"DD-MM-YYYY HH:mm");
+
+    const startTimeValue = "10-12-1994" + range.startValue;
+    const endTimeValue = "10-12-1994" + range.endValue;
+
+    const momentStartTimeValue = moment(startTimeValue, "DD-MM-YYYY HH:mm");
+    const momentEndTimeValue = moment(endTimeValue, "DD-MM-YYYY HH:mm");
+    
+    if(momentFormatTime.isBefore(momentStartTimeValue))
+      return `Podana pora dnia jest zbyt wczesna`;
+
+    if(momentFormatTime.isAfter(momentEndTimeValue))
+      return `Podana pora dnia jest zbyt późna`;
   }
 
   if (inputType && !canBeNull) {

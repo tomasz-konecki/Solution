@@ -451,6 +451,7 @@ class Form extends Component {
           btnTitle={this.props.btnTitle}
           submitResult={this.props.submitResult}
           enableButtonAfterTransactionEnd={enableButtonAfterTransactionEnd}
+          shouldBeDisabledByOtherReason={this.props.shouldBeDisabledByOtherReason}
         />
       </form>
     );

@@ -62,6 +62,7 @@ export const getReservedDates = (reservedDates, getDatesStatus, getDatesErrors) 
 
   export const getReservedDatesACreator = employeeId => dispatch => {
       return new Promise((resolve, reject) => {
+
         WebApi.quarterTalks.get.reservedDates(employeeId).then(response => {
             const { dtoObjects: cutedResponse } = response.replyBlock.data;
             const datesAndTimes = cutedResponse.map(item => {
@@ -80,11 +81,15 @@ export const getReservedDates = (reservedDates, getDatesStatus, getDatesErrors) 
   export const planQuarter = (planQuarterStatus, planQuarterErrors) => {
       return { type: PLAN_QUARTER, planQuarterStatus, planQuarterErrors}
   }
-  export const planQuarterACreator = (employeeId, formItems) => dispatch => {
+  export const planQuarterACreator = (employeeId, formItems, time) => dispatch => {
       return new Promise((resolve, reject) => {
+        const onlyDate = formItems[0].value.format("YYYY-MM-DD");
+        const dateWithTime = onlyDate + time;
+        const momentedDateWithTime = moment(dateWithTime, "YYYY-MM-DD HH:mm");
+
         const model = {
             employeeId, 
-            "plannedTalkDate": formItems[0].value,
+            "plannedTalkDate": momentedDateWithTime.format(),
             "year": moment(formItems[0].value).year(),
             "quarter": formItems[1].value
         };
@@ -96,16 +101,17 @@ export const getReservedDates = (reservedDates, getDatesStatus, getDatesErrors) 
             resolve();
         })
       })
-     
   }
 
-  const createPosibleTimeSpaces = (listOfTimes) => {
+  export const createPosibleTimeSpaces = (listOfTimes) => {
+    if(listOfTimes.length === 0){
+        return [];
+    }
     
-    const startTime = {time: "06:00", date: listOfTimes[0].date, isHelpOnly: true};
-    const endTime = {time: "20:00", date: listOfTimes[0].date, isHelpOnly: true};
+    const startTime = { date: listOfTimes[0].date, time: "06:00", isHelpOnly: true};
+    const endTime = {date: listOfTimes[0].date, time: "20:00", isHelpOnly: true};
     
     const listOfTimesWithStartAndEndTimes = [startTime, ...listOfTimes, endTime];
-
     for(let i = 0; i < listOfTimesWithStartAndEndTimes.length-1; i++){
         const startFullDate = listOfTimesWithStartAndEndTimes[i].date + " " + listOfTimesWithStartAndEndTimes[i].time;
 
@@ -115,14 +121,11 @@ export const getReservedDates = (reservedDates, getDatesStatus, getDatesErrors) 
 
         const difference = startMomentedDate.diff(moment(endFullDate,"DD-MM-YYYY HH:mm"));
         const hours = Math.abs(moment.duration(difference).hours());
-        
-        if(hours > 0)
-            listOfTimesWithStartAndEndTimes[i].hours = hours;
+        listOfTimesWithStartAndEndTimes[i].hours = hours;
         
         if(!listOfTimesWithStartAndEndTimes[i].isHelpOnly)
             listOfTimesWithStartAndEndTimes[i].willLastTo = startMomentedDate.subtract(1, 'days').format("HH:mm");
         
     }
-
     return listOfTimesWithStartAndEndTimes;
   }

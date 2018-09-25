@@ -15,7 +15,7 @@ import Form from "../../../form/form";
 import { translate } from "react-translate";
 import { withRouter } from 'react-router';
 import LoadHandlingWrapper from '../../../../hocs/handleLoadingContent.jsx';
-import { getReservedDatesACreator, getReservedDates, planQuarter, planQuarterACreator } from '../../../../actions/quarterTalks';
+import { getReservedDatesACreator, getReservedDates, planQuarter, planQuarterACreator, createPosibleTimeSpaces } from '../../../../actions/quarterTalks';
 import { validateInput } from '../../../../services/validation';
 const createQuestionsForm = questions => {
   const copiedQuestions = [...questions];
@@ -66,7 +66,9 @@ class Quaters extends React.PureComponent {
     ],
     timeToPlanQuarter: {value: "", error: ""},
     isPlanningQuarter: false,
-    showChooseHourInput: false
+    showChooseHourInput: false,
+    isAddingDateToDatesListIndex: -1,
+    lastAddedTime: ""
   };
   selectQuartersByState = (state, quartersList) => {
     const newQuarters = [];
@@ -187,15 +189,14 @@ class Quaters extends React.PureComponent {
     this.setState({openPlanQuaterModal: true, getFreeDatesLoading: true});
     const { getReservedDatesACreator, employeeId } = this.props;
     getReservedDatesACreator(employeeId).then(() => {
-
       this.setState({getFreeDatesLoading: false})
-      
     }).catch(() => this.setState({getFreeDatesLoading: false}));
   }
 
   closePlanQuarterModal = () => {
     this.setState({openPlanQuaterModal: false, timeToPlanQuarter: {value: "", error: ""}}, () => {
-      this.props.clearReservedDates();
+      this.closeAddingHour();
+      this.props.changeReservedDates([], null, []);
       this.props.planQuarterClear();
     });
   }
@@ -203,21 +204,22 @@ class Quaters extends React.PureComponent {
   planQuarter = () => {
     this.setState({isPlanningQuarter: true});
     const { planQuarterACreator, employeeId } = this.props;
-    const { planQuarterFormItems } = this.state;
-    planQuarterACreator(employeeId, planQuarterFormItems).then(() => {
+    const { planQuarterFormItems, lastAddedTime } = this.state;
+    planQuarterACreator(employeeId, planQuarterFormItems, lastAddedTime).then(() => {
       this.setState({isPlanningQuarter: false});
     }).catch(() => this.setState({isPlanningQuarter: false}))
   }
 
   getQuartersByDate = () => {
-   this.setState({wasChangedData: this.state.wasChangedData+1});
+   this.setState({wasChangedData: this.state.wasChangedData+1}, () => {
+    this.closeAddingHour();
+   });
   }
 
   filterQuarters = () => {
     const { reservedDates: items } = this.props;
     const planQuarterFormItems = [...this.state.planQuarterFormItems];
     
-
     if(items.length > 0){
       const selectedDate = planQuarterFormItems[0].value.format().slice(0, 10);
     
@@ -230,24 +232,67 @@ class Quaters extends React.PureComponent {
   }
 
   showChooseHourInput = () => {
+    this.closeAddingHour();
     this.setState({showChooseHourInput: true});
   }
 
-  onChangePlanQuarterTime = e => {
-    const validationResult = validateInput(e.target.value, false, null, null, null, "godzina rozmowy", {startValue: "06:00", endValue: "20:00"});
+  onChangePlanQuarterTime = (e, indexOfCurrentAddingDate, filteredQuarters) => {
+    const validationResult = validateInput(e.target.value, false, null, null, null, "godzina rozmowy", null,
+      {startValue: filteredQuarters[indexOfCurrentAddingDate], endValue: filteredQuarters[indexOfCurrentAddingDate+1]});
+ 
     const actualPlanQuarterTime = {...this.state.timeToPlanQuarter};
 
     actualPlanQuarterTime.value = e.target.value;
-    actualPlanQuarterTime.error = validationResult
+    actualPlanQuarterTime.error = validationResult;
+    this.setState({timeToPlanQuarter: actualPlanQuarterTime});
+  }
+  onChangPlanWhenIsEmpty = e => {
+    const validationResult = validateInput(e.target.value, false, null, null, null, "godzina rozmowy", 
+      {startValue: "06:00", endValue: "20:00"}, null);
+
+    const actualPlanQuarterTime = {...this.state.timeToPlanQuarter};
+    actualPlanQuarterTime.value = e.target.value;
+    actualPlanQuarterTime.error = validationResult;
     this.setState({timeToPlanQuarter: actualPlanQuarterTime});
   }
 
+  closeAddingHour = () => {
+    this.setState({isAddingDateToDatesListIndex: -1, timeToPlanQuarter: {value: "", error: ""}, 
+    showChooseHourInput: false, isPlanningQuarter: false});
+  }
+
+  addHourToPlannedQuarter = index => {
+    const { timeToPlanQuarter, planQuarterFormItems } = this.state;
+    const { changeReservedDates } = this.props;
+
+    const selectedDate = planQuarterFormItems[0].value.format("YYYY-MM-DD");
+    const dateWithTime = selectedDate + timeToPlanQuarter.value;
+
+    const momentedTimeAndDate = moment(dateWithTime, "YYYY-MM-DD HH:mm");
+    const substractedTime = momentedTimeAndDate.subtract(1, 'days').format('HH:mm');
+    
+    const momentedTimeWithAdditionalHours = momentedTimeAndDate.add(1, 'hours').subtract(1, 'days').format('HH:mm');
+
+    const objectToAdd = {date: selectedDate, time: substractedTime, willLastTo: momentedTimeWithAdditionalHours};
+  
+    const copiedReservedDates = [...this.props.reservedDates];
+
+    copiedReservedDates.splice(index+1, 0, objectToAdd);
+    copiedReservedDates.splice(0, 1);
+    copiedReservedDates.splice(copiedReservedDates.length-1, 1);
+    
+    this.setState({lastAddedTime: substractedTime}, () => {
+      changeReservedDates(createPosibleTimeSpaces(copiedReservedDates), true, []);
+      this.closeAddingHour();
+    });
+  }
+  
   render() {
-    const { reservedDates, getDatesStatus, getDatesErrors, clearReservedDates,planQuarterStatus, planQuarterErrors,
+    const { reservedDates, getDatesStatus, getDatesErrors, changeReservedDates,planQuarterStatus, planQuarterErrors,
       paginationLimit, deleteQuaterStatus, deleteQuaterErrors, quarterTalks, status, t, employeeId } = this.props;
     const {openPlanQuaterModal, getFreeDatesLoading, planQuarterFormItems, isPlanningQuarter, showedReservedDates,
       listToShowIndex, currentPage, watchedRecords, showDeleteModal, deletingQuater, activatingQuater, shouldShowDeleted, quarters,
-      showChooseHourInput, timeToPlanQuarter
+      showChooseHourInput, timeToPlanQuarter, isAddingDateToDatesListIndex, lastAddedTime
       } = this.state;
     const shouldShowOperationButtons = this.putOperationButtonsInDom();
 
@@ -399,10 +444,10 @@ class Quaters extends React.PureComponent {
         >
           <header>
             <h3 className="section-heading">
-              Dodaj pracownika do projektu
+              Zaplanuj rozmowę kwartalną
             </h3>
           </header>
-          <LoadHandlingWrapper errors={getDatesErrors} closePrompt={clearReservedDates} operationStatus={getDatesStatus} isLoading={getFreeDatesLoading}>
+          <LoadHandlingWrapper errors={getDatesErrors} closePrompt={changeReservedDates} operationStatus={getDatesStatus} isLoading={getFreeDatesLoading}>
               <Form
                 btnTitle="Zaplanuj"
                 shouldSubmit={true}
@@ -410,7 +455,7 @@ class Quaters extends React.PureComponent {
                 isLoading={isPlanningQuarter}
                 formItems={planQuarterFormItems}
                 enableButtonAfterTransactionEnd={true}
-                shouldBeDisabledByOtherReason={timeToPlanQuarter.error}
+                shouldBeDisabledByOtherReason={timeToPlanQuarter.error ? true : false}
                   submitResult={{
                     status: planQuarterStatus,
                     content: planQuarterStatus ? "Pomyślnie zaplanowano rozmowe kwartalną" :
@@ -432,12 +477,33 @@ class Quaters extends React.PureComponent {
                   <div className="hours">
                     {filteredQuarters.map((date, index) => {
                       return (
-                        <div key={index} className={`${date.hours && "highlighter"} ${date.isHelpOnly && "start-or-end-time"}`}>
+                        <div key={index} className={`${date.hours > 0 && isAddingDateToDatesListIndex !== index ? "highlighter" : ""} ${date.isHelpOnly ? "start-or-end-time" : ""}`}>
                           {date.time} <div><i className="fa fa-clock"></i><span>{date.willLastTo}</span></div>
-                          {date.hours && <i className="fa fa-plus"></i>}
+                          <span onClick={() => this.setState({isAddingDateToDatesListIndex: index})}/>
+
+                          {isAddingDateToDatesListIndex === index ? 
+                          <section className="time-input-container">
+                            <input value={timeToPlanQuarter.value} type="time" 
+                            onChange={e => this.onChangePlanQuarterTime(e, index, filteredQuarters)}/> 
+                            <i onClick={this.closeAddingHour} className="fa fa-times"></i>
+                            <i onClick={() => this.addHourToPlannedQuarter(index)} className="fa fa-check"></i>
+                          </section> : 
+                          (date.hours && date.hours > 0) ? <i onClick={() => this.setState({isAddingDateToDatesListIndex: index})} className="fa fa-plus"/> : null
+                          }
+
                         </div>
                       );
                     })}
+
+                    {lastAddedTime && 
+                      <div className="last-added-time-prompt">
+                        <p>Dodałeś godzinę: <b>{lastAddedTime}</b> w której odbędzie się rozmowa. Wypełnij formularz do końca i wcisnij przycisk "Zaplanuj"</p>
+                        <p>
+                          <i>lub</i>
+                          <span> Usuń dodane</span>
+                        </p>
+                      </div>
+                    }
                     
                     {filteredQuarters.length === 0 && 
                     <React.Fragment>
@@ -445,12 +511,14 @@ class Quaters extends React.PureComponent {
                           06:00 <div><i className="fa fa-clock"></i></div>
                       </div>
                       {showChooseHourInput ? 
+
                       <section className="time-input-container">
                         <input value={timeToPlanQuarter.value} type="time" 
-                        onChange={e => this.onChangePlanQuarterTime(e)}/> 
-                        <i onClick={() => this.setState({showChooseHourInput: false})} className="fa fa-times"></i>
-                        <i onClick={() => this.setState({showChooseHourInput: false})} className="fa fa-check"></i>
+                          onChange={e => this.onChangPlanWhenIsEmpty(e)}/> 
+                        <i onClick={this.closeAddingHour} className="fa fa-times"></i>
+                        <i className="fa fa-check"></i>
                       </section>
+
                       : 
                         <button onClick={() => this.setState({showChooseHourInput: true})} 
                           className="add-hour-btn">Dodaj godzinę</button>
@@ -485,9 +553,9 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     getReservedDatesACreator: (employeeId) => dispatch(getReservedDatesACreator(employeeId)),
-    clearReservedDates: () => dispatch(getReservedDates([], null, [])),
+    changeReservedDates: (reservedDates, status, errors) => dispatch(getReservedDates(reservedDates, status, errors)),
 
-    planQuarterACreator: (employeeId, formItems) => dispatch(planQuarterACreator(employeeId, formItems)),
+    planQuarterACreator: (employeeId, formItems, time) => dispatch(planQuarterACreator(employeeId, formItems, time)),
     planQuarterClear: () => dispatch(planQuarter(null, [])),
   };
 };

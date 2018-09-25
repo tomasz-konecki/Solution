@@ -1,74 +1,76 @@
 .all
 { 
-    font-size:16px;
-    color: #000;
-    text-align: left;
-}
-.submit
-{
-    margin-top: 25%;
-    background-color: #4eb954;
-    padding: 5px;
-    width: 70px;
-    border: 1.2px solid transparent;
-    border-radius: 6px;
-    transition: 0.5s;
-}
-.submit:hover
-{
-    margin-top: 25%;
-    background-color: #00ad09;
-    padding: 5px;
-    cursor: pointer;
-    color: #00d61d;
-    border: 1.2px solid transparent;
-    border-radius: 6px;
-}
-input[type=checkbox]
-{
-    width: 18px;
-    height: 18px;
-    cursor: pointer;
+        font-size:16px;
+        color: #000;
+        text-align: left;
 
+    .submit
+    {
+        margin-top: 25%;
+        background-color: #611321;
+        padding: 5px;
+        width: 70px;
+        border: 1.2px solid #611321;
+        border-radius: 6px;
+        transition: 0.5s;
+        color: #fff
+    }
+    .submit:hover
+    {
+        margin-top: 25%;
+        background-color: #4c0f19;
+        padding: 5px;
+        cursor: pointer;
+        color: #fff;
+        border: 1.2px solid transparent;
+        border-radius: 6px;
+    }
+    input[type=checkbox]
+    {
+        width: 18px;
+        height: 18px;
+        cursor: pointer;
+
+    }
+    .Modal header
+    {
+        text-align: center;
+        font-size: 17px;
+        font-weight: 600;
+        margin-right: 8%;
+        margin-bottom:25px;
+    }
+    .header
+    {
+        height: 50px;
+    }
+    .saved
+    {
+        font-weight: 500;
+        font-size: 19px;
+        text-align: center;
+        letter-spacing: 1px;
+    }
+    .Modal-closeIcon-0-1-4
+    {
+        top: 5px;
+        right: 5px;
+        cursor: pointer;
+        position: absolute;
+    }
+    .submit:disabled
+    {
+        background: #000;
+        color: #fff;
+        cursor: not-allowed;
+        margin-top: 25%;
+    }
+    .center
+    {
+        margin-left: 30%;
+    }
+    .role
+    {
+        margin-top: 5%;
 }
-.Modal header
-{
-    text-align: center;
-    font-size: 17px;
-    font-weight: 600;
-    margin-right: 8%;
-    margin-bottom:25px;
-}
-.header
-{
-    height: 50px;
-}
-.saved
-{
-    font-weight: 500;
-    font-size: 19px;
-    text-align: center;
-    letter-spacing: 1px;
-}
-.Modal-closeIcon-0-1-4
-{
-    top: 5px;
-    right: 5px;
-    cursor: pointer;
-    position: absolute;
-}
-.submit:disabled
-{
-    background: #000;
-    color: #fff;
-    cursor: not-allowed;
-    margin-top: 25%;
-}
-.center
-{
-    margin-left: 30%;
-}
-.role
-{
-    margin-top: 5%;
 }

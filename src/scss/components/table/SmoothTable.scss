@@ -34,7 +34,15 @@ $activeShadow: 0 0 10px rgba($teal1, 0.5);
 }
 
 .raport-button {
-  width: 200px;
+  width: 150px;
+  height: 35px !important;
+  float: right;
+  background-color: #8c1b2f !important;
+  color: white !important;
+  margin: 10px !important;
+}
+.raport-button:hover {
+  background-color: #4c0f19 !important;
 }
 
 .smooth-operator {
@@ -43,13 +51,19 @@ $activeShadow: 0 0 10px rgba($teal1, 0.5);
   user-select: none;
   margin: 20px 0 0;
 
+  button {
+    line-height: 4vh !important;
+  }
+
   @media screen and (max-width: 500px) {
     margin: 20px auto;
   }
 
   .smooth-table-remove-filters {
-    padding: 2px;
+    align-items: center;
     margin-left: 40px;
+    height: 85%;
+    line-height: 2;
 
     @media screen and (max-width: 1000px) {
       margin: 0;
@@ -230,7 +244,7 @@ $activeShadow: 0 0 10px rgba($teal1, 0.5);
 
   @media screen and (min-width: 501px) {
     .smooth-table-search-span {
-      padding: 2px;
+      padding-top: 10px;
     }
   }
   @media screen and (max-width: 500px) {
@@ -239,7 +253,7 @@ $activeShadow: 0 0 10px rgba($teal1, 0.5);
       height: unset;
 
       & > button {
-        width: 100%;
+        width: 90%;
         background-color: $button-element-background;
         color: $default-color;
       }

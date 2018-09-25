@@ -5,7 +5,8 @@ const translations = {
     EnterPassword: "Podaj hasło",
     Login: "Zaloguj",
     Forgot: "Zapomniałeś",
-    Password: "hasła"
+    Password: "hasła",
+    CloseModalMessage: 'Czy na pewno nie chcesz wybrać preferowanych roli w serwisie ? \nTej operacji nie można powtórzyć !'
   },
   NotFound404: {
     PageNotFound: "Nie znaleziono strony",
@@ -389,7 +390,8 @@ const translations = {
   },
   EditUserDetails: {
     Confirm: "Potwierdź",
-    RolesSuccessfullyEdited: "Role edytowano pomyślnie"
+    RolesSuccessfullyEdited: "Role edytowano pomyślnie",
+    UserSuccesfullyAdded: "Pomyślnie dodano użytkownika"
   },
   StageOne: {
     SearchAD: "Wyszukaj użytkownika w AD",
@@ -480,6 +482,12 @@ const translations = {
     WrongFileType: "Zły format pliku",
     FileIsTooBig: "Za duży plik",
     WrongAspectRatio: "Obrazek ma złe proporcje"
+  },
+  SideProgressBar: {
+    Notifications: "Powiadomienia",
+    SuccessFullyGeneratedReport: "Pomyślnie wygenerowano raport",
+    Read: "Odczytane",
+    Unread: "Nieodczytane"
   }
 };
 

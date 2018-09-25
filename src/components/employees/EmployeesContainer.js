@@ -19,7 +19,8 @@ class EmployeesContainer extends React.Component {
     this.state = {
       currentPage: 1,
       limit: 15,
-      init: false
+      init: false,
+      settings: {}
     };
   }
 
@@ -30,7 +31,7 @@ class EmployeesContainer extends React.Component {
         this.props.toConfirm.employee.id,
         "Junior",
         0.3,
-        () => this.pageChange(this.state.currentPage),
+        () => this.pageChange(this.state.currentPage, this.state.settings),
         this.props.async.setActionConfirmationResult
       );
     }
@@ -38,7 +39,7 @@ class EmployeesContainer extends React.Component {
       this.props.async.setActionConfirmationProgress(true);
       this.props.employeeActions.reActivateEmployeeOnList(
         this.props.toConfirm.employee.id,
-        () => this.pageChange(this.state.currentPage),
+        () => this.pageChange(this.state.currentPage, this.state.settings),
         this.props.async.setActionConfirmationResult
       );
     }
@@ -46,10 +47,16 @@ class EmployeesContainer extends React.Component {
       this.props.async.setActionConfirmationProgress(true);
       this.props.employeeActions.deleteEmployeeOnList(
         this.props.toConfirm.employee.id,
-        () => this.pageChange(this.state.currentPage),
+        () => this.pageChange(this.state.currentPage, this.state.settings),
         this.props.async.setActionConfirmationResult
       );
     }
+  }
+
+  getSettings = (settings) => {
+    this.setState({
+      settings: settings
+    })
   }
 
   validatePropsForAction(nextProps, action) {
@@ -127,6 +134,7 @@ class EmployeesContainer extends React.Component {
           />
         )}
         <EmployeesList
+          getSettings={this.getSettings}
           employees={this.props.employees}
           currentPage={this.state.currentPage}
           totalPageCount={this.props.totalPageCount}

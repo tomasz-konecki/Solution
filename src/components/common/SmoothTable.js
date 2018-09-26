@@ -152,7 +152,7 @@ class SmoothTable extends Component {
       });
     }
 
-    this.props.getSettings(Object.assign({}, this.state.sortingSettings, mainFilter));
+    //this.props.getSettings(Object.assign({}, this.state.sortingSettings, mainFilter));
     return Object.assign({}, this.state.sortingSettings, mainFilter);
   }
 

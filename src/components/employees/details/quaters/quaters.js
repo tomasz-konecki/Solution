@@ -68,7 +68,7 @@ class Quaters extends React.PureComponent {
     isPlanningQuarter: false,
     showChooseHourInput: false,
     isAddingDateToDatesListIndex: -1,
-    lastAddedTime: ""
+    lastAddedTime: {time: "", date: ""}
   };
   selectQuartersByState = (state, quartersList) => {
     const newQuarters = [];
@@ -211,7 +211,7 @@ class Quaters extends React.PureComponent {
   }
 
   getQuartersByDate = () => {
-   this.setState({wasChangedData: this.state.wasChangedData+1}, () => {
+   this.setState({wasChangedData: this.state.wasChangedData+1, timeToPlanQuarter: {time: "", date: ""}}, () => {
     this.closeAddingHour();
    });
   }
@@ -276,14 +276,28 @@ class Quaters extends React.PureComponent {
     const objectToAdd = {date: selectedDate, time: substractedTime, willLastTo: momentedTimeWithAdditionalHours};
   
     const copiedReservedDates = [...this.props.reservedDates];
-
     copiedReservedDates.splice(index+1, 0, objectToAdd);
     copiedReservedDates.splice(0, 1);
     copiedReservedDates.splice(copiedReservedDates.length-1, 1);
     
-    this.setState({lastAddedTime: substractedTime}, () => {
+    this.setState({lastAddedTime: {time: substractedTime, date: selectedDate}}, () => {
       changeReservedDates(createPosibleTimeSpaces(copiedReservedDates), true, []);
       this.closeAddingHour();
+    });
+  }
+
+  deleteLastAddedHour = () => {
+    const { lastAddedTime } = this.state;
+    const items = [...this.props.reservedDates];
+
+    const itemToDeleteIndex = items.findIndex(x => x.time === lastAddedTime.time);
+    items.splice(itemToDeleteIndex, 1);
+    console.log(itemToDeleteIndex);
+    items.splice(0, 1);
+    items.splice(items.length-1, 1);
+    const newLastAddedTime = {time: "", date: ""};
+    this.setState({lastAddedTime: newLastAddedTime}, () => {
+      this.props.changeReservedDates(createPosibleTimeSpaces(items), true, []);
     });
   }
   
@@ -470,8 +484,8 @@ class Quaters extends React.PureComponent {
                     <Button title="Zajęte dni" mainClass="option-btn normal-btn"/>
                 </nav>
                 <div className="calendar">
-                  <h2>Liczba rozmów w dniu <span>{planQuarterFormItems[0].value.format('dddd')}</span> wynosi: {filteredQuarters.length === 0 ? filteredQuarters.length : 
-                    filteredQuarters.length-2}
+                  <h2>
+                    <i className="fa fa-calendar-alt"></i> Przeglądany dzień <span>{planQuarterFormItems[0].value.format('dddd')}</span>, {planQuarterFormItems[0].value.format('MMMM')}
                   </h2>
                   
                   <div className="hours">
@@ -479,32 +493,25 @@ class Quaters extends React.PureComponent {
                       return (
                         <div key={index} className={`${date.hours > 0 && isAddingDateToDatesListIndex !== index ? "highlighter" : ""} ${date.isHelpOnly ? "start-or-end-time" : ""}`}>
                           {date.time} <div><i className="fa fa-clock"></i><span>{date.willLastTo}</span></div>
-                          <span onClick={() => this.setState({isAddingDateToDatesListIndex: index})}/>
+                          
+                          {lastAddedTime.time === "" &&
+                            <span onClick={() => this.setState({isAddingDateToDatesListIndex: index})}/>
+                          }
 
                           {isAddingDateToDatesListIndex === index ? 
                           <section className="time-input-container">
                             <input value={timeToPlanQuarter.value} type="time" 
                             onChange={e => this.onChangePlanQuarterTime(e, index, filteredQuarters)}/> 
                             <i onClick={this.closeAddingHour} className="fa fa-times"></i>
-                            <i onClick={() => this.addHourToPlannedQuarter(index)} className="fa fa-check"></i>
+                            <i onClick={timeToPlanQuarter.error ? null : () => this.addHourToPlannedQuarter(index)} className={`fa ${timeToPlanQuarter.error ? "check-dis" : ""} fa-check`}></i>
                           </section> : 
-                          (date.hours && date.hours > 0) ? <i onClick={() => this.setState({isAddingDateToDatesListIndex: index})} className="fa fa-plus"/> : null
+                          (lastAddedTime.time === "" && date.hours && date.hours > 0) ? <i onClick={() => this.setState({isAddingDateToDatesListIndex: index})} className="fa fa-plus"/> : null
                           }
 
                         </div>
                       );
                     })}
-
-                    {lastAddedTime && 
-                      <div className="last-added-time-prompt">
-                        <p>Dodałeś godzinę: <b>{lastAddedTime}</b> w której odbędzie się rozmowa. Wypełnij formularz do końca i wcisnij przycisk "Zaplanuj"</p>
-                        <p>
-                          <i>lub</i>
-                          <span> Usuń dodane</span>
-                        </p>
-                      </div>
-                    }
-                    
+ 
                     {filteredQuarters.length === 0 && 
                     <React.Fragment>
                       <div className="start-or-end-time">
@@ -516,7 +523,7 @@ class Quaters extends React.PureComponent {
                         <input value={timeToPlanQuarter.value} type="time" 
                           onChange={e => this.onChangPlanWhenIsEmpty(e)}/> 
                         <i onClick={this.closeAddingHour} className="fa fa-times"></i>
-                        <i className="fa fa-check"></i>
+                        <i onClick={timeToPlanQuarter.error ? null : () => this.addHourToPlannedQuarter(1)} className={`fa ${timeToPlanQuarter.error ? "check-dis" : ""} fa-check `}></i>
                       </section>
 
                       : 
@@ -528,6 +535,17 @@ class Quaters extends React.PureComponent {
                       </div>
                     </React.Fragment>
                     }
+
+                    {lastAddedTime.time && 
+                      <div className="last-added-time-prompt">
+                        <p>Wybrano czas rozmowy kwartalnej. Odbędzie się <b>{lastAddedTime.date}</b> o godzinie {lastAddedTime.time}. Aby zmienić date kliknij poniższy przycisk</p>
+                        <p>
+                          <i>lub</i>
+                          <span onClick={this.deleteLastAddedHour}>Usuń dodaną godzine</span>
+                        </p>
+                      </div>
+                    }
+                   
                   </div>
                 </div>
 

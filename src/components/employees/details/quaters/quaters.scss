@@ -177,8 +177,12 @@
   }
   .calendar{
     h2{
-      padding: 10px;
+      padding: 10px 15px;
       color: gray;
+      i{
+        font-size: 24px;
+        margin-right: 10px;
+      }
       span{
         color: lightcoral;
       }
@@ -196,6 +200,8 @@
         align-items: center;
         p{
           padding: 5px 0;
+          line-height: 25px;
+          text-align: center;
         }
         p:last-of-type{
           display: inherit;
@@ -208,6 +214,10 @@
           span{
             color: tomato;
             margin: 5px 0;
+            cursor: pointer;
+            &:hover{
+              color: #EE3411;
+            }
           }
         }
         b{
@@ -218,6 +228,9 @@
         width: 100px;
         position: relative;
         box-sizing: border-box;
+        .check-dis{
+          color: lightgray !important;
+        }
         .fa-times{
           position: absolute;
           top: -20px;

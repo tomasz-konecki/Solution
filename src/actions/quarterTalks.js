@@ -107,7 +107,7 @@ export const getReservedDates = (reservedDates, getDatesStatus, getDatesErrors) 
     if(listOfTimes.length === 0){
         return [];
     }
-    
+
     const startTime = { date: listOfTimes[0].date, time: "06:00", isHelpOnly: true};
     const endTime = {date: listOfTimes[0].date, time: "20:00", isHelpOnly: true};
     

@@ -306,8 +306,8 @@ class SmoothTable extends Component {
   }
 
   handleRowClick(object, index, event) {
-    if(object.hasAccount == false) {
-      alert("Pracownik jest nie aktywny")
+    if (object.hasAccount == false) {
+      alert(this.props.t("EmployeeIsNotActivated"));
     } else {
       const { redirectPath } = this.props.construct;
       if (redirectPath) {
@@ -327,7 +327,6 @@ class SmoothTable extends Component {
         });
       }
     }
-
   }
 
   removeFilters() {
@@ -639,8 +638,12 @@ class SmoothTable extends Component {
     payload.push(
       <tr
         key={object[construct.keyField]}
-        className={object.hasAccount ? classes.join(" ") : (classes.push("unset-pointer"), classes.join(" "))}
-        onClick={object.hasAccount ? this.deepenFunction(this.handleRowClick, object, index) : null}
+        className={
+          object.hasAccount
+            ? classes.join(" ")
+            : (classes.push("unset-pointer"), classes.join(" "))
+        }
+        onClick={this.deepenFunction(this.handleRowClick, object, index)}
       >
         {construct.columns.map((column, index) => {
           if (column.field !== undefined) {
@@ -751,15 +754,16 @@ class SmoothTable extends Component {
     return (
       <div className="smooth-table">
         <div className="d-flex">
-          <div className="smooth-operator">{this.generateOperators()}
-          {showRaportButton && (
-            <button
-              className="dcmt-button raport-button ml-auto mt-3 mr-3"
-              onClick={this.setToRaports}
-            >
-              {this.props.t("Reports")}
-            </button>
-          )}
+          <div className="smooth-operator">
+            {this.generateOperators()}
+            {showRaportButton && (
+              <button
+                className="dcmt-button raport-button ml-auto mt-3 mr-3"
+                onClick={this.setToRaports}
+              >
+                {this.props.t("Reports")}
+              </button>
+            )}
           </div>
         </div>
         <div className="smooth-loader-top">

@@ -5,7 +5,9 @@ const translations = {
     EnterPassword: "Enter password",
     Login: "Login",
     Forgot: "Forgot",
-    Password: "password"
+    Password: "password",
+    CloseModalMessage:
+      "Are you sure you don't want to choose prefered roles ? \nThis operation can be performed only once !"
   },
   TopBar: {
     Logout: "Logout"
@@ -40,7 +42,8 @@ const translations = {
     ShowAll: "All",
     Today: "Today",
     NoDataOrResults: "No data or results given",
-    Reports: "Reports"
+    Reports: "Reports",
+    EmployeeIsNotActivated: "Employee is not activated!"
   },
   StatsContainer: {
     DevLocalization: "Employees Localization",
@@ -253,7 +256,7 @@ const translations = {
     Role: "Role",
     StartDate: "Start date",
     EndDate: "End date",
-    EmptyAssignments: "Empty assignments",
+    EmptyAssignments: "Empty assignments"
   },
   ActivateCheckbox: {
     ShowDeleted: "Show Deleted"
@@ -377,7 +380,8 @@ const translations = {
   },
   EditUserDetails: {
     Confirm: "Confirm",
-    RolesSuccessfullyEdited: "Roles edited successfully"
+    RolesSuccessfullyEdited: "Roles edited successfully",
+    UserSuccesfullyAdded: "Successfully added new user"
   },
   StageOne: {
     SearchAD: "Search Active Directory",
@@ -468,6 +472,12 @@ const translations = {
     WrongFileType: "Wrong File Type",
     FileIsTooBig: "File is too big",
     WrongAspectRatio: "Image has wrong aspect ratio"
+  },
+  SideProgressBar: {
+    Notifications: "Notifications",
+    SuccessFullyGeneratedReport: "Successfully generated report",
+    Read: "Read",
+    Unread: "Unread"
   }
 };
 

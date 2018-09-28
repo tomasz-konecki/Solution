@@ -115,6 +115,7 @@ class EmployeesList extends Component {
     let render = () => (
       <div>
         <SmoothTable
+          getSettings={this.props.getSettings}
           currentPage={this.props.currentPage}
           totalPageCount={this.props.totalPageCount}
           loading={this.props.loading}

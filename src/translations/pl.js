@@ -5,7 +5,9 @@ const translations = {
     EnterPassword: "Podaj hasło",
     Login: "Zaloguj",
     Forgot: "Zapomniałeś",
-    Password: "hasła"
+    Password: "hasła",
+    CloseModalMessage:
+      "Czy na pewno nie chcesz wybrać preferowanych roli w serwisie ? \nTej operacji nie można powtórzyć !"
   },
   NotFound404: {
     PageNotFound: "Nie znaleziono strony",
@@ -40,7 +42,8 @@ const translations = {
     ShowAll: "Wszystkie",
     Today: "Dzisiaj",
     NoDataOrResults: "Brak danych bądź wyników",
-    Reports: "Raporty"
+    Reports: "Raporty",
+    EmployeeIsNotActivated: "Pracownik jest nieaktywny!"
   },
   StatsContainer: {
     DevLocalization: "Lokalizacja Pracowników",
@@ -248,7 +251,7 @@ const translations = {
     SkillsAddedSuccessfull: "Pomyślnie dodano umiejętności",
     Search: "Wyszukaj",
     SearchInAdded: "szukasz w dodanych...",
-    SearchInAll: "szukasz we wszystkich...",
+    SearchInAll: "szukasz we wszystkich..."
   },
   EmployeeTable: {
     AddedBy: "Dodany przez",
@@ -256,7 +259,7 @@ const translations = {
     Role: "Rola",
     StartDate: "Data rozpoczęcia",
     EndDate: "Data zakoczenia",
-    EmptyAssignments: "Puste przypisania",
+    EmptyAssignments: "Puste przypisania"
   },
   ActivateCheckbox: {
     ShowDeleted: "Pokaż usunięte"
@@ -345,7 +348,6 @@ const translations = {
     Add: "Dodaj",
     CloudPlaceHolder: "wpisz własną lub wybierz chmure z listy",
     ClientPlaceHolder: "wpisz własnego klienta lub wybierz z listy"
-
   },
   ProjectDetailsBlock: {
     EditProjectData: "Edycja danych projektu",
@@ -389,7 +391,8 @@ const translations = {
   },
   EditUserDetails: {
     Confirm: "Potwierdź",
-    RolesSuccessfullyEdited: "Role edytowano pomyślnie"
+    RolesSuccessfullyEdited: "Role edytowano pomyślnie",
+    UserSuccesfullyAdded: "Pomyślnie dodano użytkownika"
   },
   StageOne: {
     SearchAD: "Wyszukaj użytkownika w AD",
@@ -480,6 +483,12 @@ const translations = {
     WrongFileType: "Zły format pliku",
     FileIsTooBig: "Za duży plik",
     WrongAspectRatio: "Obrazek ma złe proporcje"
+  },
+  SideProgressBar: {
+    Notifications: "Powiadomienia",
+    SuccessFullyGeneratedReport: "Pomyślnie wygenerowano raport",
+    Read: "Odczytane",
+    Unread: "Nieodczytane"
   }
 };
 

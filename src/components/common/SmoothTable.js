@@ -151,6 +151,8 @@ class SmoothTable extends Component {
           mainFilter[this.props.construct.filterClass][fieldName] = keyval[1];
       });
     }
+
+    //this.props.getSettings(Object.assign({}, this.state.sortingSettings, mainFilter));
     return Object.assign({}, this.state.sortingSettings, mainFilter);
   }
 
@@ -304,22 +306,26 @@ class SmoothTable extends Component {
   }
 
   handleRowClick(object, index, event) {
-    const { redirectPath } = this.props.construct;
-    if (redirectPath) {
-      this.setState({ rowClickedId: object.id });
+    if (object.hasAccount == false) {
+      alert(this.props.t("EmployeeIsNotActivated"));
     } else {
-      const { keyField } = this.props.construct;
-      const { rowUnfurls } = this.state;
-
-      if (rowUnfurls[index] === undefined) {
-        rowUnfurls[index] = true;
+      const { redirectPath } = this.props.construct;
+      if (redirectPath) {
+        this.setState({ rowClickedId: object.id });
       } else {
-        rowUnfurls[index] = !rowUnfurls[index];
-      }
+        const { keyField } = this.props.construct;
+        const { rowUnfurls } = this.state;
 
-      this.setState({
-        rowUnfurls
-      });
+        if (rowUnfurls[index] === undefined) {
+          rowUnfurls[index] = true;
+        } else {
+          rowUnfurls[index] = !rowUnfurls[index];
+        }
+
+        this.setState({
+          rowUnfurls
+        });
+      }
     }
   }
 
@@ -632,7 +638,11 @@ class SmoothTable extends Component {
     payload.push(
       <tr
         key={object[construct.keyField]}
-        className={classes.join(" ")}
+        className={
+          object.hasAccount
+            ? classes.join(" ")
+            : (classes.push("unset-pointer"), classes.join(" "))
+        }
         onClick={this.deepenFunction(this.handleRowClick, object, index)}
       >
         {construct.columns.map((column, index) => {
@@ -744,15 +754,17 @@ class SmoothTable extends Component {
     return (
       <div className="smooth-table">
         <div className="d-flex">
-          <div className="smooth-operator">{this.generateOperators()}</div>
-          {showRaportButton && (
-            <button
-              className="dcmt-button raport-button ml-auto mt-3 mr-3"
-              onClick={this.setToRaports}
-            >
-              {this.props.t("Reports")}
-            </button>
-          )}
+          <div className="smooth-operator">
+            {this.generateOperators()}
+            {showRaportButton && (
+              <button
+                className="dcmt-button raport-button ml-auto mt-3 mr-3"
+                onClick={this.setToRaports}
+              >
+                {this.props.t("Reports")}
+              </button>
+            )}
+          </div>
         </div>
         <div className="smooth-loader-top">
           {this.props.loading && <LoaderHorizontal />}

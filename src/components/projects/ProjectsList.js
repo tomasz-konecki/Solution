@@ -13,9 +13,12 @@ import { push } from "react-router-redux";
 import binaryPermissioner from "./../../api/binaryPermissioner";
 import specialPermissioner from "./../../api/specialPermissioner";
 import "../../scss/components/projects/ProjectsList.scss";
-import { bindActionCreators } from 'redux';
-import ProjectDetailsBlock from '../projects/modals/ProjectDetailsBlock';
-import { editProjectPromise, getContactPersonDataACreator } from '../../actions/projectsActions';
+import { bindActionCreators } from "redux";
+import ProjectDetailsBlock from "../projects/modals/ProjectDetailsBlock";
+import {
+  editProjectPromise,
+  getContactPersonDataACreator
+} from "../../actions/projectsActions";
 
 class ProjectsList extends Component {
   constructor(props) {
@@ -27,16 +30,19 @@ class ProjectsList extends Component {
       loading: false
     };
   }
-  componentWillReceiveProps(nextProps){
-    if(nextProps.editProjectErrors !== this.props.editProjectErrors && nextProps.editProjectStatus){
+  componentWillReceiveProps(nextProps) {
+    if (
+      nextProps.editProjectErrors !== this.props.editProjectErrors &&
+      nextProps.editProjectStatus
+    ) {
       setTimeout(() => {
-        this.props.pageChange()
+        this.props.pageChange();
       }, 3000);
     }
   }
-  
+
   handleGetProject = project => {
-    this.setState({project: project, showEditProjectModal: true});
+    this.setState({ project: project, showEditProjectModal: true });
   };
 
   handleCloseModal = () => {
@@ -44,8 +50,8 @@ class ProjectsList extends Component {
   };
 
   clearEditModalData = () => {
-    this.setState({showEditProjectModal: false});
-  }
+    this.setState({ showEditProjectModal: false });
+  };
 
   render() {
     const { t } = this.props;
@@ -70,26 +76,22 @@ class ProjectsList extends Component {
           this.props.pageChange();
         },
         ownerDelete: (ownerId, projectId) => {
-          this.props.
-            setActionConfirmation(true, {
-              key: "deleteProjectOwner",
-              string: t("DeleteOwnerFuture", { ownerId, projectId }),
-              ownerId,
-              projectId,
-              successMessage: t("OwnerHasBeenDeleted")
-            }
-          );
+          this.props.setActionConfirmation(true, {
+            key: "deleteProjectOwner",
+            string: t("DeleteOwnerFuture", { ownerId, projectId }),
+            ownerId,
+            projectId,
+            successMessage: t("OwnerHasBeenDeleted")
+          });
         },
         putSkills: (projectId, skillsArray) => {
-          this.props.
-            setActionConfirmation(true, {
-              key: "putProjectSkills",
-              string: t("ChangeSkillSettingsFuture", { projectId }),
-              skillsArray,
-              projectId,
-              successMessage: t("SettingsHaveBeenSaved")
-            }
-          );
+          this.props.setActionConfirmation(true, {
+            key: "putProjectSkills",
+            string: t("ChangeSkillSettingsFuture", { projectId }),
+            skillsArray,
+            projectId,
+            successMessage: t("SettingsHaveBeenSaved")
+          });
         }
       },
       operators: [
@@ -153,22 +155,19 @@ class ProjectsList extends Component {
               icon: { icon: "minus-square", iconType: "fas" },
               title: t("CloseProjectImperativus"),
               click: object => {
-                this.props.
-                  setActionConfirmation(true, {
-                    key: "closeProject",
-                    string: `${t("CloseProjectInfinitive")} ${object.name}`,
-                    id: object.id,
-                    successMessage: t("ProjectClosed")
-                  }
-                );
+                this.props.setActionConfirmation(true, {
+                  key: "closeProject",
+                  string: `${t("CloseProjectInfinitive")} ${object.name}`,
+                  id: object.id,
+                  successMessage: t("ProjectClosed")
+                });
               },
               comparator: object => {
                 return (
-                  (
-                  //   specialPermissioner().projects.isOwner(
-                  //   object,
-                  //   this.props.login
-                  // ) ||
+                  (specialPermissioner().projects.isOwner(
+                    object,
+                    this.props.login
+                  ) ||
                     binaryPermissioner(false)(0)(0)(0)(0)(1)(1)(
                       this.props.binPem
                     )) &&
@@ -181,28 +180,23 @@ class ProjectsList extends Component {
               icon: { icon: "eject", iconType: "fas" },
               title: t("ReactivateProjectImperativus"),
               click: object => {
-                this.props.
-                  setActionConfirmation(true, {
-                    key: "reactivateProject",
-                    string: `${t("ReactivateProjectInfinitive")} ${
-                      object.name
-                    }`,
-                    id: object.id,
-                    successMessage: t("ProjectReactivated")
-                  }
-                );
+                this.props.setActionConfirmation(true, {
+                  key: "reactivateProject",
+                  string: `${t("ReactivateProjectInfinitive")} ${object.name}`,
+                  id: object.id,
+                  successMessage: t("ProjectReactivated")
+                });
               },
               comparator: object => {
                 return (
-                  (
-                  //   specialPermissioner().projects.isOwner(
-                  //   object,
-                  //   this.props.login
-                  // ) ||
-                    binaryPermissioner(false)(0)(0)(0)(0)(1)(1)(
-                      this.props.binPem
-                    )) &&
-                  object.isDeleted
+                  specialPermissioner().projects.isOwner(
+                    object,
+                    this.props.login
+                  ) ||
+                  (binaryPermissioner(false)(0)(0)(0)(0)(1)(1)(
+                    this.props.binPem
+                  ) &&
+                    object.isDeleted)
                 );
               }
             },
@@ -210,26 +204,23 @@ class ProjectsList extends Component {
               icon: { icon: "times" },
               title: t("DeleteProjectImperativus"),
               click: object => {
-                this.props.
-                  setActionConfirmation(true, {
-                    key: "deleteProject",
-                    string: `${t("DeleteProjectInfinitive")} ${object.name}`,
-                    id: object.id,
-                    successMessage: t("ProjectDeleted")
-                  }
-                );
+                this.props.setActionConfirmation(true, {
+                  key: "deleteProject",
+                  string: `${t("DeleteProjectInfinitive")} ${object.name}`,
+                  id: object.id,
+                  successMessage: t("ProjectDeleted")
+                });
               },
               comparator: object => {
                 return (
-                  (
-                  //   specialPermissioner().projects.isOwner(
-                  //   object,
-                  //   this.props.login
-                  // ) ||
-                    binaryPermissioner(false)(0)(0)(0)(0)(1)(1)(
-                      this.props.binPem
-                    )) &&
-                  !object.isDeleted
+                  specialPermissioner().projects.isOwner(
+                    object,
+                    this.props.login
+                  ) ||
+                  (binaryPermissioner(false)(0)(0)(0)(0)(1)(1)(
+                    this.props.binPem
+                  ) &&
+                    !object.isDeleted)
                 );
               }
             },
@@ -241,10 +232,10 @@ class ProjectsList extends Component {
               },
               comparator: object => {
                 return (
-                  // specialPermissioner().projects.isOwner(
-                  //   object,
-                  //   this.props.login
-                  // ) ||
+                  specialPermissioner().projects.isOwner(
+                    object,
+                    this.props.login
+                  ) ||
                   binaryPermissioner(false)(0)(0)(0)(0)(1)(1)(this.props.binPem)
                 );
               }
@@ -257,10 +248,10 @@ class ProjectsList extends Component {
               },
               comparator: object => {
                 return (
-                  // specialPermissioner().projects.isOwner(
-                  //   object,
-                  //   this.props.login
-                  // ) ||
+                  specialPermissioner().projects.isOwner(
+                    object,
+                    this.props.login
+                  ) ||
                   binaryPermissioner(false)(1)(0)(1)(0)(1)(1)(this.props.binPem)
                 );
               }
@@ -286,15 +277,17 @@ class ProjectsList extends Component {
           contentLabel="Edit projects details"
           onClose={this.handleCloseModal}
         >
-            <ProjectDetailsBlock
-              shouldOnlyEdit={true}
-              editProjectStatus={this.props.editProjectStatus}
-              editProjectErrors={this.props.editProjectErrors}
-              project={this.state.project}
-              getContactPersonDataACreator={this.props.getContactPersonDataACreator}
-              editProject={this.props.editProjectPromise}
-              closeEditProjectModal={this.clearEditModalData}
-            />
+          <ProjectDetailsBlock
+            shouldOnlyEdit={true}
+            editProjectStatus={this.props.editProjectStatus}
+            editProjectErrors={this.props.editProjectErrors}
+            project={this.state.project}
+            getContactPersonDataACreator={
+              this.props.getContactPersonDataACreator
+            }
+            editProject={this.props.editProjectPromise}
+            closeEditProjectModal={this.clearEditModalData}
+          />
         </Modal>
       </div>
     );
@@ -307,16 +300,18 @@ function mapStateToProps(state) {
     login: state.authReducer.login,
     editProjectStatus: state.projectsReducer.editProjectStatus,
     editProjectErrors: state.projectsReducer.editProjectErrors
-    
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    getContactPersonDataACreator: (clientId) => dispatch(getContactPersonDataACreator(clientId)),
-    editProjectPromise: (projectToSend, projectId) => dispatch(editProjectPromise(projectToSend, projectId)),
-    setActionConfirmation: (confirmationInProgress, toConfirm) => dispatch(setActionConfirmation(confirmationInProgress, toConfirm))
-  }
+    getContactPersonDataACreator: clientId =>
+      dispatch(getContactPersonDataACreator(clientId)),
+    editProjectPromise: (projectToSend, projectId) =>
+      dispatch(editProjectPromise(projectToSend, projectId)),
+    setActionConfirmation: (confirmationInProgress, toConfirm) =>
+      dispatch(setActionConfirmation(confirmationInProgress, toConfirm))
+  };
 }
 
 ProjectsList.propTypes = {
@@ -329,6 +324,7 @@ ProjectsList.propTypes = {
   projectActions: PropTypes.object
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(
-  translate("ProjectsList")(ProjectsList)
-);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(translate("ProjectsList")(ProjectsList));

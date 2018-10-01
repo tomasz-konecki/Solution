@@ -137,6 +137,7 @@ const employeeContent = ({
                 capacityLeft={employee.baseCapacity}
                 editCapacity={editCapacity}
                 employeeErrors={employeeErrors}
+                canEditFteBar={binPem > 1}
               />
 
               <div className="degree-bar-container">
@@ -145,40 +146,47 @@ const employeeContent = ({
                   seniority={employee.seniority}
                   employeeErrors={employeeErrors}
                   range={4}
+                  canEditDegreeBar={binPem > 1}
                 />
               </div>
             </React.Fragment>
           )}
 
-        <div className="emp-btns-container">
-          {status === t("Active") ? (
-            <Button
-              mainClass="option-btn option-very-dang"
-              title={t("Delete")}
-              disable={isChangingEmployeeData}
-              onClick={deleteEmployee}
-            >
-              {isChangingEmployeeData && <Spinner />}
-            </Button>
-          ) : (
-            <Button
-              disable={isChangingEmployeeData}
-              onClick={
-                status === t("Deleted") ? reactivateEmployee : activateEmployee
-              }
-              title={t("Activate")}
-              mainClass="option-btn green-btn"
-            >
-              {isChangingEmployeeData && <Spinner />}
-            </Button>
-          )}
-        </div>
+        {binPem === 32 && (
+          <React.Fragment>
+            <div className="emp-btns-container">
+              {status === t("Active") ? (
+                <Button
+                  mainClass="option-btn option-very-dang"
+                  title={t("Delete")}
+                  disable={isChangingEmployeeData}
+                  onClick={deleteEmployee}
+                >
+                  {isChangingEmployeeData && <Spinner />}
+                </Button>
+              ) : (
+                <Button
+                  disable={isChangingEmployeeData}
+                  onClick={
+                    status === t("Deleted")
+                      ? reactivateEmployee
+                      : activateEmployee
+                  }
+                  title={t("Activate")}
+                  mainClass="option-btn green-btn"
+                >
+                  {isChangingEmployeeData && <Spinner />}
+                </Button>
+              )}
+            </div>
 
-        {status !== t("Active") && (
-          <div className="information-for-statuses">
-            <p>{t("BeforeYouChangeStatus")}</p>
-            <article>{t("BeforeYouChangeStatusContent")}</article>
-          </div>
+            {status !== t("Active") && (
+              <div className="information-for-statuses">
+                <p>{t("BeforeYouChangeStatus")}</p>
+                <article>{t("BeforeYouChangeStatusContent")}</article>
+              </div>
+            )}
+          </React.Fragment>
         )}
       </div>
       <Quaters

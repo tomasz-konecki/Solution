@@ -79,7 +79,6 @@ class CallSkype extends Component {
           href={"sip:<" + employee.email + ">"}
         >
           <span className="skypeId">
-            {" "}
             <img
               src="/public/img/skypeforbusiness.jpeg"
               className="businessSkypeIcon"
@@ -87,38 +86,42 @@ class CallSkype extends Component {
             Skype for Business
           </span>
         </a>
-        {!this.state.editSkype ? (
+        {canEditSkypeId && (
           <React.Fragment>
-            <a className="pencilIcon" onClick={this.handleClick}>
-              <Icon icon="times-circle" className="col pencilIcon" />
-            </a>
-            <Form
-              onSubmit={editSkypeId}
-              formItems={editSkypeFormItems}
-              btnTitle={t("Save")}
-              isLoading={skypeIdAddLoading}
-              submitResult={{
-                status:
-                  updateSkypeIdResult && updateSkypeIdResult.errorOccurred
-                    ? !updateSkypeIdResult.errorOccurred()
-                      ? true
-                      : false
-                    : null,
-                content:
-                  updateSkypeIdResult && updateSkypeIdResult.errorOccurred
-                    ? !updateSkypeIdResult.errorOccurred()
-                      ? t("SkypeIdUpdated")
-                      : updateSkypeIdResult &&
-                        updateSkypeIdResult.getMostSignificantText()
-                    : null
-              }}
-              enableButtonAfterTransactionEnd={true}
-            />
+            {!this.state.editSkype ? (
+              <React.Fragment>
+                <a className="pencilIcon" onClick={this.handleClick}>
+                  <Icon icon="times-circle" className="col pencilIcon" />
+                </a>
+                <Form
+                  onSubmit={editSkypeId}
+                  formItems={editSkypeFormItems}
+                  btnTitle={t("Save")}
+                  isLoading={skypeIdAddLoading}
+                  submitResult={{
+                    status:
+                      updateSkypeIdResult && updateSkypeIdResult.errorOccurred
+                        ? !updateSkypeIdResult.errorOccurred()
+                          ? true
+                          : false
+                        : null,
+                    content:
+                      updateSkypeIdResult && updateSkypeIdResult.errorOccurred
+                        ? !updateSkypeIdResult.errorOccurred()
+                          ? t("SkypeIdUpdated")
+                          : updateSkypeIdResult &&
+                            updateSkypeIdResult.getMostSignificantText()
+                        : null
+                  }}
+                  enableButtonAfterTransactionEnd={true}
+                />
+              </React.Fragment>
+            ) : (
+              <a className="pencilIcon" onClick={this.handleClick}>
+                <Icon icon="pencil-alt" className="col pencilIcon" />
+              </a>
+            )}
           </React.Fragment>
-        ) : (
-          <a className="pencilIcon" onClick={this.handleClick}>
-            <Icon icon="pencil-alt" className="col pencilIcon" />
-          </a>
         )}
       </div>
     );

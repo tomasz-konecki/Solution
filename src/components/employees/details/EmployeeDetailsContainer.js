@@ -233,6 +233,8 @@ class EmployeeDetailsContainer extends React.Component {
                 changeEmployeeSkillsACreator={changeEmployeeSkillsACreator}
                 skills={employee.skills}
                 limit={5}
+                isYou={login === employee.id}
+                binPem={binPem}
               />
 
               <EmployeeTable
@@ -257,6 +259,8 @@ class EmployeeDetailsContainer extends React.Component {
                 deleteCertificate={this.deleteCertificate}
                 userId={this.props.match.params.id}
                 resultBlockAddCertificate={this.props.resultBlockAddCertificate}
+                isYou={login === employee.id}
+                binPem={binPem}
               />
             </React.Fragment>
           )

@@ -503,6 +503,10 @@ class ProjectDetails extends Component {
                   addSkillsToProjectStatus={this.props.addSkillsToProjectStatus}
                   addSkillsToProjectErrors={this.props.addSkillsToProjectErrors}
                   addSkillsToProjectClear={this.props.addSkillsToProjectClear}
+                  isProjectOwner={specialPermissioner().projects.isOwner(
+                    this.props.project,
+                    this.props.login
+                  )}
                 />
               </div>
 
@@ -528,6 +532,10 @@ class ProjectDetails extends Component {
                       addEmployeModal: !this.state.addEmployeModal
                     })
                   }
+                  isProjectOwner={specialPermissioner().projects.isOwner(
+                    this.props.project,
+                    this.props.login
+                  )}
                 />
 
                 <div className="table-container table">

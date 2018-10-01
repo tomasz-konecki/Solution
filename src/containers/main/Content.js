@@ -13,18 +13,39 @@ import ClientsContainer from "../../components/clients/ClientsContainer";
 import PromptsCommander from "../../components/promptsCommander/promptsCommander";
 import ImportCVContainer from "../../components/importCV/ImportCVContainer";
 import NotFound404 from "../../components/notFound404/NotFound404";
+import { connect } from "react-redux";
 
 class Content extends React.Component {
   render() {
-    const { match } = this.props;
+    const { match, binPem } = this.props;
+
+    console.log(binPem);
+    let routesToRender = null;
+    switch (binPem) {
+      case 1:
+        routesToRender = (
+          <React.Fragment>
+            <Route
+              path={match.url + "/projects"}
+              component={ProjectsContainer}
+            />
+            <Route
+              path={match.url + "/employees"}
+              component={EmployeesContainer}
+            />
+          </React.Fragment>
+        );
+    }
     return (
       <div className="content">
         <Confirmation />
-      <PromptsCommander />
+        <PromptsCommander />
         <Switch>
           <Route exact path={match.url} component={StatsContainer} />
-          <Route path={match.url + "/users"} component={UsersContainer} />
+          {routesToRender}
+          {/* <Route path={match.url + "/users"} component={UsersContainer} />
           <Route path={match.url + "/clients"} component={ClientsContainer} />
+
           <Route
             path={match.url + "/employees"}
             component={EmployeesContainer}
@@ -35,7 +56,7 @@ class Content extends React.Component {
           <Route
             path={match.url + "/import-cv"}
             component={ImportCVContainer}
-          />
+          /> */}
           <Route component={NotFound404} />
         </Switch>
         <div className="content-abs-footer">Billennium 2018</div>
@@ -44,8 +65,14 @@ class Content extends React.Component {
   }
 }
 
+function mapStateToProps(state) {
+  return {
+    binPem: state.authReducer.binPem
+  };
+}
+
 Content.propTypes = {
   match: PropTypes.object
 };
 
-export default withRouter(Content);
+export default connect(mapStateToProps)(withRouter(Content));

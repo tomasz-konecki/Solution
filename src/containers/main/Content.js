@@ -23,15 +23,26 @@ class Content extends React.Component {
     let routesToRender = null;
     switch (binPem) {
       case 1:
+        routesToRender = <React.Fragment />;
+      case 32:
         routesToRender = (
           <React.Fragment>
+            <Route path={match.url + "/users"} component={UsersContainer} />
+            <Route path={match.url + "/clients"} component={ClientsContainer} />
+
+            <Route
+              path={match.url + "/employees"}
+              component={EmployeesContainer}
+            />
             <Route
               path={match.url + "/projects"}
               component={ProjectsContainer}
             />
+            <Route path={match.url + "/skills"} component={SkillsContainer} />
+            <Route path={match.url + "/reports"} component={ReportsContainer} />
             <Route
-              path={match.url + "/employees"}
-              component={EmployeesContainer}
+              path={match.url + "/import-cv"}
+              component={ImportCVContainer}
             />
           </React.Fragment>
         );
@@ -42,21 +53,12 @@ class Content extends React.Component {
         <PromptsCommander />
         <Switch>
           <Route exact path={match.url} component={StatsContainer} />
-          {routesToRender}
-          {/* <Route path={match.url + "/users"} component={UsersContainer} />
-          <Route path={match.url + "/clients"} component={ClientsContainer} />
-
+          <Route path={match.url + "/projects"} component={ProjectsContainer} />
           <Route
             path={match.url + "/employees"}
             component={EmployeesContainer}
           />
-          <Route path={match.url + "/projects"} component={ProjectsContainer} />
-          <Route path={match.url + "/skills"} component={SkillsContainer} />
-          <Route path={match.url + "/reports"} component={ReportsContainer} />
-          <Route
-            path={match.url + "/import-cv"}
-            component={ImportCVContainer}
-          /> */}
+          {routesToRender}
           <Route component={NotFound404} />
         </Switch>
         <div className="content-abs-footer">Billennium 2018</div>

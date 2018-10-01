@@ -29,7 +29,9 @@ const employeeContent = ({
   editSkypeFormItems,
   editSkypeId,
   skypeIdAddLoading,
-  updateSkypeIdResult
+  updateSkypeIdResult,
+  isYou,
+  binPem
 }) => {
   const status = employee.isDeleted
     ? t("Deleted")
@@ -53,7 +55,6 @@ const employeeContent = ({
       <i className="fa fa-user" />
     </figure>
   );
-
   return (
     <section className="top-content-container">
       <div className="employee-details-bar">
@@ -70,16 +71,17 @@ const employeeContent = ({
               {imgContent}
               <p>{employee.roles ? employee.roles[0] : t("RoleMissing")}</p>
             </div>
-            <div className="text-center" style={{width: "100%" }}>
-            <h2> {employee.firstName + " " + employee.lastName + " "}</h2>
-            <CallSkype 
-              editSkypeFormItems={editSkypeFormItems} 
-              employee={employee}
-              editSkypeId={editSkypeId}
-              skypeIdAddLoading={skypeIdAddLoading}
-              updateSkypeIdResult={updateSkypeIdResult}
-              t={t} />
-
+            <div className="text-center" style={{ width: "100%" }}>
+              <h2> {employee.firstName + " " + employee.lastName + " "}</h2>
+              <CallSkype
+                editSkypeFormItems={editSkypeFormItems}
+                employee={employee}
+                editSkypeId={editSkypeId}
+                skypeIdAddLoading={skypeIdAddLoading}
+                updateSkypeIdResult={updateSkypeIdResult}
+                t={t}
+                canEditSkypeId={isYou || binPem == 32}
+              />
             </div>
           </header>
 

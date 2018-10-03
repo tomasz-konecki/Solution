@@ -97,7 +97,11 @@ class EmployeesList extends Component {
               click: object => {
                 this.props.activateEmployee(object, t);
               },
-              comparator: object => !object.seniority || object.isDeleted
+              comparator: object =>
+                binaryPermissioner(false)(0)(0)(0)(0)(0)(1)(
+                  this.props.binPem
+                ) &&
+                (!object.seniority || object.isDeleted)
             },
             {
               icon: { icon: "minus-square" },
@@ -105,7 +109,12 @@ class EmployeesList extends Component {
               click: object => {
                 this.props.removeEmployee(object, t);
               },
-              comparator: object => !object.isDeleted && object.seniority
+              comparator: object =>
+                binaryPermissioner(false)(0)(0)(0)(0)(0)(1)(
+                  this.props.binPem
+                ) &&
+                !object.isDeleted &&
+                object.seniority
             }
           ],
           pretty: t("Options")
@@ -136,6 +145,12 @@ class EmployeesList extends Component {
   }
 }
 
+function mapStateToProps(state) {
+  return {
+    binPem: state.authReducer.binPem
+  };
+}
+
 EmployeesList.propTypes = {
   pageChange: PropTypes.func.isRequired,
   currentPage: PropTypes.number.isRequired,
@@ -147,4 +162,6 @@ EmployeesList.propTypes = {
   removeEmployee: PropTypes.func.isRequired
 };
 
-export default translate("EmployeesList")(EmployeesList);
+export default connect(mapStateToProps)(
+  translate("EmployeesList")(EmployeesList)
+);

@@ -21,10 +21,10 @@ class Content extends React.Component {
 
     console.log(binPem);
     let routesToRender = null;
-    switch (binPem) {
+    switch (true) {
       case 1:
         routesToRender = <React.Fragment />;
-      case 32:
+      case binPem >= 32:
         routesToRender = (
           <React.Fragment>
             <Route path={match.url + "/users"} component={UsersContainer} />

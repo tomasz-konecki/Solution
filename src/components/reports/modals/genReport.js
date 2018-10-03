@@ -135,7 +135,6 @@ const genReport = ({
               startDate={availableUntilStartDate}
               minDate={availableUntilStartDate}
               selected={availableUntilDate}
-              selectsEnd
               onChange={handleAvailableUntil}
               locale="pl"
               dateFormat="DD/MM/YYYY"

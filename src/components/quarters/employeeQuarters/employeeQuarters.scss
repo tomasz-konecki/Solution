@@ -1,0 +1,12 @@
+.employee-quarters{
+    display: flex;
+    justify-content: space-between;
+    .quarters-list-container{
+       width: 450px;
+    }
+    .quarter-detail{
+        width: 90%;
+        padding: 0 20px;
+        box-sizing: border-box;
+    }
+}

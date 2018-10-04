@@ -88,7 +88,7 @@ export const validateReportPages = value => {
 export const validateDateIsNotFromPast = givenDate => {
   const dateNow = moment();
   if(moment(givenDate, 'DD-MM-YYYY').isSameOrBefore(dateNow)){
-    return "Podana data nie może odnosić do przeszlości";
+    return "Podana data nie może odnosić do przeszlości oraz do dzisiejszego dnia";
   }
 
   return "";

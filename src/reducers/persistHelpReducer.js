@@ -1,5 +1,5 @@
 import { FETCH_LISTS, CHOOSE_FOLDER_TO_GENERATE_REPORT, G_DRIVE_LOGIN, FETCH_FORM_CLIENTS,
-  CHANGE_SORT_BY } from "../constants";
+  CHANGE_SORT_BY, CREATE_LAST_WATCHED_PERSONS, CHANGE_LINK_BEFORE_REDIRECT, CHANGE_CURRENT_WATCHED_USER } from "../constants";
 import { updateObject } from "../services/methods";
 
 const initialState = {
@@ -16,7 +16,11 @@ const initialState = {
 
   loginStatus: null,
   loginErrors: [],
-  redirectUrl: ""
+  redirectUrl: "",
+  lastWatchedPersons: [],
+
+  linkBeforeRedirectToOutlookAuth: "",
+  currentWatchedUser: ""
 };
 
 export const persistHelpReducer = (state = initialState, action) => {
@@ -44,6 +48,12 @@ export const persistHelpReducer = (state = initialState, action) => {
       });
     case CHANGE_SORT_BY:
       return updateObject(state, { driveSortType: action.driveSortType })
+    case CREATE_LAST_WATCHED_PERSONS:
+      return updateObject(state, { lastWatchedPersons: action.lastWatchedPersons});
+    case CHANGE_LINK_BEFORE_REDIRECT:
+      return updateObject(state, { linkBeforeRedirectToOutlookAuth: action.linkBeforeRedirectToOutlookAuth })
+    case CHANGE_CURRENT_WATCHED_USER:
+      return updateObject(state, { currentWatchedUser: action.currentWatchedUser });
     default:
       return state;
   }

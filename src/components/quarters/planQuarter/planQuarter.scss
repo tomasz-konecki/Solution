@@ -1,0 +1,11 @@
+.plan-quarter-container{
+    display: flex;
+    padding: 20px;
+    .plan-quarter-form{
+        position: relative;
+        height: 350px;
+        width: 350px;
+        align-self: center;
+        margin-left: 25px;
+    }
+}

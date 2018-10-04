@@ -1,14 +1,14 @@
 import React, { Component } from 'react'
 import './addQuarter.scss';
-import Form from '../../../../form/form.js';
+import Form from '../../../components/form/form.js';
 import { connect } from 'react-redux';
 import {
     addQuarterTalkACreator,
     addQuarterTalk,
     getQuarterQuestionsACreator, getQuestions
-  } from "../../../../../actions/quarterTalks.js";
-import Spinner from '../../../../common/spinner/spinner.js';
-import LoadHandlingWrapper from '../../../../../hocs/handleLoadingContent';
+  } from "../../../actions/quarterTalks.js";
+import Spinner from '../../common/spinner/spinner.js';
+import LoadHandlingWrapper from '../../../hocs/handleLoadingContent';
 import moment from 'moment';
 class AddQuarter extends Component{
     state = {

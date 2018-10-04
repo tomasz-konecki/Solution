@@ -1,5 +1,5 @@
 import {
-    ADD_QUARTER_TALK, GET_QUESTIONS, GET_RESERVED_DATES, PLAN_QUARTER
+    ADD_QUARTER_TALK, GET_QUESTIONS, GET_RESERVED_DATES, PLAN_QUARTER, GET_QUARTERS_FOR_EMPLOYEE
   } from "../constants";
   import { updateObject } from '../services/methods';
   const initialState = {
@@ -12,7 +12,9 @@ import {
 
       reservedDates: [], getDatesStatus: null, getDatesErrors: [],
 
-      planQuarterStatus: null, planQuarterErrors: []
+      planQuarterStatus: null, planQuarterErrors: [],
+
+      quartersForEmployee: [], quartersForEmployeeStatus: null, quartersForEmployeeErrors: []
   };
   
   export const quarterTalks = (state = initialState, action) => {
@@ -27,7 +29,10 @@ import {
             return updateObject(state, { planQuarterStatus: action.planQuarterStatus, planQuarterErrors: action.planQuarterErrors })
         case GET_RESERVED_DATES:
             return updateObject(state, { reservedDates: action.reservedDates, getDatesStatus: action.getDatesStatus, getDatesErrors: action.getDatesErrors })
-      default:
+        case GET_QUARTERS_FOR_EMPLOYEE:
+            return updateObject(state, { quartersForEmployee: action.quartersForEmployee, 
+                quartersForEmployeeStatus: action.quartersForEmployeeStatus, quartersForEmployeeErrors: action.quartersForEmployeeErrors })
+            default:
         return state;
     }
   };

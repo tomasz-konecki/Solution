@@ -10,6 +10,9 @@ import { Link } from "react-router-dom";
 import Form from "../../../form/form";
 
 const employeeContent = ({
+  changeCurrentWatchedUser,
+  createLastWatchedPersonsArray,
+  lastWatchedPersons,
   employee,
   editSeniority,
   employeeErrors,
@@ -218,6 +221,9 @@ const callSkype = editSkypeFormItems[0].value ? (
         )}
       </div>
       <Quaters
+        changeCurrentWatchedUser={changeCurrentWatchedUser}
+        createLastWatchedPersonsArray={createLastWatchedPersonsArray}
+        lastWatchedPersons={lastWatchedPersons}
         getEmployeePromise={getEmployeePromise}
         reactivateQuaterACreator={reactivateQuaterACreator}
         status={status}

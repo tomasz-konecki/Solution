@@ -1,0 +1,66 @@
+.list-nav{
+    p{
+        padding: 10px;
+        font-size: 20px;
+    }
+    .modifie-list-options{
+        padding: 10px 0;
+        display: flex;
+        flex-flow: wrap;
+        width: 98%;
+        align-items: center;
+        div{
+            margin: 0 10px;
+        }
+        .search-box{
+            display: inherit;
+            align-items: inherit;
+            input{
+                margin: 0 10px 0 0;
+                font-size: 15px;
+                border: none;
+                padding: 15px;
+                font-family: inherit;
+                border-radius: 37px;
+            }
+        }
+        .sort-box{
+            cursor: pointer;
+        }
+    }
+}
+.animated-list div{
+    animation: 0.5s animate-in forwards;
+    opacity: 0;
+    @for $i from 2 through 20 {
+        & {
+          &:nth-child(#{$i}) {
+            animation-delay: $i * (1s / 18);
+          }
+        }
+    }
+    @keyframes animate-in {
+        0% {
+          opacity: 0;
+          transform: translateX(-15px);
+        }
+        100% {
+          opacity: 1;
+          transform: translateX(0);
+        }
+    }
+}
+.question-list{
+    display: flex;
+    flex-flow: wrap;
+}
+.calendar-list{
+    overflow-y: auto;
+    height: 650px;
+    padding-right: 10px;
+    width: 450px;
+    margin-top: 10px;
+}
+.pagination{
+
+}

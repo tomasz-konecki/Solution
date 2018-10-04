@@ -130,3 +130,39 @@ export const clearDataOfForm = formItems => {
   }
 }
 
+export const extractFromItemsWantedAttributes = (attributes, items) => {
+  const copiedItems = [...items];
+  if(attributes){
+      const allKeysOfItems = Object.keys(copiedItems);
+      const newItems = [];
+
+      for(let i = 0; i < copiedItems.length; i++){
+          const newObject = {};
+          for(let j = 0; j < attributes.length; j++){
+              const isAttributesInKeysList = allKeysOfItems.findIndex(el => el === attributes[j]);
+              if(isAttributesInKeysList){
+                  const actualValue = copiedItems[i][attributes[j]];
+                  if (typeof actualValue ===  "string" || typeof actualValue ===  "number" || typeof actualValue ===  "bollean"){
+                      newObject[attributes[j]] = actualValue;
+                  }
+                  else{
+                      newObject[attributes[j]] = JSON.parse(JSON.stringify(actualValue));
+                  }
+              }
+          }
+          newItems.push(newObject);
+      }
+      return newItems;
+  }
+  return copiedItems;
+}
+
+export const getEmployeeId = () => {
+  const url = window.location.href;
+  const indexOfLastEqual = url.lastIndexOf("=");
+  if(indexOfLastEqual === -1){
+    return "";
+  }
+ 
+  return window.location.href.substring(indexOfLastEqual+1, url.length);
+}

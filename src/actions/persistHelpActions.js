@@ -1,5 +1,5 @@
 import { FETCH_LISTS, CHOOSE_FOLDER_TO_GENERATE_REPORT, G_DRIVE_LOGIN, FETCH_FORM_CLIENTS,
-    CHANGE_SORT_BY }
+    CHANGE_SORT_BY, CREATE_LAST_WATCHED_PERSONS, CHANGE_LINK_BEFORE_REDIRECT, CHANGE_CURRENT_WATCHED_USER }
 from "../constants";
 import WebApi from '../api/index';
 import { getFolders } from './oneDriveActions';
@@ -50,4 +50,16 @@ export const changeSortByACreator = (listToSort, sortType, currentPath) => {
         dispatch(changeSortBy(!sortType));
         dispatch(getFolders(listToSort.reverse(), true, [], currentPath));
     }
+}
+
+export const createLastWatchedPersonsArray = (lastWatchedPersons) => {
+    return { type: CREATE_LAST_WATCHED_PERSONS, lastWatchedPersons}
+}
+
+export const changeLinkBeforeRedirect = (linkBeforeRedirectToOutlookAuth) => {
+    return { type: CHANGE_LINK_BEFORE_REDIRECT, linkBeforeRedirectToOutlookAuth }
+}
+
+export const changeCurrentWatchedUser = currentWatchedUser => {
+    return { type: CHANGE_CURRENT_WATCHED_USER, currentWatchedUser }
 }

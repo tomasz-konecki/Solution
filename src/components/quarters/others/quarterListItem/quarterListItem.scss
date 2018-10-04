@@ -1,0 +1,41 @@
+.single-quarter{
+    background: white;
+    padding: 10px;
+    border-bottom: none;
+    margin-top: 10px;
+    color: #006064;
+    cursor: pointer;
+  
+    p{
+        display: flex;
+        align-items: center;
+        padding: 0 10px;
+        i{
+            font-size: 24px;
+        }
+        span:first-of-type{
+            border-right: 1px solid #006064;
+        }
+        .span-light{
+            color: grey;
+            border: none;
+        }
+        span{
+            margin-left: 10px;
+            font-size: 15px;
+            font-weight: lighter;
+            padding-right: 10px;
+        }
+        .fa-check{
+            color: #82b541;
+        }
+        .fa-times{
+            color: red;
+            margin-right: 5px;
+        }
+        .fa-check, .fa-times{
+            margin-left: auto;
+            font-size: 20px;
+        }
+    }
+}

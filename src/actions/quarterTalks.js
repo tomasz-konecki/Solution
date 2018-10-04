@@ -1,13 +1,17 @@
 import {
- ADD_QUARTER_TALK, GET_QUESTIONS, GET_RESERVED_DATES, PLAN_QUARTER
+ ADD_QUARTER_TALK, GET_QUESTIONS, GET_RESERVED_DATES, PLAN_QUARTER, GET_QUARTERS_FOR_EMPLOYEE
 } from "../constants";
   import WebApi from "../api";
   import { errorCatcher } from "../services/errorsHandler"; 
   import { getEmployeePromise } from './employeesActions.js';
 import moment from 'moment';
 import _ from 'lodash';
+import { createLastWatchedPersonsArray } from './persistHelpActions';
+import { changeOperationStatus } from './asyncActions';
+import storeCreator from '../store/index';
 
-  
+
+const { store } = storeCreator;
 
 export const getQuestions = (getQuestionsStatus, getQuestionsErrors, questions) => {
     return {
@@ -60,20 +64,36 @@ export const getReservedDates = (reservedDates, getDatesStatus, getDatesErrors) 
     return { type: GET_RESERVED_DATES, reservedDates, getDatesStatus, getDatesErrors }
 }
 
-  export const getReservedDatesACreator = employeeId => dispatch => {
+  export const getReservedDatesACreator = (employeeId, token) => dispatch => {
       return new Promise((resolve, reject) => {
+        const today = moment().format("YYYY-MM-DD HH:mm");
+        const model = {
+            "dateFrom": today,
+            "employeeId": employeeId,
+            "token": token
+        };
 
-        WebApi.quarterTalks.get.reservedDates(employeeId).then(response => {
+        WebApi.quarterTalks.post.reservedDates(model, true).then(response => {
             const { dtoObjects: cutedResponse } = response.replyBlock.data;
-            const datesAndTimes = cutedResponse.map(item => {
-                return {date: item.dateTime.slice(0, 10), time: item.dateTime.slice(11,16)}
-            });
-            const sortedDates = _.orderBy(datesAndTimes, "time", 'asc');
-            dispatch(getReservedDates(createPosibleTimeSpaces(sortedDates), true, []));
-            resolve(sortedDates);
+            const copiedResponse = [...cutedResponse];
+
+            const extractedData = [];
+            for(let key in cutedResponse){
+                const momentedDate = moment(copiedResponse[key].dateTime).locale("pl");
+                const time = momentedDate.format("HH:mm");
+                const date = momentedDate.format("YYYY-MM-DD");
+                const monthName = momentedDate.format("MMMM");
+                const dayName = momentedDate.format("dddd");
+                const willLastTo = momentedDate.add(cutedResponse[key].length, "minute").format("HH:mm");
+                extractedData.push({time, date, monthName, dayName, willLastTo, length: cutedResponse[key].length});
+
+            }
+            dispatch(getReservedDates(extractedData, true, []));
+            resolve(extractedData);
         }).catch(error => {
-            dispatch(getReservedDates([], false, errorCatcher(error)));
-            reject();
+            const catchedError = errorCatcher(error);
+            dispatch(getReservedDates([], false, catchedError));
+            reject(catchedError);
         })
       })
   }
@@ -81,19 +101,18 @@ export const getReservedDates = (reservedDates, getDatesStatus, getDatesErrors) 
   export const planQuarter = (planQuarterStatus, planQuarterErrors) => {
       return { type: PLAN_QUARTER, planQuarterStatus, planQuarterErrors}
   }
-  export const planQuarterACreator = (employeeId, formItems, time) => dispatch => {
+  export const planQuarterACreator = (employeeId, formItems, token) => dispatch => {
       return new Promise((resolve, reject) => {
-        const onlyDate = formItems[0].value.format("YYYY-MM-DD");
-        const dateWithTime = onlyDate + time;
-        const momentedDateWithTime = moment(dateWithTime, "YYYY-MM-DD HH:mm");
 
         const model = {
-            employeeId, 
-            "plannedTalkDate": momentedDateWithTime.format(),
-            "year": moment(formItems[0].value).year(),
-            "quarter": formItems[1].value
-        };
-        WebApi.quarterTalks.post.planQuarter(model).then(response => {
+            "employeeId": employeeId,
+            "plannedTalkDate": formItems[0].value.format("YYYY-MM-DD HH:mm"),
+            "year": formItems[0].value.format("YYYY"),
+            "quarter": formItems[1].value,
+            "token": token
+        }
+
+        WebApi.quarterTalks.post.planQuarter(model, true).then(response => {
             dispatch(planQuarter(true, []));
             resolve();
         }).catch(error => {
@@ -103,29 +122,40 @@ export const getReservedDates = (reservedDates, getDatesStatus, getDatesErrors) 
       })
   }
 
-  export const createPosibleTimeSpaces = (listOfTimes) => {
-    if(listOfTimes.length === 0){
-        return [];
-    }
+  export const getQuartersForEmployee = (quartersForEmployee, quartersForEmployeeStatus, quartersForEmployeeErrors) => {
+      return { type: GET_QUARTERS_FOR_EMPLOYEE, quartersForEmployee, quartersForEmployeeStatus, quartersForEmployeeErrors }
+  }
 
-    const startTime = { date: listOfTimes[0].date, time: "06:00", isHelpOnly: true};
-    const endTime = {date: listOfTimes[0].date, time: "20:00", isHelpOnly: true};
-    
-    const listOfTimesWithStartAndEndTimes = [startTime, ...listOfTimes, endTime];
-    for(let i = 0; i < listOfTimesWithStartAndEndTimes.length-1; i++){
-        const startFullDate = listOfTimesWithStartAndEndTimes[i].date + " " + listOfTimesWithStartAndEndTimes[i].time;
+  const selectLastWatchedPersonsArray = state => state.persistHelpReducer.lastWatchedPersons;
 
-        const endFullDate = listOfTimesWithStartAndEndTimes[i+1].date + " " + listOfTimesWithStartAndEndTimes[i+1].time;
+  export const getQuartersForEmployeeACreator = employeeId => dispatch => {
+      return new Promise((resolve, reject) => {
+        const currentLastWatchedPersonsArray = selectLastWatchedPersonsArray(store.getState());
+        const copiedLastWatchedPersonsArray = [...currentLastWatchedPersonsArray];
+        const personInWatchedPersonsArrayIndex = copiedLastWatchedPersonsArray.indexOf(employeeId);
         
-        const startMomentedDate = listOfTimesWithStartAndEndTimes[i].isHelpOnly ? moment(startFullDate,"DD-MM-YYYY HH:mm") : moment(startFullDate,"DD-MM-YYYY HH:mm").add(1, 'hours');
+        WebApi.quarterTalks.get.getQuarterForEmployee(employeeId).then(response => {
+            const { dtoObjects: items } = response.replyBlock.data;
+            
+            items.forEach(function(part, index){
+                if(part.plannedTalkDate)
+                items[index].plannedTalkDate = part.plannedTalkDate.slice(0, 10);
+            })
+            dispatch(getQuartersForEmployee(items, true, []));
+            if(personInWatchedPersonsArrayIndex === -1){
+                copiedLastWatchedPersonsArray.push(employeeId);
+                dispatch(createLastWatchedPersonsArray(copiedLastWatchedPersonsArray));
+            }
+            resolve();
+        }).catch(error => {
+            dispatch(getQuartersForEmployee(null, false, errorCatcher(error)));
 
-        const difference = startMomentedDate.diff(moment(endFullDate,"DD-MM-YYYY HH:mm"));
-        const hours = Math.abs(moment.duration(difference).hours());
-        listOfTimesWithStartAndEndTimes[i].hours = hours;
-        
-        if(!listOfTimesWithStartAndEndTimes[i].isHelpOnly)
-            listOfTimesWithStartAndEndTimes[i].willLastTo = startMomentedDate.subtract(1, 'days').format("HH:mm");
-        
-    }
-    return listOfTimesWithStartAndEndTimes;
+            if(personInWatchedPersonsArrayIndex !== -1){
+                copiedLastWatchedPersonsArray.splice(personInWatchedPersonsArrayIndex, 1);
+            }
+            
+            dispatch(createLastWatchedPersonsArray(copiedLastWatchedPersonsArray))
+            reject();
+        })
+      })
   }

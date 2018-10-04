@@ -50,40 +50,42 @@ export const authOneDrive = (authStatus, authErrors, authRedirectLink) => {
   };
 };
 
-export const authOneDriveACreator = () => {
-  return dispatch => {
+export const authOneDriveACreator = (shouldRedirectOnCalendar) => dispatch => {
+  return new Promise((resolve, reject) => {
     WebApi.oneDrive.get
-      .getRedirectLink()
-      .then(response => {
-        dispatch(
-          authOneDrive(true, [], response.replyBlock.data.dtoObject.link)
-        );
-      })
-      .catch(error => {
-        dispatch(authOneDrive(false, errorCatcher(error), ""));
-        dispatch(clearAfterTimeByFuncRef(authOneDrive, 5000, null, []));
-      });
-  };
-};
+    .getRedirectLink(shouldRedirectOnCalendar)
+    .then(response => {
+      dispatch(
+        authOneDrive(true, [], response.replyBlock.data.dtoObject.link)
+      );
+      resolve(response.replyBlock.data.dtoObject.link);
+    })
+    .catch(error => {
+      const catchedError = errorCatcher(error);
+      dispatch(authOneDrive(false, catchedError, ""));
+      dispatch(clearAfterTimeByFuncRef(authOneDrive, 5000, null, []));
+      reject(catchedError);
+    });
+  })
+}
+
+const extractCodeFromUrl = url => {
+  const indexOfEqualMark = url.search("=");
+  const codeWithNotNeededId = url.substring(indexOfEqualMark + 1, url.length);
+  if(codeWithNotNeededId.length > 50){
+    return codeWithNotNeededId.substring(
+      0,
+      codeWithNotNeededId.search("&")
+    );
+  }
+  else
+    return codeWithNotNeededId;
+
+}
 
 export const sendCodeToGetTokenACreator = url => {
   return dispatch => {
-    const indexOfEqualMark = url.search("=");
-    const codeWithNotNeededId = url.substring(indexOfEqualMark + 1, url.length);
-    let codeWithoutId = null;
-    if(codeWithNotNeededId.length > 50){
-      codeWithoutId = codeWithNotNeededId.substring(
-        0,
-        codeWithNotNeededId.search("&")
-      );
-    }
-    else
-      codeWithoutId = codeWithNotNeededId;
-
-    dispatch(sendAuthCodePromise(codeWithoutId)).then(response => {
-      const { access_token, refresh_token } = response.replyBlock.data.dtoObject;
-      dispatch(sendTokenToGetAuth(access_token, true, [], refresh_token));
-
+    dispatch(sendAuthCodePromise(url)).then(access_token => {
       dispatch(getFoldersPromise(access_token, null)).then(folders => {
         dispatch(getFolders(folders, true, [], "/drive/root:"));
       });
@@ -133,12 +135,13 @@ export const getFoldersPromise = (token, path) => dispatch => {
   });
 };
 
-export const sendAuthCodePromise = codeWithoutId => dispatch => {
+export const sendAuthCodePromise = (url, shouldRedirectOnCalendar) => dispatch => {
   return new Promise((resolve, reject) => {
-    WebApi.oneDrive.get
-      .sendQuertToAuth(codeWithoutId)
+    WebApi.oneDrive.get.sendQuertToAuth(extractCodeFromUrl(url), shouldRedirectOnCalendar)
       .then(response => {
-        resolve(response);
+        const { access_token, refresh_token } = response.replyBlock.data.dtoObject;
+        dispatch(sendTokenToGetAuth(access_token, true, [], refresh_token));
+        resolve(access_token);
       })
       .catch(error => {
         dispatch(sendTokenToGetAuth("", false, errorCatcher(error), ""));

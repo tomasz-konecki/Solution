@@ -1,13 +1,15 @@
 .quaters-container {
   width: 600px;
   position: relative;
-  .quater-check-container {
-    position: absolute;
-    bottom: -50px;
-    right: 115px;
-  }
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  align-items: center;
   .q-btn-holder {
     padding: 10px;
+    .quater-check-container {
+      margin-left: auto;
+    }
   }
   @media screen and (max-width: 1470px) {
     margin-top: 400px;
@@ -30,7 +32,7 @@
   }
   .pagination-options {
     width: 400px;
-    margin: 0 auto;
+    margin: 15px auto 0 auto;
     display: flex;
     justify-content: flex-end;
     font-size: 24px;
@@ -161,193 +163,3 @@
   }
 }
 
-
-.plan-quarter-modal{
-  width: 1200px !important;
-  height: 750px !important;
-  @media (max-width: 500px) {
-    height: 98% !important;
-  }
-  h3{
-      text-align: left;
-  }
-  & > nav{
-    padding: 10px;
-    border-top: 1px solid grey;
-  }
-  .calendar{
-    h2{
-      padding: 10px 15px;
-      color: gray;
-      i{
-        font-size: 24px;
-        margin-right: 10px;
-      }
-      span{
-        color: lightcoral;
-      }
-    }
-    .hours{
-      display: flex;
-      padding: 40px 0;
-      flex-flow: wrap;
-      justify-content: center;
-      .last-added-time-prompt{
-        padding: 10px;
-        margin-top: 30px;
-        display: flex;
-        flex-flow: column;
-        align-items: center;
-        p{
-          padding: 5px 0;
-          line-height: 25px;
-          text-align: center;
-        }
-        p:last-of-type{
-          display: inherit;
-          flex-flow: inherit;
-          align-items: center;
-          i{
-            font-style: italic;
-            margin: 5px 0;
-          }
-          span{
-            color: tomato;
-            margin: 5px 0;
-            cursor: pointer;
-            &:hover{
-              color: #EE3411;
-            }
-          }
-        }
-        b{
-          color:#60A360;
-        }
-      }
-      .time-input-container{
-        width: 100px;
-        position: relative;
-        box-sizing: border-box;
-        .check-dis{
-          color: lightgray !important;
-        }
-        .fa-times{
-          position: absolute;
-          top: -20px;
-          right: 5px;
-          cursor: pointer;
-          font-size: 14px;
-          color: black;
-        }
-        .fa-check{
-          position: absolute;
-          bottom: -22px;
-          right: 5px;
-          cursor: pointer;
-          color: mediumseagreen;
-          font-size: 16px;
-        }
-        input{
-          width: 100%;
-          font-family: inherit;
-          font-size: 17px;
-          transition: .5s all;
-          padding: 0 10px;
-          margin-left: 5px;
-          border: none;
-          border-left: 2px solid #A8BAAE;
-          border-right: 2px solid #A8BAAE;
-          &:focus{
-            outline: none;
-            border-color: #0AA163;
-            margin-left: 7.5px;
-          }
-          &:hover{
-            cursor: pointer;
-          }
-        }
-      }
-      .fa-plus{
-        color: #60A360;
-        position: absolute;
-        cursor: pointer;
-        font-size: 16px;
-        right: 15px;
-      }
-      .add-hour-btn{
-        width: 160px;
-        background: transparent;
-        border: none;
-        border-left: 2px solid transparent;
-        border-right: 2px solid transparent;
-        cursor: pointer;
-        transition: .5s all;
-        &:hover{
-          width: 180px;
-          margin: 0 10px;
-          border-color: tomato;
-        }
-        &:focus{
-          outline: none;
-        }
-      }
-      & > div{
-        animation: .5s animate-in forwards;
-        opacity: 0;
-        padding: 0 10px;
-        display: flex;
-        & > div{
-          position: relative;
-          & > span{
-            position: absolute;
-            top: -15px;
-            font-size: 12px;
-            color: tomato;
-            letter-spacing: 1.25px;
-            font-weight: bold;
-          }
-        }
-        @for $i from 2 through 20 {
-          & {
-            &:nth-child(#{$i}) {
-              animation-delay: $i * (1s / 18);
-            }
-          }
-        }
-        i{
-          margin-left: 5px;
-        }
-      }
-      .start-or-end-time{
-        font-size: 30px;
-        color: #A8BAAE;
-      }
-      .highlighter{
-        & > span{
-          display: block;
-          cursor: pointer;
-          height: 100%;
-          width: 25px;
-          border-bottom: 3px solid transparent;
-          transition: .5s all;
-        }
-        &:hover > span{
-            cursor: pointer;
-            width: 40px;
-            border-bottom-color: tomato;
-        }
-        @keyframes animate-in{
-          0%{
-            opacity: 0;
-            transform: translateX(-15px);
-          }
-          100%{
-            opacity: 1;
-            transform: translateX(0);
-          }
-        }
-      }
-    }
-
-  }
-}

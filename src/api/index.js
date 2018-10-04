@@ -239,8 +239,8 @@ const WebApi = {
       questions: () => {
         return WebAround.get(`${API_ENDPOINT}/QuarterTalks/questions`);
       },
-      reservedDates: (employeeId) => {
-        return WebAround.get(`${API_ENDPOINT}/QuarterTalks/GetReservedDates/` + employeeId);
+      getQuarterForEmployee: (employeeId) => {
+        return WebAround.get(`${API_ENDPOINT}/QuarterTalks/ForEmployee/` + employeeId);
       }
     },
     delete: quarterId => {
@@ -257,8 +257,11 @@ const WebApi = {
       createQuarter: model => {
         return WebAround.post(`${API_ENDPOINT}/QuarterTalks`, model);
       },
-      planQuarter: model => {
-        return WebAround.post(`${API_ENDPOINT}/QuarterTalks/Planned`, model);
+      planQuarter: (model, shouldSync) => {
+        return WebAround.post(`${API_ENDPOINT}/QuarterTalks/Planned?syncCalendar=${shouldSync}`, model);
+      },
+      reservedDates: (model, checkOutlook) => {
+        return WebAround.post(`${API_ENDPOINT}/QuarterTalks/GetReservedDates?checkOutlook=${checkOutlook}`, model);
       }
     }
   },
@@ -542,12 +545,13 @@ const WebApi = {
   },
   oneDrive: {
     get: {
-      getRedirectLink: () => {
-        return WebAround.get(`${API_ENDPOINT}/onedrive/auth`);
+      getRedirectLink: shouldRedirectOnCalendar => {
+          return WebAround.get(`${API_ENDPOINT}/onedrive/auth?=${shouldRedirectOnCalendar ? shouldRedirectOnCalendar : false}`);
       },
-      sendQuertToAuth: code => {
+      sendQuertToAuth: (code, shouldRedirectOnCalendar) => {
+        console.log(shouldRedirectOnCalendar);
         return WebAround.get(
-          `${API_ENDPOINT}/onedrive/authenticated?code=${code}`
+          `${API_ENDPOINT}/onedrive/authenticated?code=${code}&calendar=${shouldRedirectOnCalendar ? shouldRedirectOnCalendar : false}`
         );
       },
       refreshToken: oldToken => {

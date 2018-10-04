@@ -18,7 +18,6 @@ import { bindActionCreators } from "redux";
 import { LANGUAGE_CHANGE } from "../constants";
 import { withRouter } from "react-router-dom";
 import NotFound404 from "../components/notFound404/NotFound404";
-
 class App extends Component {
   constructor(props) {
     super(props);

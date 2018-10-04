@@ -83,6 +83,9 @@ class Form extends Component {
           formItems[key].title
         );
       }
+      if(formItems[key].checkIfDateIsfromPast){
+        formItems[key].error = validateDateIsNotFromPast(formItems[key].value);
+      }
 
       if (formItems[key].error !== "") {
         result = false;
@@ -250,7 +253,7 @@ class Form extends Component {
                     id={index}
                     value={i.value}
                     onChange={e => this.onChangeInput(e, index)}
-                    type="text"
+                    type={i.type}
                     placeholder={i.placeholder}
                   />
                 ) : i.mode === "textarea" ? (
@@ -423,6 +426,7 @@ class Form extends Component {
                 ) : i.mode === "type-and-select" ? 
 
                 <DataList
+                    type={i.type}
                     key={index}
                     identity={i.inputType}
                     dataToMap={i.dataToMap}

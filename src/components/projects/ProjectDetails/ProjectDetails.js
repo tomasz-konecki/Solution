@@ -18,6 +18,7 @@ import { validateInput } from "../../../services/validation";
 import { errorCatcher } from "../../../services/errorsHandler";
 import { getRandomColor } from "../../../services/methods";
 import OperationStatusPrompt from "../../form/operationStatusPrompt/operationStatusPrompt";
+import { translate } from "react-translate";
 import { connect } from "react-redux";
 import {
   getContactPersonDataACreator,
@@ -44,7 +45,6 @@ import ConfirmModal from "../../common/confimModal/confirmModal";
 import ServerError from "../../common/serverError/serverError";
 import WebApi from "../../../api/index";
 import employeeTable from "../../employees/details/employeeTable/employeeTable";
-import { translate } from "react-translate";
 import specialPermissioner from "./../../../api/specialPermissioner";
 import binaryPermissioner from "./../../../api/binaryPermissioner";
 
@@ -338,7 +338,8 @@ class ProjectDetails extends Component {
       changeProjectStateStatus,
       changeProjectStateErrors,
       getSuggestEmployeesStatus,
-      suggestEmployees
+      suggestEmployees,
+      t
     } = this.props;
 
     const { reactivate, close } = WebApi.projects.put;
@@ -445,7 +446,7 @@ class ProjectDetails extends Component {
                 <ProjectInformationsCart
                   key={1}
                   items={this.props.overViewKeys}
-                  headerTitle="Informacje ogólne"
+                  headerTitle={t("GeneralInfo")}
                   originalObject={project}
                   dateKeys={["startDate", "estimatedEndDate", "endDate"]}
                 />
@@ -453,7 +454,7 @@ class ProjectDetails extends Component {
                 <ProjectInformationsCart
                   key={2}
                   items={this.props.responsiblePersonKeys}
-                  headerTitle="Osoba odpowiedzialna"
+                  headerTitle={t("ResponsiblePerson")}
                   originalObject={project.responsiblePerson}
                 />
                 <article>
@@ -493,7 +494,7 @@ class ProjectDetails extends Component {
                     this.props.changeProjectSkillsErrors
                   }
                   changeProjectSkills={this.props.changeProjectSkills}
-                  title="Umiejętności na potrzeby projektu"
+                  title={t("SkillsRequired")}
                   items={project.skills}
                   getAllSkills={this.props.getAllSkills}
                   loadedSkills={this.props.loadedSkills}
@@ -512,7 +513,7 @@ class ProjectDetails extends Component {
 
               <div className="right-project-spec">
                 <div className="a-asign-container">
-                  <label>Pokaż aktywne przypisania</label>
+                  <label>{t("ShowActiveAssignments")}</label>
                   <input
                     type="checkbox"
                     checked={onlyActiveAssignments}
@@ -958,4 +959,4 @@ const mapDispatchToProps = dispatch => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(ProjectDetails);
+)(translate("ProjectDetails")(ProjectDetails));

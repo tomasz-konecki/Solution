@@ -236,7 +236,7 @@ class Form extends Component {
     this.setState({ formItems: formItems });
   };
   render() {
-    const { enableButtonAfterTransactionEnd = false } = this.props;
+    const { enableButtonAfterTransactionEnd = false, inputContainerClass } = this.props;
     return (
       <form
         onSubmit={this.props.shouldSubmit ? e => this.onSubmit(e) : null}
@@ -244,7 +244,7 @@ class Form extends Component {
       >
         {this.state.formItems.map((i, index) => {
           return (
-            <section style={{display: i.disable === true ? 'none' : 'flex'}} className="input-container" key={i.title}>
+            <section style={{display: i.disable === true ? 'none' : 'flex'}} className={`input-container ${inputContainerClass}`} key={i.title}>
               <label>{i.title}</label>
               <div className="right-form-container">
                 {!i.mode || i.mode === "text" ? (
@@ -462,6 +462,10 @@ class Form extends Component {
       </form>
     );
   }
+}
+
+Form.defaultProps = {
+  inputContainerClass: "row-container"
 }
 
 export default Form;

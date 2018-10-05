@@ -1,11 +1,26 @@
 .plan-quarter-container{
     display: flex;
     padding: 20px;
+    color: #2b2b2b;
+    & > div > h2{
+        margin-bottom: 20px;
+        margin-top: 10px;
+        font-size: 20px;
+    }
     .plan-quarter-form{
         position: relative;
         height: 350px;
         width: 350px;
         align-self: center;
-        margin-left: 25px;
+        margin: 0 45px;
+        .submit-btn{
+            position: relative;
+        }
+    }
+    .hours-to-use-container{
+        margin: 0 45px;
+        align-self: center;
+        width: 500px;
+        height: 350px;       
     }
 }

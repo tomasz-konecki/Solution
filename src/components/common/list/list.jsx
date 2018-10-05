@@ -67,7 +67,12 @@ class List extends React.PureComponent {
         else{
             return (
                 <div {...noItemsComponentProps} className="empty-list-content">
-                    Brak wyników
+                    <span>Brak wyników</span>
+                    <div>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
                 </div>
             )
         }

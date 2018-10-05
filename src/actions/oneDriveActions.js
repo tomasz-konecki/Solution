@@ -149,7 +149,6 @@ export const sendAuthCodePromise = (url, shouldRedirectOnCalendar) => dispatch =
       });
   });
 };
-//siema
 export const createFolder = (createFolderStatus, createFolderErrors) => {
   return { type: CREATE_FOLDER, createFolderStatus, createFolderErrors };
 };

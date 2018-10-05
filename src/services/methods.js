@@ -166,3 +166,14 @@ export const getEmployeeId = () => {
  
   return window.location.href.substring(indexOfLastEqual+1, url.length);
 }
+
+export const pushMomentValuesDynamicly = (limit, startDate, numberOfAdds, valueType, format) => {
+  const startMomentDate = moment(startDate);
+  const items = [];
+  for(let i = 0; i < limit; i++){
+      const formatedDate = startMomentDate.add(numberOfAdds, valueType).format(format);
+
+      items.push({name: formatedDate, id: i});
+  }
+  return items;
+}

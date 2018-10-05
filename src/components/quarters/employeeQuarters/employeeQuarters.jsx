@@ -42,7 +42,7 @@ class EmployeeQuarters extends React.PureComponent{
         const currentWatchedItemId = quartersForEmployee.findIndex(item => item.id === quarter.id);
         this.setState({currentWatchedQuarterDetail: currentWatchedItemId});
     }
-    
+
     render(){
         const { isLoadingQuarters, currentWatchedQuarterDetail } = this.state;
         const { clearQuartersEmployeeQuartersData, quartersForEmployee, quartersForEmployeeStatus, quartersForEmployeeErrors, shouldLoadDataAfterLinkChange } = this.props;
@@ -56,7 +56,7 @@ class EmployeeQuarters extends React.PureComponent{
 
                     </div>
                     <div className="quarter-detail">
-                        {currentWatchedQuarterDetail !== -1 &&
+                        {currentWatchedQuarterDetail !== -1 && quartersForEmployee[currentWatchedQuarterDetail] && 
                             quartersForEmployee[currentWatchedQuarterDetail].quarterTalkQuestionItems ? 
                             <List functionsToUse={functionsToUseForQuestions} listTitle="Przebieg rozmowy" listClass="question-list" 
                             component={QuarterDetailsItem} items={quartersForEmployee[currentWatchedQuarterDetail].quarterTalkQuestionItems} /> : 

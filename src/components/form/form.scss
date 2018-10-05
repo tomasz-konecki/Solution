@@ -5,16 +5,32 @@
     flex-flow: column;
     padding: 10px 0;
     .input-container{
-        width: 100%;
         position: relative;
         display: flex;
         justify-content: space-between;
     }
+    .row-container{
+        flex-flow: row;
+        width: 100%;
+        label{
+            margin: 3px 0;
+            text-align: center;
+        }
+    }
+    .column-container{
+        flex-flow: column;
+        .right-form-container{
+            width: 100%;
+        }
+        label{
+            margin-bottom: 10px;
+        }
+    }
     label{
-        margin: 3px 0;
         width: 30%;
         font-size: 14px;
-        text-align: center;
+        color: #2b2b2b;
+        
     }
    
     .right-form-container{
@@ -44,8 +60,6 @@
         -moz-box-shadow: -1px 1px 24px -2px rgb(112, 202, 233);
         box-shadow: -1px 1px 24px -2px rgb(112, 202, 233);
     }
-  
-   
  
     .data-list-container{
         width: 100%;

@@ -85,7 +85,7 @@ export const getReservedDates = (reservedDates, getDatesStatus, getDatesErrors) 
                 const monthName = momentedDate.format("MMMM");
                 const dayName = momentedDate.format("dddd");
                 const willLastTo = momentedDate.add(cutedResponse[key].length, "minute").format("HH:mm");
-                extractedData.push({time, date, monthName, dayName, willLastTo, length: cutedResponse[key].length});
+                extractedData.push({time, date, monthName, dayName, willLastTo, length: cutedResponse[key].length, dateAndTime: date + " " + time});
 
             }
             dispatch(getReservedDates(extractedData, true, []));

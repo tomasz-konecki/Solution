@@ -33,7 +33,7 @@ class Quarters extends React.PureComponent{
         }
     }
 
-    changeActualWatchedUser = (person) => {
+    changeActualWatchedUser = person => {
         const { history, match, changeCurrentWatchedUser } = this.props;
         const url = history.location;
         
@@ -41,7 +41,6 @@ class Quarters extends React.PureComponent{
         for(let key in linkTypes){
             if(url.pathname.search(key) !== -1){
                 changeCurrentWatchedUser(person);
-                console.log(changeCurrentWatchedUser);
                 history.push(`${match.url}${linkTypes[key]}${person}?=${person}`);
                 break;
             }

@@ -64,3 +64,34 @@
 .pagination{
 
 }
+.empty-list-content{
+    padding: 20px;
+    width: 100%;
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    font-size: 32px;
+    color: #898989;
+    margin-top: 100px;
+    div{
+        margin: 20px;
+        position: relative;
+     
+        &::before{
+            content: '';
+            position: absolute;
+            width: 55px;
+            transform: rotate(45deg);
+            top: 20px;
+            left: -8px;
+            border: 4px solid #e8e8e8;
+        }
+        span{
+            display: block;
+            width: 40px;
+            margin: 5px 0;
+            border: 4px solid #898989;
+        }
+    }
+    
+}

@@ -53,8 +53,34 @@
         }
     }
     p:nth-child(3){
+        z-index: 3;
         span{
             margin-left: auto;
+            color: #F35555;
+        }
+    }
+}
+.deleted-quarter{
+    position: relative;
+    .backdrop-prompt{
+        position: absolute;
+        z-index: 2;
+        background: rgba(0,0,0,0.8);
+        display: flex;
+        flex-flow: column;
+        width: 100%;
+        height: 100%;
+        color: white;
+        top: 0;
+        padding: 10px;
+        left: 0;
+        p{
+            margin-top: auto;
+        }
+        span{
+            color: #82b541;
+            margin-left: auto;
+            margin-top: auto;
         }
     }
 }

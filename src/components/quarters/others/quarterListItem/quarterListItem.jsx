@@ -2,7 +2,7 @@ import React from 'react'
 import './quarterListItem.scss';
 
 const quarterListItem = ({item, clickItemFunction}) => (
-    <div className="single-quarter" onClick={clickItemFunction}>
+    <div className={`single-quarter ${item.isDeleted ? "deleted-quarter" : ""}`} onClick={e => clickItemFunction(e)}>
         <p>
             <i title="Osoba przeprowadzająca rozmowe" className="fa fa-user"></i>
             <span title="Osoba przeprowadzająca rozmowe">{item.questionerId}</span>
@@ -18,8 +18,17 @@ const quarterListItem = ({item, clickItemFunction}) => (
             </span>
         </p>
         <p>
-            <span style={{color: item.isDeleted ? "" : "#F35555"}}>{item.isDeleted ? "Reaktywuj" : "Usuń"}</span>
+            {item.isDeleted || 
+                <span onClick={e => clickItemFunction(e, "delete")}>Usuń</span>
+            }
         </p>
+        {item.isDeleted && 
+            <div className="backdrop-prompt">
+                <p>Ta rozmowa jest usunięta</p>
+                <span onClick={e => clickItemFunction(e, "reactivate")}>Reaktywuj</span>
+            </div>
+        }
+        
     </div>
 );
 

@@ -1,5 +1,5 @@
 import {
- ADD_QUARTER_TALK, GET_QUESTIONS, GET_RESERVED_DATES, PLAN_QUARTER, GET_QUARTERS_FOR_EMPLOYEE
+ ADD_QUARTER_TALK, GET_QUESTIONS, GET_RESERVED_DATES, PLAN_QUARTER, GET_QUARTERS_FOR_EMPLOYEE, DELETE_QUARTER_TALK, REACTIVATE_QUARTER_TALK
 } from "../constants";
   import WebApi from "../api";
   import { errorCatcher } from "../services/errorsHandler"; 
@@ -160,4 +160,36 @@ export const getReservedDates = (reservedDates, getDatesStatus, getDatesErrors) 
             reject();
         })
       })
+  }
+
+  export const deleteQuarterTalk = (deleteQuarterStatus, deleteQuarterErrors) => {
+      return { type: DELETE_QUARTER_TALK, deleteQuarterStatus, deleteQuarterErrors }
+  }
+
+  export const deleteQuarterTalkACreator = quarterId => dispatch => {
+    return new Promise((resolve, reject) => {
+        WebApi.quarterTalks.delete(quarterId).then(response => {
+            dispatch(deleteQuarterTalk(true, []));
+            resolve();
+        }).catch(error => {
+            dispatch(deleteQuarterTalk(false, errorCatcher(error)));
+            reject();
+        });
+    })
+  }
+
+  export const reactivateQuarterTalk = (reactiveQuarterStatus, reactiveQuarterErrors) => {
+      return { type: REACTIVATE_QUARTER_TALK, reactiveQuarterStatus, reactiveQuarterErrors }
+  }
+
+  export const reactivateQuarterTalkACreator = quarterId => dispatch => {
+    return new Promise((resolve, reject) => {
+        WebApi.quarterTalks.put.reactivate(quarterId).then(response => {
+            dispatch(reactivateQuarterTalk(true, []));
+            resolve();
+        }).catch(error => {
+            dispatch(reactivateQuarterTalk(false, errorCatcher(error)));
+            reject();
+        });
+    })
   }

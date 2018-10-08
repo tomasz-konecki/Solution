@@ -1,5 +1,5 @@
 import {
-    ADD_QUARTER_TALK, GET_QUESTIONS, GET_RESERVED_DATES, PLAN_QUARTER, GET_QUARTERS_FOR_EMPLOYEE
+    ADD_QUARTER_TALK, GET_QUESTIONS, GET_RESERVED_DATES, PLAN_QUARTER, GET_QUARTERS_FOR_EMPLOYEE, DELETE_QUARTER_TALK, REACTIVATE_QUARTER_TALK
   } from "../constants";
   import { updateObject } from '../services/methods';
   const initialState = {
@@ -14,7 +14,11 @@ import {
 
       planQuarterStatus: null, planQuarterErrors: [],
 
-      quartersForEmployee: [], quartersForEmployeeStatus: null, quartersForEmployeeErrors: []
+      quartersForEmployee: [], quartersForEmployeeStatus: null, quartersForEmployeeErrors: [],
+
+      deleteQuarterStatus: null, deleteQuarterErrors: [],
+
+      reactiveQuarterStatus: null, reactiveQuarterErrors: []
   };
   
   export const quarterTalks = (state = initialState, action) => {
@@ -32,6 +36,10 @@ import {
         case GET_QUARTERS_FOR_EMPLOYEE:
             return updateObject(state, { quartersForEmployee: action.quartersForEmployee, 
                 quartersForEmployeeStatus: action.quartersForEmployeeStatus, quartersForEmployeeErrors: action.quartersForEmployeeErrors })
+        case DELETE_QUARTER_TALK:
+            return updateObject(state, { deleteQuarterStatus: action.deleteQuarterStatus, deleteQuarterErrors: action.deleteQuarterErrors })
+        case REACTIVATE_QUARTER_TALK:
+            return updateObject(state, { reactiveQuarterStatus: action.reactiveQuarterStatus, reactiveQuarterErrors: action.reactiveQuarterErrors })
             default:
         return state;
     }

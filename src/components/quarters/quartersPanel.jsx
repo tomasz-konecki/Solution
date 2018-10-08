@@ -47,7 +47,6 @@ class Quarters extends React.PureComponent{
         }
            
     }
-     
   
     render(){
         const { match, history, lastWatchedPersons, planQuarterACreator, 
@@ -72,7 +71,7 @@ class Quarters extends React.PureComponent{
 
                 <nav>
                     <Button onClick={() => this.handleBtnClick(`${match.url}/employees`, true)} title="Rozmowy kwartalne" mainClass="generate-raport-btn btn-green"><i className="fa fa-users"/></Button>
-                    <Button onClick={() => history.push(`${match.url}/employees`)} title="Użytkownicy" mainClass="generate-raport-btn btn-green"><i className="fa fa-users"/></Button>
+                    <Button onClick={() => this.setState({openFindUserModal: true})} title="Użytkownicy" mainClass="generate-raport-btn btn-green"><i className="fa fa-users"/></Button>
                     <Button onClick={() => this.handleBtnClick(`${match.url}/employees/addquarter`, true)} title="Dodaj rozmowę" mainClass="generate-raport-btn btn-green"><i className="fa fa-users"/></Button>
                     <Button onClick={() => this.handleBtnClick(`${match.url}/employees/plan`, true)} title="Zaplanuj rozmowę" mainClass="generate-raport-btn btn-green"><i className="fa fa-users"/></Button>
                 </nav>
@@ -90,10 +89,6 @@ class Quarters extends React.PureComponent{
                         <Route exact path={match.url + "/employees/addquarter/:id"} component={AddQuarter} />
                         <Route exact path={`${match.url}/employees/:id`} render={() => (
                             <EmployeeQuarters lastWatchedPersons={lastWatchedPersons} location={history.location} />
-                        )}/>
-                      
-                        <Route exact path={`${match.url}/employees`} render={() => (
-                            <div>Użytkownicy</div>
                         )}/>
 
                     </Switch>   

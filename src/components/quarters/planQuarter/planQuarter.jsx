@@ -53,6 +53,7 @@ class PlanQuarter extends React.PureComponent{
     generateHoursToUse = () => {
         const { reservedDates } = this.props;
         const { planQuarterFormItems } = this.state;
+        console.log("Siema");
         if(planQuarterFormItems[0].error){
             this.setState({hoursToUse: []});
         }
@@ -88,7 +89,6 @@ class PlanQuarter extends React.PureComponent{
 
     componentDidMount(){
         const { getEmployeeId, redirectToLastWatchedPerson, oneDriveToken, match, currentWatchedUser} = this.props;
-        this.generateHoursToUse();
         if(currentWatchedUser !== ""){
             this.getReservedDates(currentWatchedUser);
         }
@@ -113,7 +113,7 @@ class PlanQuarter extends React.PureComponent{
     getReservedDates = employeeId => {
         const { getReservedDatesACreator, oneDriveToken, authOneDriveACreator, changeLinkBeforeRedirect, location } = this.props;
         getReservedDatesACreator(employeeId, oneDriveToken)
-        .then(() => this.setState({isGettingReservedDates: false}))
+        .then(() => this.setState({isGettingReservedDates: false}, () => this.generateHoursToUse()))
         .catch(error => {
             if(error[0] === invalidOneDriveTokenError){
                 authOneDriveACreator()

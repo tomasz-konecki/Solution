@@ -65,7 +65,10 @@ class EmployeeDetailsContainer extends React.Component {
   componentWillReceiveProps(nextProps) {
     if (this.validatePropsForAction(nextProps, "deleteCertificate")) {
       this.props.async.setActionConfirmationProgress(true);
-      this.props.deleteCertificate(this.props.toConfirm.certificate.id, this.props.match.params.id);
+      this.props.deleteCertificate(
+        this.props.toConfirm.certificate.id,
+        this.props.match.params.id
+      );
     }
 
     if (nextProps.employeeErrors !== this.props.employeeErrors) {
@@ -182,9 +185,10 @@ class EmployeeDetailsContainer extends React.Component {
       t,
       updateSkypeIdResult,
       getEmployeePromise,
-      certificates
+      certificates,
+      binPem,
+      login
     } = this.props;
-
     return (
       <div className="employee-details-container">
         {isLoadingFirstTimeEmployee ? (
@@ -219,8 +223,14 @@ class EmployeeDetailsContainer extends React.Component {
                 editSkypeFormItems={editSkypeFormItems}
                 editSkypeId={this.editSkypeId}
                 t={t}
-                skypeIdAddLoading={updateSkypeIdResult && updateSkypeIdResult.loading}
-                updateSkypeIdResult={updateSkypeIdResult && updateSkypeIdResult.resultBlock}
+                skypeIdAddLoading={
+                  updateSkypeIdResult && updateSkypeIdResult.loading
+                }
+                updateSkypeIdResult={
+                  updateSkypeIdResult && updateSkypeIdResult.resultBlock
+                }
+                isYou={login === employee.id}
+                binPem={binPem}
               />
 
               <EmployeeSkills
@@ -232,6 +242,8 @@ class EmployeeDetailsContainer extends React.Component {
                 changeEmployeeSkillsACreator={changeEmployeeSkillsACreator}
                 skills={employee.skills}
                 limit={5}
+                isYou={login === employee.id}
+                binPem={binPem}
               />
 
               <EmployeeTable
@@ -256,6 +268,8 @@ class EmployeeDetailsContainer extends React.Component {
                 deleteCertificate={this.deleteCertificate}
                 userId={this.props.match.params.id}
                 resultBlockAddCertificate={this.props.resultBlockAddCertificate}
+                isYou={login === employee.id}
+                binPem={binPem}
               />
             </React.Fragment>
           )
@@ -341,7 +355,9 @@ const mapStateToProps = state => {
     isWorking: state.asyncReducer.isWorking,
     type: state.asyncReducer.type,
 
-    lastWatchedPersons: state.persistHelpReducer.lastWatchedPersons
+    lastWatchedPersons: state.persistHelpReducer.lastWatchedPersons,
+    binPem: state.authReducer.binPem,
+    login: state.authReducer.login
 
   };
 };
@@ -374,7 +390,6 @@ const mapDispatchToProps = dispatch => {
     deleteCertificate: (certificateId, userId) => dispatch(deleteCertificate(certificateId, userId)),
     createLastWatchedPersonsArray: (lastWatchedPersons) => dispatch(createLastWatchedPersonsArray(lastWatchedPersons)),
     changeCurrentWatchedUser: (currentWatchedUser) => dispatch(changeCurrentWatchedUser(currentWatchedUser))
-    
   };
 };
 

@@ -8,6 +8,7 @@ import Spinner from "../../../common/spinner/small-spinner";
 import Icon from "../../../common/Icon";
 import { Link } from "react-router-dom";
 import Form from "../../../form/form";
+import CallSkype from "./callSkype";
 
 const employeeContent = ({
   changeCurrentWatchedUser,
@@ -32,7 +33,10 @@ const employeeContent = ({
   editSkypeId,
   skypeIdAddLoading,
   updateSkypeIdResult,
-  getEmployeePromise
+
+  getEmployeePromise,
+  isYou,
+  binPem
 }) => {
   const status = employee.isDeleted
     ? t("Deleted")
@@ -56,27 +60,6 @@ const employeeContent = ({
       <i className="fa fa-user" />
     </figure>
   );
-
-const callSkype = editSkypeFormItems[0].value ? (
-    <a
-      title={`${t("CallSkype")} ${editSkypeFormItems[0].value}`}
-      className="skype"
-      href={"skype:" + editSkypeFormItems[0].value + "?add"}
-    >
-      <Icon icon="skype" iconType="fab" />
-      <span className="skypeId">{editSkypeFormItems[0].value}</span>
-    </a>
-  )   : (
-  <a
-  title={`${t("CallBusinessSkype")}`}
-  className="skype"
-  href={"sip:<" + employee.email + ">"}
->
-  <img src="/public/img/skypeforbusiness.jpeg" className="businessSkypeIcon"/>
-  <span className="skypeId"> {employee.email} </span>
-</a>
-)
-
   return (
     <section className="top-content-container">
       <div className="employee-details-bar">
@@ -93,9 +76,17 @@ const callSkype = editSkypeFormItems[0].value ? (
               {imgContent}
               <p>{employee.roles ? employee.roles[0] : t("RoleMissing")}</p>
             </div>
-            <div>
-            <h2> {employee.firstName + " " + employee.lastName + " "}</h2>
-            {callSkype}
+            <div className="text-center" style={{ width: "100%" }}>
+              <h2> {employee.firstName + " " + employee.lastName + " "}</h2>
+              <CallSkype
+                editSkypeFormItems={editSkypeFormItems}
+                employee={employee}
+                editSkypeId={editSkypeId}
+                skypeIdAddLoading={skypeIdAddLoading}
+                updateSkypeIdResult={updateSkypeIdResult}
+                t={t}
+                canEditSkypeId={isYou || binPem == 32}
+              />
             </div>
           </header>
 
@@ -151,6 +142,7 @@ const callSkype = editSkypeFormItems[0].value ? (
                 capacityLeft={employee.baseCapacity}
                 editCapacity={editCapacity}
                 employeeErrors={employeeErrors}
+                canEditFteBar={binPem > 1}
               />
 
               <div className="degree-bar-container">
@@ -159,65 +151,47 @@ const callSkype = editSkypeFormItems[0].value ? (
                   seniority={employee.seniority}
                   employeeErrors={employeeErrors}
                   range={4}
-                />
-              </div>
-
-              <div className="edit-skypeid-form">
-                <Form
-                  onSubmit={editSkypeId}
-                  formItems={editSkypeFormItems}
-                  btnTitle={t("Save")}
-                  isLoading={skypeIdAddLoading}
-                  submitResult={{
-                    status:
-                      updateSkypeIdResult && updateSkypeIdResult.errorOccurred
-                        ? !updateSkypeIdResult.errorOccurred()
-                          ? true
-                          : false
-                        : null,
-                    content:
-                      updateSkypeIdResult && updateSkypeIdResult.errorOccurred
-                        ? !updateSkypeIdResult.errorOccurred()
-                          ? t("SkypeIdUpdated")
-                          : updateSkypeIdResult &&
-                            updateSkypeIdResult.getMostSignificantText()
-                        : null
-                  }}
-                  enableButtonAfterTransactionEnd={true}
+                  canEditDegreeBar={binPem > 1}
                 />
               </div>
             </React.Fragment>
           )}
 
-        <div className="emp-btns-container">
-          {status === t("Active") ? (
-            <Button
-              mainClass="option-btn option-very-dang"
-              title={t("Delete")}
-              disable={isChangingEmployeeData}
-              onClick={deleteEmployee}
-            >
-              {isChangingEmployeeData && <Spinner />}
-            </Button>
-          ) : (
-            <Button
-              disable={isChangingEmployeeData}
-              onClick={
-                status === t("Deleted") ? reactivateEmployee : activateEmployee
-              }
-              title={t("Activate")}
-              mainClass="option-btn green-btn"
-            >
-              {isChangingEmployeeData && <Spinner />}
-            </Button>
-          )}
-        </div>
+        {binPem === 32 && (
+          <React.Fragment>
+            <div className="emp-btns-container">
+              {status === t("Active") ? (
+                <Button
+                  mainClass="option-btn option-very-dang"
+                  title={t("Delete")}
+                  disable={isChangingEmployeeData}
+                  onClick={deleteEmployee}
+                >
+                  {isChangingEmployeeData && <Spinner />}
+                </Button>
+              ) : (
+                <Button
+                  disable={isChangingEmployeeData}
+                  onClick={
+                    status === t("Deleted")
+                      ? reactivateEmployee
+                      : activateEmployee
+                  }
+                  title={t("Activate")}
+                  mainClass="option-btn green-btn"
+                >
+                  {isChangingEmployeeData && <Spinner />}
+                </Button>
+              )}
+            </div>
 
-        {status !== t("Active") && (
-          <div className="information-for-statuses">
-            <p>{t("BeforeYouChangeStatus")}</p>
-            <article>{t("BeforeYouChangeStatusContent")}</article>
-          </div>
+            {status !== t("Active") && (
+              <div className="information-for-statuses">
+                <p>{t("BeforeYouChangeStatus")}</p>
+                <article>{t("BeforeYouChangeStatusContent")}</article>
+              </div>
+            )}
+          </React.Fragment>
         )}
       </div>
       <Quaters

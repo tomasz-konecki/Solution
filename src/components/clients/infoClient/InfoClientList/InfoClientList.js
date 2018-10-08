@@ -1,12 +1,14 @@
 import React, { Component } from "react";
 import Icon from "../../../common/Icon";
 import PropTypes from "prop-types";
+import CloudFiledsList from "./cloudFieldsList";
 import "./InfoClientList.scss";
 
 export default class InfoClientList extends Component {
   state = {
     list: this.props.list,
-    isDeleted: false
+    isDeleted: false,
+    clickedCloudIndex: 0
   };
 
   componentWillMount() {
@@ -52,6 +54,12 @@ export default class InfoClientList extends Component {
     });
   };
 
+  toogleFieldsList = (index) => {
+    this.setState({
+      clickedCloudIndex: index
+    })
+  }
+
   render() {
     const {
       t,
@@ -68,9 +76,10 @@ export default class InfoClientList extends Component {
         <div key={index} className="info-list-item">
           <div className="info-list-circle" />
           <div className="info-list-name">
-            <span>
-              {item.name ? item.name : item.firstName + " " + item.lastName}
-            </span>
+            <CloudFiledsList
+              item={item}
+              fields={item.fields}
+            />
           </div>
           <div className="info-list-options">
             {!item.isDeleted ? (

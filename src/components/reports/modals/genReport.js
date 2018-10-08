@@ -130,12 +130,11 @@ const genReport = ({
         {shouldLetGenerate &&
           <div className="availableUntil">
             <input type="checkbox" id="availableUntilCheckbox" onChange={handleAvailableUntilToggle}/>
-            <label htmlFor="availableUntilCheckbox">Tylko pracownicy dostępni do:</label>
+            <label htmlFor="availableUntilCheckbox">Tylko pracownicy dostępni w dniu:</label>
             <DatePicker 
               startDate={availableUntilStartDate}
               minDate={availableUntilStartDate}
               selected={availableUntilDate}
-              selectsEnd
               onChange={handleAvailableUntil}
               locale="pl"
               dateFormat="DD/MM/YYYY"

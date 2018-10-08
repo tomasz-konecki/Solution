@@ -14,18 +14,26 @@ import PromptsCommander from "../../components/promptsCommander/promptsCommander
 import ImportCVContainer from "../../components/importCV/ImportCVContainer";
 import NotFound404 from "../../components/notFound404/NotFound404";
 import Quarters from '../../components/quarters/quartersPanel.jsx';
+import { connect } from "react-redux";
+
 class Content extends React.Component {
   render() {
     const { match } = this.props;
+
     return (
       <div className="content">
         <Confirmation />
         <PromptsCommander />
         <Switch>
           <Route exact path={match.url} component={StatsContainer} />
+          <Route path={match.url + "/projects"} component={ProjectsContainer} />
+          <Route
+            path={match.url + "/employees"}
+            component={EmployeesContainer}
+          />
           <Route path={match.url + "/users"} component={UsersContainer} />
           <Route path={match.url + "/clients"} component={ClientsContainer} />
-      
+
           <Route
             path={match.url + "/employees"}
             component={EmployeesContainer}

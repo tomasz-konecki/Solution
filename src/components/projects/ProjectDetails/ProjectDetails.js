@@ -48,16 +48,16 @@ import employeeTable from "../../employees/details/employeeTable/employeeTable";
 import specialPermissioner from "./../../../api/specialPermissioner";
 import binaryPermissioner from "./../../../api/binaryPermissioner";
 
-const workerNames = [
-  "Nazwa",
-  "Rola",
-  "Doświadczenie",
-  "Stanowisko",
-  "Data rozpoczęcia",
-  "Data zakończenia"
-];
 
 class ProjectDetails extends Component {
+  workerNames = [
+    this.props.t("Name",),
+    this.props.t("Role",),
+    this.props.t("Experience",),
+    this.props.t("Position",),
+    this.props.t("StartDate",),
+    this.props.t("EndDate")
+  ];
   state = {
     items: [],
     currentOpenedRow: -1,
@@ -69,29 +69,29 @@ class ProjectDetails extends Component {
     addEmployeModal: false,
     addEmployeToProjectFormItems: [
       {
-        title: "Data rozpoczęcia pracy",
+        title: this.props.t("AssignmentStartDate"),
         name: "startDate",
         type: "text",
-        placeholder: "wprowadź datę rozpoczęcia pracy...",
+        placeholder: this.props.t("InsertAssignmentStartDate"),
         mode: "date-picker",
         value: "",
         error: "",
         canBeBefore: true
       },
       {
-        title: "Data zakończenia pracy",
+        title: this.props.t("AssignmentEndDate"),
         name: "endDate",
         type: "text",
-        placeholder: "wprowadź datę zakończenia pracy...",
+        placeholder: this.props.t("InsertAssignmentEndDate"),
         mode: "date-picker",
         value: "",
         error: "",
         canBeBefore: false
       },
       {
-        title: "Zakres obowiązków",
+        title: this.props.t("Responsibilities"),
         type: "text",
-        placeholder: "dodaj obowiązek..",
+        placeholder: this.props.t("AddResponsibility"),
         mode: "input-with-add-items",
         value: [],
         typedListVal: "",
@@ -102,9 +102,9 @@ class ProjectDetails extends Component {
         canBeNull: false
       },
       {
-        title: "Pracownik",
+        title: this.props.t("Employee"),
         type: "text",
-        placeholder: "znajdź pracownika...",
+        placeholder: this.props.t("FindEmployee"),
         mode: "type-ahead",
         value: "",
         error: "",
@@ -114,13 +114,13 @@ class ProjectDetails extends Component {
         canBeNull: false
       },
       {
-        title: "Rola w projekcie",
+        title: this.props.t("RoleInProject"),
         canBeNull: false,
         minLength: 3,
         maxLength: 100,
         error: "",
         type: "text",
-        placeholder: "wybierz lub wpisz role w projekcie...",
+        placeholder: this.props.t("SelectRoleInProject"),
         mode: "type-and-select",
         value: "",
         inputType: "roleInProject",
@@ -252,13 +252,13 @@ class ProjectDetails extends Component {
     isDeleted
   ) => {
     if (isDeleted === true)
-      return [{ classVal: "spn-unactive", name: "Usunięty" }];
+      return [{ classVal: "spn-unactive", name: this.props.t("Deleted") }];
     if (projectStatus === 2)
-      return [{ classVal: "spn-closed", name: "Zamknięty" }];
+      return [{ classVal: "spn-closed", name: this.props.t("Closed") }];
     if (projectStatus === 1)
-      return [{ classVal: "spn-closed", name: "Nieaktywny" }];
+      return [{ classVal: "spn-closed", name: this.props.t("Inactive") }];
     if (projectStatus === 0)
-      return [{ classVal: "spn-active", name: "Aktywny" }];
+      return [{ classVal: "spn-active", name: this.props.t("Active") }];
   };
 
   clearEditModalData = () => {
@@ -393,10 +393,10 @@ class ProjectDetails extends Component {
                       }
                       className="option-btn normal-btn"
                     >
-                      Edytuj projekt
+                      {t("EditProject")}
                     </button>
 
-                    {projectStatus[0].name !== "Aktywny" && (
+                    {projectStatus[0].name !== t("Active") && (
                       <button
                         onClick={() =>
                           changeProjectState(reactivate, "reactivate", {
@@ -406,11 +406,11 @@ class ProjectDetails extends Component {
                         }
                         className="option-btn green-btn"
                       >
-                        Aktywuj projekt
+                        {t("ActivateProject")}
                       </button>
                     )}
 
-                    {projectStatus[0].name === "Aktywny" && (
+                    {projectStatus[0].name === t("Active") && (
                       <button
                         onClick={() =>
                           changeProjectState(close, "close", {
@@ -420,12 +420,12 @@ class ProjectDetails extends Component {
                         }
                         className="option-btn option-dang"
                       >
-                        Zamknij
+                        {t("Close")}
                       </button>
                     )}
 
-                    {projectStatus[0].name !== "Usunięty" &&
-                      projectStatus[0].name !== "Zamknięty" && (
+                    {projectStatus[0].name !== t("Deleted") &&
+                      projectStatus[0].name !== t("Closed") && (
                         <button
                           onClick={() =>
                             this.setState({
@@ -434,7 +434,7 @@ class ProjectDetails extends Component {
                           }
                           className="option-btn option-very-dang"
                         >
-                          Usuń projekt
+                          {t("DeleteProject")}
                         </button>
                       )}
                   </React.Fragment>
@@ -449,6 +449,7 @@ class ProjectDetails extends Component {
                   headerTitle={t("GeneralInfo")}
                   originalObject={project}
                   dateKeys={["startDate", "estimatedEndDate", "endDate"]}
+                  t={t}
                 />
 
                 <ProjectInformationsCart
@@ -456,12 +457,13 @@ class ProjectDetails extends Component {
                   items={this.props.responsiblePersonKeys}
                   headerTitle={t("ResponsiblePerson")}
                   originalObject={project.responsiblePerson}
+                  t={t}
                 />
                 <article>
-                  <h4>Opis</h4>
+                  <h4>{t("Description")}</h4>
                   {project.description}
                 </article>
-                <h4>Właściciele</h4>
+                <h4>{t("Owners")}</h4>
                 <div className="owners-list">
                   {project.owners.map((i, index) => {
                     return (
@@ -525,9 +527,9 @@ class ProjectDetails extends Component {
                   key={0}
                   projectId={project.id}
                   items={project.team}
-                  title="Zespół projektowy"
-                  thds={workerNames}
-                  emptyMsg="Ten projekt nie ma jeszcze pracowników"
+                  title={t("ProjectTeam")}
+                  thds={this.workerNames}
+                  emptyMsg={t("EmptyProjectTeam")}
                   togleAddEmployeeModal={() =>
                     this.setState({
                       addEmployeModal: !this.state.addEmployeModal
@@ -775,8 +777,8 @@ class ProjectDetails extends Component {
                   deleteProjectModal: !this.state.deleteProjectModal
                 })
               }
-              header="Czy jesteś pewny, że chcesz usunąć ten projekt?"
-              operationName="Usuń"
+              header={t("ConfirmDeleteProject")}
+              operationName={t("Delete")}
               operation={() =>
                 changeProjectState(WebApi.projects.delete.project, "delete", {
                   projectId: project.id,
@@ -794,11 +796,11 @@ class ProjectDetails extends Component {
             >
               <header>
                 <h3 className="section-heading">
-                  Dodaj pracownika do projektu{" "}
+                  {t("AddEmployee")}{" "}
                 </h3>
               </header>
               <Form
-                btnTitle="Dodaj"
+                btnTitle={t("Add")}
                 key={4}
                 endDate={this.props.estimatedEndDate}
                 shouldSubmit={false}
@@ -809,7 +811,7 @@ class ProjectDetails extends Component {
                 shouldCancelInputList={true}
               >
                 <div className="lte-pic-container">
-                  <label>Długość etatu</label>
+                  <label>{t("FTE")}</label>
                   <ProgressPicker
                     settings={{ width: "10%" }}
                     createResult={this.createLTEPicker(10)}
@@ -823,7 +825,7 @@ class ProjectDetails extends Component {
                 <OperationStatusPrompt
                   operationPromptContent={
                     addEmployeeToProjectStatus
-                      ? "Pomyślnie dodano pracownika do projektu"
+                      ? t("EmployeeAdded")
                       : addEmployeeToProjectErrors &&
                         addEmployeeToProjectErrors[0]
                   }

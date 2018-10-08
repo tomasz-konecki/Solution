@@ -114,7 +114,7 @@ class ProjectDetailsBlock extends React.PureComponent {
       {
         title: this.props.t("FirstName"),
         type: "text",
-        placeholder: "wprowadź imię...",
+        placeholder: this.props.t("InsertFirstName"),
         value: "",
         error: "",
         inputType: "firstName",

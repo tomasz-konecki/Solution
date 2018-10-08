@@ -45,18 +45,18 @@ export const CHANGE_OPERATION_STATE = "CHANGE_OPERATION_STATE";
 
 export const GET_PROJECT = "GET_PROJECT";
 export const names = [
-  "Imię",
-  "Nazwisko",
-  "Klient",
+  "FirstName",
+  "Surname",
+  "Client",
   "Email",
-  "Number kontaktowy",
-  "Pełna nazwa"
+  "PhoneNumber",
+  "FullName"
 ];
 export const overViewNames = [
-  "Klient",
-  "Data rozpoczęcia",
-  "Szacowana data zakończenia",
-  "Data zakończenia"
+  "Client",
+  "StartDate",
+  "EstimatedEndDate",
+  "EndDate"
 ];
 
 export const ADD_EMPLOYEE_TO_PROJECT = "ADD_EMPLOYEE_TO_PROJECT";

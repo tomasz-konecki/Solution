@@ -13,6 +13,7 @@ import ClientsContainer from "../../components/clients/ClientsContainer";
 import PromptsCommander from "../../components/promptsCommander/promptsCommander";
 import ImportCVContainer from "../../components/importCV/ImportCVContainer";
 import NotFound404 from "../../components/notFound404/NotFound404";
+import Quarters from '../../components/quarters/quartersPanel.jsx';
 import { connect } from "react-redux";
 
 class Content extends React.Component {
@@ -40,6 +41,7 @@ class Content extends React.Component {
           <Route path={match.url + "/projects"} component={ProjectsContainer} />
           <Route path={match.url + "/skills"} component={SkillsContainer} />
           <Route path={match.url + "/reports"} component={ReportsContainer} />
+          <Route path={match.url + "/quarters"} component={Quarters} />
           <Route
             path={match.url + "/import-cv"}
             component={ImportCVContainer}

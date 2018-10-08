@@ -1,0 +1,53 @@
+.date{
+    margin: 5px 0;
+    padding: 10px;
+    background: #FEFEFE;
+    p{
+        padding: 5px 0;
+        span{
+            color: #414141;
+        }
+    }
+    p:first-of-type{
+        display: flex;
+        span{
+            font-size: 14px;
+            b{
+                font-size: 22px;
+                margin-right: 5px;
+            }
+        }
+        i {
+            margin-left: auto;
+            padding: 0 5px;
+            font-size: 20px;
+            cursor: pointer;
+            color: #06534F;
+        }
+    }
+    p:nth-child(2){
+        span{
+         margin-right: 5px;
+         font-size: 18px;
+         b{
+             font-size: 16px;
+         }
+        }
+    }
+    p:last-of-type{
+        font-size: 20px;
+        display: flex;
+        span{
+            font-size: 16px;
+            i{
+                margin-right: 5px;
+                font-size: 20px;
+            }
+        }
+        .fa-chevron-down{
+           margin-left: auto;
+           cursor: pointer;
+           padding: 0 10px;
+        }
+    }
+}

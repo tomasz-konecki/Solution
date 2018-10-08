@@ -8,7 +8,7 @@ const dataList = props => (
         onBlur={props.onBlur}
         autoComplete="off"
         className={props.error !== "" ? "input-error" : null}
-        type="text" placeholder={props.placeholder}/>
+        type={props.type} placeholder={props.placeholder}/>
         <datalist id={props.identity} className="select-input">
             {props.dataToMap && props.dataToMap.length > 0 && props.dataToMap.map(i => {
                 return (<option value={i.name}  
@@ -21,5 +21,9 @@ const dataList = props => (
     </div>
       
 );
+
+dataList.defaultProps = {
+    type: "text"
+}
 
 export default dataList;

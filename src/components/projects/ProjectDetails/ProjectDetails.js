@@ -347,10 +347,10 @@ class ProjectDetails extends Component {
       onlyActiveAssignments,
       isChangingAssignment,
       matches,
-      currentOpenedRow
+      currentOpenedRow,
+      isLoadingProject
     } = this.state;
     const { owner } = WebApi.projects.delete;
-
     return (
       <div
         onClick={
@@ -360,7 +360,8 @@ class ProjectDetails extends Component {
         }
         className="project-details-container"
       >
-        {this.state.isLoadingProject && <OperationLoader isLoading={true} />}
+        {loadProjectStatus === null && <OperationLoader isLoading={true} />}
+
         {loadProjectStatus && (
           <Aux>
             <header>

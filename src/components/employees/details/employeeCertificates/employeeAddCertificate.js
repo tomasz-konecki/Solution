@@ -57,7 +57,7 @@ class EmployeeAddCertificate extends React.Component{
 
         let error =
         e.target.name === "name"
-            ? validateInput(value, false, 3, 50, "name", this.props.t("Name"))
+            ? validateInput(value, false, 3, 50, "nameWithPolishLetters", this.props.t("Name"))
             : e.target.name === "description"
             ? validateInput(
                 value,

@@ -89,7 +89,6 @@ class Skills extends Component {
   createProgressBtns = (number, color, startVal, index, listName) => {
     const btnsArray = [];
     const items = [...this.state[listName]];
-    console.log(this.props);
     if (this.props.isProjectOwner) {
       for (let i = 0; i < number; i++) {
         btnsArray.push(

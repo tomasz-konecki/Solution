@@ -17,41 +17,8 @@ import { connect } from "react-redux";
 
 class Content extends React.Component {
   render() {
-    const { match, binPem } = this.props;
+    const { match } = this.props;
 
-    console.log(binPem);
-    let routesToRender = null;
-    switch (true) {
-      case 1:
-        routesToRender = <React.Fragment />;
-      case binPem >= 2:
-        routesToRender = (
-          <React.Fragment>
-            <Route path={match.url + "/users"} component={UsersContainer} />
-          </React.Fragment>
-        );
-      case binPem >= 32:
-        routesToRender = (
-          <React.Fragment>
-            <Route path={match.url + "/clients"} component={ClientsContainer} />
-
-            <Route
-              path={match.url + "/employees"}
-              component={EmployeesContainer}
-            />
-            <Route
-              path={match.url + "/projects"}
-              component={ProjectsContainer}
-            />
-            <Route path={match.url + "/skills"} component={SkillsContainer} />
-            <Route path={match.url + "/reports"} component={ReportsContainer} />
-            <Route
-              path={match.url + "/import-cv"}
-              component={ImportCVContainer}
-            />
-          </React.Fragment>
-        );
-    }
     return (
       <div className="content">
         <Confirmation />
@@ -63,7 +30,20 @@ class Content extends React.Component {
             path={match.url + "/employees"}
             component={EmployeesContainer}
           />
-          {routesToRender}
+          <Route path={match.url + "/users"} component={UsersContainer} />
+          <Route path={match.url + "/clients"} component={ClientsContainer} />
+
+          <Route
+            path={match.url + "/employees"}
+            component={EmployeesContainer}
+          />
+          <Route path={match.url + "/projects"} component={ProjectsContainer} />
+          <Route path={match.url + "/skills"} component={SkillsContainer} />
+          <Route path={match.url + "/reports"} component={ReportsContainer} />
+          <Route
+            path={match.url + "/import-cv"}
+            component={ImportCVContainer}
+          />
           <Route component={NotFound404} />
         </Switch>
         <div className="content-abs-footer">Billennium 2018</div>
@@ -72,14 +52,8 @@ class Content extends React.Component {
   }
 }
 
-function mapStateToProps(state) {
-  return {
-    binPem: state.authReducer.binPem
-  };
-}
-
 Content.propTypes = {
   match: PropTypes.object
 };
 
-export default connect(mapStateToProps)(withRouter(Content));
+export default withRouter(Content);

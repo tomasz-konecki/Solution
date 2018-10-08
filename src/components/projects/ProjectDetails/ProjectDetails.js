@@ -351,8 +351,6 @@ class ProjectDetails extends Component {
     } = this.state;
     const { owner } = WebApi.projects.delete;
 
-    console.log(this.props);
-    console.log(this.state);
     return (
       <div
         onClick={

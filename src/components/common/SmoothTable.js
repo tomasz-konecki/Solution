@@ -728,8 +728,7 @@ class SmoothTable extends Component {
   };
   render() {
     const { construct } = this.state;
-    const { showRaportButton } = this.props;
-    const { t } = this.props;
+    const { showRaportButton, t } = this.props;
     let list = [],
       empty = false;
     list.push(this.generateFieldSearchRow());

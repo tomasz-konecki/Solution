@@ -379,10 +379,13 @@ class ProjectDetails extends Component {
                 </b>
               </h1>
               <nav>
-                {specialPermissioner().projects.isOwner(
-                  this.props.project,
-                  this.props.login
-                ) && (
+                {(binaryPermissioner(false)(0)(0)(0)(0)(0)(1)(
+                  this.props.binPem
+                ) ||
+                  specialPermissioner().projects.isOwner(
+                    this.props.project,
+                    this.props.login
+                  )) && (
                   <React.Fragment>
                     <button
                       onClick={() =>

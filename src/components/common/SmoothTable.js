@@ -740,11 +740,11 @@ class SmoothTable extends Component {
       empty = true;
     }
     if (this.state.toRaports === true) {
-      return <Redirect to="/main/reports" />;
+      return <Redirect push to="/main/reports" />;
     }
     if (this.state.rowClickedId) {
       return (
-        <Redirect
+        <Redirect push
           to={this.props.construct.redirectPath + this.state.rowClickedId}
         />
       );

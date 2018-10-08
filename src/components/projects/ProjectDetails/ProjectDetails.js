@@ -504,10 +504,15 @@ class ProjectDetails extends Component {
                   addSkillsToProjectStatus={this.props.addSkillsToProjectStatus}
                   addSkillsToProjectErrors={this.props.addSkillsToProjectErrors}
                   addSkillsToProjectClear={this.props.addSkillsToProjectClear}
-                  isProjectOwner={specialPermissioner().projects.isOwner(
-                    this.props.project,
-                    this.props.login
-                  )}
+                  isProjectOwner={
+                    binaryPermissioner(false)(0)(0)(0)(0)(0)(1)(
+                      this.props.binPem
+                    ) ||
+                    specialPermissioner().projects.isOwner(
+                      this.props.project,
+                      this.props.login
+                    )
+                  }
                 />
               </div>
 

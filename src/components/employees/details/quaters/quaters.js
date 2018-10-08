@@ -142,14 +142,17 @@ class Quaters extends React.PureComponent {
     return null;
   }
 
-  putEmployeeToLastWatchedAndRedirect = (url) => {
+  putEmployeeToLastWatchedAndRedirect = url => {
     const { history, createLastWatchedPersonsArray, lastWatchedPersons, employeeId, changeCurrentWatchedUser } = this.props;
- 
+    const limitOfWatchedPersons = 8;
     const isEmployeeIdAlreadyExist = lastWatchedPersons.length === 0 ? -1 : lastWatchedPersons.findIndex(i => {
       return i === employeeId
     });
     if(isEmployeeIdAlreadyExist === -1){
       const copiedLastWatchedPersons = [...lastWatchedPersons];
+      if(copiedLastWatchedPersons.length > limitOfWatchedPersons){
+        copiedLastWatchedPersons.shift();
+      }
       createLastWatchedPersonsArray(copiedLastWatchedPersons);
       changeCurrentWatchedUser(employeeId);
       copiedLastWatchedPersons.push(employeeId);

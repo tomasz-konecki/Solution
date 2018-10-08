@@ -106,9 +106,9 @@ export const getReservedDates = (reservedDates, getDatesStatus, getDatesErrors) 
 
         const model = {
             "employeeId": employeeId,
-            "plannedTalkDate": formItems[0].value.format("YYYY-MM-DD HH:mm"),
+            "plannedTalkDate": formItems[0].value.format("YYYY-MM-DD") + " " + formItems[1].value,
             "year": formItems[0].value.format("YYYY"),
-            "quarter": formItems[1].value,
+            "quarter": formItems[2].value,
             "token": token
         }
 
@@ -139,7 +139,9 @@ export const getReservedDates = (reservedDates, getDatesStatus, getDatesErrors) 
             
             items.forEach(function(part, index){
                 if(part.plannedTalkDate)
-                items[index].plannedTalkDate = part.plannedTalkDate.slice(0, 10);
+                    items[index].plannedTalkDate = moment(part.plannedTalkDate).format("YYYY-MM-DD HH:mm");
+                if(part.aswerQuestionDate)
+                    items[index].aswerQuestionDate = moment(part.aswerQuestionDate).format("YYYY-MM-DD HH:mm");
             })
             dispatch(getQuartersForEmployee(items, true, []));
             if(personInWatchedPersonsArrayIndex === -1){

@@ -3,28 +3,28 @@
     padding: 10px;
     border-bottom: none;
     margin-top: 10px;
-    color: #006064;
+    //color: #006064;
     cursor: pointer;
-  
     p{
         display: flex;
         align-items: center;
-        padding: 0 10px;
-        i{
+    }
+    .span-light{
+        color: #6D6D6D;
+    }
+    p:first-of-type{
+        margin-bottom: 10px;
+        .fa-user{
             font-size: 24px;
-        }
-        span:first-of-type{
-            border-right: 1px solid #006064;
+            margin-right: 10px;
+            color: #006064;
         }
         .span-light{
-            color: grey;
-            border: none;
+            margin-left: 5px;
+            font-size: 12px;        
         }
-        span{
-            margin-left: 10px;
-            font-size: 15px;
-            font-weight: lighter;
-            padding-right: 10px;
+        span:not(.span-light){
+            color: #006064;
         }
         .fa-check{
             color: #82b541;
@@ -36,6 +36,25 @@
         .fa-check, .fa-times{
             margin-left: auto;
             font-size: 20px;
+        }
+    }
+    p:nth-child(2){
+        margin-bottom: 10px;
+        justify-content: flex-end;
+        span{
+            margin-left: auto;
+        }
+        .span-light{
+            margin-left: auto;
+            font-size: 15px;
+            .fa{
+                margin-right: 10px;
+            }
+        }
+    }
+    p:nth-child(3){
+        span{
+            margin-left: auto;
         }
     }
 }

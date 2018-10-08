@@ -36,15 +36,15 @@ class PlanQuarter extends React.PureComponent{
             placeholder: "wybierz lub wpisz godzinę rozmowy..."
         },
         {
-          title: "Kwartał", mode: "select", value: "",
+          title: "Kwartał", mode: "select", value: "1",
           placeholder: "wybierz lub wpisz kwartał...",
           selectValues: ["1", "2", "3", "4"]
         },
         {
             title: "Rok", mode: "type-and-select", value: "", error: "", canBeNull: false,
-            inputType: "number",
+            inputType: "strongNumber",
             placeholder: "wybierz rok lub wpisz własny...",
-            dataToMap: pushMomentValuesDynamicly(20,"2000-12-19", 1, 'years', "YYYY")
+            dataToMap: pushMomentValuesDynamicly(20,"2010-12-19", 1, 'years', "YYYY")
         }
         
       ]
@@ -88,6 +88,7 @@ class PlanQuarter extends React.PureComponent{
 
     componentDidMount(){
         const { getEmployeeId, redirectToLastWatchedPerson, oneDriveToken, match, currentWatchedUser} = this.props;
+        this.generateHoursToUse();
         if(currentWatchedUser !== ""){
             this.getReservedDates(currentWatchedUser);
         }
@@ -98,9 +99,13 @@ class PlanQuarter extends React.PureComponent{
     }
 
     componentDidUpdate(prevProps){
-        const { location, currentWatchedUser } = this.props;
+        const { location, currentWatchedUser, clearPlanQuarter } = this.props;
         if(prevProps.location.search !== location.search){
-            this.setState({isGettingReservedDates: true});
+            const planQuarterFormItems = [...this.state.planQuarterFormItems];
+            planQuarterFormItems[1].value = "";
+            planQuarterFormItems[3].value = "";
+            this.setState({isGettingReservedDates: true, hoursToUse: [], planQuarterFormItems});
+            clearPlanQuarter();
             this.getReservedDates(currentWatchedUser);
         }
     }
@@ -142,10 +147,6 @@ class PlanQuarter extends React.PureComponent{
 
     componentWillUnmount(){
         this.props.clearPlanQuarter();
-    }
-
-    selectDateFromList = item => {
-        this.setState({})
     }
 
     render(){

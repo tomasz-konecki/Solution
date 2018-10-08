@@ -11,15 +11,19 @@
         position: relative;
         height: 350px;
         width: 350px;
-        align-self: center;
-        margin: 0 45px;
+        margin: 45px 45px;
         .submit-btn{
-            position: relative;
+            bottom: -180px;
+        }
+        .spinner-btn{
+            bottom: -180px;
+        }
+        p.incorrect-status{
+            bottom: -85px;
         }
     }
     .hours-to-use-container{
-        margin: 0 45px;
-        align-self: center;
+        margin: 45px 45px;
         width: 500px;
         height: 350px;       
     }

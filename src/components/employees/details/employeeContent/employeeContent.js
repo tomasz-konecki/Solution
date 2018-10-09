@@ -11,6 +11,9 @@ import Form from "../../../form/form";
 import CallSkype from "./callSkype";
 
 const employeeContent = ({
+  changeCurrentWatchedUser,
+  createLastWatchedPersonsArray,
+  lastWatchedPersons,
   employee,
   editSeniority,
   employeeErrors,
@@ -30,6 +33,8 @@ const employeeContent = ({
   editSkypeId,
   skypeIdAddLoading,
   updateSkypeIdResult,
+
+  getEmployeePromise,
   isYou,
   binPem
 }) => {
@@ -190,6 +195,10 @@ const employeeContent = ({
         )}
       </div>
       <Quaters
+        changeCurrentWatchedUser={changeCurrentWatchedUser}
+        createLastWatchedPersonsArray={createLastWatchedPersonsArray}
+        lastWatchedPersons={lastWatchedPersons}
+        getEmployeePromise={getEmployeePromise}
         reactivateQuaterACreator={reactivateQuaterACreator}
         status={status}
         reactivateQuaterStatus={reactivateQuaterStatus}

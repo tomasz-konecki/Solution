@@ -9,14 +9,11 @@ import Modal from "react-responsive-modal";
 import EmptyContent from "../../../common/empty-content/empty-content";
 import ActivateCheckbox from "../others/activateCheckbox";
 import { connect } from "react-redux";
-import {
-  addQuarterTalkACreator,
-  addQuarterTalk,
-  getQuarterQuestionsACreator
-} from "../../../../actions/quarterTalks";
+import moment from 'moment';
 import ServerError from "../../../common/serverError/serverError";
 import Form from "../../../form/form";
 import { translate } from "react-translate";
+import { withRouter } from 'react-router';
 
 class Quaters extends React.PureComponent {
   state = {
@@ -28,8 +25,7 @@ class Quaters extends React.PureComponent {
     deletingQuater: false,
     activatingQuater: false,
     shouldShowDeleted: false,
-    currentOpenedItemId: null,
-    showAddQuarterModal: false
+    currentOpenedItemId: null
   };
   selectQuartersByState = (state, quartersList) => {
     const newQuarters = [];
@@ -124,60 +120,42 @@ class Quaters extends React.PureComponent {
       listToShowIndex: null
     });
   };
-  openAddQuarterModal = () => {
-    const { getQuestionsStatus, getQuarterQuestionsACreator } = this.props;
-    this.setState({ showAddQuarterModal: true });
-    if (getQuestionsStatus === null) getQuarterQuestionsACreator();
-  };
-  addQuarter = () => {
-    const { addQuarterTalkACreator, employeeId } = this.props;
-    const model = {};
-    addQuarterTalkACreator(model, employeeId);
-  };
-  closeAddQuarterModal = () => {
-    this.setState({ showAddQuarterModal: false });
-  };
 
+  putOperationButtonsInDom = () => {
+    const { t, status, employeeId } = this.props;
+    if(status === "Aktywny"){
+      return (
+        <React.Fragment>
+          <Button
+            onClick={() => this.putEmployeeToLastWatchedAndRedirect(`/main/quarters/employees/addquarter/${employeeId}?=${employeeId}`)}
+            title={t("Add")}
+            mainClass="option-btn normal-btn rel-btn"
+          />
+          <Button
+            onClick={() => this.putEmployeeToLastWatchedAndRedirect(`/main/quarters/employees/${employeeId}?=${employeeId}`)}
+            title="Kalendarz rozmów"
+            mainClass="option-btn normal-btn rel-btn"
+          />
+        </React.Fragment>
+      );
+    }
+    return null;
+  }
+
+  putEmployeeToLastWatchedAndRedirect = url => {
+    const { history, employeeId, changeCurrentWatchedUser } = this.props;
+    changeCurrentWatchedUser(employeeId);
+    history.push(url);
+  }
+  
   render() {
-    const {
-      paginationLimit,
-      deleteQuaterStatus,
-      deleteQuaterErrors,
-      quarterTalks,
-      status,
-      addQuarterTalkStatus,
-      addQuarterTalkErrors,
-      addQuarterTalkClear,
-      getQuestionsStatus,
-      getQuestionsErrors,
-      questions,
-      t
-    } = this.props;
-    const {
-      listToShowIndex,
-      currentPage,
-      watchedRecords,
-      showDeleteModal,
-      deletingQuater,
-      activatingQuater,
-      shouldShowDeleted,
-      quarters,
-      showAddQuarterModal
-    } = this.state;
-    const shouldShowAddButton =
-      status === t("Active") ? (
-        <Button
-          onClick={this.openAddQuarterModal}
-          title={t("Add")}
-          mainClass="option-btn normal-btn"
-        />
-      ) : null;
+    const { paginationLimit, deleteQuaterStatus, deleteQuaterErrors, quarterTalks, status, t, employeeId } = this.props;
+    const { listToShowIndex, currentPage, watchedRecords, showDeleteModal, deletingQuater, activatingQuater, shouldShowDeleted, quarters } = this.state;
+    const shouldShowOperationButtons = this.putOperationButtonsInDom();
+
     return (
       <div className="quaters-container">
-        <ActivateCheckbox
-          shouldShowDeleted={shouldShowDeleted}
-          showDeleted={this.showDeleted}
-        />
+        
         {quarters && quarters.length > 0 ? (
           <React.Fragment>
             <h2>
@@ -271,7 +249,6 @@ class Quaters extends React.PureComponent {
                 />
               )}
             </div>
-            {shouldShowAddButton}
           </React.Fragment>
         ) : (
           <EmptyContent
@@ -284,6 +261,14 @@ class Quaters extends React.PureComponent {
             mainIcon="fa fa-comments"
           />
         )}
+        <div className="q-btn-holder">
+          {this.putOperationButtonsInDom()}
+          <ActivateCheckbox
+            shouldShowDeleted={shouldShowDeleted}
+            showDeleted={this.showDeleted}
+          />
+        </div>
+        
 
         <ConfirmModal
           operationName={t("Delete")}
@@ -306,77 +291,10 @@ class Quaters extends React.PureComponent {
               operationPrompt={deleteQuaterStatus}
             />
           )}
-
-        {addQuarterTalkStatus !== null &&
-          addQuarterTalkStatus !== undefined && (
-            <OperationStatusPrompt
-              closePrompt={() => addQuarterTalkClear(null, [])}
-              operationPromptContent={
-                addQuarterTalkStatus
-                  ? t("QuarterTalkAdded")
-                  : addQuarterTalkErrors[0]
-              }
-              operationPrompt={addQuarterTalkStatus}
-            />
-          )}
-
-        <Modal
-          open={showAddQuarterModal}
-          classNames={{ modal: "modal-add-quarter Modal" }}
-          contentLabel={`${t("Add")} ${t("QuarterTalk")}`}
-          onClose={this.closeAddQuarterModal}
-        >
-          <header>
-            <h3 className="section-heading">{`${t("Add")} ${t(
-              "QuarterTalk"
-            )}`}</h3>
-          </header>
-
-          {getQuestionsStatus === null ? (
-            <Spinner />
-          ) : (
-            <div className="questions-container">
-              {getQuestionsStatus === false ? (
-                <ServerError message={getQuestionsErrors[0]} />
-              ) : (
-                questions.map(question => {
-                  return (
-                    <section key={question.question}>
-                      <label>{question.question}</label>
-                    </section>
-                  );
-                })
-              )}
-            </div>
-          )}
-        </Modal>
       </div>
     );
   }
 }
 
-const mapStateToProps = state => {
-  return {
-    addQuarterTalkStatus: state.quarterTalks.addQuarterTalkStatus,
-    addQuarterTalkErrors: state.quarterTalks.addQuarterTalkErrors,
 
-    getQuestionsStatus: state.quarterTalks.getQuestionsStatus,
-    getQuestionsErrors: state.quarterTalks.getQuestionsErrors,
-    questions: state.quarterTalks.questions
-  };
-};
-
-const mapDispatchToProps = dispatch => {
-  return {
-    addQuarterTalkACreator: (model, employeeId) =>
-      dispatch(addQuarterTalkACreator(model, employeeId)),
-    addQuarterTalkClear: (status, errors) =>
-      dispatch(addQuarterTalk(status, errors)),
-    getQuarterQuestionsACreator: () => dispatch(getQuarterQuestionsACreator())
-  };
-};
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(translate("Quaters")(Quaters));
+export default translate("Quaters")(withRouter(Quaters));

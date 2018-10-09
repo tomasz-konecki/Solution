@@ -177,6 +177,19 @@
         border-radius: 50%;
     }
 }
+.comunicates-number{
+    background-color: red !important;
+    font-size: 1rem;
+    position: absolute !important;
+    width: 25px !important;
+    height: 25px !important;
+    left: -10px;
+    top: -20px !important;
+    text-align: center;
+    line-height: 17px;
+    color: white;
+    
+}
 .comunicates-btn:focus{
     outline: none;
 }
@@ -239,11 +252,36 @@
             padding: 15px 0;
             justify-content: center;
         }
-        .showed-btn{
+        .read-all-btn{
+            line-height: 20px;
             color: green;
+            &:hover{
+                background-color: #e8e8e8;
+                border-radius: 20px;
+            }
+            &:focus{
+                outline: none;
+                background-color: #e8e8e8;
+                border-radius: 20px;
+            }
         }
-        .not-showed-btn{
+        .button-disabled{
+            pointer-events: none;
+            cursor: not-allowed !important;
+            opacity: 0.45;
+        }
+        .delete-all-btn{
+            line-height: 20px;
             color: red;
+            &:hover{
+                background-color: #e8e8e8;
+                border-radius: 20px;
+            }
+            &:focus{
+                outline: none;
+                background-color: #e8e8e8;
+                border-radius: 20px;
+            }
         }
         button{
             margin: 0 15px;
@@ -289,11 +327,10 @@
         li{
             font-size: 17px !important;
             display: flex;
-            padding: 20px 30px;
-            margin: 25px 0 25px auto;
+            padding: 35px 15px 35px 15px;
+            margin-top: 5px;
             justify-content: space-between;
             align-items: center;
-            width: 95%;
             border-bottom: 1px solid #E5E5DE;
             @media(max-width: 550px){
                 width: 98%;
@@ -319,9 +356,14 @@
             }
             i{
                 font-size: 24px;
+                margin-right: 20px;
                 @media(max-width: 550px){
                     font-size: 20px;
                 }
+            }
+            .deleteNotificationBtn{
+                visibility: visible;
+                cursor: pointer;
             }
             .fa-check{
                 color: green;
@@ -344,6 +386,26 @@
                     font-weight: bold;
                 }
             }
+            
+        }
+        .noNotificationsMessage{
+            align-content: center;
+            padding-top: 8%;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: rgb(51, 51, 51);
+        }
+    }
+    .spinAnimation{
+        animation: 0.8s animate-btn-delete ease-in-out infinite;
+        @keyframes animate-btn-delete {
+            0%{
+                transform: rotate(0);
+            }
+            100%{
+                transform: rotate(360deg);
+            }
         }
     }
 }
+

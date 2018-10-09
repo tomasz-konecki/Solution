@@ -130,7 +130,9 @@ class EmployeesList extends Component {
           loading={this.props.loading}
           data={this.props.employees}
           construct={construct}
-          showRaportButton={true}
+          showRaportButton={binaryPermissioner(false)(0)(0)(0)(1)(1)(1)(
+            this.props.binPem
+          )}
         />
       </div>
     );

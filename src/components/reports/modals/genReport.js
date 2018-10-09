@@ -46,7 +46,7 @@ const genReport = ({
         {addList.map((i, index) => {
           return (
             <li
-              className={pagesList[index].error ? "inc-list-item" : null}
+              className={pagesList !== undefined ? pagesList[index].error ? "inc-list-item" : "" : ""}
               key={index}
             >
               <label>{i.name} <b><i className="fa fa-users"></i>{i.numberOfMemberInDB}</b></label>

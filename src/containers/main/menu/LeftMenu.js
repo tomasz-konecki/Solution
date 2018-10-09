@@ -108,7 +108,7 @@ class LeftMenu extends React.Component {
             title={t("Skills")}
           />
         ) : null}
-        {this.props.pem.hasAdministrativeAccess ? (
+        {binaryPermissioner(false)(0)(0)(0)(0)(1)(1)(this.props.binPem) ? (
           <VerticalMenuElement
             match={match}
             extended={extended}
@@ -118,7 +118,7 @@ class LeftMenu extends React.Component {
             title={t("Reports")}
           />
         ) : null}
-        {this.props.pem.hasAdministrativeAccess ? (
+        {binaryPermissioner(false)(0)(0)(0)(0)(1)(1)(this.props.binPem) ? (
           <VerticalMenuElement
             match={match}
             extended={extended}

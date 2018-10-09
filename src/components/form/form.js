@@ -3,7 +3,7 @@ import "./form.scss";
 import DatePicker from "react-datepicker";
 import { translate } from "react-translate";
 import moment from "moment";
-import { validateInput, validateDate } from "../../services/validation";
+import { validateInput, validateDate, validateDateIsNotFromPast } from "../../services/validation";
 import DataList from "./dataList/dataList";
 import { contains } from "../../services/methods";
 import SpinnerButton from "./spinner-btn/spinner-btn";
@@ -83,6 +83,9 @@ class Form extends Component {
           formItems[key].title
         );
       }
+      if(formItems[key].checkIfDateIsfromPast){
+        formItems[key].error = validateDateIsNotFromPast(formItems[key].value);
+      }
 
       if (formItems[key].error !== "") {
         result = false;
@@ -106,6 +109,17 @@ class Form extends Component {
         newFormItems[dateIndexesToCompare[i]].error = validationResult[i];
       if (validationResult[0]) shouldSubmit = false;
     }
+
+    if(newFormItems[id].checkIfDateIsfromPast){
+      const result = validateDateIsNotFromPast(newFormItems[id].value);
+      newFormItems[id].error = result;
+      if(newFormItems[id].error) shouldSubmit = false;
+    }
+
+    if(newFormItems[id].callBackFunc){
+      newFormItems[id].callBackFunc();
+    }
+    console.log()
 
     this.setState({ formItems: newFormItems, validationResult: shouldSubmit });
   };
@@ -186,6 +200,7 @@ class Form extends Component {
         } else shouldShowSearchList = true;
 
         this.setState({
+          validationResult: formItems[index].error !== "" ? false : true,
           searchedList: response.replyBlock.data.dtoObject.results,
           isServerSearching: false,
           formItems: formItems,
@@ -193,8 +208,8 @@ class Form extends Component {
         });
       })
       .catch(error => {
-        newFormItems[id].error = "Błąd serwera";
-        this.setState({ isServerSearching: false });
+        formItems[id].error = "Błąd serwera";
+        this.setState({ isServerSearching: false, validationResult: formItems[index].error !== "" ? false : true });
       });
   };
   selectSearched = (index, mainListIndex) => {
@@ -211,7 +226,8 @@ class Form extends Component {
 
   onSubmit = e => {
     e.preventDefault();
-    if (this.validateAllInputs() === true) {
+      
+    if (this.validateAllInputs() === true && this.props.shouldSubmit) {
       this.props.onSubmit();
     }
   };
@@ -222,15 +238,15 @@ class Form extends Component {
     this.setState({ formItems: formItems });
   };
   render() {
-    const { enableButtonAfterTransactionEnd = false } = this.props;
+    const { enableButtonAfterTransactionEnd = false, inputContainerClass } = this.props;
     return (
       <form
-        onSubmit={this.props.shouldSubmit ? e => this.onSubmit(e) : null}
+        onSubmit={e => this.onSubmit(e)}
         className="universal-form-container"
       >
         {this.state.formItems.map((i, index) => {
           return (
-            <section style={{display: i.disable === true ? 'none' : 'flex'}} className="input-container" key={i.title}>
+            <section style={{display: i.disable === true ? 'none' : 'flex'}} className={`input-container ${inputContainerClass}`} key={i.title}>
               <label>{i.title}</label>
               <div className="right-form-container">
                 {!i.mode || i.mode === "text" ? (
@@ -239,7 +255,7 @@ class Form extends Component {
                     id={index}
                     value={i.value}
                     onChange={e => this.onChangeInput(e, index)}
-                    type="text"
+                    type={i.type}
                     placeholder={i.placeholder}
                   />
                 ) : i.mode === "textarea" ? (
@@ -248,7 +264,7 @@ class Form extends Component {
                     id={index}
                     value={i.value}
                     onChange={e => this.onChangeInput(e, index)}
-                    placeholder={i.placeholder}
+                    placeholder={i.placeholder ? i.placeholder : ""}
                   />
                 ) : i.mode === "drop-down-with-data" ? (
                   <DataList
@@ -412,6 +428,7 @@ class Form extends Component {
                 ) : i.mode === "type-and-select" ? 
 
                 <DataList
+                    type={i.type}
                     key={index}
                     identity={i.inputType}
                     dataToMap={i.dataToMap}
@@ -442,10 +459,15 @@ class Form extends Component {
           btnTitle={this.props.btnTitle}
           submitResult={this.props.submitResult}
           enableButtonAfterTransactionEnd={enableButtonAfterTransactionEnd}
+          shouldBeDisabledByOtherReason={this.props.shouldBeDisabledByOtherReason}
         />
       </form>
     );
   }
+}
+
+Form.defaultProps = {
+  inputContainerClass: "row-container"
 }
 
 export default Form;

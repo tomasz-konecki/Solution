@@ -1,0 +1,75 @@
+.quarters-panel{
+    & > header{
+        font-size: 24px;
+        padding: 10px 0 15px 0;
+        margin: 15px 0;
+        i{
+            margin-right: 10px;
+        }
+        span{
+            margin-left: 7.5px;
+            color: #8E8E8E;
+            font-size: 16px;
+            b{
+                text-transform: uppercase;
+            }
+        }
+    }
+    .recent-watched{
+        display: flex;
+        flex-flow: wrap;
+        .last-watched-person-focused{
+            background: #e8e8e8 !important;
+        }
+        .last-watched-person{
+            cursor: pointer;
+            transition: .5s;
+            display: inherit;
+            align-items: center;
+            padding: 10px;
+            background: #F7F7F7;
+            &:hover{
+                background: #e8e8e8;
+            }
+            .avatar-container{
+                height: 50px;
+                background: #3C3C3C;
+                width: 50px;
+                border-radius: 50%;
+                display: inherit;
+                align-items: center;
+                justify-content: center;
+                margin-right: 7.5px;
+                position: relative;
+                .image{
+                    z-index: 1;
+                    position: absolute;
+                    width: 100%;
+                    border-radius: 50%;
+                    height: 100%;
+                    background-position: center;
+                    background-size: cover;
+                }
+                i{
+                    font-size: 18px;
+                    color: #e8e8e8;
+                    z-index: 0;
+                }
+            }
+        }
+    }
+    & > nav{
+        padding-top: 30px;
+        display: flex;
+        button {
+            margin-right: 15px;
+        }
+        .btn-brown{
+            margin-left: auto;
+        }
+    }
+    .quarters-content {
+        padding: 15px;
+    }
+    
+}

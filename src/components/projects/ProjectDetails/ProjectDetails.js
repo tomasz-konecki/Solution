@@ -348,12 +348,10 @@ class ProjectDetails extends Component {
       onlyActiveAssignments,
       isChangingAssignment,
       matches,
-      currentOpenedRow
+      currentOpenedRow,
+      isLoadingProject
     } = this.state;
     const { owner } = WebApi.projects.delete;
-
-    console.log(this.props);
-    console.log(this.state);
     return (
       <div
         onClick={
@@ -363,7 +361,8 @@ class ProjectDetails extends Component {
         }
         className="project-details-container"
       >
-        {this.state.isLoadingProject && <OperationLoader isLoading={true} />}
+        {loadProjectStatus === null && <OperationLoader isLoading={true} />}
+
         {loadProjectStatus && (
           <Aux>
             <header>
@@ -382,10 +381,13 @@ class ProjectDetails extends Component {
                 </b>
               </h1>
               <nav>
-                {specialPermissioner().projects.isOwner(
-                  this.props.project,
-                  this.props.login
-                ) && (
+                {(binaryPermissioner(false)(0)(0)(0)(0)(0)(1)(
+                  this.props.binPem
+                ) ||
+                  specialPermissioner().projects.isOwner(
+                    this.props.project,
+                    this.props.login
+                  )) && (
                   <React.Fragment>
                     <button
                       onClick={() =>
@@ -506,10 +508,15 @@ class ProjectDetails extends Component {
                   addSkillsToProjectStatus={this.props.addSkillsToProjectStatus}
                   addSkillsToProjectErrors={this.props.addSkillsToProjectErrors}
                   addSkillsToProjectClear={this.props.addSkillsToProjectClear}
-                  isProjectOwner={specialPermissioner().projects.isOwner(
-                    this.props.project,
-                    this.props.login
-                  )}
+                  isProjectOwner={
+                    binaryPermissioner(false)(0)(0)(0)(0)(0)(1)(
+                      this.props.binPem
+                    ) ||
+                    specialPermissioner().projects.isOwner(
+                      this.props.project,
+                      this.props.login
+                    )
+                  }
                 />
               </div>
 

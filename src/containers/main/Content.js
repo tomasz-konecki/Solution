@@ -14,9 +14,14 @@ import PromptsCommander from "../../components/promptsCommander/promptsCommander
 import ImportCVContainer from "../../components/importCV/ImportCVContainer";
 import NotFound404 from "../../components/notFound404/NotFound404";
 import Quarters from '../../components/quarters/quartersPanel.jsx';
+import { getNotificationACreator } from '../../actions/notificationActions'
 import { connect } from "react-redux";
-
 class Content extends React.Component {
+  componentDidMount(){
+    this.props.getNotificationACreator().then(() =>{
+    });
+  }
+  
   render() {
     const { match } = this.props;
 
@@ -58,4 +63,21 @@ Content.propTypes = {
   match: PropTypes.object
 };
 
-export default withRouter(Content);
+const mapDispatchToProps = dispatch => {
+  return {
+    getNotificationACreator: (employeeId) => dispatch(getNotificationACreator(employeeId))
+  };
+};
+
+const mapStateToProps  = state => {
+  return {
+    login: state.authReducer.login
+  }
+}
+
+export default withRouter(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(Content)
+);

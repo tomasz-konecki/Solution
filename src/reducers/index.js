@@ -12,3 +12,4 @@ export * from "./clientsReducer";
 export * from './gDriveReducer';
 export * from './progressBarReducer';
 export * from './quarterTalks';
+export * from './notificationReducer';

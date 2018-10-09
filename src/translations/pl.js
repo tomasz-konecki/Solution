@@ -488,7 +488,24 @@ const translations = {
     Notifications: "Powiadomienia",
     SuccessFullyGeneratedReport: "Pomyślnie wygenerowano raport",
     Read: "Odczytane",
-    Unread: "Nieodczytane"
+    Unread: "Nieodczytane",
+    Hour: "godzinę",
+    Hours: "godziny",
+    HoursPl: "godzin",
+    Ago: "temu",
+    Day: "dzien",
+    Days: "dni",
+    Month: "Miesiąc",
+    Months: "miesięcy",
+    MonthsPl: "miesiące",
+    Year: "Rok",
+    Years: "lata",    
+    OneMinute: "Minutę",
+    Minutes: "minuty",
+    MinutesPl: "minut",
+    MarkAllAsRead: "Oznacz wszystkie jako przeczytane",
+    DeleteAll: "Usuń wszystkie"
+
   }
 };
 

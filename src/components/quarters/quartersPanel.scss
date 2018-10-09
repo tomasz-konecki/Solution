@@ -18,9 +18,8 @@
     .recent-watched{
         display: flex;
         flex-flow: wrap;
-        background: #F7F7F7;
         .last-watched-person-focused{
-            background: #e8e8e8;
+            background: #e8e8e8 !important;
         }
         .last-watched-person{
             cursor: pointer;
@@ -28,6 +27,7 @@
             display: inherit;
             align-items: center;
             padding: 10px;
+            background: #F7F7F7;
             &:hover{
                 background: #e8e8e8;
             }

@@ -28,9 +28,7 @@ const select = state =>
   state.authReducer.tokens !== undefined ? state.authReducer.tokens.token : "";
 
 const selectLang = state =>
-  state.languageReducer.language !== undefined
-    ? state.languageReducer.language
-    : "pl";
+  state.languageReducer.language ? state.languageReducer.language : "pl";
 
 function listener() {
   // const token = `Bearer ${select(store.getState())}`;
@@ -163,6 +161,33 @@ const WebApi = {
         `${API_ENDPOINT}/assignments/${assignmentId}`,
         assignmentModel
       );
+    }
+  },
+  notification: {
+    get: {
+      getAll: () => {
+        return WebAround.get(`${API_ENDPOINT}/Notification`)
+      }
+    },
+    delete: {
+      delete: notificationsIds => {
+        return WebAround.delete(`${API_ENDPOINT}/Notification`, {
+          data: {
+            NotificationIds: notificationsIds
+          }
+        })
+      },
+      deleteAll: () => {
+        return WebAround.delete(`${API_ENDPOINT}/Notification/All`)
+      }
+    },
+    put: {
+      markAsRead: notificationId => {
+      return WebAround.put(`${API_ENDPOINT}/Notification/MarkAsRead/${notificationId}`)
+      },
+      markAllAsRead: () => {
+        return WebAround.put(`${API_ENDPOINT}/Notification/MarkAllAsRead`)
+      }
     }
   },
   roles: {

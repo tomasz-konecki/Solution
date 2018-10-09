@@ -475,7 +475,24 @@ const translations = {
     Notifications: "Notifications",
     SuccessFullyGeneratedReport: "Successfully generated report",
     Read: "Read",
-    Unread: "Unread"
+    Unread: "Unread",
+    Hour: "hour",
+    Hours: "hours",
+    HoursPl: "hours",
+    Ago: "ago",
+    Day: "day",
+    Days: "days",
+    Month: "Month",
+    Months: "months",
+    MonthsPl: "months",
+    Year: "Year",
+    Years: "years",
+    OneMinute: "One minute",
+    Minutes: "minutes",
+    MinutesPl: "minutes",
+    MarkAllAsRead: "Mark all as read",
+    DeleteAll: "Delete all"
+
   }
 };
 

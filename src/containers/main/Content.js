@@ -13,14 +13,21 @@ import ClientsContainer from "../../components/clients/ClientsContainer";
 import PromptsCommander from "../../components/promptsCommander/promptsCommander";
 import ImportCVContainer from "../../components/importCV/ImportCVContainer";
 import NotFound404 from "../../components/notFound404/NotFound404";
-
+import { connect } from 'react-redux';
+import { getNotificationACreator } from '../../actions/notificationActions'
+import { authReducer } from './../../reducers/authReducer';
 class Content extends React.Component {
+  componentDidMount(){
+    this.props.getNotificationACreator().then(() =>{
+    });
+  }
+  
   render() {
     const { match } = this.props;
     return (
       <div className="content">
         <Confirmation />
-      <PromptsCommander />
+        <PromptsCommander />
         <Switch>
           <Route exact path={match.url} component={StatsContainer} />
           <Route path={match.url + "/users"} component={UsersContainer} />
@@ -48,4 +55,21 @@ Content.propTypes = {
   match: PropTypes.object
 };
 
-export default withRouter(Content);
+const mapDispatchToProps = dispatch => {
+  return {
+    getNotificationACreator: (employeeId) => dispatch(getNotificationACreator(employeeId))
+  };
+};
+
+const mapStateToProps  = state => {
+  return {
+    login: state.authReducer.login
+  }
+}
+
+export default withRouter(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(Content)
+);

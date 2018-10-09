@@ -14,6 +14,7 @@ import {
 import Spinner from "components/common/spinner/spinner";
 import OperationStatusPrompt from "../../form/operationStatusPrompt/operationStatusPrompt";
 import { withRouter } from "react-router-dom";
+import { translate } from "react-translate";
 
 class Table extends Component {
   state = {
@@ -24,9 +25,9 @@ class Table extends Component {
     modalType: false,
     feedbackItems: [
       {
-        title: "Opinia",
+        title: this.props.t("Feedback"),
         type: "text",
-        placeholder: "dodaj opinie o pracowniku...",
+        placeholder: this.props.t("AddFeedbackPlaceholder"),
         mode: "textarea",
         value: "",
         error: "",
@@ -40,12 +41,12 @@ class Table extends Component {
     helpData: []
   };
   componentDidMount() {
-    const trs = this.populateTrs(this.props.items);
+    const trs = this.populateTrs(this.props.items, this.props.t);
     this.setState({ trs: trs, currentTrs: trs });
   }
   componentWillReceiveProps(nextProps) {
     if (nextProps.items !== this.props.items) {
-      const trs = this.populateTrs(nextProps.items);
+      const trs = this.populateTrs(nextProps.items, nextProps.t);
       this.setState({ trs: trs, currentTrs: trs, isLoading: false });
     } else if (
       nextProps.addFeedbackErrors !== this.props.addFeedbackErrors ||
@@ -64,7 +65,8 @@ class Table extends Component {
 
     this.setState({ currentTrs: currentTrs, currentOpenedRowId: null });
   };
-  pushUserDetailsIntoTableDOM = id => {
+  pushUserDetailsIntoTableDOM = (id, t) => {
+    console.log("t", t);
     if (
       this.state.currentOpenedRowId !== null &&
       id === this.state.currentOpenedRowId
@@ -90,23 +92,22 @@ class Table extends Component {
                 </span>
                 <b>
                   <i id="str-date">
-                    Data rozpoczęcia: {items[id].startDate.slice(0, 10)}
+                    {t("StartDate")}: {items[id].startDate.slice(0, 10)}
                   </i>
                   <i id="ed-date">
-                    Data zakończenia: {items[id].endDate.slice(0, 10)}
+                    {t("EndDate")}: {items[id].endDate.slice(0, 10)}
                   </i>
                 </b>
               </h5>
               <li>
-                Dodany do projektu przez: <b>{items[id].createdBy}</b> w{" "}
+                {t("AddedBy")}: <b>{items[id].createdBy}</b> {t("OnDate") + " "}
                 <i className="moment-date">
                   {items[id].createdAt.slice(0, 10)}(
-                  {moment().diff(items[id].createdAt.slice(0, 10), "days")} dni
-                  temu)
+                  {moment().diff(items[id].createdAt.slice(0, 10), "days")} {t("DaysAgo")})
                 </i>
               </li>
 
-              <p>Lista obowiązków: </p>
+              <p>{t("Responsibilities")}: </p>
               <li className="responsibilities-list">
                 {items[id].responsibilities.map(i => {
                   return <i key={i}>{i}</i>;
@@ -119,13 +120,13 @@ class Table extends Component {
               }
               className="option-btn green-btn"
             >
-              Dodaj opinie
+              {t("AddFeedbackShort")}
             </button>
             <button
               className="option-btn green-btn"
               onClick={this.getFeedbacks}
             >
-              Zobacz opinie
+              {t("ShowFeedbacks")}
             </button>
           </td>
         </tr>
@@ -135,11 +136,11 @@ class Table extends Component {
       this.setState({ currentTrs: teamRows, currentOpenedRowId: id });
     }
   };
-  populateTrs = items => {
+  populateTrs = (items,t) => {
     const trs = [];
     for (let i = 0; i < items.length; i++) {
       const trItem = (
-        <tr onClick={() => this.pushUserDetailsIntoTableDOM(i)} key={i}>
+        <tr onClick={() => this.pushUserDetailsIntoTableDOM(i,t)} key={i}>
           <td>{items[i].firstName + " " + items[i].lastName}</td>
           <td>{items[i].role}</td>
           <td>{items[i].seniority}</td>
@@ -213,7 +214,8 @@ class Table extends Component {
       title,
       togleAddEmployeeModal,
       emptyMsg,
-      isProjectOwner
+      isProjectOwner,
+      t
     } = this.props;
     const { modalType } = this.state;
     return (
@@ -240,7 +242,7 @@ class Table extends Component {
                 onClick={togleAddEmployeeModal}
                 className="add-programmer-btn"
               >
-                Dodaj
+                {t("Add")}
               </button>
             )}
           </Hoc>
@@ -265,8 +267,8 @@ class Table extends Component {
               <header>
                 <h3 className="section-heading">
                   {modalType
-                    ? "Dodaj opinie o pracowniku"
-                    : "Lista opini o pracowniku"}
+                    ? t("AddFeedback")
+                    : t("FeedbacksList")}
                 </h3>
               </header>
 
@@ -274,7 +276,7 @@ class Table extends Component {
                 <div className="add-opinion-container">
                   <Form
                     transactionEnd={this.props.addFeedbackStatus}
-                    btnTitle="Dodaj opinie"
+                    btnTitle={t("AddFeedbackShort")}
                     shouldSubmit={true}
                     onSubmit={this.addFeedbackHandler}
                     isLoading={this.state.isLoading}
@@ -290,7 +292,7 @@ class Table extends Component {
                       return (
                         <li key={j.id}>
                           <p>
-                            Autor: {j.author} => {j.client}
+                            {t("Author")}: {j.author} => {j.client}
                           </p>
                           <p>{j.description}</p>
                         </li>
@@ -299,10 +301,10 @@ class Table extends Component {
                   </ul>
                 </div>
               ) : (
-                <p className="empty-opinions">Brak opini o tym pracowniku</p>
+                <p className="empty-opinions">{t("NoFeedbacks")}</p>
               )}
               <button onClick={this.changeModal} className="show-opinions-btn">
-                {modalType ? "Pokaż opinie" : "Dodaj opinie"}
+                {modalType ? t("ShowFeedbacks") : t("AddFeedbackShort")}
               </button>
             </div>
           </Modal>
@@ -313,7 +315,7 @@ class Table extends Component {
             <OperationStatusPrompt
               operationPromptContent={
                 addFeedbackStatus
-                  ? "Pomyślnie dodano opinie"
+                  ? t("FeedbackAdded")
                   : addFeedbackErrors && addFeedbackErrors[0]
               }
               operationPrompt={addFeedbackStatus}
@@ -355,4 +357,4 @@ const mapDispatchToProps = dispatch => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withRouter(Table));
+)(translate("ProjectTeamTable")(withRouter(Table)));

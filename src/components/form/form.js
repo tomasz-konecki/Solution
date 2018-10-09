@@ -200,6 +200,7 @@ class Form extends Component {
         } else shouldShowSearchList = true;
 
         this.setState({
+          validationResult: formItems[index].error !== "" ? false : true,
           searchedList: response.replyBlock.data.dtoObject.results,
           isServerSearching: false,
           formItems: formItems,
@@ -207,8 +208,8 @@ class Form extends Component {
         });
       })
       .catch(error => {
-        newFormItems[id].error = "Błąd serwera";
-        this.setState({ isServerSearching: false });
+        formItems[id].error = "Błąd serwera";
+        this.setState({ isServerSearching: false, validationResult: formItems[index].error !== "" ? false : true });
       });
   };
   selectSearched = (index, mainListIndex) => {
@@ -225,7 +226,8 @@ class Form extends Component {
 
   onSubmit = e => {
     e.preventDefault();
-    if (this.validateAllInputs() === true) {
+      
+    if (this.validateAllInputs() === true && this.props.shouldSubmit) {
       this.props.onSubmit();
     }
   };
@@ -239,7 +241,7 @@ class Form extends Component {
     const { enableButtonAfterTransactionEnd = false, inputContainerClass } = this.props;
     return (
       <form
-        onSubmit={this.props.shouldSubmit ? e => this.onSubmit(e) : null}
+        onSubmit={e => this.onSubmit(e)}
         className="universal-form-container"
       >
         {this.state.formItems.map((i, index) => {

@@ -18,9 +18,7 @@ const quarterListItem = ({item, clickItemFunction}) => (
             </span>
         </p>
         <p>
-            {item.isDeleted || 
-                <span onClick={e => clickItemFunction(e, "delete")}>Usuń</span>
-            }
+            <span onClick={e => clickItemFunction(e, "delete")}>Usuń</span>
         </p>
         {item.isDeleted && 
             <div className="backdrop-prompt">

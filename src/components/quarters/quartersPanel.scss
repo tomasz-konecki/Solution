@@ -6,20 +6,32 @@
         i{
             margin-right: 10px;
         }
+        span{
+            margin-left: 7.5px;
+            color: #8E8E8E;
+            font-size: 16px;
+            b{
+                text-transform: uppercase;
+            }
+        }
     }
     .recent-watched{
         display: flex;
-        padding: 10px 10px 0 10px;
         flex-flow: wrap;
         background: #F7F7F7;
+        .last-watched-person-focused{
+            background: #e8e8e8;
+        }
         .last-watched-person{
             cursor: pointer;
-            margin: 0 20px 10px 0;
+            transition: .5s;
             display: inherit;
-            border-right: 1px solid #3C3C3C;
             align-items: center;
-            padding-right: 20px;
-            span:first-of-type{
+            padding: 10px;
+            &:hover{
+                background: #e8e8e8;
+            }
+            .avatar-container{
                 height: 50px;
                 background: #3C3C3C;
                 width: 50px;
@@ -28,17 +40,32 @@
                 align-items: center;
                 justify-content: center;
                 margin-right: 7.5px;
+                position: relative;
+                .image{
+                    z-index: 1;
+                    position: absolute;
+                    width: 100%;
+                    border-radius: 50%;
+                    height: 100%;
+                    background-position: center;
+                    background-size: cover;
+                }
                 i{
                     font-size: 18px;
                     color: #e8e8e8;
+                    z-index: 0;
                 }
             }
         }
     }
     & > nav{
         padding-top: 30px;
+        display: flex;
         button {
             margin-right: 15px;
+        }
+        .btn-brown{
+            margin-left: auto;
         }
     }
     .quarters-content {

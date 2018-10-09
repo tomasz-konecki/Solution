@@ -10,19 +10,20 @@ import QuarterDetailsItem from '../others/quarterDetailsItem/quarterDetailsItem'
 import { getEmployeeId } from '../../../services/methods.js';
 import ConfirmModal from '../../common/confimModal/confirmModal.js';
 import OperationStatusPrompt from '../../form/operationStatusPrompt/operationStatusPrompt.js';
+import Spinner from '../../common/spinner/spinner.js';
 const functionsToUseForQuestions = [
-    {name: "search", searchBy: "question" }, 
+    {name: "search", searchBy: "question", count: true }, 
     {name: "sort", sortBy: "question"}
 ]
 
 const functionsToUseForQuarters = [
-    {name: "filter", filterBy: "isDeleted", posibleValues: [{value: false, description: "Nieusunięte"}, {value: true, description: "Usunięte"}]}
+    {name: "filter", count: true, filterBy: "isDeleted", posibleValues: [{value: false, description: "Nieusunięte"}, {value: true, description: "Usunięte"}]}
 ]
 class EmployeeQuarters extends React.PureComponent{
     state = {
         isLoadingQuarters: true,
         currentWatchedQuarterDetail: 0,
-        quartedToDeleteId: -1, isDeletingQuarter: false
+        quarterToDeleteId: -1, isDeletingQuarter: false, isReactivatingQuarter: false
     }
 
     componentDidMount(){
@@ -43,13 +44,18 @@ class EmployeeQuarters extends React.PureComponent{
     }
 
     onClickOperationHandler = (quarter, operationName) => {
+        const { reactivateQuarterTalkACreator, quartersForEmployee } = this.props;
         switch(operationName){
             case "delete":
-                this.setState({quartedToDeleteId: quarter.id})
+                this.setState({quarterToDeleteId: quarter.id})
                 break;
-
+            case "reactivate":
+                this.setState({isReactivatingQuarter: true});
+                reactivateQuarterTalkACreator(quarter.id, quartersForEmployee).then(() => {
+                    this.setState({isReactivatingQuarter: false});
+                }).catch(() => this.setState({isReactivatingQuarter: false}));
+                break;
             default: 
-                const { quartersForEmployee } = this.props;
                 const currentWatchedItemId = quartersForEmployee.findIndex(item => item.id === quarter.id);
                 this.setState({currentWatchedQuarterDetail: currentWatchedItemId});
                 break;
@@ -57,28 +63,28 @@ class EmployeeQuarters extends React.PureComponent{
     }
 
     handleQuarterTalkDelete = () => {
-        const { deleteQuarterTalkACreator } = this.props;
-        const { quartedToDeleteId } = this.state;
+        const { deleteQuarterTalkACreator, quartersForEmployee } = this.props;
+        const { quarterToDeleteId } = this.state;
         this.setState({isDeletingQuarter: true});
-
-        deleteQuarterTalkACreator(quartedToDeleteId).then(() => {
-            this.setState({quartedToDeleteId: -1, isDeletingQuarter: false});
+        deleteQuarterTalkACreator(quarterToDeleteId, quartersForEmployee).then(() => {
+            this.setState({quarterToDeleteId: -1, isDeletingQuarter: false});
         }).catch(() => this.setState({isDeletingQuarter: false}));
     }
 
     closeConfirmDeleteModal = () => {
-        this.setState({quartedToDeleteId: -1}, () => this.props.deleteQuarterTalk());
+        this.setState({quarterToDeleteId: -1}, () => this.props.deleteQuarterTalk());
     }
 
     render(){
-        const { isLoadingQuarters, currentWatchedQuarterDetail, quartedToDeleteId, isDeletingQuarter } = this.state;
-        const { deleteQuarterTalk, deleteQuarterStatus, deleteQuarterErrors, clearQuartersEmployeeQuartersData, quartersForEmployee, quartersForEmployeeStatus, quartersForEmployeeErrors, shouldLoadDataAfterLinkChange } = this.props;
+        const { isLoadingQuarters, currentWatchedQuarterDetail, quarterToDeleteId, isDeletingQuarter, isReactivatingQuarter } = this.state;
+        const { deleteQuarterTalk, deleteQuarterStatus, deleteQuarterErrors, getQuartersForEmployee, quartersForEmployee, 
+            quartersForEmployeeStatus, quartersForEmployeeErrors, shouldLoadDataAfterLinkChange } = this.props;
         return (
-            <LoadHandlingWrapper errors={quartersForEmployeeErrors} closePrompt={clearQuartersEmployeeQuartersData} 
+            <LoadHandlingWrapper errors={quartersForEmployeeErrors} closePrompt={() => getQuartersForEmployee([], null, [])} 
                 operationStatus={quartersForEmployeeStatus} isLoading={isLoadingQuarters}>
                 <main className="employee-quarters">
                     <div className="quarters-list-container">
-                        <List listClass="quarter-list" functionsToUse={functionsToUseForQuarters}
+                        <List isDoingRequest={isReactivatingQuarter} listClass="quarter-list" functionsToUse={functionsToUseForQuarters}
                         shouldAnimateList clickItemFunction={this.onClickOperationHandler} items={quartersForEmployee} component={QuarterListItem} listTitle={`Rozmowy kwartalne ${getEmployeeId()}`}
                             allKeysOfItems={["id", "isTaken", "year", "quarter" ,"quarterTalkQuestionItems", "questionerId", "plannedTalkDate"]}/>
 
@@ -97,8 +103,8 @@ class EmployeeQuarters extends React.PureComponent{
                 
                 <ConfirmModal 
                 operation={this.handleQuarterTalkDelete} operationName="Usuń" header="Czy jesteś pewny, że chcesz usunąć tą rozmowę kwartalną?"
-                onClose={this.closeConfirmDeleteModal} open={quartedToDeleteId !== -1}>
-   
+                onClose={this.closeConfirmDeleteModal} open={quarterToDeleteId !== -1}>
+                    {isDeletingQuarter && <Spinner />}
                 </ConfirmModal>
                 
                 {deleteQuarterStatus !== null && 
@@ -133,10 +139,10 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        clearQuartersEmployeeQuartersData: () => dispatch(getQuartersForEmployee([], null, [])),
+        getQuartersForEmployee: (quarter, status, errors) => dispatch(getQuartersForEmployee(quarter, status, errors)),
         getQuartersForEmployeeACreator: (employeeId) => dispatch(getQuartersForEmployeeACreator(employeeId)),
-        deleteQuarterTalkACreator: (quarterId) => dispatch(deleteQuarterTalkACreator(quarterId)),
-        reactivateQuarterTalkACreator: (quarterId) => dispatch(reactivateQuarterTalkACreator(quarterId)),
+        deleteQuarterTalkACreator: (quarterToDeleteId, quartersForEmployee) => dispatch(deleteQuarterTalkACreator(quarterToDeleteId, quartersForEmployee)),
+        reactivateQuarterTalkACreator: (quarterId, quartersForEmployee) => dispatch(reactivateQuarterTalkACreator(quarterId, quartersForEmployee)),
         deleteQuarterTalk: () => dispatch(deleteQuarterTalk(null, []))
     }
 }

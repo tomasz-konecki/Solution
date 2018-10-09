@@ -10,8 +10,6 @@ import { deleteNotification, deleteNotificationACreator,
     deleteAllNotifications, deleteAllNotificationsACreator,
     markAllNotificationsAsRead, markAllNotificationsAsReadACreator
 } from './../../actions/notificationActions';
-import { axios } from 'axios';
-import { authReducer } from './../../reducers/authReducer';
 
 class PromptsCommander extends React.Component{
     state = {

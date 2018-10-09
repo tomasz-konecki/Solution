@@ -1,6 +1,5 @@
 import React from "react";
 import { translate } from "react-translate";
-import { authReducer } from './../../reducers/authReducer';
 
 const sideProgressBar = ({
   currentDeletedElements,

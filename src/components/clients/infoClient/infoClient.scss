@@ -14,6 +14,10 @@
   cursor: pointer;
 }
 
+.cloud-name-without-hover {
+  width: 100%;
+}
+
 
 .client-clouds-container,
 .responsible-person-container {
@@ -103,7 +107,7 @@
     @keyframes animating {
       0% {
         opacity: 0;
-        transform: translateY(-15px);
+        transform: translateY(15px);
       }
       100% {
         opacity: 1;

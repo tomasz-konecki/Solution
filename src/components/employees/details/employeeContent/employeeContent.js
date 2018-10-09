@@ -11,6 +11,9 @@ import Form from "../../../form/form";
 import CallSkype from "./callSkype";
 
 const employeeContent = ({
+  changeCurrentWatchedUser,
+  createLastWatchedPersonsArray,
+  lastWatchedPersons,
   employee,
   editSeniority,
   employeeErrors,
@@ -29,7 +32,11 @@ const employeeContent = ({
   editSkypeFormItems,
   editSkypeId,
   skypeIdAddLoading,
-  updateSkypeIdResult
+  updateSkypeIdResult,
+
+  getEmployeePromise,
+  isYou,
+  binPem
 }) => {
   const status = employee.isDeleted
     ? t("Deleted")
@@ -53,7 +60,6 @@ const employeeContent = ({
       <i className="fa fa-user" />
     </figure>
   );
-
   return (
     <section className="top-content-container">
       <div className="employee-details-bar">
@@ -70,16 +76,17 @@ const employeeContent = ({
               {imgContent}
               <p>{employee.roles ? employee.roles[0] : t("RoleMissing")}</p>
             </div>
-            <div className="text-center" style={{width: "100%" }}>
-            <h2> {employee.firstName + " " + employee.lastName + " "}</h2>
-            <CallSkype 
-              editSkypeFormItems={editSkypeFormItems} 
-              employee={employee}
-              editSkypeId={editSkypeId}
-              skypeIdAddLoading={skypeIdAddLoading}
-              updateSkypeIdResult={updateSkypeIdResult}
-              t={t} />
-
+            <div className="text-center" style={{ width: "100%" }}>
+              <h2> {employee.firstName + " " + employee.lastName + " "}</h2>
+              <CallSkype
+                editSkypeFormItems={editSkypeFormItems}
+                employee={employee}
+                editSkypeId={editSkypeId}
+                skypeIdAddLoading={skypeIdAddLoading}
+                updateSkypeIdResult={updateSkypeIdResult}
+                t={t}
+                canEditSkypeId={isYou || binPem == 32}
+              />
             </div>
           </header>
 
@@ -135,6 +142,7 @@ const employeeContent = ({
                 capacityLeft={employee.baseCapacity}
                 editCapacity={editCapacity}
                 employeeErrors={employeeErrors}
+                canEditFteBar={binPem > 1}
               />
 
               <div className="degree-bar-container">
@@ -143,43 +151,54 @@ const employeeContent = ({
                   seniority={employee.seniority}
                   employeeErrors={employeeErrors}
                   range={4}
+                  canEditDegreeBar={binPem > 1}
                 />
               </div>
             </React.Fragment>
           )}
 
-        <div className="emp-btns-container">
-          {status === t("Active") ? (
-            <Button
-              mainClass="option-btn option-very-dang"
-              title={t("Delete")}
-              disable={isChangingEmployeeData}
-              onClick={deleteEmployee}
-            >
-              {isChangingEmployeeData && <Spinner />}
-            </Button>
-          ) : (
-            <Button
-              disable={isChangingEmployeeData}
-              onClick={
-                status === t("Deleted") ? reactivateEmployee : activateEmployee
-              }
-              title={t("Activate")}
-              mainClass="option-btn green-btn"
-            >
-              {isChangingEmployeeData && <Spinner />}
-            </Button>
-          )}
-        </div>
+        {binPem === 32 && (
+          <React.Fragment>
+            <div className="emp-btns-container">
+              {status === t("Active") ? (
+                <Button
+                  mainClass="option-btn option-very-dang"
+                  title={t("Delete")}
+                  disable={isChangingEmployeeData}
+                  onClick={deleteEmployee}
+                >
+                  {isChangingEmployeeData && <Spinner />}
+                </Button>
+              ) : (
+                <Button
+                  disable={isChangingEmployeeData}
+                  onClick={
+                    status === t("Deleted")
+                      ? reactivateEmployee
+                      : activateEmployee
+                  }
+                  title={t("Activate")}
+                  mainClass="option-btn green-btn"
+                >
+                  {isChangingEmployeeData && <Spinner />}
+                </Button>
+              )}
+            </div>
 
-        {status !== t("Active") && (
-          <div className="information-for-statuses">
-            <p>{t("BeforeYouChangeStatus")}</p>
-            <article>{t("BeforeYouChangeStatusContent")}</article>
-          </div>
+            {status !== t("Active") && (
+              <div className="information-for-statuses">
+                <p>{t("BeforeYouChangeStatus")}</p>
+                <article>{t("BeforeYouChangeStatusContent")}</article>
+              </div>
+            )}
+          </React.Fragment>
         )}
       </div>
       <Quaters
+        changeCurrentWatchedUser={changeCurrentWatchedUser}
+        createLastWatchedPersonsArray={createLastWatchedPersonsArray}
+        lastWatchedPersons={lastWatchedPersons}
+        getEmployeePromise={getEmployeePromise}
         reactivateQuaterACreator={reactivateQuaterACreator}
         status={status}
         reactivateQuaterStatus={reactivateQuaterStatus}

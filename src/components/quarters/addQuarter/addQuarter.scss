@@ -1,0 +1,28 @@
+
+
+.add-quarter-container{
+    h1{
+        color: #707070;
+        font-size: 26px;
+        padding: 20px;
+        margin-bottom: 25px;
+        i{
+            margin-right: 10px;
+            color: lightcoral;
+        }
+    }
+    .form-container{
+        width: 60%;
+        padding-bottom: 100px;
+        .spinner-btn, .submit-btn, .incorrect-status, .correct-status{
+            position: relative;
+        }
+        .incorrect-status, .correct-status{
+            margin-top: 25px;
+            bottom: 0;
+        }
+        label{
+            font-size: 18px;
+        }
+    }
+}

@@ -24,11 +24,16 @@ class CloudFieldsList extends Component {
   render() {
     return (
       <div className="cloud-fields">
-        <span className="cloud-name" onClick={this.toogleFieldsList}>
-              {this.props.item.name ? this.props.item.name : this.props.item.firstName + " " + this.props.item.lastName}
-              {this.state.opened && this.state.fields.length > 0 ? <i className="fas fa-caret-up arrow"></i> : <i className="fas fa-caret-down arrow"></i>}
-        </span>
-        {this.state.opened && this.state.fields.length > 0 && this.state.fields.map((field, index) => {
+        {this.state.fields && this.state.fields.length > 0 ?
+          <span className="cloud-name" onClick={this.toogleFieldsList}>
+            {this.props.item.name ? this.props.item.name : this.props.item.firstName + " " + this.props.item.lastName}
+            {this.state.fields && this.state.fields.length > 0 ? (this.state.opened ? <i className="fas fa-caret-up arrow"></i> : <i className="fas fa-caret-down arrow"></i>) : (<span></span>)}
+          </span>
+          :
+          <span className="cloud-name-without-hover">
+            {this.props.item.name ? this.props.item.name : this.props.item.firstName + " " + this.props.item.lastName}
+          </span>}
+        {this.state.opened && this.state.fields && this.state.fields.length > 0 && this.state.fields.map((field, index) => {
           return (
           <div key={index} className='field-container'>
             <span className="field-name">

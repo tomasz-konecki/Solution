@@ -152,7 +152,7 @@ class SmoothTable extends Component {
       });
     }
 
-    this.props.getSettings(Object.assign({}, this.state.sortingSettings, mainFilter));
+    //this.props.getSettings(Object.assign({}, this.state.sortingSettings, mainFilter));
     return Object.assign({}, this.state.sortingSettings, mainFilter);
   }
 
@@ -306,8 +306,8 @@ class SmoothTable extends Component {
   }
 
   handleRowClick(object, index, event) {
-    if(object.hasAccount == false) {
-      alert("Pracownik jest nie aktywny")
+    if (object.hasAccount == false) {
+      alert(this.props.t("EmployeeIsNotActivated"));
     } else {
       const { redirectPath } = this.props.construct;
       if (redirectPath) {
@@ -327,7 +327,6 @@ class SmoothTable extends Component {
         });
       }
     }
-
   }
 
   removeFilters() {
@@ -639,8 +638,12 @@ class SmoothTable extends Component {
     payload.push(
       <tr
         key={object[construct.keyField]}
-        className={object.hasAccount ? classes.join(" ") : (classes.push("unset-pointer"), classes.join(" "))}
-        onClick={object.hasAccount ? this.deepenFunction(this.handleRowClick, object, index) : null}
+        className={
+          object.hasAccount
+            ? classes.join(" ")
+            : (classes.push("unset-pointer"), classes.join(" "))
+        }
+        onClick={this.deepenFunction(this.handleRowClick, object, index)}
       >
         {construct.columns.map((column, index) => {
           if (column.field !== undefined) {
@@ -725,8 +728,7 @@ class SmoothTable extends Component {
   };
   render() {
     const { construct } = this.state;
-    const { showRaportButton } = this.props;
-    const { t } = this.props;
+    const { showRaportButton, t } = this.props;
     let list = [],
       empty = false;
     list.push(this.generateFieldSearchRow());
@@ -738,11 +740,11 @@ class SmoothTable extends Component {
       empty = true;
     }
     if (this.state.toRaports === true) {
-      return <Redirect to="/main/reports" />;
+      return <Redirect push to="/main/reports" />;
     }
     if (this.state.rowClickedId) {
       return (
-        <Redirect
+        <Redirect push
           to={this.props.construct.redirectPath + this.state.rowClickedId}
         />
       );
@@ -751,15 +753,16 @@ class SmoothTable extends Component {
     return (
       <div className="smooth-table">
         <div className="d-flex">
-          <div className="smooth-operator">{this.generateOperators()}
-          {showRaportButton && (
-            <button
-              className="dcmt-button raport-button ml-auto mt-3 mr-3"
-              onClick={this.setToRaports}
-            >
-              {this.props.t("Reports")}
-            </button>
-          )}
+          <div className="smooth-operator">
+            {this.generateOperators()}
+            {showRaportButton && (
+              <button
+                className="dcmt-button raport-button ml-auto mt-3 mr-3"
+                onClick={this.setToRaports}
+              >
+                {this.props.t("Reports")}
+              </button>
+            )}
           </div>
         </div>
         <div className="smooth-loader-top">

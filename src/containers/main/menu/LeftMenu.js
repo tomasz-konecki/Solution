@@ -49,7 +49,7 @@ class LeftMenu extends React.Component {
         onMouseLeave={this.handleExtend}
         className={"left-menu" + (extended ? " extended" : "")}
       >
-        {binaryPermissioner(false)(0)(1)(1)(1)(1)(1)(this.props.binPem) ? (
+        {binaryPermissioner(false)(1)(1)(1)(1)(1)(1)(this.props.binPem) ? (
           <VerticalMenuElement
             match={match}
             extended={extended}
@@ -59,7 +59,7 @@ class LeftMenu extends React.Component {
             title={t("Stats")}
           />
         ) : null}
-        {binaryPermissioner(false)(0)(0)(0)(0)(1)(1)(this.props.binPem) ? (
+        {binaryPermissioner(false)(0)(1)(0)(0)(1)(1)(this.props.binPem) ? (
           <VerticalMenuElement
             match={match}
             extended={extended}
@@ -108,7 +108,7 @@ class LeftMenu extends React.Component {
             title={t("Skills")}
           />
         ) : null}
-        {this.props.pem.hasAdministrativeAccess ? (
+        {binaryPermissioner(false)(0)(0)(0)(0)(1)(1)(this.props.binPem) ? (
           <VerticalMenuElement
             match={match}
             extended={extended}
@@ -118,7 +118,7 @@ class LeftMenu extends React.Component {
             title={t("Reports")}
           />
         ) : null}
-        {this.props.pem.hasAdministrativeAccess ? (
+        {binaryPermissioner(false)(0)(0)(0)(0)(1)(1)(this.props.binPem) ? (
           <VerticalMenuElement
             match={match}
             extended={extended}

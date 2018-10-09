@@ -5,6 +5,7 @@ import { bindActionCreators } from "redux";
 import { withRouter } from "react-router-dom";
 import * as asyncActions from "../../../actions/asyncActions";
 import EmployeeContent from "./employeeContent/employeeContent";
+import { createLastWatchedPersonsArray, changeCurrentWatchedUser } from '../../../actions/persistHelpActions';
 import EmployeeTable from "./employeeTable/employeeTable";
 import {
   getEmployeePromise,
@@ -64,7 +65,10 @@ class EmployeeDetailsContainer extends React.Component {
   componentWillReceiveProps(nextProps) {
     if (this.validatePropsForAction(nextProps, "deleteCertificate")) {
       this.props.async.setActionConfirmationProgress(true);
-      this.props.deleteCertificate(this.props.toConfirm.certificate.id, this.props.match.params.id);
+      this.props.deleteCertificate(
+        this.props.toConfirm.certificate.id,
+        this.props.match.params.id
+      );
     }
 
     if (nextProps.employeeErrors !== this.props.employeeErrors) {
@@ -156,6 +160,9 @@ class EmployeeDetailsContainer extends React.Component {
       editSkypeFormItems
     } = this.state;
     const {
+      changeCurrentWatchedUser,
+      createLastWatchedPersonsArray,
+      lastWatchedPersons,
       employeeStatus,
       employeeErrors,
       employee,
@@ -177,9 +184,11 @@ class EmployeeDetailsContainer extends React.Component {
       changeSkillsErrors,
       t,
       updateSkypeIdResult,
-      certificates
+      getEmployeePromise,
+      certificates,
+      binPem,
+      login
     } = this.props;
-
     return (
       <div className="employee-details-container">
         {isLoadingFirstTimeEmployee ? (
@@ -192,6 +201,10 @@ class EmployeeDetailsContainer extends React.Component {
               <h1>{t("EmployeeDetails")}</h1>
 
               <EmployeeContent
+                changeCurrentWatchedUser={changeCurrentWatchedUser}
+                createLastWatchedPersonsArray={createLastWatchedPersonsArray}
+                lastWatchedPersons={lastWatchedPersons}
+                getEmployee={getEmployeePromise}
                 status={status}
                 reactivateQuaterACreator={reactivateQuaterACreator}
                 reactivateQuaterStatus={reactivateQuaterStatus}
@@ -210,8 +223,14 @@ class EmployeeDetailsContainer extends React.Component {
                 editSkypeFormItems={editSkypeFormItems}
                 editSkypeId={this.editSkypeId}
                 t={t}
-                skypeIdAddLoading={updateSkypeIdResult && updateSkypeIdResult.loading}
-                updateSkypeIdResult={updateSkypeIdResult && updateSkypeIdResult.resultBlock}
+                skypeIdAddLoading={
+                  updateSkypeIdResult && updateSkypeIdResult.loading
+                }
+                updateSkypeIdResult={
+                  updateSkypeIdResult && updateSkypeIdResult.resultBlock
+                }
+                isYou={login === employee.id}
+                binPem={binPem}
               />
 
               <EmployeeSkills
@@ -223,6 +242,8 @@ class EmployeeDetailsContainer extends React.Component {
                 changeEmployeeSkillsACreator={changeEmployeeSkillsACreator}
                 skills={employee.skills}
                 limit={5}
+                isYou={login === employee.id}
+                binPem={binPem}
               />
 
               <EmployeeTable
@@ -247,6 +268,8 @@ class EmployeeDetailsContainer extends React.Component {
                 deleteCertificate={this.deleteCertificate}
                 userId={this.props.match.params.id}
                 resultBlockAddCertificate={this.props.resultBlockAddCertificate}
+                isYou={login === employee.id}
+                binPem={binPem}
               />
             </React.Fragment>
           )
@@ -331,6 +354,11 @@ const mapStateToProps = state => {
     toConfirm: state.asyncReducer.toConfirm,
     isWorking: state.asyncReducer.isWorking,
     type: state.asyncReducer.type,
+
+    lastWatchedPersons: state.persistHelpReducer.lastWatchedPersons,
+    binPem: state.authReducer.binPem,
+    login: state.authReducer.login
+
   };
 };
 
@@ -359,7 +387,9 @@ const mapDispatchToProps = dispatch => {
     loadCertificates: employeeId => dispatch(loadCertificates(employeeId)),
     addCertificate: (certificate,userId) => dispatch(addCertificate(certificate,userId)),
     editCertificate: (certificateId, certificate, userId) => dispatch(editCertificate(certificateId,certificate,userId)),
-    deleteCertificate: (certificateId, userId) => dispatch(deleteCertificate(certificateId, userId))
+    deleteCertificate: (certificateId, userId) => dispatch(deleteCertificate(certificateId, userId)),
+    createLastWatchedPersonsArray: (lastWatchedPersons) => dispatch(createLastWatchedPersonsArray(lastWatchedPersons)),
+    changeCurrentWatchedUser: (currentWatchedUser) => dispatch(changeCurrentWatchedUser(currentWatchedUser))
   };
 };
 

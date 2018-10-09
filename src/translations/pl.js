@@ -599,7 +599,7 @@ const translations = {
     FeedbackAdded: "Pomyślnie dodano opinie",
     Author: "Autor",
     DaysAgo: "dni temu",
-    OnDate: "",
+    OnDate: "w dniu",
 	}
 };
 

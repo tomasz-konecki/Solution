@@ -465,6 +465,7 @@ class EmployeeSkills extends React.Component {
                     ? t("SkillsAddedSuccessfull")
                     : addNewSkillsErrors && addNewSkillsErrors[0]
                 }}
+                validationResult={skillsToAdd.length > 0 ? true : false}
                 onClickHandler={this.saveNewAddedSkills}
                 isLoading={isAddingNewSkills}
                 btnTitle={t("ApproveChanges")}

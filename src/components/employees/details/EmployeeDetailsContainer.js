@@ -77,13 +77,12 @@ class EmployeeDetailsContainer extends React.Component {
       });
     } else if (nextProps.employeeOperationStatus === false) {
       this.setState({ isChangingEmployeeData: false });
-    } /*
-        else if(nextProps.match !== this.props.match)
-        {
-            console.log("nextProps.match : " + nextProps.match)
-            this.setState({isLoadingFirstTimeEmployee: true});
-            this.props.getEmployeePromise(nextProps.match.params.id);
-        }*/
+    }
+    else if(nextProps.match !== this.props.match)
+    {
+        this.setState({isLoadingFirstTimeEmployee: true});
+        this.props.getEmployeePromise(nextProps.match.params.id);
+    }
     if (nextProps.employee) {
       if (
         nextProps.employee.skypeId &&

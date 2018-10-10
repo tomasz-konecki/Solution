@@ -283,6 +283,17 @@ const translations = {
     EditingCertificate: "Editing certyficate",
     Edit: "Save"
   },
+  ShareEmployeesModal: {
+    ShareEmployees: "Share employees",
+    ChooseEmployeesToShare: "Choose employees to share",
+    ChooseLeader: "Choose leader",
+    SharedEmployees: "Shared employees",
+    Search: "Search",
+    StopSharing: "Stop sharing",
+    Employees: "Employees",
+    ShareTeam: "Share team",
+    Share: "Share"
+  },
   ImportCVContainer: {
     Name: "Name",
     Size: "Size",

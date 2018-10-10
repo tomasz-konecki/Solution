@@ -9,6 +9,9 @@ import Icon from "../../../common/Icon";
 import { Link } from "react-router-dom";
 import Form from "../../../form/form";
 import CallSkype from "./callSkype";
+import ShareEmployeesModal from './modals/shareEmployeesModal';
+import binaryPermissioner from '../../../../api/binaryPermissioner';
+
 
 const employeeContent = ({
   employee,
@@ -89,6 +92,15 @@ const employeeContent = ({
             {employee.seniority ? employee.seniority : t("NoLevel")}
           </div>
           <p>{employee.title}</p>
+
+
+          {isYou && binaryPermissioner(false)(0)(0)(0)(1)(1)(1)(binPem) &&
+            <ShareEmployeesModal
+              t={t}
+              employee={employee}
+            />
+          }
+
         </div>
 
         <div className="right-content">
@@ -186,9 +198,14 @@ const employeeContent = ({
                 <article>{t("BeforeYouChangeStatusContent")}</article>
               </div>
             )}
+
+
           </React.Fragment>
         )}
+
+
       </div>
+
       <Quaters
         reactivateQuaterACreator={reactivateQuaterACreator}
         status={status}
@@ -201,6 +218,7 @@ const employeeContent = ({
         paginationLimit={5}
         quarterTalks={employee.quarterTalks}
       />
+
     </section>
   );
 };

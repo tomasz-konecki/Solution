@@ -50,6 +50,11 @@ class AddQuarter extends Component{
             this.setState({addQuarterItems: this.createQuestionsForm(response), isLoadingQuestions: false})
         }).catch(() => this.setState({isLoadingQuestions: false}));
     }
+    componentDidUpdate(prevProps){
+        if(prevProps.currentWatchedUser !== this.props.currentWatchedUser && !this.state.showSelectQuestionsModal){
+            this.setState({showSelectQuestionsModal: true});
+        }
+    }
     createQuestionsForm = questions => {
         const copiedQuestions = [...questions];
         const formItems = [];
@@ -102,7 +107,6 @@ class AddQuarter extends Component{
     render(){
         const {history, addQuarterTalkStatus, addQuarterTalkErrors, getQuestionsStatus, getQuestionsErrors, clearQuestionResult, questions } = this.props;
         const { isAddingQuarter, addQuarterItems, isLoadingQuestions, showSelectQuestionsModal, itemsDeletedCount} = this.state;
-        console.log(questions.length, itemsDeletedCount)
         return (
             <div className="add-quarter-container">
                 <LoadHandlingWrapper errors={getQuestionsErrors} closePrompt={clearQuestionResult}

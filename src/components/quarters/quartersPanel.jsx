@@ -104,7 +104,7 @@ class Quarters extends React.PureComponent{
                              redirectToLastWatchedPerson={this.handleBtnClick} changeLinkBeforeRedirect={changeLinkBeforeRedirect}/>
                         )}/>
                         <Route exact path={match.url + "/employees/addquarter/:id"} render={() => (
-                            <AddQuarter onCloseModal={() => this.handleBtnClick(`${match.url}/employees`, true)}/>
+                            <AddQuarter currentWatchedUser={currentWatchedUser} onCloseModal={() => this.handleBtnClick(`${match.url}/employees`, true)}/>
                         )} />
                         <Route exact path={`${match.url}/employees/:id`} render={() => (
                             <EmployeeQuarters lastWatchedPersons={lastWatchedPersons} location={history.location} />

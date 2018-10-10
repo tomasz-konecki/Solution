@@ -87,11 +87,9 @@ class EmployeeQuarters extends React.PureComponent{
                         <List isDoingRequest={isReactivatingQuarter} listClass="quarter-list" functionsToUse={functionsToUseForQuarters}
                         shouldAnimateList clickItemFunction={this.onClickOperationHandler} items={quartersForEmployee} component={QuarterListItem} listTitle={`Rozmowy kwartalne ${getEmployeeId()}`}
                             allKeysOfItems={["id", "isTaken", "year", "quarter" ,"quarterTalkQuestionItems", "questionerId", "plannedTalkDate"]}/>
-
                     </div>
                     <div className="quarter-detail">
-                        {quartersForEmployee[currentWatchedQuarterDetail] && 
-                            quartersForEmployee[currentWatchedQuarterDetail].quarterTalkQuestionItems ? 
+                        {quartersForEmployeeStatus && quartersForEmployee[currentWatchedQuarterDetail] && quartersForEmployee[currentWatchedQuarterDetail].quarterTalkQuestionItems ? 
                             <List functionsToUse={functionsToUseForQuestions} listTitle="Przebieg rozmowy" listClass="question-list" 
                             component={QuarterDetailsItem} items={quartersForEmployee[currentWatchedQuarterDetail].quarterTalkQuestionItems} /> : 
                             

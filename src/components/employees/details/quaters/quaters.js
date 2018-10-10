@@ -122,9 +122,8 @@ class Quaters extends React.PureComponent {
   };
 
   putOperationButtonsInDom = () => {
-    const { t, status, employeeId } = this.props;
-    if(status === "Aktywny"){
-      return (
+    const { t, employeeId } = this.props;
+    return (
         <React.Fragment>
           <Button
             onClick={() => this.putEmployeeToLastWatchedAndRedirect(`/main/quarters/employees/addquarter/${employeeId}?=${employeeId}`)}
@@ -138,8 +137,6 @@ class Quaters extends React.PureComponent {
           />
         </React.Fragment>
       );
-    }
-    return null;
   }
 
   putEmployeeToLastWatchedAndRedirect = url => {

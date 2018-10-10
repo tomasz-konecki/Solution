@@ -5,7 +5,7 @@ const loadHandling = WrappedComponent => ({isLoading, operationStatus, children,
     <WrappedComponent>
         {isLoading ? <Spinner /> :  
             operationStatus ? children : 
-            operationStatus !== null &&
+            operationStatus === false &&
             <OperationStatusPrompt 
             closePrompt={closePrompt}
             operationPromptContent={errors[0]}

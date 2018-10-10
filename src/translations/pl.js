@@ -432,7 +432,7 @@ const translations = {
     EstimatedEndDate: "Szacowana data zakończenia",
     Description: "Opis",
     Owners: "Właściciele",
-    Add: "Dodaj",
+    Add: "Dodaj"
   },
   ResponsiblePersonBlock: {
     NameNoSpecial: "Imię nie może zawierać znaków specjalnych ani cyfr.",
@@ -584,6 +584,8 @@ const translations = {
     ShowAdded: "Pokaż dodane",
     NoResults: "Brak wyników dla tego ciągu znaków",
     Confirm: "Zatwierdź",
+    ThatProjectDoesntHavaAnySkillAssigned:
+      "Ten projekt nie ma żadnych przypisanych umiejętności."
   },
   ProjectTeamTable: {
     Add: "Dodaj",
@@ -601,8 +603,8 @@ const translations = {
     FeedbackAdded: "Pomyślnie dodano opinie",
     Author: "Autor",
     DaysAgo: "dni temu",
-    OnDate: "w dniu",
-	}
+    OnDate: "w dniu"
+  }
 };
 
 export default translations;

@@ -85,7 +85,7 @@ const employeeContent = ({
                 skypeIdAddLoading={skypeIdAddLoading}
                 updateSkypeIdResult={updateSkypeIdResult}
                 t={t}
-                canEditSkypeId={isYou || binPem == 32}
+                canEditSkypeId={isYou || binPem >= 32}
               />
             </div>
           </header>

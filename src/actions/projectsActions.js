@@ -14,7 +14,8 @@ import {
   CREATE_PROJECT,
   GET_SUGGEST_EMPLOYEES,
   CHANGE_GET_SUGGEST_EMPLOYEES_STATUS,
-  GET_CONTACT_PERSON_DATA
+  GET_CONTACT_PERSON_DATA,
+  ADD_PROJECT_OWNER_TO_PROJECT
 } from "../constants";
 import axios from "axios";
 import WebApi from "../api";
@@ -26,10 +27,36 @@ import {
 import { errorCatcher } from "../services/errorsHandler";
 import { cutNotNeededKeysFromArray } from "../services/methods";
 import moment from "moment";
+
 export const loadProjectsSuccess = projects => {
   return {
     type: LOAD_PROJECTS_SUCCESS,
     projects
+  };
+};
+
+export const addProjectOwner = (
+  addProjectOwnerToProjectStatus,
+  addProjectOwnerToProjectErrors
+) => {
+  return {
+    type: ADD_PROJECT_OWNER_TO_PROJECT,
+    addProjectOwnerToProjectStatus,
+    addProjectOwnerToProjectErrors
+  };
+};
+
+export const addProjectOwnerACreator = (projectId, ownersIdsArray) => {
+  return dispatch => {
+    WebApi.projects.put
+      .owner(projectId, ownersIdsArray)
+      .then(dispatch(addProjectOwner(true, [])))
+      .catch(error => {
+        addProjectOwner(false, errorCatcher(error));
+      })
+      .then(
+        dispatch(clearAfterTimeByFuncRef(addProjectOwner, 5000, false, []))
+      );
   };
 };
 
@@ -106,7 +133,7 @@ export const getProjectACreator = (projectId, onlyActiveAssignments) => {
         const overViewKeys = {
           keys: cutNotNeededKeysFromArray(
             Object.keys(response.replyBlock.data.dtoObject),
-            [0, 1, 2, ,4, 8, 9, 10, 11, 12, 13]
+            [0, 1, 2, , 4, 8, 9, 10, 11, 12, 13]
           ),
           names: overViewNames
         };
@@ -140,34 +167,47 @@ export const addEmployeeToProject = (
     addEmployeeToProjectErrors
   };
 };
-export const addEmployeeToProjectACreator = (empId, projectId, strDate, endDate, role, assignedCapacity,
-  responsibilites, onlyActiveAssignments ) => dispatch => { 
-      const assignmentModel = {
-        "employeeId": empId,
-        "projectId": projectId,
-        "startDate": strDate,
-        "endDate": endDate,
-        "role": role,
-        "assignedCapacity": assignedCapacity/10,
-        "responsibilities": responsibilites
-      }
-      WebApi.assignments.post(assignmentModel).then(response => {
-        dispatch(addEmployeeToProject(true, []));
-        dispatch(getProjectACreator(projectId, onlyActiveAssignments));
-      }).catch(error => {
-        dispatch(addEmployeeToProject(false, errorCatcher(error)));
-      }).then(
-        dispatch(clearAfterTimeByFuncRef(addEmployeeToProject, 5000, null, []))
-      );
-}
+
+export const addEmployeeToProjectACreator = (
+  empId,
+  projectId,
+  strDate,
+  endDate,
+  role,
+  assignedCapacity,
+  responsibilites,
+  onlyActiveAssignments
+) => dispatch => {
+  const assignmentModel = {
+    employeeId: empId,
+    projectId: projectId,
+    startDate: strDate,
+    endDate: endDate,
+    role: role,
+    assignedCapacity: assignedCapacity / 10,
+    responsibilities: responsibilites
+  };
+  WebApi.assignments
+    .post(assignmentModel)
+    .then(response => {
+      dispatch(addEmployeeToProject(true, []));
+      dispatch(getProjectACreator(projectId, onlyActiveAssignments));
+    })
+    .catch(error => {
+      dispatch(addEmployeeToProject(false, errorCatcher(error)));
+    })
+    .then(
+      dispatch(clearAfterTimeByFuncRef(addEmployeeToProject, 5000, null, []))
+    );
+};
 
 const clearAfterTimeByFuncRef = (funcRef, delay, ...params) => {
   return dispatch => {
     setTimeout(() => {
-      dispatch(funcRef(...params))
+      dispatch(funcRef(...params));
     }, delay);
-  }
-}
+  };
+};
 
 export const addFeedback = (addFeedbackStatus, addFeedbackErrors) => {
   return {
@@ -261,33 +301,61 @@ export const editProjectACreator = (
   onlyActiveAssignments
 ) => {
   return dispatch => {
-    dispatch(editProjectPromise(projectToSend, projectId)).then(response => {
-      dispatch(clearAfterTimeByFuncRef(editProject, 5000, null, []));
-      
-      dispatch(getProjectPromise(projectId, onlyActiveAssignments)).then(getProjectResponse => {
-        const responsiblePersonKeys = {keys: cutNotNeededKeysFromArray(
-          Object.keys(getProjectResponse.responsiblePerson), [0]), 
-          names: names};
-        
-        const overViewKeys = {keys: cutNotNeededKeysFromArray(
-            Object.keys(getProjectResponse), [0, 1, 2, ,4, 8, 9, 10, 11, 12, 13]), 
-            names: overViewNames};
-        
-        dispatch(getProject(getProjectResponse, 
-            true, [], responsiblePersonKeys, overViewKeys, []));
+    dispatch(editProjectPromise(projectToSend, projectId))
+      .then(response => {
+        dispatch(clearAfterTimeByFuncRef(editProject, 5000, null, []));
 
-      
-      }).catch(error => {
-        dispatch(getProject(null, 
-          false, errorCatcher(error), [], []));
-        dispatch(clearAfterTimeByFuncRef(getProject, 5000, null, null, [], [], []));
+        dispatch(getProjectPromise(projectId, onlyActiveAssignments))
+          .then(getProjectResponse => {
+            const responsiblePersonKeys = {
+              keys: cutNotNeededKeysFromArray(
+                Object.keys(getProjectResponse.responsiblePerson),
+                [0]
+              ),
+              names: names
+            };
+
+            const overViewKeys = {
+              keys: cutNotNeededKeysFromArray(Object.keys(getProjectResponse), [
+                0,
+                1,
+                2,
+                ,
+                4,
+                8,
+                9,
+                10,
+                11,
+                12,
+                13
+              ]),
+              names: overViewNames
+            };
+
+            dispatch(
+              getProject(
+                getProjectResponse,
+                true,
+                [],
+                responsiblePersonKeys,
+                overViewKeys,
+                []
+              )
+            );
+          })
+          .catch(error => {
+            dispatch(getProject(null, false, errorCatcher(error), [], []));
+            dispatch(
+              clearAfterTimeByFuncRef(getProject, 5000, null, null, [], [], [])
+            );
+          });
       })
-    }).catch(error => {
-      dispatch(clearAfterTimeByFuncRef(editProject, 5000, null, []));
-    });
-  }
-}
-     
+      .catch(error => {
+        dispatch(clearAfterTimeByFuncRef(editProject, 5000, null, []));
+      });
+  };
+};
+
 export const changeProjectSkills = (
   changeProjectSkillsStatus,
   changeProjectSkillsErrors
@@ -405,6 +473,7 @@ export const changeProjectStateACreator = (
   model
 ) => {
   return dispatch => {
+    console.log("Siema");
     dispatch(asyncStarted());
     dispatch(changeProjectStatePromise(ApiOperation, Object.values(model)))
       .then(response => {
@@ -457,50 +526,63 @@ export const createProjectACreator = (firstArray, secondArray) => dispatch => {
         dispatch(createProject(false, errorCatcher(error)));
         reject(error);
       });
-  })
-}
-export const getSuggestEmployeesStatus = (getSuggestEmployeesStatus, getSuggestEmployeesError) =>{
+  });
+};
+export const getSuggestEmployeesStatus = (
+  getSuggestEmployeesStatus,
+  getSuggestEmployeesError
+) => {
   return {
     type: CHANGE_GET_SUGGEST_EMPLOYEES_STATUS,
     getSuggestEmployeesStatus,
     getSuggestEmployeesError
-  }
-}
-export const getSuggestEmployees = suggestEmployees =>{
-  return {type: GET_SUGGEST_EMPLOYEES, suggestEmployees}
-}
+  };
+};
+export const getSuggestEmployees = suggestEmployees => {
+  return { type: GET_SUGGEST_EMPLOYEES, suggestEmployees };
+};
 
-export const getSuggestEmployeesACreator = projectId =>{
+export const getSuggestEmployeesACreator = projectId => {
   return dispatch => {
-    WebApi.projects.get.suggestEmployees(projectId)
-      .then(response =>{
-        if(!response.errorOccurred()){
+    WebApi.projects.get
+      .suggestEmployees(projectId)
+      .then(response => {
+        if (!response.errorOccurred()) {
           dispatch(getSuggestEmployees(response.extractData()));
-          dispatch(getSuggestEmployeesStatus(true,[]));
+          dispatch(getSuggestEmployeesStatus(true, []));
         }
       })
       .catch(error => {
-        dispatch(getSuggestEmployeesStatus(false,errorCatcher(error)));
+        dispatch(getSuggestEmployeesStatus(false, errorCatcher(error)));
       });
   };
 };
 
-
-export const getContactPersonData = (contactPersonData, getContactPersonDataStatus, getContactPersonDataErrors) => {
+export const getContactPersonData = (
+  contactPersonData,
+  getContactPersonDataStatus,
+  getContactPersonDataErrors
+) => {
   return {
-    type: GET_CONTACT_PERSON_DATA, contactPersonData, getContactPersonDataStatus, getContactPersonDataErrors
-  }
-}
+    type: GET_CONTACT_PERSON_DATA,
+    contactPersonData,
+    getContactPersonDataStatus,
+    getContactPersonDataErrors
+  };
+};
 
 export const getContactPersonDataACreator = clientId => dispatch => {
   return new Promise((resolve, reject) => {
-    WebApi.responsiblePerson.get.byClient(clientId).then(response => {
-      const { dtoObjects } = response.replyBlock.data;
-      dispatch(getContactPersonData(dtoObjects, true, []));
-      resolve(dtoObjects);
-    }).catch(error => {
-      dispatch(getContactPersonData([], false, errorCatcher(error)));
-      reject(error);
-    })
-  })
-}
+    WebApi.responsiblePerson.get
+      .byClient(clientId)
+      .then(response => {
+        const { dtoObjects } = response.replyBlock.data;
+        dispatch(getContactPersonData(dtoObjects, true, []));
+        resolve(dtoObjects);
+      })
+      .catch(error => {
+        dispatch(getContactPersonData([], false, errorCatcher(error)));
+        reject(error);
+      });
+  });
+};

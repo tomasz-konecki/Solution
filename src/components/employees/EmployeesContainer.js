@@ -53,11 +53,11 @@ class EmployeesContainer extends React.Component {
     }
   }
 
-  getSettings = (settings) => {
+  getSettings = settings => {
     this.setState({
       settings: settings
-    })
-  }
+    });
+  };
 
   validatePropsForAction(nextProps, action) {
     return (

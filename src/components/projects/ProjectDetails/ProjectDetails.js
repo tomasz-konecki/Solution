@@ -33,7 +33,8 @@ import {
   editProject,
   changeProjectStateACreator,
   clearProjectState,
-  getSuggestEmployeesACreator
+  getSuggestEmployeesACreator,
+  addProjectOwnerACreator
 } from "../../../actions/projectsActions";
 import {
   getAllSkillsACreator,
@@ -47,7 +48,7 @@ import WebApi from "../../../api/index";
 import employeeTable from "../../employees/details/employeeTable/employeeTable";
 import specialPermissioner from "./../../../api/specialPermissioner";
 import binaryPermissioner from "./../../../api/binaryPermissioner";
-
+import Owners from "./Owners/Owners";
 
 class ProjectDetails extends Component {
   workerNames = [
@@ -339,6 +340,8 @@ class ProjectDetails extends Component {
       changeProjectStateErrors,
       getSuggestEmployeesStatus,
       suggestEmployees,
+      addProjectOwnerToProjectStatus,
+      addProjectOwnerToProjectErrors
       t
     } = this.props;
 
@@ -351,7 +354,7 @@ class ProjectDetails extends Component {
       currentOpenedRow,
       isLoadingProject
     } = this.state;
-    const { owner } = WebApi.projects.delete;
+
     return (
       <div
         onClick={
@@ -465,29 +468,31 @@ class ProjectDetails extends Component {
                   <h4>{t("Description")}</h4>
                   {project.description}
                 </article>
-                <h4>{t("Owners")}</h4>
-                <div className="owners-list">
-                  {project.owners.map((i, index) => {
-                    return (
-                      <button key={i.id} className="owner-btn">
-                        {i.fullName}
-                        {project.owners.length > 1 && (
-                          <i
-                            onClick={() =>
-                              changeProjectState(owner, "deleteOwner", {
-                                projectId: project.id,
-                                ownerId: project.owners[index].id,
-                                onlyActiveAssignments: onlyActiveAssignments
-                              })
-                            }
-                          >
-                            Usuń
-                          </i>
-                        )}
-                      </button>
-                    );
-                  })}
-                </div>
+
+                <Owners
+                  addProjectOwnerToProjectErrors={
+                    addProjectOwnerToProjectErrors
+                  }
+                  addProjectOwnerToProjectStatus={
+                    addProjectOwnerToProjectStatus
+                  }
+                  addProjectOwner={this.props.addProjectOwner}
+                  projectId={project.id}
+                  owners={project.owners}
+                  changeProjectState={changeProjectState}
+                  WebApi={WebApi}
+                  projectId={project.id}
+                  isProjectOwner={
+                    binaryPermissioner(false)(0)(0)(0)(0)(0)(1)(
+                      this.props.binPem
+                    ) ||
+                    specialPermissioner().projects.isOwner(
+                      this.props.project,
+                      this.props.login
+                    )
+                  }
+                />
+
                 <Skills
                   onlyActiveAssignments={onlyActiveAssignments}
                   projectId={project.id}
@@ -881,6 +886,11 @@ const mapStateToProps = state => {
     addEmployeeToProjectErrors:
       state.projectsReducer.addEmployeeToProjectErrors,
 
+    addProjectOwnerToProjectStatus:
+      state.projectsReducer.addProjectOwnerToProjectStatus,
+    addProjectOwnerToProjectErrors:
+      state.projectsReducer.addProjectOwnerToProjectErrors,
+
     changeProjectSkillsStatus: state.projectsReducer.changeProjectSkillsStatus,
     changeProjectSkillsErrors: state.projectsReducer.changeProjectSkillsErrors,
 
@@ -941,6 +951,10 @@ const mapDispatchToProps = dispatch => {
       dispatch(
         changeProjectSkillsACreator(projectId, skills, onlyActiveAssignments)
       ),
+
+    addProjectOwner: (projectId, ownersIdsArray) =>
+      dispatch(addProjectOwnerACreator(projectId, ownersIdsArray)),
+
     getAllSkills: currentAddedSkills =>
       dispatch(getAllSkillsACreator(currentAddedSkills)),
     getAllSkillsDataClear: (loadedSkills, loadSkillsStatus, loadSkillsErrors) =>

@@ -318,9 +318,12 @@ const translations = {
     OK: ""
   },
   AddProjectOwner: {
-    AddOwner: "Add owner",
-    OwnersAddedSuccessfully: "Owners added successfully",
-    Add: "Add"
+    Owners: "Owners",
+    AddProjectOwner: "Add project's owner",
+    ChooseAnOwner: "Choose project's owner",
+    EmployeeNotFound: "Employee Not Found",
+    ProjectOwnerHasBeenAdded: "Owner has been added successfully",
+    Delete: "Delete"
   },
   AddProjectScreen: {
     AddProject: "Add Project",
@@ -561,7 +564,6 @@ const translations = {
     MinutesPl: "minutes",
     MarkAllAsRead: "Mark all as read",
     DeleteAll: "Delete all"
-
   },
   Skills: {
     SaveChanges: "Save changes",

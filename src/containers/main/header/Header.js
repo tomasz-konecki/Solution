@@ -52,7 +52,7 @@ class Header extends React.Component {
           <Icon additionalClass="menu-hide-exclusion" icon="bars" iconSize="lg"/>
         </div>
         <LeftMenu className="left-menu" close={this.closeMenu} extended={this.state.extended} />
-        <Logo size="vector_cut"/>
+        <Logo size="vector_cut_header"/>
         <TopBar />
       </div>
     );

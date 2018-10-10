@@ -22,7 +22,6 @@ class CallSkype extends Component {
       t,
       canEditSkypeId
     } = this.props;
-
     return editSkypeFormItems[0].value ? (
       <div className="row skypeDiv">
         <a
@@ -37,7 +36,7 @@ class CallSkype extends Component {
           <React.Fragment>
             {!this.state.editSkype ? (
               <React.Fragment>
-                <a className="pencilIcon" onClick={this.handleClick}>
+                <a className="pencilIcon" title={t("Close")} onClick={this.handleClick}>
                   <Icon icon="times-circle" className="col pencilIcon" />
                 </a>
                 <Form
@@ -64,7 +63,7 @@ class CallSkype extends Component {
                 />
               </React.Fragment>
             ) : (
-              <a className="pencilIcon" onClick={this.handleClick}>
+              <a className="pencilIcon" title={t("Edit")} onClick={this.handleClick}>
                 <Icon icon="pencil-alt" className="col pencilIcon" />
               </a>
             )}
@@ -90,7 +89,7 @@ class CallSkype extends Component {
           <React.Fragment>
             {!this.state.editSkype ? (
               <React.Fragment>
-                <a className="pencilIcon" onClick={this.handleClick}>
+                <a className="pencilIcon" title={t("Edit")} onClick={this.handleClick}>
                   <Icon icon="times-circle" className="col pencilIcon" />
                 </a>
                 <Form

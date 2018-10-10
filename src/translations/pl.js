@@ -321,9 +321,12 @@ const translations = {
     OK: ""
   },
   AddProjectOwner: {
-    AddOwner: "Dodaj właściciela",
-    OwnersAddedSuccessfully: "Właścicieli dodano pomyślnie",
-    Add: "Dodaj"
+    Owners: "Właściciele",
+    AddProjectOwner: "Dodaj właściciela projektu.",
+    ChooseAnOwner: "Wybierz właściciela projektu.",
+    EmployeeNotFound: "Nie znaleziono pracownika.",
+    ProjectOwnerHasBeenAdded: "Właściciel został dodany.",
+    Delete: "Usuń"
   },
   AddProjectScreen: {
     AddProject: "Dodaj Projekt",
@@ -499,13 +502,12 @@ const translations = {
     Months: "miesięcy",
     MonthsPl: "miesiące",
     Year: "Rok",
-    Years: "lata",    
+    Years: "lata",
     OneMinute: "Minutę",
     Minutes: "minuty",
     MinutesPl: "minut",
     MarkAllAsRead: "Oznacz wszystkie jako przeczytane",
     DeleteAll: "Usuń wszystkie"
-
   }
 };
 

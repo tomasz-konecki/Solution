@@ -52,11 +52,11 @@ import Owners from "./Owners/Owners";
 
 class ProjectDetails extends Component {
   workerNames = [
-    this.props.t("Name",),
-    this.props.t("Role",),
-    this.props.t("Experience",),
-    this.props.t("Position",),
-    this.props.t("StartDate",),
+    this.props.t("Name"),
+    this.props.t("Role"),
+    this.props.t("Experience"),
+    this.props.t("Position"),
+    this.props.t("StartDate"),
     this.props.t("EndDate")
   ];
   state = {
@@ -341,7 +341,7 @@ class ProjectDetails extends Component {
       getSuggestEmployeesStatus,
       suggestEmployees,
       addProjectOwnerToProjectStatus,
-      addProjectOwnerToProjectErrors
+      addProjectOwnerToProjectErrors,
       t
     } = this.props;
 
@@ -807,9 +807,7 @@ class ProjectDetails extends Component {
               onClose={this.closeAddEmployeeToProjectModal}
             >
               <header>
-                <h3 className="section-heading">
-                  {t("AddEmployee")}{" "}
-                </h3>
+                <h3 className="section-heading">{t("AddEmployee")} </h3>
               </header>
               <Form
                 btnTitle={t("Add")}

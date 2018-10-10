@@ -5,6 +5,8 @@ import {loadSharedEmployeesForManager,loadEmployees, addSharedEmployee, deleteSh
 import Spinner from "../../../../common/spinner/spinner";
 import Button from "../../../../common/button/button";
 import { translate } from "react-translate";
+import SharedEmployeesListContainer from './sharedEmployeesListContainer';
+import EmployeesListContainer from './employeesListContainer';
 import "./sharedEmployeesModal.scss";
 
 class ShareEmployeesModal extends React.Component {
@@ -235,161 +237,26 @@ class ShareEmployeesModal extends React.Component {
 
             {this.state.loadingEmployees || this.state.loadingSharedEmployees || this.state.loadingTeamLeadersAndManagers ? (<div><Spinner/></div>) :(
               <div>
-                <div className="row" style={{ marginTop: "10px", alignItems: "center" }}>
-                  <div className="col-6">{t("SharedEmployees")} :</div>
-                  <div className="col-6">
-                    {this.props.sharedEmployeesForManager &&
-                    this.props.sharedEmployeesForManager.length > 0 ? (
-                      <input
-                        type="text"
-                        placeholder={t("Search") + "..."}
-                        className="form-control search-btn"
-                        onChange={e => this.filterSharedEmployees(e)}
-                      />
-                    ) : (
-                      <input
-                        type="text"
-                        placeholder={t("Search") + "..."}
-                        className="form-control search-btn"
-                        disabled
-                      />
-                    )}
-                  </div>
-                </div>
 
-                <div className="shared-employees-container">
-                  {this.props.sharedEmployeesForManager && this.props.sharedEmployeesForManager.map(sharedEmployee => {
-                      return (
-                        <div
-                          className={this.state.errorElementsDeleting.filter(e => e.empId === sharedEmployee.employeeId ).length > 0 ? "red shared-row" : "shared-row"}
-                          key={sharedEmployee.id}
-                        >
-                          {(sharedEmployee.firstName.toLowerCase() + " " + sharedEmployee.lastName.toLowerCase()).includes(this.state.sharedEmployeesFilter) ? (
-                            <div className="row align-center">
-                              <div className="col-7">{sharedEmployee.firstName}{" "}{sharedEmployee.lastName}</div>
-                              <div className="col-5">
-                                <button onClick={() => this.stopSharingEmployee(sharedEmployee.id,sharedEmployee.employeeId)} className="shared-btn">
-                                  {this.state.currentlyDeletingIds.includes(sharedEmployee.employeeId) ?
-                                  (
-                                    <div className="align-center">
-                                      <div className="lds-dual-ring" />
-                                      <div className="clicked">
-                                        <i className="fa fa-stop-circle btn-icon" />
-                                        {t("StopSharing")}
-                                      </div>
-                                    </div>
-                                  ) : (
-                                    <div className="align-center">
-                                      <i className="fa fa-stop-circle btn-icon" />
-                                      {t("StopSharing")}
-                                    </div>
-                                  )}
-                                </button>
-                              </div>
+                <SharedEmployeesListContainer
+                  sharedEmployeesForManager={this.props.sharedEmployeesForManager}
+                  stopSharingEmployee={this.stopSharingEmployee}
+                  currentlyDeletingIds={this.state.currentlyDeletingIds}
+                  errorElementsDeleting={this.state.errorElementsDeleting}
+                  t={t}
+                />
 
-                              {this.state.errorElementsDeleting.filter(e => e.empId === sharedEmployee.employeeId).length > 0 &&
-                                this.state.errorElementsDeleting.filter(e => e.empId === sharedEmployee.employeeId).map(
-                                  error => (<div className="col-sm-12" style={{textAlign: "center",fontSize: "0.8rem"}}>{error.error}</div>)
-                              )}
+                <EmployeesListContainer
+                  employees={this.props.employees}
+                  sharedEmployeesForManager={this.props.sharedEmployeesForManager}
+                  errorElementsAdding={this.state.errorElementsAdding}
+                  getSubordinates={this.getSubordinates}
+                  shareEmployee={this.shareEmployee}
+                  currentlyAddingIds={this.state.currentlyAddingIds}
+                  showSubordinatesId={this.state.showSubordinatesId}
+                  t={t}
+                />
 
-                            </div>
-                          ) : (
-                            <div />
-                          )}
-                        </div>
-                      );
-                    })}
-                </div>
-
-                <div className="row" style={{ marginTop: "10px", alignItems: "center" }} >
-                  <div className="col-6">{t("Employees")} :</div>
-                  <div className="col-6">
-                    {this.props.employees && this.props.employees.length > 0 ? (
-                      <input
-                        type="text"
-                        placeholder={t("Search") + "..."}
-                        className="form-control search-btn"
-                        onChange={e => this.filterEmployees(e)}
-                      />
-                    ) : (
-                      <input
-                        type="text"
-                        placeholder={t("Search") + "..."}
-                        className="form-control search-btn"
-                        disabled
-                      />
-                    )}
-                  </div>
-                </div>
-
-                <div className="employees-container">
-                  {this.props.employees && this.props.employees.map(employee => {
-                      if (this.state.loadingEmployees === true) {
-                        this.setState({loadingEmployees: false});
-                      }
-                      return (
-                        <div key={employee.id} className="emp-row">
-                          {!employee.employeeShared && this.props.sharedEmployeesForManager.filter(e => e.employeeId === employee.id).length === 0 &&
-                            (employee.firstName.toLowerCase() + " " + employee.lastName.toLowerCase()).includes(this.state.employeesFilter) &&
-                            (
-                              <div className={this.state.errorElementsAdding.filter(e => e.empId === employee.id).length > 0? "row red align-center": "row align-center"}>
-                                <div className="col-7">
-                                  {employee.firstName} {employee.lastName}
-                                  {this.props.employees.filter( e => e.managerId === employee.id).length > 0 &&
-                                  (
-                                    <span>
-                                      <i className="fa fa-caret-down" style={{ marginLeft: "5px", cursor: "pointer" }} onClick={() =>this.getSubordinates(employee.id)}/>
-                                    </span>
-                                  )}
-                                </div>
-
-                                <div className="col-5">
-                                  <button onClick={() => this.shareEmployee(employee.id)} className="emp-btn">
-                                    {this.state.currentlyAddingIds.includes(employee.id) ?
-                                    (
-                                      <div className="align-center">
-                                        <div className="lds-dual-ring" />
-                                        <div className="clicked">
-                                          <i className="fa fa-share-alt btn-icon"/>
-                                          {this.props.employees.filter(e => e.managerId === employee.id).length > 0
-                                            ? t("ShareTeam") + " [" + this.props.employees.filter(e => e.managerId === employee.id).length +"]"
-                                            : t("Share")}
-                                        </div>
-                                      </div>
-                                    ) : (
-                                      <div className="align-center">
-                                        <i className="fa fa-share-alt btn-icon"/>
-                                        {this.props.employees.filter(e => e.managerId === employee.id).length > 0
-                                          ? t("ShareTeam") +" [" + this.props.employees.filter(e => e.managerId === employee.id).length +"]"
-                                          : t("Share")}
-                                      </div>
-                                    )}
-                                  </button>
-                                </div>
-
-                                {this.state.showSubordinatesId === employee.id && this.state.subordinates.length > 0 &&
-                                  this.state.subordinates.map(subordinate => {
-                                    return (
-                                      <div className="col-sm-12" style={{ paddingLeft: "20px" }} key={subordinate.id} >
-                                        <i className="fa fa-angle-right" />{subordinate.firstName}{" "}{subordinate.lastName}
-                                      </div>
-                                    );
-                                  })}
-
-                                {this.state.errorElementsAdding.filter(e => e.empId === employee.id).length > 0 &&
-                                  this.state.errorElementsAdding
-                                    .filter(e => e.empId === employee.id)
-                                    .map(error => (
-                                      <div className="col-sm-12" style={{textAlign: "center", fontSize: "0.8rem"}}>
-                                        {error.error}
-                                      </div>
-                                ))}
-                              </div>
-                            )}
-                        </div>
-                      );
-                    })}
-                </div>
               </div>
             )}
           </div>

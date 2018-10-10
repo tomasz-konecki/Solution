@@ -66,7 +66,6 @@ class Table extends Component {
     this.setState({ currentTrs: currentTrs, currentOpenedRowId: null });
   };
   pushUserDetailsIntoTableDOM = (id, t) => {
-    console.log("t", t);
     if (
       this.state.currentOpenedRowId !== null &&
       id === this.state.currentOpenedRowId
@@ -103,7 +102,8 @@ class Table extends Component {
                 {t("AddedBy")}: <b>{items[id].createdBy}</b> {t("OnDate") + " "}
                 <i className="moment-date">
                   {items[id].createdAt.slice(0, 10)}(
-                  {moment().diff(items[id].createdAt.slice(0, 10), "days")} {t("DaysAgo")})
+                  {moment().diff(items[id].createdAt.slice(0, 10), "days")}{" "}
+                  {t("DaysAgo")})
                 </i>
               </li>
 
@@ -114,14 +114,17 @@ class Table extends Component {
                 })}
               </li>
             </ul>
-            <button
-              onClick={() =>
-                this.setState({ opinionModal: true, modalType: true })
-              }
-              className="option-btn green-btn"
-            >
-              {t("AddFeedbackShort")}
-            </button>
+            {this.props.isProjectOwner ||
+              (items[id].employeeId !== this.props.login && (
+                <button
+                  onClick={() =>
+                    this.setState({ opinionModal: true, modalType: true })
+                  }
+                  className="option-btn green-btn"
+                >
+                  {t("AddFeedbackShort")}
+                </button>
+              ))}
             <button
               className="option-btn green-btn"
               onClick={this.getFeedbacks}
@@ -136,11 +139,11 @@ class Table extends Component {
       this.setState({ currentTrs: teamRows, currentOpenedRowId: id });
     }
   };
-  populateTrs = (items,t) => {
+  populateTrs = (items, t) => {
     const trs = [];
     for (let i = 0; i < items.length; i++) {
       const trItem = (
-        <tr onClick={() => this.pushUserDetailsIntoTableDOM(i,t)} key={i}>
+        <tr onClick={() => this.pushUserDetailsIntoTableDOM(i, t)} key={i}>
           <td>{items[i].firstName + " " + items[i].lastName}</td>
           <td>{items[i].role}</td>
           <td>{items[i].seniority}</td>
@@ -215,9 +218,11 @@ class Table extends Component {
       togleAddEmployeeModal,
       emptyMsg,
       isProjectOwner,
-      t
+      t,
+      login
     } = this.props;
     const { modalType } = this.state;
+
     return (
       <div className="table-container">
         {items && items.length > 0 ? (
@@ -250,7 +255,12 @@ class Table extends Component {
           <div className="empty-project-squad">
             <div>
               <span>{emptyMsg}</span>
-              <i onClick={togleAddEmployeeModal} className="fa fa-user-plus" />
+              {isProjectOwner && (
+                <i
+                  onClick={togleAddEmployeeModal}
+                  className="fa fa-user-plus"
+                />
+              )}
             </div>
           </div>
         )}
@@ -266,9 +276,7 @@ class Table extends Component {
             <div className="opinion-container">
               <header>
                 <h3 className="section-heading">
-                  {modalType
-                    ? t("AddFeedback")
-                    : t("FeedbacksList")}
+                  {modalType ? t("AddFeedback") : t("FeedbacksList")}
                 </h3>
               </header>
 
@@ -303,9 +311,14 @@ class Table extends Component {
               ) : (
                 <p className="empty-opinions">{t("NoFeedbacks")}</p>
               )}
-              <button onClick={this.changeModal} className="show-opinions-btn">
-                {modalType ? t("ShowFeedbacks") : t("AddFeedbackShort")}
-              </button>
+              {isProjectOwner && (
+                <button
+                  onClick={this.changeModal}
+                  className="show-opinions-btn"
+                >
+                  {modalType ? t("ShowFeedbacks") : t("AddFeedbackShort")}
+                </button>
+              )}
             </div>
           </Modal>
         )}

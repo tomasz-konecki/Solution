@@ -154,22 +154,23 @@ class Owners extends PureComponent {
             return (
               <button key={i.id} className="owner-btn">
                 {i.fullName}
-                {owners.length > 1 && (
-                  <i
-                    onClick={() =>
-                      changeProjectState(
-                        WebApi.projects.delete.owner,
-                        "deleteOwner",
-                        {
-                          projectId: projectId,
-                          ownerId: owners[index].id
-                        }
-                      )
-                    }
-                  >
-                    {t("Delete")}
-                  </i>
-                )}
+                {owners.length > 1 &&
+                  isProjectOwner && (
+                    <i
+                      onClick={() =>
+                        changeProjectState(
+                          WebApi.projects.delete.owner,
+                          "deleteOwner",
+                          {
+                            projectId: projectId,
+                            ownerId: owners[index].id
+                          }
+                        )
+                      }
+                    >
+                      {t("Delete")}
+                    </i>
+                  )}
               </button>
             );
           })}

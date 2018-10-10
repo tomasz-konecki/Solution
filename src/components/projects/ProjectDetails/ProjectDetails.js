@@ -354,7 +354,7 @@ class ProjectDetails extends Component {
       currentOpenedRow,
       isLoadingProject
     } = this.state;
-
+    console.log(this.props);
     return (
       <div
         onClick={
@@ -547,10 +547,16 @@ class ProjectDetails extends Component {
                       addEmployeModal: !this.state.addEmployeModal
                     })
                   }
-                  isProjectOwner={specialPermissioner().projects.isOwner(
-                    this.props.project,
-                    this.props.login
-                  )}
+                  login={this.props.login}
+                  isProjectOwner={
+                    binaryPermissioner(false)(0)(0)(0)(0)(0)(1)(
+                      this.props.binPem
+                    ) ||
+                    specialPermissioner().projects.isOwner(
+                      this.props.project,
+                      this.props.login
+                    )
+                  }
                 />
 
                 <div className="table-container table">

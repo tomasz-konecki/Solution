@@ -79,7 +79,7 @@ class EmployeeDetailsContainer extends React.Component {
     } else if (nextProps.employeeOperationStatus === false) {
       this.setState({ isChangingEmployeeData: false });
     }
-    else if(nextProps.match !== this.props.match)
+    else if(nextProps.match.path !== this.props.match.path)
     {
         this.setState({isLoadingFirstTimeEmployee: true});
         this.props.getEmployeePromise(nextProps.match.params.id);

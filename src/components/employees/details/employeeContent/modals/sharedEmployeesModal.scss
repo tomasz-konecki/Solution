@@ -1,7 +1,9 @@
-
+.share-employees-modal-container {
+  height: 600px !important;
+}
 
 .shared-employees-container {
-  height: 100px;
+  height: 150px;
   overflow-y: scroll;
   overflow-x: hidden;
   background-color: rgba(223,223,223, 1);
@@ -16,8 +18,16 @@
     height: 100%;
     cursor: pointer;
 
+    @media screen and (max-width: 400px) {
+      height: 50px;
+    }
+
     .btn-icon {
       margin-right: 5px;
+
+      @media screen and (max-width: 500px) {
+        display: block;
+      }
     }
   }
 
@@ -27,7 +37,7 @@
 }
 
 .employees-container {
-  height: 150px;
+  height: 250px;
   overflow-y: scroll;
   overflow-x: hidden;
   background-color: rgba(223, 223, 223, 1);
@@ -40,9 +50,18 @@
   .emp-btn {
     width: 100%;
     cursor: pointer;
+    align-items: center;
+
+    @media screen and (max-width: 400px) {
+      height: 50px;
+    }
 
     .btn-icon {
       margin-right: 5px;
+
+      @media screen and (max-width: 500px) {
+        display: block;
+      }
     }
   }
 
@@ -109,4 +128,8 @@
 
 .share-btn:hover {
   opacity: 0.8;
+}
+
+.align-center {
+  align-items: center;
 }

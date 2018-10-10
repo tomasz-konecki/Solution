@@ -70,7 +70,6 @@ class List extends React.PureComponent {
     }
 
     modifeList = (originalList, functionsToUse) => {
-        console.log(originalList, functionsToUse)
         if(functionsToUse){
             const shouldPutSearchBox = functionsToUse.find(item => item.name === "search");
             const shouldPutSort = functionsToUse.find(item => item.name === "sort");

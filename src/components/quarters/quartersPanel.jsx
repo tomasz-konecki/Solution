@@ -48,6 +48,10 @@ class Quarters extends React.PureComponent{
             }
         }
     }
+
+    // To do: 
+    // translation, responsive, dynamicly adding questions, deleting current added questions, generating docs, 
+    // adding events to callendar, removing events from callendar, connect adding quarter request
   
     render(){
         const { match, history, lastWatchedPersons, planQuarterACreator, createLastWatchedPersonsArray,

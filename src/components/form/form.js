@@ -119,7 +119,6 @@ class Form extends Component {
     if(newFormItems[id].callBackFunc){
       newFormItems[id].callBackFunc();
     }
-    console.log()
 
     this.setState({ formItems: newFormItems, validationResult: shouldSubmit });
   };

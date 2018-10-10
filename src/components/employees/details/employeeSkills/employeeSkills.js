@@ -378,7 +378,11 @@ class EmployeeSkills extends React.Component {
           ) : (
             <EmptyContent
               sizeClass="skills-size"
-              action={status !== "Nieaktywny" ? this.openSkillsModal : null}
+              action={
+                status !== "Nieaktywny" && (isYou || binPem > 1)
+                  ? this.openSkillsModal
+                  : null
+              }
               shouldShowTopIcon={status !== "Nieaktywny"}
               content={t("NoSkills")}
               operationIcon="fa fa-plus"
@@ -461,6 +465,7 @@ class EmployeeSkills extends React.Component {
                     ? t("SkillsAddedSuccessfull")
                     : addNewSkillsErrors && addNewSkillsErrors[0]
                 }}
+                validationResult={skillsToAdd.length > 0 ? true : false}
                 onClickHandler={this.saveNewAddedSkills}
                 isLoading={isAddingNewSkills}
                 btnTitle={t("ApproveChanges")}

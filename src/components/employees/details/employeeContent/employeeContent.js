@@ -14,6 +14,9 @@ import binaryPermissioner from '../../../../api/binaryPermissioner';
 
 
 const employeeContent = ({
+  changeCurrentWatchedUser,
+  createLastWatchedPersonsArray,
+  lastWatchedPersons,
   employee,
   editSeniority,
   employeeErrors,
@@ -33,6 +36,8 @@ const employeeContent = ({
   editSkypeId,
   skypeIdAddLoading,
   updateSkypeIdResult,
+
+  getEmployeePromise,
   isYou,
   binPem
 }) => {
@@ -83,7 +88,7 @@ const employeeContent = ({
                 skypeIdAddLoading={skypeIdAddLoading}
                 updateSkypeIdResult={updateSkypeIdResult}
                 t={t}
-                canEditSkypeId={isYou || binPem == 32}
+                canEditSkypeId={isYou || binPem >= 32}
               />
             </div>
           </header>
@@ -207,6 +212,10 @@ const employeeContent = ({
       </div>
 
       <Quaters
+        changeCurrentWatchedUser={changeCurrentWatchedUser}
+        createLastWatchedPersonsArray={createLastWatchedPersonsArray}
+        lastWatchedPersons={lastWatchedPersons}
+        getEmployeePromise={getEmployeePromise}
         reactivateQuaterACreator={reactivateQuaterACreator}
         status={status}
         reactivateQuaterStatus={reactivateQuaterStatus}

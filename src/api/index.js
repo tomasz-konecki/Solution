@@ -1,6 +1,6 @@
 import axios from "axios";
 // import * as jwtDecode from "jwt-decode";
-import { resolve as BluebirdResolve }  from "bluebird/js/browser/bluebird.core.min.js";
+import { resolve as BluebirdResolve } from "bluebird/js/browser/bluebird.core.min.js";
 import * as usersMocks from "./mock/users";
 import * as projectsMocks from "./mock/projects";
 import redux from "redux";
@@ -28,9 +28,7 @@ const select = state =>
   state.authReducer.tokens !== undefined ? state.authReducer.tokens.token : "";
 
 const selectLang = state =>
-  state.languageReducer.language !== undefined
-    ? state.languageReducer.language
-    : "pl";
+  state.languageReducer.language ? state.languageReducer.language : "pl";
 
 function listener() {
   // const token = `Bearer ${select(store.getState())}`;
@@ -132,7 +130,7 @@ const WebAround = {
   patch: (path, payload) => {
     return axios
       .patch(path, payload)
-      .then(response =>  parseSuccess(response))
+      .then(response => parseSuccess(response))
       .catch(response => authValidator(response))
       .catch(response => parseFailure(response));
   }
@@ -165,15 +163,47 @@ const WebApi = {
       );
     }
   },
+  notification: {
+    get: {
+      getAll: () => {
+        return WebAround.get(`${API_ENDPOINT}/Notification`);
+      }
+    },
+    delete: {
+      delete: notificationsIds => {
+        return WebAround.delete(`${API_ENDPOINT}/Notification`, {
+          data: {
+            NotificationIds: notificationsIds
+          }
+        });
+      },
+      deleteAll: () => {
+        return WebAround.delete(`${API_ENDPOINT}/Notification/All`);
+      }
+    },
+    put: {
+      markAsRead: notificationId => {
+        return WebAround.put(
+          `${API_ENDPOINT}/Notification/MarkAsRead/${notificationId}`
+        );
+      },
+      markAllAsRead: () => {
+        return WebAround.put(`${API_ENDPOINT}/Notification/MarkAllAsRead`);
+      }
+    }
+  },
   roles: {
     get: {
       getAll: () => {
-        return WebAround.get(`${API_ENDPOINT}/role`)
+        return WebAround.get(`${API_ENDPOINT}/role`);
       }
     },
     post: {
-      add: (userRoles) => {
-        return WebAround.post(`${API_ENDPOINT}/account/preferedRoles`, userRoles)
+      add: userRoles => {
+        return WebAround.post(
+          `${API_ENDPOINT}/account/preferedRoles`,
+          userRoles
+        );
       }
     }
   },
@@ -238,6 +268,11 @@ const WebApi = {
     get: {
       questions: () => {
         return WebAround.get(`${API_ENDPOINT}/QuarterTalks/questions`);
+      },
+      getQuarterForEmployee: employeeId => {
+        return WebAround.get(
+          `${API_ENDPOINT}/QuarterTalks/ForEmployee/` + employeeId
+        );
       }
     },
     delete: quarterId => {
@@ -253,13 +288,27 @@ const WebApi = {
     post: {
       createQuarter: model => {
         return WebAround.post(`${API_ENDPOINT}/QuarterTalks`, model);
+      },
+      planQuarter: (model, shouldSync) => {
+        return WebAround.post(
+          `${API_ENDPOINT}/QuarterTalks/Planned?syncCalendar=${shouldSync}`,
+          model
+        );
+      },
+      reservedDates: (model, checkOutlook) => {
+        return WebAround.post(
+          `${API_ENDPOINT}/QuarterTalks/GetReservedDates?checkOutlook=${checkOutlook}`,
+          model
+        );
       }
     }
   },
   certificates: {
     get: {
       byEmployee: employeeId => {
-        return WebAround.get(`${API_ENDPOINT}/certificates/employee/${employeeId}`)
+        return WebAround.get(
+          `${API_ENDPOINT}/certificates/employee/${employeeId}`
+        );
       }
     },
     post: {
@@ -269,12 +318,17 @@ const WebApi = {
     },
     put: {
       update: (certificateId, certificateModel) => {
-        return WebAround.put(`${API_ENDPOINT}/certificates/${certificateId}`, certificateModel);
+        return WebAround.put(
+          `${API_ENDPOINT}/certificates/${certificateId}`,
+          certificateModel
+        );
       }
     },
     delete: {
       deleteById: certificateId => {
-        return WebAround.delete(`${API_ENDPOINT}/certificates/${certificateId}`);
+        return WebAround.delete(
+          `${API_ENDPOINT}/certificates/${certificateId}`
+        );
       }
     }
   },
@@ -407,11 +461,11 @@ const WebApi = {
           `${API_ENDPOINT}/projects/${projectId}?onlyActiveAssignments=${onlyActiveAssignments}`
         );
       },
-      suggestEmployees: projectId =>{
+      suggestEmployees: projectId => {
         return WebAround.get(
           `${API_ENDPOINT}/projects/EmployeeWithFreeCapacity?projectId=${projectId}`
-        )
-      },
+        );
+      }
     },
     post: {
       list: (settings = {}) => {
@@ -430,7 +484,7 @@ const WebApi = {
       },
       owner: (projectId, ownersIdsArray) => {
         return WebAround.put(`${API_ENDPOINT}/projects/owner/${projectId}`, {
-          userIds: ownersIdsArray
+          usersIds: ownersIdsArray
         });
       },
       closeProject: projectId => {
@@ -508,9 +562,8 @@ const WebApi = {
       }
     },
     delete: {
-      report: reportId => WebAround.delete(
-        `${API_ENDPOINT}/reports/unfavorite/${reportId}`
-      )
+      report: reportId =>
+        WebAround.delete(`${API_ENDPOINT}/reports/unfavorite/${reportId}`)
     }
   },
   CvImport: {
@@ -556,12 +609,19 @@ const WebApi = {
   },
   oneDrive: {
     get: {
-      getRedirectLink: () => {
-        return WebAround.get(`${API_ENDPOINT}/onedrive/auth`);
-      },
-      sendQuertToAuth: code => {
+      getRedirectLink: shouldRedirectOnCalendar => {
         return WebAround.get(
-          `${API_ENDPOINT}/onedrive/authenticated?code=${code}`
+          `${API_ENDPOINT}/onedrive/auth?=${
+            shouldRedirectOnCalendar ? shouldRedirectOnCalendar : false
+          }`
+        );
+      },
+      sendQuertToAuth: (code, shouldRedirectOnCalendar) => {
+        console.log(shouldRedirectOnCalendar);
+        return WebAround.get(
+          `${API_ENDPOINT}/onedrive/authenticated?code=${code}&calendar=${
+            shouldRedirectOnCalendar ? shouldRedirectOnCalendar : false
+          }`
         );
       },
       refreshToken: oldToken => {

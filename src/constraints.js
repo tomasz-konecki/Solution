@@ -1,7 +1,9 @@
 const constraints = {
   projetctFormPattern: {
+    nameWithPolishLetters: /^[0-9a-zżźćńółęąśŻŹĆĄŚĘŁÓŃ\s-]+$/i,
     name: /^[0-9a-z\s-]+$/i,
     number: /[0-9]/,
+    strongNumber: /^[0-9]*$/,
     client: /(.*?)/,
     cloud: /(.*?)/,
     roleInProject: /(.*?)/,

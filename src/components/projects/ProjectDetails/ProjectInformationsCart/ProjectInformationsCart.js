@@ -13,7 +13,7 @@ const projectInformationsCart = props => {
                 <li key={i}>
                     {
                         props.originalObject[i] && props.items.names[index] &&
-                        <span>{props.items.names[index]}: </span>
+                        <span>{props.t(props.items.names[index])}: </span>
                     }
 
                     {props.originalObject[i] && 

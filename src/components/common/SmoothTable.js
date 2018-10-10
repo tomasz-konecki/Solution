@@ -734,8 +734,7 @@ class SmoothTable extends Component {
   };
   render() {
     const { construct } = this.state;
-    const { showRaportButton } = this.props;
-    const { t } = this.props;
+    const { showRaportButton, t } = this.props;
     let list = [],
       empty = false;
     list.push(this.generateFieldSearchRow());
@@ -747,11 +746,11 @@ class SmoothTable extends Component {
       empty = true;
     }
     if (this.state.toRaports === true) {
-      return <Redirect to="/main/reports" />;
+      return <Redirect push to="/main/reports" />;
     }
     if (this.state.rowClickedId) {
       return (
-        <Redirect
+        <Redirect push
           to={this.props.construct.redirectPath + this.state.rowClickedId}
         />
       );

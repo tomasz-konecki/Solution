@@ -7,6 +7,7 @@ import Modal from "react-responsive-modal";
 import Spinner from "../spinner/spinner";
 import { isArrayContainsByObjectKey } from "../../../services/methods";
 import CorrectOperation from "../correctOperation/correctOperation";
+import { translate } from "react-translate";
 
 class Skills extends Component {
   state = {
@@ -89,7 +90,6 @@ class Skills extends Component {
   createProgressBtns = (number, color, startVal, index, listName) => {
     const btnsArray = [];
     const items = [...this.state[listName]];
-    console.log(this.props);
     if (this.props.isProjectOwner) {
       for (let i = 0; i < number; i++) {
         btnsArray.push(
@@ -246,20 +246,25 @@ class Skills extends Component {
       addSkillsToProjectStatus,
       addSkillsToProjectErrors,
       items: propsItems,
-      isProjectOwner
+      isProjectOwner,
+      t
     } = this.props;
     return (
       <div className="progress-bars-container">
         <h3>
           {title}
+
+          {isProjectOwner && (
+            <i
+              onClick={this.getAllSkills}
+              className="fa fa-plus"
+              title={t("AddSkillsToProject")}
+            />
+          )}
           {changeProjectSkillsStatus === false && (
             <span>{changeProjectSkillsErrors[0]}</span>
           )}
-
           {isChanging && <SmallSpinner />}
-          {isProjectOwner && (
-            <i onClick={this.getAllSkills} className="fa fa-plus" />
-          )}
         </h3>
         {items.map((i, index) => {
           return (
@@ -280,6 +285,13 @@ class Skills extends Component {
             </div>
           );
         })}
+        {items.length === 0 && (
+          <div
+            style={{ display: "block", textAlign: "center", color: "tomato" }}
+          >
+            {t("ThatProjectDoesntHavaAnySkillAssigned")}
+          </div>
+        )}
 
         {items.length > 0 &&
           isProjectOwner && (
@@ -288,7 +300,7 @@ class Skills extends Component {
               onClick={this.saveChangedSkills}
               className="option-btn green-btn btn-abs"
             >
-              Zapisz zmiany
+              {t("SaveChanges")}
             </button>
           )}
         <Modal
@@ -304,11 +316,11 @@ class Skills extends Component {
                 value={skillName}
                 type="text"
                 onChange={e => this.findSkillByName(e)}
-                placeholder="wpisz nazwę umiejętności..."
+                placeholder={t("InsertSkillName")}
               />
             ) : (
               <h3 className="section-heading">
-                Dodaj umiejętność do projektu
+                {t("AddSkillToProject")}
                 {loadSkillsStatus && (
                   <i
                     onClick={() => this.setState({ showSearchBar: true })}
@@ -320,7 +332,7 @@ class Skills extends Component {
 
             {loadSkillsStatus && (
               <button onClick={this.showAddList} className="change-list-btn">
-                {showAddList ? "Ukryj dodane" : "Pokaż dodane"}
+                {showAddList ? t("HideAdded") : t("ShowAdded")}
               </button>
             )}
           </header>
@@ -332,9 +344,7 @@ class Skills extends Component {
               {loadSkillsStatus !== null && loadSkillsStatus ? (
                 <div className="modal-progress-br-container">
                   {searchedSkills.length === 0 && (
-                    <p className="empty-list">
-                      Brak wyników dla tego ciągu znaków
-                    </p>
+                    <p className="empty-list">{t("NoResults")}</p>
                   )}
 
                   {searchedSkills.map((skill, index) => {
@@ -379,17 +389,16 @@ class Skills extends Component {
               ) : (
                 <p className="server-error">{loadSkillsErrors[0]}</p>
               )}
-              {!isLoadingSkillsForModal &&
-                listToAddForProject.length > 0 && (
-                  <button
-                    disabled={isAddingNewSkills}
-                    onClick={this.addSkillsToProject}
-                    className="option-btn green-btn"
-                  >
-                    Zatwierdź
-                    {isAddingNewSkills && <SmallSpinner />}
-                  </button>
-                )}
+              {!isLoadingSkillsForModal && (
+                <button
+                  disabled={isAddingNewSkills}
+                  onClick={this.addSkillsToProject}
+                  className="option-btn green-btn"
+                >
+                  {t("Confirm")}
+                  {isAddingNewSkills && <SmallSpinner />}
+                </button>
+              )}
 
               {addSkillsToProjectStatus === false && (
                 <p style={{ fontSize: "22px" }} className="server-error">
@@ -407,4 +416,4 @@ class Skills extends Component {
   }
 }
 
-export default Skills;
+export default translate("Skills")(Skills);

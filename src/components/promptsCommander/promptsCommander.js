@@ -5,25 +5,19 @@ import { changeShowGlobal, setProgressValue } from '../../actions/progressBarAct
 import { generateReport } from '../../actions/reportsActions';
 import SideBarProgressContent from './sideBarProgressContent';
 import SmallProgressBar from './smallProgressBar/smallProgressBar';
-const items = [
-    {name: "Powiadomienie 1", content: "dasd asds asdsa sad sasa as asdsa sasa asdsadasdadsadsdsa dsad asa sadasd as sa...", date: "19-12-1994 16:45", 
-    isShowed: true},
-    {name: "Powiadomienie 2", content: "dasd asds asdsa sad sasa as asdsa sasa asdsadasdadsadsdsa dsad asa sadasd as sa...", date: "19-12-1994 16:45", 
-    isShowed: true},
-    {name: "Powiadomienie 3", content: "dasd asds asdsa sad sasa as asdsa sasa asdsadasdadsadsdsa dsad asa sadasd as sa...", date: "19-12-1994 16:45", 
-    isShowed: true},
-    {name: "Powiadomienie 4", content: "dasd asds asdsa sad sasa as asdsa sasa asdsadasdadsadsdsa dsad asa sadasd as sa...", date: "19-12-1994 16:45", 
-    isShowed: false},
-    {name: "Powiadomienie 5", content: "dasd asds asdsa sad sasa as asdsa sasa asdsadasdadsadsdsa dsad asa sadasd as sa...", date: "19-12-1994 16:45", 
-    isShowed: false},
-    {name: "Powiadomienie 6", content: "dasd asds asdsa sad sasa as asdsa sasa asdsadasdadsadsdsa dsad asa sadasd as sa...", date: "19-12-1994 16:45", 
-    isShowed: true},
-    {name: "Powiadomienie 7", content: "dasd asds asdsa sad sasa as asdsa sasa asdsadasdadsadsdsa dsad asa sadasd as sa...", date: "19-12-1994 16:45", 
-    isShowed: true},
-    {name: "Powiadomienie 8", content: "dasd asds asdsa sad sasa as asdsa sasa asdsadasdadsadsdsa dsad asa sadasd as sa...", date: "19-12-1994 16:45", 
-    isShowed: true}
-]
+import { deleteNotification, deleteNotificationACreator, 
+    markNotificationAsRead, markNotificationAsReadACreator,
+    deleteAllNotifications, deleteAllNotificationsACreator,
+    markAllNotificationsAsRead, markAllNotificationsAsReadACreator
+} from './../../actions/notificationActions';
+
 class PromptsCommander extends React.Component{
+    state = {
+        currentDeletedElements: [],
+        currentReadElements: [],
+        deleteAllSpin: false,
+        readAllSpin: false
+    }
     componentDidMount(){
         if(!this.props.barType)
             window.addEventListener('beforeunload', this.handleExitFromPageWhenGeneratingReport);
@@ -60,23 +54,57 @@ class PromptsCommander extends React.Component{
         if(!this.props.barType)
             window.removeEventListener('beforeunload', this.handleExitFromPageWhenGeneratingReport);
     }
+    handleDelete = (notificationId) => {
+        this.setState({currentDeletedElements: [...this.state.currentDeletedElements, notificationId]});
+        const notifications = [notificationId];
+        this.props.deleteNotificationACreator(notifications);
+    };
+    handleMarkAsRead = (notificationId) => {
+        this.setState({currentReadElements: [...this.state.currentReadElements, notificationId]});
+        this.props.markNotificationAsReadACreator(notificationId);
+    };
+    handleDeleteAll = () => {
+        this.setState({deleteAllSpin: true});
+        this.props.deleteAllNotificationsACreator();
+    };
+    handleMarkAllAsRead = () => {
+        this.setState({readAllSpin: true});
+        this.props.markAllNotificationsAsReadACreator().then(() => {
+            this.setState({readAllSpin: false});
+        }).catch(() => this.setState({readAllSpin: false }));
+    };
+
     render(){
         const { shouldShowGlobal, changeShowGlobal, isStarted, percentage, message,
             operationName, connectingSinalRStatus, connectionSignalRErrors, 
-            generateReportStatus, generateReportErrors, barType, gDriveLoginStatus, oneDriveLoginStatus } = this.props;
+            generateReportStatus, generateReportErrors, barType, gDriveLoginStatus,
+            oneDriveLoginStatus, notifications, language, numberOfNotifications } = this.props;
+        const { currentDeletedElements, currentReadElements, deleteAllSpin, readAllSpin } = this.state;
         return (
             <React.Fragment>
                 {barType === undefined ? 
                     <SideBarProgressContent 
+                    currentDeletedElements={currentDeletedElements}
+                    currentReadElements={currentReadElements}
+                    deleteAllSpin={deleteAllSpin}
+                    readAllSpin={readAllSpin}
+                    notifications={notifications}
+                    numberOfNotifications={numberOfNotifications}
                     oneDriveLoginStatus={oneDriveLoginStatus}
                     gDriveLoginStatus={gDriveLoginStatus}
-                    items={items} message={message}
+                    message={message}
                     shouldShowGlobal={shouldShowGlobal}
                     createClassesForLoader={this.createClassesForLoader} percentage={percentage}
                     generateReportStatus={generateReportStatus}
                     isStarted={isStarted} operationName={operationName}
                     generateReportErrors={generateReportErrors}
-                    togleSideBarHandler={this.togleSideBarHandler} /> : 
+                    togleSideBarHandler={this.togleSideBarHandler}
+                    language={language}
+                    handleDelete={this.handleDelete}
+                    handleMarkAsRead={this.handleMarkAsRead}
+                    handleDeleteAll={this.handleDeleteAll}
+                    handleMarkAllAsRead={this.handleMarkAllAsRead}
+                     /> : 
 
                     <SmallProgressBar message={message} percentage={percentage} />
                 }
@@ -102,7 +130,14 @@ const mapStateToProps = state => {
         generateReportErrors: state.reportsReducer.generateReportErrors,
 
         oneDriveLoginStatus: state.authReducer.oneDriveToken,
-        gDriveLoginStatus: state.persistHelpReducer.loginStatus
+        gDriveLoginStatus: state.persistHelpReducer.loginStatus,
+
+        notifications: state.notificationReducer.notifications,
+        getNotificationStatus: state.notificationReducer.getNotificationStatus,
+        getNotificationErrors: state.notificationReducer.getNotificationErrors,
+
+        language: state.languageReducer.language,
+        numberOfNotifications: state.authReducer.notifications
         
     };
   };
@@ -110,8 +145,19 @@ const mapStateToProps = state => {
     return {
         changeShowGlobal: (shouldShowGlobal) => dispatch(changeShowGlobal(shouldShowGlobal)),
         setProgressValue: (percentage, message) => dispatch(setProgressValue(percentage, message)),
-        generateReportClearData: (status, errors) => dispatch(generateReport(status, errors))
-        
+        generateReportClearData: (status, errors) => dispatch(generateReport(status, errors)),
+
+        deleteNotificationACreator: name => dispatch(deleteNotificationACreator(name)),
+        deleteNotification: (status, errors) => dispatch(deleteNotification(status, errors)),
+
+        markNotificationAsReadACreator: name => dispatch(markNotificationAsReadACreator(name)),
+        markNotificationAsRead: (status, errors) => dispatch(markNotificationAsRead(status, errors)),
+
+        deleteAllNotificationsACreator: name => dispatch(deleteAllNotificationsACreator(name)),
+        deleteAllNotifications: (status, errors) => dispatch(deleteAllNotifications(status, errors)),
+
+        markAllNotificationsAsReadACreator: name => dispatch(markAllNotificationsAsReadACreator(name)),
+        markAllNotificationsAsRead: (status, errors) => dispatch(markAllNotificationsAsRead(status, errors))
     };
   };
   export default connect(mapStateToProps, mapDispatchToProps)(PromptsCommander);

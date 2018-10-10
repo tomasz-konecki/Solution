@@ -5,6 +5,7 @@ import { bindActionCreators } from "redux";
 import { withRouter } from "react-router-dom";
 import * as asyncActions from "../../../actions/asyncActions";
 import EmployeeContent from "./employeeContent/employeeContent";
+import { createLastWatchedPersonsArray, changeCurrentWatchedUser } from '../../../actions/persistHelpActions';
 import EmployeeTable from "./employeeTable/employeeTable";
 import {
   getEmployeePromise,
@@ -77,13 +78,12 @@ class EmployeeDetailsContainer extends React.Component {
       });
     } else if (nextProps.employeeOperationStatus === false) {
       this.setState({ isChangingEmployeeData: false });
-    } /*
-        else if(nextProps.match !== this.props.match)
-        {
-            console.log("nextProps.match : " + nextProps.match)
-            this.setState({isLoadingFirstTimeEmployee: true});
-            this.props.getEmployeePromise(nextProps.match.params.id);
-        }*/
+    }
+    else if(nextProps.match !== this.props.match)
+    {
+        this.setState({isLoadingFirstTimeEmployee: true});
+        this.props.getEmployeePromise(nextProps.match.params.id);
+    }
     if (nextProps.employee) {
       if (
         nextProps.employee.skypeId &&
@@ -159,6 +159,9 @@ class EmployeeDetailsContainer extends React.Component {
       editSkypeFormItems
     } = this.state;
     const {
+      changeCurrentWatchedUser,
+      createLastWatchedPersonsArray,
+      lastWatchedPersons,
       employeeStatus,
       employeeErrors,
       employee,
@@ -180,6 +183,7 @@ class EmployeeDetailsContainer extends React.Component {
       changeSkillsErrors,
       t,
       updateSkypeIdResult,
+      getEmployeePromise,
       certificates,
       binPem,
       login
@@ -196,6 +200,10 @@ class EmployeeDetailsContainer extends React.Component {
               <h1>{t("EmployeeDetails")}</h1>
 
               <EmployeeContent
+                changeCurrentWatchedUser={changeCurrentWatchedUser}
+                createLastWatchedPersonsArray={createLastWatchedPersonsArray}
+                lastWatchedPersons={lastWatchedPersons}
+                getEmployee={getEmployeePromise}
                 status={status}
                 reactivateQuaterACreator={reactivateQuaterACreator}
                 reactivateQuaterStatus={reactivateQuaterStatus}
@@ -346,8 +354,10 @@ const mapStateToProps = state => {
     isWorking: state.asyncReducer.isWorking,
     type: state.asyncReducer.type,
 
+    lastWatchedPersons: state.persistHelpReducer.lastWatchedPersons,
     binPem: state.authReducer.binPem,
     login: state.authReducer.login
+
   };
 };
 
@@ -374,12 +384,11 @@ const mapDispatchToProps = dispatch => {
     updateSkype: (skypeId, employeeId) =>
       dispatch(updateSkype(skypeId, employeeId)),
     loadCertificates: employeeId => dispatch(loadCertificates(employeeId)),
-    addCertificate: (certificate, userId) =>
-      dispatch(addCertificate(certificate, userId)),
-    editCertificate: (certificateId, certificate, userId) =>
-      dispatch(editCertificate(certificateId, certificate, userId)),
-    deleteCertificate: (certificateId, userId) =>
-      dispatch(deleteCertificate(certificateId, userId))
+    addCertificate: (certificate,userId) => dispatch(addCertificate(certificate,userId)),
+    editCertificate: (certificateId, certificate, userId) => dispatch(editCertificate(certificateId,certificate,userId)),
+    deleteCertificate: (certificateId, userId) => dispatch(deleteCertificate(certificateId, userId)),
+    createLastWatchedPersonsArray: (lastWatchedPersons) => dispatch(createLastWatchedPersonsArray(lastWatchedPersons)),
+    changeCurrentWatchedUser: (currentWatchedUser) => dispatch(changeCurrentWatchedUser(currentWatchedUser))
   };
 };
 

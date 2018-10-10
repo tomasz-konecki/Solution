@@ -41,7 +41,7 @@ class ProjectsContainer extends React.Component {
           )}`,
           value: "",
           error: "",
-          inputType: "name",
+          inputType: "nameWithPolishLetters",
           minLength: 3,
           maxLength: 25,
           canBeNull: false

@@ -9,7 +9,7 @@
     "lint": "node_modules/.bin/esw webpack.config.* src tools",
     "lint:watch": "npm run lint -- --watch",
     "test": "babel-node mocha --reporter progress tools/testSetup.js \"src/**/*.test.js\"",
-    "start": "webpack-dev-server --inline --hot --port 8080 --host 0.0.0.0 --config ./webpack.config.js",
+    "start": "webpack-dev-server --inline --port 8080 --host 0.0.0.0 --config ./webpack.config.js",
     "build": "rimraf dist && SET NODE_ENV=production& webpack --config ./webpack.config.js --progress --profile --color"
   },
   "repository": {
@@ -69,6 +69,7 @@
     "moment": "^2.21.0",
     "prop-types": "^15.6.2",
     "react": "^16.5.2",
+    "react-bootstrap-typeahead": "^3.2.4",
     "react-c3-component": "^1.3.5",
     "react-datepicker": "^1.6.0",
     "react-dnd": "^2.6.0",

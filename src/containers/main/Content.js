@@ -13,40 +13,18 @@ import ClientsContainer from "../../components/clients/ClientsContainer";
 import PromptsCommander from "../../components/promptsCommander/promptsCommander";
 import ImportCVContainer from "../../components/importCV/ImportCVContainer";
 import NotFound404 from "../../components/notFound404/NotFound404";
+import Quarters from '../../components/quarters/quartersPanel.jsx';
+import { getNotificationACreator } from '../../actions/notificationActions'
 import { connect } from "react-redux";
-
 class Content extends React.Component {
+  componentDidMount(){
+    this.props.getNotificationACreator().then(() =>{
+    });
+  }
+  
   render() {
-    const { match, binPem } = this.props;
+    const { match } = this.props;
 
-    console.log(binPem);
-    let routesToRender = null;
-    switch (binPem) {
-      case 1:
-        routesToRender = <React.Fragment />;
-      case 32:
-        routesToRender = (
-          <React.Fragment>
-            <Route path={match.url + "/users"} component={UsersContainer} />
-            <Route path={match.url + "/clients"} component={ClientsContainer} />
-
-            <Route
-              path={match.url + "/employees"}
-              component={EmployeesContainer}
-            />
-            <Route
-              path={match.url + "/projects"}
-              component={ProjectsContainer}
-            />
-            <Route path={match.url + "/skills"} component={SkillsContainer} />
-            <Route path={match.url + "/reports"} component={ReportsContainer} />
-            <Route
-              path={match.url + "/import-cv"}
-              component={ImportCVContainer}
-            />
-          </React.Fragment>
-        );
-    }
     return (
       <div className="content">
         <Confirmation />
@@ -58,7 +36,21 @@ class Content extends React.Component {
             path={match.url + "/employees"}
             component={EmployeesContainer}
           />
-          {routesToRender}
+          <Route path={match.url + "/users"} component={UsersContainer} />
+          <Route path={match.url + "/clients"} component={ClientsContainer} />
+
+          <Route
+            path={match.url + "/employees"}
+            component={EmployeesContainer}
+          />
+          <Route path={match.url + "/projects"} component={ProjectsContainer} />
+          <Route path={match.url + "/skills"} component={SkillsContainer} />
+          <Route path={match.url + "/reports"} component={ReportsContainer} />
+          <Route path={match.url + "/quarters"} component={Quarters} />
+          <Route
+            path={match.url + "/import-cv"}
+            component={ImportCVContainer}
+          />
           <Route component={NotFound404} />
         </Switch>
         <div className="content-abs-footer">Billennium 2018</div>
@@ -67,14 +59,25 @@ class Content extends React.Component {
   }
 }
 
-function mapStateToProps(state) {
-  return {
-    binPem: state.authReducer.binPem
-  };
-}
-
 Content.propTypes = {
   match: PropTypes.object
 };
 
-export default connect(mapStateToProps)(withRouter(Content));
+const mapDispatchToProps = dispatch => {
+  return {
+    getNotificationACreator: (employeeId) => dispatch(getNotificationACreator(employeeId))
+  };
+};
+
+const mapStateToProps  = state => {
+  return {
+    login: state.authReducer.login
+  }
+}
+
+export default withRouter(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(Content)
+);

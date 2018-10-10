@@ -7,10 +7,10 @@
     top: 0;
     border: 1px solid transparent;
     left: 0;
-    transition: 0.5s all linear;
     margin: 0 auto;
     right: 0;
-    animation: 0.5s animate-prompt-in linear forwards;
+    padding: 20px;
+    animation: .5s animate-prompt-in forwards;
     @media(max-width: 440px){
         font-size: 17px;
     }
@@ -24,19 +24,13 @@
 }
 @keyframes animate-prompt-in{
     0%{
-        width: 5%;
-        top: 15px;
-        padding: 0;
-        height: 5%;
+       opacity: 0;
+       transform: translateY(-15px);
     }
-    50%{
-        top: 0;
-        width: 50%;
-    }
+  
     100%{
-        width: 100%;
-        padding: 20px;
-        height: 62px;
+        opacity: 1;
+        transform: translateY(0);
     }
 }
 .operation-ok{

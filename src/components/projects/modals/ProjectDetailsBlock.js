@@ -22,9 +22,9 @@ class ProjectDetailsBlock extends React.PureComponent {
   state = {
     editProjectArray: [
       {
-        title: "Nazwa",
+        title: this.props.t("Name"),
         type: "text",
-        placeholder: "wprowadź nazwę projektu...",
+        placeholder: this.props.t("InsertProjectName"),
         value: "",
         error: "",
         inputType: null,
@@ -33,9 +33,9 @@ class ProjectDetailsBlock extends React.PureComponent {
         canBeNull: false
       },
       {
-        title: "Opis",
+        title: this.props.t("Description"),
         type: "text",
-        placeholder: "wprowadź opis projektu...",
+        placeholder: this.props.t("InsertProjectDescription"),
         mode: "textarea",
         value: "",
         error: "",
@@ -46,9 +46,9 @@ class ProjectDetailsBlock extends React.PureComponent {
       },
 
       {
-        title: "Klient",
+        title: this.props.t("Client"),
         type: "text",
-        placeholder: "wpisz nazwę klienta bądź wybierz z listy",
+        placeholder: this.props.t("InsertClientName"),
         mode: "drop-down-with-data",
         value: "",
         error: "",
@@ -59,9 +59,9 @@ class ProjectDetailsBlock extends React.PureComponent {
         dataToMap: []
       },
       {
-        title: "Wybierz chmurę",
+        title: this.props.t("Cloud"),
         type: "text",
-        placeholder: "Wpisz nazwę chmury lub wybierz z listy",
+        placeholder: this.props.t("ChooseCloud"),
         mode: "drop-down-with-data",
         value: "",
         error: "",
@@ -74,20 +74,20 @@ class ProjectDetailsBlock extends React.PureComponent {
       },
 
       {
-        title: "Data rozpoczęcia",
+        title: this.props.t("StartDate"),
         name: "startDate",
         type: "text",
-        placeholder: "wprowadź datę rozpoczęcia projektu...",
+        placeholder: this.props.t("InsertStartDate"),
         mode: "date-picker",
         value: "",
         error: "",
         canBeBefore: true
       },
       {
-        title: "Data zakończenia ",
+        title: this.props.t("EndDate"),
         name: "endDate",
         type: "text",
-        placeholder: "wprowadź datę zakończenia projektu...",
+        placeholder: this.props.t("wprowadź datę zakończenia projektu..."),
         mode: "date-picker",
         value: "",
         error: "",
@@ -103,7 +103,7 @@ class ProjectDetailsBlock extends React.PureComponent {
       {
         title: "Email",
         type: "text",
-        placeholder: "wprowadź adres email...",
+        placeholder: this.props.t("InsertEmail"),
         value: "",
         error: "",
         inputType: "email",
@@ -112,9 +112,9 @@ class ProjectDetailsBlock extends React.PureComponent {
         canBeNull: false
       },
       {
-        title: "Imię",
+        title: this.props.t("FirstName"),
         type: "text",
-        placeholder: "wprowadź imię...",
+        placeholder: this.props.t("InsertFirstName"),
         value: "",
         error: "",
         inputType: "firstName",
@@ -123,9 +123,9 @@ class ProjectDetailsBlock extends React.PureComponent {
         canBeNull: false
       },
       {
-        title: "Nazwisko",
+        title: this.props.t("LastName"),
         type: "text",
-        placeholder: "wprowadź nazwisko...",
+        placeholder: this.props.t("InsertLastName"),
         value: "",
         error: "",
         inputType: "lastName",
@@ -134,9 +134,9 @@ class ProjectDetailsBlock extends React.PureComponent {
         canBeNull: false
       },
       {
-        title: "Numer telefonu",
+        title: this.props.t("PhoneNumber"),
         type: "text",
-        placeholder: "wprowadź numer telefonu...",
+        placeholder: this.props.t("InsertPhoneNumber"),
         value: "",
         inputType: "phoneNumber",
         error: "",
@@ -147,7 +147,7 @@ class ProjectDetailsBlock extends React.PureComponent {
     ],
 
     showContactForm: false,
-    selected: "Wybierz osoby do kontaktu"
+    selected: this.props.t("ResponsiblePerson")
   };
 
   componentDidMount() {

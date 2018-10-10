@@ -7,6 +7,7 @@ import Modal from "react-responsive-modal";
 import Spinner from "../spinner/spinner";
 import { isArrayContainsByObjectKey } from "../../../services/methods";
 import CorrectOperation from "../correctOperation/correctOperation";
+import { translate } from "react-translate";
 
 class Skills extends Component {
   state = {
@@ -245,7 +246,8 @@ class Skills extends Component {
       addSkillsToProjectStatus,
       addSkillsToProjectErrors,
       items: propsItems,
-      isProjectOwner
+      isProjectOwner,
+      t
     } = this.props;
     return (
       <div className="progress-bars-container">
@@ -287,7 +289,7 @@ class Skills extends Component {
               onClick={this.saveChangedSkills}
               className="option-btn green-btn btn-abs"
             >
-              Zapisz zmiany
+              {t("SaveChanges")}
             </button>
           )}
         <Modal
@@ -303,11 +305,11 @@ class Skills extends Component {
                 value={skillName}
                 type="text"
                 onChange={e => this.findSkillByName(e)}
-                placeholder="wpisz nazwę umiejętności..."
+                placeholder={t("InsertSkillName")}
               />
             ) : (
               <h3 className="section-heading">
-                Dodaj umiejętność do projektu
+                {t("AddSkillToProject")}
                 {loadSkillsStatus && (
                   <i
                     onClick={() => this.setState({ showSearchBar: true })}
@@ -319,7 +321,7 @@ class Skills extends Component {
 
             {loadSkillsStatus && (
               <button onClick={this.showAddList} className="change-list-btn">
-                {showAddList ? "Ukryj dodane" : "Pokaż dodane"}
+                {showAddList ? t("HideAdded") : t("ShowAdded")}
               </button>
             )}
           </header>
@@ -332,7 +334,7 @@ class Skills extends Component {
                 <div className="modal-progress-br-container">
                   {searchedSkills.length === 0 && (
                     <p className="empty-list">
-                      Brak wyników dla tego ciągu znaków
+                      {t("NoResults")}
                     </p>
                   )}
 
@@ -385,7 +387,7 @@ class Skills extends Component {
                     onClick={this.addSkillsToProject}
                     className="option-btn green-btn"
                   >
-                    Zatwierdź
+                    {t("Confirm")}
                     {isAddingNewSkills && <SmallSpinner />}
                   </button>
                 )}
@@ -406,4 +408,4 @@ class Skills extends Component {
   }
 }
 
-export default Skills;
+export default translate("Skills")(Skills);

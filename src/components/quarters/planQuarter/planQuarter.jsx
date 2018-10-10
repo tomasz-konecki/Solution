@@ -14,7 +14,7 @@ import { pushMomentValuesDynamicly } from '../../../services/methods.js';
 import Hour from '../others/hour/hour';
 import _ from 'lodash';
 const functionsToUseForDates = [
-    {name: "search", searchBy: "date" }, 
+    {name: "search", searchBy: "date", count: true }, 
     {name: "sort", sortBy: "date"}
 ];
 

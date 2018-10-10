@@ -148,6 +148,7 @@ export const getReservedDates = (reservedDates, getDatesStatus, getDatesErrors) 
                 copiedLastWatchedPersonsArray.push(employeeId);
                 dispatch(createLastWatchedPersonsArray(copiedLastWatchedPersonsArray));
             }
+            
             resolve();
         }).catch(error => {
             dispatch(getQuartersForEmployee(null, false, errorCatcher(error)));
@@ -166,10 +167,14 @@ export const getReservedDates = (reservedDates, getDatesStatus, getDatesErrors) 
       return { type: DELETE_QUARTER_TALK, deleteQuarterStatus, deleteQuarterErrors }
   }
 
-  export const deleteQuarterTalkACreator = quarterId => dispatch => {
+  export const deleteQuarterTalkACreator = (quarterToDeleteId, quartersForEmployee) => dispatch => {
     return new Promise((resolve, reject) => {
-        WebApi.quarterTalks.delete(quarterId).then(response => {
+        WebApi.quarterTalks.delete(quarterToDeleteId).then(response => {
+            const quartersForEmployeeCopy = [...quartersForEmployee];
+            const indexWithGivenId = quartersForEmployeeCopy.findIndex(i => i.id === quarterToDeleteId);
+            quartersForEmployeeCopy[indexWithGivenId].isDeleted = true;
             dispatch(deleteQuarterTalk(true, []));
+            dispatch(getQuartersForEmployee(quartersForEmployeeCopy, true, []));
             resolve();
         }).catch(error => {
             dispatch(deleteQuarterTalk(false, errorCatcher(error)));
@@ -178,14 +183,19 @@ export const getReservedDates = (reservedDates, getDatesStatus, getDatesErrors) 
     })
   }
 
+
   export const reactivateQuarterTalk = (reactiveQuarterStatus, reactiveQuarterErrors) => {
       return { type: REACTIVATE_QUARTER_TALK, reactiveQuarterStatus, reactiveQuarterErrors }
   }
 
-  export const reactivateQuarterTalkACreator = quarterId => dispatch => {
+  export const reactivateQuarterTalkACreator = (quarterId, quartersForEmployee) => dispatch => {
     return new Promise((resolve, reject) => {
         WebApi.quarterTalks.put.reactivate(quarterId).then(response => {
+            const quartersForEmployeeCopy = [...quartersForEmployee];
+            const indexOfQuarter = quartersForEmployeeCopy.findIndex(i => i.id === quarterId);
+            quartersForEmployeeCopy[indexOfQuarter].isDeleted = false;
             dispatch(reactivateQuarterTalk(true, []));
+            dispatch(getQuartersForEmployee(quartersForEmployeeCopy, true, []));
             resolve();
         }).catch(error => {
             dispatch(reactivateQuarterTalk(false, errorCatcher(error)));

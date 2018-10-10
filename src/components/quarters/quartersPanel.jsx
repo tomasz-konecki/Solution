@@ -6,12 +6,13 @@ import { Route, Switch, Redirect } from 'react-router-dom';
 import Button from '../common/button/button.js';
 import EmployeeQuarters from './employeeQuarters/employeeQuarters';
 import AddQuarter from './addQuarter/addQuarter';
-import Modal from 'react-responsive-modal';
 import { createLastWatchedPersonsArray, changeLinkBeforeRedirect, changeCurrentWatchedUser } from '../../actions/persistHelpActions.js';
 import { sendAuthCodePromise } from '../../actions/oneDriveActions.js';
 import { getEmployeeId } from '../../services/methods.js';
 import PlanQuarter from './planQuarter/planQuarter';
 import AuthWithOutlook from './authWithOutlookComponent/authWithOutlookComponent';
+import FindUserModal from './others/findUserModal/findUserModal';
+// employeContent 55
 const linkTypes = {
     "plan": "/employees/plan/",
     "addquarter": "/employees/addquarter/",
@@ -41,39 +42,55 @@ class Quarters extends React.PureComponent{
         for(let key in linkTypes){
             if(url.pathname.search(key) !== -1){
                 changeCurrentWatchedUser(person);
+                this.setState({openFindUserModal: false});
                 history.push(`${match.url}${linkTypes[key]}${person}?=${person}`);
-                break;
+                break; 
             }
         }
-           
     }
   
     render(){
-        const { match, history, lastWatchedPersons, planQuarterACreator, 
+        const { match, history, lastWatchedPersons, planQuarterACreator, createLastWatchedPersonsArray,
             linkBeforeRedirectToOutlookAuth, changeLinkBeforeRedirect, sendAuthCodePromise,
             authCodeStatus, authCodeErrors, currentWatchedUser } = this.props;
         const { openFindUserModal, shouldLoadDataAfterLinkChange } = this.state;
+
+        const isHistoryExist = lastWatchedPersons && lastWatchedPersons.length > 0;
         return (
             <div className="quarters-panel">
-                <header><i className="fa fa-comments"></i>Panel rozmów kwartalnych</header>
-                <div className="recent-watched">
-                    {lastWatchedPersons.map(person => {
-                        return (
-                            <div onClick={() => this.changeActualWatchedUser(person)} className="last-watched-person" key={person}>
-                                <span><i className="fa fa-user"></i></span>
-                                <div>
-                                    {person}
+                <header><i className="fa fa-comments"></i>Panel rozmów kwartalnych 
+                {currentWatchedUser && 
+                    <span>aktualnie przeglądasz użytkownika <b>{currentWatchedUser}</b></span>
+                }
+                </header>
+                {isHistoryExist && 
+                    <div className="recent-watched">
+                        {lastWatchedPersons.map(person => {
+                            return (
+                                <div onClick={() => this.changeActualWatchedUser(person)} className={`last-watched-person ${person === currentWatchedUser ? "last-watched-person-focused" : ""}`} key={person}>
+                                    <div className="avatar-container">
+                                        <div className="image" style={{backgroundImage: `url(${"http://10.255.20.241/ProfilePhotos/" + person + ".jpg"})`}}>
+                                        </div>
+                                        <i className="fa fa-user"></i>
+                                    </div>
+                                    <div>
+                                        {person}
+                                    </div>
                                 </div>
-                            </div>
-                        );
-                    })}
-                </div>
+                            );
+                        })}
+                    </div>
+                }
 
                 <nav>
                     <Button onClick={() => this.handleBtnClick(`${match.url}/employees`, true)} title="Rozmowy kwartalne" mainClass="generate-raport-btn btn-green"><i className="fa fa-users"/></Button>
                     <Button onClick={() => this.setState({openFindUserModal: true})} title="Użytkownicy" mainClass="generate-raport-btn btn-green"><i className="fa fa-users"/></Button>
                     <Button onClick={() => this.handleBtnClick(`${match.url}/employees/addquarter`, true)} title="Dodaj rozmowę" mainClass="generate-raport-btn btn-green"><i className="fa fa-users"/></Button>
                     <Button onClick={() => this.handleBtnClick(`${match.url}/employees/plan`, true)} title="Zaplanuj rozmowę" mainClass="generate-raport-btn btn-green"><i className="fa fa-users"/></Button>
+                    
+                    {isHistoryExist && 
+                        <Button onClick={() => createLastWatchedPersonsArray([])} title="Wyczyść historię" mainClass="generate-raport-btn btn-brown"><i className="fa fa-history"/></Button>
+                    }
                 </nav>
                 <div className="quarters-content">
                     <Switch>
@@ -86,24 +103,23 @@ class Quarters extends React.PureComponent{
                             <PlanQuarter currentWatchedUser={currentWatchedUser} location={history.location} planQuarterACreator={planQuarterACreator} match={match} 
                              redirectToLastWatchedPerson={this.handleBtnClick} changeLinkBeforeRedirect={changeLinkBeforeRedirect}/>
                         )}/>
-                        <Route exact path={match.url + "/employees/addquarter/:id"} component={AddQuarter} />
+                        <Route exact path={match.url + "/employees/addquarter/:id"} render={() => (
+                            <AddQuarter onCloseModal={() => this.handleBtnClick(`${match.url}/employees`, true)}/>
+                        )} />
                         <Route exact path={`${match.url}/employees/:id`} render={() => (
                             <EmployeeQuarters lastWatchedPersons={lastWatchedPersons} location={history.location} />
                         )}/>
 
                     </Switch>   
                 </div>
-                <Modal
-                open={openFindUserModal}
-                classNames={{ modal: `Modal Modal-add-project`}}
-                contentLabel="Add project modal"
-                onClose={() => this.setState({ openFindUserModal: false })}
-                >
-                <header>
-                    <h3>Znajdź użytkownika do przeglądania</h3>
-                </header>
+
+                {openFindUserModal && 
+                    <FindUserModal changeActualWatchedUser={this.changeActualWatchedUser} 
+                    onClose={() => this.setState({ openFindUserModal: false })} 
+                    open={openFindUserModal} />
+                }
                 
-                </Modal>
+            
             </div>
         );
     }

@@ -1,6 +1,7 @@
 import React from 'react'
 import './list.scss';
 import _ from 'lodash';
+import SmallSpinner from '../../common/spinner/small-spinner.js';
 
 class List extends React.PureComponent {
     state = {
@@ -37,7 +38,9 @@ class List extends React.PureComponent {
                     <div className="search-box">
                         <input value={searchInput.value} type="text" onChange={e => this.searchByKeys(e)} placeholder="wpisz, aby wyszukać..." />
                         <i className="fa fa-search"></i>
-                        <span className="items-counter">{numberOfItems}</span>
+                        {shouldPutSearchBox.count && 
+                            <span className="items-counter">{numberOfItems}</span>
+                        }
                     </div>
                     }
                     {shouldPutSort && 
@@ -48,7 +51,9 @@ class List extends React.PureComponent {
                     {shouldFilter && 
                     <div onClick={this.togleFilterDetails} className="filter-box">
                         Filtr <i className="fa fa-cogs"></i>
-                        <span className="items-counter">{numberOfItems}</span>
+                        {shouldFilter.count && 
+                            <span className="items-counter">{numberOfItems}</span>
+                        }
                         {showFilterDetails && 
                             <div className="filter-sugestions">
                                 {filterCategories.map(category => (
@@ -133,14 +138,19 @@ class List extends React.PureComponent {
 
     render(){
         const { listClass, paginationSettings, component: Component, componentProps, 
-            listTitle, selectDataOptions, items, functionsToUse, shouldAnimateList  } = this.props;
+            listTitle, selectDataOptions, items, functionsToUse, shouldAnimateList, isDoingRequest } = this.props;
 
         const modifiedItems = this.modifeList(items, functionsToUse);
         return (
             <React.Fragment>
                 <nav className="list-nav">
-                    {listTitle && <p>{listTitle}</p>}
-
+                    {listTitle && 
+                        <div>{listTitle}
+                            {isDoingRequest && 
+                                <span><SmallSpinner /></span>
+                            }
+                        </div>
+                    }
                     {this.putModifieListOptionsInDom(functionsToUse, modifiedItems.length)}
                 </nav>
                 <div className={`${listClass} ${shouldAnimateList ? "animated-list" : ""}`}>

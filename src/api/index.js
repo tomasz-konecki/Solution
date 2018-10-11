@@ -504,6 +504,23 @@ const WebApi = {
       }
     }
   },
+  shareProject:{
+    get:{
+      managers: (projectId) =>{
+        return WebAround.get(`${API_ENDPOINT}/shareProject/DestinationManagers/${projectId}`);
+      }
+    },
+    post:{
+      add: (projectId, shareProjectModel)=>{
+        return WebAround.post(`${API_ENDPOINT}/shareProject/${projectId}`, shareProjectModel);
+      }
+    },
+    delete:{
+      cancel: (projectId, shareProjectId)=>{
+        return WebAround.delete(`${API_ENDPOINT}/shareProject/${projectId}/${shareProjectId}`);
+      }
+    }
+  },
   reports: {
     get: {
       developers: fileName => {

@@ -141,7 +141,7 @@ class ShareEmployeesModal extends React.Component {
         subordinates: []
       });
     } else {
-      let emp = this.props.employees.filter(e => e.managerId === employeeId);
+      let emp = this.generateSubordinates(this.props.employees.filter(e => e.managerId === employeeId));
 
       this.setState({
         showSubordinatesId: employeeId,
@@ -149,6 +149,17 @@ class ShareEmployeesModal extends React.Component {
       });
     }
   };
+
+  generateSubordinates = (employeesList) => {
+    let tmpList = [];
+    employeesList.forEach(employee => {
+      let emp = this.props.employees.filter(e => e.managerId === employee.id)
+      tmpList = [...tmpList, ...emp];
+      this.generateSubordinates(tmpList);
+    });
+    tmpList = [...employeesList, ...tmpList];
+    return tmpList;
+  }
 
   chooseLeader = (e) => {
     this.state.choosenLeader  &&
@@ -255,6 +266,7 @@ class ShareEmployeesModal extends React.Component {
                   currentlyAddingIds={this.state.currentlyAddingIds}
                   showSubordinatesId={this.state.showSubordinatesId}
                   subordinates={this.state.subordinates}
+                  generateSubordinates={this.generateSubordinates}
                   t={t}
                 />
 

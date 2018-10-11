@@ -61,7 +61,7 @@ class EmployeesListContainer extends React.Component {
                                 <div className="clicked">
                                   <i className="fa fa-share-alt btn-icon"/>
                                   {this.props.employees.filter(e => e.managerId === employee.id).length > 0
-                                    ? t("ShareTeam") + " [" + this.props.employees.filter(e => e.managerId === employee.id).length +"]"
+                                    ? t("ShareTeam") + " [" + this.props.generateSubordinates(this.props.employees.filter(e => e.managerId === employee.id)).length +"]"
                                     : t("Share")}
                                 </div>
                               </div>
@@ -69,7 +69,7 @@ class EmployeesListContainer extends React.Component {
                               <div className="align-center">
                                 <i className="fa fa-share-alt btn-icon"/>
                                 {this.props.employees.filter(e => e.managerId === employee.id).length > 0
-                                  ? t("ShareTeam") +" [" + this.props.employees.filter(e => e.managerId === employee.id).length +"]"
+                                  ? t("ShareTeam") +" [" + this.props.generateSubordinates(this.props.employees.filter(e => e.managerId === employee.id)).length +"]"
                                   : t("Share")}
                               </div>
                             )}

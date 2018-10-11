@@ -254,6 +254,7 @@ class ShareEmployeesModal extends React.Component {
                   shareEmployee={this.shareEmployee}
                   currentlyAddingIds={this.state.currentlyAddingIds}
                   showSubordinatesId={this.state.showSubordinatesId}
+                  subordinates={this.state.subordinates}
                   t={t}
                 />
 

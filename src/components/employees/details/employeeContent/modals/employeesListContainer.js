@@ -76,7 +76,7 @@ class EmployeesListContainer extends React.Component {
                           </button>
                         </div>
 
-                        {this.props.showSubordinatesId === employee.id && this.state.subordinates.length > 0 &&
+                        {this.props.showSubordinatesId === employee.id && this.props.subordinates.length > 0 &&
                           this.props.subordinates.map(subordinate => {
                             return (
                               <div className="col-sm-12" style={{ paddingLeft: "20px" }} key={subordinate.id} >

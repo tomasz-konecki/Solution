@@ -80,11 +80,38 @@ const sideProgressBar = ({
 
     return <p>{ago}</p>;
   };
-   
+
+  const notificationLoop = (notification) => {
+    const withLink = notification.redirectId > 0 && notification.redirectTo !== null;
+    
+    if(withLink){
+      return (
+        <a key={notification.id} href={`/main/${notification.redirectTo}/${notification.redirectId}`} 
+        className="redirectLi"
+        onClick={notification.isRead ? null : () => handleMarkAsRead(notification.id, false)}>
+          <li 
+          key={notification.id} 
+          style={notification.isRead ? {} : {"backgroundColor": "#e8e8e8"}}
+          >
+            {notificationContent(notification)}
+          </li>
+        </a>
+      );
+    }
+    else {
+      return (
+        <li 
+        key={notification.id} 
+        style={notification.isRead ? {} : {"backgroundColor": "#e8e8e8"}}
+        >
+          {notificationContent(notification)}
+        </li>
+      );
+    }
+
+  };
+
   const notificationContent = (notification) => {
-    const content = language === "pl" ? 
-      notification.contentPl :
-      notification.contentEng;
     return( 
       <React.Fragment>
       <i 
@@ -99,7 +126,7 @@ const sideProgressBar = ({
       style={{"cursor": "pointer"}} />
       }
       <div className="not-content">
-        <span className={`${notification.isRead ? "" : "font-weight-bold"}`}>{content}</span>
+        <span className={`${notification.isRead ? "" : "font-weight-bold"}`}>{language === "pl" ?notification.contentPl : notification.contentEng}</span>
         {notificationDate(notification.date)}
       </div>
       </React.Fragment>
@@ -129,15 +156,13 @@ const sideProgressBar = ({
         </header>
         <ul className="notifictions">
           {notifications.length !== 0 ? 
+
           notifications.map(notification => {
-            return (
-              <li key={notification.id} style={notification.isRead ? {} : {"backgroundColor": "#e8e8e8"}}>
-                {notificationContent(notification)}
-              </li>
-            );
+            return notificationLoop(notification)
           })
+
           :
-          <p className="noNotificationsMessage" align="center">Nie masz żadnych powiadomień.</p>
+          <p className="noNotificationsMessage" align="center">{t("NoNotifications")}</p>
         }
 
         </ul>

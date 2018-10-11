@@ -574,7 +574,8 @@ const translations = {
     Minutes: "minuty",
     MinutesPl: "minut",
     MarkAllAsRead: "Oznacz wszystkie jako przeczytane",
-    DeleteAll: "Usuń wszystkie"
+    DeleteAll: "Usuń wszystkie",
+    NoNotifications: "Nie masz żadnych powiadomień."
   },
   Skills: {
     SaveChanges: "Zapisz zmiany",

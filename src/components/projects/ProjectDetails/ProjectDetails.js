@@ -49,6 +49,7 @@ import employeeTable from "../../employees/details/employeeTable/employeeTable";
 import specialPermissioner from "./../../../api/specialPermissioner";
 import binaryPermissioner from "./../../../api/binaryPermissioner";
 import Owners from "./Owners/Owners";
+import ShareProject from "./ShareProject";
 
 class ProjectDetails extends Component {
   workerNames = [
@@ -68,6 +69,7 @@ class ProjectDetails extends Component {
     editModal: false,
     deleteProjectModal: false,
     addEmployeModal: false,
+    shareProjectModal: false,
     addEmployeToProjectFormItems: [
       {
         title: this.props.t("AssignmentStartDate"),
@@ -294,6 +296,11 @@ class ProjectDetails extends Component {
       addEmployeModal: false
     });
   };
+  closeShareProjectModal = () =>{
+    this.setState({
+      shareProjectModal: false
+    });
+  }
   handleChange = () => {
     const { matches } = this.state;
     this.setState({
@@ -389,7 +396,7 @@ class ProjectDetails extends Component {
                   specialPermissioner().projects.isOwner(
                     this.props.project,
                     this.props.login
-                  )) && (
+                  ))  && (
                   <React.Fragment>
                     <button
                       onClick={() =>
@@ -398,6 +405,15 @@ class ProjectDetails extends Component {
                       className="option-btn normal-btn"
                     >
                       {t("EditProject")}
+                    </button>
+
+                     <button
+                      onClick={() =>
+                        this.setState({ shareProjectModal: !this.state.shareProjectModal })
+                      }
+                      className="option-btn normal-btn"
+                    >
+                      Udostępnij
                     </button>
 
                     {projectStatus[0].name !== t("Active") && (
@@ -834,6 +850,20 @@ class ProjectDetails extends Component {
                 </div>
               </Form>
             </Modal>
+
+            <Modal
+              key={5}
+              open={this.state.shareProjectModal}
+              classNames={{ modal: "Modal Modal-add-owner" }}
+              contentLabel="Add employee to project modal"
+              onClose={this.closeShareProjectModal}
+            >
+              <ShareProject
+                projectId={this.props.match.params.id}
+              >
+              </ShareProject>              
+            </Modal>
+
 
             {addEmployeeToProjectStatus !== null &&
               addEmployeeToProjectStatus !== undefined && (

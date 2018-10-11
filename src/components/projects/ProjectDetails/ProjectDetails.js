@@ -446,7 +446,6 @@ class ProjectDetails extends Component {
               </nav>
             </header>
             <main>
-              {console.log(project)}
               <div className="project-details">
                 <ProjectInformationsCart
                   key={1}

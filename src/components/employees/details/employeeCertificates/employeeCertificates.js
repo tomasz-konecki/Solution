@@ -51,7 +51,7 @@ class EmployeeCertificates extends React.Component {
           {t("Title")}
           {(isYou || binPem > 1) && (
             <span>
-              <i onClick={this.addCertificateModal} className="fa fa-plus" />
+              <i onClick={this.addCertificateModal} title={t("Add")} className="fa fa-plus" />
             </span>
           )}
         </h2>

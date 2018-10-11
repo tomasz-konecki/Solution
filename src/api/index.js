@@ -597,7 +597,6 @@ const WebApi = {
         );
       },
       sendQuertToAuth: (code, shouldRedirectOnCalendar) => {
-        console.log(shouldRedirectOnCalendar);
         return WebAround.get(
           `${API_ENDPOINT}/onedrive/authenticated?code=${code}&calendar=${
             shouldRedirectOnCalendar ? shouldRedirectOnCalendar : false

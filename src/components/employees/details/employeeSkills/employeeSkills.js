@@ -346,7 +346,7 @@ class EmployeeSkills extends React.Component {
               !isChangingSkills &&
               status === "Aktywny" &&
               (isYou || binPem > 1) && (
-                <i onClick={this.openSkillsModal} className="fa fa-plus" />
+                <i onClick={this.openSkillsModal} title={t("Add")} className="fa fa-plus"/>
               )}
             {isChangingSkills && <SmallSpinner />}
             {changeSkillsStatus === true && <CorrectOperation />}

@@ -5,6 +5,9 @@ from "../constants";
 import WebApi from '../api/index';
 import { getFolders } from './oneDriveActions';
 import { errorCatcher, errorCatcherForLogin } from '../services/errorsHandler';
+import storeCreator from '../store/index';
+
+const { store } = storeCreator;
 
 export const fetchLists = (addList, baseList, helpList, pagesList) => {
   return { type: FETCH_LISTS, addList, baseList, helpList, pagesList };
@@ -68,6 +71,23 @@ export const changeSortByACreator = (listToSort, sortType, currentPath) => {
 
 export const createLastWatchedPersonsArray = (lastWatchedPersons) => {
     return { type: CREATE_LAST_WATCHED_PERSONS, lastWatchedPersons}
+}
+
+const selectLastWatchedPersonsArray = state => state.persistHelpReducer.lastWatchedPersons;
+
+
+export const createLastWatchedPersonsArrayACreator = employeeId => dispatch => {
+  const currentLastWatchedPersonsArray = selectLastWatchedPersonsArray(store.getState());
+  const copiedLastWatchedPersonsArray = [...currentLastWatchedPersonsArray];
+  const personInWatchedPersonsArrayIndex = copiedLastWatchedPersonsArray.indexOf(employeeId);
+  const limitOfPersons = 8;
+  if(personInWatchedPersonsArrayIndex === -1){
+    copiedLastWatchedPersonsArray.push(employeeId);
+  }
+  if(copiedLastWatchedPersonsArray.length > limitOfPersons){
+    copiedLastWatchedPersonsArray.splice(0, 1);
+  }
+  dispatch(createLastWatchedPersonsArray(copiedLastWatchedPersonsArray));
 }
 
 export const changeLinkBeforeRedirect = (linkBeforeRedirectToOutlookAuth) => {

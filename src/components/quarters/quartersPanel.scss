@@ -19,15 +19,17 @@
         display: flex;
         flex-flow: wrap;
         .last-watched-person-focused{
-            background: #e8e8e8 !important;
+            background: #F7F7F7 !important;
+            border-bottom-color: #82b541 !important;
         }
         .last-watched-person{
             cursor: pointer;
+            margin: 0 10px;
             transition: .5s;
+            border-bottom: 3px solid transparent;
             display: inherit;
             align-items: center;
             padding: 10px;
-            background: #F7F7F7;
             &:hover{
                 background: #e8e8e8;
             }

@@ -192,6 +192,8 @@ const translations = {
     EmployeeHasBeenDeleted: "Pracownik został Usunięty."
   },
   EmployeeDetails: {
+    Close: "Zamknij",
+    Edit: "Edytuj",
     EmployeeDetails: "Szczegóły Pracownika",
     Active: "Aktywny",
     NotActive: "Nieaktywny",
@@ -239,6 +241,7 @@ const translations = {
     QuarterTalkActivated: "Aktywowano rozmowę kwartalną"
   },
   EmployeeSkills: {
+    Add: "Dodaj",
     Skills: "Umiejętności",
     NoSkills: "Brak umiejętności",
     ManageSkills: "Zarządzaj umiejętnościami",
@@ -265,6 +268,7 @@ const translations = {
     ShowDeleted: "Pokaż usunięte"
   },
   EmployeeCertificates: {
+    Add: "Dodaj",
     Name: "Nazwa",
     Description: "Opis",
     Date: "Data",

@@ -190,6 +190,8 @@ const translations = {
     EmployeeHasBeenDeleted: "Employee has been Deleted."
   },
   EmployeeDetails: {
+    Close: "Close",
+    Edit: "Edit",
     EmployeeDetails: "Employee's Details",
     Active: "Active",
     NotActive: "Not Active",
@@ -236,6 +238,7 @@ const translations = {
     QuarterTalkActivated: "Quarter Talk has been activated"
   },
   EmployeeSkills: {
+    Add: "Add",
     Skills: "Skills",
     NoSkills: "No skills",
     ManageSkills: "Manage skills",
@@ -262,6 +265,7 @@ const translations = {
     ShowDeleted: "Show Deleted"
   },
   EmployeeCertificates: {
+    Add: "Add",
     Name: "Name",
     Description: "Description",
     Date: "Date",

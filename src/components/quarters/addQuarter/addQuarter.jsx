@@ -245,8 +245,9 @@ class AddQuarter extends Component{
 
                     <div className="adding-quarter-settings">
                         <h1>Opcje</h1>
-                        <Button onClick={() => this.setState({isAddingNewQuestion: !isAddingNewQuestion})} title="Dodaj pytanie" 
-                        mainClass="generate-raport-btn btn-green"><i className="fa fa-plus"/></Button>
+                        <Button onClick={() => this.setState({isAddingNewQuestion: !isAddingNewQuestion})} title={isAddingNewQuestion ? "Anuluj" : "Dodaj pytanie"} 
+                        mainClass={`generate-raport-btn ${isAddingNewQuestion ? "btn-grey" : "btn-green"}`}>
+                        <i className={`fa fa-${isAddingNewQuestion ? "times" : "plus"}`}/></Button>
 
                         <Button onClick={this.openSelectQuestionsModal} title="Zarządzaj pytaniami" 
                         mainClass="generate-raport-btn btn-green"><i className="fa fa-question-circle"/></Button>

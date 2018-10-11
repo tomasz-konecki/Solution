@@ -209,8 +209,6 @@
     color: white;
 }
 
-
-
 .lte-pic-container{
     width: 100%;
     display: flex;
@@ -218,6 +216,7 @@
     justify-content: space-between;
     label{
         margin: 0;
+        text-align: center;
         width: 30%;
     }
     .progress-btns{

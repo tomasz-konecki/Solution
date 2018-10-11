@@ -53,7 +53,6 @@ class PlanQuarter extends React.PureComponent{
     generateHoursToUse = () => {
         const { reservedDates } = this.props;
         const { planQuarterFormItems } = this.state;
-        console.log("Siema");
         if(planQuarterFormItems[0].error){
             this.setState({hoursToUse: []});
         }

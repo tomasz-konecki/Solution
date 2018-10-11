@@ -347,6 +347,9 @@ const WebApi = {
           `${API_ENDPOINT}/employees/${employeeId}/capacityRefactor`
         );
       },
+      employeesAndManagers: () => {
+        return WebAround.get(`${API_ENDPOINT}/sharedEmployees/getEmployeesAndManagers`);
+      },
       emplo: {
         contact: employeeId => {
           return WebAround.get(
@@ -404,6 +407,23 @@ const WebApi = {
         return WebAround.patch(
           `${API_ENDPOINT}/employees/reactivate/${employeeId}`
         );
+      }
+    }
+  },
+  sharedEmployees: {
+    get: {
+      forManager: (managerId) => {
+        return WebAround.get(`${API_ENDPOINT}/sharedEmployees/forManager/${managerId}`);
+      }
+    },
+    post: {
+      add: (sharedEmployeeModel) => {
+        return WebAround.post(`${API_ENDPOINT}/sharedEmployees`, sharedEmployeeModel)
+      }
+    },
+    delete: {
+      deleteById: (sharedEmployeeId) => {
+        return WebAround.delete(`${API_ENDPOINT}/sharedEmployees/${sharedEmployeeId}`)
       }
     }
   },
@@ -614,7 +634,6 @@ const WebApi = {
         );
       },
       sendQuertToAuth: (code, shouldRedirectOnCalendar) => {
-        console.log(shouldRedirectOnCalendar);
         return WebAround.get(
           `${API_ENDPOINT}/onedrive/authenticated?code=${code}&calendar=${
             shouldRedirectOnCalendar ? shouldRedirectOnCalendar : false

@@ -253,14 +253,18 @@ class Skills extends Component {
       <div className="progress-bars-container">
         <h3>
           {title}
+
+          {isProjectOwner && (
+            <i
+              onClick={this.getAllSkills}
+              className="fa fa-plus"
+              title={t("AddSkillsToProject")}
+            />
+          )}
           {changeProjectSkillsStatus === false && (
             <span>{changeProjectSkillsErrors[0]}</span>
           )}
-
           {isChanging && <SmallSpinner />}
-          {isProjectOwner && (
-            <i onClick={this.getAllSkills} className="fa fa-plus" />
-          )}
         </h3>
         {items.map((i, index) => {
           return (
@@ -281,6 +285,13 @@ class Skills extends Component {
             </div>
           );
         })}
+        {items.length === 0 && (
+          <div
+            style={{ display: "block", textAlign: "center", color: "tomato" }}
+          >
+            {t("ThatProjectDoesntHavaAnySkillAssigned")}
+          </div>
+        )}
 
         {items.length > 0 &&
           isProjectOwner && (
@@ -333,9 +344,7 @@ class Skills extends Component {
               {loadSkillsStatus !== null && loadSkillsStatus ? (
                 <div className="modal-progress-br-container">
                   {searchedSkills.length === 0 && (
-                    <p className="empty-list">
-                      {t("NoResults")}
-                    </p>
+                    <p className="empty-list">{t("NoResults")}</p>
                   )}
 
                   {searchedSkills.map((skill, index) => {
@@ -380,17 +389,16 @@ class Skills extends Component {
               ) : (
                 <p className="server-error">{loadSkillsErrors[0]}</p>
               )}
-              {!isLoadingSkillsForModal &&
-                listToAddForProject.length > 0 && (
-                  <button
-                    disabled={isAddingNewSkills}
-                    onClick={this.addSkillsToProject}
-                    className="option-btn green-btn"
-                  >
-                    {t("Confirm")}
-                    {isAddingNewSkills && <SmallSpinner />}
-                  </button>
-                )}
+              {!isLoadingSkillsForModal && (
+                <button
+                  disabled={isAddingNewSkills}
+                  onClick={this.addSkillsToProject}
+                  className="option-btn green-btn"
+                >
+                  {t("Confirm")}
+                  {isAddingNewSkills && <SmallSpinner />}
+                </button>
+              )}
 
               {addSkillsToProjectStatus === false && (
                 <p style={{ fontSize: "22px" }} className="server-error">

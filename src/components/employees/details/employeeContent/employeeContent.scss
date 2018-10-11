@@ -65,7 +65,7 @@
     width: 650px;
     background: #fbfbfb;
     padding: 20px;
-    height: 320px;
+    height: 360px;
     justify-content: space-between;
     display: flex;
     position: relative;
@@ -117,6 +117,7 @@
     .left-content {
       border-right: 2px solid #707070;
       width: 53%;
+      position: relative;
       header {
         display: flex;
         position: relative;

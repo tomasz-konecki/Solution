@@ -48,6 +48,10 @@ class Quarters extends React.PureComponent{
             }
         }
     }
+
+    // To do: 
+    // translation, responsive, dynamicly adding questions, deleting current added questions, generating docs, 
+    // adding events to callendar, removing events from callendar, connect adding quarter request
   
     render(){
         const { match, history, lastWatchedPersons, planQuarterACreator, createLastWatchedPersonsArray,
@@ -104,7 +108,7 @@ class Quarters extends React.PureComponent{
                              redirectToLastWatchedPerson={this.handleBtnClick} changeLinkBeforeRedirect={changeLinkBeforeRedirect}/>
                         )}/>
                         <Route exact path={match.url + "/employees/addquarter/:id"} render={() => (
-                            <AddQuarter onCloseModal={() => this.handleBtnClick(`${match.url}/employees`, true)}/>
+                            <AddQuarter currentWatchedUser={currentWatchedUser} onCloseModal={() => this.handleBtnClick(`${match.url}/employees`, true)}/>
                         )} />
                         <Route exact path={`${match.url}/employees/:id`} render={() => (
                             <EmployeeQuarters lastWatchedPersons={lastWatchedPersons} location={history.location} />

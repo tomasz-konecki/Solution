@@ -51,7 +51,7 @@ class EmployeeCertificates extends React.Component {
           {t("Title")}
           {(isYou || binPem > 1) && (
             <span>
-              <i onClick={this.addCertificateModal} className="fa fa-plus" />
+              <i onClick={this.addCertificateModal} title={t("Add")} className="fa fa-plus" />
             </span>
           )}
         </h2>
@@ -62,7 +62,9 @@ class EmployeeCertificates extends React.Component {
               <th>{t("Name")}</th>
               <th>{t("Description")}</th>
               <th>{t("Date")}</th>
-              <th>{t("Options")}</th>
+              {(isYou || binPem > 1) && (
+                <th>{t("Options")}</th>
+              )}
             </tr>
           </thead>
           <tbody>
@@ -72,6 +74,7 @@ class EmployeeCertificates extends React.Component {
                   <td>{certificate.name}</td>
                   <td>{certificate.description}</td>
                   <td>{certificate.date.slice(0, 10)}</td>
+                  {(isYou || binPem > 1) && (
                   <td className="options">
                     <div
                       onClick={() => this.editCertificate(certificate)}
@@ -92,7 +95,7 @@ class EmployeeCertificates extends React.Component {
                     >
                       <Icon icon="minus-square" />
                     </div>
-                  </td>
+                  </td>)}
                 </tr>
               );
             })}

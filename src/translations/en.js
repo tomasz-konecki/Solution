@@ -190,6 +190,8 @@ const translations = {
     EmployeeHasBeenDeleted: "Employee has been Deleted."
   },
   EmployeeDetails: {
+    Close: "Close",
+    Edit: "Edit",
     EmployeeDetails: "Employee's Details",
     Active: "Active",
     NotActive: "Not Active",
@@ -236,6 +238,7 @@ const translations = {
     QuarterTalkActivated: "Quarter Talk has been activated"
   },
   EmployeeSkills: {
+    Add: "Add",
     Skills: "Skills",
     NoSkills: "No skills",
     ManageSkills: "Manage skills",
@@ -262,6 +265,7 @@ const translations = {
     ShowDeleted: "Show Deleted"
   },
   EmployeeCertificates: {
+    Add: "Add",
     Name: "Name",
     Description: "Description",
     Date: "Date",
@@ -282,6 +286,17 @@ const translations = {
     AddingCertificate: "Adding certyficate",
     EditingCertificate: "Editing certyficate",
     Edit: "Save"
+  },
+  ShareEmployeesModal: {
+    ShareEmployees: "Share employees",
+    ChooseEmployeesToShare: "Choose employees to share",
+    ChooseLeader: "Choose leader",
+    SharedEmployees: "Shared employees",
+    Search: "Search",
+    StopSharing: "Stop sharing",
+    Employees: "Employees",
+    ShareTeam: "Share team",
+    Share: "Share"
   },
   ImportCVContainer: {
     Name: "Name",
@@ -431,7 +446,7 @@ const translations = {
     EstimatedEndDate: "Estimated end date",
     Description: "Description",
     Owners: "Owners",
-    Add: "Add",
+    Add: "Add"
   },
   ProjectRowUnfurl: {
     OwnersList: "Owners",
@@ -573,6 +588,8 @@ const translations = {
     ShowAdded: "Show added",
     NoResults: "No results for this query",
     Confirm: "Confirm",
+    ThatProjectDoesntHavaAnySkillAssigned:
+      "That project doesn't have any skills assigned."
   },
   ProjectTeamTable: {
     Add: "Add",
@@ -590,8 +607,8 @@ const translations = {
     FeedbackAdded: "Successfully added feedback",
     Author: "Author",
     DaysAgo: "days ago",
-    OnDate: "on",
-	}
+    OnDate: "on"
+  }
 };
 
 export default translations;

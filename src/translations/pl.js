@@ -192,6 +192,8 @@ const translations = {
     EmployeeHasBeenDeleted: "Pracownik został Usunięty."
   },
   EmployeeDetails: {
+    Close: "Zamknij",
+    Edit: "Edytuj",
     EmployeeDetails: "Szczegóły Pracownika",
     Active: "Aktywny",
     NotActive: "Nieaktywny",
@@ -239,6 +241,7 @@ const translations = {
     QuarterTalkActivated: "Aktywowano rozmowę kwartalną"
   },
   EmployeeSkills: {
+    Add: "Dodaj",
     Skills: "Umiejętności",
     NoSkills: "Brak umiejętności",
     ManageSkills: "Zarządzaj umiejętnościami",
@@ -265,6 +268,7 @@ const translations = {
     ShowDeleted: "Pokaż usunięte"
   },
   EmployeeCertificates: {
+    Add: "Dodaj",
     Name: "Nazwa",
     Description: "Opis",
     Date: "Data",
@@ -285,6 +289,17 @@ const translations = {
     AddingCertificate: "Dodawanie certyfikatu",
     EditingCertificate: "Edytowanie certyfikatu",
     Edit: "Zapisz"
+  },
+  ShareEmployeesModal: {
+    ShareEmployees: "Udostępnij pracowników",
+    ChooseEmployeesToShare: "Wybierz pracowników do udostępnienia",
+    ChooseLeader: "Wybierz lidera",
+    SharedEmployees: "Udostępnieni pracownicy",
+    Search: "Wyszukaj",
+    StopSharing: "Przestań udostępniać",
+    Employees: "Pracownicy",
+    ShareTeam: "Udostępnij team",
+    Share: "Udostępnij"
   },
   ImportCVContainer: {
     Name: "Nazwa",
@@ -432,7 +447,7 @@ const translations = {
     EstimatedEndDate: "Szacowana data zakończenia",
     Description: "Opis",
     Owners: "Właściciele",
-    Add: "Dodaj",
+    Add: "Dodaj"
   },
   ResponsiblePersonBlock: {
     NameNoSpecial: "Imię nie może zawierać znaków specjalnych ani cyfr.",
@@ -584,6 +599,8 @@ const translations = {
     ShowAdded: "Pokaż dodane",
     NoResults: "Brak wyników dla tego ciągu znaków",
     Confirm: "Zatwierdź",
+    ThatProjectDoesntHavaAnySkillAssigned:
+      "Ten projekt nie ma żadnych przypisanych umiejętności."
   },
   ProjectTeamTable: {
     Add: "Dodaj",
@@ -601,8 +618,8 @@ const translations = {
     FeedbackAdded: "Pomyślnie dodano opinie",
     Author: "Autor",
     DaysAgo: "dni temu",
-    OnDate: "w dniu",
-	}
+    OnDate: "w dniu"
+  }
 };
 
 export default translations;

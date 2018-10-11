@@ -12,7 +12,12 @@ import {
   ADD_CERTIFICATE_RESULT,
   GET_CERTIFICATES_FAILURE,
   GET_CERTIFICATES_SUCCESS,
-  UPDATE_EMPLOYEE_SKYPE_ID
+  UPDATE_EMPLOYEE_SKYPE_ID,
+  GET_SHARED_EMPLOYEES_FOR_MANAGER,
+  CHANGE_SHARED_EMPLOYEES_FOR_MANAGER_STATUS,
+  ADD_SHARED_EMPLOYEE_RESULT,
+  CHANGE_LOAD_TEAMLEADERS_AND_MANGERS_STATUS,
+  GET_TEAMLEADERS_AND_MANAGERS
 } from "../constants";
 import { updateObject } from "../services/methods";
 const initialState = {
@@ -49,11 +54,19 @@ const initialState = {
     resultBlock: null,
     loading: false
   },
-  
-  loadCertificatesStatus: null,
-  loadAssignmentsErrors: [],
-  certificates: []
 
+  loadCertificatesStatus: null,
+  loadCertificatesErrors: [],
+  certificates: [],
+
+  loadSharedEmployeesForManagerStatus: null,
+  loadSharedEmployeesForManagerErrors: [],
+  sharedEmployeesForManager: [],
+  resultBlockAddSharedEmployee: null,
+
+  teamLeadersAndManagers: [],
+  loadTeamLeadersAndManagersStatus: null,
+  loadTeamLeadersAndManagersErrors: []
 };
 
 export const employeesReducer = (state = initialState, action) => {
@@ -72,6 +85,7 @@ export const employeesReducer = (state = initialState, action) => {
       };
     case LOAD_EMPLOYEES_SUCCESS:
       return {
+        ...state,
         employees: action.employees.results,
         currentPage: action.employees.currentPage,
         totalPageCount: action.employees.totalPageCount
@@ -96,7 +110,7 @@ export const employeesReducer = (state = initialState, action) => {
         employeeResultMessage: action.employeeResultMessage
       });
     case LOAD_ASSIGNMENTS:
-      return updateObject(state, { loadAssignmentsStatus: action.loadAssignmentsStatus, loadAssignmentsErrors: action.loadAssignmentsErrors, 
+      return updateObject(state, { loadAssignmentsStatus: action.loadAssignmentsStatus, loadAssignmentsErrors: action.loadAssignmentsErrors,
         loadedAssignments: action.loadedAssignments})
     case CHANGE_CERTIFICATES_GET_STATUS:
       return updateObject(state, { loadCertificatesStatus: action.loadCertificatesStatus, loadCertificatesErrors: action.loadCertificatesErrors})
@@ -104,6 +118,16 @@ export const employeesReducer = (state = initialState, action) => {
       return updateObject(state, { certificates: action.certificates})
     case ADD_CERTIFICATE_RESULT:
       return updateObject(state, {resultBlockAddCertificate: action.resultBlockAddCertificate})
+    case CHANGE_SHARED_EMPLOYEES_FOR_MANAGER_STATUS:
+      return updateObject(state, { loadSharedEmployeesForManagerStatus: action.loadSharedEmployeesForManagerStatus, loadSharedEmployeesForManagerErrors: action.loadSharedEmployeesForManagerErrors})
+    case GET_SHARED_EMPLOYEES_FOR_MANAGER:
+      return updateObject(state, { sharedEmployeesForManager: action.sharedEmployeesForManager})
+    case ADD_SHARED_EMPLOYEE_RESULT:
+      return updateObject(state, {resultBlockAddSharedEmployee: action.resultBlockAddSharedEmployee})
+    case CHANGE_LOAD_TEAMLEADERS_AND_MANGERS_STATUS:
+      return updateObject(state, { loadTeamLeadersAndManagersStatus: action.loadTeamLeadersAndManagersStatus, loadTeamLeadersAndManagersErrors: action.loadTeamLeadersAndManagersErrors})
+    case GET_TEAMLEADERS_AND_MANAGERS:
+      return updateObject(state, { teamLeadersAndManagers: action.teamLeadersAndManagers })
     case DELETE_QUATER:
       return updateObject(state, {
         deleteQuaterStatus: action.deleteQuaterStatus,

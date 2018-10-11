@@ -473,7 +473,6 @@ export const changeProjectStateACreator = (
   model
 ) => {
   return dispatch => {
-    console.log("Siema");
     dispatch(asyncStarted());
     dispatch(changeProjectStatePromise(ApiOperation, Object.values(model)))
       .then(response => {

@@ -119,7 +119,6 @@ class Form extends Component {
     if(newFormItems[id].callBackFunc){
       newFormItems[id].callBackFunc();
     }
-    console.log()
 
     this.setState({ formItems: newFormItems, validationResult: shouldSubmit });
   };
@@ -216,7 +215,7 @@ class Form extends Component {
     const formItems = [...this.state.formItems];
     formItems[mainListIndex].value = this.state.searchedList[index].id;
     formItems[mainListIndex].error = "";
-    this.setState({ formItems: formItems, showSearchedList: false });
+    this.setState({ formItems: formItems, showSearchedList: false, validationResult: true });
   };
   onClickHandler = () => {
     if (this.validateAllInputs() === true) {

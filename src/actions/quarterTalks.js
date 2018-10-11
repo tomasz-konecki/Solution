@@ -6,12 +6,9 @@ import {
   import { getEmployeePromise } from './employeesActions.js';
 import moment from 'moment';
 import _ from 'lodash';
-import { createLastWatchedPersonsArray } from './persistHelpActions';
+import { createLastWatchedPersonsArrayACreator } from './persistHelpActions';
 import { changeOperationStatus } from './asyncActions';
-import storeCreator from '../store/index';
 
-
-const { store } = storeCreator;
 
 export const getQuestions = (getQuestionsStatus, getQuestionsErrors, questions) => {
     return {
@@ -22,7 +19,7 @@ export const getQuestions = (getQuestionsStatus, getQuestionsErrors, questions) 
     }
 }
 
-  export const getQuarterQuestionsACreator = () => (dispatch) => {
+  export const getQuarterQuestionsACreator = () => dispatch => {
       return new Promise((resolve, reject) => {
           WebApi.quarterTalks.get.questions().then(response => {
             dispatch(getQuestions(true, [], response.replyBlock.data.dtoObjects));
@@ -89,6 +86,8 @@ export const getReservedDates = (reservedDates, getDatesStatus, getDatesErrors) 
 
             }
             dispatch(getReservedDates(extractedData, true, []));
+            dispatch(createLastWatchedPersonsArrayACreator(employeeId));
+            
             resolve(extractedData);
         }).catch(error => {
             const catchedError = errorCatcher(error);
@@ -126,14 +125,12 @@ export const getReservedDates = (reservedDates, getDatesStatus, getDatesErrors) 
       return { type: GET_QUARTERS_FOR_EMPLOYEE, quartersForEmployee, quartersForEmployeeStatus, quartersForEmployeeErrors }
   }
 
-  const selectLastWatchedPersonsArray = state => state.persistHelpReducer.lastWatchedPersons;
+
+
+
 
   export const getQuartersForEmployeeACreator = employeeId => dispatch => {
       return new Promise((resolve, reject) => {
-        const currentLastWatchedPersonsArray = selectLastWatchedPersonsArray(store.getState());
-        const copiedLastWatchedPersonsArray = [...currentLastWatchedPersonsArray];
-        const personInWatchedPersonsArrayIndex = copiedLastWatchedPersonsArray.indexOf(employeeId);
-        
         WebApi.quarterTalks.get.getQuarterForEmployee(employeeId).then(response => {
             const { dtoObjects: items } = response.replyBlock.data;
             
@@ -144,20 +141,11 @@ export const getReservedDates = (reservedDates, getDatesStatus, getDatesErrors) 
                     items[index].aswerQuestionDate = moment(part.aswerQuestionDate).format("YYYY-MM-DD HH:mm");
             })
             dispatch(getQuartersForEmployee(items, true, []));
-            if(personInWatchedPersonsArrayIndex === -1){
-                copiedLastWatchedPersonsArray.push(employeeId);
-                dispatch(createLastWatchedPersonsArray(copiedLastWatchedPersonsArray));
-            }
+            dispatch(createLastWatchedPersonsArrayACreator(employeeId));
             
             resolve();
         }).catch(error => {
-            dispatch(getQuartersForEmployee(null, false, errorCatcher(error)));
-
-            if(personInWatchedPersonsArrayIndex !== -1){
-                copiedLastWatchedPersonsArray.splice(personInWatchedPersonsArrayIndex, 1);
-            }
-            
-            dispatch(createLastWatchedPersonsArray(copiedLastWatchedPersonsArray))
+            dispatch(getQuartersForEmployee([], false, errorCatcher(error)));
             reject();
         })
       })

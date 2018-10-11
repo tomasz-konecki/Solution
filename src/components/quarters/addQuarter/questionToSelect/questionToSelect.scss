@@ -10,7 +10,6 @@
     .custom-checkbox-container{
         width: 32px;
         height: 32px;
-        margin-left: auto;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -24,6 +23,11 @@
             
             font-size: 15px;
         }
+    }
+    .operations{
+        margin-left: auto;
+        cursor: pointer;
+        margin-right: 15px;
     }
     .checked-checkbox{
         background: #82b541;

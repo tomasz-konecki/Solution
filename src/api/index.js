@@ -275,8 +275,14 @@ const WebApi = {
         );
       }
     },
-    delete: quarterId => {
-      return WebAround.delete(`${API_ENDPOINT}/QuarterTalks/${quarterId}`);
+    delete: {
+      quarter: quarterId => {
+        return WebAround.delete(`${API_ENDPOINT}/QuarterTalks/${quarterId}`);
+      },
+      question: questionId => {
+        return WebAround.delete(`${API_ENDPOINT}/QuarterTalks/Question/${questionId}`);
+      }
+    
     },
     put: {
       reactivate: quarterId => {
@@ -286,6 +292,9 @@ const WebApi = {
       }
     },
     post: {
+      addQuestion: model => {
+        return WebAround.post(`${API_ENDPOINT}/QuarterTalks/Question`, model)
+      },
       createQuarter: model => {
         return WebAround.post(`${API_ENDPOINT}/QuarterTalks`, model);
       },

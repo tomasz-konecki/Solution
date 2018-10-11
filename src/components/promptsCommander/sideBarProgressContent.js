@@ -1,5 +1,6 @@
 import React from "react";
 import { translate } from "react-translate";
+import { Link } from "react-router-dom";
 
 const sideProgressBar = ({
   currentDeletedElements,
@@ -24,7 +25,7 @@ const sideProgressBar = ({
   handleMarkAllAsRead,
   numberOfNotifications,
   deleteAllSpin,
-  readAllSpin,
+  readAllSpin
 }) => {
   const menuClass = shouldShowGlobal ? "menu-expanded" : "menu-collapsed";
   const btnClass = shouldShowGlobal ? "btn-expanded" : "btn-collapsed";
@@ -49,90 +50,122 @@ const sideProgressBar = ({
   const notificationDate = date => {
     const timeStamp = new Date().getTime() - Date.parse(date);
     var ago;
-    if(timeStamp < day / 24){
+    if (timeStamp < day / 24) {
       ago = parseInt(Math.floor(timeStamp / 1000 / 60));
-      if(ago < 2) ago = `${t("OneMinute")} ${t("Ago")}`;
-      else if( (ago > 20 || ago < 5) && [2,3,4].includes(Number(ago.toString().split('').pop()))) ago += ` ${t("Minutes")} ${t("Ago")}`;
+      if (ago < 2) ago = `${t("OneMinute")} ${t("Ago")}`;
+      else if (
+        (ago > 20 || ago < 5) &&
+        [2, 3, 4].includes(
+          Number(
+            ago
+              .toString()
+              .split("")
+              .pop()
+          )
+        )
+      )
+        ago += ` ${t("Minutes")} ${t("Ago")}`;
       else ago += ` ${t("MinutesPl")} ${t("Ago")}`;
-    }
-    else if (timeStamp < day) {
+    } else if (timeStamp < day) {
       ago = parseInt(Math.floor(timeStamp / 1000 / 60 / 60));
       if (ago === 1) ago += ` ${t("Hour")} ${t("Ago")}`;
-      else if ([2, 3, 4, 22, 23].includes(ago)) ago += ` ${t("Hours")} ${t("Ago")}`;
+      else if ([2, 3, 4, 22, 23].includes(ago))
+        ago += ` ${t("Hours")} ${t("Ago")}`;
       else ago += ` ${t("HoursPl")} ${t("Ago")}`;
-    } 
-    else if (timeStamp >= day && timeStamp < day * 30) {
+    } else if (timeStamp >= day && timeStamp < day * 30) {
       ago = parseInt(Math.floor(timeStamp / 1000 / 60 / 60 / 24));
       if (ago === 1) ago += ` ${t("Day")} ${t("Ago")}`;
       else ago += ` ${t("Days")} ${t("Ago")}`;
-    } 
-    else if (timeStamp >= day * 30 && timeStamp < day * 30 * 12) {
+    } else if (timeStamp >= day * 30 && timeStamp < day * 30 * 12) {
       ago = parseInt(Math.floor(timeStamp / 1000 / 60 / 60 / 24 / 30));
-        if (ago === 1) ago = `${t("Month")} ${t("Ago")}`;
-        else if (ago >= 5) ago += `${t("Months")} ${t("Ago")}`;
-        else ago += ` ${t("MonthsPl")} ${t("Ago")}`;
-    } 
-    else if (timeStamp >= day * 30 * 12) {
+      if (ago === 1) ago = `${t("Month")} ${t("Ago")}`;
+      else if (ago >= 5) ago += `${t("Months")} ${t("Ago")}`;
+      else ago += ` ${t("MonthsPl")} ${t("Ago")}`;
+    } else if (timeStamp >= day * 30 * 12) {
       ago = parseInt(Math.floor(timeStamp / 1000 / 60 / 60 / 24 / 30 / 12));
-        if (ago === 1) ago = `${t("Year")} ${t("Ago")}`;
-        else ago += ` ${t("Years")} ${t("Ago")}`;
+      if (ago === 1) ago = `${t("Year")} ${t("Ago")}`;
+      else ago += ` ${t("Years")} ${t("Ago")}`;
     }
 
     return <p>{ago}</p>;
   };
 
-  const notificationLoop = (notification) => {
-    const withLink = notification.redirectId > 0 && notification.redirectTo !== null;
-    
-    if(withLink){
+  const notificationLoop = notification => {
+    const withLink = notification.redirectId > 0 && !!notification.redirectTo;
+    if (withLink) {
       return (
-        <a key={notification.id} href={`/main/${notification.redirectTo}/${notification.redirectId}`} 
-        className="redirectLi"
-        onClick={notification.isRead ? null : () => handleMarkAsRead(notification.id, false)}>
-          <li 
-          key={notification.id} 
-          style={notification.isRead ? {} : {"backgroundColor": "#e8e8e8"}}
+        <Link
+          key={notification.id}
+          to={`/main/${notification.redirectTo}/${notification.redirectId}`}
+          className="redirectLi"
+          onClick={
+            notification.isRead
+              ? null
+              : () => handleMarkAsRead(notification.id, false)
+          }
+        >
+          <li
+            key={notification.id}
+            style={notification.isRead ? {} : { backgroundColor: "#e8e8e8" }}
           >
             {notificationContent(notification)}
           </li>
-        </a>
+        </Link>
       );
-    }
-    else {
+    } else {
       return (
-        <li 
-        key={notification.id} 
-        style={notification.isRead ? {} : {"backgroundColor": "#e8e8e8"}}
+        <li
+          key={notification.id}
+          style={notification.isRead ? {} : { backgroundColor: "#e8e8e8" }}
         >
           {notificationContent(notification)}
         </li>
       );
     }
-
   };
 
-  const notificationContent = (notification) => {
-    return( 
+  const notificationContent = notification => {
+    return (
       <React.Fragment>
-      <i 
-      className={`fa fa-trash-alt deleteNotificationBtn ${currentDeletedElements.includes(notification.id) ? "spinAnimation" : ""}`} 
-      onClick={() => handleDelete(notification.id)}/>
-      {notification.isRead ? 
-      <i className="far fa-envelope-open" />
-      :
-      <i 
-      className={`${notification.isRead ? "far fa-envelope-open" : "fa fa-envelope"} ${currentReadElements.includes(notification.id)  ? "spinAnimation" : ""}`} 
-      onClick={ () => handleMarkAsRead(notification.id)}
-      style={{"cursor": "pointer"}} />
-      }
-      <div className="not-content">
-        <span className={`${notification.isRead ? "" : "font-weight-bold"}`}>{language === "pl" ?notification.contentPl : notification.contentEng}</span>
-        {notificationDate(notification.date)}
-      </div>
+        <object>
+          <i
+            className={`fa fa-trash-alt deleteNotificationBtn ${
+              currentDeletedElements.includes(notification.id)
+                ? "spinAnimation"
+                : ""
+            }`}
+            onClick={() => handleDelete(notification.id)}
+          />
+        </object>
+        {notification.isRead ? (
+          <i className="far fa-envelope-open" />
+        ) : (
+          <object>
+            <i
+              className={`${
+                notification.isRead ? "far fa-envelope-open" : "fa fa-envelope"
+              } ${
+                currentReadElements.includes(notification.id)
+                  ? "spinAnimation"
+                  : ""
+              }`}
+              onClick={() => handleMarkAsRead(notification.id)}
+              style={{ cursor: "pointer" }}
+            />
+          </object>
+        )}
+        <div className="not-content">
+          <span className={`${notification.isRead ? "" : "font-weight-bold"}`}>
+            {language === "pl"
+              ? notification.contentPl
+              : notification.contentEng}
+          </span>
+          {notificationDate(notification.date)}
+        </div>
       </React.Fragment>
     );
-  }
-  
+  };
+
   return (
     <React.Fragment>
       <div className={`comunicates-window ${menuClass}`}>
@@ -155,36 +188,49 @@ const sideProgressBar = ({
           </span>
         </header>
         <ul className="notifictions">
-          {notifications.length !== 0 ? 
-
-          notifications.map(notification => {
-            return notificationLoop(notification)
-          })
-
-          :
-          <p className="noNotificationsMessage" align="center">{t("NoNotifications")}</p>
-        }
-
+          {notifications.length !== 0 ? (
+            notifications.map(notification => {
+              return notificationLoop(notification);
+            })
+          ) : (
+            <p className="noNotificationsMessage" align="center">
+              {t("NoNotifications")}
+            </p>
+          )}
         </ul>
-        {notifications.length !==0 ?
-        <footer>
-          <button 
-          type="button"
-          className= {`read-all-btn ${notifications.filter(x => x.isRead === false).length > 0 ? "" : "button-disabled" }`}
-          onClick={() => handleMarkAllAsRead()}
-          >
-            {t("MarkAllAsRead")} <i className={`fa fa-envelope-open ${readAllSpin ? "spinAnimation" : ""}`}/>
-
-          </button>
-          <button 
-          className="delete-all-btn"
-          onClick={() => handleDeleteAll()}>
-            {t("DeleteAll")} <i className={`fa fa-trash-alt ${deleteAllSpin ? "spinAnimation" : ""}`} />
-          </button>
-        </footer>
-        :
-        <div></div>
-        }
+        {notifications.length !== 0 ? (
+          <footer>
+            <button
+              type="button"
+              className={`read-all-btn ${
+                notifications.filter(x => x.isRead === false).length > 0
+                  ? ""
+                  : "button-disabled"
+              }`}
+              onClick={() => handleMarkAllAsRead()}
+            >
+              {t("MarkAllAsRead")}{" "}
+              <i
+                className={`fa fa-envelope-open ${
+                  readAllSpin ? "spinAnimation" : ""
+                }`}
+              />
+            </button>
+            <button
+              className="delete-all-btn"
+              onClick={() => handleDeleteAll()}
+            >
+              {t("DeleteAll")}{" "}
+              <i
+                className={`fa fa-trash-alt ${
+                  deleteAllSpin ? "spinAnimation" : ""
+                }`}
+              />
+            </button>
+          </footer>
+        ) : (
+          <div />
+        )}
         <div className="operations-messages">
           {isStarted &&
             shouldShowGlobal && (
@@ -209,16 +255,16 @@ const sideProgressBar = ({
       >
         <i className={`fa ${btnIcon}`} />
         <div />
-        {notifications.filter(x => x.isRead === false).length > 0 ?
-        <div className="comunicates-number">{notifications.filter(x => x.isRead === false).length}</div>
-        :
-        <div></div>
-        }
+        {notifications.filter(x => x.isRead === false).length > 0 ? (
+          <div className="comunicates-number">
+            {notifications.filter(x => x.isRead === false).length}
+          </div>
+        ) : (
+          <div />
+        )}
       </button>
     </React.Fragment>
   );
 };
-
-
 
 export default translate("SideProgressBar")(sideProgressBar);

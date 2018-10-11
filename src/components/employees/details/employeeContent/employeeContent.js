@@ -111,6 +111,19 @@ const employeeContent = ({
               {t("Localization")}:<span>{employee.localization}</span>
             </p>
           )}
+          <h2>{t("EmployeeCV")}</h2>
+          <div className="file-type-icons-container">
+            <i
+              onClick={null}
+              title={t("DownloadEmployeeCVInWordFormat")}
+              className="far fa-file-word"
+            />
+            <i
+              onClick={null}
+              title={t("DownloadEmployeeCVInPdfFormat")}
+              className="far fa-file-pdf"
+            />
+          </div>
           <div className="managerHierarchy">
             {(employee.manager || employee.managersManager) && (
               <h2>{t("Superiors")}</h2>

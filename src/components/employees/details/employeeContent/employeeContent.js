@@ -34,7 +34,8 @@ const employeeContent = ({
 
   getEmployeePromise,
   isYou,
-  binPem
+  binPem,
+  downloadCVClickHandler
 }) => {
   const status = employee.isDeleted
     ? t("Deleted")
@@ -114,12 +115,12 @@ const employeeContent = ({
           <h2>{t("EmployeeCV")}</h2>
           <div className="file-type-icons-container">
             <i
-              onClick={null}
+              onClick={() => downloadCVClickHandler("word", employee.id)}
               title={t("DownloadEmployeeCVInWordFormat")}
               className="far fa-file-word"
             />
             <i
-              onClick={null}
+              onClick={() => downloadCVClickHandler("pdf", employee.id)}
               title={t("DownloadEmployeeCVInPdfFormat")}
               className="far fa-file-pdf"
             />

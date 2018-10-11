@@ -539,6 +539,9 @@ const WebApi = {
         return WebAround.post(
           `${API_ENDPOINT}/reports/cv/${employeeId}?forceIncompletePDF=true`
         );
+      },
+      wordcv: employeeId => {
+        return WebAround.post(`${API_ENDPOINT}/reports/WordCv/${employeeId}`);
       }
     },
     delete: {

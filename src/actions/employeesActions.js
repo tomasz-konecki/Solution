@@ -47,6 +47,16 @@ export const updateSkypeResult = (resultBlock, loading) => {
   };
 };
 
+export const downloadCV = (format, employeeId) => {
+  if (format === "word") {
+    WebApi.reports.post.wordcv(employeeId);
+  } else {
+    WebApi.reports.post
+      .cv(employeeId)
+      .then(WebApi.reports.get.cv(employeeId + ".pdf"));
+  }
+};
+
 export const updateSkype = (skypeId, employeeId) => {
   return dispatch => {
     dispatch(updateSkypeResult(null, true));

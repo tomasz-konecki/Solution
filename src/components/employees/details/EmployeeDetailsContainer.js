@@ -5,7 +5,7 @@ import { bindActionCreators } from "redux";
 import { withRouter } from "react-router-dom";
 import * as asyncActions from "../../../actions/asyncActions";
 import EmployeeContent from "./employeeContent/employeeContent";
-import { changeCurrentWatchedUser } from '../../../actions/persistHelpActions';
+import { changeCurrentWatchedUser } from "../../../actions/persistHelpActions";
 import EmployeeTable from "./employeeTable/employeeTable";
 import {
   getEmployeePromise,
@@ -23,7 +23,8 @@ import {
   reactivateQuaterACreator,
   changeEmployeeSkillsACreator,
   updateSkype,
-  getCertificates
+  getCertificates,
+  downloadCV
 } from "../../../actions/employeesActions";
 import Spinner from "../../common/spinner/spinner";
 import OperationStatusPrompt from "../../form/operationStatusPrompt/operationStatusPrompt";
@@ -78,11 +79,9 @@ class EmployeeDetailsContainer extends React.Component {
       });
     } else if (nextProps.employeeOperationStatus === false) {
       this.setState({ isChangingEmployeeData: false });
-    }
-    else if(nextProps.match !== this.props.match)
-    {
-        this.setState({isLoadingFirstTimeEmployee: true});
-        this.props.getEmployeePromise(nextProps.match.params.id);
+    } else if (nextProps.match !== this.props.match) {
+      this.setState({ isLoadingFirstTimeEmployee: true });
+      this.props.getEmployeePromise(nextProps.match.params.id);
     }
     if (nextProps.employee) {
       if (
@@ -184,7 +183,8 @@ class EmployeeDetailsContainer extends React.Component {
       getEmployeePromise,
       certificates,
       binPem,
-      login
+      login,
+      downloadCV
     } = this.props;
     return (
       <div className="employee-details-container">
@@ -226,6 +226,7 @@ class EmployeeDetailsContainer extends React.Component {
                 }
                 isYou={login === employee.id}
                 binPem={binPem}
+                downloadCVClickHandler={downloadCV}
               />
 
               <EmployeeSkills
@@ -352,12 +353,13 @@ const mapStateToProps = state => {
 
     binPem: state.authReducer.binPem,
     login: state.authReducer.login
-
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
+    downloadCV: (format, employeeId) =>
+      dispatch(downloadCV(format, employeeId)),
     async: bindActionCreators(asyncActions, dispatch),
     getEmployeePromise: employeeId => dispatch(getEmployeePromise(employeeId)),
     editStatistics: (employeeId, seniority, capacity, currentClouds) =>
@@ -379,10 +381,14 @@ const mapDispatchToProps = dispatch => {
     updateSkype: (skypeId, employeeId) =>
       dispatch(updateSkype(skypeId, employeeId)),
     loadCertificates: employeeId => dispatch(loadCertificates(employeeId)),
-    addCertificate: (certificate,userId) => dispatch(addCertificate(certificate,userId)),
-    editCertificate: (certificateId, certificate, userId) => dispatch(editCertificate(certificateId,certificate,userId)),
-    deleteCertificate: (certificateId, userId) => dispatch(deleteCertificate(certificateId, userId)),
-    changeCurrentWatchedUser: (currentWatchedUser) => dispatch(changeCurrentWatchedUser(currentWatchedUser))
+    addCertificate: (certificate, userId) =>
+      dispatch(addCertificate(certificate, userId)),
+    editCertificate: (certificateId, certificate, userId) =>
+      dispatch(editCertificate(certificateId, certificate, userId)),
+    deleteCertificate: (certificateId, userId) =>
+      dispatch(deleteCertificate(certificateId, userId)),
+    changeCurrentWatchedUser: currentWatchedUser =>
+      dispatch(changeCurrentWatchedUser(currentWatchedUser))
   };
 };
 

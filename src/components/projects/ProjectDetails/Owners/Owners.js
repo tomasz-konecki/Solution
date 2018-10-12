@@ -43,6 +43,13 @@ class Owners extends PureComponent {
         this.setState({ disabled: false });
       }
     }
+
+    if(nextProps.owners !== this.props.owners)
+    {
+      this.setState({
+        owners: nextProps.owners
+      })
+    }
   }
 
   componentDidMount() {

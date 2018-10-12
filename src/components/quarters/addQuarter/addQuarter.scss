@@ -5,7 +5,7 @@
     h1{
         color: #8E8E8E;
         font-size: 20px;
-        margin: 10px 0 30px 0;
+        margin: 10px 0 10px 0;
     }
     .form-container{
         width: 40%;
@@ -20,9 +20,39 @@
         label{
             font-size: 16px;
         }
+        .input-container{
+            .right-form-container{
+                width: 95%;
+                & > div{
+                    position: relative;
+                    display: flex;
+                    .small-spiner{
+                        right: 0;
+                        top: -35px;
+                    }
+                    .active-plus{
+                        cursor: pointer;
+                        color: #82b541;
+                    }
+                    .unactive-plus{
+                        color: lightgray;
+                    }
+                    i{
+                        position: relative;
+                        margin-left: 10px;
+                        font-size: 22px;
+                        margin-top: 7.5px;
+                    }
+                }
+            }
+        }
+       
     }
     .adding-quarter-settings{
         margin-left: 60px;
+        button{
+            margin-right: 15px;
+        }
     }
   
 }
@@ -37,7 +67,7 @@
             }
         }
         .list{
-            height: 300px;
+            height: 250px;
             overflow-y: auto;
             margin-top: 30px;
         }

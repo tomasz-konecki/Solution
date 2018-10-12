@@ -14,7 +14,12 @@ import {
   UPDATE_EMPLOYEE_SKYPE_ID,
   CHANGE_CERTIFICATES_GET_STATUS,
   ADD_CERTIFICATE_RESULT,
-  GET_CERTYFICATES
+  GET_CERTYFICATES,
+  GET_SHARED_EMPLOYEES_FOR_MANAGER,
+  CHANGE_SHARED_EMPLOYEES_FOR_MANAGER_STATUS,
+  ADD_SHARED_EMPLOYEE_RESULT,
+  CHANGE_LOAD_TEAMLEADERS_AND_MANGERS_STATUS,
+  GET_TEAMLEADERS_AND_MANAGERS
 } from "../constants";
 import WebApi from "../api";
 import {
@@ -97,6 +102,130 @@ export const loadEmployees = (page = 1, limit = 25, other = {}) => {
       });
   };
 };
+
+export const changeLoadSharedEmployeesForManagerStatus = (
+  loadSharedEmployeesForManagerStatus,
+  loadSharedEmployeesForManagerErrors
+) => {
+  return {
+    type: CHANGE_SHARED_EMPLOYEES_FOR_MANAGER_STATUS,
+    loadSharedEmployeesForManagerStatus,
+    loadSharedEmployeesForManagerErrors
+  }
+}
+
+export const getSharedEmployeesForManager = sharedEmployeesForManager => {
+  return {
+    type: GET_SHARED_EMPLOYEES_FOR_MANAGER,
+    sharedEmployeesForManager
+  }
+}
+
+export const loadSharedEmployeesForManager = (managerId) => {
+  return dispatch => {
+    WebApi.sharedEmployees.get
+      .forManager(managerId)
+      .then(response => {
+        if(!response.errorOccurred()) {
+          dispatch(getSharedEmployeesForManager(response.extractData()));
+          dispatch(changeLoadSharedEmployeesForManagerStatus(true, []));
+        }
+      })
+      .catch(error => {
+        dispatch(changeLoadSharedEmployeesForManagerStatus(false, errorCatcher(error)));
+      });
+  };
+}
+
+export const addSharedEmployeeResult = resultBlockAddSharedEmployee => {
+  return {
+    type: ADD_SHARED_EMPLOYEE_RESULT,
+    resultBlockAddSharedEmployee
+  };
+};
+
+export const addSharedEmployee = (sharedEmployeeModel, destManagerId) => dispatch => {
+  return new Promise((resolve, reject) => {
+    WebApi.sharedEmployees.post
+      .add(sharedEmployeeModel)
+      .then(response => {
+        dispatch(addSharedEmployeeResult(response));
+
+        setTimeout(() => {
+          dispatch(addSharedEmployeeResult(null));
+          dispatch(loadSharedEmployeesForManager(destManagerId));
+          dispatch(loadEmployees());
+          resolve();
+        }, 2000);
+      })
+      .catch(errors => {
+        dispatch(addSharedEmployeeResult(errors));
+        setTimeout(() => {
+          dispatch(addSharedEmployeeResult(null));
+
+          const keys = Object.keys(errors.replyBlock.data.errorObjects[0].errors);
+          const error = errors.replyBlock.data.errorObjects[0].errors[keys[0]]
+
+          reject(error);
+        }, 2000);
+        throw error;
+      });
+  });
+};
+
+export const deleteSharedEmployee = (sharedEmployeeId, destManagerId) => dispatch => {
+  return new Promise((resolve, reject) => {
+    WebApi.sharedEmployees.delete
+      .deleteById(sharedEmployeeId)
+      .then(response => {
+        dispatch(setActionConfirmationResult(response));
+        dispatch(loadSharedEmployeesForManager(destManagerId));
+        resolve();
+      })
+      .catch(errors => {
+        dispatch(setActionConfirmationResult(error));
+
+        const keys = Object.keys(errors.replyBlock.data.errorObjects[0].errors);
+        const error = errors.replyBlock.data.errorObjects[0].errors[keys[0]]
+
+        reject(error);
+      });
+  });
+};
+
+export const changeLoadTeamLeadersAndManagers = (
+  loadTeamLeadersAndManagersStatus,
+  loadTeamLeadersAndManagersErrors
+) => {
+  return {
+    type: CHANGE_LOAD_TEAMLEADERS_AND_MANGERS_STATUS,
+    loadTeamLeadersAndManagersStatus,
+    loadTeamLeadersAndManagersErrors
+  }
+}
+
+export const getTeamLeadersAndManagers = teamLeadersAndManagers => {
+  return {
+    type: GET_TEAMLEADERS_AND_MANAGERS,
+    teamLeadersAndManagers
+  }
+}
+
+export const loadTeamLeadersAndManagers = () => {
+  return dispatch => {
+    WebApi.employees.get
+      .employeesAndManagers()
+      .then(response => {
+        if(!response.errorOccurred()) {
+          dispatch(getTeamLeadersAndManagers(response.extractData()));
+          dispatch(changeLoadTeamLeadersAndManagers(true, []));
+        }
+      })
+      .catch(error => {
+        dispatch(changeLoadTeamLeadersAndManagers(false, errorCatcher(error)));
+      });
+  };
+}
 
 export const changeLoadCertificatesStatus = (
   loadCertificatesStatus,
@@ -498,20 +627,6 @@ export const addCertificateResult = resultBlockAddCertificate => {
   };
 };
 
-export const deleteCertificate = (certificateId, employeeId) => {
-  return dispatch => {
-    WebApi.certificates.delete
-      .deleteById(certificateId)
-      .then(response => {
-        dispatch(setActionConfirmationResult(response));
-        dispatch(loadCertificates(employeeId));
-      })
-      .catch(error => {
-        dispatch(setActionConfirmationResult(error));
-      });
-  };
-};
-
 export const addCertificate = (cretificate, userId) => {
   return dispatch => {
     WebApi.certificates.post
@@ -530,6 +645,20 @@ export const addCertificate = (cretificate, userId) => {
           dispatch(addCertificateResult(null));
         }, 2000);
         throw error;
+      });
+  };
+};
+
+export const deleteCertificate = (certificateId, employeeId) => {
+  return dispatch => {
+    WebApi.certificates.delete
+      .deleteById(certificateId)
+      .then(response => {
+        dispatch(setActionConfirmationResult(response));
+        dispatch(loadCertificates(employeeId));
+      })
+      .catch(error => {
+        dispatch(setActionConfirmationResult(error));
       });
   };
 };

@@ -24,6 +24,13 @@ class Form extends Component {
     showSearchedList: false
   };
 
+  componentDidUpdate(prevProps){
+    const { shouldChangeFormState, newFormItems } = this.props;
+    if(shouldChangeFormState !== undefined && prevProps.shouldChangeFormState !== shouldChangeFormState){
+      this.setState({formItems: newFormItems, validationResult: true});
+    }
+  }
+
   onKeyPress = (e, index, typedVal) => {
     if (e.key === "Enter") this.addItemToList(index, typedVal);
   };
@@ -243,6 +250,9 @@ class Form extends Component {
         onSubmit={e => this.onSubmit(e)}
         className="universal-form-container"
       >
+      {this.props.placeToUsePropsChildren === "top" && 
+          this.props.children
+      }
         {this.state.formItems.map((i, index) => {
           return (
             <section style={{display: i.disable === true ? 'none' : 'flex'}} className={`input-container ${inputContainerClass}`} key={i.title}>
@@ -446,8 +456,9 @@ class Form extends Component {
             </section>
           );
         })}
-
-        {this.props.children}
+        {this.props.placeToUsePropsChildren === "bottom" && 
+          this.props.children
+        }
 
         <SpinnerButton
           validationResult={this.state.validationResult}
@@ -466,7 +477,8 @@ class Form extends Component {
 }
 
 Form.defaultProps = {
-  inputContainerClass: "row-container"
+  inputContainerClass: "row-container",
+  placeToUsePropsChildren: "bottom"
 }
 
 export default Form;

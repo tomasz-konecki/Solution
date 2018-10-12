@@ -290,6 +290,17 @@ const translations = {
     EditingCertificate: "Edytowanie certyfikatu",
     Edit: "Zapisz"
   },
+  ShareEmployeesModal: {
+    ShareEmployees: "Udostępnij pracowników",
+    ChooseEmployeesToShare: "Wybierz pracowników do udostępnienia",
+    ChooseLeader: "Wybierz lidera",
+    SharedEmployees: "Udostępnieni pracownicy",
+    Search: "Wyszukaj",
+    StopSharing: "Przestań udostępniać",
+    Employees: "Pracownicy",
+    ShareTeam: "Udostępnij team",
+    Share: "Udostępnij"
+  },
   ImportCVContainer: {
     Name: "Nazwa",
     Size: "Rozmiar",

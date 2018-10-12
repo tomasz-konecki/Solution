@@ -1,4 +1,4 @@
-import {
+import {ADD_QUESTION, DELETE_QUESTION,
  ADD_QUARTER_TALK, GET_QUESTIONS, GET_RESERVED_DATES, PLAN_QUARTER, GET_QUARTERS_FOR_EMPLOYEE, DELETE_QUARTER_TALK, REACTIVATE_QUARTER_TALK
 } from "../constants";
   import WebApi from "../api";
@@ -157,7 +157,7 @@ export const getReservedDates = (reservedDates, getDatesStatus, getDatesErrors) 
 
   export const deleteQuarterTalkACreator = (quarterToDeleteId, quartersForEmployee) => dispatch => {
     return new Promise((resolve, reject) => {
-        WebApi.quarterTalks.delete(quarterToDeleteId).then(response => {
+        WebApi.quarterTalks.delete.quarter(quarterToDeleteId).then(response => {
             const quartersForEmployeeCopy = [...quartersForEmployee];
             const indexWithGivenId = quartersForEmployeeCopy.findIndex(i => i.id === quarterToDeleteId);
             quartersForEmployeeCopy[indexWithGivenId].isDeleted = true;
@@ -190,4 +190,36 @@ export const getReservedDates = (reservedDates, getDatesStatus, getDatesErrors) 
             reject();
         });
     })
+  }
+
+  export const addQuestion = (addQuestionStatus, addQuestionErrors) => {
+    return { type: ADD_QUESTION, addQuestionStatus, addQuestionErrors };
+  }
+
+  export const addQuestionACreator = question => dispatch => {
+    return new Promise((resolve, reject) => {
+        WebApi.quarterTalks.post.addQuestion({question}).then(response => {
+            dispatch(addQuestion(true, []));
+            resolve(response.replyBlock.data.dtoObject);
+        }).catch(errors => {
+            dispatch(addQuestion(false, errorCatcher(errors)));
+            reject();
+        })
+    })
+  }
+
+export const deleteQuestionACreator = questionId => dispatch => {
+    return new Promise((resolve, reject) => {
+        WebApi.quarterTalks.delete.question(questionId).then(response => {
+            dispatch(deleteQuestion(true, []));
+            resolve();
+        }).catch(errors => {
+            dispatch(deleteQuestion(false, errorCatcher(errors)));
+            reject();
+        })
+    })
+}
+
+  export const deleteQuestion = (status, errors) => {
+      return { type: DELETE_QUESTION, status, errors };
   }

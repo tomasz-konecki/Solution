@@ -275,8 +275,14 @@ const WebApi = {
         );
       }
     },
-    delete: quarterId => {
-      return WebAround.delete(`${API_ENDPOINT}/QuarterTalks/${quarterId}`);
+    delete: {
+      quarter: quarterId => {
+        return WebAround.delete(`${API_ENDPOINT}/QuarterTalks/${quarterId}`);
+      },
+      question: questionId => {
+        return WebAround.delete(`${API_ENDPOINT}/QuarterTalks/Question/${questionId}`);
+      }
+    
     },
     put: {
       reactivate: quarterId => {
@@ -286,6 +292,9 @@ const WebApi = {
       }
     },
     post: {
+      addQuestion: model => {
+        return WebAround.post(`${API_ENDPOINT}/QuarterTalks/Question`, model)
+      },
       createQuarter: model => {
         return WebAround.post(`${API_ENDPOINT}/QuarterTalks`, model);
       },
@@ -347,6 +356,9 @@ const WebApi = {
           `${API_ENDPOINT}/employees/${employeeId}/capacityRefactor`
         );
       },
+      employeesAndManagers: () => {
+        return WebAround.get(`${API_ENDPOINT}/sharedEmployees/getEmployeesAndManagers`);
+      },
       emplo: {
         contact: employeeId => {
           return WebAround.get(
@@ -404,6 +416,23 @@ const WebApi = {
         return WebAround.patch(
           `${API_ENDPOINT}/employees/reactivate/${employeeId}`
         );
+      }
+    }
+  },
+  sharedEmployees: {
+    get: {
+      forManager: (managerId) => {
+        return WebAround.get(`${API_ENDPOINT}/sharedEmployees/forManager/${managerId}`);
+      }
+    },
+    post: {
+      add: (sharedEmployeeModel) => {
+        return WebAround.post(`${API_ENDPOINT}/sharedEmployees`, sharedEmployeeModel)
+      }
+    },
+    delete: {
+      deleteById: (sharedEmployeeId) => {
+        return WebAround.delete(`${API_ENDPOINT}/sharedEmployees/${sharedEmployeeId}`)
       }
     }
   },
@@ -501,6 +530,23 @@ const WebApi = {
       },
       deleteProject: projectId => {
         return WebAround.delete(`${API_ENDPOINT}/projects/delete/${projectId}`);
+      }
+    }
+  },
+  shareProject:{
+    get:{
+      managers: (projectId) =>{
+        return WebAround.get(`${API_ENDPOINT}/shareProject/DestinationManagers/${projectId}`);
+      }
+    },
+    post:{
+      add: (projectId, shareProjectModel)=>{
+        return WebAround.post(`${API_ENDPOINT}/shareProject/${projectId}`, shareProjectModel);
+      }
+    },
+    delete:{
+      cancel: (projectId, shareProjectId)=>{
+        return WebAround.delete(`${API_ENDPOINT}/shareProject/${projectId}/${shareProjectId}`);
       }
     }
   },

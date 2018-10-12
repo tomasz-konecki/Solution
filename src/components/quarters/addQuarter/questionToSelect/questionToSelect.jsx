@@ -6,7 +6,10 @@ const questionToSelect = ({item, clickItemFunction}) => (
         <div className="question-value">
             {item.question}
         </div>
-        <div onClick={clickItemFunction} className={`custom-checkbox-container ${item.isChecked ? "checked-checkbox" : "unchecked-checkbox"}`}>
+        <div className="operations">
+            <i onClick={e => clickItemFunction(e, "delete")} className="fa fa-trash"></i>
+        </div>
+        <div onClick={e => clickItemFunction(e, "choose")} className={`custom-checkbox-container ${item.isChecked ? "checked-checkbox" : "unchecked-checkbox"}`}>
             <i className={`fa fa-check`}></i>
         </div>
     </div>

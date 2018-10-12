@@ -152,7 +152,10 @@ class SmoothTable extends Component {
       });
     }
 
-    //this.props.getSettings(Object.assign({}, this.state.sortingSettings, mainFilter));
+    if(this.props.getSettings)
+    {
+      this.props.getSettings(Object.assign({}, this.state.sortingSettings, mainFilter));
+    }
     return Object.assign({}, this.state.sortingSettings, mainFilter);
   }
 
@@ -606,7 +609,13 @@ class SmoothTable extends Component {
   generateCell(column, object) {
     switch (column.type) {
       case "text":
-        return object[column.field];
+        if(object.employeeShared && column.field === "firstName")
+        {
+          return <span> {object[column.field]} <i className="fa fa-share-alt" style={{color: "red"}} title={"Udostępniony przez " + object.employeeSharedBy}></i></span>
+        }else
+        {
+          return object[column.field];
+        }
       case "multiState":
         if (object.isDeleted) {
           return this.props.t("Deleted");

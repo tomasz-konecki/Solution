@@ -78,9 +78,10 @@ class List extends React.PureComponent {
             const { currentFilteringBy } = this.state;
           
             if(shouldPutSearchBox){
-                const { searchInput } = this.state;
+                const searchInput = {...this.state.searchInput};
+                const typedValue = searchInput.value.toUpperCase();
                 modifiedElements = originalList.filter(element => {
-                    return element[shouldPutSearchBox.searchBy].toUpperCase().search(searchInput.value.toUpperCase()) !== -1
+                    return element[shouldPutSearchBox.searchBy].toUpperCase().search(typedValue) !== -1;
                 });
             }
             if(shouldPutSort){

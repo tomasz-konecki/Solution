@@ -59,6 +59,7 @@
       vertical-align: top;
       transition-property: width;
       transition-duration: 0.3s;
+      
       box-shadow: 0px 4px 3px 3px rgba(0, 0, 0, 0.75);
 
       li {
@@ -104,6 +105,7 @@
         width: 15%;
         li {
           span {
+            transition-delay: .1s, 0s, 0s;
             display: inline-block;
             visibility: visible;
             width: 100%;
@@ -200,20 +202,25 @@
   .wrapper {
     height: auto;
     overflow: auto;
-
     font-size: 120%;
-
     .header {
       width: 100%;
       .left-menu {
         width: 0;
         li {
-          display: none;
+          i {
+              display: none;
+          }
         }
         &.extended {
           width: 20%;
-
           li {
+              span {
+                transition-delay: .1s, 0s, 0s;
+              }
+              i {
+                display: inline-block;
+              }
             display: block;
             padding: 0px;
           }

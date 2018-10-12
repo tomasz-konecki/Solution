@@ -19,7 +19,9 @@ import {
   CHANGE_SHARED_EMPLOYEES_FOR_MANAGER_STATUS,
   ADD_SHARED_EMPLOYEE_RESULT,
   CHANGE_LOAD_TEAMLEADERS_AND_MANGERS_STATUS,
-  GET_TEAMLEADERS_AND_MANAGERS
+  GET_TEAMLEADERS_AND_MANAGERS,
+  GET_EMPLOYEES_FEEDBACKS,
+  CHANGE_LOAD_EMPLOYEES_FEEDBACKS
 } from "../constants";
 import WebApi from "../api";
 import {
@@ -102,6 +104,40 @@ export const loadEmployees = (page = 1, limit = 25, other = {}) => {
       });
   };
 };
+
+export const changeLoadEmployeeFeedbacksStatus = (
+  loadEmployeeFeedbacksStatus,
+  loadEmployeeFeedbacksErrors
+) => {
+  return {
+    type: CHANGE_LOAD_EMPLOYEES_FEEDBACKS,
+    loadEmployeeFeedbacksStatus,
+    loadEmployeeFeedbacksErrors
+  }
+}
+
+export const getEmployeeFeedbacks = employeeFeedbacks => {
+  return {
+    type: GET_EMPLOYEES_FEEDBACKS,
+    employeeFeedbacks
+  }
+}
+
+export const loadEmployeeFeedbacks = (employeeId) => {
+  return dispatch => {
+    WebApi.feedbacks.get
+      .byEmployee(employeeId)
+      .then(response => {
+        if(!response.errorOccurred()) {
+          dispatch(getEmployeeFeedbacks(response.extractData()));
+          dispatch(changeLoadEmployeeFeedbacksStatus(true, []));
+        }
+      })
+      .catch(error => {
+        dispatch(changeLoadEmployeeFeedbacksStatus(false, errorCatcher(error)));
+      });
+  };
+}
 
 export const changeLoadSharedEmployeesForManagerStatus = (
   loadSharedEmployeesForManagerStatus,

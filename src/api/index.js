@@ -282,7 +282,7 @@ const WebApi = {
       question: questionId => {
         return WebAround.delete(`${API_ENDPOINT}/QuarterTalks/Question/${questionId}`);
       }
-    
+
     },
     put: {
       reactivate: quarterId => {
@@ -443,7 +443,7 @@ const WebApi = {
       byAuthor: authorId => {},
       byEmployee: employeeId => {
         return WebAround.get(
-          `${API_ENDPOINT}/feedbacks/employee/${employeeId}`
+          `${API_ENDPOINT}/feedbacks/employee/${employeeId}?isDeleted=false`
         );
       },
       byProject: projectId => {}

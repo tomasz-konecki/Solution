@@ -290,6 +290,13 @@ const translations = {
     EditingCertificate: "Edytowanie certyfikatu",
     Edit: "Zapisz"
   },
+  EmployeeFeedbacks: {
+    Feedbacks: "Opinie",
+    Author: "Autor",
+    Content: "Treść",
+    Project: "Projekt",
+    Client: "Klient"
+  },
   ShareEmployeesModal: {
     ShareEmployees: "Udostępnij pracowników",
     ChooseEmployeesToShare: "Wybierz pracowników do udostępnienia",

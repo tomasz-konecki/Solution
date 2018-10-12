@@ -287,6 +287,13 @@ const translations = {
     EditingCertificate: "Editing certyficate",
     Edit: "Save"
   },
+  EmployeeFeedbacks: {
+    Feedbacks: "Feedbacks",
+    Author: "Author",
+    Content: "Content",
+    Project: "Project",
+    Client: "Client"
+  },
   ShareEmployeesModal: {
     ShareEmployees: "Share employees",
     ChooseEmployeesToShare: "Choose employees to share",

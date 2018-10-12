@@ -17,7 +17,9 @@ import {
   CHANGE_SHARED_EMPLOYEES_FOR_MANAGER_STATUS,
   ADD_SHARED_EMPLOYEE_RESULT,
   CHANGE_LOAD_TEAMLEADERS_AND_MANGERS_STATUS,
-  GET_TEAMLEADERS_AND_MANAGERS
+  GET_TEAMLEADERS_AND_MANAGERS,
+  GET_EMPLOYEES_FEEDBACKS,
+  CHANGE_LOAD_EMPLOYEES_FEEDBACKS
 } from "../constants";
 import { updateObject } from "../services/methods";
 const initialState = {
@@ -66,7 +68,11 @@ const initialState = {
 
   teamLeadersAndManagers: [],
   loadTeamLeadersAndManagersStatus: null,
-  loadTeamLeadersAndManagersErrors: []
+  loadTeamLeadersAndManagersErrors: [],
+
+  employeeFeedbacks: [],
+  loadEmployeeFeedbacksStatus: null,
+  loadEmployeeFedebacksErrors: []
 };
 
 export const employeesReducer = (state = initialState, action) => {
@@ -128,6 +134,10 @@ export const employeesReducer = (state = initialState, action) => {
       return updateObject(state, { loadTeamLeadersAndManagersStatus: action.loadTeamLeadersAndManagersStatus, loadTeamLeadersAndManagersErrors: action.loadTeamLeadersAndManagersErrors})
     case GET_TEAMLEADERS_AND_MANAGERS:
       return updateObject(state, { teamLeadersAndManagers: action.teamLeadersAndManagers })
+    case CHANGE_LOAD_EMPLOYEES_FEEDBACKS:
+      return updateObject(state, { loadEmployeeFeedbacksStatus: action.loadEmployeeFeebacksStatus, loadEmployeeFeedbacksErrors: action.loadEmployeeFeedbacksErrors})
+    case GET_EMPLOYEES_FEEDBACKS:
+      return updateObject(state, { employeeFeedbacks: action.employeeFeedbacks })
     case DELETE_QUATER:
       return updateObject(state, {
         deleteQuaterStatus: action.deleteQuaterStatus,

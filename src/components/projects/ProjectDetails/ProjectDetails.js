@@ -161,10 +161,18 @@ class ProjectDetails extends Component {
     const addEmployeToProjectFormItems = [
       ...this.state.addEmployeToProjectFormItems
     ];
-    addEmployeToProjectFormItems[0].value = moment(startDate);
-    addEmployeToProjectFormItems[1].value = moment(
-      endDate ? endDate : estimatedEndDate
-    );
+
+    if(moment(startDate).format("YYYY-MM-DD") === '0001-01-01')
+    {
+      addEmployeToProjectFormItems[0].value = moment();
+      addEmployeToProjectFormItems[1].value = moment().add(1, 'days');
+    }else{
+      addEmployeToProjectFormItems[0].value = moment(startDate);
+      addEmployeToProjectFormItems[1].value = moment(
+        endDate ? endDate : estimatedEndDate
+      );
+    }
+
     return addEmployeToProjectFormItems;
   };
   componentWillReceiveProps(nextProps) {
@@ -861,7 +869,7 @@ class ProjectDetails extends Component {
               <ShareProject
                 projectId={this.props.match.params.id}
               >
-              </ShareProject>              
+              </ShareProject>
             </Modal>
 
 

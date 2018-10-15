@@ -93,7 +93,7 @@
             margin: initial;
         }
     }
-  
+
     .project-carts{
         width: 100%;
         padding: 15px;
@@ -144,7 +144,7 @@
                 }
             }
         }
-    
+
     }
     .right-project-spec{
         width: 100%;
@@ -154,6 +154,9 @@
         font-size: 0.8rem;
         .a-asign-container{
             margin-right: auto;
+            position: relative;
+            display: inline-flex;
+            align-items: center;
             padding: 7.5px;
             label{
                 font-size: 18px;
@@ -163,6 +166,11 @@
                 cursor: pointer;
                 height: 20px;
                 margin-left: 15px;
+            }
+            .assingments-spinner-container {
+              position: absolute;
+              top: 30px;
+              right: -20px;
             }
         }
         h3{
@@ -304,7 +312,7 @@
     .fa-plus {
       color: green;
     }
-    
+
 }
 .skills{
     float: left;

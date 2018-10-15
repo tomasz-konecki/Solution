@@ -132,7 +132,7 @@ class Quaters extends React.PureComponent {
           />
           <Button
             onClick={() => this.putEmployeeToLastWatchedAndRedirect(`/main/quarters/employees/${employeeId}?=${employeeId}`)}
-            title="Kalendarz rozmów"
+            title={t("CallCalendar")}
             mainClass="option-btn normal-btn rel-btn"
           />
         </React.Fragment>

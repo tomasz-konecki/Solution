@@ -273,6 +273,9 @@ const WebApi = {
         return WebAround.get(
           `${API_ENDPOINT}/QuarterTalks/ForEmployee/` + employeeId
         );
+      },
+      generateDoc: quarterId => {
+        return WebAround.get(`${API_ENDPOINT}/QuarterTalks/GenerateDocx/${quarterId}`);
       }
     },
     delete: {

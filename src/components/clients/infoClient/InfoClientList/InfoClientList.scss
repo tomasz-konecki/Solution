@@ -67,11 +67,12 @@
   width: 100%;
   .info-list-item {
     display: flex;
-    align-items: center;
     width: 100%;
     margin-top: 10px;
     .info-list-circle,
-    .info-list-name,
+    .info-list-name{
+      padding-top: 2% !important;
+    }
     .info-list-options {
       float: left;
       button {

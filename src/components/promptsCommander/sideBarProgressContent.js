@@ -90,77 +90,64 @@ const sideProgressBar = ({
     return <p>{ago}</p>;
   };
 
-  const notificationLoop = notification => {
-    const withLink = notification.redirectId > 0 && !!notification.redirectTo;
-    if (withLink) {
-      return (
-        <Link
-          key={notification.id}
-          to={`/main/${notification.redirectTo}/${notification.redirectId}`}
-          className="redirectLi"
-          onClick={
-            notification.isRead
-              ? null
-              : () => handleMarkAsRead(notification.id, false)
-          }
-        >
-          <li
-            key={notification.id}
-            style={notification.isRead ? {} : { backgroundColor: "#e8e8e8" }}
-          >
-            {notificationContent(notification)}
-          </li>
-        </Link>
-      );
-    } else {
-      return (
-        <li
-          key={notification.id}
-          style={notification.isRead ? {} : { backgroundColor: "#e8e8e8" }}
-        >
-          {notificationContent(notification)}
-        </li>
-      );
+  const generateRedirectLink = (notification) => {
+    switch(notification.redirectTo){
+      case "Projects":
+      {
+        return "/main/projects/" + notification.redirectId;
+      }
+      case "QuarterTalk":
+      {
+        return "/main/quarters/employees/" + notification.userId + "?=" + notification.userId;
+      }
+      default:
+      {
+        return null;
+      }
     }
-  };
 
+  }
+  
   const notificationContent = notification => {
+    const redirectLink = generateRedirectLink(notification);
+
     return (
       <React.Fragment>
-        <object>
-          <i
-            className={`fa fa-trash-alt deleteNotificationBtn ${
-              currentDeletedElements.includes(notification.id)
-                ? "spinAnimation"
-                : ""
-            }`}
-            onClick={() => handleDelete(notification.id)}
-          />
-        </object>
-        {notification.isRead ? (
-          <i className="far fa-envelope-open" />
-        ) : (
-          <object>
+        <div className="container row">
+          <div className="col-2 col-sm-3">
             <i
-              className={`${
-                notification.isRead ? "far fa-envelope-open" : "fa fa-envelope"
-              } ${
-                currentReadElements.includes(notification.id)
+              className={`fa fa-trash-alt deleteNotificationBtn ${
+                currentDeletedElements.includes(notification.id)
                   ? "spinAnimation"
                   : ""
               }`}
-              onClick={() => handleMarkAsRead(notification.id)}
-              style={{ cursor: "pointer" }}
+              onClick={() => handleDelete(notification.id)}
             />
-          </object>
-        )}
-        <div className="not-content">
-          <span className={`${notification.isRead ? "" : "font-weight-bold"}`}>
-            {language === "pl"
-              ? notification.contentPl
-              : notification.contentEng}
-          </span>
-          {notificationDate(notification.date)}
+            {notification.isRead ? (
+              <i className="far fa-envelope-open" />
+            ) : (
+                <i
+                  className={`fa fa-envelope 
+                  ${currentReadElements.includes(notification.id)
+                      ? "spinAnimation"
+                      : ""
+                  }`}
+                  onClick={() => handleMarkAsRead(notification.id)}
+                  style={{ cursor: "pointer" }}
+                />
+            )}
+          </div>
+          <div className="not-content col-10 col-sm-9">
+            <a href={redirectLink} className={`${redirectLink === null ? "noRedirect" : "redirect"} ${notification.isRead ? "" : "pointer"}`} onClick={notification.isRead ? null : () => handleMarkAsRead(notification.id, false)}>
+            
+              <span className={`${notification.isRead ? "" : "font-weight-bold"}`}>
+                {language === "pl"
+                  ? notification.contentPl
+                  : notification.contentEng}
+              </span>
+              {notificationDate(notification.date)}
+            </a>
+          </div>
         </div>
       </React.Fragment>
     );
@@ -188,9 +175,15 @@ const sideProgressBar = ({
           </span>
         </header>
         <ul className="notifictions">
-          {notifications.length !== 0 ? (
-            notifications.map(notification => {
-              return notificationLoop(notification);
+          {notifications.length !== 0 ? (notifications.map(notification => {
+              return (
+                <li
+                key={notification.id}
+                style={notification.isRead ? {} : { backgroundColor: "#e8e8e8" }}
+                >
+                  {notificationContent(notification)}
+                </li>
+              );
             })
           ) : (
             <p className="noNotificationsMessage" align="center">

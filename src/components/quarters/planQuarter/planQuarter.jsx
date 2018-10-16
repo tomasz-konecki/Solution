@@ -13,14 +13,15 @@ import AuthWithOutlook from '../authWithOutlookComponent/authWithOutlookComponen
 import { pushMomentValuesDynamicly } from '../../../services/methods.js';
 import Hour from '../others/hour/hour';
 import _ from 'lodash';
+import { translate } from 'react-translate';
+
 const functionsToUseForDates = [
     {name: "search", searchBy: "date", count: true }, 
     {name: "sort", sortBy: "date"}
 ];
 
-
-
 const invalidOneDriveTokenError = "Nieprawidłowy token autoryzanyjny do usługi Outlook Calendar.";
+const invalidTokenErrorTranslated = "Invalid authentication token for Outlook Calendar service.";
 
 class PlanQuarter extends React.PureComponent{
     state = {
@@ -28,22 +29,21 @@ class PlanQuarter extends React.PureComponent{
         isPlanningQuarter: false,
         hoursToUse: [],
         planQuarterFormItems: [
-        { title: "Planowana data", mode: 'date-picker', error: "", callBackFunc: () => this.generateHoursToUse(),
-          value: moment().locale("pl").add(1, 'days'), canBeNull: false, checkIfDateIsfromPast: true },
+        { title: this.props.t("PlannedDate"), mode: 'date-picker', error: "", locale: this.props.t("Language"), 
+            callBackFunc: () => this.generateHoursToUse(), value: moment().locale(this.props.t("Language")).add(1, 'days'), canBeNull: false, checkIfDateIsfromPast: true },
         {
-            title: "Godzina rozmowy", value: "", error: "", canBeNull: false,
-            type: "time", mode: "text", inputType: "number",
-            placeholder: "wybierz lub wpisz godzinę rozmowy..."
+            title: this.props.t("PlannedHour"), value: "", error: "", canBeNull: false,
+            type: "time", mode: "text", inputType: "number"
         },
         {
-          title: "Kwartał", mode: "select", value: "1",
-          placeholder: "wybierz lub wpisz kwartał...",
+          title: this.props.t("Quarter"), mode: "select", value: "1",
+          placeholder: this.props.t("ChooseOrSelectQuarter"),
           selectValues: ["1", "2", "3", "4"]
         },
         {
-            title: "Rok", mode: "type-and-select", value: "", error: "", canBeNull: false,
+            title: this.props.t("Year"), mode: "type-and-select", value: "", error: "", canBeNull: false,
             inputType: "strongNumber",
-            placeholder: "wybierz rok lub wpisz własny...",
+            placeholder: this.props.t("YearHolder"),
             dataToMap: pushMomentValuesDynamicly(20,"2010-12-19", 1, 'years', "YYYY")
         }
         
@@ -110,11 +110,11 @@ class PlanQuarter extends React.PureComponent{
     }
 
     getReservedDates = employeeId => {
-        const { getReservedDatesACreator, oneDriveToken, authOneDriveACreator, changeLinkBeforeRedirect, location } = this.props;
-        getReservedDatesACreator(employeeId, oneDriveToken)
+        const { getReservedDatesACreator, oneDriveToken, authOneDriveACreator, changeLinkBeforeRedirect, location, t } = this.props;
+        getReservedDatesACreator(employeeId, oneDriveToken, t("Language"))
         .then(() => this.setState({isGettingReservedDates: false}, () => this.generateHoursToUse()))
         .catch(error => {
-            if(error[0] === invalidOneDriveTokenError){
+            if(error[0] === invalidOneDriveTokenError || error[0] === invalidTokenErrorTranslated){
                 authOneDriveACreator()
                 .then(link => {
                     this.setState({isGettingReservedDates: false});
@@ -150,7 +150,7 @@ class PlanQuarter extends React.PureComponent{
 
     render(){
         const { planQuarterStatus, planQuarterErrors, reservedDates, getDatesErrors, getDatesStatus, 
-            clearReservedDate, authStatus, authErrors, authOneDriveClear, match } = this.props;
+            clearReservedDate, authStatus, authErrors, authOneDriveClear, match, t } = this.props;
         const { isGettingReservedDates, isPlanningQuarter, planQuarterFormItems, hoursToUse } = this.state;
         
         return (
@@ -159,14 +159,20 @@ class PlanQuarter extends React.PureComponent{
             operationStatus={getDatesStatus} isLoading={isGettingReservedDates}>
                 <div className="plan-quarter-container">
                     <div className="dates">
-                        <List functionsToUse={functionsToUseForDates} shouldAnimateList listClass="calendar-list" listTitle="Zajęte daty" component={CalendarItem} items={reservedDates} />
+                        <List functionsToUse={functionsToUseForDates} 
+                        componentProps={{
+                            minutes: t("Minutes"),
+                            to: t("To"),
+                            from: t("From")
+                        }}
+                        shouldAnimateList listClass="calendar-list" listTitle={t("OccupiedDates")} component={CalendarItem} items={reservedDates} />
                     </div>
                     <div className="plan-quarter-form">
                         <h2>
-                            Szczegóły rozmowy kwartalnej
+                            {t("QuarterTalksDetails")}
                         </h2>
                         <Form
-                            btnTitle="Zaplanuj"
+                            btnTitle={t("Plan")}
                             shouldSubmit
                             inputContainerClass="column-container"
                             onSubmit={this.planQuarterHandler}
@@ -175,13 +181,14 @@ class PlanQuarter extends React.PureComponent{
                             enableButtonAfterTransactionEnd
                             submitResult={{
                                 status: planQuarterStatus,
-                                content: planQuarterStatus ? "Pomyślnie zaplanowano rozmowę kwartalną" :
+                                content: planQuarterStatus ? t("SuccPlannedQuarter") :
                                     planQuarterErrors[0]
                             }}
                         />
                     </div>
                     <div className="hours-to-use-container">
-                        <List shouldAnimateList listClass="question-list" listTitle="Proponowane godziny" 
+                        <List
+                        shouldAnimateList listClass="question-list" listTitle={t("SugestedHours")}
                         component={Hour} items={hoursToUse} />
                       
                     </div>
@@ -194,9 +201,7 @@ class PlanQuarter extends React.PureComponent{
                 operationPrompt={authStatus}
                 />
             }            
-            
             </React.Fragment>
-           
         );
     }
 }
@@ -221,14 +226,13 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         planQuarterACreator: (employeeId, formItems, token) => dispatch(planQuarterACreator(employeeId, formItems, token)),
-        getReservedDatesACreator: (employeeId, oneDriveToken) => dispatch(getReservedDatesACreator(employeeId, oneDriveToken)),
+        getReservedDatesACreator: (employeeId, oneDriveToken, locale) => dispatch(getReservedDatesACreator(employeeId, oneDriveToken, locale)),
         clearReservedDate: () => dispatch(getReservedDates([], null, [])),
         clearPlanQuarter: () => dispatch(planQuarter(null, [])),
         authOneDriveACreator: () => dispatch(authOneDriveACreator(true)),
         authOneDriveClear: () => dispatch(authOneDrive(null, [], ""))
-
     }
 }
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(PlanQuarter);
+export default connect(mapStateToProps, mapDispatchToProps)(translate("Quaters")(PlanQuarter));

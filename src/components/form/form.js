@@ -26,7 +26,7 @@ class Form extends Component {
 
   componentDidUpdate(prevProps){
     const { shouldChangeFormState, newFormItems } = this.props;
-    if(shouldChangeFormState !== undefined && prevProps.shouldChangeFormState !== shouldChangeFormState){
+    if(shouldChangeFormState === true && prevProps.shouldChangeFormState !== shouldChangeFormState){
       this.setState({formItems: newFormItems, validationResult: true});
     }
   }
@@ -255,7 +255,7 @@ class Form extends Component {
       }
         {this.state.formItems.map((i, index) => {
           return (
-            <section style={{display: i.disable === true ? 'none' : 'flex'}} className={`input-container ${inputContainerClass}`} key={i.title}>
+            <section style={{display: i.disable === true ? 'none' : 'flex'}} className={`input-container ${inputContainerClass}`} key={index}>
               <label>{i.title}</label>
               <div className="right-form-container">
                 {!i.mode || i.mode === "text" ? (
@@ -302,7 +302,7 @@ class Form extends Component {
                         ? this.state.endDate
                         : this.state.startDate
                     }
-                    locale="pl"
+                    locale={i.locale ? i.locale : "pl"}
                     onChange={date => this.onDateChange(date, index)}
                     dateFormat="DD/MM/YYYY"
                     peekNextMonth

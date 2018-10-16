@@ -3,13 +3,14 @@ import "./employeeContent.scss";
 import FteBar from "../fteBar/fteBar";
 import DegreeBar from "../degreeBar/degreeBar";
 import Button from "../../../common/button/button";
-import Quaters from "../quaters/quaters";
+import QuarterList from "../quarterList/quarterList.jsx";
 import Spinner from "../../../common/spinner/small-spinner";
 import Icon from "../../../common/Icon";
 import { Link } from "react-router-dom";
 import Form from "../../../form/form";
 import CallSkype from "./callSkype";
-import binaryPermissioner from "../../../../api/binaryPermissioner";
+import ShareEmployeesModal from './modals/shareEmployeesModal';
+import binaryPermissioner from '../../../../api/binaryPermissioner';
 
 const employeeContent = ({
   changeCurrentWatchedUser,
@@ -21,12 +22,6 @@ const employeeContent = ({
   isChangingEmployeeData,
   reactivateEmployee,
   deleteEmployee,
-  deleteQuaterStatus,
-  deleteQuaterErrors,
-  deleteQuaterACreator,
-  reactivateQuaterACreator,
-  reactivateQuaterStatus,
-  reactivateQuaterErrors,
   t,
   editSkypeFormItems,
   editSkypeId,
@@ -96,6 +91,15 @@ const employeeContent = ({
             {employee.seniority ? employee.seniority : t("NoLevel")}
           </div>
           <p>{employee.title}</p>
+
+
+          {isYou && binaryPermissioner(false)(0)(0)(0)(1)(1)(1)(binPem) &&
+            <ShareEmployeesModal
+              t={t}
+              employee={employee}
+            />
+          }
+
         </div>
 
         <div className="right-content">
@@ -209,23 +213,21 @@ const employeeContent = ({
                 <article>{t("BeforeYouChangeStatusContent")}</article>
               </div>
             )}
+
+
           </React.Fragment>
         )}
+
+
       </div>
-      <Quaters
+
+      <QuarterList
         changeCurrentWatchedUser={changeCurrentWatchedUser}
         getEmployeePromise={getEmployeePromise}
-        reactivateQuaterACreator={reactivateQuaterACreator}
-        status={status}
-        reactivateQuaterStatus={reactivateQuaterStatus}
-        reactivateQuaterErrors={reactivateQuaterErrors}
-        deleteQuaterStatus={deleteQuaterStatus}
-        deleteQuaterErrors={deleteQuaterErrors}
         employeeId={employee.id}
-        deleteQuaterACreator={deleteQuaterACreator}
-        paginationLimit={5}
         quarterTalks={employee.quarterTalks}
       />
+
     </section>
   );
 };

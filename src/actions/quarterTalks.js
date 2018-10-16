@@ -1,4 +1,4 @@
-import {
+import {ADD_QUESTION, DELETE_QUESTION,
  ADD_QUARTER_TALK, GET_QUESTIONS, GET_RESERVED_DATES, PLAN_QUARTER, GET_QUARTERS_FOR_EMPLOYEE, DELETE_QUARTER_TALK, REACTIVATE_QUARTER_TALK
 } from "../constants";
   import WebApi from "../api";
@@ -39,14 +39,21 @@ export const getQuestions = (getQuestionsStatus, getQuestionsErrors, questions) 
 
   export const addQuarterTalkACreator = (quarterTalkQuestionItems, employeeId) => dispatch => {
       return new Promise((resolve, reject) => {
-        const model = {employeeId, year: moment(quarterTalkQuestionItems[10].value).year(), quarter: quarterTalkQuestionItems[11].value, quarterTalkQuestionItems: []}
+        const count = quarterTalkQuestionItems.length;
+        const quarterIndex = count - 1;
+        const yearIndex = count - 2;
 
-        quarterTalkQuestionItems.splice(11, 1);
-        quarterTalkQuestionItems.splice(10, 1);
+        const model = {
+            employeeId, year: moment(quarterTalkQuestionItems[yearIndex].value).year(),
+            quarter: quarterTalkQuestionItems[quarterIndex].value, quarterTalkQuestionItems: []
+        }
+        const filteredQuarters = quarterTalkQuestionItems.filter(i => i.mode === "textarea");
 
-        model.quarterTalkQuestionItems = quarterTalkQuestionItems.map(item => {
+        model.quarterTalkQuestionItems = filteredQuarters.map(item => {
             return { quarterTalkQuestionId: item.id, answer: item.value} 
         });
+
+        console.log(model);
         WebApi.quarterTalks.post.createQuarter(model).then(response => {
             dispatch(addQuarterTalk(true, []));
             resolve();
@@ -61,7 +68,7 @@ export const getReservedDates = (reservedDates, getDatesStatus, getDatesErrors) 
     return { type: GET_RESERVED_DATES, reservedDates, getDatesStatus, getDatesErrors }
 }
 
-  export const getReservedDatesACreator = (employeeId, token) => dispatch => {
+  export const getReservedDatesACreator = (employeeId, token, locale) => dispatch => {
       return new Promise((resolve, reject) => {
         const today = moment().format("YYYY-MM-DD HH:mm");
         const model = {
@@ -76,7 +83,7 @@ export const getReservedDates = (reservedDates, getDatesStatus, getDatesErrors) 
 
             const extractedData = [];
             for(let key in cutedResponse){
-                const momentedDate = moment(copiedResponse[key].dateTime).locale("pl");
+                const momentedDate = moment(copiedResponse[key].dateTime).locale(locale);
                 const time = momentedDate.format("HH:mm");
                 const date = momentedDate.format("YYYY-MM-DD");
                 const monthName = momentedDate.format("MMMM");
@@ -157,7 +164,7 @@ export const getReservedDates = (reservedDates, getDatesStatus, getDatesErrors) 
 
   export const deleteQuarterTalkACreator = (quarterToDeleteId, quartersForEmployee) => dispatch => {
     return new Promise((resolve, reject) => {
-        WebApi.quarterTalks.delete(quarterToDeleteId).then(response => {
+        WebApi.quarterTalks.delete.quarter(quarterToDeleteId).then(response => {
             const quartersForEmployeeCopy = [...quartersForEmployee];
             const indexWithGivenId = quartersForEmployeeCopy.findIndex(i => i.id === quarterToDeleteId);
             quartersForEmployeeCopy[indexWithGivenId].isDeleted = true;
@@ -190,4 +197,36 @@ export const getReservedDates = (reservedDates, getDatesStatus, getDatesErrors) 
             reject();
         });
     })
+  }
+
+  export const addQuestion = (addQuestionStatus, addQuestionErrors) => {
+    return { type: ADD_QUESTION, addQuestionStatus, addQuestionErrors };
+  }
+
+  export const addQuestionACreator = question => dispatch => {
+    return new Promise((resolve, reject) => {
+        WebApi.quarterTalks.post.addQuestion({question}).then(response => {
+            dispatch(addQuestion(true, []));
+            resolve(response.replyBlock.data.dtoObject.id);
+        }).catch(errors => {
+            dispatch(addQuestion(false, errorCatcher(errors)));
+            reject();
+        })
+    })
+  }
+
+export const deleteQuestionACreator = questionId => dispatch => {
+    return new Promise((resolve, reject) => {
+        WebApi.quarterTalks.delete.question(questionId).then(response => {
+            dispatch(deleteQuestion(true, []));
+            resolve();
+        }).catch(errors => {
+            dispatch(deleteQuestion(false, errorCatcher(errors)));
+            reject();
+        })
+    })
+}
+
+  export const deleteQuestion = (status, errors) => {
+      return { type: DELETE_QUESTION, status, errors };
   }

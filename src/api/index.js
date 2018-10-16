@@ -19,7 +19,7 @@ import { loginACreator } from "../actions/persistHelpActions";
 import { Certificate } from "crypto";
 const { store } = storeCreator;
 
-const API_ENDPOINT = Config.serverUrl;
+export const API_ENDPOINT = Config.serverUrl;
 
 store.subscribe(listener);
 ``;
@@ -273,10 +273,19 @@ const WebApi = {
         return WebAround.get(
           `${API_ENDPOINT}/QuarterTalks/ForEmployee/` + employeeId
         );
+      },
+      generateDoc: quarterId => {
+        return WebAround.get(`${API_ENDPOINT}/QuarterTalks/GenerateDocx/${quarterId}`);
       }
     },
-    delete: quarterId => {
-      return WebAround.delete(`${API_ENDPOINT}/QuarterTalks/${quarterId}`);
+    delete: {
+      quarter: quarterId => {
+        return WebAround.delete(`${API_ENDPOINT}/QuarterTalks/${quarterId}`);
+      },
+      question: questionId => {
+        return WebAround.delete(`${API_ENDPOINT}/QuarterTalks/Question/${questionId}`);
+      }
+
     },
     put: {
       reactivate: quarterId => {
@@ -286,6 +295,9 @@ const WebApi = {
       }
     },
     post: {
+      addQuestion: model => {
+        return WebAround.post(`${API_ENDPOINT}/QuarterTalks/Question`, model)
+      },
       createQuarter: model => {
         return WebAround.post(`${API_ENDPOINT}/QuarterTalks`, model);
       },
@@ -347,6 +359,9 @@ const WebApi = {
           `${API_ENDPOINT}/employees/${employeeId}/capacityRefactor`
         );
       },
+      employeesAndManagers: () => {
+        return WebAround.get(`${API_ENDPOINT}/sharedEmployees/getEmployeesAndManagers`);
+      },
       emplo: {
         contact: employeeId => {
           return WebAround.get(
@@ -407,6 +422,23 @@ const WebApi = {
       }
     }
   },
+  sharedEmployees: {
+    get: {
+      forManager: (managerId) => {
+        return WebAround.get(`${API_ENDPOINT}/sharedEmployees/forManager/${managerId}`);
+      }
+    },
+    post: {
+      add: (sharedEmployeeModel) => {
+        return WebAround.post(`${API_ENDPOINT}/sharedEmployees`, sharedEmployeeModel)
+      }
+    },
+    delete: {
+      deleteById: (sharedEmployeeId) => {
+        return WebAround.delete(`${API_ENDPOINT}/sharedEmployees/${sharedEmployeeId}`)
+      }
+    }
+  },
   feedbacks: {
     get: {
       all: () => {},
@@ -414,7 +446,7 @@ const WebApi = {
       byAuthor: authorId => {},
       byEmployee: employeeId => {
         return WebAround.get(
-          `${API_ENDPOINT}/feedbacks/employee/${employeeId}`
+          `${API_ENDPOINT}/feedbacks/employee/${employeeId}?isDeleted=false`
         );
       },
       byProject: projectId => {}
@@ -501,6 +533,23 @@ const WebApi = {
       },
       deleteProject: projectId => {
         return WebAround.delete(`${API_ENDPOINT}/projects/delete/${projectId}`);
+      }
+    }
+  },
+  shareProject:{
+    get:{
+      managers: (projectId) =>{
+        return WebAround.get(`${API_ENDPOINT}/shareProject/DestinationManagers/${projectId}`);
+      }
+    },
+    post:{
+      add: (projectId, shareProjectModel)=>{
+        return WebAround.post(`${API_ENDPOINT}/shareProject/${projectId}`, shareProjectModel);
+      }
+    },
+    delete:{
+      cancel: (projectId, shareProjectId)=>{
+        return WebAround.delete(`${API_ENDPOINT}/shareProject/${projectId}/${shareProjectId}`);
       }
     }
   },

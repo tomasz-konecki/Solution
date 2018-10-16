@@ -7,8 +7,6 @@ import {
   CHANGE_EMPLOYEE_OPERATION_STATUS,
   CHANGE_EMPLOYEE_STATE,
   LOAD_ASSIGNMENTS,
-  DELETE_QUATER,
-  REACTIVATE_QUATER,
   CHANGE_EMPLOYEE_SKILLS,
   ADD_NEW_SKILLS_TO_EMPLOYEE,
   UPDATE_EMPLOYEE_SKYPE_ID,
@@ -16,6 +14,13 @@ import {
   ADD_CERTIFICATE_RESULT,
   GET_CERTYFICATES,
   GET_USER_CV
+  GET_SHARED_EMPLOYEES_FOR_MANAGER,
+  CHANGE_SHARED_EMPLOYEES_FOR_MANAGER_STATUS,
+  ADD_SHARED_EMPLOYEE_RESULT,
+  CHANGE_LOAD_TEAMLEADERS_AND_MANGERS_STATUS,
+  GET_TEAMLEADERS_AND_MANAGERS,
+  GET_EMPLOYEES_FEEDBACKS,
+  CHANGE_LOAD_EMPLOYEES_FEEDBACKS
 } from "../constants";
 import WebApi from "../api";
 import {
@@ -25,7 +30,7 @@ import {
 } from "./asyncActions";
 import { errorCatcher } from "../services/errorsHandler";
 import { populateSkillArrayWithConstData } from "../services/methods";
-
+import moment from 'moment';
 export const loadEmployeesSuccess = employees => {
   return {
     type: LOAD_EMPLOYEES_SUCCESS,
@@ -140,6 +145,164 @@ export const loadEmployees = (page = 1, limit = 25, other = {}) => {
   };
 };
 
+export const changeLoadEmployeeFeedbacksStatus = (
+  loadEmployeeFeedbacksStatus,
+  loadEmployeeFeedbacksErrors
+) => {
+  return {
+    type: CHANGE_LOAD_EMPLOYEES_FEEDBACKS,
+    loadEmployeeFeedbacksStatus,
+    loadEmployeeFeedbacksErrors
+  }
+}
+
+export const getEmployeeFeedbacks = employeeFeedbacks => {
+  return {
+    type: GET_EMPLOYEES_FEEDBACKS,
+    employeeFeedbacks
+  }
+}
+
+export const loadEmployeeFeedbacks = (employeeId) => {
+  return dispatch => {
+    WebApi.feedbacks.get
+      .byEmployee(employeeId)
+      .then(response => {
+        if(!response.errorOccurred()) {
+          dispatch(getEmployeeFeedbacks(response.extractData()));
+          dispatch(changeLoadEmployeeFeedbacksStatus(true, []));
+        }
+      })
+      .catch(error => {
+        dispatch(changeLoadEmployeeFeedbacksStatus(false, errorCatcher(error)));
+      });
+  };
+}
+
+export const changeLoadSharedEmployeesForManagerStatus = (
+  loadSharedEmployeesForManagerStatus,
+  loadSharedEmployeesForManagerErrors
+) => {
+  return {
+    type: CHANGE_SHARED_EMPLOYEES_FOR_MANAGER_STATUS,
+    loadSharedEmployeesForManagerStatus,
+    loadSharedEmployeesForManagerErrors
+  }
+}
+
+export const getSharedEmployeesForManager = sharedEmployeesForManager => {
+  return {
+    type: GET_SHARED_EMPLOYEES_FOR_MANAGER,
+    sharedEmployeesForManager
+  }
+}
+
+export const loadSharedEmployeesForManager = (managerId) => {
+  return dispatch => {
+    WebApi.sharedEmployees.get
+      .forManager(managerId)
+      .then(response => {
+        if(!response.errorOccurred()) {
+          dispatch(getSharedEmployeesForManager(response.extractData()));
+          dispatch(changeLoadSharedEmployeesForManagerStatus(true, []));
+        }
+      })
+      .catch(error => {
+        dispatch(changeLoadSharedEmployeesForManagerStatus(false, errorCatcher(error)));
+      });
+  };
+}
+
+export const addSharedEmployeeResult = resultBlockAddSharedEmployee => {
+  return {
+    type: ADD_SHARED_EMPLOYEE_RESULT,
+    resultBlockAddSharedEmployee
+  };
+};
+
+export const addSharedEmployee = (sharedEmployeeModel, destManagerId) => dispatch => {
+  return new Promise((resolve, reject) => {
+    WebApi.sharedEmployees.post
+      .add(sharedEmployeeModel)
+      .then(response => {
+        dispatch(addSharedEmployeeResult(response));
+
+        setTimeout(() => {
+          dispatch(addSharedEmployeeResult(null));
+          dispatch(loadSharedEmployeesForManager(destManagerId));
+          dispatch(loadEmployees());
+          resolve();
+        }, 2000);
+      })
+      .catch(errors => {
+        dispatch(addSharedEmployeeResult(errors));
+        setTimeout(() => {
+          dispatch(addSharedEmployeeResult(null));
+
+          const keys = Object.keys(errors.replyBlock.data.errorObjects[0].errors);
+          const error = errors.replyBlock.data.errorObjects[0].errors[keys[0]]
+
+          reject(error);
+        }, 2000);
+        throw error;
+      });
+  });
+};
+
+export const deleteSharedEmployee = (sharedEmployeeId, destManagerId) => dispatch => {
+  return new Promise((resolve, reject) => {
+    WebApi.sharedEmployees.delete
+      .deleteById(sharedEmployeeId)
+      .then(response => {
+        dispatch(setActionConfirmationResult(response));
+        dispatch(loadSharedEmployeesForManager(destManagerId));
+        resolve();
+      })
+      .catch(errors => {
+        dispatch(setActionConfirmationResult(error));
+
+        const keys = Object.keys(errors.replyBlock.data.errorObjects[0].errors);
+        const error = errors.replyBlock.data.errorObjects[0].errors[keys[0]]
+
+        reject(error);
+      });
+  });
+};
+
+export const changeLoadTeamLeadersAndManagers = (
+  loadTeamLeadersAndManagersStatus,
+  loadTeamLeadersAndManagersErrors
+) => {
+  return {
+    type: CHANGE_LOAD_TEAMLEADERS_AND_MANGERS_STATUS,
+    loadTeamLeadersAndManagersStatus,
+    loadTeamLeadersAndManagersErrors
+  }
+}
+
+export const getTeamLeadersAndManagers = teamLeadersAndManagers => {
+  return {
+    type: GET_TEAMLEADERS_AND_MANAGERS,
+    teamLeadersAndManagers
+  }
+}
+
+export const loadTeamLeadersAndManagers = () => {
+  return dispatch => {
+    WebApi.employees.get
+      .employeesAndManagers()
+      .then(response => {
+        if(!response.errorOccurred()) {
+          dispatch(getTeamLeadersAndManagers(response.extractData()));
+          dispatch(changeLoadTeamLeadersAndManagers(true, []));
+        }
+      })
+      .catch(error => {
+        dispatch(changeLoadTeamLeadersAndManagers(false, errorCatcher(error)));
+      });
+  };
+}
+
 export const changeLoadCertificatesStatus = (
   loadCertificatesStatus,
   loadCertificatesErrors
@@ -194,7 +357,17 @@ export const getEmployeePromise = employeeId => dispatch => {
     WebApi.employees.get
       .byEmployee(employeeId)
       .then(response => {
-        const { dtoObject } = response.replyBlock.data;
+        const dtoObject = {...response.replyBlock.data.dtoObject};
+        let quarterTalks = [...dtoObject.quarterTalks];
+
+        quarterTalks.forEach(function(part, index){
+          if(part.plannedTalkDate)
+            quarterTalks[index].plannedTalkDate = moment(part.plannedTalkDate).format("YYYY-MM-DD HH:mm");
+          if(part.aswerQuestionDate)
+            quarterTalks[index].aswerQuestionDate = moment(part.aswerQuestionDate).format("YYYY-MM-DD HH:mm");
+        })
+        dtoObject.quarterTalks = quarterTalks;
+        
         dispatch(getEmployee(dtoObject));
         dispatch(changeEmployeeOperationStatus(true, []));
         resolve(dtoObject);
@@ -401,62 +574,11 @@ export const loadAssignmentsACreator = employeeId => dispatch => {
   });
 };
 
-export const deleteQuater = (deleteQuaterStatus, deleteQuaterErrors) => {
-  return { type: DELETE_QUATER, deleteQuaterStatus, deleteQuaterErrors };
-};
-
-export const deleteQuaterACreator = (quarterId, employeeId) => {
-  return dispatch => {
-    WebApi.quarterTalks
-      .delete(quarterId)
-      .then(response => {
-        dispatch(deleteQuater(true, []));
-        dispatch(getEmployeePromise(employeeId));
-
-        dispatch(clearAfterTimeByFuncRef(deleteQuater, 5000, null, []));
-      })
-      .catch(error => {
-        dispatch(deleteQuater(false, errorCatcher(error)));
-        dispatch(clearAfterTimeByFuncRef(deleteQuater, 5000, null, []));
-      });
-  };
-};
-
 const clearAfterTimeByFuncRef = (funcRef, delay, ...params) => {
   return dispatch => {
     setTimeout(() => {
       dispatch(funcRef(...params));
     }, delay);
-  };
-};
-
-export const reactivateQuater = (
-  reactivateQuaterStatus,
-  reactivateQuaterErrors,
-  reactivateQuaterMessage
-) => {
-  return {
-    type: REACTIVATE_QUATER,
-    reactivateQuaterStatus,
-    reactivateQuaterErrors,
-    reactivateQuaterMessage
-  };
-};
-
-export const reactivateQuaterACreator = (quaterId, employeeId, message) => {
-  return dispatch => {
-    WebApi.quarterTalks.put
-      .reactivate(quaterId)
-      .then(response => {
-        dispatch(reactivateQuater(true, [], message));
-        dispatch(getEmployeePromise(employeeId));
-
-        dispatch(clearAfterTimeByFuncRef(reactivateQuater, 5000, null, []));
-      })
-      .catch(error => {
-        dispatch(reactivateQuater(false, errorCatcher(error)));
-        dispatch(clearAfterTimeByFuncRef(reactivateQuater, 5000, null, []));
-      });
   };
 };
 
@@ -540,20 +662,6 @@ export const addCertificateResult = resultBlockAddCertificate => {
   };
 };
 
-export const deleteCertificate = (certificateId, employeeId) => {
-  return dispatch => {
-    WebApi.certificates.delete
-      .deleteById(certificateId)
-      .then(response => {
-        dispatch(setActionConfirmationResult(response));
-        dispatch(loadCertificates(employeeId));
-      })
-      .catch(error => {
-        dispatch(setActionConfirmationResult(error));
-      });
-  };
-};
-
 export const addCertificate = (cretificate, userId) => {
   return dispatch => {
     WebApi.certificates.post
@@ -572,6 +680,20 @@ export const addCertificate = (cretificate, userId) => {
           dispatch(addCertificateResult(null));
         }, 2000);
         throw error;
+      });
+  };
+};
+
+export const deleteCertificate = (certificateId, employeeId) => {
+  return dispatch => {
+    WebApi.certificates.delete
+      .deleteById(certificateId)
+      .then(response => {
+        dispatch(setActionConfirmationResult(response));
+        dispatch(loadCertificates(employeeId));
+      })
+      .catch(error => {
+        dispatch(setActionConfirmationResult(error));
       });
   };
 };

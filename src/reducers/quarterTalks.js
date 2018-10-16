@@ -1,4 +1,4 @@
-import {
+import { ADD_QUESTION, DELETE_QUESTION, 
     ADD_QUARTER_TALK, GET_QUESTIONS, GET_RESERVED_DATES, PLAN_QUARTER, GET_QUARTERS_FOR_EMPLOYEE, DELETE_QUARTER_TALK, REACTIVATE_QUARTER_TALK
   } from "../constants";
   import { updateObject } from '../services/methods';
@@ -18,7 +18,12 @@ import {
 
       deleteQuarterStatus: null, deleteQuarterErrors: [],
 
-      reactiveQuarterStatus: null, reactiveQuarterErrors: []
+      reactiveQuarterStatus: null, reactiveQuarterErrors: [],
+
+      addQuestionStatus: null, addQuestionErrors: [],
+
+      deleteQuestionStatus: null, deleteQuestionErrors: []
+
   };
   
   export const quarterTalks = (state = initialState, action) => {
@@ -40,6 +45,11 @@ import {
             return updateObject(state, { deleteQuarterStatus: action.deleteQuarterStatus, deleteQuarterErrors: action.deleteQuarterErrors })
         case REACTIVATE_QUARTER_TALK:
             return updateObject(state, { reactiveQuarterStatus: action.reactiveQuarterStatus, reactiveQuarterErrors: action.reactiveQuarterErrors })
+        case ADD_QUESTION:
+            return updateObject(state, { addQuestionStatus: action.addQuestionStatus, addQuestionErrors: action.addQuarterTalkErrors })
+        case DELETE_QUESTION:
+            return updateObject(state, { deleteQuestionStatus: action.status, 
+                deleteQuestionErrors: action.errors});
             default:
         return state;
     }

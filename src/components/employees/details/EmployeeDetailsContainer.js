@@ -19,18 +19,19 @@ import {
   reactivateEmployee,
   loadAssignmentsACreator,
   loadAssignments,
-  deleteQuaterACreator,
-  reactivateQuaterACreator,
   changeEmployeeSkillsACreator,
   updateSkype,
   getCertificates,
+
   downloadCV,
   getUserCv
+  loadEmployeeFeedbacks
 } from "../../../actions/employeesActions";
 import Spinner from "../../common/spinner/spinner";
 import OperationStatusPrompt from "../../form/operationStatusPrompt/operationStatusPrompt";
 import EmployeeSkills from "./employeeSkills/employeeSkills";
 import EmployeeCertificates from "./employeeCertificates/employeeCertificates";
+import EmployeeFeedbacks from './employeeFeedbacks/employeeFeedbacks';
 import { ACTION_CONFIRMED } from "./../../../constants";
 import { translate } from "react-translate";
 import NotFound404 from "../../notFound404/NotFound404";
@@ -59,9 +60,10 @@ class EmployeeDetailsContainer extends React.Component {
   }
 
   componentDidMount() {
-    const { getEmployeePromise, loadCertificates, match } = this.props;
+    const { getEmployeePromise, loadCertificates, loadEmployeeFeedbacks, match } = this.props;
     getEmployeePromise(match.params.id);
     loadCertificates(match.params.id);
+    loadEmployeeFeedbacks(match.params.id);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -80,21 +82,18 @@ class EmployeeDetailsContainer extends React.Component {
       });
     } else if (nextProps.employeeOperationStatus === false) {
       this.setState({ isChangingEmployeeData: false });
-    } else if (nextProps.match !== this.props.match) {
-      this.setState({ isLoadingFirstTimeEmployee: true });
-      this.props.getEmployeePromise(nextProps.match.params.id);
+    if(nextProps.match !== this.props.match) {
+        this.setState({isLoadingFirstTimeEmployee: true});
+        this.props.getEmployeePromise(nextProps.match.params.id);
     }
-    if (nextProps.employee) {
-      if (
-        nextProps.employee.skypeId &&
-        !this.state.editSkypeFormItems[0].value
-      ) {
-        let form = this.state.editSkypeFormItems;
-        form[0].value = nextProps.employee.skypeId;
-        this.setState({
-          editSkypeFormItems: form
-        });
-      }
+    if(nextProps.employee) {
+        if (this.state.editSkypeFormItems[0]) {
+            let form = this.state.editSkypeFormItems;
+            form[0].value = nextProps.employee.skypeId;
+            this.setState({
+            editSkypeFormItems: form
+            });
+        }
     }
   }
 
@@ -177,12 +176,6 @@ class EmployeeDetailsContainer extends React.Component {
       loadAssignmentsStatus,
       loadAssignmentsErrors,
       loadedAssignments,
-      deleteQuaterStatus,
-      deleteQuaterErrors,
-      deleteQuaterACreator,
-      reactivateQuaterACreator,
-      reactivateQuaterStatus,
-      reactivateQuaterErrors,
       changeEmployeeSkillsACreator,
       changeSkillsStatus,
       changeSkillsErrors,
@@ -193,6 +186,9 @@ class EmployeeDetailsContainer extends React.Component {
       binPem,
       login,
       downloadCV
+      employeeFeedbacks,
+      loadEmployeeFeedbacksErrors,
+      loadEmployeeFeedbacksStatus
     } = this.props;
     return (
       <div className="employee-details-container">
@@ -208,13 +204,6 @@ class EmployeeDetailsContainer extends React.Component {
               <EmployeeContent
                 changeCurrentWatchedUser={changeCurrentWatchedUser}
                 getEmployee={getEmployeePromise}
-                status={status}
-                reactivateQuaterACreator={reactivateQuaterACreator}
-                reactivateQuaterStatus={reactivateQuaterStatus}
-                reactivateQuaterErrors={reactivateQuaterErrors}
-                deleteQuaterStatus={deleteQuaterStatus}
-                deleteQuaterErrors={deleteQuaterErrors}
-                deleteQuaterACreator={deleteQuaterACreator}
                 employee={employee}
                 editCapacity={this.editCapacity}
                 deleteEmployee={this.deleteEmployee}
@@ -275,6 +264,13 @@ class EmployeeDetailsContainer extends React.Component {
                 isYou={login === employee.id}
                 binPem={binPem}
               />
+
+              <EmployeeFeedbacks
+                employeeFeedbacks={employeeFeedbacks}
+                loadEmployeeFeedbacksErrors={loadEmployeeFeedbacksErrors}
+                loadEmployeeFeedbacksStatus={loadEmployeeFeedbacksStatus}
+              />
+
             </React.Fragment>
           )
         )}
@@ -296,18 +292,6 @@ class EmployeeDetailsContainer extends React.Component {
                   : employeeOperationErrors[0]
               }
               operationPrompt={employeeOperationStatus}
-            />
-          )}
-
-        {reactivateQuaterStatus !== null &&
-          reactivateQuaterStatus !== undefined && (
-            <OperationStatusPrompt
-              operationPromptContent={
-                reactivateQuaterStatus
-                  ? t("QuarterTalkHasBeenActiaved")
-                  : reactivateQuaterErrors[0]
-              }
-              operationPrompt={reactivateQuaterStatus}
             />
           )}
 
@@ -345,13 +329,6 @@ const mapStateToProps = state => {
     certificates: state.employeesReducer.certificates,
     resultBlockAddCertificate: state.employeesReducer.resultBlockAddCertificate,
 
-    deleteQuaterStatus: state.employeesReducer.deleteQuaterStatus,
-    deleteQuaterErrors: state.employeesReducer.deleteQuaterErrors,
-
-    reactivateQuaterStatus: state.employeesReducer.reactivateQuaterStatus,
-    reactivateQuaterErrors: state.employeesReducer.reactivateQuaterErrors,
-    reactivateQuaterMessage: state.employeesReducer.reactivateQuaterMessage,
-
     changeSkillsStatus: state.employeesReducer.changeSkillsStatus,
     changeSkillsErrors: state.employeesReducer.changeSkillsErrors,
 
@@ -365,6 +342,9 @@ const mapStateToProps = state => {
 
     binPem: state.authReducer.binPem,
     login: state.authReducer.login
+    employeeFeedbacks: state.employeesReducer.employeeFeedbacks,
+    loadEmployeeFeedbacksErrors: state.employeesReducer.loadEmployeeFeedbacksErrors,
+    loadEmployeeFeedbacksStatus: state.employeesReducer.loadEmployeeFeedbacksStatus
   };
 };
 
@@ -386,23 +366,16 @@ const mapDispatchToProps = dispatch => {
       dispatch(loadAssignmentsACreator(employeeId)),
     loadAssignmentsClear: (status, errors, assignments) =>
       dispatch(loadAssignments(status, errors, assignments)),
-    deleteQuaterACreator: (quarterId, employeeId) =>
-      dispatch(deleteQuaterACreator(quarterId, employeeId)),
-    reactivateQuaterACreator: (quaterId, employeeId, message) =>
-      dispatch(reactivateQuaterACreator(quaterId, employeeId, message)),
     changeEmployeeSkillsACreator: (employeeId, currentArray) =>
       dispatch(changeEmployeeSkillsACreator(employeeId, currentArray)),
     updateSkype: (skypeId, employeeId) =>
       dispatch(updateSkype(skypeId, employeeId)),
     loadCertificates: employeeId => dispatch(loadCertificates(employeeId)),
-    addCertificate: (certificate, userId) =>
-      dispatch(addCertificate(certificate, userId)),
-    editCertificate: (certificateId, certificate, userId) =>
-      dispatch(editCertificate(certificateId, certificate, userId)),
-    deleteCertificate: (certificateId, userId) =>
-      dispatch(deleteCertificate(certificateId, userId)),
-    changeCurrentWatchedUser: currentWatchedUser =>
-      dispatch(changeCurrentWatchedUser(currentWatchedUser))
+    addCertificate: (certificate,userId) => dispatch(addCertificate(certificate,userId)),
+    editCertificate: (certificateId, certificate, userId) => dispatch(editCertificate(certificateId,certificate,userId)),
+    deleteCertificate: (certificateId, userId) => dispatch(deleteCertificate(certificateId, userId)),
+    changeCurrentWatchedUser: (currentWatchedUser) => dispatch(changeCurrentWatchedUser(currentWatchedUser)),
+    loadEmployeeFeedbacks: (employeeId) => dispatch(loadEmployeeFeedbacks(employeeId))
   };
 };
 

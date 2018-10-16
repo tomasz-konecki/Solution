@@ -16,6 +16,15 @@ class EmployeesList extends Component {
     super(props);
     this.state = {};
   }
+
+  showSharedSymbod(employee) {
+    if(employee && employee.employeeShared) {
+      return <span><i className="fa fa-share-alt"></i> {employee.firstName} </span>;
+    }else{
+      return employee.firstName;
+    }
+  }
+
   render() {
     const { t } = this.props;
     const construct = {
@@ -43,10 +52,10 @@ class EmployeesList extends Component {
       columns: [
         {
           width: 20,
-          field: "firstName",
           pretty: t("Name"),
           type: "text",
-          filter: true
+          field: "firstName",
+          filter: true,
         },
         {
           width: 20,

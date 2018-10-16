@@ -161,10 +161,10 @@ class ProjectDetails extends Component {
     const addEmployeToProjectFormItems = [
       ...this.state.addEmployeToProjectFormItems
     ];
-    addEmployeToProjectFormItems[0].value = moment(startDate);
+    addEmployeToProjectFormItems[0].value = moment(startDate)._i;
     addEmployeToProjectFormItems[1].value = moment(
       endDate ? endDate : estimatedEndDate
-    );
+    )._i;
     return addEmployeToProjectFormItems;
   };
   componentWillReceiveProps(nextProps) {

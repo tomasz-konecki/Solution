@@ -6,6 +6,7 @@ import TopBar from "./TopBar";
 import Icon from "../../../components/common/Icon";
 import LeftMenu from "../menu/LeftMenu";
 import { browserHistory } from 'react-router';
+import {Link} from 'react-router-dom';
 
 class Header extends React.Component {
   constructor(props) {
@@ -52,7 +53,9 @@ class Header extends React.Component {
           <Icon additionalClass="menu-hide-exclusion" icon="bars" iconSize="lg"/>
         </div>
         <LeftMenu className="left-menu" close={this.closeMenu} extended={this.state.extended} />
-        <Logo size="vector_cut_header"/>
+        <Link to="/main"> 
+            <Logo size="vector_cut_header"/>
+        </Link>
         <TopBar />
       </div>
     );

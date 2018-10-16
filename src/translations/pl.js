@@ -407,7 +407,7 @@ const translations = {
     InsertLastName: "wprowadź nazwisko...",
     PhoneNumber: "Numer telefonu",
     InsertPhoneNumber: "wprowadź numer telefonu...",
-    ResponsiblePerson: "Osoba do kontaktu"
+    ResponsiblePerson: "Osoba do kontaktu",
   },
   ProjectDetails: {
     GeneralInfo: "Informacje ogólne",
@@ -454,6 +454,8 @@ const translations = {
     EstimatedEndDate: "Szacowana data zakończenia",
     Description: "Opis",
     Owners: "Właściciele",
+    ToFill: "Do uzupełnienia",
+    ToFillEmail: "do@uzupełnienia.com",
     Add: "Dodaj"
   },
   ResponsiblePersonBlock: {

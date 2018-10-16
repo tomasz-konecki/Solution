@@ -406,7 +406,7 @@ const translations = {
     InsertLastName: "insert last name...",
     PhoneNumber: "Phone number",
     InsertPhoneNumber: "insert phone number...",
-    ResponsiblePerson: "Responsible person"
+    ResponsiblePerson: "Responsible person",
   },
   ProjectDetails: {
     GeneralInfo: "Overview",
@@ -453,7 +453,9 @@ const translations = {
     EstimatedEndDate: "Estimated end date",
     Description: "Description",
     Owners: "Owners",
-    Add: "Add"
+    Add: "Add",
+    ToFill: "To Fill",
+    ToFillEmail: "to@fill.com",
   },
   ProjectRowUnfurl: {
     OwnersList: "Owners",

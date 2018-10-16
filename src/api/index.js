@@ -292,6 +292,9 @@ const WebApi = {
         return WebAround.put(
           `${API_ENDPOINT}/QuarterTalks/Reactivate/${quarterId}`
         );
+      },
+      populateQuarter: (model, quarterId) => {
+        return WebAround.put(`${API_ENDPOINT}/QuarterTalks/${quarterId}`, model);
       }
     },
     post: {
@@ -540,6 +543,9 @@ const WebApi = {
     get:{
       managers: (projectId) =>{
         return WebAround.get(`${API_ENDPOINT}/shareProject/DestinationManagers/${projectId}`);
+      },
+      alreadySharedManagers: (projectId) =>{
+        return WebAround.get(`${API_ENDPOINT}/shareProject/AlreadySharedManagers/${projectId}`);
       }
     },
     post:{

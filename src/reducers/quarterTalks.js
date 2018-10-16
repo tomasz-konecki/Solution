@@ -1,4 +1,4 @@
-import { ADD_QUESTION, DELETE_QUESTION, 
+import { ADD_QUESTION, DELETE_QUESTION,
     ADD_QUARTER_TALK, GET_QUESTIONS, GET_RESERVED_DATES, PLAN_QUARTER, GET_QUARTERS_FOR_EMPLOYEE, DELETE_QUARTER_TALK, REACTIVATE_QUARTER_TALK
   } from "../constants";
   import { updateObject } from '../services/methods';
@@ -23,7 +23,6 @@ import { ADD_QUESTION, DELETE_QUESTION,
       addQuestionStatus: null, addQuestionErrors: [],
 
       deleteQuestionStatus: null, deleteQuestionErrors: []
-
   };
   
   export const quarterTalks = (state = initialState, action) => {

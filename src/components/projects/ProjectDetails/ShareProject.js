@@ -1,20 +1,24 @@
 import React, { Component } from "react";
-import Form from "../../form/form";
 import WebApi from "../../../api/index";
 import SpinnerButton from '../../../components/form/spinner-btn/spinner-btn'
+import { Typeahead } from 'react-bootstrap-typeahead';
 
 class ShareProject extends Component {
     
     state = {
         managers: [],
-        selectedManagerId: "",    
+        selectedManagers: [],    
+        currentSelectedManager: [],
         isLoading: false,
         sharedFinished: false,
-        errors: []
+        changed: false,
+        errors: [],
+        message: ''
     }
 
     componentDidMount(){
-        this.searchOnServer()
+        this.getManagers()
+        this.getAlreadyShareManagers();
     }
 
     concatErrors(errs){
@@ -27,16 +31,37 @@ class ShareProject extends Component {
         return result;
     }
 
-    searchOnServer = () => {
+    getManagers = () => {
         this.setState({ isLoading: true });            
     
         WebApi.shareProject.get
           .managers(this.props.projectId)
           .then(response => {
             
-            const managers = [{id:"", fullName: ""}, ...response.replyBlock.data.dtoObjects];
+            const managers = [{id:"0", fullName: ""}, ...response.replyBlock.data.dtoObjects];
             this.setState({
               managers,
+              isLoading: false,
+                })
+            })
+          .catch(err => {
+            this.setState({
+                isLoading: false,                
+                errors: this.concatErrors(err.replyBlock.data.errorObjects)
+            });
+          })
+    }
+
+    getAlreadyShareManagers = () => {
+        this.setState({ isLoading: true });            
+    
+        WebApi.shareProject.get
+          .alreadySharedManagers(this.props.projectId)
+          .then(response => {
+            
+            const selectedManagers = [...response.replyBlock.data.dtoObjects];
+            this.setState({
+              selectedManagers,
               isLoading: false,
                 })
             })
@@ -54,48 +79,120 @@ class ShareProject extends Component {
 
         WebApi.shareProject.post.add(this.props.projectId, {
             projectId: this.props.projectId,
-            destinationManagerId: this.state.selectedManagerId,
+            destinationManagersIds: this.state.selectedManagers.map(m => (m.id)),
         })
         .then(response => {
             this.setState({
                 isLoading: false,
                 sharedFinished: true,
-                selectedManagerId: ''
+                selectedManagers: [],
+                currentSelectedManager: [],
+                changed: false,
+                message: 'Zmiany zostały zapisane',
             });
-        })
-        .catch(err =>{
+            this.getAlreadyShareManagers();
             
+        })
+        .catch(err =>{            
             this.setState({
                 isLoading: false,                
-                errors: this.concatErrors(err.replyBlock.data.errorObjects)
+                errors: this.concatErrors(err.replyBlock.data.errorObjects),
+                message: ''
             });
         })
     }
 
     onSelect = e =>{
+       console.log(e)
+        if(e.length === 0 || e[0].id == "0"){
+            return
+        }
+        const selectedManagers = this.state.selectedManagers;
+        selectedManagers.push(e[0])
+
+        const managers = this.state.managers.filter((value, index, arr) => {            
+            return e[0] && value.id !== e[0].id;
+        });
+        
+        const currentSelectedManager = [];
+        currentSelectedManager.push(managers[0])
         this.setState({
             errors: [],
-            selectedManagerId: e.target.value
+            currentSelectedManager,
+            selectedManagers,
+            managers,
+            changed: true,
+            message: '',
         })
     } 
 
-    render(){    
+    onDelete = id =>{       
 
-        return(        
-            <form onSubmit={e => this.onSubmit(e)} className="universal-form-container" >
-             <section className={`input-container `}>
-              <label>Wybierz komu</label>
-              <div className="right-form-container">
-                <select  className="simple-select" onChange={e => this.onSelect(e)}
-                    value={this.state.selectedManagerId}>
-                    {this.state.managers.map(m => {
-                        return (
-                        <option key={m.id} value={m.id}> {m.fullName} </option>
-                        );
-                    })}
-                </select>          
-              </div>
-              </section>                            
+        const managers = this.state.managers;
+        const managerToDelete = this.state.selectedManagers.filter((value, index, arr) => {            
+            return value.id === id;
+        }) [0];
+        managers.push(managerToDelete)
+        const selectedManagers = this.state.selectedManagers.filter((value, index, arr) => {            
+            return value.id !== id;
+        });
+        
+        const currentSelectedManager = [];
+        currentSelectedManager.push(managers[0])
+        this.setState({
+            errors: [],
+            currentSelectedManager,
+            selectedManagers,
+            managers,
+            changed: true,
+            message: '',
+        })
+    } 
+
+
+    render(){    
+        return(                  
+            <form onSubmit={e => this.onSubmit(e)} >        
+                <div className="row justify-content-center">                    
+                    <div className="col col-sm-8">  
+                        <h2 className="mb-5 text-center">Udostępnij projekt</h2>
+                        <div className="row">                        
+                            <label className="mt-1 mr-2">Wybierz komu</label>      
+                            <div style={{width: '68%'}}>
+                                <Typeahead
+                                    disabled={this.state.isLoading}
+                                    emptyLabel={true ? "nie znaleziono" : undefined}
+                                    labelKey={option => `${option.fullName}`}
+                                    onChange={employee => {this.onSelect(employee)}}
+                                    ref={typeahead => (this.typeahead = typeahead)}
+                                    selectHintOnEnter={false}
+                                    highlightOnlyResult
+                                    options={this.state.managers}
+                                    placeholder=""
+                                    selected={this.state.currentSelectedManager}
+                                />                                           
+                            </div>                                  
+                        </div>                     
+                    </div>
+                </div>
+                <div className="row justify-content-center mx-2">
+                
+                <div className="col col-sm-5 mt-5 border" style={{height: '150px', overflowY: 'scroll'}}>                
+                <label>Udostępnione:</label>
+                {
+                    this.state.selectedManagers.map(manager=>{
+                    return(                        
+                        <div key={manager.id} className="row justify-content-end my-2 mr-2">
+                            <div style={{cursor: 'default'}}>{manager.fullName}</div>
+                            <div className="d-block text-danger mx-2 my-auto" style={{cursor: 'pointer'}} onClick={()=> this.onDelete(manager.id)} >X</div>
+                        </div>
+                    )
+                })
+                }
+                </div>
+                </div>
+
+
                   {
                     this.state.errors.map(err=>{
                     return(
@@ -103,12 +200,13 @@ class ShareProject extends Component {
                     )
                   })
                 }
+                <p className="form-error text-primary">{this.state.message}</p>
             <SpinnerButton
-                validationResult={this.state.selectedManagerId != ""}
+                validationResult={this.state.selectedManagers != [] && this.state.changed}
                 transactionEnd={this.state.sharedFinished}
                 onClickHandler={this.shareProject}
                 isLoading={this.state.isLoading}
-                btnTitle="Udostępnij"
+                btnTitle="Zatwierdź"
                 enableButtonAfterTransactionEnd={true}
                 />
           </form>

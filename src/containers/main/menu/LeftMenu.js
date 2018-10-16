@@ -69,7 +69,7 @@ class LeftMenu extends React.Component {
             title={t("Users")}
           />
         ) : null}
-        {binaryPermissioner(false)(0)(0)(0)(0)(1)(1)(this.props.binPem) ? (
+        {binaryPermissioner(false)(0)(0)(0)(1)(1)(1)(this.props.binPem) ? (
           <VerticalMenuElement
             match={match}
             extended={extended}

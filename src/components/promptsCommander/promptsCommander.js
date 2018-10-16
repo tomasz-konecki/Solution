@@ -59,8 +59,8 @@ class PromptsCommander extends React.Component{
         const notifications = [notificationId];
         this.props.deleteNotificationACreator(notifications);
     };
-    handleMarkAsRead = (notificationId) => {
-        this.setState({currentReadElements: [...this.state.currentReadElements, notificationId]});
+    handleMarkAsRead = (notificationId, spin=true) => {
+        if(spin)this.setState({currentReadElements: [...this.state.currentReadElements, notificationId]});
         this.props.markNotificationAsReadACreator(notificationId);
     };
     handleDeleteAll = () => {

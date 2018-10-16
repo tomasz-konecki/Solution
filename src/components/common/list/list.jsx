@@ -22,7 +22,6 @@ class List extends React.PureComponent {
         this.setState({currentFilteringBy});
     }
 
-
     putModifieListOptionsInDom = (functionsToUse, numberOfItems) => {
         const { t } = this.props;
         if(functionsToUse){
@@ -143,11 +142,15 @@ class List extends React.PureComponent {
     render(){
         const { listClass, paginationSettings, component: Component, componentProps, 
             listTitle, selectDataOptions, items, functionsToUse, shouldAnimateList, isDoingRequest } = this.props;
+        
+        const { showFilterDetails } = this.state;
 
         const modifiedItems = this.modifeList(items, functionsToUse);
+        
+        const closeFiltersFunction = showFilterDetails ? this.togleFilterDetails : null;
         return (
             <React.Fragment>
-                <nav className="list-nav">
+                <nav onClick={closeFiltersFunction} className="list-nav">
                     {listTitle && 
                         <div>{listTitle}
                             {isDoingRequest && 

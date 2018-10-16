@@ -240,11 +240,6 @@ class SmoothTable extends Component {
         }, 1000);
       }
     );
-
-    if(this.props.changeSearchQuery)
-    {
-      this.props.changeSearchQuery(event.target.value)
-    }
   }
 
   swapKeysForValues(object) {

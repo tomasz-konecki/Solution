@@ -86,19 +86,19 @@ class EmployeeDetailsContainer extends React.Component {
       });
     } else if (nextProps.employeeOperationStatus === false) {
       this.setState({ isChangingEmployeeData: false });
-      if (nextProps.match !== this.props.match) {
-        this.setState({ isLoadingFirstTimeEmployee: true });
+    }
+    if(nextProps.match !== this.props.match) {
+        this.setState({isLoadingFirstTimeEmployee: true});
         this.props.getEmployeePromise(nextProps.match.params.id);
-      }
-      if (nextProps.employee) {
+    }
+    if(nextProps.employee) {
         if (this.state.editSkypeFormItems[0]) {
-          let form = this.state.editSkypeFormItems;
-          form[0].value = nextProps.employee.skypeId;
-          this.setState({
-            editSkypeFormItems: form
-          });
+            let form = this.state.editSkypeFormItems;
+            form[0].value = nextProps.employee.skypeId;
+            this.setState({
+                editSkypeFormItems: form
+            });
         }
-      }
     }
   }
   componentDidUpdate() {

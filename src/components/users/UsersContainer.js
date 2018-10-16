@@ -18,7 +18,8 @@ class UsersContainer extends React.Component {
       currentPage: 1,
       limit: 15,
       showModal: false,
-      passedSettings: {}
+      passedSettings: {},
+      searchQuery: ''
     };
 
     this.handleOpenModal = this.handleOpenModal.bind(this);
@@ -108,6 +109,7 @@ class UsersContainer extends React.Component {
   }
 
   pageChange(page = this.state.currentPage, other) {
+    other = {query : this.state.searchQuery, isDeleted: false};
     this.setState(
       {
         currentPage: page
@@ -119,6 +121,12 @@ class UsersContainer extends React.Component {
           other
         )
     );
+  }
+
+  changeSearchQuery = (query) => {
+    this.setState({
+      searchQuery : query
+    })
   }
 
   handleOpenModal() {
@@ -134,6 +142,7 @@ class UsersContainer extends React.Component {
       <UsersList
         show={this.props.show}
         openAddUserModal={this.handleOpenModal}
+        changeSearchQuery={this.changeSearchQuery}
         users={this.props.users}
         currentPage={
           this.state.currentPage !== undefined ? this.state.currentPage : 1

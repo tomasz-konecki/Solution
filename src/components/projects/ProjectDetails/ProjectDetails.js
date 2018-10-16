@@ -6,7 +6,7 @@ import {
   cutNotNeededKeysFromArray,
   populateFormArrayWithValues
 } from "../../../services/methods";
-import Spinner from "../../common/spinner/spinner";
+import SmallSpinner from "../../common/spinner/small-spinner";
 import Modal from "react-responsive-modal";
 import Table from "../../common/table/table";
 import ProjectDetailsBlock from "../modals/ProjectDetailsBlock";
@@ -140,7 +140,8 @@ class ProjectDetails extends Component {
     lteVal: 1,
     addEmployeSpinner: false,
     projectStatus: [],
-    onlyActiveAssignments: true
+    onlyActiveAssignments: true,
+    isLoadingAssignments: false
   };
   componentDidMount() {
     this.props.getProject(
@@ -165,6 +166,18 @@ class ProjectDetails extends Component {
     addEmployeToProjectFormItems[1].value = moment(
       endDate ? endDate : estimatedEndDate
     )._i;
+
+    // if(moment(startDate).format("YYYY-MM-DD") === '0001-01-01')
+    // {
+    //   addEmployeToProjectFormItems[0].value = moment();
+    //   addEmployeToProjectFormItems[1].value = moment().add(1, 'days');
+    // }else{
+    //   addEmployeToProjectFormItems[0].value = moment(startDate);
+    //   addEmployeToProjectFormItems[1].value = moment(
+    //     endDate ? endDate : estimatedEndDate
+    //   );
+    // }
+
     return addEmployeToProjectFormItems;
   };
   componentWillReceiveProps(nextProps) {
@@ -191,6 +204,13 @@ class ProjectDetails extends Component {
             project.isDeleted
           )
         });
+
+        if(this.props.project && (this.props.project.team !== project.team || project.team === null )){
+          this.setState({
+            isLoadingAssignments: false
+          })
+        }
+
       } else this.setState({ isLoadingProject: false });
     } else if (
       this.props.addEmployeeToProjectErrors !==
@@ -275,6 +295,7 @@ class ProjectDetails extends Component {
     const { onlyActiveAssignments } = this.state;
     this.setState({
       onlyActiveAssignments: !onlyActiveAssignments,
+      isLoadingAssignments: true,
       isLoadingProject: true
     });
     this.props.getProject(this.props.match.params.id, !onlyActiveAssignments);
@@ -548,6 +569,7 @@ class ProjectDetails extends Component {
                     checked={onlyActiveAssignments}
                     onChange={this.togleActiveAssign}
                   />
+                  <span className="assingments-spinner-container">{this.state.isLoadingAssignments && <SmallSpinner />}</span>
                 </div>
 
                 <Table
@@ -861,7 +883,7 @@ class ProjectDetails extends Component {
               <ShareProject
                 projectId={this.props.match.params.id}
               >
-              </ShareProject>              
+              </ShareProject>
             </Modal>
 
 

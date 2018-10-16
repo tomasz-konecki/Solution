@@ -19,7 +19,7 @@ import { loginACreator } from "../actions/persistHelpActions";
 import { Certificate } from "crypto";
 const { store } = storeCreator;
 
-const API_ENDPOINT = Config.serverUrl;
+export const API_ENDPOINT = Config.serverUrl;
 
 store.subscribe(listener);
 ``;
@@ -273,6 +273,9 @@ const WebApi = {
         return WebAround.get(
           `${API_ENDPOINT}/QuarterTalks/ForEmployee/` + employeeId
         );
+      },
+      generateDoc: quarterId => {
+        return WebAround.get(`${API_ENDPOINT}/QuarterTalks/GenerateDocx/${quarterId}`);
       }
     },
     delete: {
@@ -282,7 +285,7 @@ const WebApi = {
       question: questionId => {
         return WebAround.delete(`${API_ENDPOINT}/QuarterTalks/Question/${questionId}`);
       }
-    
+
     },
     put: {
       reactivate: quarterId => {
@@ -443,7 +446,7 @@ const WebApi = {
       byAuthor: authorId => {},
       byEmployee: employeeId => {
         return WebAround.get(
-          `${API_ENDPOINT}/feedbacks/employee/${employeeId}`
+          `${API_ENDPOINT}/feedbacks/employee/${employeeId}?isDeleted=false`
         );
       },
       byProject: projectId => {}
@@ -585,6 +588,9 @@ const WebApi = {
         return WebAround.post(
           `${API_ENDPOINT}/reports/cv/${employeeId}?forceIncompletePDF=true`
         );
+      },
+      wordcv: employeeId => {
+        return WebAround.post(`${API_ENDPOINT}/reports/WordCv/${employeeId}`);
       }
     },
     delete: {

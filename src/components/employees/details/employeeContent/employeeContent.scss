@@ -65,7 +65,6 @@
     width: 650px;
     background: #fbfbfb;
     padding: 20px;
-    height: 360px;
     justify-content: space-between;
     display: flex;
     position: relative;
@@ -148,7 +147,7 @@
             text-align: center;
           }
         }
-        img{
+        img {
           border-radius: 50%;
           width: 130px;
         }
@@ -167,43 +166,42 @@
           justify-content: center;
           text-decoration: none;
         }
-        .skypeId{
+        .skypeId {
           position: unset !important;
           font-size: 15px;
           margin-left: 5px;
         }
-        .skypeId:hover{
+        .skypeId:hover {
           text-decoration: underline;
         }
-        .businessSkypeIcon{
+        .businessSkypeIcon {
           width: 20px;
           position: absolute;
           top: 0;
           left: 0;
         }
-        .pencilIcon{
+        .pencilIcon {
           cursor: pointer;
         }
-        .skypeDiv button{
+        .skypeDiv button {
           margin: 5px auto 0 auto;
           padding: 3px;
           width: 40%;
           height: 30px;
           position: relative;
         }
-        .skypeDiv .form-error span{
+        .skypeDiv .form-error span {
           right: -5px;
           top: 35px;
           width: 150px;
         }
-        .universal-form-container{
+        .universal-form-container {
           padding: 10px;
         }
-        .skypeDiv .correct-status{
+        .skypeDiv .correct-status {
           top: 110px;
           left: 50px;
         }
-
       }
       @media screen and (max-width: 764px) {
         width: 100%;
@@ -263,6 +261,29 @@
       width: 48%;
       padding: 0 10px;
       position: relative;
+
+      .file-type-icons-container {
+        text-align: center;
+        padding-top: 10px;
+        font-size: 30px;
+        i {
+          border-radius: 0 10px 0 0;
+          margin: 0 10px;
+          cursor: pointer;
+          transition: all 0.5s ease-in-out;
+        }
+        .far.fa-file-word {
+          &:hover {
+            background-color: #2a569680;
+          }
+        }
+        .far.fa-file-pdf {
+          &:hover {
+            background-color: #ff1e1680;
+          }
+        }
+      }
+
       button {
         color: lightseagreen;
         position: absolute;

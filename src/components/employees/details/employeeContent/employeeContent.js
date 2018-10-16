@@ -9,6 +9,7 @@ import Icon from "../../../common/Icon";
 import { Link } from "react-router-dom";
 import Form from "../../../form/form";
 import CallSkype from "./callSkype";
+import binaryPermissioner from "../../../../api/binaryPermissioner";
 
 const employeeContent = ({
   changeCurrentWatchedUser,
@@ -84,7 +85,9 @@ const employeeContent = ({
                 skypeIdAddLoading={skypeIdAddLoading}
                 updateSkypeIdResult={updateSkypeIdResult}
                 t={t}
-                canEditSkypeId={isYou || binPem >= 32}
+                canEditSkypeId={
+                  isYou || binaryPermissioner(false)(0)(0)(0)(0)(0)(1)(binPem)
+                }
               />
             </div>
           </header>
@@ -112,19 +115,23 @@ const employeeContent = ({
               {t("Localization")}:<span>{employee.localization}</span>
             </p>
           )}
-          <h2>{t("EmployeeCV")}</h2>
-          <div className="file-type-icons-container">
-            <i
-              onClick={() => downloadCVClickHandler("word", employee.id)}
-              title={t("DownloadEmployeeCVInWordFormat")}
-              className="far fa-file-word"
-            />
-            <i
-              onClick={() => downloadCVClickHandler("pdf", employee.id)}
-              title={t("DownloadEmployeeCVInPdfFormat")}
-              className="far fa-file-pdf"
-            />
-          </div>
+          {(isYou || binaryPermissioner(false)(0)(0)(1)(1)(1)(1)(binPem)) && (
+            <React.Fragment>
+              <h2>{t("EmployeeCV")}</h2>
+              <div className="file-type-icons-container">
+                <i
+                  onClick={() => downloadCVClickHandler("word", employee.id)}
+                  title={t("DownloadEmployeeCVInWordFormat")}
+                  className="far fa-file-word"
+                />
+                <i
+                  onClick={() => downloadCVClickHandler("pdf", employee.id)}
+                  title={t("DownloadEmployeeCVInPdfFormat")}
+                  className="far fa-file-pdf"
+                />
+              </div>
+            </React.Fragment>
+          )}
           <div className="managerHierarchy">
             {(employee.manager || employee.managersManager) && (
               <h2>{t("Superiors")}</h2>
@@ -168,8 +175,7 @@ const employeeContent = ({
               </div>
             </React.Fragment>
           )}
-
-        {binPem === 32 && (
+        {binaryPermissioner(false)(0)(0)(0)(0)(0)(1)(binPem) && (
           <React.Fragment>
             <div className="emp-btns-container">
               {status === t("Active") ? (

@@ -14,7 +14,8 @@ import {
   UPDATE_EMPLOYEE_SKYPE_ID,
   CHANGE_CERTIFICATES_GET_STATUS,
   ADD_CERTIFICATE_RESULT,
-  GET_CERTYFICATES
+  GET_CERTYFICATES,
+  GET_USER_CV
 } from "../constants";
 import WebApi from "../api";
 import {
@@ -48,13 +49,44 @@ export const updateSkypeResult = (resultBlock, loading) => {
 };
 
 export const downloadCV = (format, employeeId) => {
-  if (format === "word") {
-    WebApi.reports.post.wordcv(employeeId);
-  } else {
-    WebApi.reports.post
-      .cv(employeeId)
-      .then(WebApi.reports.get.cv(employeeId + ".pdf"));
-  }
+  return dispatch => {
+    if (format === "word") {
+      WebApi.reports.post.wordcv(employeeId).then(
+        WebApi.reports.get
+          .cv("CV_" + employeeId + ".docx")
+          .then(response => {
+            dispatch(
+              getUserCv(response.replyBlock.request.responseURL, true, [])
+            );
+          })
+          .catch(error => dispatch(getUserCv("", false, errorCatcher(error))))
+      );
+    } else {
+      WebApi.reports.post.cv(employeeId).then(
+        WebApi.reports.get
+          .cv("CV_" + employeeId + ".pdf")
+          .then(response => {
+            dispatch(
+              getUserCv(response.replyBlock.request.responseURL, true, [])
+            );
+          })
+          .catch(error => dispatch(getUserCv("", false, errorCatcher(error))))
+      );
+    }
+  };
+};
+
+export const getUserCv = (
+  userDownloadCVLink,
+  getUserCVStatus,
+  getUserCVErrors
+) => {
+  return {
+    type: GET_USER_CV,
+    userDownloadCVLink,
+    getUserCVStatus,
+    getUserCVErrors
+  };
 };
 
 export const updateSkype = (skypeId, employeeId) => {

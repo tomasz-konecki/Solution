@@ -24,7 +24,8 @@ import {
   changeEmployeeSkillsACreator,
   updateSkype,
   getCertificates,
-  downloadCV
+  downloadCV,
+  getUserCv
 } from "../../../actions/employeesActions";
 import Spinner from "../../common/spinner/spinner";
 import OperationStatusPrompt from "../../form/operationStatusPrompt/operationStatusPrompt";
@@ -94,6 +95,13 @@ class EmployeeDetailsContainer extends React.Component {
           editSkypeFormItems: form
         });
       }
+    }
+  }
+
+  componentDidUpdate() {
+    if (this.props.userDownloadCVLink && this.props.getUserCVStatus) {
+      window.location.href = this.props.userDownloadCVLink;
+      this.props.getUserCVClear("", null, []);
     }
   }
 
@@ -316,6 +324,10 @@ class EmployeeDetailsContainer extends React.Component {
 
 const mapStateToProps = state => {
   return {
+    userDownloadCVLink: state.reportsReducer.userDownloadCVLink,
+    getUserCVStatus: state.reportsReducer.getUserCVStatus,
+    getUserCVErrors: state.reportsReducer.getUserCVErrors,
+
     employeeStatus: state.employeesReducer.employeeStatus,
     employeeErrors: state.employeesReducer.employeeErrors,
     employee: state.employeesReducer.employee,
@@ -358,6 +370,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
+    getUserCVClear: (link, status, errors) =>
+      dispatch(getUserCv(link, status, errors)),
     downloadCV: (format, employeeId) =>
       dispatch(downloadCV(format, employeeId)),
     async: bindActionCreators(asyncActions, dispatch),

@@ -13,7 +13,7 @@ import {
   CHANGE_CERTIFICATES_GET_STATUS,
   ADD_CERTIFICATE_RESULT,
   GET_CERTYFICATES,
-  GET_USER_CV
+  GET_USER_CV,
   GET_SHARED_EMPLOYEES_FOR_MANAGER,
   CHANGE_SHARED_EMPLOYEES_FOR_MANAGER_STATUS,
   ADD_SHARED_EMPLOYEE_RESULT,
@@ -30,7 +30,7 @@ import {
 } from "./asyncActions";
 import { errorCatcher } from "../services/errorsHandler";
 import { populateSkillArrayWithConstData } from "../services/methods";
-import moment from 'moment';
+import moment from "moment";
 export const loadEmployeesSuccess = employees => {
   return {
     type: LOAD_EMPLOYEES_SUCCESS,
@@ -153,22 +153,22 @@ export const changeLoadEmployeeFeedbacksStatus = (
     type: CHANGE_LOAD_EMPLOYEES_FEEDBACKS,
     loadEmployeeFeedbacksStatus,
     loadEmployeeFeedbacksErrors
-  }
-}
+  };
+};
 
 export const getEmployeeFeedbacks = employeeFeedbacks => {
   return {
     type: GET_EMPLOYEES_FEEDBACKS,
     employeeFeedbacks
-  }
-}
+  };
+};
 
-export const loadEmployeeFeedbacks = (employeeId) => {
+export const loadEmployeeFeedbacks = employeeId => {
   return dispatch => {
     WebApi.feedbacks.get
       .byEmployee(employeeId)
       .then(response => {
-        if(!response.errorOccurred()) {
+        if (!response.errorOccurred()) {
           dispatch(getEmployeeFeedbacks(response.extractData()));
           dispatch(changeLoadEmployeeFeedbacksStatus(true, []));
         }
@@ -177,7 +177,7 @@ export const loadEmployeeFeedbacks = (employeeId) => {
         dispatch(changeLoadEmployeeFeedbacksStatus(false, errorCatcher(error)));
       });
   };
-}
+};
 
 export const changeLoadSharedEmployeesForManagerStatus = (
   loadSharedEmployeesForManagerStatus,
@@ -187,31 +187,33 @@ export const changeLoadSharedEmployeesForManagerStatus = (
     type: CHANGE_SHARED_EMPLOYEES_FOR_MANAGER_STATUS,
     loadSharedEmployeesForManagerStatus,
     loadSharedEmployeesForManagerErrors
-  }
-}
+  };
+};
 
 export const getSharedEmployeesForManager = sharedEmployeesForManager => {
   return {
     type: GET_SHARED_EMPLOYEES_FOR_MANAGER,
     sharedEmployeesForManager
-  }
-}
+  };
+};
 
-export const loadSharedEmployeesForManager = (managerId) => {
+export const loadSharedEmployeesForManager = managerId => {
   return dispatch => {
     WebApi.sharedEmployees.get
       .forManager(managerId)
       .then(response => {
-        if(!response.errorOccurred()) {
+        if (!response.errorOccurred()) {
           dispatch(getSharedEmployeesForManager(response.extractData()));
           dispatch(changeLoadSharedEmployeesForManagerStatus(true, []));
         }
       })
       .catch(error => {
-        dispatch(changeLoadSharedEmployeesForManagerStatus(false, errorCatcher(error)));
+        dispatch(
+          changeLoadSharedEmployeesForManagerStatus(false, errorCatcher(error))
+        );
       });
   };
-}
+};
 
 export const addSharedEmployeeResult = resultBlockAddSharedEmployee => {
   return {
@@ -220,7 +222,10 @@ export const addSharedEmployeeResult = resultBlockAddSharedEmployee => {
   };
 };
 
-export const addSharedEmployee = (sharedEmployeeModel, destManagerId) => dispatch => {
+export const addSharedEmployee = (
+  sharedEmployeeModel,
+  destManagerId
+) => dispatch => {
   return new Promise((resolve, reject) => {
     WebApi.sharedEmployees.post
       .add(sharedEmployeeModel)
@@ -239,8 +244,10 @@ export const addSharedEmployee = (sharedEmployeeModel, destManagerId) => dispatc
         setTimeout(() => {
           dispatch(addSharedEmployeeResult(null));
 
-          const keys = Object.keys(errors.replyBlock.data.errorObjects[0].errors);
-          const error = errors.replyBlock.data.errorObjects[0].errors[keys[0]]
+          const keys = Object.keys(
+            errors.replyBlock.data.errorObjects[0].errors
+          );
+          const error = errors.replyBlock.data.errorObjects[0].errors[keys[0]];
 
           reject(error);
         }, 2000);
@@ -249,7 +256,10 @@ export const addSharedEmployee = (sharedEmployeeModel, destManagerId) => dispatc
   });
 };
 
-export const deleteSharedEmployee = (sharedEmployeeId, destManagerId) => dispatch => {
+export const deleteSharedEmployee = (
+  sharedEmployeeId,
+  destManagerId
+) => dispatch => {
   return new Promise((resolve, reject) => {
     WebApi.sharedEmployees.delete
       .deleteById(sharedEmployeeId)
@@ -262,7 +272,7 @@ export const deleteSharedEmployee = (sharedEmployeeId, destManagerId) => dispatc
         dispatch(setActionConfirmationResult(error));
 
         const keys = Object.keys(errors.replyBlock.data.errorObjects[0].errors);
-        const error = errors.replyBlock.data.errorObjects[0].errors[keys[0]]
+        const error = errors.replyBlock.data.errorObjects[0].errors[keys[0]];
 
         reject(error);
       });
@@ -277,22 +287,22 @@ export const changeLoadTeamLeadersAndManagers = (
     type: CHANGE_LOAD_TEAMLEADERS_AND_MANGERS_STATUS,
     loadTeamLeadersAndManagersStatus,
     loadTeamLeadersAndManagersErrors
-  }
-}
+  };
+};
 
 export const getTeamLeadersAndManagers = teamLeadersAndManagers => {
   return {
     type: GET_TEAMLEADERS_AND_MANAGERS,
     teamLeadersAndManagers
-  }
-}
+  };
+};
 
 export const loadTeamLeadersAndManagers = () => {
   return dispatch => {
     WebApi.employees.get
       .employeesAndManagers()
       .then(response => {
-        if(!response.errorOccurred()) {
+        if (!response.errorOccurred()) {
           dispatch(getTeamLeadersAndManagers(response.extractData()));
           dispatch(changeLoadTeamLeadersAndManagers(true, []));
         }
@@ -301,7 +311,7 @@ export const loadTeamLeadersAndManagers = () => {
         dispatch(changeLoadTeamLeadersAndManagers(false, errorCatcher(error)));
       });
   };
-}
+};
 
 export const changeLoadCertificatesStatus = (
   loadCertificatesStatus,
@@ -357,17 +367,21 @@ export const getEmployeePromise = employeeId => dispatch => {
     WebApi.employees.get
       .byEmployee(employeeId)
       .then(response => {
-        const dtoObject = {...response.replyBlock.data.dtoObject};
+        const dtoObject = { ...response.replyBlock.data.dtoObject };
         let quarterTalks = [...dtoObject.quarterTalks];
 
-        quarterTalks.forEach(function(part, index){
-          if(part.plannedTalkDate)
-            quarterTalks[index].plannedTalkDate = moment(part.plannedTalkDate).format("YYYY-MM-DD HH:mm");
-          if(part.aswerQuestionDate)
-            quarterTalks[index].aswerQuestionDate = moment(part.aswerQuestionDate).format("YYYY-MM-DD HH:mm");
-        })
+        quarterTalks.forEach(function(part, index) {
+          if (part.plannedTalkDate)
+            quarterTalks[index].plannedTalkDate = moment(
+              part.plannedTalkDate
+            ).format("YYYY-MM-DD HH:mm");
+          if (part.aswerQuestionDate)
+            quarterTalks[index].aswerQuestionDate = moment(
+              part.aswerQuestionDate
+            ).format("YYYY-MM-DD HH:mm");
+        });
         dtoObject.quarterTalks = quarterTalks;
-        
+
         dispatch(getEmployee(dtoObject));
         dispatch(changeEmployeeOperationStatus(true, []));
         resolve(dtoObject);

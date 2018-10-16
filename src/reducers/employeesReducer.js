@@ -22,7 +22,8 @@ import {
   CHANGE_LOAD_TEAMLEADERS_AND_MANGERS_STATUS,
   GET_TEAMLEADERS_AND_MANAGERS,
   GET_EMPLOYEES_FEEDBACKS,
-  CHANGE_LOAD_EMPLOYEES_FEEDBACKS
+  CHANGE_LOAD_EMPLOYEES_FEEDBACKS,
+  GET_USER_CV
 } from "../constants";
 import { updateObject } from "../services/methods";
 const initialState = {
@@ -60,7 +61,7 @@ const initialState = {
 
   userDownloadCVLink: "",
   getUserCVStatus: null,
-  getUserCVErrors: []
+  getUserCVErrors: [],
 
   loadCertificatesErrors: [],
   certificates: [],
@@ -77,7 +78,6 @@ const initialState = {
   employeeFeedbacks: [],
   loadEmployeeFeedbacksStatus: null,
   loadEmployeeFedebacksErrors: []
-
 };
 
 export const employeesReducer = (state = initialState, action) => {
@@ -127,8 +127,11 @@ export const employeesReducer = (state = initialState, action) => {
         employeeResultMessage: action.employeeResultMessage
       });
     case LOAD_ASSIGNMENTS:
-      return updateObject(state, { loadAssignmentsStatus: action.loadAssignmentsStatus, loadAssignmentsErrors: action.loadAssignmentsErrors,
-        loadedAssignments: action.loadedAssignments})
+      return updateObject(state, {
+        loadAssignmentsStatus: action.loadAssignmentsStatus,
+        loadAssignmentsErrors: action.loadAssignmentsErrors,
+        loadedAssignments: action.loadedAssignments
+      });
     case CHANGE_CERTIFICATES_GET_STATUS:
       return updateObject(state, {
         loadCertificatesStatus: action.loadCertificatesStatus,
@@ -137,21 +140,44 @@ export const employeesReducer = (state = initialState, action) => {
     case GET_CERTYFICATES:
       return updateObject(state, { certificates: action.certificates });
     case ADD_CERTIFICATE_RESULT:
-      return updateObject(state, {resultBlockAddCertificate: action.resultBlockAddCertificate})
+      return updateObject(state, {
+        resultBlockAddCertificate: action.resultBlockAddCertificate
+      });
     case CHANGE_SHARED_EMPLOYEES_FOR_MANAGER_STATUS:
-      return updateObject(state, { loadSharedEmployeesForManagerStatus: action.loadSharedEmployeesForManagerStatus, loadSharedEmployeesForManagerErrors: action.loadSharedEmployeesForManagerErrors})
+      return updateObject(state, {
+        loadSharedEmployeesForManagerStatus:
+          action.loadSharedEmployeesForManagerStatus,
+        loadSharedEmployeesForManagerErrors:
+          action.loadSharedEmployeesForManagerErrors
+      });
     case GET_SHARED_EMPLOYEES_FOR_MANAGER:
-      return updateObject(state, { sharedEmployeesForManager: action.sharedEmployeesForManager})
+      return updateObject(state, {
+        sharedEmployeesForManager: action.sharedEmployeesForManager
+      });
     case ADD_SHARED_EMPLOYEE_RESULT:
-      return updateObject(state, {resultBlockAddSharedEmployee: action.resultBlockAddSharedEmployee})
+      return updateObject(state, {
+        resultBlockAddSharedEmployee: action.resultBlockAddSharedEmployee
+      });
     case CHANGE_LOAD_TEAMLEADERS_AND_MANGERS_STATUS:
-      return updateObject(state, { loadTeamLeadersAndManagersStatus: action.loadTeamLeadersAndManagersStatus, loadTeamLeadersAndManagersErrors: action.loadTeamLeadersAndManagersErrors})
+      return updateObject(state, {
+        loadTeamLeadersAndManagersStatus:
+          action.loadTeamLeadersAndManagersStatus,
+        loadTeamLeadersAndManagersErrors:
+          action.loadTeamLeadersAndManagersErrors
+      });
     case GET_TEAMLEADERS_AND_MANAGERS:
-      return updateObject(state, { teamLeadersAndManagers: action.teamLeadersAndManagers })
+      return updateObject(state, {
+        teamLeadersAndManagers: action.teamLeadersAndManagers
+      });
     case CHANGE_LOAD_EMPLOYEES_FEEDBACKS:
-      return updateObject(state, { loadEmployeeFeedbacksStatus: action.loadEmployeeFeebacksStatus, loadEmployeeFeedbacksErrors: action.loadEmployeeFeedbacksErrors})
+      return updateObject(state, {
+        loadEmployeeFeedbacksStatus: action.loadEmployeeFeebacksStatus,
+        loadEmployeeFeedbacksErrors: action.loadEmployeeFeedbacksErrors
+      });
     case GET_EMPLOYEES_FEEDBACKS:
-      return updateObject(state, { employeeFeedbacks: action.employeeFeedbacks })
+      return updateObject(state, {
+        employeeFeedbacks: action.employeeFeedbacks
+      });
     case CHANGE_EMPLOYEE_SKILLS:
       return updateObject(state, {
         changeSkillsStatus: action.changeSkillsStatus,

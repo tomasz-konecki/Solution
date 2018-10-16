@@ -19,7 +19,7 @@ import { loginACreator } from "../actions/persistHelpActions";
 import { Certificate } from "crypto";
 const { store } = storeCreator;
 
-const API_ENDPOINT = Config.serverUrl;
+export const API_ENDPOINT = Config.serverUrl;
 
 store.subscribe(listener);
 ``;
@@ -292,6 +292,9 @@ const WebApi = {
         return WebAround.put(
           `${API_ENDPOINT}/QuarterTalks/Reactivate/${quarterId}`
         );
+      },
+      populateQuarter: (model, quarterId) => {
+        return WebAround.put(`${API_ENDPOINT}/QuarterTalks/${quarterId}`, model);
       }
     },
     post: {
@@ -540,6 +543,9 @@ const WebApi = {
     get:{
       managers: (projectId) =>{
         return WebAround.get(`${API_ENDPOINT}/shareProject/DestinationManagers/${projectId}`);
+      },
+      alreadySharedManagers: (projectId) =>{
+        return WebAround.get(`${API_ENDPOINT}/shareProject/AlreadySharedManagers/${projectId}`);
       }
     },
     post:{
@@ -588,6 +594,9 @@ const WebApi = {
         return WebAround.post(
           `${API_ENDPOINT}/reports/cv/${employeeId}?forceIncompletePDF=true`
         );
+      },
+      wordcv: employeeId => {
+        return WebAround.post(`${API_ENDPOINT}/reports/WordCv/${employeeId}`);
       }
     },
     delete: {

@@ -220,7 +220,10 @@ const translations = {
     Skills: "Skills",
     Missing: "Missing",
     Assignments: "Assignments",
-    ProfilePhoto: "Profile photo"
+    ProfilePhoto: "Profile photo",
+    EmployeeCV: "Employee's CV",
+    DownloadEmployeeCVInWordFormat: "Download CV.docx",
+    DownloadEmployeeCVInPdfFormat: "Download CV.pdf"
   },
   List: {
     Search: "type to search...",
@@ -245,7 +248,7 @@ const translations = {
     QuarterTalkActivated: "Quarter Talk has been activated",
     QuarterTalkHeader: "Quarter talk panel",
     QuarterTalkSubHeader: "current watched user",
-    Users: "Users",
+    Users: "Employees",
     PlanQuarter: "Plan quarter",
     AddQuarter: "Add quarter",
     ClearHistory: "Clear history",
@@ -291,7 +294,12 @@ const translations = {
     Choosen: "Choosen",
     NotChoosen: "Not choosen",
     Deleted: "Deleted",
-    NotDeleted: "Not deleted"
+    NotDeleted: "Not deleted",
+    Empty: "Empty quarter talks",
+    startQuarterTranslation: "Fill answers",
+    NoAnswers: "This conversation has not yet taken",
+    Populate: "Populate quarter",
+    ConfirmQuestions: "Confirm questions"
   },
   EmployeeSkills: {
     Add: "Add",
@@ -462,7 +470,7 @@ const translations = {
     InsertLastName: "insert last name...",
     PhoneNumber: "Phone number",
     InsertPhoneNumber: "insert phone number...",
-    ResponsiblePerson: "Responsible person"
+    ResponsiblePerson: "Responsible person",
   },
   ProjectDetails: {
     GeneralInfo: "Overview",
@@ -509,7 +517,9 @@ const translations = {
     EstimatedEndDate: "Estimated end date",
     Description: "Description",
     Owners: "Owners",
-    Add: "Add"
+    Add: "Add",
+    ToFill: "To Fill",
+    ToFillEmail: "to@fill.com",
   },
   ProjectRowUnfurl: {
     OwnersList: "Owners",

@@ -1,4 +1,4 @@
-import {ADD_QUESTION, DELETE_QUESTION, GENERATE_QUARTER_DOC,
+import {ADD_QUESTION, DELETE_QUESTION,
  ADD_QUARTER_TALK, GET_QUESTIONS, GET_RESERVED_DATES, PLAN_QUARTER, GET_QUARTERS_FOR_EMPLOYEE, DELETE_QUARTER_TALK, REACTIVATE_QUARTER_TALK
 } from "../constants";
   import WebApi from "../api";
@@ -53,7 +53,6 @@ export const getQuestions = (getQuestionsStatus, getQuestionsErrors, questions) 
             return { quarterTalkQuestionId: item.id, answer: item.value} 
         });
 
-        console.log(model);
         WebApi.quarterTalks.post.createQuarter(model).then(response => {
             dispatch(addQuarterTalk(true, []));
             resolve();
@@ -131,10 +130,6 @@ export const getReservedDates = (reservedDates, getDatesStatus, getDatesErrors) 
   export const getQuartersForEmployee = (quartersForEmployee, quartersForEmployeeStatus, quartersForEmployeeErrors) => {
       return { type: GET_QUARTERS_FOR_EMPLOYEE, quartersForEmployee, quartersForEmployeeStatus, quartersForEmployeeErrors }
   }
-
-
-
-
 
   export const getQuartersForEmployeeACreator = employeeId => dispatch => {
       return new Promise((resolve, reject) => {
@@ -230,18 +225,17 @@ export const deleteQuestionACreator = questionId => dispatch => {
   export const deleteQuestion = (status, errors) => {
       return { type: DELETE_QUESTION, status, errors };
   }
-  export const generateQuarterDoc = (generateDocDownloadLink, generateDocStatus, generateDocErrors) => {
-      return { type: GENERATE_QUARTER_DOC, generateDocDownloadLink, generateDocStatus, generateDocErrors }
-  }
 
-  export const generateQuarterDocACreator = quarterId => dispatch => {
+  export const populateQuarterTalkACreator = (formItems, quarterId) => dispatch => {
       return new Promise((resolve, reject) => {
-        WebApi.quarterTalks.get.generateDoc(quarterId).then(response => {
-            console.log(response.replyBlock.data);
-            dispatch(generateQuarterDoc("dsad", true, []));
+        const quarterTalkQuestionItems = formItems.map(item => (
+            { quarterTalkQuestionId: item.id, answer: item.value }
+        ));
+        WebApi.quarterTalks.put.populateQuarter({quarterTalkQuestionItems}, quarterId).then(response => {
+            dispatch(addQuarterTalk(true, []));
             resolve();
         }).catch(errors => {
-            dispatch(generateQuarterDoc("", false, errorCatcher(errors)));
+            dispatch(addQuarterTalk(false, errorCatcher(errors)));
             reject();
         })
       })

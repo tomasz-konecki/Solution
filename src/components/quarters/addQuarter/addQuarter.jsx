@@ -2,7 +2,8 @@ import React, { Component } from 'react'
 import './addQuarter.scss';
 import Form from '../../../components/form/form.js';
 import { connect } from 'react-redux';
-import {deleteQuestion,
+import { populateQuarterTalkACreator,
+    deleteQuestion, 
     deleteQuestionACreator,
     addQuestionACreator, addQuestion,
     addQuarterTalkACreator,
@@ -59,9 +60,12 @@ class AddQuarter extends Component{
             {value: true, description: this.props.t("NotChoosen")}]}
     ];
 
+    quarterToPopulateId = this.props.history.location.state && this.props.history.location.state.quarterToPopulateId;
+
     componentDidMount(){
         this.getQuestions();
     }
+
     getQuestions = () => {
         this.props.getQuarterQuestionsACreator().then(response => {
             this.setState({addQuarterQuestions: this.createStartFormData(response), 
@@ -87,7 +91,9 @@ class AddQuarter extends Component{
         let addQuarterFormItems = onlyCheckedQuarterQuestions.map(i => {
             return this.createFormItem(i.id, i.question);
         })
-        addQuarterFormItems = addQuarterFormItems.concat(this.additionalFormItems);
+        if(!this.quarterToPopulateId)
+            addQuarterFormItems = addQuarterFormItems.concat(this.additionalFormItems);
+        
         deleteQuestionClearData();
         this.setState({addQuarterFormItems, showSelectQuestionsModal: false});
     }
@@ -101,11 +107,21 @@ class AddQuarter extends Component{
 
     addQuarter = () => {
         this.setState({isAddingQuarter: true});
-        const { addQuarterTalkACreator, currentWatchedUser } = this.props;
+        const { addQuarterTalkACreator, currentWatchedUser, populateQuarterTalkACreator } = this.props;
         const addQuarterFormItems = [...this.state.addQuarterFormItems];
-        addQuarterTalkACreator(addQuarterFormItems, currentWatchedUser).then(() => {
-            this.setState({isAddingQuarter: false});
-        }).catch(() => this.setState({isAddingQuarter: false}));
+
+        if(this.quarterToPopulateId){
+            populateQuarterTalkACreator(addQuarterFormItems, this.quarterToPopulateId).then(() => {
+                this.setState({isAddingQuarter: false});
+            }).catch(() => this.setState({isAddingQuarter: false}));
+        }
+        else{
+            addQuarterTalkACreator(addQuarterFormItems, currentWatchedUser).then(() => {
+                this.setState({isAddingQuarter: false});
+            }).catch(() => this.setState({isAddingQuarter: false}));
+        }
+            
+        
     }
 
     togleIsCheckedState = item => {
@@ -203,10 +219,11 @@ class AddQuarter extends Component{
         addQuarterTalkClear(); clearQuestionResult(); deleteQuestionClearData();
     }
     render(){
-        const {history, addQuarterTalkStatus, addQuarterTalkErrors, getQuestionsStatus, getQuestionsErrors, clearQuestionResult,
+        const { history, addQuarterTalkStatus, addQuarterTalkErrors, getQuestionsStatus, getQuestionsErrors, clearQuestionResult,
             addQuestionStatus, addQuestionErrors, deleteQuestionStatus, deleteQuestionErrors, t } = this.props;
         const { isDeletingQuestion, isAddingQuarter, addQuarterQuestions, isLoadingQuestions, showSelectQuestionsModal, shouldPutAddedQuestionInForm, 
             itemsDeletedCount, addQuarterFormItems, newQuestionName, isAddingNewQuestion, isPostingNewQuestion } = this.state;
+        
         return (
             <div className="add-quarter-container">
                 <LoadHandlingWrapper errors={getQuestionsErrors} closePrompt={clearQuestionResult}
@@ -215,9 +232,9 @@ class AddQuarter extends Component{
                 {addQuarterFormItems.length > 0 && 
                   <React.Fragment>
                     <div className="form-container">
-                        <h1>{t("AddQuarterTalk")}</h1>
+                        <h1>{this.quarterToPopulateId ? t("Populate") : t("AddQuarterTalk")}</h1>
                         <Form
-                            btnTitle={t("Add")}
+                            btnTitle={this.quarterToPopulateId ? t("ConfirmQuestions") : t("Add")}
                             newFormItems={addQuarterFormItems}
                             shouldChangeFormState={shouldPutAddedQuestionInForm}
                             shouldSubmit={true}
@@ -267,43 +284,38 @@ class AddQuarter extends Component{
 
                         <Button onClick={this.openSelectQuestionsModal} title={t("QuestionMenage")}
                         mainClass="generate-raport-btn btn-green"><i className="fa fa-question-circle"/></Button>
-
-                        
-                
                     </div>
                   </React.Fragment>
                 }
-                   
-                    
-                    <Modal
-                    open={showSelectQuestionsModal}
-                    classNames={{ modal: `Modal select-questions-modal`}}
-                    contentLabel="Select questions modal"
-                    onClose={this.closeModal}
-                    >
-                        <header>
-                            <h3>{t("ChooseQuestionHeader")}</h3>
-                        </header>
+                <Modal
+                open={showSelectQuestionsModal}
+                classNames={{ modal: `Modal select-questions-modal`}}
+                contentLabel="Select questions modal"
+                onClose={this.closeModal}
+                >
+                    <header>
+                        <h3>{t("ChooseQuestionHeader")}</h3>
+                    </header>
 
-                        <div className="questions-list">
-                            <List shouldAnimateList functionsToUse={this.functionsToUseForQuestions}
-                                clickItemFunction={this.chooseFunction} items={addQuarterQuestions} component={QuestionToSelect} 
-                            />
-                        </div>
-
-                        <SpinnerButton
-                            validationResult={itemsDeletedCount === 0 ? false : true}
-                            onClickHandler={this.createFormItems}
-                            btnTitle={t("Start")}
-                            isLoading={isDeletingQuestion}
-                            submitResult={{
-                                status: deleteQuestionStatus,
-                                content: deleteQuestionStatus ? t("SuccDeleteQuestion") :
-                                    deleteQuestionErrors[0]        
-                            }}
-                            
+                    <div className="questions-list">
+                        <List shouldAnimateList functionsToUse={this.functionsToUseForQuestions}
+                            clickItemFunction={this.chooseFunction} items={addQuarterQuestions} component={QuestionToSelect} 
                         />
-                    </Modal>
+                    </div>
+
+                    <SpinnerButton
+                        validationResult={itemsDeletedCount === 0 ? false : true}
+                        onClickHandler={this.createFormItems}
+                        btnTitle={this.quarterToPopulateId ? t("Populate") : t("Start")}
+                        isLoading={isDeletingQuestion}
+                        submitResult={{
+                            status: deleteQuestionStatus,
+                            content: deleteQuestionStatus ? t("SuccDeleteQuestion") :
+                                deleteQuestionErrors[0]        
+                        }}
+                        
+                    />
+                </Modal>
                 </LoadHandlingWrapper>     
             </div>
         );
@@ -339,7 +351,9 @@ const mapStateToProps = state => {
       addQuestionClearData: () => dispatch(addQuestion(null, [])),
       
       deleteQuestionACreator: questionId => dispatch(deleteQuestionACreator(questionId)),
-      deleteQuestionClearData: () => dispatch(deleteQuestion(null, []))
+      deleteQuestionClearData: () => dispatch(deleteQuestion(null, [])),
+
+      populateQuarterTalkACreator: (formItems, quarterId) => dispatch(populateQuarterTalkACreator(formItems, quarterId))
     };
   };
   

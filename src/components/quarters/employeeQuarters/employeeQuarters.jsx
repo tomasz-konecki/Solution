@@ -1,7 +1,7 @@
 import React from 'react'
 import './employeeQuarters.scss';
 import { connect } from 'react-redux';
-import { getQuartersForEmployeeACreator, getQuartersForEmployee, generateQuarterDocACreator, generateQuarterDoc,
+import { getQuartersForEmployeeACreator, getQuartersForEmployee, 
     deleteQuarterTalkACreator, deleteQuarterTalk, reactivateQuarterTalkACreator  } from '../../../actions/quarterTalks.js';
 import LoadHandlingWrapper from '../../../hocs/handleLoadingContent';
 import List from '../../common/list/list';
@@ -13,6 +13,8 @@ import ConfirmModal from '../../common/confimModal/confirmModal.js';
 import OperationStatusPrompt from '../../form/operationStatusPrompt/operationStatusPrompt.js';
 import Spinner from '../../common/spinner/spinner.js';
 import { translate } from 'react-translate';
+import { API_ENDPOINT } from '../../../api/index.js';
+import EmptyContent from '../../common/empty-content/empty-content.js';
 
 class EmployeeQuarters extends React.PureComponent{
     state = {
@@ -36,7 +38,7 @@ class EmployeeQuarters extends React.PureComponent{
     }
     
     componentDidUpdate(prevProps){
-        if(prevProps.location.search !== this.props.location.search){
+        if(prevProps.history.location.search !== this.props.history.location.search){
             this.setState({isLoadingQuarters: true});
             this.getQuartersForEmployeeHandler();
         }
@@ -61,10 +63,7 @@ class EmployeeQuarters extends React.PureComponent{
                 }).catch(() => this.setState({isChangingSomethingInQuarterList: false}));
                 break;
             case "generateDoc":
-                this.setState({isChangingSomethingInQuarterList: true});
-                generateQuarterDocACreator(quarter.id).then((link) => {
-                    this.setState({isChangingSomethingInQuarterList: false});
-                }).catch(() => this.setState({isChangingSomethingInQuarterList: false}));
+                window.open(`${API_ENDPOINT}/QuarterTalks/GenerateDocx/${quarter.id}`)
                 break;
             default: 
                 const currentWatchedItemId = quartersForEmployee.findIndex(item => item.id === quarter.id);
@@ -86,6 +85,12 @@ class EmployeeQuarters extends React.PureComponent{
         this.setState({quarterToDeleteId: -1}, () => this.props.deleteQuarterTalk());
     }
 
+    fillAnswersForQuarter = () => {
+        const { quartersForEmployee } = this.props;
+        const { currentWatchedQuarterDetail } = this.state;
+        this.props.redirectToPopulatingQuarter(quartersForEmployee[currentWatchedQuarterDetail].id);
+    }
+
     render(){
         const { isLoadingQuarters, currentWatchedQuarterDetail, quarterToDeleteId, isDeletingQuarter, isChangingSomethingInQuarterList } = this.state;
         const { t, deleteQuarterTalk, deleteQuarterStatus, deleteQuarterErrors, getQuartersForEmployee, quartersForEmployee, 
@@ -95,9 +100,9 @@ class EmployeeQuarters extends React.PureComponent{
                 operationStatus={quartersForEmployeeStatus} isLoading={isLoadingQuarters}>
                 <main className="employee-quarters">
                     <div className="quarters-list-container">
-                        <List componentProps={{currentWatchedItemId: currentWatchedQuarterDetail}}
-                        isDoingRequest={isChangingSomethingInQuarterList} 
+                        <List isDoingRequest={isChangingSomethingInQuarterList} 
                         listClass="quarter-list" functionsToUse={this.functionsToUseForQuarters} componentProps={{
+                            currentWatchedItemId: currentWatchedQuarterDetail,
                             subHeader: t("QuarterItemSubHeader"),
                             deleteTranslation: t("Delete"),
                             reactivate: t("Reactivate"),
@@ -106,15 +111,24 @@ class EmployeeQuarters extends React.PureComponent{
                             QuarterDeletedPrompt: t("QuarterDeletedPrompt")
                         }}
                         shouldAnimateList clickItemFunction={this.onClickOperationHandler} items={quartersForEmployee} component={QuarterListItem} 
-                        listTitle={`${t("QuaterTalks")} of ${getEmployeeId()}`}
+                        listTitle={`${t("QuaterTalks")} ${getEmployeeId()}`}
                             allKeysOfItems={["id", "isTaken", "year", "quarter" ,"quarterTalkQuestionItems", "questionerId", "plannedTalkDate"]}/>
                     </div>
                     <div className="quarter-detail">
-                        {quartersForEmployeeStatus && quartersForEmployee[currentWatchedQuarterDetail] && quartersForEmployee[currentWatchedQuarterDetail].quarterTalkQuestionItems && 
+                        
+                        {quartersForEmployeeStatus && quartersForEmployee[currentWatchedQuarterDetail] && quartersForEmployee[currentWatchedQuarterDetail].isTaken && 
                             <List functionsToUse={this.functionsToUseForQuestions} listTitle={t("SpeechState")} listClass="question-list" 
                             component={QuarterDetailsItem} items={quartersForEmployee[currentWatchedQuarterDetail].quarterTalkQuestionItems} />
                         }
                         
+                        {quartersForEmployeeStatus && quartersForEmployee[currentWatchedQuarterDetail] && !quartersForEmployee[currentWatchedQuarterDetail].isTaken && 
+                            <EmptyContent action={this.fillAnswersForQuarter} sizeClass="quaters-size"
+                                shouldShowTopIcon={t("startQuarterTranslation")}
+                                content={t("NoAnswers")}
+                                operationIcon="fa fa-plus"
+                                mainIcon="fa fa-comments"
+                            />
+                        }
                     </div>
                 </main>
                 
@@ -158,11 +172,7 @@ const mapStateToProps = state => {
         deleteQuarterErrors: state.quarterTalks.deleteQuarterErrors,
 
         reactiveQuarterStatus: state.quarterTalks.reactiveQuarterStatus,
-        reactiveQuarterErrors: state.quarterTalks.reactiveQuarterErrors,
-
-        generateDocDownloadLink: state.quarterTalks.generateDocDownloadLink, 
-        generateDocStatus: state.quarterTalks.generateDocStatus, 
-        generateDocErrors: state.quarterTalks.generateDocErrors
+        reactiveQuarterErrors: state.quarterTalks.reactiveQuarterErrors
     }
 }
 
@@ -173,9 +183,6 @@ const mapDispatchToProps = dispatch => {
         deleteQuarterTalkACreator: (quarterToDeleteId, quartersForEmployee) => dispatch(deleteQuarterTalkACreator(quarterToDeleteId, quartersForEmployee)),
         reactivateQuarterTalkACreator: (quarterId, quartersForEmployee) => dispatch(reactivateQuarterTalkACreator(quarterId, quartersForEmployee)),
         deleteQuarterTalk: () => dispatch(deleteQuarterTalk(null, [])),
-        generateQuarterDocACreator: (quarterId) => dispatch(generateQuarterDocACreator(quarterId)),
-        generateQuarterDoc: () => dispatch(generateQuarterDoc("", null, []))
-
     }
 }
 

@@ -222,7 +222,10 @@ const translations = {
     Skills: "Umiejętności",
     Missing: "Brak",
     Assignments: "Przypisania",
-    ProfilePhoto: "Zdjęcie profilowe"
+    ProfilePhoto: "Zdjęcie profilowe",
+    EmployeeCV: "CV Pracownika",
+    DownloadEmployeeCVInWordFormat: "Pobierz CV.docx",
+    DownloadEmployeeCVInPdfFormat: "Pobierz CV.pdf"
   },
   List: {
     Search: "wpisz, aby wyszukać...",
@@ -248,7 +251,7 @@ const translations = {
     QuarterTalkActivated: "Aktywowano rozmowę kwartalną",
     QuarterTalkHeader: "Panel rozmów kwartalnych",
     QuarterTalkSubHeader: "aktualnie przeglądany użytkownik",
-    Users: "Użytkownicy",
+    Users: "Pracownicy",
     PlanQuarter: "Zaplanuj rozmowę",
     AddQuarter: "Dodaj rozmowę",
     ClearHistory: "Wyczyść historię",
@@ -275,7 +278,7 @@ const translations = {
     SuccAddedQuarter: "Pomyślnie utworzono rozmowę kwartalną",
     QuarterItemSubHeader: "przeprowadził",
     Reactivate: "Reaktywuj", 
-    Conduct: "Przeprowadzi",
+    Conduct: "przeprowadzi",
     QuarterDeletedPrompt: "Ta rozmowa jest usunięta",
     Year: "Rok",
     PlannedDate: "Planowana data",
@@ -294,7 +297,12 @@ const translations = {
     Choosen: "Wybrane",
     NotChoosen: "Nie wybrane",
     Deleted: "Usunięte",
-    NotDeleted: "Nie usunięte"
+    NotDeleted: "Nie usunięte",
+    Empty: "Brak rozmów kwartalnych",
+    startQuarterTranslation: "Wypełnij pytania",
+    NoAnswers: "Ta rozmową się jeszcze nie odbyła",
+    Populate: "Uzupełnij rozmowę",
+    ConfirmQuestions: "Zatwierdź pytania"
   },
   EmployeeSkills: {
     Add: "Dodaj",
@@ -463,7 +471,7 @@ const translations = {
     InsertLastName: "wprowadź nazwisko...",
     PhoneNumber: "Numer telefonu",
     InsertPhoneNumber: "wprowadź numer telefonu...",
-    ResponsiblePerson: "Osoba do kontaktu"
+    ResponsiblePerson: "Osoba do kontaktu",
   },
   ProjectDetails: {
     GeneralInfo: "Informacje ogólne",
@@ -510,6 +518,8 @@ const translations = {
     EstimatedEndDate: "Szacowana data zakończenia",
     Description: "Opis",
     Owners: "Właściciele",
+    ToFill: "Do uzupełnienia",
+    ToFillEmail: "do@uzupełnienia.com",
     Add: "Dodaj"
   },
   ResponsiblePersonBlock: {

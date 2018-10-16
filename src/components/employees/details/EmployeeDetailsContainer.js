@@ -5,7 +5,7 @@ import { bindActionCreators } from "redux";
 import { withRouter } from "react-router-dom";
 import * as asyncActions from "../../../actions/asyncActions";
 import EmployeeContent from "./employeeContent/employeeContent";
-import { changeCurrentWatchedUser } from '../../../actions/persistHelpActions';
+import { changeCurrentWatchedUser } from "../../../actions/persistHelpActions";
 import EmployeeTable from "./employeeTable/employeeTable";
 import {
   getEmployeePromise,
@@ -19,18 +19,18 @@ import {
   reactivateEmployee,
   loadAssignmentsACreator,
   loadAssignments,
-  deleteQuaterACreator,
-  reactivateQuaterACreator,
   changeEmployeeSkillsACreator,
   updateSkype,
   getCertificates,
+  downloadCV,
+  getUserCv,
   loadEmployeeFeedbacks
 } from "../../../actions/employeesActions";
 import Spinner from "../../common/spinner/spinner";
 import OperationStatusPrompt from "../../form/operationStatusPrompt/operationStatusPrompt";
 import EmployeeSkills from "./employeeSkills/employeeSkills";
 import EmployeeCertificates from "./employeeCertificates/employeeCertificates";
-import EmployeeFeedbacks from './employeeFeedbacks/employeeFeedbacks';
+import EmployeeFeedbacks from "./employeeFeedbacks/employeeFeedbacks";
 import { ACTION_CONFIRMED } from "./../../../constants";
 import { translate } from "react-translate";
 import NotFound404 from "../../notFound404/NotFound404";
@@ -59,7 +59,12 @@ class EmployeeDetailsContainer extends React.Component {
   }
 
   componentDidMount() {
-    const { getEmployeePromise, loadCertificates, loadEmployeeFeedbacks, match } = this.props;
+    const {
+      getEmployeePromise,
+      loadCertificates,
+      loadEmployeeFeedbacks,
+      match
+    } = this.props;
     getEmployeePromise(match.params.id);
     loadCertificates(match.params.id);
     loadEmployeeFeedbacks(match.params.id);
@@ -91,9 +96,15 @@ class EmployeeDetailsContainer extends React.Component {
             let form = this.state.editSkypeFormItems;
             form[0].value = nextProps.employee.skypeId;
             this.setState({
-            editSkypeFormItems: form
+                editSkypeFormItems: form
             });
         }
+    }
+  }
+  componentDidUpdate() {
+    if (this.props.userDownloadCVLink && this.props.getUserCVStatus) {
+      window.location.href = this.props.userDownloadCVLink;
+      this.props.getUserCVClear("", null, []);
     }
   }
 
@@ -169,12 +180,6 @@ class EmployeeDetailsContainer extends React.Component {
       loadAssignmentsStatus,
       loadAssignmentsErrors,
       loadedAssignments,
-      deleteQuaterStatus,
-      deleteQuaterErrors,
-      deleteQuaterACreator,
-      reactivateQuaterACreator,
-      reactivateQuaterStatus,
-      reactivateQuaterErrors,
       changeEmployeeSkillsACreator,
       changeSkillsStatus,
       changeSkillsErrors,
@@ -184,6 +189,7 @@ class EmployeeDetailsContainer extends React.Component {
       certificates,
       binPem,
       login,
+      downloadCV,
       employeeFeedbacks,
       loadEmployeeFeedbacksErrors,
       loadEmployeeFeedbacksStatus
@@ -202,13 +208,6 @@ class EmployeeDetailsContainer extends React.Component {
               <EmployeeContent
                 changeCurrentWatchedUser={changeCurrentWatchedUser}
                 getEmployee={getEmployeePromise}
-                status={status}
-                reactivateQuaterACreator={reactivateQuaterACreator}
-                reactivateQuaterStatus={reactivateQuaterStatus}
-                reactivateQuaterErrors={reactivateQuaterErrors}
-                deleteQuaterStatus={deleteQuaterStatus}
-                deleteQuaterErrors={deleteQuaterErrors}
-                deleteQuaterACreator={deleteQuaterACreator}
                 employee={employee}
                 editCapacity={this.editCapacity}
                 deleteEmployee={this.deleteEmployee}
@@ -228,6 +227,7 @@ class EmployeeDetailsContainer extends React.Component {
                 }
                 isYou={login === employee.id}
                 binPem={binPem}
+                downloadCVClickHandler={downloadCV}
               />
 
               <EmployeeSkills
@@ -274,7 +274,6 @@ class EmployeeDetailsContainer extends React.Component {
                 loadEmployeeFeedbacksErrors={loadEmployeeFeedbacksErrors}
                 loadEmployeeFeedbacksStatus={loadEmployeeFeedbacksStatus}
               />
-
             </React.Fragment>
           )
         )}
@@ -299,18 +298,6 @@ class EmployeeDetailsContainer extends React.Component {
             />
           )}
 
-        {reactivateQuaterStatus !== null &&
-          reactivateQuaterStatus !== undefined && (
-            <OperationStatusPrompt
-              operationPromptContent={
-                reactivateQuaterStatus
-                  ? t("QuarterTalkHasBeenActiaved")
-                  : reactivateQuaterErrors[0]
-              }
-              operationPrompt={reactivateQuaterStatus}
-            />
-          )}
-
         {changeSkillsStatus === false && (
           <OperationStatusPrompt
             operationPromptContent={changeSkillsErrors[0]}
@@ -324,6 +311,10 @@ class EmployeeDetailsContainer extends React.Component {
 
 const mapStateToProps = state => {
   return {
+    userDownloadCVLink: state.reportsReducer.userDownloadCVLink,
+    getUserCVStatus: state.reportsReducer.getUserCVStatus,
+    getUserCVErrors: state.reportsReducer.getUserCVErrors,
+
     employeeStatus: state.employeesReducer.employeeStatus,
     employeeErrors: state.employeesReducer.employeeErrors,
     employee: state.employeesReducer.employee,
@@ -341,13 +332,6 @@ const mapStateToProps = state => {
     certificates: state.employeesReducer.certificates,
     resultBlockAddCertificate: state.employeesReducer.resultBlockAddCertificate,
 
-    deleteQuaterStatus: state.employeesReducer.deleteQuaterStatus,
-    deleteQuaterErrors: state.employeesReducer.deleteQuaterErrors,
-
-    reactivateQuaterStatus: state.employeesReducer.reactivateQuaterStatus,
-    reactivateQuaterErrors: state.employeesReducer.reactivateQuaterErrors,
-    reactivateQuaterMessage: state.employeesReducer.reactivateQuaterMessage,
-
     changeSkillsStatus: state.employeesReducer.changeSkillsStatus,
     changeSkillsErrors: state.employeesReducer.changeSkillsErrors,
 
@@ -361,15 +345,20 @@ const mapStateToProps = state => {
 
     binPem: state.authReducer.binPem,
     login: state.authReducer.login,
-
     employeeFeedbacks: state.employeesReducer.employeeFeedbacks,
-    loadEmployeeFeedbacksErrors: state.employeesReducer.loadEmployeeFeedbacksErrors,
-    loadEmployeeFeedbacksStatus: state.employeesReducer.loadEmployeeFeedbacksStatus
+    loadEmployeeFeedbacksErrors:
+      state.employeesReducer.loadEmployeeFeedbacksErrors,
+    loadEmployeeFeedbacksStatus:
+      state.employeesReducer.loadEmployeeFeedbacksStatus
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
+    getUserCVClear: (link, status, errors) =>
+      dispatch(getUserCv(link, status, errors)),
+    downloadCV: (format, employeeId) =>
+      dispatch(downloadCV(format, employeeId)),
     async: bindActionCreators(asyncActions, dispatch),
     getEmployeePromise: employeeId => dispatch(getEmployeePromise(employeeId)),
     editStatistics: (employeeId, seniority, capacity, currentClouds) =>
@@ -382,20 +371,21 @@ const mapDispatchToProps = dispatch => {
       dispatch(loadAssignmentsACreator(employeeId)),
     loadAssignmentsClear: (status, errors, assignments) =>
       dispatch(loadAssignments(status, errors, assignments)),
-    deleteQuaterACreator: (quarterId, employeeId) =>
-      dispatch(deleteQuaterACreator(quarterId, employeeId)),
-    reactivateQuaterACreator: (quaterId, employeeId, message) =>
-      dispatch(reactivateQuaterACreator(quaterId, employeeId, message)),
     changeEmployeeSkillsACreator: (employeeId, currentArray) =>
       dispatch(changeEmployeeSkillsACreator(employeeId, currentArray)),
     updateSkype: (skypeId, employeeId) =>
       dispatch(updateSkype(skypeId, employeeId)),
     loadCertificates: employeeId => dispatch(loadCertificates(employeeId)),
-    addCertificate: (certificate,userId) => dispatch(addCertificate(certificate,userId)),
-    editCertificate: (certificateId, certificate, userId) => dispatch(editCertificate(certificateId,certificate,userId)),
-    deleteCertificate: (certificateId, userId) => dispatch(deleteCertificate(certificateId, userId)),
-    changeCurrentWatchedUser: (currentWatchedUser) => dispatch(changeCurrentWatchedUser(currentWatchedUser)),
-    loadEmployeeFeedbacks: (employeeId) => dispatch(loadEmployeeFeedbacks(employeeId))
+    addCertificate: (certificate, userId) =>
+      dispatch(addCertificate(certificate, userId)),
+    editCertificate: (certificateId, certificate, userId) =>
+      dispatch(editCertificate(certificateId, certificate, userId)),
+    deleteCertificate: (certificateId, userId) =>
+      dispatch(deleteCertificate(certificateId, userId)),
+    changeCurrentWatchedUser: currentWatchedUser =>
+      dispatch(changeCurrentWatchedUser(currentWatchedUser)),
+    loadEmployeeFeedbacks: employeeId =>
+      dispatch(loadEmployeeFeedbacks(employeeId))
   };
 };
 

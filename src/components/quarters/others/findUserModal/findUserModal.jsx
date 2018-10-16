@@ -2,13 +2,14 @@ import React from 'react'
 import './findUserModal.scss';
 import Modal from 'react-responsive-modal';
 import Form from '../../../form/form.js';
+import { translate } from 'react-translate';
 class FindUserModal extends React.PureComponent{
     state = {
         findUserFormItems: [
             {
-                title: "Pracownik",
+                title: this.props.t("Worker"),
                 type: "text",
-                placeholder: "znajdź pracownika...",
+                placeholder: this.props.t("WorkerPlaceholder"),
                 mode: "type-ahead",
                 value: "",
                 error: "",
@@ -25,12 +26,11 @@ class FindUserModal extends React.PureComponent{
         const { changeActualWatchedUser } = this.props;
         const { findUserFormItems } = this.state;
         const foundEmployee = findUserFormItems[0].value;
-
         changeActualWatchedUser(foundEmployee);
         
     }
     render(){
-        const { onClose, open } = this.props;
+        const { onClose, open, t } = this.props;
         const { findUserFormItems, isChecking } = this.state;
         return (
             <Modal
@@ -40,10 +40,10 @@ class FindUserModal extends React.PureComponent{
             onClose={onClose}
             >
                 <header>
-                    <h3>Znajdź użytkownika do przeglądania</h3>
+                    <h3>{t("FindUserModalTitle")}</h3>
                 </header>
                 <Form
-                    btnTitle="Przejdź"
+                    btnTitle={t("Next")}
                     onSubmit={this.redirectToSearchedEmployee}
                     isLoading={false}
                     shouldSubmit={false}
@@ -56,4 +56,4 @@ class FindUserModal extends React.PureComponent{
     }
 }
 
-export default FindUserModal;
+export default translate("Quaters")(FindUserModal);

@@ -32,28 +32,10 @@
     .checked-checkbox{
         background: #82b541;
         border-color: #82b541;
-        &:hover{
-            background: transparent;
-            border-color: lightslategrey;
-        }
-        &:hover i{
-            opacity: 0;
-        }
-        
     }
     .unchecked-checkbox{
         background: transparent;
         border-color: lightslategrey;
-        i{
-            opacity: 0;
-        }
-        &:hover{
-            background: #82b541;
-            border-color: #82b541;
-        }
-        &:hover i{
-            opacity: 1;
-        }
     }
 }
 .check-animation{

@@ -1,18 +1,18 @@
 import React from 'react'
 import './calendarItem.scss';
 
-const calendarItem = ({item}) => (
+const calendarItem = ({item, minutes, from, to}) => (
 <div key={item.date + item.time} className="date">
     <p>
         <span><b>{item.date}</b> {item.monthName} ({item.dayName})</span> 
-        <i title="Pokaż zajęte godziny" className="fas fa-chart-pie"></i>
+        <i className="fas fa-chart-pie"></i>
     </p>
     <p>
-        <span>Od: <b>{item.time}</b></span> 
-        <span>Do: <b>{item.willLastTo}</b></span> 
+        <span>{from}: <b>{item.time}</b></span> 
+        <span>{to}: <b>{item.willLastTo}</b></span> 
     </p>
     <p>
-        <span><i className="fa fa-stopwatch"></i> {item.length} minut </span>
+        <span><i className="fa fa-stopwatch"></i> {item.length} {minutes} </span>
         <i className="fa fa-chevron-down"></i>
     </p>
 </div>

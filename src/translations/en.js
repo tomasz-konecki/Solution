@@ -248,7 +248,7 @@ const translations = {
     QuarterTalkActivated: "Quarter Talk has been activated",
     QuarterTalkHeader: "Quarter talk panel",
     QuarterTalkSubHeader: "current watched user",
-    Users: "Users",
+    Users: "Employees",
     PlanQuarter: "Plan quarter",
     AddQuarter: "Add quarter",
     ClearHistory: "Clear history",
@@ -297,7 +297,9 @@ const translations = {
     NotDeleted: "Not deleted",
     Empty: "Empty quarter talks",
     startQuarterTranslation: "Fill answers",
-    NoAnswers: "This conversation has not yet taken"
+    NoAnswers: "This conversation has not yet taken",
+    Populate: "Populate quarter",
+    ConfirmQuestions: "Confirm questions"
   },
   EmployeeSkills: {
     Add: "Add",

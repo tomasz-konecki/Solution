@@ -38,7 +38,7 @@ class EmployeeQuarters extends React.PureComponent{
     }
     
     componentDidUpdate(prevProps){
-        if(prevProps.location.search !== this.props.location.search){
+        if(prevProps.history.location.search !== this.props.history.location.search){
             this.setState({isLoadingQuarters: true});
             this.getQuartersForEmployeeHandler();
         }
@@ -86,7 +86,9 @@ class EmployeeQuarters extends React.PureComponent{
     }
 
     fillAnswersForQuarter = () => {
-        
+        const { quartersForEmployee } = this.props;
+        const { currentWatchedQuarterDetail } = this.state;
+        this.props.redirectToPopulatingQuarter(quartersForEmployee[currentWatchedQuarterDetail].id);
     }
 
     render(){
@@ -120,13 +122,11 @@ class EmployeeQuarters extends React.PureComponent{
                         }
                         
                         {quartersForEmployeeStatus && quartersForEmployee[currentWatchedQuarterDetail] && !quartersForEmployee[currentWatchedQuarterDetail].isTaken && 
-                            <EmptyContent
-                            action={this.fillAnswersForQuarter}
-                            sizeClass="quaters-size"
-                            shouldShowTopIcon={t("startQuarterTranslation")}
-                            content={t("NoAnswers")}
-                            operationIcon="fa fa-plus"
-                            mainIcon="fa fa-comments"
+                            <EmptyContent action={this.fillAnswersForQuarter} sizeClass="quaters-size"
+                                shouldShowTopIcon={t("startQuarterTranslation")}
+                                content={t("NoAnswers")}
+                                operationIcon="fa fa-plus"
+                                mainIcon="fa fa-comments"
                             />
                         }
                     </div>

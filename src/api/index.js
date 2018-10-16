@@ -292,6 +292,9 @@ const WebApi = {
         return WebAround.put(
           `${API_ENDPOINT}/QuarterTalks/Reactivate/${quarterId}`
         );
+      },
+      populateQuarter: (model, quarterId) => {
+        return WebAround.put(`${API_ENDPOINT}/QuarterTalks/${quarterId}`, model);
       }
     },
     post: {

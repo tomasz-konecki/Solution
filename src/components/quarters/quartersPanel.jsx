@@ -25,11 +25,14 @@ class Quarters extends React.PureComponent{
         openFindUserModal: false
     }
 
-    handleBtnClick = (urlToPush, isUrlWithParam) => {
+    handleBtnClick = (urlToPush, isUrlWithParam, quarterToPopulateId) => {
         const { push } = this.props.history;
         const { currentWatchedUser } = this.props;
         if(isUrlWithParam){
-            push(urlToPush + "/" + currentWatchedUser + "?=" + currentWatchedUser);
+            push({
+                pathname: urlToPush + "/" + currentWatchedUser + "?=" + currentWatchedUser,
+                state: { quarterToPopulateId }
+            });
         }else{
             this.setState({openFindUserModal: true});
         }
@@ -114,10 +117,11 @@ class Quarters extends React.PureComponent{
                              redirectToLastWatchedPerson={this.handleBtnClick} changeLinkBeforeRedirect={changeLinkBeforeRedirect}/>
                         )}/>
                         <Route exact path={match.url + "/employees/addquarter/:id"} render={() => (
-                            <AddQuarter currentWatchedUser={currentWatchedUser} onCloseModal={() => this.handleBtnClick(`${match.url}/employees`, true)}/>
+                            <AddQuarter history={history} currentWatchedUser={currentWatchedUser} onCloseModal={() => this.handleBtnClick(`${match.url}/employees`, true)}/>
                         )} />
                         <Route exact path={`${match.url}/employees/:id`} render={() => (
-                            <EmployeeQuarters lastWatchedPersons={lastWatchedPersons} location={history.location} />
+                            <EmployeeQuarters lastWatchedPersons={lastWatchedPersons} redirectToPopulatingQuarter={(quarterId) => this.handleBtnClick(`${match.url}/employees/addquarter`, true, quarterId)}
+                            history={history} />
                         )}/>
 
                     </Switch>   

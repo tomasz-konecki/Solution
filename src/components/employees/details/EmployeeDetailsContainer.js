@@ -87,18 +87,18 @@ class EmployeeDetailsContainer extends React.Component {
     } else if (nextProps.employeeOperationStatus === false) {
       this.setState({ isChangingEmployeeData: false });
     }
-    if(nextProps.match.patch !== this.props.match.patch) {
-        this.setState({isLoadingFirstTimeEmployee: true});
-        this.props.getEmployeePromise(nextProps.match.params.id);
+    if (nextProps.match.patch !== this.props.match.patch) {
+      this.setState({ isLoadingFirstTimeEmployee: true });
+      this.props.getEmployeePromise(nextProps.match.params.id);
     }
-    if(nextProps.employee) {
-        if (this.state.editSkypeFormItems[0]) {
-            let form = this.state.editSkypeFormItems;
-            form[0].value = nextProps.employee.skypeId;
-            this.setState({
-                editSkypeFormItems: form
-            });
-        }
+    if (nextProps.employee) {
+      if (this.state.editSkypeFormItems[0]) {
+        let form = this.state.editSkypeFormItems;
+        form[0].value = nextProps.employee.skypeId;
+        this.setState({
+          editSkypeFormItems: form
+        });
+      }
     }
   }
   componentDidUpdate() {
@@ -194,6 +194,7 @@ class EmployeeDetailsContainer extends React.Component {
       loadEmployeeFeedbacksErrors,
       loadEmployeeFeedbacksStatus
     } = this.props;
+    console.log(this.props);
     return (
       <div className="employee-details-container">
         {isLoadingFirstTimeEmployee ? (
@@ -226,6 +227,10 @@ class EmployeeDetailsContainer extends React.Component {
                   updateSkypeIdResult && updateSkypeIdResult.resultBlock
                 }
                 isYou={login === employee.id}
+                isInManagerTeam={
+                  employee.manager === login ||
+                  employee.managersManager === login
+                }
                 binPem={binPem}
                 downloadCVClickHandler={downloadCV}
               />

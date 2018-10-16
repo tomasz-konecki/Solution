@@ -5,7 +5,7 @@ import {
   GET_EMPLOYEE,
   CHANGE_EMPLOYEE_OPERATION_STATUS,
   CHANGE_EMPLOYEE_STATE, LOAD_ASSIGNMENTS,
-  DELETE_QUATER, REACTIVATE_QUATER, CHANGE_EMPLOYEE_SKILLS,
+  CHANGE_EMPLOYEE_SKILLS,
   ADD_NEW_SKILLS_TO_EMPLOYEE,
   CHANGE_CERTIFICATES_GET_STATUS,
   GET_CERTYFICATES,
@@ -38,13 +38,6 @@ const initialState = {
   loadAssignmentsStatus: null,
   loadAssignmentsErrors: [],
   loadedAssignments: [],
-
-  deleteQuaterStatus: null,
-  deleteQuaterErrors: [],
-
-  reactivateQuaterStatus: null,
-  reactivateQuaterErrors: [],
-  reactivateQuaterMesssage: "",
 
   changeSkillsStatus: null,
   changeSkillsErrors: [],
@@ -138,17 +131,6 @@ export const employeesReducer = (state = initialState, action) => {
       return updateObject(state, { loadEmployeeFeedbacksStatus: action.loadEmployeeFeebacksStatus, loadEmployeeFeedbacksErrors: action.loadEmployeeFeedbacksErrors})
     case GET_EMPLOYEES_FEEDBACKS:
       return updateObject(state, { employeeFeedbacks: action.employeeFeedbacks })
-    case DELETE_QUATER:
-      return updateObject(state, {
-        deleteQuaterStatus: action.deleteQuaterStatus,
-        deleteQuaterErrors: action.deleteQuaterErrors
-      });
-    case REACTIVATE_QUATER:
-      return updateObject(state, {
-        reactivateQuaterStatus: action.reactivateQuaterStatus,
-        reactivateQuaterErrors: action.reactivateQuaterErrors,
-        reactivateQuaterMesssage: action.reactivateQuaterMesssage
-      });
     case CHANGE_EMPLOYEE_SKILLS:
       return updateObject(state, {
         changeSkillsStatus: action.changeSkillsStatus,

@@ -1,4 +1,4 @@
-import {ADD_QUESTION, DELETE_QUESTION, GENERATE_QUARTER_DOC,
+import {ADD_QUESTION, DELETE_QUESTION,
  ADD_QUARTER_TALK, GET_QUESTIONS, GET_RESERVED_DATES, PLAN_QUARTER, GET_QUARTERS_FOR_EMPLOYEE, DELETE_QUARTER_TALK, REACTIVATE_QUARTER_TALK
 } from "../constants";
   import WebApi from "../api";
@@ -229,20 +229,4 @@ export const deleteQuestionACreator = questionId => dispatch => {
 
   export const deleteQuestion = (status, errors) => {
       return { type: DELETE_QUESTION, status, errors };
-  }
-  export const generateQuarterDoc = (generateDocDownloadLink, generateDocStatus, generateDocErrors) => {
-      return { type: GENERATE_QUARTER_DOC, generateDocDownloadLink, generateDocStatus, generateDocErrors }
-  }
-
-  export const generateQuarterDocACreator = quarterId => dispatch => {
-      return new Promise((resolve, reject) => {
-        WebApi.quarterTalks.get.generateDoc(quarterId).then(response => {
-            console.log(response.replyBlock.data);
-            dispatch(generateQuarterDoc("dsad", true, []));
-            resolve();
-        }).catch(errors => {
-            dispatch(generateQuarterDoc("", false, errorCatcher(errors)));
-            reject();
-        })
-      })
   }

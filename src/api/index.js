@@ -19,7 +19,7 @@ import { loginACreator } from "../actions/persistHelpActions";
 import { Certificate } from "crypto";
 const { store } = storeCreator;
 
-const API_ENDPOINT = Config.serverUrl;
+export const API_ENDPOINT = Config.serverUrl;
 
 store.subscribe(listener);
 ``;

@@ -275,7 +275,7 @@ const translations = {
     SuccAddedQuarter: "Pomyślnie utworzono rozmowę kwartalną",
     QuarterItemSubHeader: "przeprowadził",
     Reactivate: "Reaktywuj", 
-    Conduct: "Przeprowadzi",
+    Conduct: "przeprowadzi",
     QuarterDeletedPrompt: "Ta rozmowa jest usunięta",
     Year: "Rok",
     PlannedDate: "Planowana data",
@@ -294,7 +294,8 @@ const translations = {
     Choosen: "Wybrane",
     NotChoosen: "Nie wybrane",
     Deleted: "Usunięte",
-    NotDeleted: "Nie usunięte"
+    NotDeleted: "Nie usunięte",
+    Empty: "Brak rozmów kwartalnych"
   },
   EmployeeSkills: {
     Add: "Dodaj",

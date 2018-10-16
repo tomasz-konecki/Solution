@@ -3,7 +3,7 @@ import "./employeeContent.scss";
 import FteBar from "../fteBar/fteBar";
 import DegreeBar from "../degreeBar/degreeBar";
 import Button from "../../../common/button/button";
-import Quaters from "../quaters/quaters";
+import QuarterList from "../quarterList/quarterList.jsx";
 import Spinner from "../../../common/spinner/small-spinner";
 import Icon from "../../../common/Icon";
 import { Link } from "react-router-dom";
@@ -23,12 +23,6 @@ const employeeContent = ({
   isChangingEmployeeData,
   reactivateEmployee,
   deleteEmployee,
-  deleteQuaterStatus,
-  deleteQuaterErrors,
-  deleteQuaterACreator,
-  reactivateQuaterACreator,
-  reactivateQuaterStatus,
-  reactivateQuaterErrors,
   t,
   editSkypeFormItems,
   editSkypeId,
@@ -209,18 +203,10 @@ const employeeContent = ({
 
       </div>
 
-      <Quaters
+      <QuarterList
         changeCurrentWatchedUser={changeCurrentWatchedUser}
         getEmployeePromise={getEmployeePromise}
-        reactivateQuaterACreator={reactivateQuaterACreator}
-        status={status}
-        reactivateQuaterStatus={reactivateQuaterStatus}
-        reactivateQuaterErrors={reactivateQuaterErrors}
-        deleteQuaterStatus={deleteQuaterStatus}
-        deleteQuaterErrors={deleteQuaterErrors}
         employeeId={employee.id}
-        deleteQuaterACreator={deleteQuaterACreator}
-        paginationLimit={5}
         quarterTalks={employee.quarterTalks}
       />
 

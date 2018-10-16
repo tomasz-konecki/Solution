@@ -291,7 +291,8 @@ const translations = {
     Choosen: "Choosen",
     NotChoosen: "Not choosen",
     Deleted: "Deleted",
-    NotDeleted: "Not deleted"
+    NotDeleted: "Not deleted",
+    Empty: "Empty quarter talks"
   },
   EmployeeSkills: {
     Add: "Add",

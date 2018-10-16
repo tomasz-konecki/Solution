@@ -19,8 +19,6 @@ import {
   reactivateEmployee,
   loadAssignmentsACreator,
   loadAssignments,
-  deleteQuaterACreator,
-  reactivateQuaterACreator,
   changeEmployeeSkillsACreator,
   updateSkype,
   getCertificates,
@@ -169,12 +167,6 @@ class EmployeeDetailsContainer extends React.Component {
       loadAssignmentsStatus,
       loadAssignmentsErrors,
       loadedAssignments,
-      deleteQuaterStatus,
-      deleteQuaterErrors,
-      deleteQuaterACreator,
-      reactivateQuaterACreator,
-      reactivateQuaterStatus,
-      reactivateQuaterErrors,
       changeEmployeeSkillsACreator,
       changeSkillsStatus,
       changeSkillsErrors,
@@ -202,13 +194,6 @@ class EmployeeDetailsContainer extends React.Component {
               <EmployeeContent
                 changeCurrentWatchedUser={changeCurrentWatchedUser}
                 getEmployee={getEmployeePromise}
-                status={status}
-                reactivateQuaterACreator={reactivateQuaterACreator}
-                reactivateQuaterStatus={reactivateQuaterStatus}
-                reactivateQuaterErrors={reactivateQuaterErrors}
-                deleteQuaterStatus={deleteQuaterStatus}
-                deleteQuaterErrors={deleteQuaterErrors}
-                deleteQuaterACreator={deleteQuaterACreator}
                 employee={employee}
                 editCapacity={this.editCapacity}
                 deleteEmployee={this.deleteEmployee}
@@ -299,18 +284,6 @@ class EmployeeDetailsContainer extends React.Component {
             />
           )}
 
-        {reactivateQuaterStatus !== null &&
-          reactivateQuaterStatus !== undefined && (
-            <OperationStatusPrompt
-              operationPromptContent={
-                reactivateQuaterStatus
-                  ? t("QuarterTalkHasBeenActiaved")
-                  : reactivateQuaterErrors[0]
-              }
-              operationPrompt={reactivateQuaterStatus}
-            />
-          )}
-
         {changeSkillsStatus === false && (
           <OperationStatusPrompt
             operationPromptContent={changeSkillsErrors[0]}
@@ -340,13 +313,6 @@ const mapStateToProps = state => {
     loadCertificatesErrors: state.employeesReducer.loadCertificatesErrors,
     certificates: state.employeesReducer.certificates,
     resultBlockAddCertificate: state.employeesReducer.resultBlockAddCertificate,
-
-    deleteQuaterStatus: state.employeesReducer.deleteQuaterStatus,
-    deleteQuaterErrors: state.employeesReducer.deleteQuaterErrors,
-
-    reactivateQuaterStatus: state.employeesReducer.reactivateQuaterStatus,
-    reactivateQuaterErrors: state.employeesReducer.reactivateQuaterErrors,
-    reactivateQuaterMessage: state.employeesReducer.reactivateQuaterMessage,
 
     changeSkillsStatus: state.employeesReducer.changeSkillsStatus,
     changeSkillsErrors: state.employeesReducer.changeSkillsErrors,
@@ -382,10 +348,6 @@ const mapDispatchToProps = dispatch => {
       dispatch(loadAssignmentsACreator(employeeId)),
     loadAssignmentsClear: (status, errors, assignments) =>
       dispatch(loadAssignments(status, errors, assignments)),
-    deleteQuaterACreator: (quarterId, employeeId) =>
-      dispatch(deleteQuaterACreator(quarterId, employeeId)),
-    reactivateQuaterACreator: (quaterId, employeeId, message) =>
-      dispatch(reactivateQuaterACreator(quaterId, employeeId, message)),
     changeEmployeeSkillsACreator: (employeeId, currentArray) =>
       dispatch(changeEmployeeSkillsACreator(employeeId, currentArray)),
     updateSkype: (skypeId, employeeId) =>

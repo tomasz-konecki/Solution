@@ -4,18 +4,19 @@
     border-bottom: none;
     margin-top: 10px;
     border-right: 4px solid transparent;
+    border-left: 4px solid transparent;
     transition: .5s;
     //color: #006064;
    
     cursor: pointer;
-    p{
+    & > p{
         display: flex;
         align-items: center;
     }
     .span-light{
         color: #6D6D6D;
     }
-    p:first-of-type{
+    & > p:first-of-type{
         margin-bottom: 10px;
         @media(min-width: 500px){
             .fa-user{
@@ -61,7 +62,7 @@
             margin-left: auto;
         }
     }
-    p:nth-child(2){
+    & > p:nth-child(2){
         margin-bottom: 10px;
         justify-content: flex-end;
         span{
@@ -75,13 +76,32 @@
             }
         }
     }
-    p:nth-child(3){
+    & > p:nth-child(3){
         z-index: 3;
-        span{
-            margin-left: auto;
+        .delete-span{
+            color: #6D6D6D;
+        }
+        .delete-span{
             color: #F35555;
         }
+        span{
+            margin-left: auto;
+        }
+        .fa-chevron-down{
+            font-size: 20px;
+            transform: rotate(0);
+            transition: .5s;
+            cursor: pointer;
+        }
+        .rot-chev{
+            transform: rotate(180deg);
+        }
     }
+    .border-paragraph{
+        border-bottom: 1px solid #6D6D6D;
+        padding-bottom: 10px;
+    }
+  
 }
 .deleted-quarter{
     position: relative;
@@ -108,5 +128,5 @@
     }
 }
 .current-watched-item{
-    border-color: #82b541;
+    border-right-color: #82b541;
 }

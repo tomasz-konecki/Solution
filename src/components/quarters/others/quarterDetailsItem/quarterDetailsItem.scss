@@ -1,12 +1,19 @@
 .quarter-details-item{
-    padding: 15px;
+    padding: 10px;
     margin: 15px;
     background: white;
+    @media(max-width: 500px){
+        margin: 5px;
+        p{
+            line-height: 24px;
+        }
+    }
     p{
+        
+        margin: 10px 0;
         i{
             margin-right: 2.5px;
         }
-        margin: 5px 0;
     }
     
 }

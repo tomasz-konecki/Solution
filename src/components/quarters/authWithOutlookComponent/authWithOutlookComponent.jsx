@@ -13,6 +13,7 @@ class AuthWithOutlook extends React.PureComponent{
     getTokenBySendingCode = () => {
         const { push, linkBeforeRedirectToOutlookAuth, sendAuthCodePromise, match } = this.props;
         const code = getQueryParam();
+        console.log("Siema");
         if(code){
             sendAuthCodePromise(window.location.href, true).then(() => {
                 push(linkBeforeRedirectToOutlookAuth);

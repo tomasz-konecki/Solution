@@ -7,14 +7,13 @@ import {
   CHANGE_EMPLOYEE_OPERATION_STATUS,
   CHANGE_EMPLOYEE_STATE,
   LOAD_ASSIGNMENTS,
-  DELETE_QUATER,
-  REACTIVATE_QUATER,
   CHANGE_EMPLOYEE_SKILLS,
   ADD_NEW_SKILLS_TO_EMPLOYEE,
   UPDATE_EMPLOYEE_SKYPE_ID,
   CHANGE_CERTIFICATES_GET_STATUS,
   ADD_CERTIFICATE_RESULT,
   GET_CERTYFICATES,
+  GET_USER_CV
   GET_SHARED_EMPLOYEES_FOR_MANAGER,
   CHANGE_SHARED_EMPLOYEES_FOR_MANAGER_STATUS,
   ADD_SHARED_EMPLOYEE_RESULT,
@@ -31,7 +30,7 @@ import {
 } from "./asyncActions";
 import { errorCatcher } from "../services/errorsHandler";
 import { populateSkillArrayWithConstData } from "../services/methods";
-
+import moment from 'moment';
 export const loadEmployeesSuccess = employees => {
   return {
     type: LOAD_EMPLOYEES_SUCCESS,
@@ -51,6 +50,47 @@ export const updateSkypeResult = (resultBlock, loading) => {
     type: UPDATE_EMPLOYEE_SKYPE_ID,
     resultBlock,
     loading
+  };
+};
+
+export const downloadCV = (format, employeeId) => {
+  return dispatch => {
+    if (format === "word") {
+      WebApi.reports.post.wordcv(employeeId).then(
+        WebApi.reports.get
+          .cv("CV_" + employeeId + ".docx")
+          .then(response => {
+            dispatch(
+              getUserCv(response.replyBlock.request.responseURL, true, [])
+            );
+          })
+          .catch(error => dispatch(getUserCv("", false, errorCatcher(error))))
+      );
+    } else {
+      WebApi.reports.post.cv(employeeId).then(
+        WebApi.reports.get
+          .cv("CV_" + employeeId + ".pdf")
+          .then(response => {
+            dispatch(
+              getUserCv(response.replyBlock.request.responseURL, true, [])
+            );
+          })
+          .catch(error => dispatch(getUserCv("", false, errorCatcher(error))))
+      );
+    }
+  };
+};
+
+export const getUserCv = (
+  userDownloadCVLink,
+  getUserCVStatus,
+  getUserCVErrors
+) => {
+  return {
+    type: GET_USER_CV,
+    userDownloadCVLink,
+    getUserCVStatus,
+    getUserCVErrors
   };
 };
 
@@ -317,7 +357,17 @@ export const getEmployeePromise = employeeId => dispatch => {
     WebApi.employees.get
       .byEmployee(employeeId)
       .then(response => {
-        const { dtoObject } = response.replyBlock.data;
+        const dtoObject = {...response.replyBlock.data.dtoObject};
+        let quarterTalks = [...dtoObject.quarterTalks];
+
+        quarterTalks.forEach(function(part, index){
+          if(part.plannedTalkDate)
+            quarterTalks[index].plannedTalkDate = moment(part.plannedTalkDate).format("YYYY-MM-DD HH:mm");
+          if(part.aswerQuestionDate)
+            quarterTalks[index].aswerQuestionDate = moment(part.aswerQuestionDate).format("YYYY-MM-DD HH:mm");
+        })
+        dtoObject.quarterTalks = quarterTalks;
+        
         dispatch(getEmployee(dtoObject));
         dispatch(changeEmployeeOperationStatus(true, []));
         resolve(dtoObject);
@@ -524,62 +574,11 @@ export const loadAssignmentsACreator = employeeId => dispatch => {
   });
 };
 
-export const deleteQuater = (deleteQuaterStatus, deleteQuaterErrors) => {
-  return { type: DELETE_QUATER, deleteQuaterStatus, deleteQuaterErrors };
-};
-
-export const deleteQuaterACreator = (quarterId, employeeId) => {
-  return dispatch => {
-    WebApi.quarterTalks
-      .delete(quarterId)
-      .then(response => {
-        dispatch(deleteQuater(true, []));
-        dispatch(getEmployeePromise(employeeId));
-
-        dispatch(clearAfterTimeByFuncRef(deleteQuater, 5000, null, []));
-      })
-      .catch(error => {
-        dispatch(deleteQuater(false, errorCatcher(error)));
-        dispatch(clearAfterTimeByFuncRef(deleteQuater, 5000, null, []));
-      });
-  };
-};
-
 const clearAfterTimeByFuncRef = (funcRef, delay, ...params) => {
   return dispatch => {
     setTimeout(() => {
       dispatch(funcRef(...params));
     }, delay);
-  };
-};
-
-export const reactivateQuater = (
-  reactivateQuaterStatus,
-  reactivateQuaterErrors,
-  reactivateQuaterMessage
-) => {
-  return {
-    type: REACTIVATE_QUATER,
-    reactivateQuaterStatus,
-    reactivateQuaterErrors,
-    reactivateQuaterMessage
-  };
-};
-
-export const reactivateQuaterACreator = (quaterId, employeeId, message) => {
-  return dispatch => {
-    WebApi.quarterTalks.put
-      .reactivate(quaterId)
-      .then(response => {
-        dispatch(reactivateQuater(true, [], message));
-        dispatch(getEmployeePromise(employeeId));
-
-        dispatch(clearAfterTimeByFuncRef(reactivateQuater, 5000, null, []));
-      })
-      .catch(error => {
-        dispatch(reactivateQuater(false, errorCatcher(error)));
-        dispatch(clearAfterTimeByFuncRef(reactivateQuater, 5000, null, []));
-      });
   };
 };
 

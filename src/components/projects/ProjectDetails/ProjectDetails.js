@@ -6,7 +6,7 @@ import {
   cutNotNeededKeysFromArray,
   populateFormArrayWithValues
 } from "../../../services/methods";
-import Spinner from "../../common/spinner/spinner";
+import SmallSpinner from "../../common/spinner/small-spinner";
 import Modal from "react-responsive-modal";
 import Table from "../../common/table/table";
 import ProjectDetailsBlock from "../modals/ProjectDetailsBlock";
@@ -140,7 +140,8 @@ class ProjectDetails extends Component {
     lteVal: 1,
     addEmployeSpinner: false,
     projectStatus: [],
-    onlyActiveAssignments: true
+    onlyActiveAssignments: true,
+    isLoadingAssignments: false
   };
   componentDidMount() {
     this.props.getProject(
@@ -199,6 +200,13 @@ class ProjectDetails extends Component {
             project.isDeleted
           )
         });
+
+        if(this.props.project && (this.props.project.team !== project.team || project.team === null )){
+          this.setState({
+            isLoadingAssignments: false
+          })
+        }
+
       } else this.setState({ isLoadingProject: false });
     } else if (
       this.props.addEmployeeToProjectErrors !==
@@ -283,6 +291,7 @@ class ProjectDetails extends Component {
     const { onlyActiveAssignments } = this.state;
     this.setState({
       onlyActiveAssignments: !onlyActiveAssignments,
+      isLoadingAssignments: true,
       isLoadingProject: true
     });
     this.props.getProject(this.props.match.params.id, !onlyActiveAssignments);
@@ -556,6 +565,7 @@ class ProjectDetails extends Component {
                     checked={onlyActiveAssignments}
                     onChange={this.togleActiveAssign}
                   />
+                  <span className="assingments-spinner-container">{this.state.isLoadingAssignments && <SmallSpinner />}</span>
                 </div>
 
                 <Table

@@ -4,25 +4,35 @@ import Aux from '../../../../services/auxilary';
 import { contains } from '../../../../services/methods';
 
 const projectInformationsCart = props => {
+    const { t } = props;
     return (
     <Aux>
         <h4>{props.headerTitle}</h4>
         <ul className="project-overview">
         {props.items.keys.map((i, index) => {
+            var field = props.originalObject[i];
+            if(field !== null && typeof(field) === "string")
+            {
+                if(field === "Do uzupełnienia") field = t("ToFill")
+                else if(field === "do@uzupelnienia.pl") field = t("ToFillEmail")
+                else if(field.includes("Do uzupelnienia") || field.includes("do@uzupelnienia.pl"))
+                    field = ""
+            }
             return (
                 <li key={i}>
                     {
-                        props.originalObject[i] && props.items.names[index] &&
-                        <span>{props.t(props.items.names[index])}: </span>
+                        field && props.items.names[index] &&
+                        <span>{t(props.items.names[index])}: </span>
                     }
 
-                    {props.originalObject[i] && 
+                    {field &&
+
                     <b>
-                       {
-                         props.dateKeys &&
+                       { 
+                         (props.dateKeys &&
                          contains(i, props.dateKeys) ? 
-                         props.originalObject[i].slice(0, 10) : 
-                         props.originalObject[i]
+                         field.slice(0, 10) : 
+                         field)
                        }
                     </b>
                     }

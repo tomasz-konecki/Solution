@@ -1,0 +1,45 @@
+.quaters-container {
+  width: 600px;
+  position: relative;
+  height: 600px;
+  .list-nav{
+    width: 80%;
+  }
+  .quarter-list{
+    width: 80%;
+    height: 360px;
+    .single-quarter{
+      cursor: initial;
+    }
+    .current-watched-item{
+      border-right-color: transparent;
+      border-left-color: #82b541;
+    }
+  }
+  @media(max-width: 764px){
+    .list-nav{
+      width: 100%;
+    }
+    .quarter-list{
+      width: 100%;
+    }
+  }
+  .q-btn-holder {
+    padding: 10px;
+    display: flex;
+    justify-content: center;    
+    width: 80%;
+    @media(max-width:764px){
+      flex-flow: column;
+      width: 100%;
+      align-items: center;
+      button{
+        padding: 10px;
+      }
+    }
+    
+  }
+  @media screen and (max-width: 1470px) {
+    margin-top: 400px;
+  }
+}

@@ -101,7 +101,7 @@ class ProjectsList extends Component {
             this.props.openAddProjectModal();
           },
           comparator: () =>
-            binaryPermissioner(false)(0)(0)(0)(0)(1)(1)(this.props.binPem)
+            binaryPermissioner(false)(0)(0)(0)(1)(1)(1)(this.props.binPem)
         }
       ],
       columns: [

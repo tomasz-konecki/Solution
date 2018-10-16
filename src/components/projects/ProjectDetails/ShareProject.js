@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import Form from "../../form/form";
 import WebApi from "../../../api/index";
 import SpinnerButton from '../../../components/form/spinner-btn/spinner-btn'
 import { Typeahead } from 'react-bootstrap-typeahead';
@@ -13,7 +12,8 @@ class ShareProject extends Component {
         isLoading: false,
         sharedFinished: false,
         changed: false,
-        errors: []
+        errors: [],
+        message: ''
     }
 
     componentDidMount(){
@@ -88,13 +88,16 @@ class ShareProject extends Component {
                 selectedManagers: [],
                 currentSelectedManager: [],
                 changed: false,
+                message: 'Zmiany zostały zapisane',
             });
             this.getAlreadyShareManagers();
+            
         })
         .catch(err =>{            
             this.setState({
                 isLoading: false,                
-                errors: this.concatErrors(err.replyBlock.data.errorObjects)
+                errors: this.concatErrors(err.replyBlock.data.errorObjects),
+                message: ''
             });
         })
     }
@@ -119,6 +122,7 @@ class ShareProject extends Component {
             selectedManagers,
             managers,
             changed: true,
+            message: '',
         })
     } 
 
@@ -140,7 +144,8 @@ class ShareProject extends Component {
             currentSelectedManager,
             selectedManagers,
             managers,
-            changed: true
+            changed: true,
+            message: '',
         })
     } 
 
@@ -160,7 +165,7 @@ class ShareProject extends Component {
                                     labelKey={option => `${option.fullName}`}
                                     onChange={employee => {this.onSelect(employee)}}
                                     ref={typeahead => (this.typeahead = typeahead)}
-                                    selectHintOnEnter
+                                    selectHintOnEnter={false}
                                     highlightOnlyResult
                                     options={this.state.managers}
                                     placeholder=""
@@ -195,6 +200,7 @@ class ShareProject extends Component {
                     )
                   })
                 }
+                <p className="form-error text-primary">{this.state.message}</p>
             <SpinnerButton
                 validationResult={this.state.selectedManagers != [] && this.state.changed}
                 transactionEnd={this.state.sharedFinished}

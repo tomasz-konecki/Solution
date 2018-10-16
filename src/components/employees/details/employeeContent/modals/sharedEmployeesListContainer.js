@@ -43,11 +43,11 @@ class SharedEmployeesListContainer extends React.Component {
       </div>
 
       <div className="shared-employees-container">
-        {this.props.sharedEmployeesForManager && this.props.sharedEmployeesForManager.map(sharedEmployee => {
+        {this.props.sharedEmployeesForManager && this.props.sharedEmployeesForManager.map((sharedEmployee, index) => {
             return (
               <div
                 className={this.props.errorElementsDeleting.filter(e => e.empId === sharedEmployee.employeeId ).length > 0 ? "red shared-row" : "shared-row"}
-                key={sharedEmployee.id}
+                key={index}
               >
                 {(sharedEmployee.firstName.toLowerCase() + " " + sharedEmployee.lastName.toLowerCase()).includes(this.state.sharedEmployeesFilter) ? (
                   <div className="row align-center">

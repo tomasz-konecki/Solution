@@ -30,12 +30,9 @@ class EmployeesListContainer extends React.Component {
         </div>
 
         <div className="employees-container">
-          {this.props.employees && this.props.employees.map(employee => {
-              // if (this.state.loadingEmployees === true) {
-              //   this.setState({loadingEmployees: false});
-              // }
+          {this.props.employees && this.props.employees.map((employee, index) => {
               return (
-                <div key={employee.id} className="emp-row">
+                <div key={index} className="emp-row">
                   {!employee.employeeShared && this.props.sharedEmployeesForManager.filter(e => e.employeeId === employee.id).length === 0 &&
                     (employee.firstName.toLowerCase() + " " + employee.lastName.toLowerCase()).includes(this.state.employeesFilter) &&
                     (

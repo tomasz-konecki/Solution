@@ -295,7 +295,9 @@ const translations = {
     NotChoosen: "Nie wybrane",
     Deleted: "Usunięte",
     NotDeleted: "Nie usunięte",
-    Empty: "Brak rozmów kwartalnych"
+    Empty: "Brak rozmów kwartalnych",
+    startQuarterTranslation: "Wypełnij pytania",
+    NoAnswers: "Ta rozmową się jeszcze nie odbyła"
   },
   EmployeeSkills: {
     Add: "Dodaj",

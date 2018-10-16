@@ -14,6 +14,7 @@ import OperationStatusPrompt from '../../form/operationStatusPrompt/operationSta
 import Spinner from '../../common/spinner/spinner.js';
 import { translate } from 'react-translate';
 import { API_ENDPOINT } from '../../../api/index.js';
+import EmptyContent from '../../common/empty-content/empty-content.js';
 
 class EmployeeQuarters extends React.PureComponent{
     state = {
@@ -84,6 +85,10 @@ class EmployeeQuarters extends React.PureComponent{
         this.setState({quarterToDeleteId: -1}, () => this.props.deleteQuarterTalk());
     }
 
+    fillAnswersForQuarter = () => {
+        
+    }
+
     render(){
         const { isLoadingQuarters, currentWatchedQuarterDetail, quarterToDeleteId, isDeletingQuarter, isChangingSomethingInQuarterList } = this.state;
         const { t, deleteQuarterTalk, deleteQuarterStatus, deleteQuarterErrors, getQuartersForEmployee, quartersForEmployee, 
@@ -108,11 +113,22 @@ class EmployeeQuarters extends React.PureComponent{
                             allKeysOfItems={["id", "isTaken", "year", "quarter" ,"quarterTalkQuestionItems", "questionerId", "plannedTalkDate"]}/>
                     </div>
                     <div className="quarter-detail">
-                        {quartersForEmployeeStatus && quartersForEmployee[currentWatchedQuarterDetail] && quartersForEmployee[currentWatchedQuarterDetail].quarterTalkQuestionItems && 
+                        
+                        {quartersForEmployeeStatus && quartersForEmployee[currentWatchedQuarterDetail] && quartersForEmployee[currentWatchedQuarterDetail].isTaken && 
                             <List functionsToUse={this.functionsToUseForQuestions} listTitle={t("SpeechState")} listClass="question-list" 
                             component={QuarterDetailsItem} items={quartersForEmployee[currentWatchedQuarterDetail].quarterTalkQuestionItems} />
                         }
                         
+                        {quartersForEmployeeStatus && quartersForEmployee[currentWatchedQuarterDetail] && !quartersForEmployee[currentWatchedQuarterDetail].isTaken && 
+                            <EmptyContent
+                            action={this.fillAnswersForQuarter}
+                            sizeClass="quaters-size"
+                            shouldShowTopIcon={t("startQuarterTranslation")}
+                            content={t("NoAnswers")}
+                            operationIcon="fa fa-plus"
+                            mainIcon="fa fa-comments"
+                            />
+                        }
                     </div>
                 </main>
                 

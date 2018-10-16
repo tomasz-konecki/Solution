@@ -23,5 +23,15 @@
             margin-top: 25px;
             padding: 0;
         }
+        .empty-content-container{
+            width: 90%;
+            margin: auto;
+            height: 90%;
+            margin-top: 5%;
+            @media(max-width: 900px){
+                height: 250px;
+                margin-top: 25px;
+            }
+        }
     }
 }

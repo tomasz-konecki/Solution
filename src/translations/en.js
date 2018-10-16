@@ -292,7 +292,9 @@ const translations = {
     NotChoosen: "Not choosen",
     Deleted: "Deleted",
     NotDeleted: "Not deleted",
-    Empty: "Empty quarter talks"
+    Empty: "Empty quarter talks",
+    startQuarterTranslation: "Fill answers",
+    NoAnswers: "This conversation has not yet taken"
   },
   EmployeeSkills: {
     Add: "Add",

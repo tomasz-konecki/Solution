@@ -299,7 +299,10 @@ const translations = {
     startQuarterTranslation: "Fill answers",
     NoAnswers: "This conversation has not yet taken",
     Populate: "Populate quarter",
-    ConfirmQuestions: "Confirm questions"
+    ConfirmQuestions: "Confirm questions",
+    ForQuarter: "for",
+    In: "in",
+    InYear: "year"  
   },
   EmployeeSkills: {
     Add: "Add",

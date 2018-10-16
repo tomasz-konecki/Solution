@@ -302,7 +302,10 @@ const translations = {
     startQuarterTranslation: "Wypełnij pytania",
     NoAnswers: "Ta rozmową się jeszcze nie odbyła",
     Populate: "Uzupełnij rozmowę",
-    ConfirmQuestions: "Zatwierdź pytania"
+    ConfirmQuestions: "Zatwierdź pytania",
+    ForQuarter: "za",
+    In: "w",
+    InYear: "roku"  
   },
   EmployeeSkills: {
     Add: "Dodaj",

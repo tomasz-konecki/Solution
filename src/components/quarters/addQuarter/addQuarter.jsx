@@ -56,8 +56,8 @@ class AddQuarter extends Component{
     functionsToUseForQuestions = [
         {name: "search", searchBy: "question", count: true}, 
         {name: "sort", sortBy: "question"},
-        {name: "filter", filterBy: "isChecked", posibleValues: [{value: false, description: this.props.t("Choosen")}, 
-            {value: true, description: this.props.t("NotChoosen")}]}
+        {name: "filter", filterBy: "isChecked", posibleValues: [{value: true, description: this.props.t("Choosen")}, 
+            {value: false, description: this.props.t("NotChoosen")}]}
     ];
 
     quarterToPopulateId = this.props.history.location.state && this.props.history.location.state.quarterToPopulateId;

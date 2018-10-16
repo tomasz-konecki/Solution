@@ -3,7 +3,8 @@ import './quarterListItem.scss';
 import QuarterDetalilsItem from '../quarterDetailsItem/quarterDetailsItem';
 
 const quarterListItem = ({index, item, clickItemFunction, currentWatchedItemId, subHeader, reactivate, 
-    deleteTranslation, conduct, quarter, QuarterDeletedPrompt, isDetailItemFromEmployeeDetails, answers}) => (
+    deleteTranslation, conduct, quarter, QuarterDeletedPrompt, isDetailItemFromEmployeeDetails, answers, forQuarter,
+    connector, inYear}) => (
     <div className={`single-quarter ${item.isDeleted ? "deleted-quarter" : ""} ${index === currentWatchedItemId ? "current-watched-item" : ""}`} onClick={e => clickItemFunction(e)}>
         <p>
             <i title="Osoba przeprowadzająca rozmowe" className="fa fa-user"></i>
@@ -16,7 +17,7 @@ const quarterListItem = ({index, item, clickItemFunction, currentWatchedItemId, 
         </p>
         <p>
             <span>
-                {item.quarter} {quarter}
+                 {forQuarter} {item.quarter} {quarter} {item.year} {inYear} <b>{connector}</b> 
             </span>
             <span className="span-light" title={item.isTaken ? "Data przeprowadzenia rozmowy" : "Planowana data odbycia rozmowy"}>
                 <i className="fa fa-calendar-alt"></i>{item.isTaken ? item.aswerQuestionDate : item.plannedTalkDate}

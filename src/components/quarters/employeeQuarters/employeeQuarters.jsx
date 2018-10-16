@@ -30,7 +30,7 @@ class EmployeeQuarters extends React.PureComponent{
     
     functionsToUseForQuarters = [
         {name: "filter", count: true, filterBy: "isDeleted", 
-            posibleValues: [{value: false, description: this.props.t("Deleted")}, {value: true, description: this.props.t("NotDeleted")}]}
+            posibleValues: [{value: true, description: this.props.t("Deleted")}, {value: false, description: this.props.t("NotDeleted")}]}
     ]
 
     componentDidMount(){
@@ -107,6 +107,9 @@ class EmployeeQuarters extends React.PureComponent{
                             deleteTranslation: t("Delete"),
                             reactivate: t("Reactivate"),
                             conduct: t("Conduct"),
+                            forQuarter: t("ForQuarter"),
+                            connector: t("In"),
+                            inYear: t("InYear"),  
                             quarter: t("Quarter"),
                             QuarterDeletedPrompt: t("QuarterDeletedPrompt")
                         }}

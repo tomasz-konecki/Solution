@@ -251,7 +251,7 @@ const translations = {
     QuarterTalkActivated: "Aktywowano rozmowę kwartalną",
     QuarterTalkHeader: "Panel rozmów kwartalnych",
     QuarterTalkSubHeader: "aktualnie przeglądany użytkownik",
-    Users: "Użytkownicy",
+    Users: "Pracownicy",
     PlanQuarter: "Zaplanuj rozmowę",
     AddQuarter: "Dodaj rozmowę",
     ClearHistory: "Wyczyść historię",
@@ -300,7 +300,9 @@ const translations = {
     NotDeleted: "Nie usunięte",
     Empty: "Brak rozmów kwartalnych",
     startQuarterTranslation: "Wypełnij pytania",
-    NoAnswers: "Ta rozmową się jeszcze nie odbyła"
+    NoAnswers: "Ta rozmową się jeszcze nie odbyła",
+    Populate: "Uzupełnij rozmowę",
+    ConfirmQuestions: "Zatwierdź pytania"
   },
   EmployeeSkills: {
     Add: "Dodaj",

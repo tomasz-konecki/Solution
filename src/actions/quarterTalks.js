@@ -53,7 +53,6 @@ export const getQuestions = (getQuestionsStatus, getQuestionsErrors, questions) 
             return { quarterTalkQuestionId: item.id, answer: item.value} 
         });
 
-        console.log(model);
         WebApi.quarterTalks.post.createQuarter(model).then(response => {
             dispatch(addQuarterTalk(true, []));
             resolve();
@@ -131,10 +130,6 @@ export const getReservedDates = (reservedDates, getDatesStatus, getDatesErrors) 
   export const getQuartersForEmployee = (quartersForEmployee, quartersForEmployeeStatus, quartersForEmployeeErrors) => {
       return { type: GET_QUARTERS_FOR_EMPLOYEE, quartersForEmployee, quartersForEmployeeStatus, quartersForEmployeeErrors }
   }
-
-
-
-
 
   export const getQuartersForEmployeeACreator = employeeId => dispatch => {
       return new Promise((resolve, reject) => {
@@ -229,4 +224,19 @@ export const deleteQuestionACreator = questionId => dispatch => {
 
   export const deleteQuestion = (status, errors) => {
       return { type: DELETE_QUESTION, status, errors };
+  }
+
+  export const populateQuarterTalkACreator = (formItems, quarterId) => dispatch => {
+      return new Promise((resolve, reject) => {
+        const quarterTalkQuestionItems = formItems.map(item => (
+            { quarterTalkQuestionId: item.id, answer: item.value }
+        ));
+        WebApi.quarterTalks.put.populateQuarter({quarterTalkQuestionItems}, quarterId).then(response => {
+            dispatch(addQuarterTalk(true, []));
+            resolve();
+        }).catch(errors => {
+            dispatch(addQuarterTalk(false, errorCatcher(errors)));
+            reject();
+        })
+      })
   }

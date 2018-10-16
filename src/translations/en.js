@@ -220,7 +220,10 @@ const translations = {
     Skills: "Skills",
     Missing: "Missing",
     Assignments: "Assignments",
-    ProfilePhoto: "Profile photo"
+    ProfilePhoto: "Profile photo",
+    EmployeeCV: "Employee's CV",
+    DownloadEmployeeCVInWordFormat: "Download CV.docx",
+    DownloadEmployeeCVInPdfFormat: "Download CV.pdf"
   },
   List: {
     Search: "type to search...",

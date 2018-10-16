@@ -5,7 +5,7 @@ import { bindActionCreators } from "redux";
 import { withRouter } from "react-router-dom";
 import * as asyncActions from "../../../actions/asyncActions";
 import EmployeeContent from "./employeeContent/employeeContent";
-import { changeCurrentWatchedUser } from '../../../actions/persistHelpActions';
+import { changeCurrentWatchedUser } from "../../../actions/persistHelpActions";
 import EmployeeTable from "./employeeTable/employeeTable";
 import {
   getEmployeePromise,
@@ -22,6 +22,9 @@ import {
   changeEmployeeSkillsACreator,
   updateSkype,
   getCertificates,
+
+  downloadCV,
+  getUserCv
   loadEmployeeFeedbacks
 } from "../../../actions/employeesActions";
 import Spinner from "../../common/spinner/spinner";
@@ -79,7 +82,6 @@ class EmployeeDetailsContainer extends React.Component {
       });
     } else if (nextProps.employeeOperationStatus === false) {
       this.setState({ isChangingEmployeeData: false });
-    }
     if(nextProps.match !== this.props.match) {
         this.setState({isLoadingFirstTimeEmployee: true});
         this.props.getEmployeePromise(nextProps.match.params.id);
@@ -92,6 +94,13 @@ class EmployeeDetailsContainer extends React.Component {
             editSkypeFormItems: form
             });
         }
+    }
+  }
+
+  componentDidUpdate() {
+    if (this.props.userDownloadCVLink && this.props.getUserCVStatus) {
+      window.location.href = this.props.userDownloadCVLink;
+      this.props.getUserCVClear("", null, []);
     }
   }
 
@@ -176,6 +185,7 @@ class EmployeeDetailsContainer extends React.Component {
       certificates,
       binPem,
       login,
+      downloadCV
       employeeFeedbacks,
       loadEmployeeFeedbacksErrors,
       loadEmployeeFeedbacksStatus
@@ -213,6 +223,7 @@ class EmployeeDetailsContainer extends React.Component {
                 }
                 isYou={login === employee.id}
                 binPem={binPem}
+                downloadCVClickHandler={downloadCV}
               />
 
               <EmployeeSkills
@@ -297,6 +308,10 @@ class EmployeeDetailsContainer extends React.Component {
 
 const mapStateToProps = state => {
   return {
+    userDownloadCVLink: state.reportsReducer.userDownloadCVLink,
+    getUserCVStatus: state.reportsReducer.getUserCVStatus,
+    getUserCVErrors: state.reportsReducer.getUserCVErrors,
+
     employeeStatus: state.employeesReducer.employeeStatus,
     employeeErrors: state.employeesReducer.employeeErrors,
     employee: state.employeesReducer.employee,
@@ -326,8 +341,7 @@ const mapStateToProps = state => {
     type: state.asyncReducer.type,
 
     binPem: state.authReducer.binPem,
-    login: state.authReducer.login,
-
+    login: state.authReducer.login
     employeeFeedbacks: state.employeesReducer.employeeFeedbacks,
     loadEmployeeFeedbacksErrors: state.employeesReducer.loadEmployeeFeedbacksErrors,
     loadEmployeeFeedbacksStatus: state.employeesReducer.loadEmployeeFeedbacksStatus
@@ -336,6 +350,10 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
+    getUserCVClear: (link, status, errors) =>
+      dispatch(getUserCv(link, status, errors)),
+    downloadCV: (format, employeeId) =>
+      dispatch(downloadCV(format, employeeId)),
     async: bindActionCreators(asyncActions, dispatch),
     getEmployeePromise: employeeId => dispatch(getEmployeePromise(employeeId)),
     editStatistics: (employeeId, seniority, capacity, currentClouds) =>

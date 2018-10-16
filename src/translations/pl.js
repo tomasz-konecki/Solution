@@ -222,7 +222,10 @@ const translations = {
     Skills: "Umiejętności",
     Missing: "Brak",
     Assignments: "Przypisania",
-    ProfilePhoto: "Zdjęcie profilowe"
+    ProfilePhoto: "Zdjęcie profilowe",
+    EmployeeCV: "CV Pracownika",
+    DownloadEmployeeCVInWordFormat: "Pobierz CV.docx",
+    DownloadEmployeeCVInPdfFormat: "Pobierz CV.pdf"
   },
   List: {
     Search: "wpisz, aby wyszukać...",

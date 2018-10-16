@@ -4,7 +4,10 @@ import {
   LOGOUT,
   GET_EMPLOYEE,
   CHANGE_EMPLOYEE_OPERATION_STATUS,
-  CHANGE_EMPLOYEE_STATE, LOAD_ASSIGNMENTS,
+  CHANGE_EMPLOYEE_STATE,
+  LOAD_ASSIGNMENTS,
+  DELETE_QUATER,
+  REACTIVATE_QUATER,
   CHANGE_EMPLOYEE_SKILLS,
   ADD_NEW_SKILLS_TO_EMPLOYEE,
   CHANGE_CERTIFICATES_GET_STATUS,
@@ -51,6 +54,14 @@ const initialState = {
   },
 
   loadCertificatesStatus: null,
+
+  loadAssignmentsErrors: [],
+  certificates: [],
+
+  userDownloadCVLink: "",
+  getUserCVStatus: null,
+  getUserCVErrors: []
+
   loadCertificatesErrors: [],
   certificates: [],
 
@@ -66,10 +77,17 @@ const initialState = {
   employeeFeedbacks: [],
   loadEmployeeFeedbacksStatus: null,
   loadEmployeeFedebacksErrors: []
+
 };
 
 export const employeesReducer = (state = initialState, action) => {
   switch (action.type) {
+    case GET_USER_CV:
+      return updateObject(state, {
+        userDownloadCVLink: action.userDownloadCVLink,
+        getUserCVStatus: action.getUserCVStatus,
+        getUserCVErrors: action.getUserCVErrors
+      });
     case UPDATE_EMPLOYEE_SKYPE_ID:
       return {
         ...state,
@@ -112,9 +130,12 @@ export const employeesReducer = (state = initialState, action) => {
       return updateObject(state, { loadAssignmentsStatus: action.loadAssignmentsStatus, loadAssignmentsErrors: action.loadAssignmentsErrors,
         loadedAssignments: action.loadedAssignments})
     case CHANGE_CERTIFICATES_GET_STATUS:
-      return updateObject(state, { loadCertificatesStatus: action.loadCertificatesStatus, loadCertificatesErrors: action.loadCertificatesErrors})
+      return updateObject(state, {
+        loadCertificatesStatus: action.loadCertificatesStatus,
+        loadCertificatesErrors: action.loadCertificatesErrors
+      });
     case GET_CERTYFICATES:
-      return updateObject(state, { certificates: action.certificates})
+      return updateObject(state, { certificates: action.certificates });
     case ADD_CERTIFICATE_RESULT:
       return updateObject(state, {resultBlockAddCertificate: action.resultBlockAddCertificate})
     case CHANGE_SHARED_EMPLOYEES_FOR_MANAGER_STATUS:

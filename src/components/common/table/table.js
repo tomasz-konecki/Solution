@@ -219,7 +219,8 @@ class Table extends Component {
       emptyMsg,
       isProjectOwner,
       t,
-      login
+      login,
+      addFeedbackClear
     } = this.props;
     const { modalType } = this.state;
 
@@ -269,7 +270,7 @@ class Table extends Component {
           <Modal
             key={1}
             open={this.state.opinionModal}
-            classNames={{ modal: "Modal Modal-add-owner" }}
+            classNames={{ modal: "Modal employee-opinion-modal" }}
             contentLabel="Employee opinion modal"
             onClose={this.closeModal}
           >
@@ -326,6 +327,7 @@ class Table extends Component {
         {addFeedbackStatus !== null &&
           addFeedbackStatus !== undefined && (
             <OperationStatusPrompt
+              closePrompt={() => addFeedbackClear(null, [])}
               operationPromptContent={
                 addFeedbackStatus
                   ? t("FeedbackAdded")

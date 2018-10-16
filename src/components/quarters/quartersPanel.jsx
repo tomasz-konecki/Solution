@@ -12,6 +12,7 @@ import { getEmployeeId } from '../../services/methods.js';
 import PlanQuarter from './planQuarter/planQuarter';
 import AuthWithOutlook from './authWithOutlookComponent/authWithOutlookComponent';
 import FindUserModal from './others/findUserModal/findUserModal';
+import { translate } from 'react-translate';
 // employeContent 55
 const linkTypes = {
     "plan": "/employees/plan/",
@@ -24,11 +25,14 @@ class Quarters extends React.PureComponent{
         openFindUserModal: false
     }
 
-    handleBtnClick = (urlToPush, isUrlWithParam) => {
+    handleBtnClick = (urlToPush, isUrlWithParam, quarterToPopulateId) => {
         const { push } = this.props.history;
         const { currentWatchedUser } = this.props;
         if(isUrlWithParam){
-            push(urlToPush + "/" + currentWatchedUser + "?=" + currentWatchedUser);
+            push({
+                pathname: urlToPush + "/" + currentWatchedUser + "?=" + currentWatchedUser,
+                state: { quarterToPopulateId }
+            });
         }else{
             this.setState({openFindUserModal: true});
         }
@@ -50,21 +54,21 @@ class Quarters extends React.PureComponent{
     }
 
     // To do: 
-    // translation, responsive, dynamicly adding questions, deleting current added questions, generating docs, 
-    // adding events to callendar, removing events from callendar, connect adding quarter request
+    // adding events to callendar, removing events from callendar
   
     render(){
         const { match, history, lastWatchedPersons, planQuarterACreator, createLastWatchedPersonsArray,
             linkBeforeRedirectToOutlookAuth, changeLinkBeforeRedirect, sendAuthCodePromise,
-            authCodeStatus, authCodeErrors, currentWatchedUser } = this.props;
+            authCodeStatus, authCodeErrors, currentWatchedUser, t } = this.props;
         const { openFindUserModal, shouldLoadDataAfterLinkChange } = this.state;
 
         const isHistoryExist = lastWatchedPersons && lastWatchedPersons.length > 0;
         return (
             <div className="quarters-panel">
-                <header><i className="fa fa-comments"></i>Panel rozmów kwartalnych 
+                <header>
+                    <span><i className="fa fa-comments"></i>{t("QuarterTalkHeader")} </span>
                 {currentWatchedUser && 
-                    <span>aktualnie przeglądasz użytkownika <b>{currentWatchedUser}</b></span>
+                    <span>{t("QuarterTalkSubHeader")} <b>{currentWatchedUser}</b></span>
                 }
                 </header>
                 {isHistoryExist && 
@@ -87,13 +91,18 @@ class Quarters extends React.PureComponent{
                 }
 
                 <nav>
-                    <Button onClick={() => this.handleBtnClick(`${match.url}/employees`, true)} title="Rozmowy kwartalne" mainClass="generate-raport-btn btn-green"><i className="fa fa-users"/></Button>
-                    <Button onClick={() => this.setState({openFindUserModal: true})} title="Użytkownicy" mainClass="generate-raport-btn btn-green"><i className="fa fa-users"/></Button>
-                    <Button onClick={() => this.handleBtnClick(`${match.url}/employees/addquarter`, true)} title="Dodaj rozmowę" mainClass="generate-raport-btn btn-green"><i className="fa fa-users"/></Button>
-                    <Button onClick={() => this.handleBtnClick(`${match.url}/employees/plan`, true)} title="Zaplanuj rozmowę" mainClass="generate-raport-btn btn-green"><i className="fa fa-users"/></Button>
+                    <Button onClick={() => this.handleBtnClick(`${match.url}/employees`, true)} 
+                        title={t("QuaterTalks")} mainClass="generate-raport-btn btn-green"><i className="fa fa-comments"/></Button>
+                    <Button onClick={() => this.setState({openFindUserModal: true})} 
+                        title={t("Users")} mainClass="generate-raport-btn btn-green"><i className="fa fa-users"/></Button>
+                    <Button onClick={() => this.handleBtnClick(`${match.url}/employees/addquarter`, true)} 
+                        title={t("AddQuarter")} mainClass="generate-raport-btn btn-green"><i className="fa fa-plus"/></Button>
+                    <Button onClick={() => this.handleBtnClick(`${match.url}/employees/plan`, true)} 
+                        title={t("PlanQuarter")} mainClass="generate-raport-btn btn-green"><i className="fa fa-comment"/></Button>
                     
                     {isHistoryExist && 
-                        <Button onClick={() => createLastWatchedPersonsArray([])} title="Wyczyść historię" mainClass="generate-raport-btn btn-brown"><i className="fa fa-history"/></Button>
+                        <Button onClick={() => createLastWatchedPersonsArray([])} title={t("ClearHistory")} 
+                            mainClass="generate-raport-btn btn-brown"><i className="fa fa-history"/></Button>
                     }
                 </nav>
                 <div className="quarters-content">
@@ -108,10 +117,11 @@ class Quarters extends React.PureComponent{
                              redirectToLastWatchedPerson={this.handleBtnClick} changeLinkBeforeRedirect={changeLinkBeforeRedirect}/>
                         )}/>
                         <Route exact path={match.url + "/employees/addquarter/:id"} render={() => (
-                            <AddQuarter currentWatchedUser={currentWatchedUser} onCloseModal={() => this.handleBtnClick(`${match.url}/employees`, true)}/>
+                            <AddQuarter history={history} currentWatchedUser={currentWatchedUser} onCloseModal={() => this.handleBtnClick(`${match.url}/employees`, true)}/>
                         )} />
                         <Route exact path={`${match.url}/employees/:id`} render={() => (
-                            <EmployeeQuarters lastWatchedPersons={lastWatchedPersons} location={history.location} />
+                            <EmployeeQuarters lastWatchedPersons={lastWatchedPersons} redirectToPopulatingQuarter={(quarterId) => this.handleBtnClick(`${match.url}/employees/addquarter`, true, quarterId)}
+                            history={history} />
                         )}/>
 
                     </Switch>   
@@ -151,4 +161,4 @@ const mapDispatchToProps = dispatch => {
 }
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Quarters));
+export default connect(mapStateToProps, mapDispatchToProps)(translate("Quaters")(withRouter(Quarters)));

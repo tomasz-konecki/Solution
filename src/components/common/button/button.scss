@@ -59,6 +59,12 @@
 .btn-brown:hover {
   background-color: #d33819;
 }
+.btn-grey{
+  background: grey;
+  &:hover{
+  background: #999898;
+  }
+}
 
 .add-client-button {
   background-color: #8c1b2f;

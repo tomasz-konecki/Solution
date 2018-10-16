@@ -9,7 +9,7 @@
     "lint": "node_modules/.bin/esw webpack.config.* src tools",
     "lint:watch": "npm run lint -- --watch",
     "test": "babel-node mocha --reporter progress tools/testSetup.js \"src/**/*.test.js\"",
-    "start": "webpack-dev-server --inline --port 8080 --host 0.0.0.0 --config ./webpack.config.js",
+    "start": "webpack-dev-server --inline --hot --port 8080 --host 0.0.0.0 --config ./webpack.config.js",
     "build": "rimraf dist && SET NODE_ENV=production& webpack --config ./webpack.config.js --progress --profile --color"
   },
   "repository": {
@@ -91,6 +91,7 @@
     "react-transition-group": "^1.2.1",
     "react-translate": "^6.0.1",
     "redux": "^3.7.2",
+    "redux-debounced": "^0.5.0",
     "redux-devtools": "^3.4.1",
     "redux-form": "^7.2.3",
     "redux-logger": "^3.0.6",

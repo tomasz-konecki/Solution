@@ -222,7 +222,10 @@ const translations = {
     Skills: "Umiejętności",
     Missing: "Brak",
     Assignments: "Przypisania",
-    ProfilePhoto: "Zdjęcie profilowe"
+    ProfilePhoto: "Zdjęcie profilowe",
+    EmployeeCV: "CV Pracownika",
+    DownloadEmployeeCVInWordFormat: "Pobierz CV.docx",
+    DownloadEmployeeCVInPdfFormat: "Pobierz CV.pdf"
   },
   List: {
     Search: "wpisz, aby wyszukać...",
@@ -466,7 +469,7 @@ const translations = {
     InsertLastName: "wprowadź nazwisko...",
     PhoneNumber: "Numer telefonu",
     InsertPhoneNumber: "wprowadź numer telefonu...",
-    ResponsiblePerson: "Osoba do kontaktu"
+    ResponsiblePerson: "Osoba do kontaktu",
   },
   ProjectDetails: {
     GeneralInfo: "Informacje ogólne",
@@ -513,6 +516,8 @@ const translations = {
     EstimatedEndDate: "Szacowana data zakończenia",
     Description: "Opis",
     Owners: "Właściciele",
+    ToFill: "Do uzupełnienia",
+    ToFillEmail: "do@uzupełnienia.com",
     Add: "Dodaj"
   },
   ResponsiblePersonBlock: {

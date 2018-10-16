@@ -220,7 +220,10 @@ const translations = {
     Skills: "Skills",
     Missing: "Missing",
     Assignments: "Assignments",
-    ProfilePhoto: "Profile photo"
+    ProfilePhoto: "Profile photo",
+    EmployeeCV: "Employee's CV",
+    DownloadEmployeeCVInWordFormat: "Download CV.docx",
+    DownloadEmployeeCVInPdfFormat: "Download CV.pdf"
   },
   List: {
     Search: "type to search...",
@@ -465,7 +468,7 @@ const translations = {
     InsertLastName: "insert last name...",
     PhoneNumber: "Phone number",
     InsertPhoneNumber: "insert phone number...",
-    ResponsiblePerson: "Responsible person"
+    ResponsiblePerson: "Responsible person",
   },
   ProjectDetails: {
     GeneralInfo: "Overview",
@@ -512,7 +515,9 @@ const translations = {
     EstimatedEndDate: "Estimated end date",
     Description: "Description",
     Owners: "Owners",
-    Add: "Add"
+    Add: "Add",
+    ToFill: "To Fill",
+    ToFillEmail: "to@fill.com",
   },
   ProjectRowUnfurl: {
     OwnersList: "Owners",

@@ -128,6 +128,14 @@ class LeftMenu extends React.Component {
             title={t("ImportCV")}
           />
         ) : null}
+        <VerticalMenuElement
+          match={match}
+          extended={extended}
+          path="/info"
+          icon="info-circle"
+          iconType="fas"
+          title={t("Info")}
+        />
       </ul>
     );
   }

@@ -145,7 +145,7 @@ export const getReservedDates = (reservedDates, getDatesStatus, getDatesErrors) 
             dispatch(getQuartersForEmployee(items, true, []));
             dispatch(createLastWatchedPersonsArrayACreator(employeeId));
             
-            resolve();
+            resolve(items);
         }).catch(error => {
             dispatch(getQuartersForEmployee([], false, errorCatcher(error)));
             reject();

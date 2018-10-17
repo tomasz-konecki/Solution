@@ -98,7 +98,10 @@ const sideProgressBar = ({
       }
       case "QuarterTalk":
       {
-        return "/main/quarters/employees/" + notification.userId + "?=" + notification.userId;
+        return {
+          pathname: "/main/quarters/employees/" + notification.userId + "?=" + notification.userId,
+          state: { quarterTalkId: notification.redirectId }
+        }
       }
       default:
       {
@@ -138,7 +141,10 @@ const sideProgressBar = ({
             )}
           </div>
           <div className="not-content col-10 col-sm-9">
-            <a href={redirectLink} className={`${redirectLink === null ? "noRedirect" : "redirect"} ${notification.isRead ? "" : "pointer"}`} onClick={notification.isRead ? null : () => handleMarkAsRead(notification.id, false)}>
+            <Link to={redirectLink} 
+            className={`${redirectLink === null ? "noRedirect" : "redirect"} 
+            ${notification.isRead ? "" : "pointer"}`} 
+            onClick={notification.isRead ? null : () => handleMarkAsRead(notification.id, false)}>
             
               <span className={`${notification.isRead ? "" : "font-weight-bold"}`}>
                 {language === "pl"
@@ -146,7 +152,7 @@ const sideProgressBar = ({
                   : notification.contentEng}
               </span>
               {notificationDate(notification.date)}
-            </a>
+            </Link>
           </div>
         </div>
       </React.Fragment>

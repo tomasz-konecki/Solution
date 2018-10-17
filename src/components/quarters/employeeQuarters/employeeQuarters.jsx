@@ -19,14 +19,15 @@ import EmptyContent from '../../common/empty-content/empty-content.js';
 class EmployeeQuarters extends React.PureComponent{
     state = {
         isLoadingQuarters: true,
-        currentWatchedQuarterDetail: 0,
+        currentWatchedQuarterDetail: -1,
         quarterToDeleteId: -1, isChangingSomethingInQuarterList: false,
         isDeletingQuarter: false
     }
+
     functionsToUseForQuestions = [
         {name: "search", searchBy: "question", count: true }, 
         {name: "sort", sortBy: "question"}
-    ]
+    ];
     
     functionsToUseForQuarters = [
         {name: "filter", count: true, filterBy: "isDeleted", 
@@ -45,8 +46,18 @@ class EmployeeQuarters extends React.PureComponent{
     }
 
     getQuartersForEmployeeHandler = () => {
-        this.props.getQuartersForEmployeeACreator(getEmployeeId())
-        .then(() => this.setState({isLoadingQuarters: false}))
+        const { history, getQuartersForEmployeeACreator } = this.props;
+        const { state } = history.location;
+        getQuartersForEmployeeACreator(getEmployeeId())
+        .then(items => {
+            let quarterIdToSet = 0;
+            if(state){
+                if(state.quarterTalkId){
+                    quarterIdToSet = items.findIndex(item => item.id === state.quarterTalkId);
+                }
+            }
+            this.setState({isLoadingQuarters: false, currentWatchedQuarterDetail: quarterIdToSet});
+        })
         .catch(() => this.setState({isLoadingQuarters: false}));
     }
 

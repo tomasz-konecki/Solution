@@ -305,7 +305,9 @@ const translations = {
     ConfirmQuestions: "Zatwierdź pytania",
     ForQuarter: "za",
     In: "w",
-    InYear: "roku"  
+    InYear: "roku"  ,
+    DoneQuarter: "Ta rozmowa została przeprowadzona",
+    IncomingQuarter: "Ta rozmowa dopiero się odbędzie"
   },
   EmployeeSkills: {
     Add: "Dodaj",

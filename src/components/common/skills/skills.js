@@ -20,7 +20,7 @@ class Skills extends Component {
     allSkills: [],
     searchedSkills: [],
     showSearchBar: false,
-
+    skillsHasBeedChanged: false,
     skillName: "",
     listToAddForProject: [],
     showAddList: false,
@@ -48,6 +48,7 @@ class Skills extends Component {
       let shouldCloseModal = nextProps.addSkillsToProjectStatus ? false : true;
 
       this.setState({
+        skillsHasBeedChanged: false,
         isChanging: false,
         items: this.fetchSkillsOnStart(nextProps.items),
         isAddingNewSkills: false,
@@ -85,7 +86,7 @@ class Skills extends Component {
     const items = [...this.state[listName]];
     items[index].startValue = skill;
 
-    this.setState({ [listName]: items });
+    this.setState({ [listName]: items, skillsHasBeedChanged: true });
   };
   createProgressBtns = (number, color, startVal, index, listName) => {
     const btnsArray = [];
@@ -234,7 +235,8 @@ class Skills extends Component {
       searchedSkills,
       showAddList,
       isAddingNewSkills,
-      listToAddForProject
+      listToAddForProject,
+      skillsHasBeedChanged
     } = this.state;
 
     const {
@@ -293,7 +295,7 @@ class Skills extends Component {
           </div>
         )}
 
-        {items.length > 0 &&
+        {items.length > 0 && skillsHasBeedChanged && 
           isProjectOwner && (
             <button
               disabled={isChanging}

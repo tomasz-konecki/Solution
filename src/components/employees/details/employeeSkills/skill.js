@@ -1,5 +1,6 @@
 import React from "react";
 import Button from "../../../common/button/button";
+import { translate } from 'react-translate';
 const skill = ({
   createSpans,
   skillName,
@@ -10,13 +11,14 @@ const skill = ({
   increaseYears,
   downgradeYears,
   showSavePrompt,
-  removeSkill
+  removeSkill,
+  t
 }) => (
   <li>
-    <label>
-      {skillName} {showSavePrompt && <i className="fa fa-save" />}
+    <label title={t("SkillName")}>
+      {skillName}
     </label>
-    <div className="spans-container">
+    <div className="spans-container" title={t("SkillLevel")}>
       {createSpans(arrayElementIndex)}
       <div
         style={{ width: `${markupWidth}%`, background: `${background}` }}
@@ -24,15 +26,15 @@ const skill = ({
       />
       <div className="years-of-expierience">
         <div>
-          <b>{experience}</b>
-          <i className="fa fa-clock" />
-          <i onClick={increaseYears} className="fa fa-arrow-up" />
-          <i onClick={downgradeYears} className="fa fa-arrow-down" />
-          <i onClick={removeSkill} className="fa fa-trash"></i>
+          <b title={t("YearsOfExperience")}>{experience}</b>
+          <i title={t("YearsOfExperience")} className="fa fa-clock" />
+          <i title={t("PutYear")} onClick={increaseYears} className="fa fa-arrow-up" />
+          <i title={t("PopYear")} onClick={downgradeYears} className="fa fa-arrow-down" />
+          <i title={t("DeleteSkill")} onClick={removeSkill} className="fa fa-trash"></i>
+          {showSavePrompt && <i title={t("ChangedThings")} className="fa fa-save" />}
         </div>
       </div>
     </div>
   </li>
 );
-
-export default skill;
+export default translate("Skill")(skill);

@@ -1,55 +1,53 @@
-.project-details{
-    margin: 0 auto;
-    width: 100%;
+.project-details {
+  margin: 0 auto;
+  width: 100%;
+  box-sizing: border-box;
+  font-size: 0.7rem;
+  @media (min-width: 500px) {
+    font-size: 0.8rem;
+  }
+  @media (min-width: 764px) {
+    width: 74%;
+    font-size: 1rem;
+  }
+  @media (min-width: 1110px) {
+    padding: 10px;
+    width: 34%;
+    border-right: 1px solid #f98c56;
+  }
+  h4 {
+    text-align: center;
+    font-weight: bold;
+    margin: 10px 0;
+    color: #006064;
+  }
+  .project-overview {
+    margin: 0;
+    padding: 0;
+  }
+  .project-overview li {
+    margin: 10px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .project-overview li span {
+    font-size: 0.6rem;
+    font-weight: normal;
+    @media (min-width: 500px) {
+      font-size: 0.8rem;
+    }
+    @media (min-width: 764px) {
+      font-size: 1rem;
+    }
+  }
+  .project-overview li b {
+    font-weight: bold;
+    word-break: break-all;
+  }
+  article {
+    padding: 15px;
     box-sizing: border-box;
-    font-size: 0.7rem;
-    @media(min-width: 500px){
-        font-size: 0.8rem;
-    }
-    @media(min-width: 764px){
-        width: 74%;
-        font-size: 1rem;
-    }
-    @media(min-width: 1110px){
-        padding: 10px;
-        width: 34%;
-        border-right: 1px solid #f98c56;
-    }
-    h4{
-        text-align: center;
-        font-weight: bold;
-        margin: 10px 0;
-        color: #493da8;
-    }
-    .project-overview{
-        margin: 0;
-        padding: 0;
-    }
-    .project-overview li {
-        margin: 10px 0;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-    .project-overview li:last-of-type{
-        justify-content: center;
-    }
-    .project-overview li span{
-        font-size: 0.6rem;
-        font-weight: normal;
-        @media(min-width: 500px){
-            font-size: 0.8rem;
-        }
-        @media(min-width: 764px){
-            font-size: 1rem;
-        }
-    }
-    .project-overview li b{
-        font-weight: bold;
-        word-break: break-all;
-    }
-    article{
-        padding: 15px;
-        box-sizing: border-box;;
-    }
+  }
 }

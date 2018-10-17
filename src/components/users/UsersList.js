@@ -248,7 +248,6 @@ class UsersList extends Component {
         <SmoothTable
           show={this.props.show}
           currentPage={this.props.currentPage}
-          changeSearchQuery={this.props.changeSearchQuery}
           totalPageCount={this.props.totalPageCount}
           loading={this.props.loading}
           data={this.props.users}

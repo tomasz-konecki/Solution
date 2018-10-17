@@ -47,8 +47,9 @@
     }
   }
   .emp-skills-container {
-    width: 400px;
+    width: 450px;
     margin: 25px 0;
+    font-size: 14px;
     @media(max-width: 550px){
       margin: 0 auto;
       width: 100%;
@@ -58,33 +59,18 @@
       margin-right: auto;
     }
     li {
+      position: relative;
       margin: 10px 0;
       @media(max-width: 550px){
         margin: 55px 0;
       }
       label {
-        max-width: 150px;
-        position: relative;
-        .fa-save {
-          color: #707070;
-          position: absolute;
-          right: -25px;
-          top: -5px;
-          animation: 1s animate-save-in ease-in-out infinite;
-        }
-        @keyframes animate-save-in {
-          0% {
-            transform: scale(1);
-          }
-          100% {
-            transform: scale(1.1);
-          }
-        }
+        max-width: 70%;
       }
 
       .spans-container {
         position: relative;
-        width: 350px;
+        width: 320px;
         background: rgba(0, 0, 0, 0.2);
         position: relative;
         height: 16px;
@@ -97,14 +83,30 @@
           position: absolute;
           right: -65px;
           color: #964646;
+          .fa-save {
+            color: #707070;
+            position: absolute;
+            right: 100px;
+            top: -25px;
+            animation: 1s animate-save-in ease-in-out infinite;
+            @media(max-width: 550px){
+              right: 0;
+            }
+            @keyframes animate-save-in {
+              0% {
+                transform: scale(1);
+              }
+              100% {
+                transform: scale(1.1);
+              }
+            }
+          }
           @media(max-width: 550px){
             right: 40px;
             & > div {
               bottom: -65px;
               justify-content: flex-end;
             }
-          }
-          @media(max-width: 450px){
           }
           div {
             position: absolute;

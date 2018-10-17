@@ -679,6 +679,15 @@ const translations = {
     ThatProjectDoesntHavaAnySkillAssigned:
       "Ten projekt nie ma żadnych przypisanych umiejętności."
   },
+  Skill: {
+    SkillName: "Nazwa umiejętności",
+    YearsOfExperience: "Lata doświadczenia",
+    PutYear: "Dodaj rok",
+    PopYear: "Zmniejsz o rok",
+    DeleteSkill: "Usuń umiejętność",
+    ChangedThings: "Ta umiejętność jest zmieniona",
+    SkillLevel: "Poziom umiejętności"
+  },
   ProjectTeamTable: {
     Add: "Dodaj",
     Feedback: "Opinia",

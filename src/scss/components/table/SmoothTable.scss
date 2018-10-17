@@ -33,6 +33,10 @@ $activeShadow: 0 0 10px rgba($teal1, 0.5);
   }
 }
 
+.unset-pointer {
+  cursor: unset !important;
+}
+
 .raport-button {
   width: 150px;
   height: 35px !important;
@@ -65,7 +69,7 @@ $activeShadow: 0 0 10px rgba($teal1, 0.5);
     height: 85%;
     line-height: 2;
 
-    button{
+    button {
       line-height: 20px !important;
       margin-right: 10px;
     }

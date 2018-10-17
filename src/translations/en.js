@@ -695,7 +695,8 @@ const translations = {
     FeedbackAdded: "Successfully added feedback",
     Author: "Author",
     DaysAgo: "days ago",
-    OnDate: "on"
+    OnDate: "on",
+    GoIntoEmployeeDetails: "Go to employee details"
   }
 };
 

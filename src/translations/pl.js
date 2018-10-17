@@ -706,7 +706,8 @@ const translations = {
     FeedbackAdded: "Pomyślnie dodano opinie",
     Author: "Autor",
     DaysAgo: "dni temu",
-    OnDate: "w dniu"
+    OnDate: "w dniu",
+    GoIntoEmployeeDetails: "Przejdź do szczegółów pracownika"
   }
 };
 

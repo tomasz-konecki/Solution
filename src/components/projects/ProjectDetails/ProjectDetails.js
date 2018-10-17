@@ -189,7 +189,6 @@ class ProjectDetails extends Component {
       this.props.project !== nextProps.project
     ) {
       const { project } = nextProps;
-
       if (project !== null) {
         this.setState({
           isLoadingProject: false,
@@ -200,10 +199,7 @@ class ProjectDetails extends Component {
             project.estimatedEndDate
           ),
           projectStatus: this.calculateProjectStatus(
-            project.startDate,
-            project.endDate,
             project.status,
-            project.estimatedEndDate,
             project.isDeleted
           )
         });
@@ -435,35 +431,38 @@ class ProjectDetails extends Component {
                       Udostępnij
                     </button>
 
-                    {projectStatus[0].name !== t("Active") && (
-                      <button
-                        onClick={() =>
-                          changeProjectState(reactivate, "reactivate", {
-                            projectId: project.id,
-                            onlyActiveAssignments: onlyActiveAssignments
-                          })
-                        }
-                        className="option-btn green-btn"
-                      >
-                        {t("ActivateProject")}
-                      </button>
-                    )}
+                    {projectStatus &&
+                      projectStatus[0].name !== t("Active") && (
+                        <button
+                          onClick={() =>
+                            changeProjectState(reactivate, "reactivate", {
+                              projectId: project.id,
+                              onlyActiveAssignments: onlyActiveAssignments
+                            })
+                          }
+                          className="option-btn green-btn"
+                        >
+                          {t("ActivateProject")}
+                        </button>
+                      )}
 
-                    {projectStatus[0].name === t("Active") && (
-                      <button
-                        onClick={() =>
-                          changeProjectState(close, "close", {
-                            projectId: project.id,
-                            onlyActiveAssignments: onlyActiveAssignments
-                          })
-                        }
-                        className="option-btn option-dang"
-                      >
-                        {t("Close")}
-                      </button>
-                    )}
+                    {projectStatus &&
+                      projectStatus[0].name === t("Active") && (
+                        <button
+                          onClick={() =>
+                            changeProjectState(close, "close", {
+                              projectId: project.id,
+                              onlyActiveAssignments: onlyActiveAssignments
+                            })
+                          }
+                          className="option-btn option-dang"
+                        >
+                          {t("Close")}
+                        </button>
+                      )}
 
-                    {projectStatus[0].name !== t("Deleted") &&
+                    {projectStatus &&
+                      projectStatus[0].name !== t("Deleted") &&
                       projectStatus[0].name !== t("Closed") && (
                         <button
                           onClick={() =>

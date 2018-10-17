@@ -194,7 +194,6 @@ class EmployeeDetailsContainer extends React.Component {
       loadEmployeeFeedbacksErrors,
       loadEmployeeFeedbacksStatus
     } = this.props;
-    console.log(this.props);
     return (
       <div className="employee-details-container">
         {isLoadingFirstTimeEmployee ? (

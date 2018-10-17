@@ -626,6 +626,7 @@ const translations = {
     ReactivateProjectInfinitive: "Reaktywować projekt",
     ProjectReactivated: "Projekt został reaktywowany",
   },
+ 
   TeamMember: {
     AssignedCapacity: "Przypisany na etat",
     ProjectRole: "Rola w projekcie",
@@ -717,6 +718,9 @@ const translations = {
     NotFound: "Nie znaleziono",
     SelectPersons: "Wybierz osoby",
     Shared: "Udostępnione",
+  },
+  Reports: {
+    LoadingAccountDataPrompt: "Trwa pobieranie zawartości chmury. Proszę czekać..."
   }
 };
 

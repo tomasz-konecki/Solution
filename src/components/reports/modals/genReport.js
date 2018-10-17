@@ -3,7 +3,6 @@ import Modal from "react-responsive-modal";
 import StatusPrompt from "../../common/statusPrompt/statusPrompt";
 import SpinnerButton from "../../form/spinner-btn/spinner-btn";
 import Spinner from "../../common/spinner/spinner";
-import RedirectSpinner from "../../common/spinner/redirect-spinner";
 import { Link } from 'react-router-dom';
 import PromptsCommander from '../../promptsCommander/promptsCommander';
 import DatePicker from "react-datepicker";

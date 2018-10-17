@@ -45,22 +45,12 @@ class ReportsContainer extends Component {
   };
 
   componentDidMount() {
-    //this.props.fetchLists([], [],[]);
-    //this.props.chooseFolder(null);
-    const {
-      loadTeamsResult,
-      getTeams,
-      getRecentAndFavoriteReports,
-      fetchLists,
-      addList,
-      teams,
-      baseList,
-      helpList
-    } = this.props;
+    const { getTeams, getRecentAndFavoriteReports, fetchLists, addList, helpList } = this.props;
     getRecentAndFavoriteReports(5);
     if (addList.length === 0) {
       getTeams();
-    } else {
+    } 
+    else {
       fetchLists([...addList], [...helpList], [...helpList]);
     }
   }
@@ -68,7 +58,6 @@ class ReportsContainer extends Component {
   componentWillReceiveProps(nextProps) {
     if (
       this.props.teams !== nextProps.teams
-      /* || this.props.reports !== nextProps.reports */
     ) {
       this.setState({ spinner: false });
       if (nextProps.loadTeamsResult && this.props.teams.length === 0) {
@@ -155,15 +144,12 @@ class ReportsContainer extends Component {
   };
 
   openReportsModals = () => {
-    //const pagesList = [];
     const { addList, baseList, helpList, fetchLists } = this.props;
     var pagesList;
     if (this.props.pagesList && this.props.pagesList.length > 0)
       pagesList = [...this.props.pagesList];
     else pagesList = addList.map(() => ({ value: 1, error: "" }));
 
-    // for (let i = 0; i < this.props.addList.length; i++)
-    //   pagesList[i] = { value: 1, error: "" };
     const didPagesHasIncorrectValues = {
       ...this.state.didPagesHasIncorrectValues
     };

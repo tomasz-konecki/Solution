@@ -15,6 +15,7 @@ import SmallSpinner from '../../common/spinner/small-spinner';
 import FilePicker from '../filePicker/filePicker';
 import OperationStatusPrompt from '../../form/operationStatusPrompt/operationStatusPrompt';
 import GenerateLinkModal from '../modals/generateLinkModal';
+import { translate } from 'react-translate';
 const startPath = "root";
 
 class GDriveContent extends React.Component{
@@ -198,12 +199,13 @@ class GDriveContent extends React.Component{
             createFolderStatus, createFolderErrors, uploadFileErrors,
             uploadFileStatus, choosenFolder, extendDetailName, extendId,
             driveSortType, changeSortBy, generateGDriveShareLinkStatus, generateGDriveShareLinkErrors,
-            generatedGDriveSharedLink } = this.props;
+            generatedGDriveSharedLink, t } = this.props;
 
         return (
             <div 
                 className="drive-content-container">
-                { isLoading ? <Spinner /> :
+                { isLoading ? <Spinner fontSize="7px" 
+                    message={t("LoadingAccountDataPrompt")} /> :
                     loginStatus !== null && 
 
                     loginStatus ? 
@@ -246,8 +248,6 @@ class GDriveContent extends React.Component{
                                         className="fa fa-times"></i> }
                             </Button>   
                             }
-                         
-
                             {path !== startPath && getFoldersStatus &&
                             <Button 
                             onClick={(this.goToFolderBefore)}
@@ -283,10 +283,6 @@ class GDriveContent extends React.Component{
                             onFileClick={this.onFileClick}
                             />
                         }
-
-                        
-
-                       
                     </div>
                     : 
                     <p className="one-d-error">{loginErrors[0]}</p>
@@ -426,5 +422,5 @@ const mapStateToProps = state => {
     };
   };
   
-  export default connect(mapStateToProps, mapDispatchToProps)(GDriveContent);
+  export default connect(mapStateToProps, mapDispatchToProps)(translate("Reports")(GDriveContent));
   

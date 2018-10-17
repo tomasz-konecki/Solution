@@ -706,6 +706,9 @@ const translations = {
     NotFound: "Not found",
     SelectPersons: "Select persons",
     Shared: "Shared"
+  },
+  Reports: {
+    LoadingAccountDataPrompt: "Cloud data is loading right now. Please wait..."
   }
 };
 

@@ -523,6 +523,7 @@ const translations = {
     Add: "Add",
     ToFill: "To Fill",
     ToFillEmail: "to@fill.com",
+    Share:"Share",
   },
   ProjectRowUnfurl: {
     OwnersList: "Owners",
@@ -685,6 +686,14 @@ const translations = {
     Author: "Author",
     DaysAgo: "days ago",
     OnDate: "on"
+  },
+  ShareProject:{
+    ShareProject:"Share project",
+    Confirm: "Confirm",
+    ChangesSaved: "Changes has been saved",
+    NotFound: "Not found",
+    SelectPersons: "Select persons",
+    Shared: "Shared",
   }
 };
 

@@ -434,7 +434,7 @@ class ProjectDetails extends Component {
                       }
                       className="option-btn normal-btn"
                     >
-                      Udostępnij
+                      {t('Share')}
                     </button>
 
                     {projectStatus[0].name !== t("Active") && (

@@ -163,7 +163,7 @@ const employeeContent = ({
                 employeeErrors={employeeErrors}
                 canEditFteBar={
                   binaryPermissioner(false)(0)(1)(1)(1)(1)(1)(binPem) &&
-                  isInManagerTeam
+                  (isInManagerTeam || isYou)
                 }
               />
 

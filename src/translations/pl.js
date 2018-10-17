@@ -523,7 +523,8 @@ const translations = {
     Owners: "Właściciele",
     ToFill: "Do uzupełnienia",
     ToFillEmail: "do@uzupełnienia.com",
-    Add: "Dodaj"
+    Add: "Dodaj",
+    Share:"Udostępnij",
   },
   ResponsiblePersonBlock: {
     NameNoSpecial: "Imię nie może zawierać znaków specjalnych ani cyfr.",
@@ -621,7 +622,7 @@ const translations = {
     DeleteProjectInfinitive: "Usunąć projekt",
     ProjectDeleted: "Projekt został usunięty",
     ReactivateProjectInfinitive: "Reaktywować projekt",
-    ProjectReactivated: "Projekt został reaktywowany"
+    ProjectReactivated: "Projekt został reaktywowany",
   },
   TeamMember: {
     AssignedCapacity: "Przypisany na etat",
@@ -696,6 +697,14 @@ const translations = {
     Author: "Autor",
     DaysAgo: "dni temu",
     OnDate: "w dniu"
+  },
+  ShareProject :{
+    ShareProject:"Udostępnij projekt",
+    Confirm: "Zatwierdź",
+    ChangesSaved: "Zmiany zostały zapisane",
+    NotFound: "Nie znaleziono",
+    SelectPersons: "Wybierz osoby",
+    Shared: "Udostępnione",
   }
 };
 

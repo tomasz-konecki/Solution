@@ -1,7 +1,9 @@
 import React, { Component } from "react";
+import { Typeahead } from 'react-bootstrap-typeahead';
+import { translate } from 'react-translate'
+
 import WebApi from "../../../api/index";
 import SpinnerButton from '../../../components/form/spinner-btn/spinner-btn'
-import { Typeahead } from 'react-bootstrap-typeahead';
 
 class ShareProject extends Component {
     
@@ -88,7 +90,7 @@ class ShareProject extends Component {
                 selectedManagers: [],
                 currentSelectedManager: [],
                 changed: false,
-                message: 'Zmiany zostały zapisane',
+                message: this.props.t("ChangesSaved"),
             });
             this.getAlreadyShareManagers();
             
@@ -103,7 +105,6 @@ class ShareProject extends Component {
     }
 
     onSelect = e =>{
-       console.log(e)
         if(e.length === 0 || e[0].id == "0"){
             return
         }
@@ -127,7 +128,6 @@ class ShareProject extends Component {
     } 
 
     onDelete = id =>{       
-
         const managers = this.state.managers;
         const managerToDelete = this.state.selectedManagers.filter((value, index, arr) => {            
             return value.id === id;
@@ -151,17 +151,18 @@ class ShareProject extends Component {
 
 
     render(){    
+      const {t} = this.props
         return(                  
             <form onSubmit={e => this.onSubmit(e)} >        
                 <div className="row justify-content-center">                    
                     <div className="col col-sm-8">  
-                        <h2 className="mb-5 text-center">Udostępnij projekt</h2>
+                        <h2 className="mb-5 text-center">{t('ShareProject')}</h2>
                         <div className="row">                        
-                            <label className="mt-1 mr-2">Wybierz komu</label>      
+                            <label className="mt-1 mr-2">{t('SelectPersons')}</label>      
                             <div style={{width: '68%'}}>
                                 <Typeahead
                                     disabled={this.state.isLoading}
-                                    emptyLabel={true ? "nie znaleziono" : undefined}
+                                    emptyLabel={true ? t('NotFound') : undefined}
                                     labelKey={option => `${option.fullName}`}
                                     onChange={employee => {this.onSelect(employee)}}
                                     ref={typeahead => (this.typeahead = typeahead)}
@@ -178,7 +179,7 @@ class ShareProject extends Component {
                 <div className="row justify-content-center mx-2">
                 
                 <div className="col col-sm-5 mt-5 border" style={{height: '150px', overflowY: 'scroll'}}>                
-                <label>Udostępnione:</label>
+                <label>{t('Shared')}:</label>
                 {
                     this.state.selectedManagers.map(manager=>{
                     return(                        
@@ -200,13 +201,13 @@ class ShareProject extends Component {
                     )
                   })
                 }
-                <p className="form-error text-primary">{this.state.message}</p>
+                <p className="form-error" style={{ color: "green" }}>{this.state.message}</p>
             <SpinnerButton
                 validationResult={this.state.selectedManagers != [] && this.state.changed}
                 transactionEnd={this.state.sharedFinished}
                 onClickHandler={this.shareProject}
                 isLoading={this.state.isLoading}
-                btnTitle="Zatwierdź"
+                btnTitle={t('Confirm')}
                 enableButtonAfterTransactionEnd={true}
                 />
           </form>
@@ -214,4 +215,4 @@ class ShareProject extends Component {
     }    
 }
 
-export default ShareProject;
+export default translate('ShareProject')(ShareProject);

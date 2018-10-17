@@ -428,7 +428,7 @@ class ProjectDetails extends Component {
                       }
                       className="option-btn normal-btn"
                     >
-                      Udostępnij
+                      {t('Share')}
                     </button>
 
                     {projectStatus &&

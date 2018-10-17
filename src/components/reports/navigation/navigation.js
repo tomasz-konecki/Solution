@@ -1,50 +1,67 @@
 import React from "react";
 import Button from "../../common/button/button";
+import NotFound404 from "../../notFound404/NotFound404";
 
-const pathnames = ["/main/reports", "/main/reports/choose", "/main/reports/onedrive", 
-"/main/reports/gdrive"];
+const pathnames = [
+  "/main/reports",
+  "/main/reports/choose",
+  "/main/reports/onedrive",
+  "/main/reports/gdrive"
+];
 
-const headerTitles = {[pathnames[0]]: "Wybierz drużyny do wygenerowania raportu" ,
-[pathnames[1]]:"Wybór dysku do wygenerowania", 
-[pathnames[2]]: "Przegląd folderów One Drive", 
-[pathnames[3]]: "Przegląd folderów Google Drive"}
+const headerTitles = {
+  [pathnames[0]]: "Wybierz drużyny do wygenerowania raportu",
+  [pathnames[1]]: "Wybór dysku do wygenerowania",
+  [pathnames[2]]: "Przegląd folderów One Drive",
+  [pathnames[3]]: "Przegląd folderów Google Drive"
+};
 
 const findIndexFromPathnamesWhichIsEqual = pathname => {
-  if(pathname.search(pathnames[2]) !== -1)
-    return 2;
+  if (pathname.search(pathnames[2]) !== -1) return 2;
 
-
-  for(let i = 0; i < pathnames.length; i++){
-    if(pathnames[i] === pathname)
-      return i;
+  for (let i = 0; i < pathnames.length; i++) {
+    if (pathnames[i] === pathname) return i;
   }
   return -1;
-}
+};
 
-const navigation = ({addListLength, baseListLength, valueToSearch, searchInTeamList,
-  openReportsModals, changeIntoFoldersView, numberOfFolders, 
-  changeIntoTeamsView, choosenFolder, pathname, baseList }) => {
+const navigation = ({
+  addListLength,
+  baseListLength,
+  valueToSearch,
+  searchInTeamList,
+  openReportsModals,
+  changeIntoFoldersView,
+  numberOfFolders,
+  changeIntoTeamsView,
+  choosenFolder,
+  pathname,
+  baseList
+}) => {
+  const whichCountShouldShow =
+    pathname === pathnames[0] || pathname === pathnames[1]
+      ? baseListLength
+      : numberOfFolders;
 
-    const whichCountShouldShow = (pathname === pathnames[0] || pathname === pathnames[1]) ? 
-      baseListLength : numberOfFolders;
+  const shouldLetGenerateReport = addListLength > 0 ? true : false;
 
-    const shouldLetGenerateReport = addListLength > 0 ? true : false;
+  const isStartView = pathname === pathnames[0] ? true : false;
 
-    const isStartView = pathname === pathnames[0] ? true : false;
+  const pathnameIndex = findIndexFromPathnamesWhichIsEqual(pathname);
 
-    const pathnameIndex = findIndexFromPathnamesWhichIsEqual(pathname);
-    return (
-    <header>
-        <h1>
-          {headerTitles[pathnames[pathnameIndex]]}
-        </h1>
+  let content;
+
+  if (pathnames.includes(pathname)) {
+    content = (
+      <header>
+        <h1>{headerTitles[pathnames[pathnameIndex]]}</h1>
         <nav>
           <div>
             <b>
-                <i className="fa fa-users" />
-                {addListLength}
-            </b>  
-            
+              <i className="fa fa-users" />
+              {addListLength}
+            </b>
+
             <b>
               <i className="fa fa-search" />
               {whichCountShouldShow}
@@ -52,20 +69,16 @@ const navigation = ({addListLength, baseListLength, valueToSearch, searchInTeamL
           </div>
 
           <div className="searcher-container">
-            {pathname === pathnames[0] &&
+            {pathname === pathnames[0] && (
               <input
-              maxLength={baseList.length === 0 ?
-                valueToSearch.length : null
-              }
-              value={valueToSearch}
-              onChange={searchInTeamList}
-              type="text"
-              placeholder="wpisz nazwę drużyny..."
+                maxLength={baseList.length === 0 ? valueToSearch.length : null}
+                value={valueToSearch}
+                onChange={searchInTeamList}
+                type="text"
+                placeholder="wpisz nazwę drużyny..."
               />
-            }
-            {pathname === pathnames[0] && 
-              <i className="fa fa-search"></i>
-            }
+            )}
+            {pathname === pathnames[0] && <i className="fa fa-search" />}
           </div>
 
           <div className="btns-container">
@@ -81,21 +94,26 @@ const navigation = ({addListLength, baseListLength, valueToSearch, searchInTeamL
             <Button
               disable={!shouldLetGenerateReport}
               title={isStartView ? "Foldery" : "Teamy"}
-              onClick={isStartView ? changeIntoFoldersView : 
-              changeIntoTeamsView}
+              onClick={
+                isStartView ? changeIntoFoldersView : changeIntoTeamsView
+              }
               mainClass="generate-raport-btn btn-green"
             >
               <i
-                className={`fa ${!isStartView
-                  ? "fa-sitemap"
-                  : "fa-folder-open"}`}
+                className={`fa ${
+                  !isStartView ? "fa-sitemap" : "fa-folder-open"
+                }`}
               />
             </Button>
           </div>
         </nav>
       </header>
     );
+  } else {
+    content = <NotFound404 />;
   }
-  
+
+  return <React.Fragment>{content}</React.Fragment>;
+};
 
 export default navigation;

@@ -299,7 +299,12 @@ const translations = {
     startQuarterTranslation: "Fill answers",
     NoAnswers: "This conversation has not yet taken",
     Populate: "Populate quarter",
-    ConfirmQuestions: "Confirm questions"
+    ConfirmQuestions: "Confirm questions",
+    ForQuarter: "for",
+    In: "in",
+    InYear: "year"  ,
+    DoneQuarter: "This conversation was carried out",
+    IncomingQuarter: "This conversation will only take place"
   },
   EmployeeSkills: {
     Add: "Add",
@@ -651,7 +656,8 @@ const translations = {
     Minutes: "minutes",
     MinutesPl: "minutes",
     MarkAllAsRead: "Mark all as read",
-    DeleteAll: "Delete all"
+    DeleteAll: "Delete all",
+    NoNotifications: "You don't have any notifications."
   },
   Skills: {
     SaveChanges: "Save changes",
@@ -663,6 +669,15 @@ const translations = {
     Confirm: "Confirm",
     ThatProjectDoesntHavaAnySkillAssigned:
       "That project doesn't have any skills assigned."
+  },
+  Skill: {
+    SkillName: "Skill name",
+    YearsOfExperience: "Years of experience",
+    PutYear: "Add year",
+    PopYear: "Pop year",
+    DeleteSkill: "Delete skill",
+    ChangedThings: "This row has been changed",
+    SkillLevel: "Skill level"
   },
   ProjectTeamTable: {
     Add: "Add",
@@ -680,7 +695,8 @@ const translations = {
     FeedbackAdded: "Successfully added feedback",
     Author: "Author",
     DaysAgo: "days ago",
-    OnDate: "on"
+    OnDate: "on",
+    GoIntoEmployeeDetails: "Go to employee details"
   }
 };
 

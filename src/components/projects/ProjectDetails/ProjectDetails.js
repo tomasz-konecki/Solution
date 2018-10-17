@@ -50,6 +50,7 @@ import specialPermissioner from "./../../../api/specialPermissioner";
 import binaryPermissioner from "./../../../api/binaryPermissioner";
 import Owners from "./Owners/Owners";
 import ShareProject from "./ShareProject";
+import NotFound404 from "../../notFound404/NotFound404";
 
 class ProjectDetails extends Component {
   workerNames = [
@@ -158,6 +159,7 @@ class ProjectDetails extends Component {
     this.setState({ onlyActiveAssignments: !onlyActiveAssignments });
     this.props.getProject(id, !onlyActiveAssignments);
   };
+
   fillDates = (startDate, endDate, estimatedEndDate) => {
     const addEmployeToProjectFormItems = [
       ...this.state.addEmployeToProjectFormItems
@@ -180,6 +182,7 @@ class ProjectDetails extends Component {
 
     return addEmployeToProjectFormItems;
   };
+
   componentWillReceiveProps(nextProps) {
     if (
       this.props.project === null ||
@@ -205,12 +208,14 @@ class ProjectDetails extends Component {
           )
         });
 
-        if(this.props.project && (this.props.project.team !== project.team || project.team === null )){
+        if (
+          this.props.project &&
+          (this.props.project.team !== project.team || project.team === null)
+        ) {
           this.setState({
             isLoadingAssignments: false
-          })
+          });
         }
-
       } else this.setState({ isLoadingProject: false });
     } else if (
       this.props.addEmployeeToProjectErrors !==
@@ -267,13 +272,7 @@ class ProjectDetails extends Component {
     );
   };
 
-  calculateProjectStatus = (
-    startDate,
-    endDate,
-    projectStatus,
-    estimatedEndDate,
-    isDeleted
-  ) => {
+  calculateProjectStatus = (projectStatus, isDeleted) => {
     if (isDeleted === true)
       return [{ classVal: "spn-unactive", name: this.props.t("Deleted") }];
     if (projectStatus === 2)
@@ -317,11 +316,11 @@ class ProjectDetails extends Component {
       addEmployeModal: false
     });
   };
-  closeShareProjectModal = () =>{
+  closeShareProjectModal = () => {
     this.setState({
       shareProjectModal: false
     });
-  }
+  };
   handleChange = () => {
     const { matches } = this.state;
     this.setState({
@@ -362,7 +361,6 @@ class ProjectDetails extends Component {
       loadProjectStatus,
       addEmployeeToProjectStatus,
       addEmployeeToProjectErrors,
-      loadProjectErrors,
       changeProjectState,
       changeProjectStateStatus,
       changeProjectStateErrors,
@@ -377,10 +375,8 @@ class ProjectDetails extends Component {
     const {
       projectStatus,
       onlyActiveAssignments,
-      isChangingAssignment,
       matches,
-      currentOpenedRow,
-      isLoadingProject
+      currentOpenedRow
     } = this.state;
     return (
       <div
@@ -417,7 +413,7 @@ class ProjectDetails extends Component {
                   specialPermissioner().projects.isOwner(
                     this.props.project,
                     this.props.login
-                  ))  && (
+                  )) && (
                   <React.Fragment>
                     <button
                       onClick={() =>
@@ -428,9 +424,11 @@ class ProjectDetails extends Component {
                       {t("EditProject")}
                     </button>
 
-                     <button
+                    <button
                       onClick={() =>
-                        this.setState({ shareProjectModal: !this.state.shareProjectModal })
+                        this.setState({
+                          shareProjectModal: !this.state.shareProjectModal
+                        })
                       }
                       className="option-btn normal-btn"
                     >
@@ -569,7 +567,9 @@ class ProjectDetails extends Component {
                     checked={onlyActiveAssignments}
                     onChange={this.togleActiveAssign}
                   />
-                  <span className="assingments-spinner-container">{this.state.isLoadingAssignments && <SmallSpinner />}</span>
+                  <span className="assingments-spinner-container">
+                    {this.state.isLoadingAssignments && <SmallSpinner />}
+                  </span>
                 </div>
 
                 <Table
@@ -880,12 +880,8 @@ class ProjectDetails extends Component {
               contentLabel="Add employee to project modal"
               onClose={this.closeShareProjectModal}
             >
-              <ShareProject
-                projectId={this.props.match.params.id}
-              >
-              </ShareProject>
+              <ShareProject projectId={this.props.match.params.id} />
             </Modal>
-
 
             {addEmployeeToProjectStatus !== null &&
               addEmployeeToProjectStatus !== undefined && (
@@ -903,7 +899,8 @@ class ProjectDetails extends Component {
         )}
 
         {loadProjectStatus === false && (
-          <ServerError message={this.props.loadProjectErrors[0]} />
+          <NotFound404 />
+          // <ServerError message={this.props.loadProjectErrors[0]} />
         )}
 
         {changeProjectStateStatus === false && (

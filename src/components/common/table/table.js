@@ -82,55 +82,56 @@ class Table extends Component {
           <td>
             <ul className="detail-team-list">
               <h5>
-                <span
-                  onClick={() =>
-                    history.push(`/main/employees/${items[id].employeeId}`)
-                  }
-                >
-                  {items[id].email} <i className="fa fa-info-circle" />
+                <span onClick={() => history.push(`/main/employees/${items[id].employeeId}`)}>
+                  {items[id].email} <i title={t("GoIntoEmployeeDetails")} className="fa fa-external-link-square-alt" />
                 </span>
                 <b>
-                  <i id="str-date">
-                    {t("StartDate")}: {items[id].startDate.slice(0, 10)}
-                  </i>
-                  <i id="ed-date">
-                    {t("EndDate")}: {items[id].endDate.slice(0, 10)}
-                  </i>
+                  <i>{t("StartDate")}: {items[id].startDate.slice(0, 10)}</i>
+                  <i>{t("EndDate")}: {items[id].endDate.slice(0, 10)}</i>
                 </b>
               </h5>
               <li>
-                {t("AddedBy")}: <b>{items[id].createdBy}</b> {t("OnDate") + " "}
+                {t("AddedBy")}: 
+                <b>{items[id].createdBy}</b> 
+                {t("OnDate") + " "}
+                {items[id].createdAt.slice(0, 10)}
                 <i className="moment-date">
-                  {items[id].createdAt.slice(0, 10)}(
-                  {moment().diff(items[id].createdAt.slice(0, 10), "days")}{" "}
+                  ({moment().diff(items[id].createdAt.slice(0, 10), "days")}{" "}
                   {t("DaysAgo")})
                 </i>
               </li>
 
-              <p>{t("Responsibilities")}: </p>
-              <li className="responsibilities-list">
-                {items[id].responsibilities.map(i => {
-                  return <i key={i}>{i}</i>;
-                })}
-              </li>
+              {items[id].responsibilities.length > 0 && 
+              <React.Fragment>
+                <p>{t("Responsibilities")}: </p>
+                <li className="responsibilities-list">
+                  {items[id].responsibilities.map(i => {
+                    return <i key={i}>{i}</i>;
+                  })}
+                </li>
+              </React.Fragment>
+              }
             </ul>
-            {this.props.isProjectOwner ||
-              (items[id].employeeId !== this.props.login && (
-                <button
-                  onClick={() =>
-                    this.setState({ opinionModal: true, modalType: true })
-                  }
-                  className="option-btn green-btn"
-                >
-                  {t("AddFeedbackShort")}
-                </button>
-              ))}
-            <button
-              className="option-btn green-btn"
-              onClick={this.getFeedbacks}
-            >
-              {t("ShowFeedbacks")}
-            </button>
+            <div className="btn-td-container">
+              {this.props.isProjectOwner ||
+                (items[id].employeeId !== this.props.login && (
+                  <button
+                    onClick={() =>
+                      this.setState({ opinionModal: true, modalType: true })
+                    }
+                    className="option-btn green-btn"
+                  >
+                    {t("AddFeedbackShort")}
+                  </button>
+                ))}
+              <button
+                className="option-btn green-btn"
+                onClick={this.getFeedbacks}
+              >
+                {t("ShowFeedbacks")}
+              </button>
+            </div>
+         
           </td>
         </tr>
       );
@@ -219,7 +220,8 @@ class Table extends Component {
       emptyMsg,
       isProjectOwner,
       t,
-      login
+      login,
+      addFeedbackClear
     } = this.props;
     const { modalType } = this.state;
 
@@ -269,7 +271,7 @@ class Table extends Component {
           <Modal
             key={1}
             open={this.state.opinionModal}
-            classNames={{ modal: "Modal Modal-add-owner" }}
+            classNames={{ modal: "Modal employee-opinion-modal" }}
             contentLabel="Employee opinion modal"
             onClose={this.closeModal}
           >
@@ -326,6 +328,7 @@ class Table extends Component {
         {addFeedbackStatus !== null &&
           addFeedbackStatus !== undefined && (
             <OperationStatusPrompt
+              closePrompt={() => addFeedbackClear(null, [])}
               operationPromptContent={
                 addFeedbackStatus
                   ? t("FeedbackAdded")

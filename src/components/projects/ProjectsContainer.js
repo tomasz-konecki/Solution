@@ -3,7 +3,7 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import * as projectsActions from "../../actions/projectsActions";
-import { loadClients } from '../../actions/clientsActions';
+import { loadClients } from "../../actions/clientsActions";
 import * as asyncActions from "../../actions/asyncActions";
 import * as persistHelpActions from "../../actions/persistHelpActions";
 import Modal from "react-responsive-modal";
@@ -19,7 +19,7 @@ import moment from "moment";
 import { validateInput } from "../../services/validation";
 import ContactList from "../../components/common/contactList/contactList";
 import { translate } from "react-translate";
-import { clearDataOfForm } from '../../services/methods';
+import { clearDataOfForm } from "../../services/methods";
 
 const ClientId = 2;
 const CloudId = 3;
@@ -167,10 +167,10 @@ class ProjectsContainer extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if(nextProps.clients !== this.props.clients){
+    if (nextProps.clients !== this.props.clients) {
       const addNewProjectFormValues = [...this.state.addNewProjectFormValues];
       addNewProjectFormValues[ClientId].dataToMap = [...nextProps.clients];
-      this.setState({addNewProjectFormValues: addNewProjectFormValues});
+      this.setState({ addNewProjectFormValues: addNewProjectFormValues });
     }
     if (this.validatePropsForAction(nextProps, "deleteProject")) {
       this.props.async.setActionConfirmationProgress(true);
@@ -238,7 +238,7 @@ class ProjectsContainer extends React.Component {
       this.setState({ isLoading: false });
     }
   }
-  
+
   validatePropsForAction(nextProps, action) {
     return (
       nextProps.confirmed &&
@@ -277,57 +277,68 @@ class ProjectsContainer extends React.Component {
 
   goForClient = () => {
     const clientIdInForm = 2;
- 
+
     const { projectActions } = this.props;
     const addNewProjectFormValues = [...this.state.addNewProjectFormValues];
 
-    const indexOfMatchedClient = addNewProjectFormValues[clientIdInForm].dataToMap.findIndex(i => {
-      return i.name === addNewProjectFormValues[clientIdInForm].value
+    const indexOfMatchedClient = addNewProjectFormValues[
+      clientIdInForm
+    ].dataToMap.findIndex(i => {
+      return i.name === addNewProjectFormValues[clientIdInForm].value;
     });
 
     const allClientsContainsGivenClient = indexOfMatchedClient !== -1;
-    
-    if(allClientsContainsGivenClient){
-      this.setState({isLoading: true});
 
-      projectActions.getContactPersonDataACreator(addNewProjectFormValues[clientIdInForm].
-        dataToMap[indexOfMatchedClient].id).then(response => {
+    if (allClientsContainsGivenClient) {
+      this.setState({ isLoading: true });
 
-        if(response.length > 0){
-          let responsiblePersons = [];
-          const responsiblePersonFormValues = [...this.state.responsiblePersonFormValues];
-          
-          responsiblePersons = responsiblePersons.concat(response);
+      projectActions
+        .getContactPersonDataACreator(
+          addNewProjectFormValues[clientIdInForm].dataToMap[
+            indexOfMatchedClient
+          ].id
+        )
+        .then(response => {
+          if (response.length > 0) {
+            let responsiblePersons = [];
+            const responsiblePersonFormValues = [
+              ...this.state.responsiblePersonFormValues
+            ];
 
-          responsiblePersonFormValues[0].value = response[0].email;
-          responsiblePersonFormValues[1].value = response[0].firstName;
-          responsiblePersonFormValues[2].value = response[0].lastName;
-          responsiblePersonFormValues[3].value = response[0].phoneNumber;
-          
-          this.setState({
-            responsiblePersons: responsiblePersons,
-            responsiblePersonFormValues: responsiblePersonFormValues
-          });
-        }
+            responsiblePersons = responsiblePersons.concat(response);
 
-        this.setState({isLoading: false});
-      }).catch(error => {
-        this.setState({ isLoading: false });
-      })
+            responsiblePersonFormValues[0].value = response[0].email;
+            responsiblePersonFormValues[1].value = response[0].firstName;
+            responsiblePersonFormValues[2].value = response[0].lastName;
+            responsiblePersonFormValues[3].value = response[0].phoneNumber;
 
+            this.setState({
+              responsiblePersons: responsiblePersons,
+              responsiblePersonFormValues: responsiblePersonFormValues
+            });
+          }
+
+          this.setState({ isLoading: false });
+        })
+        .catch(error => {
+          this.setState({ isLoading: false });
+        });
     }
-  }
+  };
 
   fetchContactDateByOtherClient = e => {
     const { responsiblePersons } = this.state;
     const index = responsiblePersons.findIndex(i => {
       return i.firstName === e.target.value;
     });
-    const responsiblePersonFormValues = [...this.state.responsiblePersonFormValues];
+    const responsiblePersonFormValues = [
+      ...this.state.responsiblePersonFormValues
+    ];
     responsiblePersonFormValues[0].value = responsiblePersons[index].email;
     responsiblePersonFormValues[1].value = responsiblePersons[index].firstName;
     responsiblePersonFormValues[2].value = responsiblePersons[index].lastName;
-    responsiblePersonFormValues[3].value = responsiblePersons[index].phoneNumber;
+    responsiblePersonFormValues[3].value =
+      responsiblePersons[index].phoneNumber;
 
     this.setState({
       responsiblePersonFormValues: responsiblePersonFormValues,
@@ -341,18 +352,24 @@ class ProjectsContainer extends React.Component {
     const addNewProjectFormValues = [...this.state.addNewProjectFormValues];
     const { history, match, projectActions, clientsActions } = this.props;
 
-    projectActions.createProjectACreator(
-      addNewProjectFormValues,
-      responsiblePersonFormValues
-    ).then(response => {
-      clearDataOfForm(addNewProjectFormValues);
-      addNewProjectFormValues[CloudId].disable = true;
-      setTimeout(() => {
-        this.setState({showModal: false, openFirstForm: true, addNewProjectFormValues: addNewProjectFormValues});
-        projectActions.createProject(null, []);
-        history.push(match.url + "/" + response.id);
-      }, 1500);
-    });
+    projectActions
+      .createProjectACreator(
+        addNewProjectFormValues,
+        responsiblePersonFormValues
+      )
+      .then(response => {
+        clearDataOfForm(addNewProjectFormValues);
+        addNewProjectFormValues[CloudId].disable = true;
+        setTimeout(() => {
+          this.setState({
+            showModal: false,
+            openFirstForm: true,
+            addNewProjectFormValues: addNewProjectFormValues
+          });
+          projectActions.createProject(null, []);
+          history.push(match.url + "/" + response.id);
+        }, 1500);
+      });
   };
 
   pullDOM = () => {
@@ -390,7 +407,9 @@ class ProjectsContainer extends React.Component {
         <Modal
           key={1}
           open={this.state.showModal}
-          classNames={{ modal: `Modal ${openFirstForm ? "Modal-add-project" : ""}` }}
+          classNames={{
+            modal: `Modal ${openFirstForm ? "Modal-add-project" : ""}`
+          }}
           contentLabel="Add project modal"
           onClose={() => this.setState({ showModal: false })}
         >
@@ -453,7 +472,7 @@ class ProjectsContainer extends React.Component {
     return (
       <Switch>
         <Route exact path={match.url + ""} component={this.pullDOM} />
-        <Route exact path={match.url + "/:id"} component={ProjectDetails} />
+        <Route path={match.url + "/:id"} component={ProjectDetails} />
       </Switch>
     );
   }
@@ -476,9 +495,10 @@ function mapStateToProps(state) {
 
     createProjectStatus: state.projectsReducer.createProjectStatus,
     createProjectErrors: state.projectsReducer.createProjectErrors,
-    
+
     contactPersonData: state.projectsReducer.contactPersonData,
-    getContactPersonDataStatus: state.projectsReducer.getContactPersonDataStatus,
+    getContactPersonDataStatus:
+      state.projectsReducer.getContactPersonDataStatus,
     getContactPersonDataErrors: state.projectsReducer.getContactPersonDataErrors
   };
 }

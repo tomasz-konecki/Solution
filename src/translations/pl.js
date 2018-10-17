@@ -302,7 +302,12 @@ const translations = {
     startQuarterTranslation: "Wypełnij pytania",
     NoAnswers: "Ta rozmową się jeszcze nie odbyła",
     Populate: "Uzupełnij rozmowę",
-    ConfirmQuestions: "Zatwierdź pytania"
+    ConfirmQuestions: "Zatwierdź pytania",
+    ForQuarter: "za",
+    In: "w",
+    InYear: "roku"  ,
+    DoneQuarter: "Ta rozmowa została przeprowadzona",
+    IncomingQuarter: "Ta rozmowa dopiero się odbędzie"
   },
   EmployeeSkills: {
     Add: "Dodaj",
@@ -662,7 +667,8 @@ const translations = {
     Minutes: "minuty",
     MinutesPl: "minut",
     MarkAllAsRead: "Oznacz wszystkie jako przeczytane",
-    DeleteAll: "Usuń wszystkie"
+    DeleteAll: "Usuń wszystkie",
+    NoNotifications: "Nie masz żadnych powiadomień."
   },
   Skills: {
     SaveChanges: "Zapisz zmiany",
@@ -674,6 +680,15 @@ const translations = {
     Confirm: "Zatwierdź",
     ThatProjectDoesntHavaAnySkillAssigned:
       "Ten projekt nie ma żadnych przypisanych umiejętności."
+  },
+  Skill: {
+    SkillName: "Nazwa umiejętności",
+    YearsOfExperience: "Lata doświadczenia",
+    PutYear: "Dodaj rok",
+    PopYear: "Zmniejsz o rok",
+    DeleteSkill: "Usuń umiejętność",
+    ChangedThings: "Ta umiejętność jest zmieniona",
+    SkillLevel: "Poziom umiejętności"
   },
   ProjectTeamTable: {
     Add: "Dodaj",
@@ -691,7 +706,8 @@ const translations = {
     FeedbackAdded: "Pomyślnie dodano opinie",
     Author: "Autor",
     DaysAgo: "dni temu",
-    OnDate: "w dniu"
+    OnDate: "w dniu",
+    GoIntoEmployeeDetails: "Przejdź do szczegółów pracownika"
   }
 };
 

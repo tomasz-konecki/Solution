@@ -23,7 +23,7 @@ class QuarterList extends React.PureComponent {
 
   functionsToUseForQuarters = [
     {name: "filter", count: true, filterBy: "isDeleted", 
-        posibleValues: [{value: false, description: this.props.t("Deleted")}, {value: true, description: this.props.t("NotDeleted")}]}
+        posibleValues: [{value: true, description: this.props.t("Deleted")}, {value: false, description: this.props.t("NotDeleted")}]}
   ];
 
   putEmployeeToLastWatchedAndRedirect = url => {
@@ -64,9 +64,14 @@ class QuarterList extends React.PureComponent {
               isDetailItemFromEmployeeDetails: true,
               subHeader: t("QuarterItemSubHeader"),
               deleteTranslation: t("Delete"),
+              doneQuarter: t("DoneQuarter"),
+              incomingQuarter: t("IncomingQuarter"),
               reactivate: t("Reactivate"),
+              forQuarter: t("ForQuarter"),
               conduct: t("Conduct"),
               quarter: t("Quarter"),
+              connector: t("In"),
+              inYear: t("InYear"),  
               QuarterDeletedPrompt: t("QuarterDeletedPrompt")
           }}
           listTitle={`${t("QuaterTalks")}`}

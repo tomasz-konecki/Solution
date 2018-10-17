@@ -155,7 +155,6 @@ class EmployeesContainer extends React.Component {
       <Switch>
         <Route exact path={match.url + ""} component={this.pullEmployeesList} />
         <Route path={match.url + "/:id"} component={EmployeeDetailsContainer} />
-        <Route component={NotFound404} />
       </Switch>
     );
   }

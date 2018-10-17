@@ -1,7 +1,5 @@
 import React from "react";
 
-import Spinner from "../common/LoaderCircular";
-
 import "../../scss/components/clients/ClientsList.scss";
 
 const ClientsList = ({

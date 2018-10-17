@@ -2,11 +2,7 @@
   width: 600px;
   position: relative;
   height: 600px;
-  .list-nav{
-    width: 80%;
-  }
   .quarter-list{
-    width: 80%;
     height: 360px;
     .single-quarter{
       cursor: initial;
@@ -24,8 +20,12 @@
       width: 100%;
     }
   }
+  .empty-content-container{
+    margin: 0 auto;
+  }
   .q-btn-holder {
     padding: 10px;
+    margin: 0 auto;
     display: flex;
     justify-content: center;    
     width: 80%;

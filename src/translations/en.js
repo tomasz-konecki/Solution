@@ -302,7 +302,9 @@ const translations = {
     ConfirmQuestions: "Confirm questions",
     ForQuarter: "for",
     In: "in",
-    InYear: "year"  
+    InYear: "year"  ,
+    DoneQuarter: "This conversation was carried out",
+    IncomingQuarter: "This conversation will only take place"
   },
   EmployeeSkills: {
     Add: "Add",
@@ -693,7 +695,8 @@ const translations = {
     FeedbackAdded: "Successfully added feedback",
     Author: "Author",
     DaysAgo: "days ago",
-    OnDate: "on"
+    OnDate: "on",
+    GoIntoEmployeeDetails: "Go to employee details"
   }
 };
 

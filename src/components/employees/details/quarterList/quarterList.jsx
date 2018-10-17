@@ -64,6 +64,8 @@ class QuarterList extends React.PureComponent {
               isDetailItemFromEmployeeDetails: true,
               subHeader: t("QuarterItemSubHeader"),
               deleteTranslation: t("Delete"),
+              doneQuarter: t("DoneQuarter"),
+              incomingQuarter: t("IncomingQuarter"),
               reactivate: t("Reactivate"),
               forQuarter: t("ForQuarter"),
               conduct: t("Conduct"),

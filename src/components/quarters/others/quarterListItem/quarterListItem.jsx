@@ -4,7 +4,7 @@ import QuarterDetalilsItem from '../quarterDetailsItem/quarterDetailsItem';
 
 const quarterListItem = ({index, item, clickItemFunction, currentWatchedItemId, subHeader, reactivate, 
     deleteTranslation, conduct, quarter, QuarterDeletedPrompt, isDetailItemFromEmployeeDetails, answers, forQuarter,
-    connector, inYear}) => (
+    connector, inYear, doneQuarter, incomingQuarter}) => (
     <div className={`single-quarter ${item.isDeleted ? "deleted-quarter" : ""} ${index === currentWatchedItemId ? "current-watched-item" : ""}`} onClick={e => clickItemFunction(e)}>
         <p>
             <i title="Osoba przeprowadzająca rozmowe" className="fa fa-user"></i>
@@ -13,7 +13,7 @@ const quarterListItem = ({index, item, clickItemFunction, currentWatchedItemId, 
             {item.isTaken && !isDetailItemFromEmployeeDetails &&
                 <i title="Pobierz rozmowę w formacie .doc" onClick={e => clickItemFunction(e, "generateDoc")} className="fa fa-file-alt"></i>
             }
-            <i title="Status rozmowy" className={`fa fa-${item.isTaken ? "check" : "times"}`}></i>
+            <i title={item.isTaken ? doneQuarter : incomingQuarter} className={`fas fa-${item.isTaken ? "check" : "question"}`}></i>
         </p>
         <p>
             <span>

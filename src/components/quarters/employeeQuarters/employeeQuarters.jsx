@@ -115,6 +115,8 @@ class EmployeeQuarters extends React.PureComponent{
                         listClass="quarter-list" functionsToUse={this.functionsToUseForQuarters} componentProps={{
                             currentWatchedItemId: currentWatchedQuarterDetail,
                             subHeader: t("QuarterItemSubHeader"),
+                            doneQuarter: t("DoneQuarter"),
+                            incomingQuarter: t("IncomingQuarter"),
                             deleteTranslation: t("Delete"),
                             reactivate: t("Reactivate"),
                             conduct: t("Conduct"),

@@ -3,11 +3,7 @@
     position: relative;
     display: flex;
     flex-flow: column;
-    
     align-items: center;
-   
-        
-   
     h3{
         margin: 45px 0 !important;
         font-size: 1rem;
@@ -41,127 +37,73 @@
         }
        
         .detail-table-header{
-            color: white;
-            padding: 15px;
+            cursor: context-menu !important;
+            list-style: none;
+            color: black;
+            &:hover{
+                background: #dddddd;
+            }
         }
         .detail-table-header td{
+            width: 100%;
             position: absolute;
-            min-height: 150px;
-            background-color: #d8d8d8 !important;
-            transition: 0.5s all ease-in-out;
-            z-index: 2;
-            color: black;
-            animation: 0.5s header-anim linear forwards;
-            @media(max-width: 764px){
-                font-size: 0.7rem;
-                min-height: 300px;
-                width: 100%;
-            }
-            .option-btn:last-of-type{
-                right: 120px;
-            }
-            .option-btn{
-                bottom: 2.5px;
-                right: 10px;
-                color: white;
-                position: absolute;
-                @media(max-width: 480px){
-                    font-size: .7rem;
-                    width: 100px;
+            z-index: 5;
+            background: #dddddd;
+            .btn-td-container{
+                text-align: right;
+                button{ 
+                    margin-left: 15px;
                 }
-                    
             }
-           
-        }
-        @keyframes header-anim {
-            0%{
-                width: 0%;
-                opacity: 0;
-            }
-            100%{
-                opacity: 1;
-                width: 100%;
-            }
-        }
-        @keyframes content-anim {
-            0%{
-                opacity: 0;
-            }
-            100%{
-                opacity: 1;
-            }
-        }
-        .detail-table-header:hover{
-            background-color: lightcoral !important;
-        }
-        
-        .detail-team-list{
-            position: relative;
-            padding-top: 30px;
-            animation: 1.5s content-anim ease-in-out forwards;
         }
         .detail-team-list h5{
-            position: absolute;
-            top: 0;
-            padding: 5px;
             width: 100%;
             display: flex;
             justify-content: space-between;
-            border-bottom: 1px solid grey;
-            @media(max-width: 480px){
-                flex-flow: column;
-                text-align: center;
+            align-items: center;
+            flex-flow: wrap;
+            line-height: 22.5px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid black;
+            .fa-external-link-square-alt{
+                cursor: pointer;
+                font-size: 20px;
             }
             b{
-                @media(max-width: 480px){
-                    i{
-                        margin-top: 8px;
-                    }
-                }
-                display: inherit;
-                @media(max-width: 764px){
-                    flex-flow: column;
-                }
-                #str-date{
-                    color: green;
-                    margin-right: 10px;
-                }
-              
-                #ed-date{
-                    color: red;
+                font-weight: bold;
+                color: #006064;
+                justify-content: center;
+                display: flex;
+                flex-flow: wrap;
+                i{
+                    margin-left: 10px;
                 }
             }
-            
+        }
+        .detail-team-list li{
+            padding: 10px;
         }
         .detail-team-list li:nth-of-type(1){
-            width: 100%;
-            text-align: center;
-            padding: 0 10px;
-            box-sizing: border-box;
-            border: 1px solid transparent;
-            @media(max-width: 764px){
-                margin-top: 20px;
-            }                
-            @media(max-width: 480px){
-                margin: 60px 0 20px 0;
-                line-height: 15px;
-                
-            }
+            text-align: right;
+            line-height: 22.5px;
             b{
-                color: tomato;
+                margin-right: 5px;
+            }
+            i{
+                margin-left: 5px;
+            }
+            b, i{
+                font-weight: bold;
             }
         }
         .detail-team-list li:nth-of-type(2){
-            width: 100%;
-            padding: 10px;
-            box-sizing: border-box;
             display: flex;
             flex-flow: wrap;
             i {
                 margin: 5px;
                 color: white;
                 padding: 5px;
-                background-color: darkcyan;
+                background-color: #006064;
                 border-radius: 5px;
                 @media(max-width: 440px){
                     font-size: 10px;
@@ -170,20 +112,16 @@
             }
         }
         .detail-team-list p{
-            padding: 5px;
-            color: darkcyan;
+            padding: 5px 10px;
             font-size: 14px;
-        }
-        .moment-date{
-            color: darkcyan;
+            font-weight: bold;
         }
         tbody tr:hover{
             background-color: rgba(0,0,0,0.2);
             cursor: pointer;
         }
         th{
-            font-weight: bold;
-            color: #493da8;
+            color: #006064;
         }
         td, th {
             border: 1px solid #dddddd;

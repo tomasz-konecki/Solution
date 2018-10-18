@@ -6,9 +6,11 @@ import Spinner from "../../common/spinner/spinner";
 import { Link } from 'react-router-dom';
 import PromptsCommander from '../../promptsCommander/promptsCommander';
 import DatePicker from "react-datepicker";
+import { translate } from 'react-translate';
 
 const genReport = ({
   shouldOpenModal,
+  t,
   closeModal,
   addList,
   pagesList,
@@ -40,7 +42,9 @@ const genReport = ({
       contentLabel="Generate report modal"
       onClose={closeModal}
     >
-      <h3>Wybierz numery stron dla poszczególnych raportów</h3>
+      <header>
+        <h3>{t("GenerateReportModalTitle")}</h3>
+      </header>
       <ul className="reports-items-list">
         {addList.map((i, index) => {
           return (
@@ -48,17 +52,12 @@ const genReport = ({
               className={pagesList !== undefined ? pagesList[index].error ? "inc-list-item" : "" : ""}
               key={index}
             >
-              <label>{i.name} <b><i className="fa fa-users"></i>{i.numberOfMemberInDB}</b></label>
-              <i
+              <label>{i.name} <b><i title={t("Employees")} className="fa fa-users"></i>{i.numberOfMemberInDB}</b></label>
+              <i title={t("Delete")}
                 onClick={!isStarted ? () => deleteTeamFromResultList(index) : null}
                 className="fa fa-minus"
               />
-              <input
-                value={pagesList[index].value}
-                type="text"
-                id={index}
-                onChange={onChangeReportPages}
-              />
+              <input value={pagesList[index].value} type="text" id={index} onChange={onChangeReportPages} />
             </li>
           );
         })}
@@ -70,7 +69,7 @@ const genReport = ({
                 <div className="icon-container">
                   <i className="fa fa-folder" />
                   <span onClick={() => window.open(choosenFolder.webUrl)}>
-                    Otwórz w 
+                    {t("OpenIn")}
                     <i className={`fab ${currentPath.search(startPathname+"/onedrive") !== -1 ?
                       "fa-windows" : "fa-google-drive"}`}></i>
                   </span>
@@ -80,25 +79,25 @@ const genReport = ({
                 <article className="folder-details">
                   {choosenFolder.id && (
                     <p>
-                      <span>Identyfikator: </span>
+                      <span>{t("Identity")}: </span>
                       <b>{choosenFolder.id}</b>
                     </p>
                   )}
                   {choosenFolder.name && (
                     <p>
-                      <span>Nazwa: </span>
+                      <span>{t("Name")}: </span>
                       <b>{choosenFolder.name}</b>
                     </p>
                   )}
                   {choosenFolder.createDateTime && (
                     <p>
-                      <span>Data utworzenia: </span>
+                      <span>{t("CreationDate")}: </span>
                       <b>{choosenFolder.createDateTime}</b>
                     </p>
                   )}
                   {choosenFolder.parentPath && (
                     <p>
-                      <span>Ścieżka: </span>
+                      <span>{t("Path")}: </span>
                       <b>{choosenFolder.parentPath}</b>
                     </p>
                   )}
@@ -107,9 +106,8 @@ const genReport = ({
             
               {isUrlDifferentFromFoldersUrl && 
               <article className="gen-report-not-able-to-gen-prompt">
-                Aby wygenerować raport musisz wybrać folder docelowy. Folder docelowy znajdziesz na jednym z dysków
-                umieszczonych w GoogleDrive lub OneDrive.
-                <Link onClick={closeModal} to={startPathname + "/choose"}>Kliknij tutaj</Link>, aby przejść do zakładki szybciej.
+                {t("FirstInfo")}
+                <Link onClick={closeModal} to={startPathname + "/choose"}>{t("ClickHere")}</Link>, {t("SecondInfo")}.
               </article>
               }
           <SpinnerButton
@@ -117,19 +115,19 @@ const genReport = ({
             submitResult={{
               status: generateReportStatus,
               content: generateReportStatus
-                ? "Pomyślnie wygenerowano raport"
+                ? t("SuccGenReport")
                 : generateReportErrors[0]
             }}
             isLoading={isReportGenerating || isStarted}
             onClickHandler={(!isReportGenerating && !generateReportStatus && !isStarted) ? 
               generateReport : null
               }
-            btnTitle="Generuj raport"
+            btnTitle={t("GenReport")}
           />
         {shouldLetGenerate &&
           <div className="availableUntil">
             <input type="checkbox" id="availableUntilCheckbox" onChange={handleAvailableUntilToggle}/>
-            <label htmlFor="availableUntilCheckbox">Tylko pracownicy dostępni w dniu:</label>
+            <label htmlFor="availableUntilCheckbox">{t("EmployeesInDay")}:</label>
             <DatePicker 
               startDate={availableUntilStartDate}
               minDate={availableUntilStartDate}
@@ -145,7 +143,7 @@ const genReport = ({
         {shouldLetGenerate &&
         <React.Fragment>
           <input type="checkbox" id="saveAsFavoriteCheckbox" onChange={addToFavorites}/>
-          <label htmlFor="saveAsFavoriteCheckbox">Dodaj ten raport do ulubionych</label>
+          <label htmlFor="saveAsFavoriteCheckbox">{t("AddFav")}</label>
         </React.Fragment>
         }
         </div>
@@ -156,4 +154,4 @@ const genReport = ({
   );
 };
 
-export default genReport;
+export default translate("GenerateReportModal")(genReport);

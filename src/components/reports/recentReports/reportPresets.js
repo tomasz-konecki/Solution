@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import "./reportPresets.scss";
+import { translate } from 'react-translate';
 import Icon from "../../common/Icon";
 
 class reportPresets extends Component {
@@ -16,7 +17,7 @@ class reportPresets extends Component {
             reports,
             reportsStatus,
             reportsErrors,
-            onDelete
+            onDelete, t
         } = this.props;
         const collapsedIcon = <Icon icon="caret-right" />
         const expandedIcon = <Icon icon="caret-down" />
@@ -34,8 +35,8 @@ class reportPresets extends Component {
                                     <React.Fragment key={report.id}>
                                         <thead>
                                             <tr key={report.id}>
-                                                <th>Team</th>
-                                                <th>Strona</th>
+                                                <th>{t("Team")}</th>
+                                                <th>{t("Page")}</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -46,8 +47,8 @@ class reportPresets extends Component {
                                                         <td className="innerCell centerCell">{teamSheet.sheet}</td>
                                                         {i == 0 && <td rowSpan={report.teamSheets.length} className="generateCell">
                                                             <div>
-                                                                <div onClick={() => chooseRecentReport(report.teamSheets)}>Wybierz te teamy</div>
-                                                                {onDelete && <div onClick={() => onDelete(report.id)}>Usuń</div>}
+                                                                <div onClick={() => chooseRecentReport(report.teamSheets)}>{t("SelectThisTeams")}</div>
+                                                                {onDelete && <div onClick={() => onDelete(report.id)}>{t("Delete")}</div>}
                                                             </div>
                                                         </td>}
                                                     </tr>)
@@ -65,4 +66,4 @@ class reportPresets extends Component {
     }
 }
 
-export default reportPresets;
+export default translate("ReportsPresets")(reportPresets);

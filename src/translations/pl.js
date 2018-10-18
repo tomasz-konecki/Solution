@@ -719,8 +719,94 @@ const translations = {
     SelectPersons: "Wybierz osoby",
     Shared: "Udostępnione",
   },
-  Reports: {
-    LoadingAccountDataPrompt: "Trwa pobieranie zawartości chmury. Proszę czekać..."
+  ReportsCloudView: {
+    LoadingAccountDataPrompt: "Trwa pobieranie zawartości chmury. Proszę czekać...",
+    ActualPath: "Aktualna ścieżka",
+    AddFolder: "Dodaj folder",
+    Create: "Stwórz",
+    WriteFolderName: "wpisz nazwę folderu...",
+    Back: "Cofnij",
+    ThisFolderIsEmpty: "Ten folder jest pusty...",
+    Refresh: "Odśwież",
+    AreYouSureToDelete: "Czy jesteś pewny, że chcesz usunać ten folder",
+    Delete: "Usuń",
+    Deny: "Anuluj",
+    SuccCreatedFolder: "Folder pomyślnie utworzony",
+    SuccEditedFolder: "Folder został pomyślnie edytowany",
+    SuccDeletedFolder: "Folder został usunięty",
+    SuccAddedFile: "Pilk został pomyślnie dodany"
+  },
+  FilePicker: {
+    SelectFileToAdd: "wybierz plik do dodania...",
+    Send: "Prześlij"
+  },
+  Files: {
+    Sort: "Sortuj",
+    Deny: "Anuluj",
+    Confirm: "Potwierdź",
+    OpenFolder: "Przejdź do tego folderu",
+    DeleteFolder: "Usuń ten folder",
+    Edit: "Edytuj",
+    ChooseFolderForLink: "Stwórz link do udostępnienia",
+    Type: "Typ",
+    Size: "Rozmiar",
+    Path: "Ścieżka",
+    Open: "Otwórz",
+    ChooseFolderToGenerate: "Wybierz ten folder, aby wygenerować raport"
+  },
+  ReportsContainer: {
+    FavReports: "Ulubione raporty",
+    LastReports: "Ostatnie raporty",
+    Back: "Wróć"
+  },
+  ReportsNavigation: {
+    FirstPage: "Wybierz drużyny",
+    SecondPage: "Wybierz rodzaj chmury",
+    GDrivePage: "Wybierz folder docelowy z twojego dysku Google Drive",
+    OneDrivePage: "Wybierz folder docelowy z twojego dysku One Drive",
+    SearchTeamPlaceholder: "wpisz nazwę drużyny...",
+    Generate: "Generuj",
+    Teams: "Drużyny",
+    Folders: "Foldery",
+    AddItems: "dodano",
+    FoundItems: "znaleziono",
+    First: "pierwszy",
+    Secondly: "drugi",
+    LastStepName: "ostatni",
+    StepName: "etap generowania raportów"
+  },
+  ReportsContent: {
+    NotFoundResults: "Brak wyników dla podanego ciągu znaków",
+    AllTeams: "Lista drużyn",
+    NumberOfEmployees: "Liczba pracowników"
+  },
+  ReportsPresets: {
+    Page: "Strona",
+    SelectThisTeams: "Wybierz",
+    Delete: "Usuń",
+    Team: "Drużyna"
+  },
+  GenerateReportModal: {
+    GenerateReportModalTitle: "Wybierz ilość stron dla poszczególnych drużyn",
+    Delete: "Delete",
+    Employees: "Liczba pracowników",
+    Identity: "Identyfikator",
+    Size: "Rozmiar",
+    Name: "Nazwa",
+    CreationDate: "Data utworzenia",
+    Path: "Ścieżka",
+    ClickHere: "Kliknij tutaj",
+    FirstInfo: "Aby wygenerować raport musisz wybrać folder docelowy. Folder docelowy znajdziesz na jednym z dysków umieszczonych w GoogleDrive lub OneDrive.",
+    SecondInfo: "aby przejść dalej",
+    EmployeesInDay: "Tylko pracownicy dostępni w dniu",
+    AddFav: "Dodaj ten raport do ulubionych",
+    SuccGenReport: "Raport został pomyślnie wygenerowany",
+    GenReport: "Generuj raport",
+    CurrentCreatedLink: "Link został utworzony",
+    CreatingLink: "Link do udostępnienia jest tworzony",
+    CreatedLink: "Stworzony link do udostępnienia",
+    OpenIn: "Otwórz w",
+    Open: "Otwórz"
   }
 };
 

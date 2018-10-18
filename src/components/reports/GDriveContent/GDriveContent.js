@@ -186,7 +186,6 @@ class GDriveContent extends React.Component{
        window.open(this.props.generatedGDriveSharedLink);
        this.closeShareLinkModal();
     }
-   
 
     render(){
         const { isLoading, folderIsLoadingId, showDeleteModal,
@@ -211,7 +210,7 @@ class GDriveContent extends React.Component{
                     loginStatus ? 
                     <div className="navigation-folders-container">
                         <header>
-                            <h3>Aktualna ścieżka: <span>{path}</span></h3>
+                            <h3>{t("ActualPath")}: <span>{path}</span></h3>
                             {newFolderNameError && !folderNameError && 
                                 <p className="validation-error">
                                 {newFolderNameError}</p>
@@ -224,7 +223,7 @@ class GDriveContent extends React.Component{
                                 <Button
                                 onClick={!showAddingFolderInput ? () => this.setState({showAddingFolderInput: true}) : null}
                                 disable={isAddingFolder || newFolderNameError}
-                                title={showAddingFolderInput || "Dodaj folder"}
+                                title={!showAddingFolderInput ? t("AddFolder") : ""}
                                 mainClass="generate-raport-btn btn-green"
                                 >
                                     {showAddingFolderInput && 
@@ -234,12 +233,12 @@ class GDriveContent extends React.Component{
                                   
                                         onKeyPress={e => this.onKeyPress(e)}
                                         onChange={e => this.onChangeNewFolderName(e)}
-                                        type="text" placeholder="wpisz nazwę folderu..." />
+                                        type="text" placeholder={t("WriteFolderName")} />
                                     }
                                     <span onClick={this.openAddingFolderInput} >
                                         <i onClick={this.addFolder} className="fa fa-folder">
                                         </i>
-                                        {showAddingFolderInput && "Stwórz"} 
+                                        {showAddingFolderInput && t("Create")} 
                                     </span>
                                     
 
@@ -251,14 +250,14 @@ class GDriveContent extends React.Component{
                             {path !== startPath && getFoldersStatus &&
                             <Button 
                             onClick={(this.goToFolderBefore)}
-                            mainClass="generate-raport-btn btn-transparent" title="Cofnij">
+                            mainClass="generate-raport-btn btn-transparent" title={t("Back")}>
                                 <i className="fa fa-long-arrow-alt-left"></i>
                             </Button> 
                             } 
                         </header>
                         {folders.length === 0 && getFoldersStatus ? 
                             <p className="empty-files-list">
-                                Ten folder jest pusty...
+                                {t("ThisFolderIsEmpty")}
                             </p> : 
 
                             <FilesList 
@@ -297,9 +296,10 @@ class GDriveContent extends React.Component{
                 open={showDeleteModal} 
                 content="Delete project modal"
                 onClose={this.closeModal} 
-                header="Czy jesteś pewny, że chcesz usunąć ten folder?"
+                header={t("AreYouSureToDelete")}
                 operation={this.deleteFolder} 
-                operationName="Usuń"
+                operationName={t("Delete")}
+                denyName={t("Deny")}
                 >
                     <React.Fragment>
                         {(loading || deleteFolderStatus === false) &&
@@ -333,7 +333,7 @@ class GDriveContent extends React.Component{
                     <OperationStatusPrompt
                     key={0} 
                     operationPromptContent={createFolderStatus ? 
-                        "Folder utworzony pomyślnie" : createFolderErrors[0]}
+                        t("SuccCreatedFolder") : createFolderErrors[0]}
                     operationPrompt={createFolderStatus}
                     />
                 }
@@ -342,7 +342,7 @@ class GDriveContent extends React.Component{
                     <OperationStatusPrompt
                     key={1} 
                     operationPromptContent={deleteFolderStatus ? 
-                        "Folder został pomyślnie usunięty" : deleteFolderErrors[0]}
+                        t("SuccDeletedFolder") : deleteFolderErrors[0]}
                     operationPrompt={deleteFolderStatus}
                     />
                 }
@@ -351,7 +351,7 @@ class GDriveContent extends React.Component{
                     <OperationStatusPrompt 
                     key={2} 
                     operationPromptContent={updateFolderStatus ? 
-                        "Folder został pomyślnie edytowany" : updateFolderErrors[0]}
+                        t("SuccEditedFolder") : updateFolderErrors[0]}
                     operationPrompt={updateFolderStatus}
                     />
                 }
@@ -360,7 +360,7 @@ class GDriveContent extends React.Component{
                     <OperationStatusPrompt 
                     key={3} 
                     operationPromptContent={uploadFileStatus ? 
-                        "Pomyślnie dodano plik" : uploadFileErrors[0]}
+                        t("SuccAddedFile") : uploadFileErrors[0]}
                     operationPrompt={uploadFileStatus}
                     />
                 }
@@ -422,5 +422,5 @@ const mapStateToProps = state => {
     };
   };
   
-  export default connect(mapStateToProps, mapDispatchToProps)(translate("Reports")(GDriveContent));
+  export default connect(mapStateToProps, mapDispatchToProps)(translate("ReportsCloudView")(GDriveContent));
   

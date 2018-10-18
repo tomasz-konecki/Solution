@@ -27,6 +27,7 @@ import GDriveContent from "./GDriveContent/GDriveContent";
 import { Route } from "react-router-dom";
 import { createSignalRConnection } from "../../actions/progressBarActions";
 import { generateSortFunction } from "../../services/methods";
+import { translate } from 'react-translate';
 const startPathname = "/main/reports";
 import moment from "moment";
 
@@ -292,34 +293,10 @@ class ReportsContainer extends Component {
   };
 
   render() {
-    const {
-      reportModal,
-      spinner,
-      valueToSearch,
-      isReportGenerating,
-      extendId
-    } = this.state;
-    const {
-      addList,
-      baseList,
-      folders,
-      pagesList,
-      choosenFolder,
-      generateReportStatus,
-      generateReportErrors,
-      getFoldersStatus,
-      getFoldersErrors,
-      path,
-      loadTeamsResult,
-      loadTeamsErrors,
-      history,
-      isStarted,
-      driveSortType,
-      changeSortBy,
-      reportsStatus,
-      reports,
-      reportsErrors
-    } = this.props;
+    const { reportModal, spinner, valueToSearch, isReportGenerating, extendId } = this.state;
+    const { addList, baseList, folders, pagesList, choosenFolder, generateReportStatus, generateReportErrors,
+      getFoldersStatus, getFoldersErrors, path, loadTeamsResult, loadTeamsErrors, history, isStarted, driveSortType,
+      changeSortBy, reportsStatus, reports, reportsErrors, t } = this.props;
     const { push } = history;
     const { pathname } = history.location;
     return (
@@ -386,6 +363,7 @@ class ReportsContainer extends Component {
           render={() => {
             return (
               <ChooseDriveView
+                BackTranslation={t("Back")}
                 goToNonePage={() => push(startPathname)}
                 selectOneDrive={() => this.clearDrivesData("/onedrive")}
                 selectGDrive={() => this.clearDrivesData("/gdrive")}
@@ -400,30 +378,33 @@ class ReportsContainer extends Component {
           render={() => {
             return (
               <React.Fragment>
-                <ReportPresets
-                  chooseRecentReport={this.chooseRecentReport}
-                  reports={reports.favoriteReports}
-                  reportsStatus={reportsStatus}
-                  reportsErrors={reportsErrors}
-                  onDelete={this.unfavorite}
-                >
-                  <h1>Ulubione raporty</h1>
-                </ReportPresets>
-                <ReportPresets
-                  chooseRecentReport={this.chooseRecentReport}
-                  reports={reports.recentReports}
-                  reportsStatus={reportsStatus}
-                  reportsErrors={reportsErrors}
-                >
-                  <h1>Ostatnie raporty</h1>
-                </ReportPresets>
-                <ReportsContent
-                  spinner={spinner}
-                  loadTeamsResult={loadTeamsResult}
-                  baseList={baseList}
-                  addTeamToResultList={this.addTeamToResultList}
-                  loadTeamsErrors={loadTeamsErrors}
-                />
+                {spinner ? <Spinner fontSize="7px" /> : 
+                <React.Fragment>
+                  <ReportPresets
+                    chooseRecentReport={this.chooseRecentReport}
+                    reports={reports.favoriteReports}
+                    reportsStatus={reportsStatus}
+                    reportsErrors={reportsErrors}
+                    onDelete={this.unfavorite}
+                  >
+                  <h1>{t("FavReports")}</h1>
+                  </ReportPresets>
+                  <ReportPresets
+                    chooseRecentReport={this.chooseRecentReport}
+                    reports={reports.recentReports}
+                    reportsStatus={reportsStatus}
+                    reportsErrors={reportsErrors}
+                  >
+                    <h1>{t("LastReports")}</h1>
+                  </ReportPresets>
+                  <ReportsContent
+                    loadTeamsResult={loadTeamsResult}
+                    baseList={baseList}
+                    addTeamToResultList={this.addTeamToResultList}
+                    loadTeamsErrors={loadTeamsErrors}
+                  />
+                </React.Fragment>
+              }
               </React.Fragment>
             );
           }}
@@ -534,4 +515,6 @@ const mapDispatchToProps = dispatch => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withRouter(ReportsContainer));
+)(translate("ReportsContainer")(withRouter(ReportsContainer)));
+
+

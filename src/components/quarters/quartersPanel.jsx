@@ -13,7 +13,6 @@ import PlanQuarter from './planQuarter/planQuarter';
 import AuthWithOutlook from './authWithOutlookComponent/authWithOutlookComponent';
 import FindUserModal from './others/findUserModal/findUserModal';
 import { translate } from 'react-translate';
-// employeContent 55
 const linkTypes = {
     "plan": "/employees/plan/",
     "addquarter": "/employees/addquarter/",
@@ -52,9 +51,6 @@ class Quarters extends React.PureComponent{
             }
         }
     }
-
-    // To do: 
-    // adding events to callendar, removing events from callendar
   
     render(){
         const { match, history, lastWatchedPersons, planQuarterACreator, createLastWatchedPersonsArray,

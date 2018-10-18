@@ -4,8 +4,9 @@ import Spinner from '../../common/spinner/spinner';
 import './modal.scss';
 import ServerError from '../../common/serverError/serverError';
 import Button from '../../common/button/button';
+import { translate } from 'react-translate';
 const generateReportModal = ({shouldOpenModal, closeModal, generateShareLinkStatus, generateShareLinkErrors,
-    generatedShareLink, fileToShare, path, copyLink, isOneDrive}) => (
+    generatedShareLink, fileToShare, path, copyLink, isOneDrive, t}) => (
     <Modal
     key={1}
     open={shouldOpenModal}
@@ -16,30 +17,30 @@ const generateReportModal = ({shouldOpenModal, closeModal, generateShareLinkStat
     {fileToShare && 
     <React.Fragment>
         <header>
-            <h3>{generateShareLinkStatus === null ? "Tworzenie linku do udostępnienia" : "Stworzony link do udostępnienia"}</h3>    
+            <h3>{generateShareLinkStatus === null ? t("CreatingLink") : t("CreatedLink")}</h3>    
         </header>
         {generateShareLinkStatus !== null ?
             generateShareLinkStatus ? 
             <div className="gen-link-modal-container">
                 <article>
-                    <p>Własnie stworzono link do udostępniania pliku: <b>{fileToShare.name}</b></p>
+                    <p>{t("CurrentCreatedLink")}: <b>{fileToShare.name}</b></p>
                     <div>
                         <figure>
                             <i className={`fa ${fileToShare.type === "folder" ? "fa-folder" : "fa-file"}`}></i>
-                            <span onClick={copyLink}>Otwórz w 
+                            <span onClick={copyLink}>{t("OpenIn")}
                                 <i className={`fab ${isOneDrive ?
                                 "fa-windows" : "fa-google-drive"}`}>
                                 </i>
                             </span>
                         </figure>
                         <div>
-                            <p><span>Identyfikator: </span><b>{fileToShare.id}</b></p>
-                            <p><span>Nazwa: </span><b>{fileToShare.name}</b></p>
+                            <p><span>{t("Identity")}: </span><b>{fileToShare.id}</b></p>
+                            <p><span>{t("Name")}: </span><b>{fileToShare.name}</b></p>
                             {fileToShare.size && 
-                                <p><span>Rozmiar: </span><b>{fileToShare.size}</b></p>
+                                <p><span>{t("Size")}: </span><b>{fileToShare.size}</b></p>
                             }
                             {fileToShare.parentPath && 
-                                <p><span>Ścieżka: </span><b>{fileToShare.parentPath}</b></p>
+                                <p><span>{t("Path")}: </span><b>{fileToShare.parentPath}</b></p>
                             }
                         </div>
                     </div>
@@ -50,7 +51,7 @@ const generateReportModal = ({shouldOpenModal, closeModal, generateShareLinkStat
                     </span>
                     <Button onClick={copyLink}
                     mainClass="option-btn option-dang">
-                        Skopiuj link <i className="fa fa-copy"></i>
+                        {t("Open")} <i className="fa fa-copy"></i>
                     </Button>
                 </div>
             </div> : 
@@ -61,10 +62,8 @@ const generateReportModal = ({shouldOpenModal, closeModal, generateShareLinkStat
         }
     </React.Fragment>
     }
-    
-    
   </Modal>
 
 );
 
-export default generateReportModal;
+export default translate("GenerateReportModal")(generateReportModal);

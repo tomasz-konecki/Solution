@@ -260,7 +260,8 @@ const translations = {
     Worker: "Worker",
     WorkerPlaceholder: "type username...",
     Deny: "Deny",
-    MakeSureYouWantDeleteQuarter: "You are sure you want to delete this quarter?",
+    MakeSureYouWantDeleteQuarter:
+      "You are sure you want to delete this quarter?",
     AddQuarterTalk: "Add quarter talk",
     Options: "Options",
     AddQuestion: "Add question",
@@ -270,7 +271,7 @@ const translations = {
     SuccDeleteQuestion: "The question was successfully removed",
     Date: "Date",
     Quarter: "Quarter",
-    QuestionWillBeHere: "question will be here" ,
+    QuestionWillBeHere: "question will be here",
     ChooseOrSelectQuarter: "choose or select quarter...",
     SuccAddedQuarter: "Quarter talk has been added",
     QuarterItemSubHeader: "carried out",
@@ -302,7 +303,7 @@ const translations = {
     ConfirmQuestions: "Confirm questions",
     ForQuarter: "for",
     In: "in",
-    InYear: "year"  ,
+    InYear: "year",
     DoneQuarter: "This conversation was carried out",
     IncomingQuarter: "This conversation will only take place"
   },
@@ -475,7 +476,7 @@ const translations = {
     InsertLastName: "insert last name...",
     PhoneNumber: "Phone number",
     InsertPhoneNumber: "insert phone number...",
-    ResponsiblePerson: "Responsible person",
+    ResponsiblePerson: "Responsible person"
   },
   ProjectDetails: {
     GeneralInfo: "Overview",
@@ -525,7 +526,7 @@ const translations = {
     Add: "Add",
     ToFill: "To Fill",
     ToFillEmail: "to@fill.com",
-    Share:"Share",
+    Share: "Share"
   },
   ProjectRowUnfurl: {
     OwnersList: "Owners",
@@ -699,13 +700,18 @@ const translations = {
     OnDate: "on",
     GoIntoEmployeeDetails: "Go to employee details"
   },
-  ShareProject:{
-    ShareProject:"Share project",
+  ShareProject: {
+    ShareProject: "Share project",
     Confirm: "Confirm",
     ChangesSaved: "Changes has been saved",
     NotFound: "Not found",
     SelectPersons: "Select persons",
     Shared: "Shared"
+  },
+  Info: {
+    YourRoleIs: "Your role is",
+    RoleError: "Ups, something went wrong...",
+    SearchingUsersAccounts: "Searching Users Accounts"
   }
 };
 

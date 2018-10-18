@@ -263,7 +263,8 @@ const translations = {
     Worker: "Pracownik",
     WorkerPlaceholder: "wpisz nazwę użytkownika...",
     Deny: "Anuluj",
-    MakeSureYouWantDeleteQuarter: "Czy jesteś pewny, że chcesz usunąć tą rozmowę kwartalną?",
+    MakeSureYouWantDeleteQuarter:
+      "Czy jesteś pewny, że chcesz usunąć tą rozmowę kwartalną?",
     AddQuarterTalk: "Dodaj rozmowę kwartalną",
     Options: "Opcje",
     AddQuestion: "Dodaj pytanie",
@@ -273,11 +274,11 @@ const translations = {
     SuccDeleteQuestion: "Pomyślnie usunięto pytanie",
     Date: "Data",
     Quarter: "Kwartał",
-    QuestionWillBeHere: "tu pojawi się pytanie" ,
+    QuestionWillBeHere: "tu pojawi się pytanie",
     ChooseOrSelectQuarter: "wpisz lub wybierz kwartał...",
     SuccAddedQuarter: "Pomyślnie utworzono rozmowę kwartalną",
     QuarterItemSubHeader: "przeprowadził",
-    Reactivate: "Reaktywuj", 
+    Reactivate: "Reaktywuj",
     Conduct: "przeprowadzi",
     QuarterDeletedPrompt: "Ta rozmowa jest usunięta",
     Year: "Rok",
@@ -305,7 +306,7 @@ const translations = {
     ConfirmQuestions: "Zatwierdź pytania",
     ForQuarter: "za",
     In: "w",
-    InYear: "roku"  ,
+    InYear: "roku",
     DoneQuarter: "Ta rozmowa została przeprowadzona",
     IncomingQuarter: "Ta rozmowa dopiero się odbędzie"
   },
@@ -476,7 +477,7 @@ const translations = {
     InsertLastName: "wprowadź nazwisko...",
     PhoneNumber: "Numer telefonu",
     InsertPhoneNumber: "wprowadź numer telefonu...",
-    ResponsiblePerson: "Osoba do kontaktu",
+    ResponsiblePerson: "Osoba do kontaktu"
   },
   ProjectDetails: {
     GeneralInfo: "Informacje ogólne",
@@ -526,7 +527,7 @@ const translations = {
     ToFill: "Do uzupełnienia",
     ToFillEmail: "do@uzupełnienia.com",
     Add: "Dodaj",
-    Share:"Udostępnij",
+    Share: "Udostępnij"
   },
   ResponsiblePersonBlock: {
     NameNoSpecial: "Imię nie może zawierać znaków specjalnych ani cyfr.",
@@ -624,7 +625,7 @@ const translations = {
     DeleteProjectInfinitive: "Usunąć projekt",
     ProjectDeleted: "Projekt został usunięty",
     ReactivateProjectInfinitive: "Reaktywować projekt",
-    ProjectReactivated: "Projekt został reaktywowany",
+    ProjectReactivated: "Projekt został reaktywowany"
   },
   TeamMember: {
     AssignedCapacity: "Przypisany na etat",
@@ -710,13 +711,16 @@ const translations = {
     OnDate: "w dniu",
     GoIntoEmployeeDetails: "Przejdź do szczegółów pracownika"
   },
-  ShareProject :{
-    ShareProject:"Udostępnij projekt",
+  ShareProject: {
+    ShareProject: "Udostępnij projekt",
     Confirm: "Zatwierdź",
     ChangesSaved: "Zmiany zostały zapisane",
     NotFound: "Nie znaleziono",
     SelectPersons: "Wybierz osoby",
-    Shared: "Udostępnione",
+    Shared: "Udostępnione"
+  },
+  Info: {
+    YourRoleIs: "Your role is "
   }
 };
 

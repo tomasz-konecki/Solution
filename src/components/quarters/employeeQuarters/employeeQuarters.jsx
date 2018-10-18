@@ -8,7 +8,6 @@ import List from '../../common/list/list';
 import Button from '../../common/button/button.js';
 import QuarterListItem from '../others/quarterListItem/quarterListItem';
 import QuarterDetailsItem from '../others/quarterDetailsItem/quarterDetailsItem';
-import { getEmployeeId } from '../../../services/methods.js';
 import ConfirmModal from '../../common/confimModal/confirmModal.js';
 import OperationStatusPrompt from '../../form/operationStatusPrompt/operationStatusPrompt.js';
 import Spinner from '../../common/spinner/spinner.js';
@@ -35,20 +34,20 @@ class EmployeeQuarters extends React.PureComponent{
     ]
 
     componentDidMount(){
-        this.getQuartersForEmployeeHandler(getEmployeeId());
+        this.getQuartersForEmployeeHandler(this.props.currentWatchedUser);
     }
     
     componentDidUpdate(prevProps){
-        if(prevProps.history.location.search !== this.props.history.location.search){
+        if(this.props.currentWatchedUser !== prevProps.currentWatchedUser){
             this.setState({isLoadingQuarters: true});
             this.getQuartersForEmployeeHandler();
         }
     }
 
     getQuartersForEmployeeHandler = () => {
-        const { history, getQuartersForEmployeeACreator } = this.props;
+        const { history, getQuartersForEmployeeACreator, currentWatchedUser } = this.props;
         const { state } = history.location;
-        getQuartersForEmployeeACreator(getEmployeeId())
+        getQuartersForEmployeeACreator(currentWatchedUser)
         .then(items => {
             let quarterIdToSet = 0;
             if(state){
@@ -105,7 +104,8 @@ class EmployeeQuarters extends React.PureComponent{
     render(){
         const { isLoadingQuarters, currentWatchedQuarterDetail, quarterToDeleteId, isDeletingQuarter, isChangingSomethingInQuarterList } = this.state;
         const { t, deleteQuarterTalk, deleteQuarterStatus, deleteQuarterErrors, getQuartersForEmployee, quartersForEmployee, 
-            quartersForEmployeeStatus, quartersForEmployeeErrors, shouldLoadDataAfterLinkChange, generateDocStatus, generateDocErrors, generateQuarterDoc } = this.props;
+            quartersForEmployeeStatus, quartersForEmployeeErrors, shouldLoadDataAfterLinkChange, 
+            generateDocStatus, generateDocErrors, generateQuarterDoc, currentWatchedUser } = this.props;
         return (
             <LoadHandlingWrapper errors={quartersForEmployeeErrors} closePrompt={() => getQuartersForEmployee([], null, [])} 
                 operationStatus={quartersForEmployeeStatus} isLoading={isLoadingQuarters}>
@@ -127,7 +127,7 @@ class EmployeeQuarters extends React.PureComponent{
                             QuarterDeletedPrompt: t("QuarterDeletedPrompt")
                         }}
                         shouldAnimateList clickItemFunction={this.onClickOperationHandler} items={quartersForEmployee} component={QuarterListItem} 
-                        listTitle={`${t("QuaterTalks")} ${getEmployeeId()}`}
+                        listTitle={`${t("QuaterTalks")} ${currentWatchedUser}`}
                             allKeysOfItems={["id", "isTaken", "year", "quarter" ,"quarterTalkQuestionItems", "questionerId", "plannedTalkDate"]}/>
                     </div>
                     <div className="quarter-detail">

@@ -116,8 +116,8 @@ class Quarters extends React.PureComponent{
                             <AddQuarter history={history} currentWatchedUser={currentWatchedUser} onCloseModal={() => this.handleBtnClick(`${match.url}/employees`, true)}/>
                         )} />
                         <Route exact path={`${match.url}/employees/:id`} render={() => (
-                            <EmployeeQuarters lastWatchedPersons={lastWatchedPersons} redirectToPopulatingQuarter={(quarterId) => this.handleBtnClick(`${match.url}/employees/addquarter`, true, quarterId)}
-                            history={history} />
+                            <EmployeeQuarters redirectToPopulatingQuarter={(quarterId) => this.handleBtnClick(`${match.url}/employees/addquarter`, true, quarterId)}
+                            history={history} currentWatchedUser={currentWatchedUser} />
                         )}/>
 
                     </Switch>   

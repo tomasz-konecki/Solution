@@ -25,7 +25,12 @@
         text-align: center;
         cursor: pointer;
         font-weight: bold;
-        transition: 0.3s all ease-in-out;
+        transition: .3s;
+        @media(max-width: 400px){
+            width: 250px;
+            margin: 15px 0;
+            height: 250px;
+        }
         .fa-share-alt-square{
             position: absolute;
             left: 0;
@@ -33,10 +38,6 @@
             margin: 0 auto;
             bottom: 7.5px;
             font-size: 20px;
-        }
-        @media(max-width: 400px){
-            width: 250px;
-            height: 250px;
         }
         .fa-folder-open{
             position: absolute;

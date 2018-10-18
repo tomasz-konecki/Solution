@@ -36,9 +36,10 @@ const generateReportModal = ({shouldOpenModal, closeModal, generateShareLinkStat
                         <div>
                             <p><span>{t("Identity")}: </span><b>{fileToShare.id}</b></p>
                             <p><span>{t("Name")}: </span><b>{fileToShare.name}</b></p>
-                            {fileToShare.size && 
+                            {fileToShare.size && fileToShare.size > 0 && 
                                 <p><span>{t("Size")}: </span><b>{fileToShare.size}</b></p>
                             }
+
                             {fileToShare.parentPath && 
                                 <p><span>{t("Path")}: </span><b>{fileToShare.parentPath}</b></p>
                             }
@@ -50,8 +51,8 @@ const generateReportModal = ({shouldOpenModal, closeModal, generateShareLinkStat
                         {generatedShareLink}
                     </span>
                     <Button onClick={copyLink}
-                    mainClass="option-btn option-dang">
-                        {t("Open")} <i className="fa fa-copy"></i>
+                    mainClass="generate-raport-btn btn-green">
+                        <i className="fa fa-copy" /> {t("Open")} 
                     </Button>
                 </div>
             </div> : 

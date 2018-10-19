@@ -1,5 +1,6 @@
 import React, { PureComponent } from "react";
 import "./ApiEndPoint.scss";
+import SmallSpinner from "../../../common/spinner/small-spinner";
 
 class ApiEndPoint extends PureComponent {
   constructor(props) {
@@ -10,16 +11,23 @@ class ApiEndPoint extends PureComponent {
     const { endPoints, name } = this.props;
 
     const listOfPermissions = endPoints.map((permission, key) => {
-      console.log(permission, "helo");
-      const circle = permission.havePerm ? (
+      console.log("Loading", permission.values.loading, permission.text);
+      console.log("Status:", permission.values.status, permission.text);
+      const circle = permission.values.status ? (
         <div className="circle green" />
       ) : (
         <div className="circle red" />
       );
       return (
-        <div key={key}>
-          <div>{permission.text}</div>
-          <div>{circle}</div>
+        <div key={key} className="api-end-point">
+          <div className="api-end-point-text">{permission.text}</div>
+          <div className="api-end-point-circle">
+            {permission.values.loading ? (
+              <SmallSpinner />
+            ) : (
+              <React.Fragment>{circle}</React.Fragment>
+            )}
+          </div>
         </div>
       );
     });

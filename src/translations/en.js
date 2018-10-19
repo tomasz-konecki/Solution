@@ -711,7 +711,8 @@ const translations = {
   Info: {
     YourRoleIs: "Your role is",
     RoleError: "Ups, something went wrong...",
-    SearchingUsersAccounts: "Searching Users Accounts"
+    SearchingUsersAccounts: "Searching Users Accounts",
+    SearchingProjects: "Searching Projects"
   }
 };
 

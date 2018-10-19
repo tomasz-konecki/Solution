@@ -1,17 +1,13 @@
 .api-end-point-container {
   .circle {
-    width: 200px;
-    height: 200px;
-    line-height: 200px;
-    border-radius: 50%; /* the magic */
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
     -moz-border-radius: 50%;
     -webkit-border-radius: 50%;
     text-align: center;
-    color: white;
-    font-size: 16px;
-    text-transform: uppercase;
-    font-weight: 700;
-    margin: 0 auto 40px;
+    margin: 0 auto;
+    box-shadow: black 1px 1px 1px 0.2px;
   }
 
   .green {
@@ -19,5 +15,20 @@
   }
   .red {
     background-color: #e74c3c;
+  }
+
+  .api-end-point {
+    position: relative;
+    display: flex;
+    .api-end-point-text {
+      width: 90%;
+    }
+    .api-end-point-circle {
+      width: 10%;
+      .small-spiner {
+        position: unset;
+        margin: 0 auto;
+      }
+    }
   }
 }

@@ -8,13 +8,14 @@ import List from '../../common/list/list';
 import Button from '../../common/button/button.js';
 import QuarterListItem from '../others/quarterListItem/quarterListItem';
 import QuarterDetailsItem from '../others/quarterDetailsItem/quarterDetailsItem';
-import { getEmployeeId } from '../../../services/methods.js';
 import ConfirmModal from '../../common/confimModal/confirmModal.js';
 import OperationStatusPrompt from '../../form/operationStatusPrompt/operationStatusPrompt.js';
 import Spinner from '../../common/spinner/spinner.js';
 import { translate } from 'react-translate';
 import { API_ENDPOINT } from '../../../api/index.js';
 import EmptyContent from '../../common/empty-content/empty-content.js';
+import { getEmployeeId } from '../../../services/methods.js';
+
 
 class EmployeeQuarters extends React.PureComponent{
     state = {
@@ -39,16 +40,19 @@ class EmployeeQuarters extends React.PureComponent{
     }
     
     componentDidUpdate(prevProps){
-        if(prevProps.history.location.search !== this.props.history.location.search){
+        const { currentWatchedUser, history, quartersForEmployee } = this.props;
+        const { state } = history.location;
+        if(currentWatchedUser !== prevProps.currentWatchedUser){
             this.setState({isLoadingQuarters: true});
-            this.getQuartersForEmployeeHandler();
+            this.getQuartersForEmployeeHandler(currentWatchedUser);
         }
     }
 
-    getQuartersForEmployeeHandler = () => {
-        const { history, getQuartersForEmployeeACreator } = this.props;
+    getQuartersForEmployeeHandler = employeeId => {
+        const { history, getQuartersForEmployeeACreator, 
+            changeCurrentWatchedUser, currentWatchedUser } = this.props;
         const { state } = history.location;
-        getQuartersForEmployeeACreator(getEmployeeId())
+        getQuartersForEmployeeACreator(employeeId)
         .then(items => {
             let quarterIdToSet = 0;
             if(state){
@@ -56,9 +60,18 @@ class EmployeeQuarters extends React.PureComponent{
                     quarterIdToSet = items.findIndex(item => item.id === state.quarterTalkId);
                 }
             }
+            if(employeeId !== currentWatchedUser){
+                changeCurrentWatchedUser(employeeId);
+                createLastWatchedPersonsArrayACreator(employeeId);
+            }
             this.setState({isLoadingQuarters: false, currentWatchedQuarterDetail: quarterIdToSet});
         })
-        .catch(() => this.setState({isLoadingQuarters: false}));
+        .catch(() => {
+            if(!getEmployeeId()){
+                changeCurrentWatchedUser("");
+            }
+            this.setState({isLoadingQuarters: false});
+        });
     }
 
     onClickOperationHandler = (quarter, operationName) => {
@@ -105,7 +118,8 @@ class EmployeeQuarters extends React.PureComponent{
     render(){
         const { isLoadingQuarters, currentWatchedQuarterDetail, quarterToDeleteId, isDeletingQuarter, isChangingSomethingInQuarterList } = this.state;
         const { t, deleteQuarterTalk, deleteQuarterStatus, deleteQuarterErrors, getQuartersForEmployee, quartersForEmployee, 
-            quartersForEmployeeStatus, quartersForEmployeeErrors, shouldLoadDataAfterLinkChange, generateDocStatus, generateDocErrors, generateQuarterDoc } = this.props;
+            quartersForEmployeeStatus, quartersForEmployeeErrors, shouldLoadDataAfterLinkChange, 
+            generateDocStatus, generateDocErrors, generateQuarterDoc, currentWatchedUser } = this.props;
         return (
             <LoadHandlingWrapper errors={quartersForEmployeeErrors} closePrompt={() => getQuartersForEmployee([], null, [])} 
                 operationStatus={quartersForEmployeeStatus} isLoading={isLoadingQuarters}>
@@ -127,7 +141,7 @@ class EmployeeQuarters extends React.PureComponent{
                             QuarterDeletedPrompt: t("QuarterDeletedPrompt")
                         }}
                         shouldAnimateList clickItemFunction={this.onClickOperationHandler} items={quartersForEmployee} component={QuarterListItem} 
-                        listTitle={`${t("QuaterTalks")} ${getEmployeeId()}`}
+                        listTitle={`${t("QuaterTalks")} ${currentWatchedUser}`}
                             allKeysOfItems={["id", "isTaken", "year", "quarter" ,"quarterTalkQuestionItems", "questionerId", "plannedTalkDate"]}/>
                     </div>
                     <div className="quarter-detail">

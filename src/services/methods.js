@@ -177,3 +177,9 @@ export const pushMomentValuesDynamicly = (limit, startDate, numberOfAdds, valueT
   }
   return items;
 }
+
+export const doSomethingAfterDelay = (timeout, functionReference, ...params) => {
+  setTimeout(() => {
+    functionReference(...params)
+  }, timeout);
+}

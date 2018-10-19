@@ -13,7 +13,7 @@ import storeCreator from "./../store";
 const { store } = storeCreator;
 const selectSortType = state =>
   state.persistHelpReducer.driveSortType
-
+const getFoldersFromStore = state => state.oneDriveReducer.folders;
 
 export const generateShareLink = (generateShareLinkStatus, generateShareLinkErrors, generatedShareLink) => {
   return { type: GENERATE_SHARE_LINK, generateShareLinkStatus, generateShareLinkErrors, generatedShareLink }
@@ -179,41 +179,31 @@ export const createFolderACreator = (folderName, path, token) => {
 };
 
 export const deleteFolder = (deleteFolderStatus, deleteFolderErrors) => {
-  return {
-    type: DELETE_FOLDER,
-    deleteFolderStatus,
-    deleteFolderErrors
-  };
+  return { type: DELETE_FOLDER, deleteFolderStatus, deleteFolderErrors };
 };
 
-export const deleteFolderACreator = (folderId, token, path, choosenFolder) => {
-  return dispatch => {
+export const deleteFolderACreator = (folderId, token, path, choosenFolder) => dispatch => {
     const model = {
       "folderId": folderId,
       "token": token
     };
-    WebApi.oneDrive.post
+      WebApi.oneDrive.post
       .deleteFolder(model)
       .then(response => {
-        dispatch(deleteFolder(true, []));
         if(choosenFolder){
           if(choosenFolder.id === folderId){
             dispatch(chooseFolder(null));
           }
         }
-        
-        dispatch(getFolderACreator(token, path));
-        setTimeout(() => {
-          dispatch(deleteFolder(null, []));
-        }, 4000);
+        const folders = [...getFoldersFromStore(store.getState())];
+        const indexToDelete = folders.findIndex(i => i.id === folderId);
+        folders.splice(indexToDelete, 1);
+        dispatch(getFolders(folders, true, [], path));
+        dispatch(deleteFolder(true, []));
       })
       .catch(error => {
         dispatch(deleteFolder(false, errorCatcher(error)));
-        setTimeout(() => {
-          dispatch(deleteFolder(null, []));
-        }, 4000);
       });
-  };
 };
 
 export const updateFolder = (updateFolderStatus, updateFolderErrors) => {

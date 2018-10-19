@@ -162,8 +162,9 @@ const employeeContent = ({
                 editCapacity={editCapacity}
                 employeeErrors={employeeErrors}
                 canEditFteBar={
-                  binaryPermissioner(false)(0)(1)(1)(1)(1)(1)(binPem) &&
-                  isInManagerTeam
+                  (binaryPermissioner(false)(0)(1)(1)(1)(1)(1)(binPem) &&
+                    isInManagerTeam) ||
+                  binaryPermissioner(false)(0)(1)(0)(0)(0)(1)(binPem)
                 }
               />
 
@@ -174,8 +175,9 @@ const employeeContent = ({
                   employeeErrors={employeeErrors}
                   range={4}
                   canEditDegreeBar={
-                    binaryPermissioner(false)(0)(1)(1)(1)(1)(1)(binPem) &&
-                    isInManagerTeam
+                    (binaryPermissioner(false)(0)(1)(1)(1)(1)(1)(binPem) &&
+                      isInManagerTeam) ||
+                    binaryPermissioner(false)(0)(1)(0)(0)(0)(1)(binPem)
                   }
                 />
               </div>

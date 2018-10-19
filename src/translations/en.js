@@ -525,6 +525,7 @@ const translations = {
     Add: "Add",
     ToFill: "To Fill",
     ToFillEmail: "to@fill.com",
+    Share:"Share",
   },
   ProjectRowUnfurl: {
     OwnersList: "Owners",
@@ -697,7 +698,104 @@ const translations = {
     DaysAgo: "days ago",
     OnDate: "on",
     GoIntoEmployeeDetails: "Go to employee details"
-  }
+  },
+  ShareProject:{
+    ShareProject:"Share project",
+    Confirm: "Confirm",
+    ChangesSaved: "Changes has been saved",
+    NotFound: "Not found",
+    SelectPersons: "Select persons",
+    Shared: "Shared"
+  },
+  ReportsCloudView: {
+    LoadingAccountDataPrompt: "Cloud data is loading right now. Please wait...",
+    ActualPath: "Actual path",
+    AddFolder: "Add folder",
+    Create: "Create",
+    WriteFolderName: "write folder name...",
+    Back: "Back",
+    ThisFolderIsEmpty: "This folder is empty...",
+    Refresh: "Refresh",
+    AreYouSureToDelete: "You are sure you want to delete the folder",
+    Delete: "Delete",
+    Deny: "Deny",
+    SuccCreatedFolder: "Folder succesfully created",
+    SuccEditedFolder: "Folder succesfully edited",
+    SuccDeletedFolder: "Folder succesfully deleted",
+    SuccAddedFile: "File succesfully added"
+  },
+  FilePicker: {
+    SelectFileToAdd: "select file to add...",
+    Send: "Send"
+  },
+  Files: {
+    Sort: "Sort",
+    Confirm: "Confirm",
+    Deny: "Deny",
+    OpenFolder: "Open this folder",
+    DeleteFolder: "Delete this folder",
+    Edit: "Edit",
+    ChooseFolderForLink: "Generate share link",
+    Type: "Type",
+    Size: "Size",
+    Path: "Path",
+    Open: "Open",
+    ChooseFolderToGenerate: "Choose this folder to generate report"
+  },
+  ReportsContainer: {
+    FavReports: "Favorite reports",
+    LastReports: "Last reports",
+    Back: "Back"
+  },
+  ReportsNavigation: {
+    FirstPage: "Choose teams",
+    SecondPage: "Select the cloud in which the report will be generated",
+    GDrivePage: "Select folder on Google Drive cloud to generate report",
+    OneDrivePage: "Select folder on One Drive cloud to generate report",
+    SearchTeamPlaceholder: "type team name...",
+    Generate: "Generate",
+    Teams: "Teams",
+    Folders: "Folders",
+    AddItems: "added",
+    FoundItems: "found",
+    First: "first",
+    Secondly: "second",
+    LastStepName: "last",
+    StepName: "step of generating reports"
+  },
+  ReportsContent: {
+    NotFoundResults: "No result for this keyword",
+    AllTeams: "List of teams",
+    NumberOfEmployees: "Number of employees"
+  },
+  ReportsPresets: {
+    Page: "Page",
+    SelectThisTeams: "Select",
+    Delete: "Delete",
+    Team: "Team"
+  },
+  GenerateReportModal: {
+    GenerateReportModalTitle: "Choose number of pages for every team",
+    Delete: "Delete",
+    Employees: "Number of employees",
+    Identity: "Identity",
+    Name: "Name",
+    CreationDate: "Creation date",
+    Size: "Size",
+    Path: "Path",
+    ClickHere: "Click here",
+    FirstInfo: "For generating report you must firstly select foolder in One Drive cloud or Google Drive cloud",
+    SecondInfo: "if you want continue",
+    EmployeesInDay: "Only employees avaible in",
+    AddFav: "Add this report to favorite",
+    SuccGenReport: "Succesfully generated report",
+    GenReport: "Generate report",
+    CurrentCreatedLink: "The link has been created",
+    CreatingLink: "Link for share is generating",
+    CreatedLink: "Created link for sharing",
+    OpenIn: "Open in",
+    Open: "Open"
+  },
 };
 
 export default translations;

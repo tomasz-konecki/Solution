@@ -10,7 +10,6 @@ import SmallSpinner from "../../common/spinner/small-spinner";
 import Modal from "react-responsive-modal";
 import Table from "../../common/table/table";
 import ProjectDetailsBlock from "../modals/ProjectDetailsBlock";
-import OperationLoader from "../../common/operationLoader/operationLoader";
 import moment from "moment";
 import Form from "../../form/form";
 import ProgressPicker from "../../common/progressPicker/progressPicker";
@@ -51,7 +50,7 @@ import binaryPermissioner from "./../../../api/binaryPermissioner";
 import Owners from "./Owners/Owners";
 import ShareProject from "./ShareProject";
 import NotFound404 from "../../notFound404/NotFound404";
-
+import Spinner from '../../common/spinner/spinner';
 class ProjectDetails extends Component {
   workerNames = [
     this.props.t("Name"),
@@ -189,7 +188,6 @@ class ProjectDetails extends Component {
       this.props.project !== nextProps.project
     ) {
       const { project } = nextProps;
-
       if (project !== null) {
         this.setState({
           isLoadingProject: false,
@@ -200,10 +198,7 @@ class ProjectDetails extends Component {
             project.estimatedEndDate
           ),
           projectStatus: this.calculateProjectStatus(
-            project.startDate,
-            project.endDate,
             project.status,
-            project.estimatedEndDate,
             project.isDeleted
           )
         });
@@ -387,7 +382,7 @@ class ProjectDetails extends Component {
         }
         className="project-details-container"
       >
-        {loadProjectStatus === null && <OperationLoader isLoading={true} />}
+        {loadProjectStatus === null && <Spinner />}
 
         {loadProjectStatus && (
           <Aux>
@@ -432,38 +427,41 @@ class ProjectDetails extends Component {
                       }
                       className="option-btn normal-btn"
                     >
-                      Udostępnij
+                      {t('Share')}
                     </button>
 
-                    {projectStatus[0].name !== t("Active") && (
-                      <button
-                        onClick={() =>
-                          changeProjectState(reactivate, "reactivate", {
-                            projectId: project.id,
-                            onlyActiveAssignments: onlyActiveAssignments
-                          })
-                        }
-                        className="option-btn green-btn"
-                      >
-                        {t("ActivateProject")}
-                      </button>
-                    )}
+                    {projectStatus &&
+                      projectStatus[0].name !== t("Active") && (
+                        <button
+                          onClick={() =>
+                            changeProjectState(reactivate, "reactivate", {
+                              projectId: project.id,
+                              onlyActiveAssignments: onlyActiveAssignments
+                            })
+                          }
+                          className="option-btn green-btn"
+                        >
+                          {t("ActivateProject")}
+                        </button>
+                      )}
 
-                    {projectStatus[0].name === t("Active") && (
-                      <button
-                        onClick={() =>
-                          changeProjectState(close, "close", {
-                            projectId: project.id,
-                            onlyActiveAssignments: onlyActiveAssignments
-                          })
-                        }
-                        className="option-btn option-dang"
-                      >
-                        {t("Close")}
-                      </button>
-                    )}
+                    {projectStatus &&
+                      projectStatus[0].name === t("Active") && (
+                        <button
+                          onClick={() =>
+                            changeProjectState(close, "close", {
+                              projectId: project.id,
+                              onlyActiveAssignments: onlyActiveAssignments
+                            })
+                          }
+                          className="option-btn option-dang"
+                        >
+                          {t("Close")}
+                        </button>
+                      )}
 
-                    {projectStatus[0].name !== t("Deleted") &&
+                    {projectStatus &&
+                      projectStatus[0].name !== t("Deleted") &&
                       projectStatus[0].name !== t("Closed") && (
                         <button
                           onClick={() =>
@@ -903,17 +901,7 @@ class ProjectDetails extends Component {
           // <ServerError message={this.props.loadProjectErrors[0]} />
         )}
 
-        {changeProjectStateStatus === false && (
-          <OperationLoader
-            operationError={
-              changeProjectStateErrors.length > 0
-                ? changeProjectStateErrors[0]
-                : ""
-            }
-            close={this.props.clearProjectState}
-          />
-        )}
-        {loading && <OperationLoader isLoading={loading} />}
+        {(changeProjectStateStatus === false || loading) && <Spinner />}
       </div>
     );
   }

@@ -7,7 +7,7 @@ const file = ({folder, openFolder, editFolderError, isDeletingOrEditingFolder,
     onSubmit, currentOpenedFileDetailId, showDeleteFolderModal, onStateChange,
     onEditFolder, onChangeFolderName, currentOpenedFolderToEditId, 
     enableFolderEdit, editFolderName, closeEditingFolderName, onFileClick, 
-    chooseFolder, choosenFolder, extendId, extendDetailName, chooseFolderToCreateShareLink }) => {
+    chooseFolder, choosenFolder, extendId, extendDetailName, chooseFolderToCreateShareLink, t }) => {
 
 
     let parentPath = null
@@ -34,63 +34,51 @@ const file = ({folder, openFolder, editFolderError, isDeletingOrEditingFolder,
 
                 { isDeletingOrEditingFolder && <SmallSpinner /> } 
                 
-                { isDeletingOrEditingFolder ||
-                    <i onClick={e => onEditFolder(e, folder.name)} 
-                    className="fa fa-check"></i>
-                }
-                { isDeletingOrEditingFolder || 
-                    <i onClick={closeEditingFolderName} className="fa fa-times"></i>
-                }
+                { isDeletingOrEditingFolder || <i title={t("Confirm")} onClick={e => onEditFolder(e, folder.name)} className="fa fa-check"/> }
+                { isDeletingOrEditingFolder || <i title={t("Deny")} onClick={closeEditingFolderName} className="fa fa-times"/> }
                 
             </form> 
             : 
             <span>{folder.name}</span>
         }
         
-        {folder.type !== "file" && 
-        <i onClick={() => openFolder(folder)} className="fa fa-folder-open"></i>
-        }
+        { folder.type !== "file" &&  <i onClick={() => openFolder(folder)} className="fa fa-folder-open" title={t("OpenFolder")}/> } 
 
-        {folder.type !== "file" && 
-            <i onClick={() => chooseFolder(folder)} className="fa fa-cloud-upload-alt"></i>
-        }
+        { folder.type !== "file" && <i onClick={() => chooseFolder(folder)} className="fa fa-cloud-upload-alt" title={t("ChooseFolderToGenerate")}/> }
 
         {
             folder.type !== "file" && 
             <div className="folders-icons">
-                <i onClick={() => showDeleteFolderModal(folder.id)} className="fa fa-trash"></i>
+                <i title={t("DeleteFolder")} onClick={() => showDeleteFolderModal(folder.id)} className="fa fa-trash"/>
                 
-                <i onClick={() => enableFolderEdit(folder.id, folder.name)}
-                    className="fa fa-pen-square"></i>
+                <i title={t("Edit")} onClick={() => enableFolderEdit(folder.id, folder.name)} className="fa fa-pen-square"/>
 
-                <i onClick={e => chooseFolderToCreateShareLink(folder, e)} className="fa fa-share-alt-square">
-                </i>
+                <i title={t("ChooseFolderForLink")} onClick={e => chooseFolderToCreateShareLink(folder, e)} className="fa fa-share-alt-square"/>
             </div>
         }
         
         
         {folder.type === "file" && 
-            <i onClick={e => chooseFolderToCreateShareLink(folder, e)} className="fa fa-share-alt-square">
-            </i> 
+            <i title={t("ChooseFolderForLink")} onClick={e => chooseFolderToCreateShareLink(folder, e)} className="fa fa-share-alt-square"/> 
         }
        
       
         {(folder.id === currentOpenedFileDetailId && folder.type === "file") && 
             <div className="file-details">
-                <p><b>Typ</b><span>{folder.type}</span></p>
-                <p><b>Rozmiar</b><span>{folder.size}</span></p>
+                <p><b>{t("Type")}</b><span>{folder.type}</span></p>
+                <p><b>{(t("Size"))}</b><span>{folder.size}</span></p>
 
                 {parentPath && 
                 <DetailExpander extendDetailName={extendDetailName} 
                     currentId={folder.id}
                     extend={extendId === folder.id ? true : false}
                     originalName={folder.parentPath}>
-                    <b>Ścieżka</b><span>{parentPath}</span>
+                    <b>{t("Path")}</b><span>{parentPath}</span>
                 </DetailExpander>
                 }
                 
 
-                <span onClick={() => window.open(folder.webUrl)}>Otwórz</span>
+                <span onClick={() => window.open(folder.webUrl)}>{t("Open")}</span>
             </div>
         }
         

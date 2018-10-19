@@ -25,7 +25,8 @@ const sideProgressBar = ({
   handleMarkAllAsRead,
   numberOfNotifications,
   deleteAllSpin,
-  readAllSpin
+  readAllSpin,
+  changeCurrentWatchedUserHandler
 }) => {
   const menuClass = shouldShowGlobal ? "menu-expanded" : "menu-collapsed";
   const btnClass = shouldShowGlobal ? "btn-expanded" : "btn-collapsed";
@@ -100,7 +101,7 @@ const sideProgressBar = ({
       {
         return {
           pathname: "/main/quarters/employees/" + notification.userId + "?=" + notification.userId,
-          state: { quarterTalkId: notification.redirectId }
+          state: { quarterTalkId: notification.redirectId, employeeId: notification.userId }
         }
       }
       default:
@@ -141,7 +142,7 @@ const sideProgressBar = ({
             )}
           </div>
           <div className="not-content col-10 col-sm-9">
-            <Link to={redirectLink} 
+            <div
             className={`${redirectLink === null ? "noRedirect" : "redirect"} 
             ${notification.isRead ? "" : "pointer"}`} 
             onClick={notification.isRead ? null : () => handleMarkAsRead(notification.id, false)}>
@@ -152,7 +153,7 @@ const sideProgressBar = ({
                   : notification.contentEng}
               </span>
               {notificationDate(notification.date)}
-            </Link>
+            </div>
           </div>
         </div>
       </React.Fragment>
@@ -183,7 +184,8 @@ const sideProgressBar = ({
         <ul className="notifictions">
           {notifications.length !== 0 ? (notifications.map(notification => {
               return (
-                <li
+                <li 
+                onClick={() => changeCurrentWatchedUserHandler(notification)}
                 key={notification.id}
                 style={notification.isRead ? {} : { backgroundColor: "#e8e8e8" }}
                 >

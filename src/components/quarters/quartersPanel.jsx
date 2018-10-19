@@ -6,9 +6,8 @@ import { Route, Switch, Redirect } from 'react-router-dom';
 import Button from '../common/button/button.js';
 import EmployeeQuarters from './employeeQuarters/employeeQuarters';
 import AddQuarter from './addQuarter/addQuarter';
-import { createLastWatchedPersonsArray, changeLinkBeforeRedirect, changeCurrentWatchedUser } from '../../actions/persistHelpActions.js';
+import { createLastWatchedPersonsArray, changeLinkBeforeRedirect, changeCurrentWatchedUser, createLastWatchedPersonsArrayACreator } from '../../actions/persistHelpActions.js';
 import { sendAuthCodePromise } from '../../actions/oneDriveActions.js';
-import { getEmployeeId } from '../../services/methods.js';
 import PlanQuarter from './planQuarter/planQuarter';
 import AuthWithOutlook from './authWithOutlookComponent/authWithOutlookComponent';
 import FindUserModal from './others/findUserModal/findUserModal';
@@ -55,7 +54,7 @@ class Quarters extends React.PureComponent{
     render(){
         const { match, history, lastWatchedPersons, planQuarterACreator, createLastWatchedPersonsArray,
             linkBeforeRedirectToOutlookAuth, changeLinkBeforeRedirect, sendAuthCodePromise,
-            authCodeStatus, authCodeErrors, currentWatchedUser, t } = this.props;
+            authCodeStatus, authCodeErrors, currentWatchedUser, changeCurrentWatchedUser, t } = this.props;
         const { openFindUserModal, shouldLoadDataAfterLinkChange } = this.state;
 
         const isHistoryExist = lastWatchedPersons && lastWatchedPersons.length > 0;
@@ -116,7 +115,9 @@ class Quarters extends React.PureComponent{
                             <AddQuarter history={history} currentWatchedUser={currentWatchedUser} onCloseModal={() => this.handleBtnClick(`${match.url}/employees`, true)}/>
                         )} />
                         <Route exact path={`${match.url}/employees/:id`} render={() => (
-                            <EmployeeQuarters redirectToPopulatingQuarter={(quarterId) => this.handleBtnClick(`${match.url}/employees/addquarter`, true, quarterId)}
+                            <EmployeeQuarters createLastWatchedPersonsArrayACreator={createLastWatchedPersonsArrayACreator}
+                            changeCurrentWatchedUser={changeCurrentWatchedUser} lastWatchedPersons={lastWatchedPersons}
+                            redirectToPopulatingQuarter={(quarterId) => this.handleBtnClick(`${match.url}/employees/addquarter`, true, quarterId)}
                             history={history} currentWatchedUser={currentWatchedUser} />
                         )}/>
 
@@ -150,6 +151,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         createLastWatchedPersonsArray: (lastWatchedPersons) => dispatch(createLastWatchedPersonsArray(lastWatchedPersons)),
+        createLastWatchedPersonsArrayACreator: (employeeId) => dispatch(createLastWatchedPersonsArrayACreator(employeeId)),
         changeLinkBeforeRedirect: (linkBeforeRedirectToOutlookAuth) => dispatch(changeLinkBeforeRedirect(linkBeforeRedirectToOutlookAuth)),
         sendAuthCodePromise: (url, shouldGoForOutlook) => dispatch(sendAuthCodePromise(url, shouldGoForOutlook)),
         changeCurrentWatchedUser: (currentWatchedUser) => dispatch(changeCurrentWatchedUser(currentWatchedUser))

@@ -14,6 +14,8 @@ import Spinner from '../../common/spinner/spinner.js';
 import { translate } from 'react-translate';
 import { API_ENDPOINT } from '../../../api/index.js';
 import EmptyContent from '../../common/empty-content/empty-content.js';
+import { getEmployeeId } from '../../../services/methods.js';
+
 
 class EmployeeQuarters extends React.PureComponent{
     state = {
@@ -34,20 +36,23 @@ class EmployeeQuarters extends React.PureComponent{
     ]
 
     componentDidMount(){
-        this.getQuartersForEmployeeHandler(this.props.currentWatchedUser);
+        this.getQuartersForEmployeeHandler(getEmployeeId());
     }
     
     componentDidUpdate(prevProps){
-        if(this.props.currentWatchedUser !== prevProps.currentWatchedUser){
+        const { currentWatchedUser, history, quartersForEmployee } = this.props;
+        const { state } = history.location;
+        if(currentWatchedUser !== prevProps.currentWatchedUser){
             this.setState({isLoadingQuarters: true});
-            this.getQuartersForEmployeeHandler();
+            this.getQuartersForEmployeeHandler(currentWatchedUser);
         }
     }
 
-    getQuartersForEmployeeHandler = () => {
-        const { history, getQuartersForEmployeeACreator, currentWatchedUser } = this.props;
+    getQuartersForEmployeeHandler = employeeId => {
+        const { history, getQuartersForEmployeeACreator, 
+            changeCurrentWatchedUser, currentWatchedUser } = this.props;
         const { state } = history.location;
-        getQuartersForEmployeeACreator(currentWatchedUser)
+        getQuartersForEmployeeACreator(employeeId)
         .then(items => {
             let quarterIdToSet = 0;
             if(state){
@@ -55,9 +60,18 @@ class EmployeeQuarters extends React.PureComponent{
                     quarterIdToSet = items.findIndex(item => item.id === state.quarterTalkId);
                 }
             }
+            if(employeeId !== currentWatchedUser){
+                changeCurrentWatchedUser(employeeId);
+                createLastWatchedPersonsArrayACreator(employeeId);
+            }
             this.setState({isLoadingQuarters: false, currentWatchedQuarterDetail: quarterIdToSet});
         })
-        .catch(() => this.setState({isLoadingQuarters: false}));
+        .catch(() => {
+            if(!getEmployeeId()){
+                changeCurrentWatchedUser("");
+            }
+            this.setState({isLoadingQuarters: false});
+        });
     }
 
     onClickOperationHandler = (quarter, operationName) => {

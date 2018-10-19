@@ -2,6 +2,7 @@ import React from 'react'
 import './promptsCommander.scss';
 import { connect } from 'react-redux';
 import { changeShowGlobal, setProgressValue } from '../../actions/progressBarActions';
+import { changeCurrentWatchedUser } from '../../actions/persistHelpActions';
 import { generateReport } from '../../actions/reportsActions';
 import SideBarProgressContent from './sideBarProgressContent';
 import SmallProgressBar from './smallProgressBar/smallProgressBar';
@@ -74,6 +75,20 @@ class PromptsCommander extends React.Component{
         }).catch(() => this.setState({readAllSpin: false }));
     };
 
+    changeCurrentWatchedUserHandler = notification => {
+        const { changeCurrentWatchedUser, history } = this.props;
+        if(notification.redirectTo === "Projects"){
+            history.push("/main/projects/" + notification.redirectId);
+        }
+        else{
+            changeCurrentWatchedUser(notification.userId);
+            history.push({
+                pathname: "/main/quarters/employees/" + notification.userId + "?=" + notification.userId,
+                state: { quarterTalkId: notification.redirectId }
+            });
+        }
+    }
+
     render(){
         const { shouldShowGlobal, changeShowGlobal, isStarted, percentage, message,
             operationName, connectingSinalRStatus, connectionSignalRErrors, 
@@ -84,6 +99,7 @@ class PromptsCommander extends React.Component{
             <React.Fragment>
                 {barType === undefined ? 
                     <SideBarProgressContent 
+                    changeCurrentWatchedUserHandler={this.changeCurrentWatchedUserHandler}
                     currentDeletedElements={currentDeletedElements}
                     currentReadElements={currentReadElements}
                     deleteAllSpin={deleteAllSpin}
@@ -157,7 +173,10 @@ const mapStateToProps = state => {
         deleteAllNotifications: (status, errors) => dispatch(deleteAllNotifications(status, errors)),
 
         markAllNotificationsAsReadACreator: name => dispatch(markAllNotificationsAsReadACreator(name)),
-        markAllNotificationsAsRead: (status, errors) => dispatch(markAllNotificationsAsRead(status, errors))
+        markAllNotificationsAsRead: (status, errors) => dispatch(markAllNotificationsAsRead(status, errors)),
+
+        changeCurrentWatchedUser: (currentWatchedUser) => dispatch(changeCurrentWatchedUser(currentWatchedUser))
+
     };
   };
   export default connect(mapStateToProps, mapDispatchToProps)(PromptsCommander);

@@ -120,6 +120,7 @@ class EmployeeCertificates extends React.Component {
             closeModal={this.closeCertificatesModal}
           />
         </Modal>
+
       </div>
     );
   }

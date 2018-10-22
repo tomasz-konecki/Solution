@@ -198,7 +198,7 @@ class EmployeeDetailsContainer extends React.Component {
     return (
       <div className="employee-details-container">
         {isLoadingFirstTimeEmployee ? (
-          <Spinner />
+          <Spinner fontSize="7px" />
         ) : !employeeStatus ? (
           <NotFound404 type={"MissingEmployee"} />
         ) : (

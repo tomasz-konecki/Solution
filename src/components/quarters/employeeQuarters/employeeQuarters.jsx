@@ -166,7 +166,7 @@ class EmployeeQuarters extends React.PureComponent{
                 operation={this.handleQuarterTalkDelete} denyName={t("Deny")}
                 operationName={t("Delete")} header={t("MakeSureYouWantDeleteQuarter")}
                 onClose={this.closeConfirmDeleteModal} open={quarterToDeleteId !== -1}>
-                    {isDeletingQuarter && <Spinner />}
+                    {isDeletingQuarter && <Spinner fontSize="3px" positionClass="abs-spinner"/>}
                 </ConfirmModal>
                 
                 {deleteQuarterStatus !== null && 

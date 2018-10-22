@@ -33,8 +33,7 @@ import moment from "moment";
 
 class ReportsContainer extends Component {
   state = {
-    spinner:
-      this.props.loadTeamsResult && this.props.reportsStatus ? false : true,
+    spinner: true,
     reportModal: false,
     didPagesHasIncorrectValues: { status: null, error: "" },
     valueToSearch: "",

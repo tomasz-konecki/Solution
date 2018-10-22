@@ -59,7 +59,7 @@ const generateReportModal = ({shouldOpenModal, closeModal, generateShareLinkStat
 
             <ServerError errorClass="whole-page-error"
             message={generateShareLinkErrors[0]}/> : 
-            <Spinner />
+            <Spinner fontSize="7px" />
         }
     </React.Fragment>
     }

@@ -25,7 +25,10 @@ const sideProgressBar = ({
   handleMarkAllAsRead,
   numberOfNotifications,
   deleteAllSpin,
-  readAllSpin
+  readAllSpin,
+  changeCurrentWatchedUserHandler,
+  putIconInOtherPlace,
+  isNotificationIconInSideBar
 }) => {
   const menuClass = shouldShowGlobal ? "menu-expanded" : "menu-collapsed";
   const btnClass = shouldShowGlobal ? "btn-expanded" : "btn-collapsed";
@@ -100,7 +103,7 @@ const sideProgressBar = ({
       {
         return {
           pathname: "/main/quarters/employees/" + notification.userId + "?=" + notification.userId,
-          state: { quarterTalkId: notification.redirectId }
+          state: { quarterTalkId: notification.redirectId, employeeId: notification.userId }
         }
       }
       default:
@@ -140,8 +143,10 @@ const sideProgressBar = ({
                 />
             )}
           </div>
-          <div className="not-content col-10 col-sm-9">
-            <Link to={redirectLink} 
+          <div 
+          onClick={() => changeCurrentWatchedUserHandler(notification)}
+          className="not-content col-10 col-sm-9">
+            <div 
             className={`${redirectLink === null ? "noRedirect" : "redirect"} 
             ${notification.isRead ? "" : "pointer"}`} 
             onClick={notification.isRead ? null : () => handleMarkAsRead(notification.id, false)}>
@@ -152,7 +157,7 @@ const sideProgressBar = ({
                   : notification.contentEng}
               </span>
               {notificationDate(notification.date)}
-            </Link>
+            </div>
           </div>
         </div>
       </React.Fragment>
@@ -165,6 +170,7 @@ const sideProgressBar = ({
         <header>
           <span>{t("Notifications")}</span>
           <span>
+            <i onClick={putIconInOtherPlace} title={t("Tack")} className="fa fa-thumbtack" />
             <i className="cor-status">emp</i>
             <i
               className={`fab fa-windows ${
@@ -183,7 +189,7 @@ const sideProgressBar = ({
         <ul className="notifictions">
           {notifications.length !== 0 ? (notifications.map(notification => {
               return (
-                <li
+                <li 
                 key={notification.id}
                 style={notification.isRead ? {} : { backgroundColor: "#e8e8e8" }}
                 >
@@ -247,9 +253,8 @@ const sideProgressBar = ({
         </div>
       </div>
 
-      <button
+      <button onClick={togleSideBarHandler} style={{display: (isNotificationIconInSideBar && !shouldShowGlobal) ? "none" : "block"}}
         title="Komunikaty"
-        onClick={togleSideBarHandler}
         className={`comunicates-btn ${btnResultClass} ${btnClass} ${btnBorderClass}`}
       >
         <i className={`fa ${btnIcon}`} />

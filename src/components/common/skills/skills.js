@@ -340,7 +340,7 @@ class Skills extends Component {
           </header>
 
           {isLoadingSkillsForModal ? (
-            <Spinner />
+            <Spinner positionClass="abs-centered-content" fontSize="7px"/>
           ) : (
             <div className="modal-container">
               {loadSkillsStatus !== null && loadSkillsStatus ? (

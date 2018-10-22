@@ -28,7 +28,7 @@ class EditUserDetails extends Component {
         WebApi.users.patch
           .roles(id, roles)
           .then(response => {
-            this.props.pageChange(),
+            this.props.pageChange(this.props.currentPage, this.props.settings),
               this.setState({
                 responseBlock: response,
                 loading: false

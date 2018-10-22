@@ -10,7 +10,6 @@ import SmallSpinner from "../../common/spinner/small-spinner";
 import Modal from "react-responsive-modal";
 import Table from "../../common/table/table";
 import ProjectDetailsBlock from "../modals/ProjectDetailsBlock";
-import OperationLoader from "../../common/operationLoader/operationLoader";
 import moment from "moment";
 import Form from "../../form/form";
 import ProgressPicker from "../../common/progressPicker/progressPicker";
@@ -51,7 +50,7 @@ import binaryPermissioner from "./../../../api/binaryPermissioner";
 import Owners from "./Owners/Owners";
 import ShareProject from "./ShareProject";
 import NotFound404 from "../../notFound404/NotFound404";
-
+import Spinner from '../../common/spinner/spinner';
 class ProjectDetails extends Component {
   workerNames = [
     this.props.t("Name"),
@@ -169,17 +168,6 @@ class ProjectDetails extends Component {
       endDate ? endDate : estimatedEndDate
     )._i;
 
-    // if(moment(startDate).format("YYYY-MM-DD") === '0001-01-01')
-    // {
-    //   addEmployeToProjectFormItems[0].value = moment();
-    //   addEmployeToProjectFormItems[1].value = moment().add(1, 'days');
-    // }else{
-    //   addEmployeToProjectFormItems[0].value = moment(startDate);
-    //   addEmployeToProjectFormItems[1].value = moment(
-    //     endDate ? endDate : estimatedEndDate
-    //   );
-    // }
-
     return addEmployeToProjectFormItems;
   };
 
@@ -290,8 +278,7 @@ class ProjectDetails extends Component {
     const { onlyActiveAssignments } = this.state;
     this.setState({
       onlyActiveAssignments: !onlyActiveAssignments,
-      isLoadingAssignments: true,
-      isLoadingProject: true
+      isLoadingAssignments: true
     });
     this.props.getProject(this.props.match.params.id, !onlyActiveAssignments);
   };
@@ -352,8 +339,7 @@ class ProjectDetails extends Component {
   };
   render() {
     const {
-      project,
-      loading,
+      project, loading,
       loadProjectStatus,
       addEmployeeToProjectStatus,
       addEmployeeToProjectErrors,
@@ -372,7 +358,9 @@ class ProjectDetails extends Component {
       projectStatus,
       onlyActiveAssignments,
       matches,
-      currentOpenedRow
+      isLoadingProject,
+      currentOpenedRow,
+      isLoadingAssignments
     } = this.state;
     return (
       <div
@@ -383,7 +371,7 @@ class ProjectDetails extends Component {
         }
         className="project-details-container"
       >
-        {loadProjectStatus === null && <OperationLoader isLoading={true} />}
+        {isLoadingProject && <Spinner fontSize="7px" />}
 
         {loadProjectStatus && (
           <Aux>
@@ -514,6 +502,7 @@ class ProjectDetails extends Component {
                   owners={project.owners}
                   changeProjectState={changeProjectState}
                   WebApi={WebApi}
+                  loggedUser={this.props.login}
                   projectId={project.id}
                   isProjectOwner={
                     binaryPermissioner(false)(0)(0)(0)(0)(0)(1)(
@@ -567,7 +556,8 @@ class ProjectDetails extends Component {
                     onChange={this.togleActiveAssign}
                   />
                   <span className="assingments-spinner-container">
-                    {this.state.isLoadingAssignments && <SmallSpinner />}
+                    {(isLoadingAssignments || loading) && 
+                      <Spinner fontSize="2px" positionClass="abs-spinner"/>}
                   </span>
                 </div>
 
@@ -833,13 +823,16 @@ class ProjectDetails extends Component {
               }
               header={t("ConfirmDeleteProject")}
               operationName={t("Delete")}
+              denyName={t("Cancel")}
               operation={() =>
                 changeProjectState(WebApi.projects.delete.project, "delete", {
                   projectId: project.id,
                   onlyActiveAssignments: onlyActiveAssignments
                 })
               }
-            />
+            >
+             {loading && <Spinner fontSize="3px" positionClass="abs-spinner"/>}
+            </ConfirmModal>
 
             <Modal
               key={3}
@@ -901,18 +894,6 @@ class ProjectDetails extends Component {
           <NotFound404 />
           // <ServerError message={this.props.loadProjectErrors[0]} />
         )}
-
-        {changeProjectStateStatus === false && (
-          <OperationLoader
-            operationError={
-              changeProjectStateErrors.length > 0
-                ? changeProjectStateErrors[0]
-                : ""
-            }
-            close={this.props.clearProjectState}
-          />
-        )}
-        {loading && <OperationLoader isLoading={loading} />}
       </div>
     );
   }
@@ -927,10 +908,11 @@ const mapStateToProps = state => {
     responsiblePersonKeys: state.projectsReducer.responsiblePersonKeys,
     overViewKeys: state.projectsReducer.overViewKeys,
 
+    loading: state.asyncReducer.loading,
+
     changeProjectStateStatus: state.projectsReducer.changeProjectStateStatus,
     changeProjectStateErrors: state.projectsReducer.changeProjectStateErrors,
     currentOperation: state.projectsReducer.currentOperation,
-    loading: state.asyncReducer.loading,
 
     addEmployeeToProjectStatus:
       state.projectsReducer.addEmployeeToProjectStatus,

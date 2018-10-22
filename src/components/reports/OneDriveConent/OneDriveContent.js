@@ -10,14 +10,14 @@ import Spinner from '../../common/spinner/spinner';
 import Button from '../../common/button/button';
 import { validateInput } from '../../../services/validation';
 import ConfirmModal from '../../common/confimModal/confirmModal';
-import OperationLoader from '../../common/operationLoader/operationLoader';
 import FilesList from './FilesList/FilesList';
 import SmallSpinner from '../../common/spinner/small-spinner';
 import FilePicker from '../filePicker/filePicker';
 import OperationStatusPrompt from '../../form/operationStatusPrompt/operationStatusPrompt';
 import { invalidTokenError, notRecognizedError, oldTokenComunicate } from '../../../constants';
-import { refreshPage } from '../../../services/methods';
+import { refreshPage, doSomethingAfterDelay } from '../../../services/methods';
 import GenerateLinkModal from '../modals/generateLinkModal';
+import { translate } from 'react-translate';
 const startPath = "/drive/root:";
 const tryToEditAndAddFolderError = "Nie można jednocześnie edytować i dodwać folderów";
 
@@ -73,6 +73,7 @@ class OneDriveContent extends React.PureComponent {
             getFolder(oneDriveToken, path ? path : "/drive/root:");
         }
     }
+
     componentWillReceiveProps(nextProps){
         if(nextProps.authErrors !== this.props.authErrors){
             if(nextProps.authStatus === true)
@@ -80,20 +81,26 @@ class OneDriveContent extends React.PureComponent {
             else 
                 this.setState({isPreparingForLogingIn: false});
         }
-
         else if(nextProps.getFoldersErrors !== this.props.getFoldersErrors){
             this.setState({isPreparingForLogingIn: false,
                 isTakingCodeFromApi: false, isAddingFolder: false, 
-                showAddingFolderInput: false, isDeletingOrEditingFolder: false, 
-                showDeleteFolderModal: false, currentOpenedFolderToEditId: "", 
-                folderIsLoadingId: "", isGoingBack: false, isUploadingFile: false});
+                showAddingFolderInput: false, currentOpenedFolderToEditId: "", 
+                folderIsLoadingId: "", isGoingBack: false, isUploadingFile: false,
+                isDeletingOrEditingFolder: false});
         }
-        else if(nextProps.createFolderStatus === false)
-            this.setState({ isAddingFolder: false });
-        else if(nextProps.deleteFolderStatus === false || nextProps.updateFolderStatus === false)
+        else if(nextProps.updateFolderErrors !== this.props.updateFolderErrors || 
+            nextProps.deleteFolderErrors !== this.props.deleteFolderErrors)
             this.setState({isDeletingOrEditingFolder: false});
         else if(nextProps.uploadFileStatus === false)
             this.setState({isUploadingFile: false});
+        
+    }
+
+    componentDidUpdate(prevProps){
+        const { deleteFolderErrors, deleteFolderStatus } = this.props;
+        if(deleteFolderStatus && deleteFolderErrors !== prevProps.deleteFolderErrors){
+            doSomethingAfterDelay(1500, this.closeDeleteFolderModal);
+        }
     }
     onChangeFolderName = (e, folderName) => {
         const validationResult = this.checkForCorrectInputValue(e.target.value, folderName);
@@ -212,7 +219,20 @@ class OneDriveContent extends React.PureComponent {
        window.open(this.props.generatedShareLink);
        this.closeShareLinkModal();
     }
-   
+
+    closeDeleteFolderModal = () => {
+        this.setState({showDeleteFolderModal: false, folderToDeleteId: ""});
+        this.props.deleteFolderClear();
+    }
+
+    openAddingFolderBtn = () => {
+        this.setState({showAddingFolderInput: true});
+    }
+
+    closeAddingFolderInput = () => {
+        this.setState({showAddingFolderInput: false, newFolderName: "", newFolderNameError: ""});
+    }
+
     render(){
         const { isPreparingForLogingIn, isTakingCodeFromApi, currentOpenedFileDetailId,
             showAddingFolderInput, isAddingFolder, folderNameError, 
@@ -227,7 +247,7 @@ class OneDriveContent extends React.PureComponent {
             uploadFileStatus, uploadFileErrors, chooseFolder, choosenFolder, 
             extendDetailName, extendId, authCodeStatus, authErrors, authStatus,
             changeSortBy, driveSortType, generateShareLinkStatus, generateShareLinkErrors,
-            generatedShareLink } = this.props;
+            generatedShareLink, t } = this.props;
         return (
             <div className="drive-content-container">
                 {authCodeStatus && getFoldersStatus && !isPreparingForLogingIn &&
@@ -235,72 +255,56 @@ class OneDriveContent extends React.PureComponent {
                     fileToUpload={fileToUpload} uploadFile={this.uploadFile}
                     handleAddFile={e => this.handleAddFile(e)} isUploadingFile={isUploadingFile}/>
                 }
-                
-                {(isPreparingForLogingIn || isTakingCodeFromApi || isGoingBack) ? <Spinner /> : 
+                {(isPreparingForLogingIn || isTakingCodeFromApi || isGoingBack) ? <Spinner fontSize="7px" 
+                message={t("LoadingAccountDataPrompt")} /> : 
                     getFoldersStatus !== null && 
                     
                     getFoldersStatus &&
 
                     <div className="navigation-folders-container">
-                        <header>
-                            <h3>Aktualna ścieżka: 
-                                <span>{path} 
-                                   
+                        <div className="add-folder-container">
+                            <Button onClick={!showAddingFolderInput ? this.openAddingFolderBtn : null} disable={isAddingFolder}
+                            title={!showAddingFolderInput ? t("AddFolder") : ""}
+                            mainClass={`${showAddingFolderInput ? "" : "not-opened-btn"} generate-raport-btn btn-green`}>
+                                {showAddingFolderInput && 
+                                    <input className={`${newFolderNameError ? "input-error" : null}`}
+                                    value={newFolderName}
+                                    onKeyPress={e => this.onKeyPress(e)}
+                                    onChange={e => this.onChangeNewFolderName(e)}
+                                    type="text" placeholder={t("WriteFolderName")} />
+                                }
+                                <span onClick={this.addFolder}>
+                                    <i className="fa fa-folder"/>
+                                    {showAddingFolderInput && t("Create")} 
                                 </span>
-                            </h3>
+                                { isAddingFolder && <SmallSpinner /> } 
+                                { showAddingFolderInput && !isAddingFolder && 
+                                <i onClick={this.closeAddingFolderInput} className="fa fa-times"/> }
+                            </Button>
 
-                                {newFolderNameError && !editFolderError &&
-                                    <p className="validation-error">
-                                    {newFolderNameError}</p>
-                                }
-                                {editFolderError && !newFolderNameError && 
-                                    <p className="validation-error">
-                                    {editFolderError}</p> 
-                                }
-                                
-                            <Button
-                                onClick={!showAddingFolderInput ? () => this.setState({showAddingFolderInput: true})
-                                 : null}
-                                disable={isAddingFolder || newFolderNameError}
-                                title={showAddingFolderInput || "Dodaj folder"}
-                                mainClass="generate-raport-btn btn-green"
-                                >
-                                    {showAddingFolderInput && 
-                                        <input 
-                                        className={newFolderNameError ? "input-error" : null}
-                                        value={newFolderName}
-
-                                        onKeyPress={e => this.onKeyPress(e)}
-                                        onChange={e => this.onChangeNewFolderName(e)}
-                                        type="text" placeholder="wpisz nazwę folderu..." />
-                                    }
-                                    <span onClick={this.addFolder}>
-                                        <i className="fa fa-folder">
-                                        </i>
-                                        {showAddingFolderInput && "Stwórz"} 
-                                    </span>
-                                    
-
-                                    { isAddingFolder && <SmallSpinner /> } 
-                                    { showAddingFolderInput && !isAddingFolder && 
-                                    <i onClick={newFolderNameError ? null :
-                                        () => this.setState({showAddingFolderInput: false})} 
-                                        className="fa fa-times"></i> }
-                            </Button>    
-                            
-                            {path !== startPath && 
+                            {newFolderNameError && !editFolderError &&
+                                <p className="validation-error">
+                                {newFolderNameError}</p>
+                            }
+                            {editFolderError && !newFolderNameError && 
+                                <p className="validation-error">
+                                {editFolderError}</p> 
+                            } 
+                        </div>
+                        
+                        {path !== startPath && 
                             <Button 
                             onClick={(this.goToFolderBefore)}
-                            mainClass="generate-raport-btn btn-transparent" title="Cofnij">
+                            mainClass="generate-raport-btn btn-transparent" title={t("Back")}>
                                 <i className="fa fa-long-arrow-alt-left"></i>
                             </Button> 
-                            }
-                           
-                        </header>
-                        
+                        } 
+
+                        <h3>{t("ActualPath")}: <span>{path}</span></h3>       
+
                         {folders.length === 0 ? 
                             <p className="empty-files-list">
-                                Ten folder jest pusty...
+                                {t("ThisFolderIsEmpty")}
                             </p> : 
 
                             <FilesList 
@@ -337,22 +341,21 @@ class OneDriveContent extends React.PureComponent {
                     <p className="one-d-error">
                         {getFoldersErrors[0] === notRecognizedError ? 
                         oldTokenComunicate : getFoldersErrors[0]}
-                        <span onClick={refreshPage}>Odśwież</span>
+                        <span onClick={refreshPage}>{t("Refresh")}</span>
                     </p>
                 }
                 
                 <ConfirmModal 
                 open={showDeleteFolderModal} 
                 content="Delete project modal"
-                onClose={() => this.setState({showDeleteFolderModal: !showDeleteFolderModal, folderToDeleteId: ""})} 
-                header="Czy jesteś pewny, że chcesz usunąć ten folder?"
+                onClose={this.closeDeleteFolderModal} 
+                header={t("AreYouSureToDelete")}
                 operation={this.deleteFolder} 
-                operationName="Usuń"
+                operationName={t("Delete")}
+                denyName={t("Deny")}
                 >
                     {isDeletingOrEditingFolder &&
-                    <OperationLoader 
-                        isLoading={true} 
-                        />
+                        <Spinner fontSize="3px" positionClass="abs-spinner"/>
                     }
                 </ConfirmModal>
                 
@@ -361,7 +364,7 @@ class OneDriveContent extends React.PureComponent {
                     <OperationStatusPrompt
                     key={0} 
                     operationPromptContent={createFolderStatus ? 
-                        "Folder utworzony pomyślnie" : createFolderErrors[0]}
+                        t("SuccCreatedFolder") : createFolderErrors[0]}
                     operationPrompt={createFolderStatus}
                     />
                 }
@@ -369,8 +372,9 @@ class OneDriveContent extends React.PureComponent {
                 {deleteFolderStatus !== null && 
                     <OperationStatusPrompt
                     key={1} 
+                    closePrompt={this.closeDeleteFolderModal}
                     operationPromptContent={deleteFolderStatus ? 
-                        "Folder został pomyślnie usunięty" : deleteFolderErrors[0]}
+                        t("SuccDeletedFolder") : deleteFolderErrors[0]}
                     operationPrompt={deleteFolderStatus}
                     />
                 }
@@ -379,7 +383,7 @@ class OneDriveContent extends React.PureComponent {
                     <OperationStatusPrompt 
                     key={2} 
                     operationPromptContent={updateFolderStatus ? 
-                        "Folder został pomyślnie edytowany" : updateFolderErrors[0]}
+                        t("SuccEditedFolder") : updateFolderErrors[0]}
                     operationPrompt={updateFolderStatus}
                     />
                 }
@@ -388,7 +392,7 @@ class OneDriveContent extends React.PureComponent {
                     <OperationStatusPrompt 
                     key={3} 
                     operationPromptContent={uploadFileStatus ? 
-                        "Pomyślnie dodano plik" : uploadFileErrors[0]}
+                        t("SuccAddedFile") : uploadFileErrors[0]}
                     operationPrompt={uploadFileStatus}
                     />
                 }
@@ -449,7 +453,7 @@ const mapStateToProps = state => {
         sendCodeToGetToken: (url) => dispatch(sendCodeToGetTokenACreator(url)),
         createFolder: (folderName, path, token) => dispatch(createFolderACreator(folderName, path, token)),
         deleteFolder: (folderId, token, path, choosenFolder) => dispatch(deleteFolderACreator(folderId, token, path, choosenFolder)),
-        deleteFolderClear: (status, errors) => dispatch(deleteFolder(status, errors)),
+        deleteFolderClear: () => dispatch(deleteFolder(null, [])),
         updateFolder: (newName, folderId, token, path) => dispatch(updateFolderACreator(newName, folderId, token, path)),
         getFolder: (token, path) => dispatch(getFolderACreator(token, path)),
         uploadFile: (token, path, file, currentFilesList) => dispatch(uploadFileACreator(token, path, file, currentFilesList)),
@@ -458,5 +462,5 @@ const mapStateToProps = state => {
     };
   };
   
-  export default connect(mapStateToProps, mapDispatchToProps)(OneDriveContent);
+  export default connect(mapStateToProps, mapDispatchToProps)(translate("ReportsCloudView")(OneDriveContent));
   

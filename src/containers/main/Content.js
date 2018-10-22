@@ -23,13 +23,17 @@ class Content extends React.Component {
     this.props.getNotificationACreator().then(() => {});
   }
 
+  showBackdropToChoosePosition = () => {
+    this.setState({showBackdropToChangeNotificationPosition: true});
+  }
+
   render() {
-    const { match } = this.props;
+    const { match, history } = this.props;
 
     return (
       <div className="content">
         <Confirmation />
-        <PromptsCommander />
+        <PromptsCommander history={history} />
         <Switch>
           <Route exact path={match.url} component={StatsContainer} />
           <Route path={match.url + "/projects"} component={ProjectsContainer} />

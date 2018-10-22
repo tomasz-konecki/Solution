@@ -3,7 +3,7 @@ import OperationStatusPrompt from '../components/form/operationStatusPrompt/oper
 import Spinner from '../components/common/spinner/spinner.js';
 const loadHandling = WrappedComponent => ({isLoading, operationStatus, children, errors, closePrompt}) => (
     <WrappedComponent>
-        {isLoading ? <Spinner /> :  
+        {isLoading ? <Spinner fontSize="7px" /> :  
             operationStatus ? children : 
             operationStatus === false &&
             <OperationStatusPrompt 

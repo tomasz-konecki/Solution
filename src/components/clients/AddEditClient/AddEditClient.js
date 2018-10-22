@@ -63,6 +63,7 @@ class AddEditClient extends Component {
             resultBlock={resultBlock}
             t={t}
             client={client}
+            resetSearchInput={this.props.resetSearchInput}
           />
         </Modal>
       </React.Fragment>

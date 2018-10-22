@@ -244,7 +244,7 @@ class EmployeeAddCertificate extends React.Component{
         let info = null;
 
         if (this.props.resultBlockAddCertificate) {
-            if (this.props.resultBlockAddCertificate.replyBlock.status === 200) {
+            //if (this.props.resultBlockAddCertificate.replyBlock && this.props.resultBlockAddCertificate.replyBlock.status === 200) {
 
               info = (
                 <CSSTransitionGroup
@@ -254,16 +254,23 @@ class EmployeeAddCertificate extends React.Component{
                   transitionEnter={false}
                   transitionLeave={false}
                 >
+                  {(this.props.resultBlockAddCertificate.replyBlock && this.props.resultBlockAddCertificate.replyBlock.status === 200) ?
                   <div className="certificate-modified-success">
                     <span>
                       {this.state.editing
                         ? t("CertificateEditedSuccessfully")
                         : t("CertificateAddedSuccessfully")}
                     </span>
+                  </div> :
+                  <div className="certificate-modified-error">
+                    <span>
+                      {this.props.resultBlockAddCertificate}
+                    </span>
                   </div>
+                  }
                 </CSSTransitionGroup>
               );
-            }
+            //}
             if(this.state.isLoading){
                 setTimeout(() => {
                     this.props.closeModal()

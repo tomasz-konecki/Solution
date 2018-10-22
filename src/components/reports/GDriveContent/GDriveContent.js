@@ -15,6 +15,7 @@ import SmallSpinner from '../../common/spinner/small-spinner';
 import FilePicker from '../filePicker/filePicker';
 import OperationStatusPrompt from '../../form/operationStatusPrompt/operationStatusPrompt';
 import GenerateLinkModal from '../modals/generateLinkModal';
+import { translate } from 'react-translate';
 const startPath = "root";
 
 class GDriveContent extends React.Component{
@@ -185,7 +186,14 @@ class GDriveContent extends React.Component{
        window.open(this.props.generatedGDriveSharedLink);
        this.closeShareLinkModal();
     }
-   
+
+    openAddingFolderBtn = () => {
+        this.setState({showAddingFolderInput: true});
+    }
+
+    closeAddingFolderInput = () => {
+        this.setState({showAddingFolderInput: false, newFolderName: "", newFolderNameError: ""});
+    }
 
     render(){
         const { isLoading, folderIsLoadingId, showDeleteModal,
@@ -198,18 +206,36 @@ class GDriveContent extends React.Component{
             createFolderStatus, createFolderErrors, uploadFileErrors,
             uploadFileStatus, choosenFolder, extendDetailName, extendId,
             driveSortType, changeSortBy, generateGDriveShareLinkStatus, generateGDriveShareLinkErrors,
-            generatedGDriveSharedLink } = this.props;
+            generatedGDriveSharedLink, t } = this.props;
 
         return (
-            <div 
-                className="drive-content-container">
-                { isLoading ? <Spinner /> :
+            <div className="drive-content-container">
+                { isLoading ? <Spinner fontSize="7px" 
+                    message={t("LoadingAccountDataPrompt")} /> :
                     loginStatus !== null && 
 
-                    loginStatus ? 
+                    loginStatus && getFoldersStatus ? 
                     <div className="navigation-folders-container">
-                        <header>
-                            <h3>Aktualna ścieżka: <span>{path}</span></h3>
+                        <div className="add-folder-container">
+                            <Button onClick={!showAddingFolderInput ? this.openAddingFolderBtn : null} disable={isAddingFolder}
+                            title={!showAddingFolderInput ? t("AddFolder") : ""}
+                            mainClass={`${showAddingFolderInput ? "" : "not-opened-btn"} generate-raport-btn btn-green`}>
+                                {showAddingFolderInput && 
+                                    <input className={`${newFolderNameError ? "input-error" : null}`}
+                                    value={newFolderName}
+                                    onKeyPress={e => this.onKeyPress(e)}
+                                    onChange={e => this.onChangeNewFolderName(e)}
+                                    type="text" placeholder={t("WriteFolderName")} />
+                                }
+                                <span onClick={this.addFolder}>
+                                    <i className="fa fa-folder"/>
+                                    {showAddingFolderInput && t("Create")} 
+                                </span>
+                                { isAddingFolder && <SmallSpinner /> } 
+                                { showAddingFolderInput && !isAddingFolder && 
+                                <i onClick={this.closeAddingFolderInput} className="fa fa-times"/> }
+                            </Button>
+
                             {newFolderNameError && !folderNameError && 
                                 <p className="validation-error">
                                 {newFolderNameError}</p>
@@ -218,47 +244,19 @@ class GDriveContent extends React.Component{
                                 <p className="validation-error">
                                 {folderNameError}</p> 
                             }
-                            {getFoldersStatus && 
-                                <Button
-                                onClick={!showAddingFolderInput ? () => this.setState({showAddingFolderInput: true}) : null}
-                                disable={isAddingFolder || newFolderNameError}
-                                title={showAddingFolderInput || "Dodaj folder"}
-                                mainClass="generate-raport-btn btn-green"
-                                >
-                                    {showAddingFolderInput && 
-                                        <input 
-                                        className={newFolderNameError ? "input-error" : null}
-                                        value={newFolderName}
-                                  
-                                        onKeyPress={e => this.onKeyPress(e)}
-                                        onChange={e => this.onChangeNewFolderName(e)}
-                                        type="text" placeholder="wpisz nazwę folderu..." />
-                                    }
-                                    <span onClick={this.openAddingFolderInput} >
-                                        <i onClick={this.addFolder} className="fa fa-folder">
-                                        </i>
-                                        {showAddingFolderInput && "Stwórz"} 
-                                    </span>
-                                    
-
-                                    {isAddingFolder && <SmallSpinner /> } 
-                                    { showAddingFolderInput && !isAddingFolder && <i onClick={() => this.setState({showAddingFolderInput: false})} 
-                                        className="fa fa-times"></i> }
-                            </Button>   
-                            }
-                         
-
-                            {path !== startPath && getFoldersStatus &&
+                        </div>
+                        {path !== startPath && getFoldersStatus &&
                             <Button 
                             onClick={(this.goToFolderBefore)}
-                            mainClass="generate-raport-btn btn-transparent" title="Cofnij">
+                            mainClass="generate-raport-btn btn-transparent" title={t("Back")}>
                                 <i className="fa fa-long-arrow-alt-left"></i>
                             </Button> 
-                            } 
-                        </header>
+                        } 
+                        <h3>{t("ActualPath")}: <span>{path}</span></h3>
+                        
                         {folders.length === 0 && getFoldersStatus ? 
                             <p className="empty-files-list">
-                                Ten folder jest pusty...
+                                {t("ThisFolderIsEmpty")}
                             </p> : 
 
                             <FilesList 
@@ -283,10 +281,6 @@ class GDriveContent extends React.Component{
                             onFileClick={this.onFileClick}
                             />
                         }
-
-                        
-
-                       
                     </div>
                     : 
                     <p className="one-d-error">{loginErrors[0]}</p>
@@ -301,17 +295,14 @@ class GDriveContent extends React.Component{
                 open={showDeleteModal} 
                 content="Delete project modal"
                 onClose={this.closeModal} 
-                header="Czy jesteś pewny, że chcesz usunąć ten folder?"
+                header={t("AreYouSureToDelete")}
                 operation={this.deleteFolder} 
-                operationName="Usuń"
+                operationName={t("Delete")}
+                denyName={t("Deny")}
                 >
                     <React.Fragment>
                         {(loading || deleteFolderStatus === false) &&
-                        <OperationLoader 
-                        close={() => this.props.deleteFolderClear(null, [])}
-                        isLoading={loading} 
-                        operationError={deleteFolderErrors[0]}
-                        />
+                            <Spinner fontSize="3px" positionClass="abs-spinner" />
                         }
                     </React.Fragment>
            
@@ -337,7 +328,7 @@ class GDriveContent extends React.Component{
                     <OperationStatusPrompt
                     key={0} 
                     operationPromptContent={createFolderStatus ? 
-                        "Folder utworzony pomyślnie" : createFolderErrors[0]}
+                        t("SuccCreatedFolder") : createFolderErrors[0]}
                     operationPrompt={createFolderStatus}
                     />
                 }
@@ -346,7 +337,7 @@ class GDriveContent extends React.Component{
                     <OperationStatusPrompt
                     key={1} 
                     operationPromptContent={deleteFolderStatus ? 
-                        "Folder został pomyślnie usunięty" : deleteFolderErrors[0]}
+                        t("SuccDeletedFolder") : deleteFolderErrors[0]}
                     operationPrompt={deleteFolderStatus}
                     />
                 }
@@ -355,7 +346,7 @@ class GDriveContent extends React.Component{
                     <OperationStatusPrompt 
                     key={2} 
                     operationPromptContent={updateFolderStatus ? 
-                        "Folder został pomyślnie edytowany" : updateFolderErrors[0]}
+                        t("SuccEditedFolder") : updateFolderErrors[0]}
                     operationPrompt={updateFolderStatus}
                     />
                 }
@@ -364,7 +355,7 @@ class GDriveContent extends React.Component{
                     <OperationStatusPrompt 
                     key={3} 
                     operationPromptContent={uploadFileStatus ? 
-                        "Pomyślnie dodano plik" : uploadFileErrors[0]}
+                        t("SuccAddedFile") : uploadFileErrors[0]}
                     operationPrompt={uploadFileStatus}
                     />
                 }
@@ -426,5 +417,5 @@ const mapStateToProps = state => {
     };
   };
   
-  export default connect(mapStateToProps, mapDispatchToProps)(GDriveContent);
+  export default connect(mapStateToProps, mapDispatchToProps)(translate("ReportsCloudView")(GDriveContent));
   

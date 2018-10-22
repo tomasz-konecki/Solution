@@ -1,7 +1,7 @@
 import React from 'react'
 import './chooseDriveView.scss';
 import Icon from '../../common/Icon';
-const chooseDriveView = ({selectOneDrive, selectGDrive, goToNonePage}) => (
+const chooseDriveView = ({selectOneDrive, selectGDrive, goToNonePage, BackTranslation}) => (
     <div className="choose-drive-content">   
         <div onClick={selectGDrive} className="btn-container">
             <p>Google Drive</p>
@@ -11,7 +11,7 @@ const chooseDriveView = ({selectOneDrive, selectGDrive, goToNonePage}) => (
             <p>One Drive</p>
             <i className="fab fa-windows"></i>
         </div>
-        <button onClick={goToNonePage} className="come-back-btn">Wróć</button>
+        <button onClick={goToNonePage} className="come-back-btn">{BackTranslation}</button>
     </div>
 );
 

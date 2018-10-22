@@ -28,7 +28,8 @@ class ClientsContainer extends React.Component {
       name: "asc"
     },
     checked: "",
-    loaded: false
+    loaded: false,
+    searchInputValue: ''
   };
 
   componentDidMount = () => {
@@ -154,8 +155,15 @@ class ClientsContainer extends React.Component {
     });
   };
 
+  resetSearchInput = () => {
+    this.setState({
+      searchInputValue: ''
+    })
+  }
+
   generateOptions = client => {
     const { t } = this.props;
+    
     let content = [];
     if (!client.isDeleted) {
       content.push(
@@ -185,6 +193,7 @@ class ClientsContainer extends React.Component {
         editClient={this.props.clientsActions.editClient}
         loading={this.props.loading}
         resultBlock={this.props.resultBlockAddClient}
+        resetSearchInput={this.resetSearchInput}
       >
         <Icon icon="edit" iconType="fa" />
       </AddEditClient>
@@ -205,7 +214,7 @@ class ClientsContainer extends React.Component {
         }
       });
     }
-    this.setState({ clients: updatedList, checked: null });
+    this.setState({ clients: updatedList, checked: null, searchInputValue: e.target.value});
   };
 
   sortBy = key => {
@@ -359,7 +368,7 @@ class ClientsContainer extends React.Component {
       t,
       resultBlock
     } = this.props;
-    const { clients, checked } = this.state;
+    const { clients, checked, searchInputValue } = this.state;
     return (
       <React.Fragment>
         <div className="clients-operators">
@@ -367,8 +376,9 @@ class ClientsContainer extends React.Component {
             <AddEditClient
               addClient={clientsActions.addClient}
               resultBlock={resultBlockAddClient}
+              resetSearchInput={this.resetSearchInput}
             />
-            <SearchClient filter={this.filterList} t={t} />
+            <SearchClient filter={this.filterList} inputValue={searchInputValue} t={t} />
           </div>
           <ShowRadioButtons
             t={t}
@@ -395,6 +405,8 @@ class ClientsContainer extends React.Component {
       </React.Fragment>
     );
   };
+
+
   render() {
     let {
       resultBlock,

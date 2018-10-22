@@ -1,0 +1,182 @@
+.current-folders{
+    display: flex;
+    flex-flow: wrap;
+    position: relative;
+    padding: 20px 0;
+    width: 100%;
+    margin: 50px 0;
+    justify-content: center;
+    .selected-folder{
+        background-color: lightblue;
+    }
+    li{
+        width: 150px;
+        word-break: break-all;
+        box-sizing: border-box;
+        height: 150px;
+        background-color: #e8e8e8;
+        border-radius: 5px;
+        padding: 7.5px;
+        display: flex;
+        margin: 15px;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        text-align: center;
+        cursor: pointer;
+        font-weight: bold;
+        transition: .3s;
+        @media(max-width: 400px){
+            width: 250px;
+            margin: 15px 0;
+            height: 250px;
+        }
+        .fa-share-alt-square{
+            position: absolute;
+            left: 0;
+            right: 0;
+            margin: 0 auto;
+            bottom: 7.5px;
+            font-size: 20px;
+        }
+        .fa-folder-open{
+            position: absolute;
+            font-size: 22px;
+            top: 5px;
+            left: 5px;
+            @media(max-width: 400px){
+                font-size: 40px;
+                left: 10px;
+                top: 10px;
+            }
+        }
+        i{
+            transition: 0.5s all ease-in-out;
+        }
+        .fa-cloud-upload-alt{
+            color: blue;
+            top: 5px;
+            font-size: 22px;
+            left: 36px;
+            @media(max-width: 400px){
+                font-size: 40px;
+                left: 70px;
+                top: 10px;
+            }
+        }
+        .fa-check:hover, .fa-times:hover, 
+        .fa-folder-open:hover, .fa-trash:hover,
+        .fa-pen-square:hover,  .fa-cloud-upload-alt:hover
+        {
+            opacity: 0.6;
+        }
+        form{
+            width: 100%;
+            position: relative;
+            input{
+                width: 100%;
+                height: 100%;
+                padding: 5px;
+                border-radius: 5px;
+                border: none;
+            }
+            .fa-check, .fa-times{
+                position: absolute;
+                bottom: -20px;
+                @media(max-width: 400px){
+                    bottom: -35px;
+                }
+            }
+            .fa-check{
+                color: green;
+                right: 0;
+                @media(max-width: 400px){
+                    font-size: 30px;
+                    right: 10px;
+                }
+            }
+            .fa-times{
+                right: 25px;
+                @media(max-width: 400px){
+                    font-size: 30px;
+                    right: 50px;
+                }
+            }
+            .small-spiner{
+                bottom: -50px;
+                right: -2.5px;
+            }
+           
+        }
+        .folders-icons{
+            position: absolute;
+            height: 35px;
+            bottom: 0;
+            left: 0;
+            width: 60px;
+            .fa-share-alt-square{
+                bottom: 5px;
+                color: #256FA5;
+                left: 57px;
+                font-size: 20px;
+                @media(max-width: 400px){
+                    font-size: 40px;
+                    left: 115px;
+                    bottom: 10px;
+                }
+            }
+        }
+        i{
+            position: absolute;
+            cursor: pointer;
+        }
+        .fa-trash{
+            bottom: 7.5px;
+            left: 7.5px;
+            color: red;
+            font-size: 18px;
+            @media(max-width: 400px){
+                font-size: 40px;
+                left: 10px;
+                bottom: 10px;
+            }
+        }
+        .fa-pen-square{
+            bottom: 5px;
+            color: green;
+            left: 30.5px;
+            font-size: 20px;
+            @media(max-width: 400px){
+                font-size: 40px;
+                left: 60px;
+                bottom: 10px;
+            }
+        }
+        
+        .file-details{
+            z-index: 1;
+            position: absolute;
+            transition: 0.5s all linear;
+            background-color: #e9e9e9;
+            border-radius: 5px;
+            width: 130%;
+            height: 130%;
+            p{
+                font-size: 18px;
+                display: flex;
+                padding: 0 20px;
+                justify-content: space-between;
+                margin: 15px 0;
+                span{
+                    font-weight: normal;
+                    word-break: break-all;
+                }
+            }
+            & > span{
+                margin-top: 45px;
+                display: block;
+            }
+        
+        }
+    }
+}

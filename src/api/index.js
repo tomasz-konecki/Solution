@@ -50,30 +50,34 @@ function listener() {
 }
 
 const authValidator = response => {
-  if (response.response) {
-    if (response.response.status === 401 || response.response === undefined) {
-      store.dispatch(logout());
-      store.dispatch(push("/"));
-    } else {
-      if (response.response.config.url.search("onedrive") !== -1) {
-        const oneDriveToken = JSON.parse(response.response.config.data).token;
-        const startPath = "/drive/root:";
-        store
-          .dispatch(refreshToken(oneDriveToken))
-          .then(response => {
-            dispatch(getFolderACreator(response, startPath));
-          })
-          .catch(error => {
-            store.dispatch(authOneDriveACreator());
-          });
-      } else if (response.response.config.url.search("GDrive") !== -1) {
-        dispatch(loginACreator());
-      }
-    }
-  } else {
+  if(response.response.status === 401 || response.response === undefined){
     store.dispatch(logout());
     store.dispatch(push("/"));
   }
+  // if (response.response) {
+  //   if (response.response.status === 401 || response.response === undefined) {
+  //     store.dispatch(logout());
+  //     store.dispatch(push("/"));
+  //   } else {
+  //     if (response.response.config.url.search("onedrive") !== -1) {
+  //       const oneDriveToken = JSON.parse(response.response.config.data).token;
+  //       const startPath = "/drive/root:";
+  //       store
+  //         .dispatch(refreshToken(oneDriveToken))
+  //         .then(response => {
+  //           dispatch(getFolderACreator(response, startPath));
+  //         })
+  //         .catch(error => {
+  //           store.dispatch(authOneDriveACreator());
+  //         });
+  //     } else if (response.response.config.url.search("GDrive") !== -1) {
+  //       dispatch(loginACreator());
+  //     }
+  //   }
+  // } else {
+  //   store.dispatch(logout());
+  //   store.dispatch(push("/"));
+  // }
 
   throw response;
 };

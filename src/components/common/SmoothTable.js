@@ -157,6 +157,11 @@ class SmoothTable extends Component {
         Object.assign({}, this.state.sortingSettings, mainFilter)
       );
     }
+
+    if (this.props.handleChangeSettings) {
+      this.props.handleChangeSettings(Object.assign({}, this.state.sortingSettings, mainFilter));
+    }
+
     return Object.assign({}, this.state.sortingSettings, mainFilter);
   }
 
@@ -242,9 +247,7 @@ class SmoothTable extends Component {
       }
     );
 
-    if (this.props.changeSearchQuery) {
-      this.props.changeSearchQuery(event.target.value);
-    }
+
   }
 
   swapKeysForValues(object) {

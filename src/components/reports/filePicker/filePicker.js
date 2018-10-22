@@ -1,12 +1,13 @@
 import React from "react";
 import SmallSpinner from '../../common/spinner/small-spinner';
 import Button from '../../common/button/button';
-const filePicker = ({handleAddFile, fileToUpload, isUploadingFile, uploadFile}) => {
+import { translate } from 'react-translate';
+const filePicker = ({handleAddFile, fileToUpload, isUploadingFile, uploadFile, t}) => {
   return (
     <div className="file-picker">
       <input
         type="file"
-        placeholder="wybierz plik do dodania..."
+        placeholder={t("SelectFileToAdd")}
         id="upload"
         onChange={handleAddFile}
       />
@@ -15,7 +16,7 @@ const filePicker = ({handleAddFile, fileToUpload, isUploadingFile, uploadFile}) 
         <Button
           disable={isUploadingFile}
           onClick={uploadFile}
-          title="Prześlij"
+          title={t("Send")}
           mainClass="generate-raport-btn btn-green"
         >
           {isUploadingFile && <SmallSpinner />}
@@ -25,4 +26,4 @@ const filePicker = ({handleAddFile, fileToUpload, isUploadingFile, uploadFile}) 
   );
 };
 
-export default filePicker;
+export default translate("FilePicker")(filePicker);

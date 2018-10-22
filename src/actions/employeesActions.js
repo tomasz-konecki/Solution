@@ -689,7 +689,7 @@ export const addCertificate = (cretificate, userId) => {
         }, 2000);
       })
       .catch(error => {
-        dispatch(addCertificateResult(error));
+        dispatch(addCertificateResult(errorCatcher(error)));
         setTimeout(() => {
           dispatch(addCertificateResult(null));
         }, 2000);
@@ -725,7 +725,7 @@ export const editCertificate = (certificateId, newCretificate, userId) => {
         }, 2000);
       })
       .catch(error => {
-        dispatch(addCertificateResult(error));
+        dispatch(addCertificateResult(errorCatcher(error)));
         setTimeout(() => {
           dispatch(addCertificateResult(null));
         }, 2000);

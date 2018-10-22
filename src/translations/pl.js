@@ -25,7 +25,8 @@ const translations = {
     Stats: "Statystyki",
     Skills: "Umiejętności",
     Reports: "Raporty",
-    ImportCV: "Import CV"
+    ImportCV: "Import CV",
+    Info: "Info"
   },
   PreferedRoles: {
     ChooseRoles: "Wybierz preferowane role w serwisie",
@@ -720,7 +721,18 @@ const translations = {
     Shared: "Udostępnione"
   },
   Info: {
-    YourRoleIs: "Your role is "
+    YourRoleIs: "Twoja rola to",
+    RoleError: "Ups, coś poszło nie tak....",
+    SearchingUsersAccounts: "Wyszukiwanie Kont Użytkowników",
+    EditingUsersRoles: "Edytowanie Roli Użytkowników",
+    SearchAD: "Wyszukiwanie Pracowników w Active Directory",
+    AddUser: "Dodawanie Kont Użytkowników",
+    ReactivateUser: "Reaktywowanie Kont Użytkowników",
+    DeleteUserRequest: "Usuwanie próśb o Konto Użytkowników",
+    DeleteUser: "Usuwanie Kont Użytkowników",
+    SearchingProjects: "Wyszukiwanie Projektów",
+    GettingListOfClients: "Wyświetlanie Listy Klientów",
+    AddingClient: "Dodawanie Klientów"
   }
 };
 

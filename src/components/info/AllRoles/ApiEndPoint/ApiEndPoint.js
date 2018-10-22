@@ -11,8 +11,6 @@ class ApiEndPoint extends PureComponent {
     const { endPoints, name } = this.props;
 
     const listOfPermissions = endPoints.map((permission, key) => {
-      console.log("Loading", permission.values.loading, permission.text);
-      console.log("Status:", permission.values.status, permission.text);
       const circle = permission.values.status ? (
         <div className="circle green" />
       ) : (

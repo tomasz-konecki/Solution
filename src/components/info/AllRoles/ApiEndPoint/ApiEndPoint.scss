@@ -1,4 +1,12 @@
 .api-end-point-container {
+  li {
+    list-style: none;
+    margin-bottom: 20px;
+    h3 {
+      color: #999;
+      font-weight: bolder;
+    }
+  }
   .circle {
     width: 20px;
     height: 20px;
@@ -20,6 +28,7 @@
   .api-end-point {
     position: relative;
     display: flex;
+    margin-bottom: 5px;
     .api-end-point-text {
       width: 90%;
     }

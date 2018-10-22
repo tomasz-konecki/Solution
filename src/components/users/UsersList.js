@@ -21,7 +21,9 @@ class UsersList extends Component {
       user: {},
       responseBlock: {},
       loading: false,
-      show: "isActivated"
+      show: "isActivated",
+      searchQuery: "",
+      settings: {}
     };
   }
 
@@ -81,6 +83,12 @@ class UsersList extends Component {
       }
     }
     return symbols;
+  }
+
+  handleChangeSettings = (settings) => {
+    this.setState({
+      settings: settings
+    })
   }
 
   render() {
@@ -252,6 +260,7 @@ class UsersList extends Component {
           loading={this.props.loading}
           data={this.props.users}
           construct={construct}
+          handleChangeSettings={this.handleChangeSettings}
         />
         <Modal
           open={this.state.showModal}
@@ -266,7 +275,8 @@ class UsersList extends Component {
             responseBlock={this.state.responseBlock}
             loading={this.state.loading}
             pageChange={this.props.pageChange}
-            // changeUserRoles={this.changeUserRoles}
+            currentPage={this.props.currentPage}
+            settings={this.state.settings}
           />
         </Modal>
       </div>

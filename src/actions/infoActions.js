@@ -38,193 +38,88 @@ export const genericChangeTypeStatusLoading = (type, status, loading) => {
   };
 };
 
+export const genericInfoACreator = (Api, type) => {
+  return dispatch => {
+    dispatch(genericChangeTypeStatusLoading(type, false, true));
+    Api.then(response => {
+      !response.errorOccurred() &&
+        dispatch(genericChangeTypeStatusLoading(type, true, false));
+    }).catch(error => {
+      if (error.replyBlock.status === 400) {
+        dispatch(genericChangeTypeStatusLoading(type, true, false));
+      } else {
+        dispatch(genericChangeTypeStatusLoading(type, false, false));
+      }
+    });
+  };
+};
+
 //ACCOUNT
 export const accountPostUsersListACreator = () => {
   return dispatch => {
     dispatch(
-      genericChangeTypeStatusLoading(
-        ACCOUNT_CAN_SEARCH_USERS_ACCOUNTS,
-        false,
-        true
+      genericInfoACreator(
+        WebApi.users.post.list({ Limit: 1, Page: 1 }),
+        ACCOUNT_CAN_SEARCH_USERS_ACCOUNTS
       )
     );
-    WebApi.users.post
-      .list({ Limit: 1, Page: 1 })
-      .then(response => {
-        !response.errorOccurred() &&
-          dispatch(
-            genericChangeTypeStatusLoading(
-              ACCOUNT_CAN_SEARCH_USERS_ACCOUNTS,
-              true,
-              false
-            )
-          );
-      })
-      .catch(error => {
-        dispatch(
-          genericChangeTypeStatusLoading(
-            ACCOUNT_CAN_SEARCH_USERS_ACCOUNTS,
-            false,
-            false
-          )
-        );
-      });
   };
 };
 
 export const accountPatchChangeUsersRolesACreator = () => {
   return dispatch => {
     dispatch(
-      genericChangeTypeStatusLoading(
-        ACCOUNT_CAN_CHANGE_USERS_ROLES,
-        false,
-        true
+      genericInfoACreator(
+        WebApi.users.patch.roles(),
+        ACCOUNT_CAN_CHANGE_USERS_ROLES
       )
     );
-    WebApi.users.patch
-      .roles()
-      .then(response => {
-        !response.errorOccurred() &&
-          dispatch(
-            genericChangeTypeStatusLoading(
-              ACCOUNT_CAN_CHANGE_USERS_ROLES,
-              true,
-              false
-            )
-          );
-      })
-      .catch(error => {
-        dispatch(
-          genericChangeTypeStatusLoading(
-            ACCOUNT_CAN_CHANGE_USERS_ROLES,
-            false,
-            false
-          )
-        );
-      });
   };
 };
 
 export const accountGetSearchADACreator = () => {
   return dispatch => {
     dispatch(
-      genericChangeTypeStatusLoading(ACCOUNT_CAN_SEARCH_AD, false, true)
+      genericInfoACreator(WebApi.users.get.adSearch(), ACCOUNT_CAN_SEARCH_AD)
     );
-    WebApi.users.get
-      .adSearch()
-      .then(response => {
-        !response.errorOccurred() &&
-          dispatch(
-            genericChangeTypeStatusLoading(ACCOUNT_CAN_SEARCH_AD, true, false)
-          );
-      })
-      .catch(error => {
-        dispatch(
-          genericChangeTypeStatusLoading(ACCOUNT_CAN_SEARCH_AD, false, false)
-        );
-      });
   };
 };
 
 export const accountPostAddUserACreator = () => {
   return dispatch => {
-    dispatch(genericChangeTypeStatusLoading(ACCOUNT_CAN_ADD_USER, false, true));
-    WebApi.users.get
-      .adSearch()
-      .then(response => {
-        !response.errorOccurred() &&
-          dispatch(
-            genericChangeTypeStatusLoading(ACCOUNT_CAN_ADD_USER, true, false)
-          );
-      })
-      .catch(error => {
-        dispatch(
-          genericChangeTypeStatusLoading(ACCOUNT_CAN_ADD_USER, false, false)
-        );
-      });
+    dispatch(
+      genericInfoACreator(WebApi.users.post.add(), ACCOUNT_CAN_ADD_USER)
+    );
   };
 };
 
 export const accountPatchReactivateUserACreator = () => {
   return dispatch => {
     dispatch(
-      genericChangeTypeStatusLoading(ACCOUNT_CAN_REACTIVATE_USER, false, true)
+      genericInfoACreator(
+        WebApi.users.patch.reactivate(),
+        ACCOUNT_CAN_REACTIVATE_USER
+      )
     );
-    WebApi.users.patch
-      .reactivate()
-      .then(response => {
-        !response.errorOccurred() &&
-          dispatch(
-            genericChangeTypeStatusLoading(
-              ACCOUNT_CAN_REACTIVATE_USER,
-              true,
-              false
-            )
-          );
-      })
-      .catch(error => {
-        dispatch(
-          genericChangeTypeStatusLoading(
-            ACCOUNT_CAN_REACTIVATE_USER,
-            false,
-            false
-          )
-        );
-      });
   };
 };
 
 export const accountDeleteUserACreator = () => {
   return dispatch => {
     dispatch(
-      genericChangeTypeStatusLoading(ACCOUNT_CAN_DELETE_USER, false, true)
+      genericInfoACreator(WebApi.users.delete.user(), ACCOUNT_CAN_DELETE_USER)
     );
-    WebApi.users.delete
-      .user()
-      .then(response => {
-        !response.errorOccurred() &&
-          dispatch(
-            genericChangeTypeStatusLoading(ACCOUNT_CAN_DELETE_USER, true, false)
-          );
-      })
-      .catch(error => {
-        dispatch(
-          genericChangeTypeStatusLoading(ACCOUNT_CAN_DELETE_USER, false, false)
-        );
-      });
   };
 };
 
 export const accountDeleteUserRequestsACreator = () => {
   return dispatch => {
     dispatch(
-      genericChangeTypeStatusLoading(
-        ACCOUNT_CAN_DELETE_USER_REQUEST,
-        false,
-        true
+      genericInfoACreator(
+        WebApi.users.delete.request(),
+        ACCOUNT_CAN_DELETE_USER_REQUEST
       )
     );
-    WebApi.users.delete
-      .request()
-      .then(response => {
-        !response.errorOccurred() &&
-          dispatch(
-            genericChangeTypeStatusLoading(
-              ACCOUNT_CAN_DELETE_USER_REQUEST,
-              true,
-              false
-            )
-          );
-      })
-      .catch(error => {
-        dispatch(
-          genericChangeTypeStatusLoading(
-            ACCOUNT_CAN_DELETE_USER_REQUEST,
-            false,
-            false
-          )
-        );
-      });
   };
 };
 

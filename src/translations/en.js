@@ -661,7 +661,8 @@ const translations = {
     MinutesPl: "minutes",
     MarkAllAsRead: "Mark all as read",
     DeleteAll: "Delete all",
-    NoNotifications: "You don't have any notifications."
+    NoNotifications: "You don't have any notifications.",
+    Tack: "Change position of notification icon on screen"
   },
   Skills: {
     SaveChanges: "Save changes",

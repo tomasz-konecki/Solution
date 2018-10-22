@@ -166,9 +166,11 @@
         margin-left: 15px;
       }
       .assingments-spinner-container {
-        position: absolute;
-        top: 30px;
-        right: -20px;
+        position: relative;
+        .abs-spinner{
+          right: -20px;
+          bottom: -9px;
+        }
       }
     }
     h3 {

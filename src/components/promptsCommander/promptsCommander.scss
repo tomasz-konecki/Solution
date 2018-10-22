@@ -167,6 +167,9 @@
     @media(max-width: 460px){
         bottom: 8px;
     }
+    & > i{
+        margin-left: 4px;
+    }
     div{
         width: 54px;
         height: 54px;
@@ -310,6 +313,10 @@
         span:last-of-type{
             display: flex;
             align-items: center;
+            .fa-thumbtack{
+                cursor: pointer;
+                color: white;
+            }
             i{
                 margin: 0 10px;
             }

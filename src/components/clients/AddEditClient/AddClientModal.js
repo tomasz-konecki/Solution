@@ -106,6 +106,7 @@ class AddClientModal extends Component {
     } else {
       this.props.addClient(fd);
     }
+    this.props.resetSearchInput();
   };
 
   getFileHandler = file => {

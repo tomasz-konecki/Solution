@@ -14,6 +14,7 @@ import { validateInput } from "../../../services/validation";
 import { mapObjectKeysToArrayByGivenIndexes } from "../../../services/methods";
 import ContactList from "../../common/contactList/contactList";
 import { errorCatcher } from "../../../services/errorsHandler";
+import Spinner from '../../common/spinner/spinner';
 const emptyField = "<brak>";
 const active = "Aktywny";
 const inActive = "Nieaktywny";
@@ -52,6 +53,7 @@ class ProjectDetailsBlock extends React.PureComponent {
         mode: "drop-down-with-data",
         value: "",
         error: "",
+        showCount: true,
         inputType: "client",
         minLength: 1,
         maxLength: 150,
@@ -65,6 +67,7 @@ class ProjectDetailsBlock extends React.PureComponent {
         mode: "drop-down-with-data",
         value: "",
         error: "",
+        showCount: true,
         inputType: "cloud",
         minLength: 1,
         maxLength: 150,
@@ -147,28 +150,30 @@ class ProjectDetailsBlock extends React.PureComponent {
     ],
 
     showContactForm: false,
-    selected: this.props.t("ResponsiblePerson")
+    selected: this.props.t("ResponsiblePerson"),
+    isLoadingFormDataFirstTime: true
   };
 
   componentDidMount() {
     WebApi.clients.get.all().then(response => {
       const editProjectArray = [...this.state.editProjectArray];
+      const { project } = this.props;
+
+      editProjectArray[0].value = project.name;
+      editProjectArray[1].value = project.description;
+      editProjectArray[2].value = project.client;
+      editProjectArray[4].value = project.startDate;
+      editProjectArray[5].value = project.estimatedEndDate;
+  
       editProjectArray[2].dataToMap = response.replyBlock.data.dtoObjects;
-      this.setState({ editProjectArray: editProjectArray });
-    });
+      const currentSelectedClient = editProjectArray[2].dataToMap.find(client => (
+        client.name === editProjectArray[2].value
+      ));
+      editProjectArray[3].dataToMap = currentSelectedClient.clouds;
+       
+        this.setState({ editProjectArray, isLoadingFormDataFirstTime: false });
+    }).catch(() => this.setState({isLoadingFormDataFirstTime: false}));
 
-    const editProjectArray = [...this.state.editProjectArray];
-    const { project } = this.props;
-
-    editProjectArray[0].value = project.name;
-    editProjectArray[1].value = project.description;
-    editProjectArray[2].value = project.client;
-    editProjectArray[4].value = project.startDate;
-    editProjectArray[5].value = project.estimatedEndDate;
-
-    this.setState({
-      editProjectArray: editProjectArray
-    });
   }
   componentWillReceiveProps(nextProps) {
     if (nextProps.editProjectErrors !== this.props.editProjectErrors) {
@@ -269,7 +274,7 @@ class ProjectDetailsBlock extends React.PureComponent {
 
   fetchContactDateByOtherClient = e => {
     const index = this.state.responsiblePersons.findIndex(i => {
-      return i.firstName === e.target.value;
+      return i.email === e.target.value;
     });
     const responsiblePersonArray = [...this.state.responsiblePersonArray];
     responsiblePersonArray[0].value = this.state.responsiblePersons[
@@ -291,65 +296,65 @@ class ProjectDetailsBlock extends React.PureComponent {
     });
   };
   render() {
-    const editable = this.props.editable;
-    const { t } = this.props;
-    const { editProjectStatus } = this.props;
-    const { editProjectErrors } = this.props;
-
+    const { editProjectStatus, editProjectErrors, editable, t } = this.props;
+    const { showContactForm, isLoadingFormDataFirstTime } = this.state;
     return (
       <div className="project-details-block">
         <header>
-          <h3>{t("EditProjectData")}</h3>
+          <h3>{showContactForm ? t("AddContactPerson") : t("EditProjectData")}</h3>
         </header>
 
-        {this.state.showContactForm ? (
-          <Form
-            btnTitle={t("Send")}
-            key={1}
-            shouldSubmit={true}
-            onSubmit={this.handleSubmit}
-            formItems={this.state.responsiblePersonArray}
-            formTitle={t("ClientContactData")}
-            isLoading={this.state.isLoading}
-            submitResult={{
-              status: editProjectStatus,
-              content: editProjectStatus
-                ? t("ProjectHasBeenEdited")
-                : editProjectErrors && editProjectErrors[0]
-            }}
-          >
-            <button
-              onClick={this.changeForm}
-              type="button"
-              className="come-back-btn"
+        {isLoadingFormDataFirstTime ? <Spinner fontSize="3px" positionClass="abs-spinner"/> : 
+          showContactForm ? (
+            <Form
+              btnTitle={t("Send")}
+              key={1}
+              shouldSubmit={true}
+              onSubmit={this.handleSubmit}
+              formItems={this.state.responsiblePersonArray}
+              formTitle={t("ClientContactData")}
+              isLoading={this.state.isLoading}
+              submitResult={{
+                status: editProjectStatus,
+                content: editProjectStatus
+                  ? t("ProjectHasBeenEdited")
+                  : editProjectErrors && editProjectErrors[0]
+              }}
             >
-              {t("Back")}
-            </button>
-            {this.state.responsiblePersons &&
-            this.state.responsiblePersons.length > 0 ? (
-              <ContactList
-                selected={this.state.selected}
-                onChange={e => this.fetchContactDateByOtherClient(e)}
-                items={this.state.responsiblePersons}
-                t={this.props.t}
-              />
-            ) : null}
-          </Form>
-        ) : (
-          <Form
-            key={2}
-            dateIndexesToCompare={[3, 4]}
-            onSubmit={this.changeForm}
-            shouldSubmit={false}
-            btnTitle={t("Next")}
-            cloudIdInForm={3}
-            isLoading={this.state.isLoading}
-            endDate={this.props.estimatedEndDate}
-            formItems={this.state.editProjectArray}
-            clientsWhichMatch={this.state.clientsWhichMatch}
-            onBlur={this.goForClient}
-          />
-        )}
+              <button
+                onClick={this.changeForm}
+                type="button"
+                className="come-back-btn"
+              >
+                {t("Back")}
+              </button>
+              {this.state.responsiblePersons &&
+              this.state.responsiblePersons.length > 0 ? (
+                <ContactList
+                  selected={this.state.selected}
+                  onChange={e => this.fetchContactDateByOtherClient(e)}
+                  items={this.state.responsiblePersons}
+                  t={this.props.t}
+                />
+              ) : null}
+            </Form>
+          ) : (
+            <Form
+              key={2}
+              dateIndexesToCompare={[3, 4]}
+              onSubmit={this.changeForm}
+              shouldSubmit={false}
+              btnTitle={t("Next")}
+              cloudIdInForm={3}
+              isLoading={this.state.isLoading}
+              endDate={this.props.estimatedEndDate}
+              formItems={this.state.editProjectArray}
+              clientsWhichMatch={this.state.clientsWhichMatch}
+              onBlur={this.goForClient}
+            />
+          )
+        }
+        
       </div>
     );
   }

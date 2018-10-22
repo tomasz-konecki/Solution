@@ -478,6 +478,10 @@ const translations = {
     PhoneNumber: "Phone number",
     InsertPhoneNumber: "insert phone number...",
     ResponsiblePerson: "Responsible person",
+    AddContactPerson: "Add or choose contact person",
+    ContactPerson: "Add or choose contact person",
+    ProjectHasBeenEdited: "Project has been succesfully edited"
+    
   },
   ProjectDetails: {
     GeneralInfo: "Overview",

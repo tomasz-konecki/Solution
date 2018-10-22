@@ -256,7 +256,7 @@ class Form extends Component {
         {this.state.formItems.map((i, index) => {
           return (
             <section style={{display: i.disable === true ? 'none' : 'flex'}} className={`input-container ${inputContainerClass}`} key={index}>
-              <label>{i.title}</label>
+              <label>{i.title} {i.showCount && <b>({i.dataToMap.length})</b>}</label>
               <div className="right-form-container">
                 {!i.mode || i.mode === "text" ? (
                   <input

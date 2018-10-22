@@ -73,6 +73,7 @@ class OneDriveContent extends React.PureComponent {
             getFolder(oneDriveToken, path ? path : "/drive/root:");
         }
     }
+
     componentWillReceiveProps(nextProps){
         if(nextProps.authErrors !== this.props.authErrors){
             if(nextProps.authStatus === true)
@@ -80,19 +81,19 @@ class OneDriveContent extends React.PureComponent {
             else 
                 this.setState({isPreparingForLogingIn: false});
         }
-
         else if(nextProps.getFoldersErrors !== this.props.getFoldersErrors){
             this.setState({isPreparingForLogingIn: false,
                 isTakingCodeFromApi: false, isAddingFolder: false, 
                 showAddingFolderInput: false, currentOpenedFolderToEditId: "", 
-                folderIsLoadingId: "", isGoingBack: false, isUploadingFile: false});
+                folderIsLoadingId: "", isGoingBack: false, isUploadingFile: false,
+                isDeletingOrEditingFolder: false});
         }
-        else if(nextProps.createFolderStatus === false)
-            this.setState({ isAddingFolder: false });
-        else if(nextProps.deleteFolderErrors !== this.props.deleteFolderErrors)
+        else if(nextProps.updateFolderErrors !== this.props.updateFolderErrors || 
+            nextProps.deleteFolderErrors !== this.props.deleteFolderErrors)
             this.setState({isDeletingOrEditingFolder: false});
         else if(nextProps.uploadFileStatus === false)
             this.setState({isUploadingFile: false});
+        
     }
 
     componentDidUpdate(prevProps){

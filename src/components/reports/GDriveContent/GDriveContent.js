@@ -187,6 +187,14 @@ class GDriveContent extends React.Component{
        this.closeShareLinkModal();
     }
 
+    openAddingFolderBtn = () => {
+        this.setState({showAddingFolderInput: true});
+    }
+
+    closeAddingFolderInput = () => {
+        this.setState({showAddingFolderInput: false, newFolderName: "", newFolderNameError: ""});
+    }
+
     render(){
         const { isLoading, folderIsLoadingId, showDeleteModal,
             folderToDeleteId, currentOpenedFolderToEditId, editFolderName, isEditingFolder, 
@@ -201,16 +209,33 @@ class GDriveContent extends React.Component{
             generatedGDriveSharedLink, t } = this.props;
 
         return (
-            <div 
-                className="drive-content-container">
+            <div className="drive-content-container">
                 { isLoading ? <Spinner fontSize="7px" 
                     message={t("LoadingAccountDataPrompt")} /> :
                     loginStatus !== null && 
 
-                    loginStatus ? 
+                    loginStatus && getFoldersStatus ? 
                     <div className="navigation-folders-container">
-                        <header>
-                            <h3>{t("ActualPath")}: <span>{path}</span></h3>
+                        <div className="add-folder-container">
+                            <Button onClick={!showAddingFolderInput ? this.openAddingFolderBtn : null} disable={isAddingFolder}
+                            title={!showAddingFolderInput ? t("AddFolder") : ""}
+                            mainClass={`${showAddingFolderInput ? "" : "not-opened-btn"} generate-raport-btn btn-green`}>
+                                {showAddingFolderInput && 
+                                    <input className={`${newFolderNameError ? "input-error" : null}`}
+                                    value={newFolderName}
+                                    onKeyPress={e => this.onKeyPress(e)}
+                                    onChange={e => this.onChangeNewFolderName(e)}
+                                    type="text" placeholder={t("WriteFolderName")} />
+                                }
+                                <span onClick={this.addFolder}>
+                                    <i className="fa fa-folder"/>
+                                    {showAddingFolderInput && t("Create")} 
+                                </span>
+                                { isAddingFolder && <SmallSpinner /> } 
+                                { showAddingFolderInput && !isAddingFolder && 
+                                <i onClick={this.closeAddingFolderInput} className="fa fa-times"/> }
+                            </Button>
+
                             {newFolderNameError && !folderNameError && 
                                 <p className="validation-error">
                                 {newFolderNameError}</p>
@@ -219,42 +244,16 @@ class GDriveContent extends React.Component{
                                 <p className="validation-error">
                                 {folderNameError}</p> 
                             }
-                            {getFoldersStatus && 
-                                <Button
-                                onClick={!showAddingFolderInput ? () => this.setState({showAddingFolderInput: true}) : null}
-                                disable={isAddingFolder || newFolderNameError}
-                                title={!showAddingFolderInput ? t("AddFolder") : ""}
-                                mainClass="generate-raport-btn btn-green"
-                                >
-                                    {showAddingFolderInput && 
-                                        <input 
-                                        className={newFolderNameError ? "input-error" : null}
-                                        value={newFolderName}
-                                  
-                                        onKeyPress={e => this.onKeyPress(e)}
-                                        onChange={e => this.onChangeNewFolderName(e)}
-                                        type="text" placeholder={t("WriteFolderName")} />
-                                    }
-                                    <span onClick={this.openAddingFolderInput} >
-                                        <i onClick={this.addFolder} className="fa fa-folder">
-                                        </i>
-                                        {showAddingFolderInput && t("Create")} 
-                                    </span>
-                                    
-
-                                    {isAddingFolder && <SmallSpinner /> } 
-                                    { showAddingFolderInput && !isAddingFolder && <i onClick={() => this.setState({showAddingFolderInput: false})} 
-                                        className="fa fa-times"></i> }
-                            </Button>   
-                            }
-                            {path !== startPath && getFoldersStatus &&
+                        </div>
+                        {path !== startPath && getFoldersStatus &&
                             <Button 
                             onClick={(this.goToFolderBefore)}
                             mainClass="generate-raport-btn btn-transparent" title={t("Back")}>
                                 <i className="fa fa-long-arrow-alt-left"></i>
                             </Button> 
-                            } 
-                        </header>
+                        } 
+                        <h3>{t("ActualPath")}: <span>{path}</span></h3>
+                        
                         {folders.length === 0 && getFoldersStatus ? 
                             <p className="empty-files-list">
                                 {t("ThisFolderIsEmpty")}
@@ -303,11 +302,7 @@ class GDriveContent extends React.Component{
                 >
                     <React.Fragment>
                         {(loading || deleteFolderStatus === false) &&
-                        <OperationLoader 
-                        close={() => this.props.deleteFolderClear(null, [])}
-                        isLoading={loading} 
-                        operationError={deleteFolderErrors[0]}
-                        />
+                            <Spinner fontSize="3px" positionClass="abs-spinner" />
                         }
                     </React.Fragment>
            

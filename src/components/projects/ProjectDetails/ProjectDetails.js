@@ -168,17 +168,6 @@ class ProjectDetails extends Component {
       endDate ? endDate : estimatedEndDate
     )._i;
 
-    // if(moment(startDate).format("YYYY-MM-DD") === '0001-01-01')
-    // {
-    //   addEmployeToProjectFormItems[0].value = moment();
-    //   addEmployeToProjectFormItems[1].value = moment().add(1, 'days');
-    // }else{
-    //   addEmployeToProjectFormItems[0].value = moment(startDate);
-    //   addEmployeToProjectFormItems[1].value = moment(
-    //     endDate ? endDate : estimatedEndDate
-    //   );
-    // }
-
     return addEmployeToProjectFormItems;
   };
 
@@ -289,8 +278,7 @@ class ProjectDetails extends Component {
     const { onlyActiveAssignments } = this.state;
     this.setState({
       onlyActiveAssignments: !onlyActiveAssignments,
-      isLoadingAssignments: true,
-      isLoadingProject: true
+      isLoadingAssignments: true
     });
     this.props.getProject(this.props.match.params.id, !onlyActiveAssignments);
   };
@@ -351,8 +339,7 @@ class ProjectDetails extends Component {
   };
   render() {
     const {
-      project,
-      loading,
+      project, loading,
       loadProjectStatus,
       addEmployeeToProjectStatus,
       addEmployeeToProjectErrors,
@@ -371,7 +358,9 @@ class ProjectDetails extends Component {
       projectStatus,
       onlyActiveAssignments,
       matches,
-      currentOpenedRow
+      isLoadingProject,
+      currentOpenedRow,
+      isLoadingAssignments
     } = this.state;
     return (
       <div
@@ -382,7 +371,7 @@ class ProjectDetails extends Component {
         }
         className="project-details-container"
       >
-        {loadProjectStatus === null && <Spinner />}
+        {isLoadingProject && <Spinner fontSize="7px" />}
 
         {loadProjectStatus && (
           <Aux>
@@ -567,7 +556,8 @@ class ProjectDetails extends Component {
                     onChange={this.togleActiveAssign}
                   />
                   <span className="assingments-spinner-container">
-                    {this.state.isLoadingAssignments && <SmallSpinner />}
+                    {(isLoadingAssignments || loading) && 
+                      <Spinner fontSize="2px" positionClass="abs-spinner"/>}
                   </span>
                 </div>
 
@@ -840,7 +830,9 @@ class ProjectDetails extends Component {
                   onlyActiveAssignments: onlyActiveAssignments
                 })
               }
-            />
+            >
+             {loading && <Spinner fontSize="3px" positionClass="abs-spinner"/>}
+            </ConfirmModal>
 
             <Modal
               key={3}
@@ -902,8 +894,6 @@ class ProjectDetails extends Component {
           <NotFound404 />
           // <ServerError message={this.props.loadProjectErrors[0]} />
         )}
-
-        {(changeProjectStateStatus === false || loading) && <Spinner />}
       </div>
     );
   }
@@ -918,10 +908,11 @@ const mapStateToProps = state => {
     responsiblePersonKeys: state.projectsReducer.responsiblePersonKeys,
     overViewKeys: state.projectsReducer.overViewKeys,
 
+    loading: state.asyncReducer.loading,
+
     changeProjectStateStatus: state.projectsReducer.changeProjectStateStatus,
     changeProjectStateErrors: state.projectsReducer.changeProjectStateErrors,
     currentOperation: state.projectsReducer.currentOperation,
-    loading: state.asyncReducer.loading,
 
     addEmployeeToProjectStatus:
       state.projectsReducer.addEmployeeToProjectStatus,

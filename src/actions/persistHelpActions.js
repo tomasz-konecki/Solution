@@ -1,5 +1,5 @@
 
-import { FETCH_LISTS, CHOOSE_FOLDER_TO_GENERATE_REPORT, G_DRIVE_LOGIN, FETCH_FORM_CLIENTS,
+import { FETCH_LISTS, CHOOSE_FOLDER_TO_GENERATE_REPORT, G_DRIVE_LOGIN, FETCH_FORM_CLIENTS, PUT_NOTIFICATION_ICON_IN_SIDE_BAR,
     CHANGE_SORT_BY, CREATE_LAST_WATCHED_PERSONS, CHANGE_LINK_BEFORE_REDIRECT, CHANGE_CURRENT_WATCHED_USER }
 from "../constants";
 import WebApi from '../api/index';
@@ -96,5 +96,10 @@ export const changeLinkBeforeRedirect = (linkBeforeRedirectToOutlookAuth) => {
 
 export const changeCurrentWatchedUser = currentWatchedUser => {
     return { type: CHANGE_CURRENT_WATCHED_USER, currentWatchedUser }
+}
+
+export const putNotificationIconInSideBar = isNotificationIconInSideBar => {
+  console.log(isNotificationIconInSideBar);
+  return { type: PUT_NOTIFICATION_ICON_IN_SIDE_BAR, isNotificationIconInSideBar };
 }
 

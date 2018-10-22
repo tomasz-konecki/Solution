@@ -673,7 +673,8 @@ const translations = {
     MinutesPl: "minut",
     MarkAllAsRead: "Oznacz wszystkie jako przeczytane",
     DeleteAll: "Usuń wszystkie",
-    NoNotifications: "Nie masz żadnych powiadomień."
+    NoNotifications: "Nie masz żadnych powiadomień.",
+    Tack: "Zmień pozycję ikony powiadomień"
   },
   Skills: {
     SaveChanges: "Zapisz zmiany",

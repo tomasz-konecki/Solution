@@ -2,7 +2,7 @@ import React from 'react'
 import './promptsCommander.scss';
 import { connect } from 'react-redux';
 import { changeShowGlobal, setProgressValue } from '../../actions/progressBarActions';
-import { changeCurrentWatchedUser } from '../../actions/persistHelpActions';
+import { changeCurrentWatchedUser, putNotificationIconInSideBar } from '../../actions/persistHelpActions';
 import { generateReport } from '../../actions/reportsActions';
 import SideBarProgressContent from './sideBarProgressContent';
 import SmallProgressBar from './smallProgressBar/smallProgressBar';
@@ -89,16 +89,24 @@ class PromptsCommander extends React.Component{
         }
     }
 
+    putIconInOtherPlace = () => {
+        this.togleSideBarHandler();
+        const { isNotificationIconInSideBar, putNotificationIconInSideBar } = this.props;
+        putNotificationIconInSideBar(!isNotificationIconInSideBar);
+    }
+
     render(){
         const { shouldShowGlobal, changeShowGlobal, isStarted, percentage, message,
             operationName, connectingSinalRStatus, connectionSignalRErrors, 
             generateReportStatus, generateReportErrors, barType, gDriveLoginStatus,
-            oneDriveLoginStatus, notifications, language, numberOfNotifications } = this.props;
+            oneDriveLoginStatus, notifications, language, numberOfNotifications, isNotificationIconInSideBar } = this.props;
         const { currentDeletedElements, currentReadElements, deleteAllSpin, readAllSpin } = this.state;
         return (
             <React.Fragment>
                 {barType === undefined ? 
                     <SideBarProgressContent 
+                    isNotificationIconInSideBar={isNotificationIconInSideBar}
+                    putIconInOtherPlace={this.putIconInOtherPlace}
                     changeCurrentWatchedUserHandler={this.changeCurrentWatchedUserHandler}
                     currentDeletedElements={currentDeletedElements}
                     currentReadElements={currentReadElements}
@@ -153,7 +161,8 @@ const mapStateToProps = state => {
         getNotificationErrors: state.notificationReducer.getNotificationErrors,
 
         language: state.languageReducer.language,
-        numberOfNotifications: state.authReducer.notifications
+        numberOfNotifications: state.authReducer.notifications,
+        isNotificationIconInSideBar: state.persistHelpReducer.isNotificationIconInSideBar
         
     };
   };
@@ -175,7 +184,8 @@ const mapStateToProps = state => {
         markAllNotificationsAsReadACreator: name => dispatch(markAllNotificationsAsReadACreator(name)),
         markAllNotificationsAsRead: (status, errors) => dispatch(markAllNotificationsAsRead(status, errors)),
 
-        changeCurrentWatchedUser: (currentWatchedUser) => dispatch(changeCurrentWatchedUser(currentWatchedUser))
+        changeCurrentWatchedUser: (currentWatchedUser) => dispatch(changeCurrentWatchedUser(currentWatchedUser)),
+        putNotificationIconInSideBar: (isNotificationIconInSideBar) => dispatch(putNotificationIconInSideBar(isNotificationIconInSideBar))
 
     };
   };

@@ -1,4 +1,4 @@
-import { FETCH_LISTS, CHOOSE_FOLDER_TO_GENERATE_REPORT, G_DRIVE_LOGIN, FETCH_FORM_CLIENTS,
+import { FETCH_LISTS, CHOOSE_FOLDER_TO_GENERATE_REPORT, G_DRIVE_LOGIN, FETCH_FORM_CLIENTS, PUT_NOTIFICATION_ICON_IN_SIDE_BAR,
   CHANGE_SORT_BY, CREATE_LAST_WATCHED_PERSONS, CHANGE_LINK_BEFORE_REDIRECT, CHANGE_CURRENT_WATCHED_USER } from "../constants";
 import { updateObject } from "../services/methods";
 
@@ -20,7 +20,9 @@ const initialState = {
   lastWatchedPersons: [],
 
   linkBeforeRedirectToOutlookAuth: "",
-  currentWatchedUser: ""
+  currentWatchedUser: "",
+
+  isNotificationIconInSideBar: false
 };
 
 export const persistHelpReducer = (state = initialState, action) => {
@@ -54,6 +56,8 @@ export const persistHelpReducer = (state = initialState, action) => {
       return updateObject(state, { linkBeforeRedirectToOutlookAuth: action.linkBeforeRedirectToOutlookAuth })
     case CHANGE_CURRENT_WATCHED_USER:
       return updateObject(state, { currentWatchedUser: action.currentWatchedUser });
+    case PUT_NOTIFICATION_ICON_IN_SIDE_BAR:
+      return updateObject(state, { isNotificationIconInSideBar: action.isNotificationIconInSideBar })
     default:
       return state;
   }

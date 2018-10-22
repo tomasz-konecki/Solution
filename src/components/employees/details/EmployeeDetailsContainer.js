@@ -169,10 +169,7 @@ class EmployeeDetailsContainer extends React.Component {
       editSkypeFormItems
     } = this.state;
     const {
-      changeCurrentWatchedUser,
-      employeeStatus,
-      employeeErrors,
-      employee,
+      changeCurrentWatchedUser, employeeStatus, employeeErrors, employee,
       employeeOperationStatus,
       employeeOperationErrors,
       employeeResultMessage,

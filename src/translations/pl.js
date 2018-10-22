@@ -277,7 +277,7 @@ const translations = {
     ChooseOrSelectQuarter: "wpisz lub wybierz kwartał...",
     SuccAddedQuarter: "Pomyślnie utworzono rozmowę kwartalną",
     QuarterItemSubHeader: "przeprowadził",
-    Reactivate: "Reaktywuj", 
+    Reactivate: "Reaktywuj",
     Conduct: "przeprowadzi",
     QuarterDeletedPrompt: "Ta rozmowa jest usunięta",
     Year: "Rok",
@@ -417,7 +417,9 @@ const translations = {
     ChooseAnOwner: "Wybierz właściciela projektu.",
     EmployeeNotFound: "Nie znaleziono pracownika.",
     ProjectOwnerHasBeenAdded: "Właściciel został dodany.",
-    Delete: "Usuń"
+    Delete: "Usuń",
+    Cancel: "Anuluj",
+    DeleteYourselfeMessage: "Czy na pewno chcesz się usunąć z listy właścicieli projektu ?"
   },
   AddProjectScreen: {
     AddProject: "Dodaj Projekt",
@@ -527,6 +529,7 @@ const translations = {
     ToFillEmail: "do@uzupełnienia.com",
     Add: "Dodaj",
     Share:"Udostępnij",
+    Cancel: "Anuluj",
   },
   ResponsiblePersonBlock: {
     NameNoSpecial: "Imię nie może zawierać znaków specjalnych ani cyfr.",
@@ -626,7 +629,7 @@ const translations = {
     ReactivateProjectInfinitive: "Reaktywować projekt",
     ProjectReactivated: "Projekt został reaktywowany",
   },
- 
+
   TeamMember: {
     AssignedCapacity: "Przypisany na etat",
     ProjectRole: "Rola w projekcie",

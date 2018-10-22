@@ -414,7 +414,9 @@ const translations = {
     ChooseAnOwner: "Choose project's owner",
     EmployeeNotFound: "Employee Not Found",
     ProjectOwnerHasBeenAdded: "Owner has been added successfully",
-    Delete: "Delete"
+    Delete: "Delete",
+    Cancel: "Cancel",
+    DeleteYourselfeMessage: "Are you sure you want to delete yourself from project owners list ?"
   },
   AddProjectScreen: {
     AddProject: "Add Project",
@@ -526,6 +528,7 @@ const translations = {
     ToFill: "To Fill",
     ToFillEmail: "to@fill.com",
     Share:"Share",
+    Cancel: "Cancel",
   },
   ProjectRowUnfurl: {
     OwnersList: "Owners",

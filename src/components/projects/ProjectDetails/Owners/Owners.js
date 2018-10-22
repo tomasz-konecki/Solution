@@ -5,6 +5,7 @@ import { Typeahead } from "react-bootstrap-typeahead";
 import "react-bootstrap-typeahead/css/Typeahead.min.css";
 import { translate } from "react-translate";
 import SmallSpinner from "../../../common/spinner/small-spinner";
+import ConfirmModal from "../../../common/confimModal/confirmModal";
 import "./Owners.scss";
 
 function getIndex(value, arr, prop) {
@@ -27,7 +28,9 @@ class Owners extends PureComponent {
       owners: props.owners,
       status: false,
       errorMessage: null,
-      employee: null
+      employee: null,
+      deleteOwnerModalOpen: false,
+      deleteOwnerId: null
     };
   }
 
@@ -68,6 +71,42 @@ class Owners extends PureComponent {
         }
         this.setState({ employeesArray });
       });
+  }
+
+  deleteProjectOwner() {
+    this.setState({
+      deleteOwnerModalOpen: false
+    })
+
+    this.props.changeProjectState(
+      this.props.WebApi.projects.delete.owner,
+      "deleteOwner",
+      {
+        projectId: this.props.projectId,
+        ownerId: this.state.deleteOwnerId
+      }
+    )
+  }
+
+  setProjectOwnerToDeleteId = ownerId => {
+    if(this.props.loggedUser && this.props.loggedUser === ownerId)
+    {
+      this.setState({
+        deleteOwnerId: ownerId,
+        deleteOwnerModalOpen: true
+      })
+    }else{
+      this.props.changeProjectState(
+        this.props.WebApi.projects.delete.owner,
+        "deleteOwner",
+        {
+          projectId: this.props.projectId,
+          ownerId: ownerId
+        }
+      )
+    }
+
+
   }
 
   afterEmployeeHasBeenChoosen = employee => {
@@ -165,14 +204,7 @@ class Owners extends PureComponent {
                   isProjectOwner && (
                     <i
                       onClick={() =>
-                        changeProjectState(
-                          WebApi.projects.delete.owner,
-                          "deleteOwner",
-                          {
-                            projectId: projectId,
-                            ownerId: owners[index].id
-                          }
-                        )
+                        this.setProjectOwnerToDeleteId(owners[index].id)
                       }
                     >
                       {t("Delete")}
@@ -182,6 +214,23 @@ class Owners extends PureComponent {
             );
           })}
         </div>
+
+        <ConfirmModal
+          open={this.state.deleteOwnerModalOpen}
+          content="Delete project modal"
+          onClose={() =>
+            this.setState({
+              deleteOwnerModalOpen: !this.state.deleteOwnerModalOpen
+            })
+          }
+          header={t("DeleteYourselfeMessage")}
+          operationName={t("Delete")}
+          denyName={t("Cancel")}
+          operation={() =>
+            this.deleteProjectOwner()
+          }
+        />
+
       </div>
     );
   }

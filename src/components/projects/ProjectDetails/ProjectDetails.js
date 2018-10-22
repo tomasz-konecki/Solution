@@ -513,6 +513,7 @@ class ProjectDetails extends Component {
                   owners={project.owners}
                   changeProjectState={changeProjectState}
                   WebApi={WebApi}
+                  loggedUser={this.props.login}
                   projectId={project.id}
                   isProjectOwner={
                     binaryPermissioner(false)(0)(0)(0)(0)(0)(1)(
@@ -832,6 +833,7 @@ class ProjectDetails extends Component {
               }
               header={t("ConfirmDeleteProject")}
               operationName={t("Delete")}
+              denyName={t("Cancel")}
               operation={() =>
                 changeProjectState(WebApi.projects.delete.project, "delete", {
                   projectId: project.id,

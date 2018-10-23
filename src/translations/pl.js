@@ -446,7 +446,8 @@ const translations = {
     ProjectAddedSuccessfully: "Projekt dodano pomyślnie",
     Add: "Dodaj",
     CloudPlaceHolder: "wpisz własną lub wybierz chmure z listy",
-    ClientPlaceHolder: "wpisz własnego klienta lub wybierz z listy"
+    ClientPlaceHolder: "wpisz własnego klienta lub wybierz z listy",
+    ContactPerson: "Wybierz lub dodaj osobę do kontaktu"
   },
   ProjectDetailsBlock: {
     EditProjectData: "Edycja danych projektu",
@@ -481,7 +482,9 @@ const translations = {
     InsertLastName: "wprowadź nazwisko...",
     PhoneNumber: "Numer telefonu",
     InsertPhoneNumber: "wprowadź numer telefonu...",
-    ResponsiblePerson: "Osoba do kontaktu"
+    ResponsiblePerson: "Osoba do kontaktu",
+    AddContactPerson: "Wybierz lub dodaj osobę do kontaktu",
+    ProjectHasBeenEdited: "Projekt został pomyślnie edytowany"
   },
   ProjectDetails: {
     GeneralInfo: "Informacje ogólne",
@@ -677,7 +680,7 @@ const translations = {
     MarkAllAsRead: "Oznacz wszystkie jako przeczytane",
     DeleteAll: "Usuń wszystkie",
     NoNotifications: "Nie masz żadnych powiadomień.",
-    Tack: "Zmień pozycję ikony powiadomień"
+    Tack: "Zmień pozycję ikony powiadomień"  
   },
   Skills: {
     SaveChanges: "Zapisz zmiany",

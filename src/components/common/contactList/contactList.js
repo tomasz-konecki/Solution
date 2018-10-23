@@ -14,8 +14,8 @@ const contactList = props => (
       <optgroup label="Dane kontaktowe">
         {props.items.map(i => {
           return (
-            <option className="option" value={i.firstName} key={i.id}>
-              {i.firstName}
+            <option className="option" value={i.email} key={i.id}>
+              {i.firstName + " " + i.lastName + ` (${i.email})`}
             </option>
           );
         })}

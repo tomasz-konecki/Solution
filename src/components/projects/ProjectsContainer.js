@@ -66,6 +66,7 @@ class ProjectsContainer extends React.Component {
           placeholder: this.props.t("ClientPlaceHolder"),
           mode: "drop-down-with-data",
           value: "",
+          showCount: true,
           error: "",
           inputType: "client",
           minLength: 1,
@@ -79,6 +80,7 @@ class ProjectsContainer extends React.Component {
           placeholder: this.props.t("CloudPlaceHolder"),
           mode: "drop-down-with-data",
           value: "",
+          showCount: true,
           error: "",
           inputType: "cloud",
           minLength: 1,
@@ -414,7 +416,7 @@ class ProjectsContainer extends React.Component {
           onClose={() => this.setState({ showModal: false })}
         >
           <header>
-            <h3>{t("AddProject")}</h3>
+            <h3>{openFirstForm ? t("AddProject") : t("ContactPerson")}</h3>
           </header>
 
           {openFirstForm ? (

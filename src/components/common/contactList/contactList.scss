@@ -24,7 +24,8 @@
         box-shadow: -1px 1px 24px -2px rgb(112, 202, 233);
     }
     label{
-        width: 32%
+        width: 32%;
+        text-align: center;
     }
     @media(max-width: 450px){
         flex-flow: column;

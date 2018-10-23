@@ -41,25 +41,27 @@ class ImportCVContainer extends Component {
   };
 
   handleDeleteItem = index => {
-    const { accepted } = this.state;
+    const { accepted, resultBlock } = this.state;
 
     let _accepted = [...accepted];
+    let _resultBlock = JSON.parse(JSON.stringify(resultBlock));
+
+    _resultBlock.result.splice(index, 1);
+
     _accepted.splice(index, 1);
-    this.setState({ accepted: _accepted });
+    this.setState({ accepted: _accepted, resultBlock: _resultBlock });
   };
 
   render() {
     const { accepted, loading, resultBlock } = this.state;
     const { t } = this.props;
-
     let lp = 1;
 
     const items = accepted.map((item, index) => {
       lp++;
-
       const rowClass = resultBlock.result
         ? resultBlock.result[lp - 2]
-          ? resultBlock.result[lp - 2].result.includes("pomyślnie")
+          ? resultBlock.result[lp - 2].result.includes("pomyślnie") || resultBlock.result[lp - 2].result.includes("successfully")
             ? "import_succes"
             : "import_fail"
           : ""

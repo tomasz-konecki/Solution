@@ -3,7 +3,7 @@ import { withRouter } from "react-router-dom";
 import VerticalMenuElement from "./VerticalMenuElement";
 import Icon from "../../../components/common/Icon";
 import PropTypes from "prop-types";
-import { putNotificationIconInSideBar } from '../../../actions/persistHelpActions';
+import { putNotificationIconInSideBar } from "../../../actions/persistHelpActions";
 import { translate } from "react-translate";
 import { connect } from "react-redux";
 import binaryPermissioner from "./../../../api/binaryPermissioner";
@@ -41,7 +41,13 @@ class LeftMenu extends React.Component {
   }
 
   render() {
-    const { match, extended, t, isNotificationIconInSideBar, putNotificationIconInSideBar } = this.props;
+    const {
+      match,
+      extended,
+      t,
+      isNotificationIconInSideBar,
+      putNotificationIconInSideBar
+    } = this.props;
     return (
       <ul
         ref={this.setMenuRef}
@@ -128,12 +134,20 @@ class LeftMenu extends React.Component {
             title={t("ImportCV")}
           />
         ) : null}
-        {isNotificationIconInSideBar &&
+        <VerticalMenuElement
+          match={match}
+          extended={extended}
+          path="/info"
+          icon="info-circle"
+          iconType="fas"
+          title={t("Info")}
+        />
+        {isNotificationIconInSideBar && (
           <li onClick={() => putNotificationIconInSideBar(false)}>
-            <Icon icon="bell" iconType="fa" iconSize="lg"/>
+            <Icon icon="bell" iconType="fa" iconSize="lg" />
             <span>Powiadomienia</span>
           </li>
-        }
+        )}
       </ul>
     );
   }
@@ -143,14 +157,16 @@ function mapStateToProps(state) {
   return {
     pem: state.authReducer.pem,
     binPem: state.authReducer.binPem,
-    isNotificationIconInSideBar: state.persistHelpReducer.isNotificationIconInSideBar
+    isNotificationIconInSideBar:
+      state.persistHelpReducer.isNotificationIconInSideBar
   };
 }
 const mapDispatchToProps = dispatch => {
   return {
-    putNotificationIconInSideBar: (isNotificationIconInSideBar) => dispatch(putNotificationIconInSideBar(isNotificationIconInSideBar))
-  }
-}
+    putNotificationIconInSideBar: isNotificationIconInSideBar =>
+      dispatch(putNotificationIconInSideBar(isNotificationIconInSideBar))
+  };
+};
 
 LeftMenu.propTypes = {
   match: PropTypes.object,
@@ -158,7 +174,12 @@ LeftMenu.propTypes = {
   close: PropTypes.func.isRequired
 };
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(translate("LeftMenu")(LeftMenu)));
+export default withRouter(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(translate("LeftMenu")(LeftMenu))
+);
 
 /*
     {binaryPermissioner(false)(0)(1)(0)(1)(1)(1)(this.props.binPem) ? (

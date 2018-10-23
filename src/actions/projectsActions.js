@@ -28,10 +28,11 @@ import { errorCatcher } from "../services/errorsHandler";
 import { cutNotNeededKeysFromArray } from "../services/methods";
 import moment from "moment";
 
-export const loadProjectsSuccess = projects => {
+export const loadProjectsSuccess = (projects, resultBlock) => {
   return {
     type: LOAD_PROJECTS_SUCCESS,
-    projects
+    projects,
+    resultBlock
   };
 };
 
@@ -60,6 +61,14 @@ export const addProjectOwnerACreator = (projectId, ownersIdsArray) => {
   };
 };
 
+export const loadProjectsTest = () => {
+  return dispatch => {
+    WebApi.projects.post.list({ Limit: 1, PageNumber: 1 }).then(response => {
+      dispatch(loadProjectsSuccess(response.extractData(), response));
+    });
+  };
+};
+
 export const loadProjects = (
   page = 1,
   limit = 15,
@@ -69,7 +78,6 @@ export const loadProjects = (
     other.ProjectFilter && other.ProjectFilter.status && !other.isDeleted
       ? false
       : other.isDeleted;
-
   const settings = Object.assign(
     {},
     {
@@ -84,7 +92,7 @@ export const loadProjects = (
       .list(settings)
       .then(response => {
         if (!response.errorOccurred()) {
-          dispatch(loadProjectsSuccess(response.extractData()));
+          dispatch(loadProjectsSuccess(response.extractData()), response);
         }
         dispatch(asyncEnded());
       })

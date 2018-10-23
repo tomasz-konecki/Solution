@@ -21,7 +21,8 @@ const translations = {
     Stats: "Statistics",
     Skills: "Skills",
     Reports: "Reports",
-    ImportCV: "Import CV"
+    ImportCV: "Import CV",
+    Info: "Info"
   },
   PreferedRoles: {
     ChooseRoles: "Choose your prefered roles",
@@ -260,7 +261,8 @@ const translations = {
     Worker: "Worker",
     WorkerPlaceholder: "type username...",
     Deny: "Deny",
-    MakeSureYouWantDeleteQuarter: "You are sure you want to delete this quarter?",
+    MakeSureYouWantDeleteQuarter:
+      "You are sure you want to delete this quarter?",
     AddQuarterTalk: "Add quarter talk",
     Options: "Options",
     AddQuestion: "Add question",
@@ -270,7 +272,7 @@ const translations = {
     SuccDeleteQuestion: "The question was successfully removed",
     Date: "Date",
     Quarter: "Quarter",
-    QuestionWillBeHere: "question will be here" ,
+    QuestionWillBeHere: "question will be here",
     ChooseOrSelectQuarter: "choose or select quarter...",
     SuccAddedQuarter: "Quarter talk has been added",
     QuarterItemSubHeader: "carried out",
@@ -302,7 +304,7 @@ const translations = {
     ConfirmQuestions: "Confirm questions",
     ForQuarter: "for",
     In: "in",
-    InYear: "year"  ,
+    InYear: "year",
     DoneQuarter: "This conversation was carried out",
     IncomingQuarter: "This conversation will only take place"
   },
@@ -416,7 +418,8 @@ const translations = {
     ProjectOwnerHasBeenAdded: "Owner has been added successfully",
     Delete: "Delete",
     Cancel: "Cancel",
-    DeleteYourselfeMessage: "Are you sure you want to delete yourself from project owners list ?"
+    DeleteYourselfeMessage:
+      "Are you sure you want to delete yourself from project owners list ?"
   },
   AddProjectScreen: {
     AddProject: "Add Project",
@@ -481,7 +484,6 @@ const translations = {
     AddContactPerson: "Add or choose contact person",
     ContactPerson: "Add or choose contact person",
     ProjectHasBeenEdited: "Project has been succesfully edited"
-    
   },
   ProjectDetails: {
     GeneralInfo: "Overview",
@@ -531,8 +533,8 @@ const translations = {
     Add: "Add",
     ToFill: "To Fill",
     ToFillEmail: "to@fill.com",
-    Share:"Share",
-    Cancel: "Cancel",
+    Share: "Share",
+    Cancel: "Cancel"
   },
   ProjectRowUnfurl: {
     OwnersList: "Owners",
@@ -707,13 +709,27 @@ const translations = {
     OnDate: "on",
     GoIntoEmployeeDetails: "Go to employee details"
   },
-  ShareProject:{
-    ShareProject:"Share project",
+  ShareProject: {
+    ShareProject: "Share project",
     Confirm: "Confirm",
     ChangesSaved: "Changes has been saved",
     NotFound: "Not found",
     SelectPersons: "Select persons",
     Shared: "Shared"
+  },
+  Info: {
+    YourRoleIs: "Your role is",
+    RoleError: "Ups, something went wrong...",
+    SearchingUsersAccounts: "Searching Users Accounts",
+    EditingUsersRoles: "Editing Users Roles",
+    SearchAD: "Searching Employees in Active Directory",
+    AddUser: "Adding Users Accounts",
+    ReactivateUser: "Reactivating Users Accounts",
+    DeleteUserRequest: "Deleting Users Accounts Requests",
+    DeleteUser: "Deleting Users Accounts",
+    SearchingProjects: "Searching Projects",
+    GettingListOfClients: "Getting List of Clients",
+    AddingClient: "Adding Client"
   },
   ReportsCloudView: {
     LoadingAccountDataPrompt: "Cloud data is loading right now. Please wait...",
@@ -792,7 +808,8 @@ const translations = {
     Size: "Size",
     Path: "Path",
     ClickHere: "Click here",
-    FirstInfo: "For generating report you must firstly select foolder in One Drive cloud or Google Drive cloud",
+    FirstInfo:
+      "For generating report you must firstly select foolder in One Drive cloud or Google Drive cloud",
     SecondInfo: "if you want continue",
     EmployeesInDay: "Only employees avaible in",
     AddFav: "Add this report to favorite",
@@ -803,7 +820,7 @@ const translations = {
     CreatedLink: "Created link for sharing",
     OpenIn: "Open in",
     Open: "Open"
-  },
+  }
 };
 
 export default translations;

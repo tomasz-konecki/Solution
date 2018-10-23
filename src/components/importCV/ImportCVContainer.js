@@ -44,12 +44,12 @@ class ImportCVContainer extends Component {
     const { accepted, resultBlock } = this.state;
 
     let _accepted = [...accepted];
-    let _resultBlock = resultBlock;
+    let _resultBlock = JSON.parse(JSON.stringify(resultBlock));
 
     _resultBlock.result.splice(index, 1);
-    
+
     _accepted.splice(index, 1);
-    this.setState({ accepted: _accepted});
+    this.setState({ accepted: _accepted, resultBlock: _resultBlock });
   };
 
   render() {

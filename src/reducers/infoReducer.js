@@ -8,7 +8,10 @@ import {
   ACCOUNT_CAN_DELETE_USER_REQUEST,
   PROJECT_CAN_SEARCH_PROJECTS,
   CLIENT_GET_LIST_OF_CLIENTS,
-  CLIENT_POST_CLIENT
+  CLIENT_POST_CLIENT,
+  CLIENT_DELETE_CLIENT,
+  CLIENT_EDIT_CLIENT,
+  CLIENT_REACTIVATE_CLIENT
 } from "../constants";
 import { updateObject } from "../services/methods";
 
@@ -55,6 +58,18 @@ const initialState = {
       loading: true
     },
     addingClient: {
+      status: false,
+      loading: true
+    },
+    deleteClient: {
+      status: false,
+      loading: true
+    },
+    editClient: {
+      status: false,
+      loading: true
+    },
+    reactivateClient: {
       status: false,
       loading: true
     }
@@ -135,6 +150,27 @@ export const infoReducer = (state = initialState, action) => {
         client: {
           ...state.client,
           addingClient: { status: action.status, loading: action.loading }
+        }
+      });
+    case CLIENT_DELETE_CLIENT:
+      return updateObject(state, {
+        client: {
+          ...state.client,
+          deleteClient: { status: action.status, loading: action.loading }
+        }
+      });
+    case CLIENT_EDIT_CLIENT:
+      return updateObject(state, {
+        client: {
+          ...state.client,
+          editClient: { status: action.status, loading: action.loading }
+        }
+      });
+    case CLIENT_REACTIVATE_CLIENT:
+      return updateObject(state, {
+        client: {
+          ...state.client,
+          reactivateClient: { status: action.status, loading: action.loading }
         }
       });
     default:

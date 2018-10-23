@@ -729,7 +729,10 @@ const translations = {
     DeleteUser: "Deleting Users Accounts",
     SearchingProjects: "Searching Projects",
     GettingListOfClients: "Getting List of Clients",
-    AddingClient: "Adding Client"
+    AddingClient: "Adding Client",
+    DeletingClient: "Deleting Client",
+    EditingClient: "Editing Client",
+    ReactivatingClient: "Reactivating Client"
   },
   ReportsCloudView: {
     LoadingAccountDataPrompt: "Cloud data is loading right now. Please wait...",

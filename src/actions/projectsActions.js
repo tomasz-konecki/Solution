@@ -128,6 +128,7 @@ export const getProject = (
 
 export const getProjectACreator = (projectId, onlyActiveAssignments) => {
   return dispatch => {
+    dispatch(asyncStarted());
     WebApi.projects.get
       .projects(projectId, onlyActiveAssignments)
       .then(response => {

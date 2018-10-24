@@ -487,6 +487,7 @@ const translations = {
   },
   ProjectDetails: {
     GeneralInfo: "Overview",
+    LoadingProjectMessage: "Loading project data",
     ResponsiblePerson: "Responsible person",
     SkillsRequired: "Skills required for this project",
     ShowActiveAssignments: "Show active assignments",
@@ -679,7 +680,8 @@ const translations = {
     NoResults: "No results for this query",
     Confirm: "Confirm",
     ThatProjectDoesntHavaAnySkillAssigned:
-      "That project doesn't have any skills assigned."
+      "That project doesn't have any skills assigned.",
+    AddSkillsToProject: "Add skills to project"
   },
   Skill: {
     SkillName: "Skill name",

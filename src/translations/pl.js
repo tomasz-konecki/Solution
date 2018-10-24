@@ -487,6 +487,7 @@ const translations = {
     ProjectHasBeenEdited: "Projekt został pomyślnie edytowany"
   },
   ProjectDetails: {
+    LoadingProjectMessage: "Trwa wczytywanie danych projektu",
     GeneralInfo: "Informacje ogólne",
     ResponsiblePerson: "Osoba do kontaktu",
     SkillsRequired: "Umiejętności na potrzeby projektu",
@@ -691,7 +692,8 @@ const translations = {
     NoResults: "Brak wyników dla tego ciągu znaków",
     Confirm: "Zatwierdź",
     ThatProjectDoesntHavaAnySkillAssigned:
-      "Ten projekt nie ma żadnych przypisanych umiejętności."
+      "Ten projekt nie ma żadnych przypisanych umiejętności.",
+    AddSkillsToProject: "Dodaj umiejętności do projektu"
   },
   Skill: {
     SkillName: "Nazwa umiejętności",

@@ -9,7 +9,7 @@ const reportsContent = ({ loadTeamsResult, baseList, addTeamToResultList, loadTe
         {baseList.length > 0 ? (
           baseList.map(i => {
             return (
-              <div
+              <div title={i.name}
                 onClick={
                   i.numberOfMemberInDB > 0
                     ? () => addTeamToResultList(i.name)
@@ -24,7 +24,9 @@ const reportsContent = ({ loadTeamsResult, baseList, addTeamToResultList, loadTe
                   <i title={t("NumberOfEmployees")} className="fa fa-users" />
                   <b>{i.numberOfMemberInDB}</b>
                 </div>
-                {i.name}
+                <span>
+                  {i.name.length > 45 ? i.name.slice(0, 45) + "..." : i.name}
+                </span>
               </div>
             );
           })

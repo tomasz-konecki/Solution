@@ -20,6 +20,7 @@ import OperationStatusPrompt from "../../form/operationStatusPrompt/operationSta
 import { translate } from "react-translate";
 import { connect } from "react-redux";
 import {
+  getProjectDataACreator,
   getContactPersonDataACreator,
   getProjectACreator,
   addEmployeeToProjectACreator,
@@ -61,6 +62,8 @@ class ProjectDetails extends Component {
     this.props.t("EndDate")
   ];
   state = {
+    isLoadingProject: true,
+    isChangingAssignments: false,
     items: [],
     currentOpenedRow: -1,
     matches: false,
@@ -140,22 +143,31 @@ class ProjectDetails extends Component {
     addEmployeSpinner: false,
     projectStatus: [],
     onlyActiveAssignments: true,
-    isLoadingAssignments: false
   };
   componentDidMount() {
-    this.props.getProject(
-      this.props.match.params.id,
-      this.state.onlyActiveAssignments
-    );
+    this.loadProjectData("isLoadingProject");
     const { getSuggest } = this.props;
     getSuggest(this.props.match.params.id);
   }
 
+  togleActiveAssignments = () => {
+    const { onlyActiveAssignments } = this.state;
+    this.setState({ onlyActiveAssignments: !onlyActiveAssignments }, () => this.loadProjectData("isChangingAssignments"));
+  };
+
+  loadProjectData = operationName => {
+    this.setState({[operationName]: true});
+    const { getProjectDataACreator, match } = this.props;
+    const { onlyActiveAssignments } = this.state;
+    getProjectDataACreator(match.params.id, onlyActiveAssignments).then(() => {
+      this.setState({[operationName]: false});
+    }).catch(() => this.setState({[operationName]: false}));
+  }
+
+
   changeOnlyActiveAssignments = () => {
     const { onlyActiveAssignments } = this.state;
-    const { id } = this.props.match.params;
-    this.setState({ onlyActiveAssignments: !onlyActiveAssignments });
-    this.props.getProject(id, !onlyActiveAssignments);
+    this.setState({ onlyActiveAssignments: !onlyActiveAssignments }, () => this.loadProjectData());
   };
 
   fillDates = (startDate, endDate, estimatedEndDate) => {
@@ -195,7 +207,7 @@ class ProjectDetails extends Component {
           (this.props.project.team !== project.team || project.team === null)
         ) {
           this.setState({
-            isLoadingAssignments: false
+            isChangingAssignments: false
           });
         }
       }
@@ -272,14 +284,6 @@ class ProjectDetails extends Component {
   componentWillUnmount() {
     this.props.clearProjectData(null, null, [], [], []);
   }
-  togleActiveAssign = () => {
-    const { onlyActiveAssignments } = this.state;
-    this.setState({
-      onlyActiveAssignments: !onlyActiveAssignments,
-      isLoadingAssignments: true
-    });
-    this.props.getProject(this.props.match.params.id, !onlyActiveAssignments);
-  };
 
   closeAddEmployeeToProjectModal = () => {
     const addEmployeToProjectFormItems = [
@@ -304,10 +308,7 @@ class ProjectDetails extends Component {
   };
   handleChange = () => {
     const { matches } = this.state;
-    this.setState({
-      matches: !matches,
-      currentOpenedRow: -1
-    });
+    this.setState({ matches: !matches, currentOpenedRow: -1 });
   };
   createProgressBtns = (number, color, startVal, index, listName) => {
     const btnsArray = [];
@@ -336,29 +337,15 @@ class ProjectDetails extends Component {
     });
   };
   render() {
-    const {
-      project, loading,
-      loadProjectStatus,
-      addEmployeeToProjectStatus,
-      addEmployeeToProjectErrors,
-      changeProjectState,
-      changeProjectStateStatus,
-      changeProjectStateErrors,
-      getSuggestEmployeesStatus,
-      suggestEmployees,
-      addProjectOwnerToProjectStatus,
-      addProjectOwnerToProjectErrors,
-      t
-    } = this.props;
+    const { project, loading, loadProjectStatus, addEmployeeToProjectStatus,
+      addEmployeeToProjectErrors, changeProjectState, changeProjectStateStatus,
+      changeProjectStateErrors, getSuggestEmployeesStatus, suggestEmployees,
+      addProjectOwnerToProjectStatus, addProjectOwnerToProjectErrors, t } = this.props;
 
     const { reactivate, close } = WebApi.projects.put;
-    const {
-      projectStatus,
-      onlyActiveAssignments,
-      matches,
-      currentOpenedRow,
-      isLoadingAssignments
-    } = this.state;
+
+    const { projectStatus, onlyActiveAssignments, matches, currentOpenedRow,
+      isChangingAssignments, isLoadingProject } = this.state;
     return (
       <div
         onClick={
@@ -368,7 +355,7 @@ class ProjectDetails extends Component {
         }
         className="project-details-container"
       >
-        {loading && <Spinner message={t("LoadingProjectMessage")} fontSize="7px" />}
+        {isLoadingProject && <Spinner message={t("LoadingProjectMessage")} fontSize="7px" />}
 
         {loadProjectStatus && (
           <Aux>
@@ -376,7 +363,7 @@ class ProjectDetails extends Component {
               <h1>
                 {projectStatus && (
                   <span className={projectStatus[0].classVal}>
-                    {projectStatus[0].name}
+                    {projectStatus[0].name} {loading && <Spinner fontSize="1.77px" positionClass="abs-spinner"/> }
                   </span>
                 )}
 
@@ -547,14 +534,14 @@ class ProjectDetails extends Component {
               <div className="right-project-spec">
                 <div className="a-asign-container">
                   <label>{t("ShowActiveAssignments")}</label>
-                  <input
+                  <input disabled={isChangingAssignments}
                     type="checkbox"
                     checked={onlyActiveAssignments}
-                    onChange={this.togleActiveAssign}
+                    onChange={this.togleActiveAssignments}
                   />
                   <span className="assingments-spinner-container">
-                    {(isLoadingAssignments || loading) && 
-                      <Spinner fontSize="2px" positionClass="abs-spinner"/>}
+                    {isChangingAssignments && 
+                      <Spinner fontSize="1.77px" positionClass="abs-spinner"/>}
                   </span>
                 </div>
 
@@ -949,6 +936,7 @@ const mapDispatchToProps = dispatch => {
       dispatch(
         editProjectACreator(projectId, projectToSend, onlyActiveAssignments)
       ),
+    getProjectDataACreator: (projectId, onlyActiveAssignments) => dispatch(getProjectDataACreator(projectId, onlyActiveAssignments)),
     editProjectClearData: (status, errors) =>
       dispatch(editProject(status, errors)),
     clearProjectData: (project, status, errors, personKeys, overViewKeys) =>

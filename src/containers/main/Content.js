@@ -16,6 +16,8 @@ import NotFound404 from "../../components/notFound404/NotFound404";
 import Quarters from "../../components/quarters/quartersPanel.jsx";
 import { getNotificationACreator } from "../../actions/notificationActions";
 import { connect } from "react-redux";
+import Info from "./../../components/info/infoContainer";
+
 class Content extends React.Component {
   componentDidMount() {
     this.props.getNotificationACreator().then(() => {});
@@ -59,6 +61,7 @@ class Content extends React.Component {
             path={match.url + "/import-cv"}
             component={ImportCVContainer}
           />
+          <Route path={match.url + "/info"} component={Info} />
           <Route component={NotFound404} />
         </Switch>
         <div className="content-abs-footer">Billennium 2018</div>

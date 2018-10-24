@@ -60,7 +60,7 @@ class Quarters extends React.PureComponent{
         const isHistoryExist = lastWatchedPersons && lastWatchedPersons.length > 0;
         return (
             <div className="quarters-panel">
-                <header>
+                <header className="block-header">
                     <span><i className="fa fa-comments"></i>{t("QuarterTalkHeader")} </span>
                 {currentWatchedUser && 
                     <span>{t("QuarterTalkSubHeader")} <b>{currentWatchedUser}</b></span>

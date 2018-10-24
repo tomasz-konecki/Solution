@@ -22,6 +22,9 @@
         transition: 0.5s all ease-in-out;
         justify-content: center;
         align-items: center;
+        span{
+          word-break: break-all;
+        }
         @media(max-width: 1000px){
           font-size: 14px;
         }

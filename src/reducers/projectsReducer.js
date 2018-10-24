@@ -23,6 +23,7 @@ const initialState = {
   totalPageCount: 1,
   editedProjectId: null,
   clients: [],
+  resultBlock: null,
 
   project: null,
   loadProjectStatus: null,
@@ -84,11 +85,12 @@ export const projectsReducer = (state = initialState, action) => {
         getContactPersonDataErrors: action.getContactPersonDataErrors
       });
     case LOAD_PROJECTS_SUCCESS:
-      return {
+      return updateObject(state, {
         projects: action.projects.results,
         currentPage: action.projects.currentPage,
-        totalPageCount: action.projects.totalPageCount
-      };
+        totalPageCount: action.projects.totalPageCount,
+        resultBlock: action.resultBlock
+      });
     case LOGOUT:
       return {
         projects: [],

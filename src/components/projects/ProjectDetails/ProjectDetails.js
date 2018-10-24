@@ -65,7 +65,6 @@ class ProjectDetails extends Component {
     currentOpenedRow: -1,
     matches: false,
     isDeleted: false,
-    isLoadingProject: true,
     editModal: false,
     deleteProjectModal: false,
     addEmployeModal: false,
@@ -179,7 +178,6 @@ class ProjectDetails extends Component {
       const { project } = nextProps;
       if (project !== null) {
         this.setState({
-          isLoadingProject: false,
           deleteProjectModal: false,
           addEmployeToProjectFormItems: this.fillDates(
             project.startDate,
@@ -200,7 +198,7 @@ class ProjectDetails extends Component {
             isLoadingAssignments: false
           });
         }
-      } else this.setState({ isLoadingProject: false });
+      }
     } else if (
       this.props.addEmployeeToProjectErrors !==
       nextProps.addEmployeeToProjectErrors
@@ -358,7 +356,6 @@ class ProjectDetails extends Component {
       projectStatus,
       onlyActiveAssignments,
       matches,
-      isLoadingProject,
       currentOpenedRow,
       isLoadingAssignments
     } = this.state;
@@ -371,7 +368,7 @@ class ProjectDetails extends Component {
         }
         className="project-details-container"
       >
-        {isLoadingProject && <Spinner fontSize="7px" />}
+        {loading && <Spinner message={t("LoadingProjectMessage")} fontSize="7px" />}
 
         {loadProjectStatus && (
           <Aux>

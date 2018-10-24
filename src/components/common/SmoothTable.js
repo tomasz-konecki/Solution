@@ -665,7 +665,7 @@ class SmoothTable extends Component {
         className={
           object.hasAccount
             ? classes.join(" ")
-            : (classes.push("unset-pointer"), classes.join(" "))
+            : (classes.push("set-pointer"), classes.join(" "))
         }
         onClick={this.deepenFunction(this.handleRowClick, object, index)}
       >

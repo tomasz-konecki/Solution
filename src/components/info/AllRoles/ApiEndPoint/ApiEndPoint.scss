@@ -1,0 +1,43 @@
+.api-end-point-container {
+  li {
+    list-style: none;
+    margin-bottom: 20px;
+    h3 {
+      color: #999;
+      font-weight: bolder;
+    }
+  }
+  .circle {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    -moz-border-radius: 50%;
+    -webkit-border-radius: 50%;
+    text-align: center;
+    margin: 0 auto;
+    box-shadow: black 1px 1px 1px 0.2px;
+  }
+
+  .green {
+    background-color: #16a085;
+  }
+  .red {
+    background-color: #e74c3c;
+  }
+
+  .api-end-point {
+    position: relative;
+    display: flex;
+    margin-bottom: 5px;
+    .api-end-point-text {
+      width: 90%;
+    }
+    .api-end-point-circle {
+      width: 10%;
+      .small-spiner {
+        position: unset;
+        margin: 0 auto;
+      }
+    }
+  }
+}

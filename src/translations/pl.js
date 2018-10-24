@@ -25,7 +25,8 @@ const translations = {
     Stats: "Statystyki",
     Skills: "Umiejętności",
     Reports: "Raporty",
-    ImportCV: "Import CV"
+    ImportCV: "Import CV",
+    Info: "Info"
   },
   PreferedRoles: {
     ChooseRoles: "Wybierz preferowane role w serwisie",
@@ -263,7 +264,8 @@ const translations = {
     Worker: "Pracownik",
     WorkerPlaceholder: "wpisz nazwę użytkownika...",
     Deny: "Anuluj",
-    MakeSureYouWantDeleteQuarter: "Czy jesteś pewny, że chcesz usunąć tą rozmowę kwartalną?",
+    MakeSureYouWantDeleteQuarter:
+      "Czy jesteś pewny, że chcesz usunąć tą rozmowę kwartalną?",
     AddQuarterTalk: "Dodaj rozmowę kwartalną",
     Options: "Opcje",
     AddQuestion: "Dodaj pytanie",
@@ -273,7 +275,7 @@ const translations = {
     SuccDeleteQuestion: "Pomyślnie usunięto pytanie",
     Date: "Data",
     Quarter: "Kwartał",
-    QuestionWillBeHere: "tu pojawi się pytanie" ,
+    QuestionWillBeHere: "tu pojawi się pytanie",
     ChooseOrSelectQuarter: "wpisz lub wybierz kwartał...",
     SuccAddedQuarter: "Pomyślnie utworzono rozmowę kwartalną",
     QuarterItemSubHeader: "przeprowadził",
@@ -305,7 +307,7 @@ const translations = {
     ConfirmQuestions: "Zatwierdź pytania",
     ForQuarter: "za",
     In: "w",
-    InYear: "roku"  ,
+    InYear: "roku",
     DoneQuarter: "Ta rozmowa została przeprowadzona",
     IncomingQuarter: "Ta rozmowa dopiero się odbędzie"
   },
@@ -419,7 +421,8 @@ const translations = {
     ProjectOwnerHasBeenAdded: "Właściciel został dodany.",
     Delete: "Usuń",
     Cancel: "Anuluj",
-    DeleteYourselfeMessage: "Czy na pewno chcesz się usunąć z listy właścicieli projektu ?"
+    DeleteYourselfeMessage:
+      "Czy na pewno chcesz się usunąć z listy właścicieli projektu ?"
   },
   AddProjectScreen: {
     AddProject: "Dodaj Projekt",
@@ -484,6 +487,7 @@ const translations = {
     ProjectHasBeenEdited: "Projekt został pomyślnie edytowany"
   },
   ProjectDetails: {
+    LoadingProjectMessage: "Trwa wczytywanie danych projektu",
     GeneralInfo: "Informacje ogólne",
     ResponsiblePerson: "Osoba do kontaktu",
     SkillsRequired: "Umiejętności na potrzeby projektu",
@@ -531,8 +535,8 @@ const translations = {
     ToFill: "Do uzupełnienia",
     ToFillEmail: "do@uzupełnienia.com",
     Add: "Dodaj",
-    Share:"Udostępnij",
-    Cancel: "Anuluj",
+    Share: "Udostępnij",
+    Cancel: "Anuluj"
   },
   ResponsiblePersonBlock: {
     NameNoSpecial: "Imię nie może zawierać znaków specjalnych ani cyfr.",
@@ -630,7 +634,7 @@ const translations = {
     DeleteProjectInfinitive: "Usunąć projekt",
     ProjectDeleted: "Projekt został usunięty",
     ReactivateProjectInfinitive: "Reaktywować projekt",
-    ProjectReactivated: "Projekt został reaktywowany",
+    ProjectReactivated: "Projekt został reaktywowany"
   },
 
   TeamMember: {
@@ -677,7 +681,7 @@ const translations = {
     MarkAllAsRead: "Oznacz wszystkie jako przeczytane",
     DeleteAll: "Usuń wszystkie",
     NoNotifications: "Nie masz żadnych powiadomień.",
-    Tack: "Zmień pozycję ikony powiadomień"  
+    Tack: "Zmień pozycję ikony powiadomień"
   },
   Skills: {
     SaveChanges: "Zapisz zmiany",
@@ -688,7 +692,8 @@ const translations = {
     NoResults: "Brak wyników dla tego ciągu znaków",
     Confirm: "Zatwierdź",
     ThatProjectDoesntHavaAnySkillAssigned:
-      "Ten projekt nie ma żadnych przypisanych umiejętności."
+      "Ten projekt nie ma żadnych przypisanych umiejętności.",
+    AddSkillsToProject: "Dodaj umiejętności do projektu"
   },
   Skill: {
     SkillName: "Nazwa umiejętności",
@@ -718,16 +723,34 @@ const translations = {
     OnDate: "w dniu",
     GoIntoEmployeeDetails: "Przejdź do szczegółów pracownika"
   },
-  ShareProject :{
-    ShareProject:"Udostępnij projekt",
+  ShareProject: {
+    ShareProject: "Udostępnij projekt",
     Confirm: "Zatwierdź",
     ChangesSaved: "Zmiany zostały zapisane",
     NotFound: "Nie znaleziono",
     SelectPersons: "Wybierz osoby",
-    Shared: "Udostępnione",
+    Shared: "Udostępnione"
+  },
+  Info: {
+    YourRoleIs: "Twoja rola to",
+    RoleError: "Ups, coś poszło nie tak....",
+    SearchingUsersAccounts: "Wyszukiwanie Kont Użytkowników",
+    EditingUsersRoles: "Edytowanie Roli Użytkowników",
+    SearchAD: "Wyszukiwanie Pracowników w Active Directory",
+    AddUser: "Dodawanie Kont Użytkowników",
+    ReactivateUser: "Reaktywowanie Kont Użytkowników",
+    DeleteUserRequest: "Usuwanie próśb o Konto Użytkowników",
+    DeleteUser: "Usuwanie Kont Użytkowników",
+    SearchingProjects: "Wyszukiwanie Projektów",
+    GettingListOfClients: "Wyświetlanie Listy Klientów",
+    AddingClient: "Dodawanie Klientów",
+    DeletingClient: "Usuwanie Klientów",
+    EditingClient: "Edytowanie Klientów",
+    ReactivatingClient: "Reaktywowanie Klientów"
   },
   ReportsCloudView: {
-    LoadingAccountDataPrompt: "Trwa pobieranie zawartości chmury. Proszę czekać...",
+    LoadingAccountDataPrompt:
+      "Trwa pobieranie zawartości chmury. Proszę czekać...",
     ActualPath: "Aktualna ścieżka",
     AddFolder: "Dodaj folder",
     Create: "Stwórz",
@@ -803,7 +826,8 @@ const translations = {
     CreationDate: "Data utworzenia",
     Path: "Ścieżka",
     ClickHere: "Kliknij tutaj",
-    FirstInfo: "Aby wygenerować raport musisz wybrać folder docelowy. Folder docelowy znajdziesz na jednym z dysków umieszczonych w GoogleDrive lub OneDrive.",
+    FirstInfo:
+      "Aby wygenerować raport musisz wybrać folder docelowy. Folder docelowy znajdziesz na jednym z dysków umieszczonych w GoogleDrive lub OneDrive.",
     SecondInfo: "aby przejść dalej",
     EmployeesInDay: "Tylko pracownicy dostępni w dniu",
     AddFav: "Dodaj ten raport do ulubionych",

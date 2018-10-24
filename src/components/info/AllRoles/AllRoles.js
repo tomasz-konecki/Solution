@@ -5,6 +5,8 @@ import PropTypes from "prop-types";
 import * as infoActions from "../../../actions/infoActions";
 import ApiEndPoint from "./ApiEndPoint/ApiEndPoint";
 
+import "./AllRoles.scss";
+
 class AllRoles extends PureComponent {
   state = {};
 
@@ -58,11 +60,23 @@ class AllRoles extends PureComponent {
       {
         text: t("AddingClient"),
         values: client.addingClient
+      },
+      {
+        text: t("DeletingClient"),
+        values: client.deleteClient
+      },
+      {
+        text: t("EditingClient"),
+        values: client.editClient
+      },
+      {
+        text: t("ReactivatingClient"),
+        values: client.reactivateClient
       }
     ];
 
     return (
-      <div id="all-roles">
+      <div id="all-roles" className="content-container">
         <ApiEndPoint name="Account" endPoints={AccountRequests} />
         <ApiEndPoint name="Projects" endPoints={ProjectsRequests} />
         <ApiEndPoint name="Client" endPoints={ClientRequests} />

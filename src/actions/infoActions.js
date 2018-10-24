@@ -10,7 +10,10 @@ import {
   ACCOUNT_CAN_DELETE_USER_REQUEST,
   PROJECT_CAN_SEARCH_PROJECTS,
   CLIENT_GET_LIST_OF_CLIENTS,
-  CLIENT_POST_CLIENT
+  CLIENT_POST_CLIENT,
+  CLIENT_DELETE_CLIENT,
+  CLIENT_EDIT_CLIENT,
+  CLIENT_REACTIVATE_CLIENT
 } from "../constants";
 
 export const infoActionCreator = () => {
@@ -27,6 +30,9 @@ export const infoActionCreator = () => {
 
     dispatch(clientGetListOfClientsACreator());
     dispatch(clientAddClientACreator());
+    dispatch(clientDeleteClientACreator());
+    dispatch(clientEditClientACreator());
+    dispatch(clientReactivateClientACreator());
   };
 };
 
@@ -157,47 +163,38 @@ export const projectsPostProjectsListACreator = () => {
 export const clientGetListOfClientsACreator = () => {
   return dispatch => {
     dispatch(
-      genericChangeTypeStatusLoading(CLIENT_GET_LIST_OF_CLIENTS, false, true)
+      genericInfoACreator(WebApi.clients.get.all(), CLIENT_GET_LIST_OF_CLIENTS)
     );
-    WebApi.clients.get
-      .all()
-      .then(response => {
-        !response.errorOccurred() &&
-          dispatch(
-            genericChangeTypeStatusLoading(
-              CLIENT_GET_LIST_OF_CLIENTS,
-              true,
-              false
-            )
-          );
-      })
-      .catch(error => {
-        dispatch(
-          genericChangeTypeStatusLoading(
-            CLIENT_GET_LIST_OF_CLIENTS,
-            false,
-            false
-          )
-        );
-      });
   };
 };
 
 export const clientAddClientACreator = () => {
   return dispatch => {
-    dispatch(genericChangeTypeStatusLoading(CLIENT_POST_CLIENT, false, true));
-    WebApi.clients.get
-      .all()
-      .then(response => {
-        !response.errorOccurred() &&
-          dispatch(
-            genericChangeTypeStatusLoading(CLIENT_POST_CLIENT, true, false)
-          );
-      })
-      .catch(error => {
-        dispatch(
-          genericChangeTypeStatusLoading(CLIENT_POST_CLIENT, false, false)
-        );
-      });
+    dispatch(genericInfoACreator(WebApi.clients.post(), CLIENT_POST_CLIENT));
+  };
+};
+
+export const clientDeleteClientACreator = () => {
+  return dispatch => {
+    dispatch(genericInfoACreator(WebApi.clients.post(), CLIENT_DELETE_CLIENT));
+  };
+};
+
+export const clientEditClientACreator = () => {
+  return dispatch => {
+    dispatch(
+      genericInfoACreator(WebApi.clients.put.info(), CLIENT_EDIT_CLIENT)
+    );
+  };
+};
+
+export const clientReactivateClientACreator = () => {
+  return dispatch => {
+    dispatch(
+      genericInfoACreator(
+        WebApi.clients.put.reactivate(),
+        CLIENT_REACTIVATE_CLIENT
+      )
+    );
   };
 };

@@ -681,7 +681,7 @@ const translations = {
     MarkAllAsRead: "Oznacz wszystkie jako przeczytane",
     DeleteAll: "Usuń wszystkie",
     NoNotifications: "Nie masz żadnych powiadomień.",
-    Tack: "Zmień pozycję ikony powiadomień"  
+    Tack: "Zmień pozycję ikony powiadomień"
   },
   Skills: {
     SaveChanges: "Zapisz zmiany",
@@ -744,7 +744,9 @@ const translations = {
     SearchingProjects: "Wyszukiwanie Projektów",
     GettingListOfClients: "Wyświetlanie Listy Klientów",
     AddingClient: "Dodawanie Klientów",
-    Shared: "Udostępnione"
+    DeletingClient: "Usuwanie Klientów",
+    EditingClient: "Edytowanie Klientów",
+    ReactivatingClient: "Reaktywowanie Klientów"
   },
   ReportsCloudView: {
     LoadingAccountDataPrompt:

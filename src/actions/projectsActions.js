@@ -126,6 +126,34 @@ export const getProject = (
   };
 };
 
+export const getProjectDataACreator = (projectId, onlyActiveAssignments) => dispatch => {
+  return new Promise((resolve, reject) => {
+    WebApi.projects.get
+    .projects(projectId, onlyActiveAssignments)
+    .then(response => {
+      const responsiblePersonKeys = { keys: cutNotNeededKeysFromArray(
+          Object.keys(response.replyBlock.data.dtoObject.responsiblePerson), [0] ),
+        names: names
+      };
+      const overViewKeys = {
+        keys: cutNotNeededKeysFromArray(
+          Object.keys(response.replyBlock.data.dtoObject),
+          [0, 1, 2, 4, 8, 9, 10, 11, 12, 13, 14]
+        ),
+        names: overViewNames
+      };
+      dispatch(getProject(response.replyBlock.data.dtoObject, true, [], responsiblePersonKeys,
+          overViewKeys, []));
+      resolve();
+    })
+    .catch(error => {
+      dispatch(getProject(null, false, errorCatcher(error), [], []));
+      reject();
+    });
+  })
+}
+
+
 export const getProjectACreator = (projectId, onlyActiveAssignments) => {
   return dispatch => {
     dispatch(asyncStarted());

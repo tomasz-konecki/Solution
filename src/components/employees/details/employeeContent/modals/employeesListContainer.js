@@ -77,7 +77,7 @@ class EmployeesListContainer extends React.Component {
                           this.props.subordinates.map(subordinate => {
                             return (
                               <div className="col-sm-12" style={{ paddingLeft: "20px" }} key={subordinate.id} >
-                                <i className="fa fa-angle-right" />{subordinate.firstName}{" "}{subordinate.lastName}
+                                <i className="fa fa-angle-right subordinate-right-arrow" />{subordinate.firstName}{" "}{subordinate.lastName}
                               </div>
                             );
                           })}

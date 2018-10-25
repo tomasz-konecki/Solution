@@ -17,6 +17,12 @@
     width: 100%;
     height: 100%;
     cursor: pointer;
+    color: white;
+    padding: 1px;
+    border-radius: 10px;
+    background-color: #883e4a;
+    border: none;
+    margin: 2px 2px;
 
     @media screen and (max-width: 400px) {
       height: 50px;
@@ -51,6 +57,12 @@
     width: 100%;
     cursor: pointer;
     align-items: center;
+    color: white;
+    border-radius: 10px;
+    border: none;
+    margin: 2px 2px;
+    padding: 1px;
+    background-color: #509054;
 
     @media screen and (max-width: 400px) {
       height: 50px;
@@ -134,4 +146,8 @@
 
 .align-center {
   align-items: center;
+}
+
+.subordinate-right-arrow {
+  margin-right: 10px;
 }

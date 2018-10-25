@@ -174,10 +174,17 @@ class ProjectDetails extends Component {
     const addEmployeToProjectFormItems = [
       ...this.state.addEmployeToProjectFormItems
     ];
-    addEmployeToProjectFormItems[0].value = moment(startDate)._i;
-    addEmployeToProjectFormItems[1].value = moment(
-      endDate ? endDate : estimatedEndDate
-    )._i;
+
+    if(moment(startDate).format("YYYY-MM-DD") === '0001-01-01')
+    {
+      addEmployeToProjectFormItems[0].value = moment();
+      addEmployeToProjectFormItems[1].value = moment().add(1, 'days');
+    }else{
+      addEmployeToProjectFormItems[0].value = moment(startDate)._i;
+      addEmployeToProjectFormItems[1].value = moment(
+        endDate ? endDate : estimatedEndDate
+      )._i;
+    }
 
     return addEmployeToProjectFormItems;
   };
@@ -540,7 +547,7 @@ class ProjectDetails extends Component {
                     onChange={this.togleActiveAssignments}
                   />
                   <span className="assingments-spinner-container">
-                    {isChangingAssignments && 
+                    {isChangingAssignments &&
                       <Spinner fontSize="1.77px" positionClass="abs-spinner"/>}
                   </span>
                 </div>

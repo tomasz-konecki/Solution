@@ -15,7 +15,9 @@ import {
   GET_SUGGEST_EMPLOYEES,
   CHANGE_GET_SUGGEST_EMPLOYEES_STATUS,
   GET_CONTACT_PERSON_DATA,
-  ADD_PROJECT_OWNER_TO_PROJECT
+  ADD_PROJECT_OWNER_TO_PROJECT,
+  EDIT_EMPLOYEE_ASSIGNMENT,
+  DELETE_EMPLOYEE_ASSIGNMENT
 } from "../constants";
 import axios from "axios";
 import WebApi from "../api";
@@ -126,8 +128,37 @@ export const getProject = (
   };
 };
 
+export const getProjectDataACreator = (projectId, onlyActiveAssignments) => dispatch => {
+  return new Promise((resolve, reject) => {
+    WebApi.projects.get
+    .projects(projectId, onlyActiveAssignments)
+    .then(response => {
+      const responsiblePersonKeys = { keys: cutNotNeededKeysFromArray(
+          Object.keys(response.replyBlock.data.dtoObject.responsiblePerson), [0] ),
+        names: names
+      };
+      const overViewKeys = {
+        keys: cutNotNeededKeysFromArray(
+          Object.keys(response.replyBlock.data.dtoObject),
+          [0, 1, 2, 4, 8, 9, 10, 11, 12, 13, 14]
+        ),
+        names: overViewNames
+      };
+      dispatch(getProject(response.replyBlock.data.dtoObject, true, [], responsiblePersonKeys,
+          overViewKeys, []));
+      resolve();
+    })
+    .catch(error => {
+      dispatch(getProject(null, false, errorCatcher(error), [], []));
+      reject();
+    });
+  })
+}
+
+
 export const getProjectACreator = (projectId, onlyActiveAssignments) => {
   return dispatch => {
+    dispatch(asyncStarted());
     WebApi.projects.get
       .projects(projectId, onlyActiveAssignments)
       .then(response => {
@@ -206,6 +237,80 @@ export const addEmployeeToProjectACreator = (
     })
     .then(
       dispatch(clearAfterTimeByFuncRef(addEmployeeToProject, 5000, null, []))
+    );
+};
+
+export const editEmployeeAssignment = (
+  addEmployeeToProjectStatus,
+  addEmployeeToProjectErrors
+) => {
+  return {
+    type: EDIT_EMPLOYEE_ASSIGNMENT,
+    addEmployeeToProjectStatus,
+    addEmployeeToProjectErrors
+  };
+};
+
+export const editEmployeeAssignmentACreator = (
+  startDate,
+  endDate,
+  role,
+  assignedCapacity,
+  responsibilites,
+  assignmentId,
+  onlyActiveAssignments,
+  projectId
+) => dispatch => {
+  const assignmentModel = {
+    startDate: startDate,
+    endDate: endDate,
+    role: role,
+    assignedCapacity: assignedCapacity / 10,
+    responsibilities: responsibilites
+  };
+  WebApi.assignments
+    .put(assignmentId, assignmentModel)
+    .then(response => {
+      console.log("addasdss")
+      dispatch(editEmployeeAssignment(true, []));
+      dispatch(getProjectACreator(projectId, onlyActiveAssignments));
+    })
+    .catch(error => {
+      console.log("error")
+      dispatch(editEmployeeAssignment(false, errorCatcher(error)));
+    })
+    .then(
+      dispatch(clearAfterTimeByFuncRef(editEmployeeAssignment, 5000, null, []))
+    );
+};
+
+export const deleteEmployeeAssignment = (
+  addEmployeeToProjectStatus,
+  addEmployeeToProjectErrors
+) => {
+  return {
+    type: DELETE_EMPLOYEE_ASSIGNMENT,
+    addEmployeeToProjectStatus,
+    addEmployeeToProjectErrors
+  };
+};
+
+export const deleteEmployeeAssignmentACreator = (
+  assignmentId,
+  projectId,
+  onlyActiveAssignments
+) => dispatch => {
+  WebApi.assignments
+    .delete(assignmentId)
+    .then(response => {
+      dispatch(deleteEmployeeAssignment(true, []));
+      dispatch(getProjectACreator(projectId, onlyActiveAssignments));
+    })
+    .catch(error => {
+      dispatch(deleteEmployeeAssignment(false, errorCatcher(error)));
+    })
+    .then(
+      dispatch(clearAfterTimeByFuncRef(deleteEmployeeAssignment, 5000, null, []))
     );
 };
 

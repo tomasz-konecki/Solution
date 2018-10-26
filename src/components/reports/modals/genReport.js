@@ -46,7 +46,7 @@ const genReport = ({
         <h3>{t("GenerateReportModalTitle")}</h3>
       </header>
       <ul className="reports-items-list">
-        {addList.map((i, index) => {
+        {addList.length > 0 && addList.map((i, index) => {
           return (
             <li
               className={pagesList !== undefined ? pagesList[index].error ? "inc-list-item" : "" : ""}

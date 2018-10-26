@@ -1,21 +1,5 @@
 .quarters-panel{
     margin-bottom: 50px;
-    & > header{
-        font-size: 24px;
-        padding: 10px 0 15px 0;
-        margin: 15px 0;
-        i{
-            margin-right: 10px;
-        }
-        span:last-of-type{
-            margin-left: 7.5px;
-            color: #8E8E8E;
-            font-size: 16px;
-            b{
-                text-transform: uppercase;
-            }
-        }
-    }
     .recent-watched{
         display: flex;
         flex-flow: wrap;

@@ -69,6 +69,10 @@
       right: 10px;
       top: -10px;
     }
+    .abs-spinner{
+      top: -20px;
+      right: -22px;
+    }
   }
   .spn-active {
     color: #37d037;
@@ -168,7 +172,7 @@
       .assingments-spinner-container {
         position: relative;
         .abs-spinner{
-          right: -20px;
+          right: -25px;
           bottom: -9px;
         }
       }

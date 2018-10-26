@@ -5,6 +5,7 @@ import Icon from "../common/Icon";
 
 import WebApi from "../../api/index";
 import LoaderCircular from "../common/LoaderCircular";
+import ConfirmModal from "../common/confimModal/confirmModal";
 import { translate } from "react-translate";
 
 import "./ImportCVContainer.scss";
@@ -15,7 +16,9 @@ class ImportCVContainer extends Component {
     this.state = {
       accepted: [],
       rejected: [],
-      resultBlock: {}
+      duplicated: [],
+      resultBlock: {},
+      confirmImportModalOpen: false
     };
   }
 
@@ -45,14 +48,58 @@ class ImportCVContainer extends Component {
 
     let _accepted = [...accepted];
     let _resultBlock = JSON.parse(JSON.stringify(resultBlock));
-
-    _resultBlock.result.splice(index, 1);
-
+    if(resultBlock.result && resultBlock.result.length !== 0){
+      _resultBlock.result.splice(index, 1);
+    }
     _accepted.splice(index, 1);
     this.setState({ accepted: _accepted, resultBlock: _resultBlock });
   };
 
+  importFilesValidation = (importAccepted, importRejected) => {
+      const { accepted, rejected, duplicated, resultBlock } = this.state;
+      const uniqueFiles = [];
+      const duplicatedFiles = [];
+
+      if(accepted && accepted.length !== 0)
+      {
+        if(resultBlock.result && resultBlock.result.length !== 0){
+          console.log("elo")
+          this.setState({ resultBlock: {}, accepted: importAccepted });
+        }
+
+        importAccepted.map((x) => 
+          accepted.some(z => z.name == x.name) ? duplicatedFiles.push(x) : uniqueFiles.push(x)
+        );
+        importAccepted = uniqueFiles;
+      }
+
+      if(duplicatedFiles.length !== 0){
+        this.setState({
+          confirmImportModalOpen: true
+        });
+      }
+
+      this.setState({
+        accepted: [...accepted, ...importAccepted],
+        rejected: [...rejected, ...importRejected],
+        duplicated: [...duplicated, ...duplicatedFiles]
+      });
+  }
+
+  replaceWithImportedFiles(){
+    const { duplicated } = this.state;
+    const accepted = [...this.state.accepted];
+
+    duplicated.forEach(function(part){
+      const index = accepted.findIndex(i => i.name === part.name);
+      accepted.splice(index, 1, part);
+    });
+
+    this.setState({ confirmImportModalOpen: false, accepted, duplicated: [] });
+  }
+
   render() {
+    console.log(this.state);
     const { accepted, loading, resultBlock } = this.state;
     const { t } = this.props;
     let lp = 1;
@@ -63,7 +110,7 @@ class ImportCVContainer extends Component {
         ? resultBlock.result[lp - 2]
           ? resultBlock.result[lp - 2].result.includes("pomyślnie") || resultBlock.result[lp - 2].result.includes("successfully")
             ? "import_succes"
-            : "import_fail"
+            : resultBlock.result[lp - 2].result.includes("Not imported") || resultBlock.result[lp - 2].result.includes("Nie zaimportowano") ? "import_fail" : "import_partially"
           : ""
         : "";
 
@@ -169,12 +216,7 @@ class ImportCVContainer extends Component {
             className="cv-dropzone"
             multiple
             accept="application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-            onDrop={(accepted, rejected) => {
-              this.setState({
-                accepted: [...this.state.accepted, ...accepted],
-                rejected: rejected
-              });
-            }}
+            onDrop={(accepted, rejected) => this.importFilesValidation(accepted, rejected)}
           >
             <p>{t("DropHere")}</p>
             <p>{t("OnlyDocx")}</p>
@@ -183,6 +225,23 @@ class ImportCVContainer extends Component {
             </button>
           </Dropzone>
         </div>
+
+        <ConfirmModal
+        open={this.state.confirmImportModalOpen}
+        content="Delete project modal"
+        onClose={() =>
+          this.setState({
+            confirmImportModalOpen: !this.state.confirmImportModalOpen,
+            duplicated: []
+          })
+        }
+        header={"Niektóre wybrane pliki się powtarzają, wybierz co chcesz z nimi zrobić"}
+        operationName={"Zastąp"}
+        denyName={"Ignoruj"}
+        operation={() =>
+          this.replaceWithImportedFiles()
+        }
+        />
       </React.Fragment>
     );
   }

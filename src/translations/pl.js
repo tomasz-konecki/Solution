@@ -488,6 +488,7 @@ const translations = {
     ProjectHasBeenEdited: "Projekt został pomyślnie edytowany"
   },
   ProjectDetails: {
+    LoadingProjectMessage: "Trwa wczytywanie danych projektu",
     GeneralInfo: "Informacje ogólne",
     ResponsiblePerson: "Osoba do kontaktu",
     SkillsRequired: "Umiejętności na potrzeby projektu",
@@ -518,8 +519,11 @@ const translations = {
     ConfirmDeleteProject: "Czy jesteś pewny, że chcesz usunąć ten projekt?",
     Delete: "Usuń",
     AddEmployee: "Dodaj pracownika do projektu",
+    EditEmployee: "Edytuj przypisanie pracownika",
     FTE: "Długość etatu",
     EmployeeAdded: "Pomyślnie dodano pracownika do projektu",
+    AssignmentSaved: "Pomyślnie edytowano przypisanie pracownika",
+    AssignmentDeleted: "Pomyślnie usunięto przypisanie pracownika",
     EditProject: "Edytuj projekt",
     ActivateProject: "Aktywuj projekt",
     Close: "Zamknij",
@@ -535,8 +539,11 @@ const translations = {
     ToFill: "Do uzupełnienia",
     ToFillEmail: "do@uzupełnienia.com",
     Add: "Dodaj",
+    Save: "Zapisz",
     Share: "Udostępnij",
-    Cancel: "Anuluj"
+    Cancel: "Anuluj",
+    DeleteEmpAssignment : "Czy napewno chcesz usunąć przypisanie użytkownika \"",
+    FromProject : "\" z projektu ?"
   },
   ResponsiblePersonBlock: {
     NameNoSpecial: "Imię nie może zawierać znaków specjalnych ani cyfr.",
@@ -681,7 +688,7 @@ const translations = {
     MarkAllAsRead: "Oznacz wszystkie jako przeczytane",
     DeleteAll: "Usuń wszystkie",
     NoNotifications: "Nie masz żadnych powiadomień.",
-    Tack: "Zmień pozycję ikony powiadomień"  
+    Tack: "Zmień pozycję ikony powiadomień"
   },
   Skills: {
     SaveChanges: "Zapisz zmiany",
@@ -692,7 +699,8 @@ const translations = {
     NoResults: "Brak wyników dla tego ciągu znaków",
     Confirm: "Zatwierdź",
     ThatProjectDoesntHavaAnySkillAssigned:
-      "Ten projekt nie ma żadnych przypisanych umiejętności."
+      "Ten projekt nie ma żadnych przypisanych umiejętności.",
+    AddSkillsToProject: "Dodaj umiejętności do projektu"
   },
   Skill: {
     SkillName: "Nazwa umiejętności",
@@ -720,7 +728,9 @@ const translations = {
     Author: "Autor",
     DaysAgo: "dni temu",
     OnDate: "w dniu",
-    GoIntoEmployeeDetails: "Przejdź do szczegółów pracownika"
+    GoIntoEmployeeDetails: "Przejdź do szczegółów pracownika",
+    DeleteAssignment: "Usuń przypisanie",
+    EditAssignment: "Edytuj przypisanie"
   },
   ShareProject: {
     ShareProject: "Udostępnij projekt",
@@ -743,7 +753,9 @@ const translations = {
     SearchingProjects: "Wyszukiwanie Projektów",
     GettingListOfClients: "Wyświetlanie Listy Klientów",
     AddingClient: "Dodawanie Klientów",
-    Shared: "Udostępnione"
+    DeletingClient: "Usuwanie Klientów",
+    EditingClient: "Edytowanie Klientów",
+    ReactivatingClient: "Reaktywowanie Klientów"
   },
   ReportsCloudView: {
     LoadingAccountDataPrompt:

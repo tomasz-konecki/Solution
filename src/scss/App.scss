@@ -17,7 +17,22 @@ body {
   min-height: 100vh;
   background: $content-background;
 }
-
+.block-header{
+    font-size: 24px;
+    padding: 10px 0 15px 0;
+    margin: 15px 0;
+    i{
+        margin-right: 10px;
+    }
+    span:last-of-type{
+        margin-left: 7.5px;
+        color: #8E8E8E;
+        font-size: 16px;
+        b{
+            text-transform: uppercase;
+        }
+    }
+}
 input[type="checkbox"] {
   margin: 0 5px;
 }
@@ -311,4 +326,8 @@ a:visited {
 
 .Modal-add-project {
   height: 550px;
+}
+
+.react-datepicker-popper {
+  z-index: 200;
 }

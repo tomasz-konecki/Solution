@@ -5,6 +5,9 @@ import { translate } from "react-translate";
 
 import AllRoles from "./AllRoles/AllRoles";
 import YourPermissions from "./YourPermissions/YourPermissions";
+import SpecyficFunctions from "./SpecyficFunctions/SpecyficFunctions";
+
+import "./infoContainer.scss";
 
 class Info extends React.PureComponent {
   state = {
@@ -26,6 +29,8 @@ class Info extends React.PureComponent {
       return "Team Leader";
     } else if (roles.includes("Tradesman")) {
       return "Tradesman";
+    } else if (roles.includes("Human Resources")) {
+      return "Human Resources";
     } else if (roles.includes("Developer")) {
       return "Developer";
     } else {
@@ -37,9 +42,12 @@ class Info extends React.PureComponent {
     const { theHighestRole } = this.state;
     const { t } = this.props;
     return (
-      <div className="content-container info-container">
+      <div className="content-container" id="info-container">
         <YourPermissions role={theHighestRole} t={t} />
-        <AllRoles t={t} />
+        <div className="info-content">
+          <AllRoles t={t} />
+          <SpecyficFunctions t={t} />
+        </div>
       </div>
     );
   }

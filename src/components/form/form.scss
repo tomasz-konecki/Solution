@@ -37,7 +37,7 @@
             color: #8E8E8E;
         }
     }
-   
+
     .right-form-container{
         width: 68%;
     }
@@ -54,7 +54,7 @@
         padding: 12.5px !important;
     }
     select{
-        padding: 0 5px; 
+        padding: 0 5px;
     }
     textarea{
         resize: none;
@@ -65,12 +65,12 @@
         -moz-box-shadow: -1px 1px 24px -2px rgb(112, 202, 233);
         box-shadow: -1px 1px 24px -2px rgb(112, 202, 233);
     }
- 
+
     .data-list-container{
         width: 100%;
     }
 
-    .react-datepicker-wrapper, 
+    .react-datepicker-wrapper,
     .react-datepicker__input-container,
     .date-picker{
         width: 100% !important;
@@ -111,9 +111,9 @@
         .responsibilites-list li:hover{
             background-color: lightgrey;
         }
-        
+
     }
-    & > .fa-search, .fa-plus{
+    & > .fa-search, .fa-plus, .fa-caret-down, .fa-caret-up{
         font-size: 16px;
         position: absolute;
         right: 0;
@@ -133,7 +133,19 @@
            color: green;
            cursor: pointer;
         }
-        
+
+        & > .fa-caret-down{
+          right: 26px;
+          color: green;
+          cursor: pointer;
+       }
+
+       & > .fa-caret-up{
+          right: 26px;
+          color: green;
+          cursor: pointer;
+        }
+
     }
     @media(max-width: 450px){
         padding: 0;

@@ -487,6 +487,7 @@ const translations = {
   },
   ProjectDetails: {
     GeneralInfo: "Overview",
+    LoadingProjectMessage: "Loading project data",
     ResponsiblePerson: "Responsible person",
     SkillsRequired: "Skills required for this project",
     ShowActiveAssignments: "Show active assignments",
@@ -516,8 +517,11 @@ const translations = {
     ConfirmDeleteProject: "Are you sure you want to delete this project?",
     Delete: "Delete",
     AddEmployee: "Add employee to the project",
+    EditEmployee: "Edit employee assignment",
     FTE: "FTE percentage",
     EmployeeAdded: "Successfully added the employee to the project",
+    AssignmentSaved: "Successfully edited employee assignment",
+    AssignmentDeleted: "Successfully deleted employee assignment",
     EditProject: "Edit project",
     ActivateProject: "Activate project",
     Close: "Close",
@@ -531,10 +535,13 @@ const translations = {
     Description: "Description",
     Owners: "Owners",
     Add: "Add",
+    Save: "Save",
     ToFill: "To Fill",
     ToFillEmail: "to@fill.com",
     Share: "Share",
-    Cancel: "Cancel"
+    Cancel: "Cancel",
+    DeleteEmpAssignment : "Are you sure you want to delete employee \"",
+    FromProject : "\" assignment ?"
   },
   ProjectRowUnfurl: {
     OwnersList: "Owners",
@@ -679,7 +686,8 @@ const translations = {
     NoResults: "No results for this query",
     Confirm: "Confirm",
     ThatProjectDoesntHavaAnySkillAssigned:
-      "That project doesn't have any skills assigned."
+      "That project doesn't have any skills assigned.",
+    AddSkillsToProject: "Add skills to project"
   },
   Skill: {
     SkillName: "Skill name",
@@ -707,7 +715,9 @@ const translations = {
     Author: "Author",
     DaysAgo: "days ago",
     OnDate: "on",
-    GoIntoEmployeeDetails: "Go to employee details"
+    GoIntoEmployeeDetails: "Go to employee details",
+    DeleteAssignment: "Delete assignment",
+    EditAssignment: "Edit assignment"
   },
   ShareProject: {
     ShareProject: "Share project",
@@ -729,7 +739,10 @@ const translations = {
     DeleteUser: "Deleting Users Accounts",
     SearchingProjects: "Searching Projects",
     GettingListOfClients: "Getting List of Clients",
-    AddingClient: "Adding Client"
+    AddingClient: "Adding Client",
+    DeletingClient: "Deleting Client",
+    EditingClient: "Editing Client",
+    ReactivatingClient: "Reactivating Client"
   },
   ReportsCloudView: {
     LoadingAccountDataPrompt: "Cloud data is loading right now. Please wait...",

@@ -153,17 +153,20 @@ class Table extends Component {
   populateTrs = (items, t) => {
     const trs = [];
     for (let i = 0; i < items.length; i++) {
-      const trItem = (
-        <tr onClick={() => this.pushUserDetailsIntoTableDOM(i, t)} key={i}>
-          <td>{items[i].firstName + " " + items[i].lastName}</td>
-          <td>{items[i].role}</td>
-          <td>{items[i].seniority}</td>
-          <td>{items[i].title}</td>
-          <td>{items[i].startDate.slice(0, 10)}</td>
-          <td>{items[i].endDate.slice(0, 10)}</td>
-        </tr>
-      );
-      trs.push(trItem);
+      if(items[i].isDeleted !== true)
+      {
+        const trItem = (
+          <tr onClick={() => this.pushUserDetailsIntoTableDOM(i, t)} key={i}>
+            <td>{items[i].firstName + " " + items[i].lastName}</td>
+            <td>{items[i].role}</td>
+            <td>{items[i].seniority}</td>
+            <td>{items[i].title}</td>
+            <td>{items[i].startDate.slice(0, 10)}</td>
+            <td>{items[i].endDate.slice(0, 10)}</td>
+          </tr>
+        );
+        trs.push(trItem);
+      }
     }
     return trs;
   };

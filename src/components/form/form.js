@@ -77,6 +77,11 @@ class Form extends Component {
     let result = true;
     const formItems = [...this.state.formItems];
 
+    if(formItems[2].value.length > 0)
+    {
+      formItems[2].canBeNull = true
+    }
+
     for (let key in formItems) {
       if (formItems[key].mode !== "date-picker") {
         formItems[key].error = validateInput(
@@ -152,7 +157,7 @@ class Form extends Component {
         return i.name === e.target.value
       });
       const { cloudIdInForm } = this.props;
-      
+
       if(indexOfMatchedClient !== -1){
 
         const cloudsInClient = newFormItems[id].dataToMap[indexOfMatchedClient].clouds;
@@ -232,7 +237,7 @@ class Form extends Component {
 
   onSubmit = e => {
     e.preventDefault();
-      
+
     if (this.validateAllInputs() === true && this.props.shouldSubmit) {
       this.props.onSubmit();
     }
@@ -250,7 +255,7 @@ class Form extends Component {
         onSubmit={e => this.onSubmit(e)}
         className="universal-form-container"
       >
-      {this.props.placeToUsePropsChildren === "top" && 
+      {this.props.placeToUsePropsChildren === "top" &&
           this.props.children
       }
         {this.state.formItems.map((i, index) => {
@@ -286,7 +291,7 @@ class Form extends Component {
                     error={i.error}
                     onBlur={i.inputType === "client" ? this.props.onBlur : null}
                   />
-                  
+
                 ) : i.mode === "date-picker" ? (
                   <DatePicker
                     style={{ width: "100%" }}
@@ -389,6 +394,11 @@ class Form extends Component {
                       type="text"
                       placeholer={i.placeholder}
                     />
+                    {this.state.formItems[index].value.length > 0 &&
+                      <i onClick={() => this.setState({showList: !this.state.showList})}
+                         className={this.state.showList ? "fa fa-caret-up" : "fa fa-caret-down"}></i>
+                    }
+
                     <i
                       onClick={() => this.addItemToList(index, i.typedListVal)}
                       className="fa fa-plus"
@@ -434,7 +444,7 @@ class Form extends Component {
                       );
                     })}
                   </select>
-                ) : i.mode === "type-and-select" ? 
+                ) : i.mode === "type-and-select" ?
 
                 <DataList
                     type={i.type}
@@ -456,7 +466,7 @@ class Form extends Component {
             </section>
           );
         })}
-        {this.props.placeToUsePropsChildren === "bottom" && 
+        {this.props.placeToUsePropsChildren === "bottom" &&
           this.props.children
         }
 

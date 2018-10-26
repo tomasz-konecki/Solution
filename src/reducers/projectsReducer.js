@@ -14,7 +14,9 @@ import {
   GET_SUGGEST_EMPLOYEES,
   CHANGE_GET_SUGGEST_EMPLOYEES_STATUS,
   GET_CONTACT_PERSON_DATA,
-  ADD_PROJECT_OWNER_TO_PROJECT
+  ADD_PROJECT_OWNER_TO_PROJECT,
+  EDIT_EMPLOYEE_ASSIGNMENT,
+  DELETE_EMPLOYEE_ASSIGNMENT
 } from "../constants";
 import { updateObject } from "../services/methods";
 const initialState = {
@@ -114,6 +116,18 @@ export const projectsReducer = (state = initialState, action) => {
         addEmployeeToProjectStatus: action.addEmployeeToProjectStatus,
         addEmployeeToProjectErrors: action.addEmployeeToProjectErrors
       });
+
+    case EDIT_EMPLOYEE_ASSIGNMENT:
+      return updateObject(state, {
+        addEmployeeToProjectStatus: action.addEmployeeToProjectStatus,
+        addEmployeeToProjectErrors: action.addEmployeeToProjectErrors
+      })
+
+    case DELETE_EMPLOYEE_ASSIGNMENT:
+      return updateObject(state, {
+        addEmployeeToProjectStatus: action.addEmployeeToProjectStatus,
+        addEmployeeToProjectErrors: action.addEmployeeToProjectErrors
+      })
 
     case ADD_FEEDBACK:
       return updateObject(state, {

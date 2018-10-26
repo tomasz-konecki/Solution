@@ -517,8 +517,11 @@ const translations = {
     ConfirmDeleteProject: "Are you sure you want to delete this project?",
     Delete: "Delete",
     AddEmployee: "Add employee to the project",
+    EditEmployee: "Edit employee assignment",
     FTE: "FTE percentage",
     EmployeeAdded: "Successfully added the employee to the project",
+    AssignmentSaved: "Successfully edited employee assignment",
+    AssignmentDeleted: "Successfully deleted employee assignment",
     EditProject: "Edit project",
     ActivateProject: "Activate project",
     Close: "Close",
@@ -532,10 +535,13 @@ const translations = {
     Description: "Description",
     Owners: "Owners",
     Add: "Add",
+    Save: "Save",
     ToFill: "To Fill",
     ToFillEmail: "to@fill.com",
     Share: "Share",
-    Cancel: "Cancel"
+    Cancel: "Cancel",
+    DeleteEmpAssignment : "Are you sure you want to delete employee \"",
+    FromProject : "\" assignment ?"
   },
   ProjectRowUnfurl: {
     OwnersList: "Owners",
@@ -709,7 +715,9 @@ const translations = {
     Author: "Author",
     DaysAgo: "days ago",
     OnDate: "on",
-    GoIntoEmployeeDetails: "Go to employee details"
+    GoIntoEmployeeDetails: "Go to employee details",
+    DeleteAssignment: "Delete assignment",
+    EditAssignment: "Edit assignment"
   },
   ShareProject: {
     ShareProject: "Share project",

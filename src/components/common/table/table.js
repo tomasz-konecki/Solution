@@ -82,8 +82,18 @@ class Table extends Component {
           <td>
             <ul className="detail-team-list">
               <h5>
-                <span onClick={() => history.push(`/main/employees/${items[id].employeeId}`)}>
-                  {items[id].email} <i title={t("GoIntoEmployeeDetails")} className="fa fa-external-link-square-alt" />
+                <span>
+                  {items[id].email}
+                  <i  title={t("GoIntoEmployeeDetails")}
+                      onClick={() => history.push(`/main/employees/${items[id].employeeId}`)}
+                      className="fa fa-external-link-square-alt" />
+                  {this.props.isProjectOwner &&
+                    <i  title={t("EditAssignment")}
+                        onClick={() => this.props.editEmployee(items[id])}
+                        className="fa fa-pen-square " />}
+                  {this.props.isProjectOwner &&
+                    <i  title={t("DeleteAssignment")} className="fa fa-minus-square "
+                        onClick={() => this.props.setDeletingAssignmentId(items[id])} />}
                 </span>
                 <b>
                   <i>{t("StartDate")}: {items[id].startDate.slice(0, 10)}</i>
@@ -91,8 +101,8 @@ class Table extends Component {
                 </b>
               </h5>
               <li>
-                {t("AddedBy")}: 
-                <b>{items[id].createdBy}</b> 
+                {t("AddedBy")}:
+                <b>{items[id].createdBy}</b>
                 {t("OnDate") + " "}
                 {items[id].createdAt.slice(0, 10)}
                 <i className="moment-date">
@@ -101,7 +111,7 @@ class Table extends Component {
                 </i>
               </li>
 
-              {items[id].responsibilities.length > 0 && 
+              {items[id].responsibilities.length > 0 &&
               <React.Fragment>
                 <p>{t("Responsibilities")}: </p>
                 <li className="responsibilities-list">
@@ -131,7 +141,7 @@ class Table extends Component {
                 {t("ShowFeedbacks")}
               </button>
             </div>
-         
+
           </td>
         </tr>
       );

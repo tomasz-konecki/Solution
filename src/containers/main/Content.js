@@ -16,7 +16,7 @@ import NotFound404 from "../../components/notFound404/NotFound404";
 import Quarters from "../../components/quarters/quartersPanel.jsx";
 import { getNotificationACreator } from "../../actions/notificationActions";
 import { connect } from "react-redux";
-import Info from "./../../components/info/infoContainer";
+import Info from "./../../components/info/infoContainer"; 
 
 class Content extends React.Component {
   componentDidMount() {

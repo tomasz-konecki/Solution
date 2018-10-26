@@ -56,27 +56,25 @@ export const updateSkypeResult = (resultBlock, loading) => {
 export const downloadCV = (format, employeeId) => {
   return dispatch => {
     if (format === "word") {
-      WebApi.reports.post.wordcv(employeeId).then(
-        WebApi.reports.get
-          .cv("CV_" + employeeId + ".docx")
-          .then(response => {
-            dispatch(
-              getUserCv(response.replyBlock.request.responseURL, true, [])
-            );
-          })
-          .catch(error => dispatch(getUserCv("", false, errorCatcher(error))))
-      );
+      WebApi.reports.post.wordcv(employeeId).then(() => {
+        WebApi.reports.get.cv("CV_" + employeeId + ".docx")
+        .then(response => {
+          dispatch(
+            getUserCv(response.replyBlock.request.responseURL, true, [])
+          );
+        })
+        .catch(error => dispatch(getUserCv("", false, errorCatcher(error))))
+      });
     } else {
-      WebApi.reports.post.cv(employeeId).then(
-        WebApi.reports.get
-          .cv("CV_" + employeeId + ".pdf")
-          .then(response => {
-            dispatch(
-              getUserCv(response.replyBlock.request.responseURL, true, [])
-            );
-          })
-          .catch(error => dispatch(getUserCv("", false, errorCatcher(error))))
-      );
+      WebApi.reports.post.cv(employeeId).then(() => {
+        WebApi.reports.get.cv("CV_" + employeeId + ".pdf")
+        .then(response => {
+          dispatch(
+            getUserCv(response.replyBlock.request.responseURL, true, [])
+          );
+        })
+        .catch(error => dispatch(getUserCv("", false, errorCatcher(error))))
+      });
     }
   };
 };

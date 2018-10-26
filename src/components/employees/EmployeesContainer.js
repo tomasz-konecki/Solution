@@ -75,8 +75,8 @@ class EmployeesContainer extends React.Component {
     }
   }
 
-  getCV = userId => {
-    this.props.getUserCV(userId);
+  getCV = (format, userId) => {
+    this.props.getUserCV(format, userId);
   };
 
   activateEmployee = (employee, t) => {
@@ -180,7 +180,8 @@ function mapDispatchToProps(dispatch) {
   return {
     employeeActions: bindActionCreators(employeesActions, dispatch),
     async: bindActionCreators(asyncActions, dispatch),
-    getUserCV: userId => dispatch(getUserCVACreator(userId)),
+    getUserCV: (format, id) =>
+      dispatch(employeesActions.downloadCV(format, id)),
     getUserCVClear: (link, status, errors) =>
       dispatch(getUserCv(link, status, errors))
   };

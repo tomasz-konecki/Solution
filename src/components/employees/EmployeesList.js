@@ -94,9 +94,17 @@ class EmployeesList extends Component {
           toolBox: [
             {
               icon: { icon: "download" },
-              title: t("DownloadCV"),
+              title: t("DownloadEmployeeCVInWordFormat"),
               click: object => {
-                this.props.getCV(object.id);
+                this.props.getCV("word", object.id);
+              },
+              comparator: object => !!object.seniority
+            },
+            {
+              icon: { icon: "download" },
+              title: t("DownloadEmployeeCVInPdfFormat"),
+              click: object => {
+                this.props.getCV("pdf", object.id);
               },
               comparator: object => !!object.seniority
             },

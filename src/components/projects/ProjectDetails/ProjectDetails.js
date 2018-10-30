@@ -894,6 +894,7 @@ class ProjectDetails extends Component {
                 onlyActiveAssignments={onlyActiveAssignments}
                 editProjectStatus={this.props.editProjectStatus}
                 editProjectErrors={this.props.editProjectErrors}
+                responsiblePerson={project.responsiblePerson}
                 project={project}
                 getContactPersonDataACreator={
                   this.props.getContactPersonDataACreator

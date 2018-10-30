@@ -267,7 +267,7 @@ class Form extends Component {
     this.setState({ formItems: formItems });
   };
   render() {
-    const { enableButtonAfterTransactionEnd = false, inputContainerClass } = this.props;
+    const { enableButtonAfterTransactionEnd = false, inputContainerClass, isDisabled} = this.props;
     return (
       <form
         onSubmit={e => this.onSubmit(e)}
@@ -289,6 +289,7 @@ class Form extends Component {
                     onChange={e => this.onChangeInput(e, index)}
                     type={i.type}
                     placeholder={i.placeholder}
+                    disabled = {isDisabled}
                   />
                 ) : i.mode === "textarea" ? (
                   <textarea
@@ -498,6 +499,7 @@ class Form extends Component {
           submitResult={this.props.submitResult}
           enableButtonAfterTransactionEnd={enableButtonAfterTransactionEnd}
           shouldBeDisabledByOtherReason={this.props.shouldBeDisabledByOtherReason}
+          isDisabled = {this.props.submitResult}
         />
       </form>
     );

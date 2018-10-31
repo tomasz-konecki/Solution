@@ -104,9 +104,8 @@ export const updateSkype = (skypeId, employeeId) => {
         }
       })
       .catch(error => {
-        dispatch(updateSkypeResult(error, false)).then(
-          clearUpdateSkypeAfterTime(5000)
-        );
+        dispatch(updateSkypeResult(error, false)),
+          dispatch(clearUpdateSkypeAfterTime(5000));
       });
   };
 };

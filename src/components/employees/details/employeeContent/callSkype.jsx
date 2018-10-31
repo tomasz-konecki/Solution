@@ -5,36 +5,17 @@ import SkypeId from "./skypeId";
 import OperationStatusPrompt from '../../../form/operationStatusPrompt/operationStatusPrompt';
 class CallSkype extends Component {
   state = {
-    editSkype: true,
-    isDisabled: false,
-    promptOpen: false
+    editSkype: true
   };
 
   handleClick = () => {
     const editSkype = !this.state.editSkype;
-    this.setState({ editSkype });
+    this.setState({editSkype});
   };
 
-   onClickPrompt = () => {
-    const {promptOpen} = this.state;
-     this.setState({promptOpen: !promptOpen})
-   }
-
-  componentDidUdpate(prevProps){
-    const { updateSkypeIdResult } = this.props;
-    if(prevProps.updateSkypeIdResult !== updateSkypeIdResult){
-        this.setState({isDisabled: !isDisabled});
-    }
-  }
   onSubmit = () => {
     this.props.editSkypeId();
-    const isDisabled = !this.state.isDisabled;
-    this.setState({isDisabled})
-    console.log(this.props.updateSkypeIdResult)
     this.handleClick();
-    setTimeout(() => {
-        this.onClickPrompt()
-    },4000)
   }
 
   render() {
@@ -42,14 +23,13 @@ class CallSkype extends Component {
       updateSkypeIdResult,
       editSkypeFormItems,
       skypeIdAddLoading,
-      editSkypeId,
       employee,
       t,
-      canEditSkypeId
+      canEditSkypeId,
+      updateSkypeResult
     } = this.props;
-    const {isDisabled, editSkype} = this.state;
+    const {editSkype} = this.state;
 
-    console.log(updateSkypeIdResult ? updateSkypeIdResult : '')
     return(
       <div className="row skypeDiv">
         {updateSkypeIdResult !== null &&
@@ -57,10 +37,10 @@ class CallSkype extends Component {
               operationPromptContent={
                 updateSkypeIdResult.replyBlock.status > 399 ? updateSkypeIdResult.getMostSignificantText() : t("SkypeIdUpdated")
               }
-              operationPrompt={!updateSkypeIdResult.replyBlock.status > 399 }
+              operationPrompt={updateSkypeIdResult.replyBlock.status < 400 }
+              closePrompt={updateSkypeResult}
             />
         }
-
         <SkypeId
             title={employee.skypeId ? `${t("CallSkype")} ${employee.skypeId}` : `${t("CallBusinessSkype")}`}
             href={employee.skypeId ? `skype:${employee.skypeId}?add` : `sip:<${employee.email}>`}
@@ -70,7 +50,7 @@ class CallSkype extends Component {
         {canEditSkypeId && (
           <React.Fragment>
             {!editSkype ? (
-              <React.Fragment>{!isDisabled &&
+              <React.Fragment>{
                 <a className="pencilIcon" title={t("Close")} onClick={this.handleClick}>
                   <Icon icon="times-circle" className="col pencilIcon" />
                 </a>}
@@ -81,7 +61,6 @@ class CallSkype extends Component {
                   isLoading={skypeIdAddLoading}
                   enableButtonAfterTransactionEnd={true}
                   shouldSubmit={true}
-                  isDisabled={isDisabled}
                 />
               </React.Fragment>
             ) : (

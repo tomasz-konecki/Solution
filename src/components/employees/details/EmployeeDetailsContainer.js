@@ -24,6 +24,7 @@ import {
   getCertificates,
   downloadCV,
   getUserCv,
+  updateSkypeResult,
   loadEmployeeFeedbacks
 } from "../../../actions/employeesActions";
 import Spinner from "../../common/spinner/spinner";
@@ -184,6 +185,7 @@ class EmployeeDetailsContainer extends React.Component {
       changeSkillsErrors,
       t,
       updateSkypeIdResult,
+      updateSkypeResult,
       getEmployeePromise,
       certificates,
       binPem,
@@ -193,7 +195,6 @@ class EmployeeDetailsContainer extends React.Component {
       loadEmployeeFeedbacksErrors,
       loadEmployeeFeedbacksStatus
     } = this.props;
-
     return (
       <div className="employee-details-container">
         {isLoadingFirstTimeEmployee ? (
@@ -225,6 +226,7 @@ class EmployeeDetailsContainer extends React.Component {
                 updateSkypeIdResult={
                   updateSkypeIdResult && updateSkypeIdResult.resultBlock
                 }
+                updateSkypeResult={updateSkypeResult}
                 isYou={login === employee.id}
                 isInManagerTeam={
                   employee.manager === login ||
@@ -377,6 +379,8 @@ const mapDispatchToProps = dispatch => {
       dispatch(loadAssignments(status, errors, assignments)),
     changeEmployeeSkillsACreator: (employeeId, currentArray) =>
       dispatch(changeEmployeeSkillsACreator(employeeId, currentArray)),
+    updateSkypeResult: () =>
+      dispatch(updateSkypeResult(null,false)),
     updateSkype: (skypeId, employeeId) =>
       dispatch(updateSkype(skypeId, employeeId)),
     loadCertificates: employeeId => dispatch(loadCertificates(employeeId)),

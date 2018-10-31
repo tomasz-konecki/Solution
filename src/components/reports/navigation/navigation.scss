@@ -20,13 +20,11 @@ header {
         padding: 15px 25px;
         justify-content: space-between;
         align-items: center;
-        @media(max-width: 866px){   
-            flex-flow: column;
+        @media(max-width: 866px){
             margin: 0 auto;
             justify-content: space-between;
             padding: 15px 0;
             align-items: center;
-            height: 210px;
             .count-icons-container{
                 margin: 15px 0 15px 0;
             }
@@ -50,7 +48,7 @@ header {
                 }
                 .add-desc{
                     left: -25px;
-                    top: -20px;     
+                    top: -20px;
                 }
                 .found-desc{
                     bottom: -17.5px;
@@ -72,7 +70,7 @@ header {
                 font-size: 12.5px;
                 font-style: inherit;
                 padding: 0;
-               
+
                 &:focus{
                     outline: none;
                     border: none;

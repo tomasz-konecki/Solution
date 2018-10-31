@@ -16,7 +16,6 @@ class EmployeesListContainer extends React.Component {
 
   render() {
     const {t} = this.props;
-    console.log(this.props.employees)
     return (
       <React.Fragment>
         <div className="row" style={{ marginTop: "10px", alignItems: "center" }} >

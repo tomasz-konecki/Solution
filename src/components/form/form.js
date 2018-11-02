@@ -53,6 +53,8 @@ class Form extends Component {
       }
     }
 
+    this.validateAllInputs()
+
     this.setState({
       formItems: formItems,
       showList: formItems[index].error ? false : true
@@ -77,23 +79,25 @@ class Form extends Component {
     let result = true;
     const formItems = [...this.state.formItems];
 
-    if(formItems[2].value.length > 0)
-    {
-      formItems[2].canBeNull = true
-    }
-
     for (let key in formItems) {
       if (formItems[key].mode !== "date-picker") {
-        formItems[key].error = validateInput(
-          formItems[key].mode === "input-with-add-items"
-            ? formItems[key].typedListVal
-            : formItems[key].value,
-          formItems[key].canBeNull,
-          formItems[key].minLength,
-          formItems[key].maxLength,
-          formItems[key].inputType,
-          formItems[key].title
-        );
+        formItems[key].error = formItems[key].mode === "input-with-add-items" ?
+          validateInput(
+            formItems[key].value.join(),
+            false,
+            1,
+            formItems[key].maxLength,
+            formItems[key].inputType,
+            formItems[key].title
+          ) :
+          validateInput(
+            formItems[key].value,
+            formItems[key].canBeNull,
+            formItems[key].minLength,
+            formItems[key].maxLength,
+            formItems[key].inputType,
+            formItems[key].title
+          )
       }
       if(formItems[key].checkIfDateIsfromPast){
         formItems[key].error = validateDateIsNotFromPast(formItems[key].value);
@@ -140,17 +144,31 @@ class Form extends Component {
     const newFormItems = [...this.state.formItems];
 
     if (newFormItems[id].mode !== "input-with-add-items")
+    {
       newFormItems[id].value = e.target.value;
-    else newFormItems[id].typedListVal = e.target.value;
 
-    newFormItems[id].error = validateInput(
-      e.target.value,
-      newFormItems[id].canBeNull,
-      newFormItems[id].minLength,
-      newFormItems[id].maxLength,
-      newFormItems[id].inputType,
-      newFormItems[id].title
-    );
+      newFormItems[id].error = validateInput(
+        e.target.value,
+        newFormItems[id].canBeNull,
+        newFormItems[id].minLength,
+        newFormItems[id].maxLength,
+        newFormItems[id].inputType,
+        newFormItems[id].title
+      );
+    }
+    else
+    {
+      newFormItems[id].typedListVal = e.target.value;
+
+      newFormItems[id].error = validateInput(
+        e.target.value,
+        newFormItems[id].value.length > 0 ? true : newFormItems[id].canBeNull,
+        newFormItems[id].value.length > 0 ? 0 : newFormItems[id].minLength,
+        newFormItems[id].maxLength,
+        newFormItems[id].inputType,
+        newFormItems[id].title
+      );
+    }
 
     if(type === "client"){
       const indexOfMatchedClient = newFormItems[id].dataToMap.findIndex(i => {
@@ -249,7 +267,7 @@ class Form extends Component {
     this.setState({ formItems: formItems });
   };
   render() {
-    const { enableButtonAfterTransactionEnd = false, inputContainerClass } = this.props;
+    const { enableButtonAfterTransactionEnd = false, inputContainerClass, isDisabled} = this.props;
     return (
       <form
         onSubmit={e => this.onSubmit(e)}
@@ -271,6 +289,7 @@ class Form extends Component {
                     onChange={e => this.onChangeInput(e, index)}
                     type={i.type}
                     placeholder={i.placeholder}
+                    disabled = {isDisabled}
                   />
                 ) : i.mode === "textarea" ? (
                   <textarea
@@ -480,6 +499,7 @@ class Form extends Component {
           submitResult={this.props.submitResult}
           enableButtonAfterTransactionEnd={enableButtonAfterTransactionEnd}
           shouldBeDisabledByOtherReason={this.props.shouldBeDisabledByOtherReason}
+          isDisabled = {this.props.submitResult}
         />
       </form>
     );

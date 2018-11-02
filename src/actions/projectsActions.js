@@ -271,12 +271,10 @@ export const editEmployeeAssignmentACreator = (
   WebApi.assignments
     .put(assignmentId, assignmentModel)
     .then(response => {
-      console.log("addasdss")
       dispatch(editEmployeeAssignment(true, []));
       dispatch(getProjectACreator(projectId, onlyActiveAssignments));
     })
     .catch(error => {
-      console.log("error")
       dispatch(editEmployeeAssignment(false, errorCatcher(error)));
     })
     .then(

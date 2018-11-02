@@ -23,6 +23,7 @@ const employeeContent = ({
   reactivateEmployee,
   deleteEmployee,
   t,
+  updateSkypeResult,
   editSkypeFormItems,
   editSkypeId,
   skypeIdAddLoading,
@@ -79,6 +80,7 @@ const employeeContent = ({
                 editSkypeId={editSkypeId}
                 skypeIdAddLoading={skypeIdAddLoading}
                 updateSkypeIdResult={updateSkypeIdResult}
+                updateSkypeResult={updateSkypeResult}
                 t={t}
                 canEditSkypeId={
                   isYou || binaryPermissioner(false)(0)(0)(0)(0)(0)(1)(binPem)

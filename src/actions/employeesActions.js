@@ -104,9 +104,8 @@ export const updateSkype = (skypeId, employeeId) => {
         }
       })
       .catch(error => {
-        dispatch(updateSkypeResult(error, false)).then(
-          clearUpdateSkypeAfterTime(5000)
-        );
+        dispatch(updateSkypeResult(error, false)),
+          dispatch(clearUpdateSkypeAfterTime(5000));
       });
   };
 };
@@ -233,7 +232,7 @@ export const addSharedEmployee = (
         setTimeout(() => {
           dispatch(addSharedEmployeeResult(null));
           dispatch(loadSharedEmployeesForManager(destManagerId));
-          dispatch(loadEmployees());
+          dispatch(loadEmployees(1, 10000));
           resolve();
         }, 2000);
       })

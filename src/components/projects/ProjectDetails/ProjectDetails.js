@@ -470,7 +470,7 @@ class ProjectDetails extends Component {
               <h1>
                 {projectStatus && (
                   <span className={projectStatus[0].classVal}>
-                    {projectStatus[0].name} {loading && <Spinner fontSize="1.77px" positionClass="abs-spinner"/> }
+                    {projectStatus[0].name} {loading && <Spinner fontSize="1.77px" position="absolute" positionClass="abs-spinner"/>}
                   </span>
                 )}
 
@@ -894,6 +894,7 @@ class ProjectDetails extends Component {
                 onlyActiveAssignments={onlyActiveAssignments}
                 editProjectStatus={this.props.editProjectStatus}
                 editProjectErrors={this.props.editProjectErrors}
+                responsiblePerson={project.responsiblePerson}
                 project={project}
                 getContactPersonDataACreator={
                   this.props.getContactPersonDataACreator

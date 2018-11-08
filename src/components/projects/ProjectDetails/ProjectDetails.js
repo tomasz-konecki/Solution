@@ -463,17 +463,15 @@ class ProjectDetails extends Component {
         className="project-details-container"
       >
         {isLoadingProject && <Spinner message={t("LoadingProjectMessage")} fontSize="7px" />}
-
         {loadProjectStatus && (
           <Aux>
             <header>
               <h1>
                 {projectStatus && (
                   <span className={projectStatus[0].classVal}>
-                    {projectStatus[0].name} {loading && <Spinner fontSize="1.77px" position="absolute" positionClass="abs-spinner"/>}
+                    {projectStatus[0].name}
                   </span>
                 )}
-
                 <i className="fa fa-briefcase fa-2x" />
                 <b title={project.name}>
                   {project.name.length > 60
@@ -498,7 +496,7 @@ class ProjectDetails extends Component {
                     >
                       {t("EditProject")}
                     </button>
-
+                    {loading && <Spinner fontSize="1.77px" position="relative" positionClass="" />}
                     <button
                       onClick={() =>
                         this.setState({

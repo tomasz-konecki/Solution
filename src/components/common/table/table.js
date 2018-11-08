@@ -77,7 +77,6 @@ class Table extends Component {
         teamRows.push(this.state.trs[i]);
       }
       const { items, history } = this.props;
-      console.log(items)
       teamRows.push(
         <tr key="uniq" className="detail-table-header">
           <td>
@@ -107,8 +106,8 @@ class Table extends Component {
                 {t("OnDate") + " "}
                 {items[id].createdAt.slice(0, 10)}
                 <i className="moment-date">
-                  ({moment().diff(items[id].createdAt.slice(0, 10), "days")}{" "}
-                  {t("DaysAgo")})
+                ({moment().diff(items[id].createdAt.slice(0, 10), "days")}{" "}
+                {t("DaysAgo")})
                 </i>
               </li>
               {items[id].responsibilities.filter(i => i !== "").length > 0 ? 
@@ -121,8 +120,7 @@ class Table extends Component {
                     }
                 })}
               </li>
-            </React.Fragment> : ''}
-              
+              </React.Fragment> : ''}              
             </ul>
             <div className="btn-td-container">
               {this.props.isProjectOwner ||

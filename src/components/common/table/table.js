@@ -77,6 +77,7 @@ class Table extends Component {
         teamRows.push(this.state.trs[i]);
       }
       const { items, history } = this.props;
+      console.log(items)
       teamRows.push(
         <tr key="uniq" className="detail-table-header">
           <td>
@@ -110,17 +111,18 @@ class Table extends Component {
                   {t("DaysAgo")})
                 </i>
               </li>
-
-              {items[id].responsibilities.length > 0 &&
+              {items[id].responsibilities.filter(i => i !== "").length > 0 ? 
               <React.Fragment>
-                <p>{t("Responsibilities")}: </p>
-                <li className="responsibilities-list">
-                  {items[id].responsibilities.map(i => {
-                    return <i key={i}>{i}</i>;
-                  })}
-                </li>
-              </React.Fragment>
-              }
+              <p>{t("Responsibilities")}: </p>
+              <li className="responsibilities-list">
+                {items[id].responsibilities.map(i => {
+                    if( i != "") {
+                        return <i key={i}>{i}</i>;
+                    }
+                })}
+              </li>
+            </React.Fragment> : ''}
+              
             </ul>
             <div className="btn-td-container">
               {this.props.isProjectOwner ||

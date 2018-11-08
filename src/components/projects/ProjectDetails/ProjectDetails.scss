@@ -63,8 +63,7 @@
   header h1 span {
     position: absolute;
     font-weight: bolder;
-    bottom: -8px;
-    margin-left: 34px;
+    bottom: -8px;    
     @media (min-width: 1100px) {
       right: 10px;
       top: -10px;
@@ -81,12 +80,15 @@
   }
   .spn-active {
     color: #37d037;
+    margin-left: 34px;
   }
   .spn-unactive {
     color: red;
+    margin-left: 33px;
   }
   .spn-closed {
     color: grey;
+    margin-left: 29px;
   }
   header nav {
     width: 100%;

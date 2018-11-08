@@ -106,21 +106,21 @@ class Table extends Component {
                 {t("OnDate") + " "}
                 {items[id].createdAt.slice(0, 10)}
                 <i className="moment-date">
-                  ({moment().diff(items[id].createdAt.slice(0, 10), "days")}{" "}
-                  {t("DaysAgo")})
+                ({moment().diff(items[id].createdAt.slice(0, 10), "days")}{" "}
+                {t("DaysAgo")})
                 </i>
               </li>
-
-              {items[id].responsibilities.length > 0 &&
+              {items[id].responsibilities.filter(i => i !== "").length > 0 ? 
               <React.Fragment>
-                <p>{t("Responsibilities")}: </p>
-                <li className="responsibilities-list">
-                  {items[id].responsibilities.map(i => {
-                    return <i key={i}>{i}</i>;
-                  })}
-                </li>
-              </React.Fragment>
-              }
+              <p>{t("Responsibilities")}: </p>
+              <li className="responsibilities-list">
+                {items[id].responsibilities.map(i => {
+                    if( i != "") {
+                        return <i key={i}>{i}</i>;
+                    }
+                })}
+              </li>
+              </React.Fragment> : ''}              
             </ul>
             <div className="btn-td-container">
               {this.props.isProjectOwner ||

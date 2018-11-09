@@ -43,6 +43,12 @@ export const asyncReducer = (state = initialState, action) => {
         ...action,
         toConfirm: initialState.toConfirm
       };
+    case types.SET_ACTION_CONFIRMATION_RESULT_WITHOUT_ENDING:
+      return {
+        ...state,
+        ...action,
+        toConfirm: initialState.toConfirm
+      };
     case types.ACTION_CONFIRMED:
       return {
         ...state,

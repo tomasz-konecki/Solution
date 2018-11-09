@@ -4,6 +4,7 @@ import {
   SET_ACTION_CONFIRMATION,
   SET_ACTION_CONFIRMATION_PROGRESS,
   SET_ACTION_CONFIRMATION_RESULT,
+  SET_ACTION_CONFIRMATION_RESULT_WITHOUT_ENDING,
   ACTION_CONFIRMED,
   CHANGE_OPERATION_STATE
 } from "../constants";
@@ -34,6 +35,12 @@ export const setActionConfirmationResult = resultBlock => ({
   type: SET_ACTION_CONFIRMATION_RESULT,
   resultBlock,
   isWorking: false
+});
+
+export const setActionConfirmationResultWithoutEnding = resultBlock => ({
+    type: SET_ACTION_CONFIRMATION_RESULT_WITHOUT_ENDING,
+    resultBlock,
+    isWorking: false    
 });
 
 export const actionConfirmed = toConfirm => ({

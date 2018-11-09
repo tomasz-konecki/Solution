@@ -2,7 +2,9 @@ import WebApi from "../api";
 import {
   asyncStarted,
   asyncEnded,
-  setActionConfirmationResult
+  setActionConfirmationResult,
+  setActionConfirmationResultWithoutEnding
+  
 } from "./asyncActions";
 import {
   LOAD_CLIENTS_SUCCESS,
@@ -90,7 +92,7 @@ export const deleteClient = id => {
         dispatch(asyncEnded());
       })
       .catch(error => {
-        dispatch(setActionConfirmationResult(error));
+        dispatch(setActionConfirmationResultWithoutEnding(error));
         dispatch(asyncEnded());
         throw error;
       });
@@ -112,7 +114,7 @@ export const reactivateClient = id => {
         dispatch(asyncEnded());
       })
       .catch(error => {
-        dispatch(setActionConfirmationResult(error));
+        dispatch(setActionConfirmationResultWithoutEnding(error));
         dispatch(asyncEnded());
         throw error;
       });
@@ -152,9 +154,6 @@ export const editClient = (clientId, formData) => {
       })
       .catch(error => {
         dispatch(addClientResult(error));
-        setTimeout(() => {
-          dispatch(addClientResult(null));
-        }, 2000);
         throw error;
       });
   };
@@ -167,7 +166,6 @@ export const addClient = formData => {
       .then(response => {
         if (!response.errorOccurred()) {
           dispatch(addClientResult(response));
-
           setTimeout(() => {
             dispatch(addClientResult(null));
             dispatch(loadClients());
@@ -176,9 +174,6 @@ export const addClient = formData => {
       })
       .catch(error => {
         dispatch(addClientResult(error));
-        setTimeout(() => {
-          dispatch(addClientResult(null));
-        }, 2000);
         throw error;
       });
   };

@@ -103,9 +103,9 @@ class UsersList extends Component {
       defaultSortAscending: true,
       filtering: true,
       filterClass: "UserFilter",
-      showDeletedCheckbox: true,
-      showNotActivatedAccountsCheckbox: true,
-      showActivatedCheckbox: true,
+      showDeletedCheckbox: binaryPermissioner(false)(1)(0)(1)(1)(1)(1)(this.props.binPem),
+      showNotActivatedAccountsCheckbox: binaryPermissioner(false)(1)(0)(1)(1)(1)(1)(this.props.binPem),
+      showActivatedCheckbox: binaryPermissioner(false)(1)(0)(1)(1)(1)(1)(this.props.binPem),
       disabledRowComparator: object => {
         return object.isDeleted;
       },

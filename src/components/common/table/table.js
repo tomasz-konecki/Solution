@@ -403,6 +403,8 @@ class Table extends Component {
               <header>
                 <h3 className="section-heading">
                   {modalType ? modalEdit ? t("EditFeedback") : t("AddFeedback") : t("FeedbacksList")}
+                  {console.log(items[this.state.currentOpenedRowId])}
+                  <span>: {items[this.state.currentOpenedRowId].firstName} {items[this.state.currentOpenedRowId].lastName}</span>
                 </h3>
               </header>
 

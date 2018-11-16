@@ -136,7 +136,7 @@ class Table extends Component {
                 {t("DaysAgo")})
                 </i>
               </li>
-              {items[id].responsibilities.filter(i => i !== "").length > 0 ? 
+              {items[id].responsibilities.filter(i => i !== "").length > 0 ?
               <React.Fragment>
               <p>{t("Responsibilities")}: </p>
               <li className="responsibilities-list">
@@ -146,7 +146,7 @@ class Table extends Component {
                     }
                 })}
               </li>
-              </React.Fragment> : ''}              
+              </React.Fragment> : ''}
             </ul>
 
             <div className="btn-td-container">
@@ -276,12 +276,12 @@ class Table extends Component {
     this.setState({ opinionModal: true, modalType: true, modalEdit: true });
     this.editFeedback(feedbackId, feedbackContent);
   }
-  editFeedbackFromMain = () => {
+  editFeedbackFromMain = (feedbackId, feedbackContent) => {
     const { modalType } = this.state;
     const { loadedFeedbacks, currentUserEmail } = this.props;
     const myFeedback = loadedFeedbacks.filter(f => f.author === currentUserEmail)[0];
     if(!modalType){
-    this.editFeedback(myFeedback.id, myFeedback.description);
+    this.editFeedback(feedbackId, feedbackContent);
      }
     else
       this.changeModal();
@@ -458,10 +458,11 @@ class Table extends Component {
 
               )}
               {items[this.state.currentOpenedRowId].employeeId !== login && (
-                loadedFeedbacks && loadedFeedbacks.some(x => x.author === currentUserEmail) ?
+                items[this.state.currentOpenedRowId].userFeedback ?
                   (isProjectOwner && (
                     <button
-                      onClick={this.editFeedbackFromMain}
+                      onClick={() => this.editFeedbackFromMain(items[this.state.currentOpenedRowId].userFeedback.id,
+                        items[this.state.currentOpenedRowId].userFeedback.description)}
                       className="show-opinions-btn"
                     >
                       {modalType ? t("ShowFeedbacks") : t("EditFeedbackShort")}

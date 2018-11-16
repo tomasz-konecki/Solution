@@ -9,20 +9,43 @@ import {
   addFeedbackACreator,
   getFeedbacksACreator,
   addFeedback,
-  getFeedbacks
+  getFeedbacks,
+  editFeedback,
+  editFeedbackACreator,
+  deleteFeedback,
+  deleteFeedbackACreator
 } from "../../../actions/projectsActions";
 import Spinner from "components/common/spinner/spinner";
 import OperationStatusPrompt from "../../form/operationStatusPrompt/operationStatusPrompt";
 import { withRouter } from "react-router-dom";
 import { translate } from "react-translate";
+import SmallSpinner from "../spinner/small-spinner";
 
 class Table extends Component {
   state = {
     trs: [],
     currentTrs: [],
     currentOpenedRowId: null,
+    currentEditedFeedbackId: null,
+    isFeedbackLoaded: false,
     opinionModal: false,
     modalType: false,
+    modalEdit: false,
+    deleteFeedbackSpinner: false,
+    addFeedbackItems: [
+      {
+        title: this.props.t("Feedback"),
+        type: "text",
+        placeholder: this.props.t("AddFeedbackPlaceholder"),
+        mode: "textarea",
+        value: "",
+        error: "",
+        inputType: null,
+        minLength: 3,
+        maxLength: 1500,
+        canBeNull: false
+      }
+    ],
     feedbackItems: [
       {
         title: this.props.t("Feedback"),
@@ -63,20 +86,22 @@ class Table extends Component {
         break;
       }
 
-    this.setState({ currentTrs: currentTrs, currentOpenedRowId: null });
+    this.setState({ currentTrs: currentTrs, currentOpenedRowId: null, isFeedbackLoaded: false });
   };
-  pushUserDetailsIntoTableDOM = (id, t) => {
+
+  pushUserDetailsIntoTableDOM = (id, t, shouldClose = true) => {
+    const { currentOpenedRowId, trs } = this.state;
     if (
-      this.state.currentOpenedRowId !== null &&
-      id === this.state.currentOpenedRowId
+      currentOpenedRowId !== null &&
+      id === currentOpenedRowId && shouldClose
     )
-      this.closeCurrentOpenedRow();
+    this.closeCurrentOpenedRow();
     else {
       const teamRows = [];
       for (let i = 0; i <= id; i++) {
-        teamRows.push(this.state.trs[i]);
+        teamRows.push(trs[i]);
       }
-      const { items, history } = this.props;
+      const { items, history, canEditFeedbacks, isDeveloper, projectId, onlyActiveAssignments } = this.props;
       teamRows.push(
         <tr key="uniq" className="detail-table-header">
           <td>
@@ -110,7 +135,7 @@ class Table extends Component {
                 {t("DaysAgo")})
                 </i>
               </li>
-              {items[id].responsibilities.filter(i => i !== "").length > 0 ? 
+              {items[id].responsibilities.filter(i => i !== "").length > 0 ?
               <React.Fragment>
               <p>{t("Responsibilities")}: </p>
               <li className="responsibilities-list">
@@ -120,28 +145,59 @@ class Table extends Component {
                     }
                 })}
               </li>
-              </React.Fragment> : ''}              
+              </React.Fragment> : ''}
             </ul>
+
             <div className="btn-td-container">
-              {this.props.isProjectOwner ||
-                (items[id].employeeId !== this.props.login && (
+                {items[id].employeeId !== this.props.login && (
+
+                  items[id].userFeedback === null ? (
                   <button
                     onClick={() =>
-                      this.setState({ opinionModal: true, modalType: true })
+                      this.setState({ opinionModal: true, modalType: true, modalEdit: false })
                     }
                     className="option-btn green-btn"
                   >
                     {t("AddFeedbackShort")}
                   </button>
-                ))}
+                  ) : (
+                  <button
+                    onClick={() =>
+                      this.editFeedbackFromProjectDetails(items[id].userFeedback.id, items[id].userFeedback.description)
+                    }
+                    className="option-btn green-btn"
+                  >
+                    {t("EditFeedbackShort")}
+                  </button>
+                  )
+                )
+              }
+
+              {(canEditFeedbacks || items[id].employeeId === this.props.login) && (
               <button
                 className="option-btn green-btn"
                 onClick={this.getFeedbacks}
               >
                 {t("ShowFeedbacks")}
               </button>
-            </div>
+              )}
 
+              {(isDeveloper && items[id].userFeedback) && (
+                <button
+                className="option-btn option-very-dang"
+                onClick={() => this.deleteFeedbackFromProjectDetails(items[id].userFeedback.id, id, t)}
+              >
+                {t("DeleteFeedback")}
+              </button>
+              )}
+              {this.state.deleteFeedbackSpinner && (
+                <div>
+                  <SmallSpinner nameOfClass="deleteFeedbackSpinner"/>
+                </div>
+              )}
+
+
+            </div>
           </td>
         </tr>
       );
@@ -173,20 +229,67 @@ class Table extends Component {
 
   addFeedbackHandler = () => {
     this.setState({ isLoading: true });
-    const { addFeedback, projectId, items } = this.props;
-    const { currentOpenedRowId, feedbackItems } = this.state;
+    const { addFeedback, projectId, items, onlyActiveAssignments } = this.props;
+    const { currentOpenedRowId, addFeedbackItems } = this.state;
     addFeedback(
       projectId,
       items[currentOpenedRowId].employeeId,
-      feedbackItems[0].value
+      addFeedbackItems[0].value,
+      onlyActiveAssignments
     );
+    let itemsCopy = JSON.parse(JSON.stringify(this.state.addFeedbackItems));
+    itemsCopy[0].value="";
+    this.setState({ addFeedbackItems: itemsCopy });
   };
+  editFeedbackHandler = () => {
+    this.setState({ isLoading: true });
+    const { editFeedback,  projectId, onlyActiveAssignments} = this.props;
+    const { currentEditedFeedbackId, feedbackItems } = this.state;
+    const feedbackModel = {description: feedbackItems[0].value}
+    editFeedback(currentEditedFeedbackId, feedbackModel, projectId, onlyActiveAssignments);
+  }
   getFeedbacks = () => {
-    this.setState({ opinionModal: true, modalType: false, isLoading: true });
+    this.setState({opinionModal: true, modalType: false, modalEdit: false, isLoading: true});
     this.props.getFeedbacks(
       this.props.items[this.state.currentOpenedRowId].employeeId
     );
   };
+  deleteFeedback = feedbackId => {
+    this.props.deleteFeedback(feedbackId, this.props.projectId, this.props.onlyActiveAssignments)
+    .then(() => this.getFeedbacks());
+  }
+  deleteFeedbackFromProjectDetails = (feedbackId, id, t) => {
+    this.setState({deleteFeedbackSpinner: true}, () => {
+      this.pushUserDetailsIntoTableDOM(id, t, false)
+    });
+    this.props.deleteFeedback(feedbackId, this.props.projectId, this.props.onlyActiveAssignments).
+      then(() => this.setState({deleteFeedbackSpinner: false}));
+  }
+  editFeedback = (feedbackId, feedbackContent) => {
+    const feedbackTemp = [...this.state.feedbackItems];
+    feedbackTemp[0].value = feedbackContent;
+    this.setState({
+      feedbackItems: feedbackTemp,
+      currentEditedFeedbackId: feedbackId,
+      modalEdit: true,
+      modalType: true
+    });
+  }
+  editFeedbackFromProjectDetails = (feedbackId, feedbackContent) => {
+    this.setState({ opinionModal: true, modalType: true, modalEdit: true });
+    this.editFeedback(feedbackId, feedbackContent);
+  }
+  editFeedbackFromMain = (feedbackId, feedbackContent) => {
+    const { modalType } = this.state;
+    const { loadedFeedbacks, currentUserEmail } = this.props;
+    const myFeedback = loadedFeedbacks.filter(f => f.author === currentUserEmail)[0];
+    if(!modalType){
+    this.editFeedback(feedbackId, feedbackContent);
+     }
+    else
+      this.changeModal();
+
+  }
   changeModal = () => {
     const { modalType, currentOpenedRowId } = this.state;
     const { getFeedbacks, items } = this.props;
@@ -194,19 +297,24 @@ class Table extends Component {
     this.clearData();
 
     if (modalType) {
-      this.setState({ isLoading: true, modalType: false });
+      this.setState({ isLoading: true, modalType: false, modalEdit: false });
       getFeedbacks(items[currentOpenedRowId].employeeId);
-    } else this.setState({ modalType: true });
+    } else this.setState({ modalType: true, modalEdit: false });
   };
   clearData = () => {
     const {
       addFeedbackStatus,
       loadFeedbackStatus,
       addFeedbackClear,
-      getFeedbacksClear
+      editFeedbackClear,
+      getFeedbacksClear,
+      editFeedbackStatus
     } = this.props;
     if (addFeedbackStatus !== null && addFeedbackStatus !== undefined)
       addFeedbackClear(null, []);
+
+    if (editFeedbackStatus !== null && editFeedbackStatus !== undefined)
+      editFeedbackClear(null, []);
 
     if (loadFeedbackStatus !== null && loadFeedbackStatus !== undefined)
       getFeedbacksClear([], null, []);
@@ -223,7 +331,10 @@ class Table extends Component {
     const {
       addFeedbackStatus,
       addFeedbackErrors,
+      editFeedbackStatus,
+      editFeedbackErrors,
       loadedFeedbacks,
+      loadedFeedback,
       loadFeedbackStatus,
       loadFeedbackErrors,
       items,
@@ -234,10 +345,13 @@ class Table extends Component {
       isProjectOwner,
       t,
       login,
-      addFeedbackClear
-    } = this.props;
-    const { modalType } = this.state;
+      canEditFeedbacks,
+      addFeedbackClear,
+      editFeedbackClear,
+      currentUserEmail
 
+    } = this.props;
+    const { modalType, modalEdit } = this.state;
     return (
       <div className="table-container">
         {items && items.length > 0 ? (
@@ -291,20 +405,32 @@ class Table extends Component {
             <div className="opinion-container">
               <header>
                 <h3 className="section-heading">
-                  {modalType ? t("AddFeedback") : t("FeedbacksList")}
+                  {modalType ? modalEdit ? t("EditFeedback") : t("AddFeedback") : t("FeedbacksList")}
+                  <span>: {items[this.state.currentOpenedRowId].firstName} {items[this.state.currentOpenedRowId].lastName}</span>
                 </h3>
               </header>
 
               {modalType ? (
                 <div className="add-opinion-container">
+                  {modalEdit ?
+                  <Form
+                    transactionEnd={this.props.editFeedbackStatus}
+                    btnTitle={t("EditFeedbackShort")}
+                    shouldSubmit={true}
+                    onSubmit={this.editFeedbackHandler}
+                    isLoading={this.state.isLoading}
+                    formItems={this.state.feedbackItems}
+                  />
+                  :
                   <Form
                     transactionEnd={this.props.addFeedbackStatus}
                     btnTitle={t("AddFeedbackShort")}
                     shouldSubmit={true}
                     onSubmit={this.addFeedbackHandler}
                     isLoading={this.state.isLoading}
-                    formItems={this.state.feedbackItems}
+                    formItems={this.state.addFeedbackItems}
                   />
+                  }
                 </div>
               ) : this.state.isLoading ? (
                 <Spinner />
@@ -316,6 +442,14 @@ class Table extends Component {
                         <li key={j.id}>
                           <p>
                             {t("Author")}: {j.author} => {j.client}
+                          {canEditFeedbacks && (
+                            <React.Fragment>
+                              <i className="fas fa-minus-square"
+                              onClick={() => this.deleteFeedback(j.id)}></i>
+                              <i className="fas fa-pen-square"
+                              onClick={() => this.editFeedback(j.id, j.description)}></i>
+                            </React.Fragment>
+                          )}
                           </p>
                           <p>{j.description}</p>
                         </li>
@@ -325,21 +459,35 @@ class Table extends Component {
                 </div>
               ) : (
                 <p className="empty-opinions">{t("NoFeedbacks")}</p>
+
               )}
-              {isProjectOwner && (
-                <button
-                  onClick={this.changeModal}
-                  className="show-opinions-btn"
-                >
-                  {modalType ? t("ShowFeedbacks") : t("AddFeedbackShort")}
-                </button>
-              )}
+              {items[this.state.currentOpenedRowId].employeeId !== login && (
+                items[this.state.currentOpenedRowId].userFeedback ?
+                  (isProjectOwner && (
+                    <button
+                      onClick={() => this.editFeedbackFromMain(items[this.state.currentOpenedRowId].userFeedback.id,
+                        items[this.state.currentOpenedRowId].userFeedback.description)}
+                      className="show-opinions-btn"
+                    >
+                      {modalType ? t("ShowFeedbacks") : t("EditFeedbackShort")}
+                    </button>
+                  ))
+                :
+                  (isProjectOwner && (
+                    <button
+                      onClick={this.changeModal}
+                      className="show-opinions-btn"
+                    >
+                      {modalType ? t("ShowFeedbacks") : t("AddFeedbackShort")}
+                    </button>
+                  ))
+            )}
             </div>
           </Modal>
         )}
 
-        {addFeedbackStatus !== null &&
-          addFeedbackStatus !== undefined && (
+        {(addFeedbackStatus !== null && addFeedbackStatus !== undefined )
+          && (
             <OperationStatusPrompt
               closePrompt={() => addFeedbackClear(null, [])}
               operationPromptContent={
@@ -349,7 +497,21 @@ class Table extends Component {
               }
               operationPrompt={addFeedbackStatus}
             />
-          )}
+          )
+        }
+        {(editFeedbackStatus !== null && editFeedbackStatus !== undefined )
+          && (
+            <OperationStatusPrompt
+              closePrompt={() => editFeedbackClear(null, [])}
+              operationPromptContent={
+                editFeedbackStatus
+                  ? t("FeedbackEdited")
+                  : editFeedbackErrors && editFeedbackErrors[0]
+              }
+              operationPrompt={editFeedbackStatus}
+            />
+          )
+        }
       </div>
     );
   }
@@ -362,16 +524,29 @@ const mapStateToProps = state => {
 
     loadedFeedbacks: state.projectsReducer.loadedFeedbacks,
     loadFeedbackStatus: state.projectsReducer.loadFeedbackStatus,
-    loadFeedbackErrors: state.projectsReducer.loadFeedbackErrors
+    loadFeedbackErrors: state.projectsReducer.loadFeedbackErrors,
+
+    deleteFeedbackStatus: state.projectsReducer.deleteFeedbackStatus,
+    deleteFeedbackErrors: state.projectsReducer.deleteFeedbackErrors,
+
+    editFeedbackStatus: state.projectsReducer.editFeedbackStatus,
+    editFeedbackErrors: state.projectsReducer.editFeedbackErrors,
+
+    currentUserEmail: state.authReducer.email,
+    currentUser: state.authReducer.login
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    addFeedback: (projectId, employeeId, description) =>
-      dispatch(addFeedbackACreator(projectId, employeeId, description)),
+    addFeedback: (projectId, employeeId, description, onlyActiveAssignments) =>
+      dispatch(addFeedbackACreator(projectId, employeeId, description, onlyActiveAssignments)),
     getFeedbacks: employeeId => dispatch(getFeedbacksACreator(employeeId)),
+    editFeedback: (feedbackId, feedbackContent, projectId, onlyActiveAssignments) =>
+      dispatch(editFeedbackACreator(feedbackId, feedbackContent, projectId, onlyActiveAssignments)),
+    deleteFeedback: (feedbackId, projectId, onlyActiveAssignments) => dispatch(deleteFeedbackACreator(feedbackId, projectId, onlyActiveAssignments)),
     addFeedbackClear: (status, errors) => dispatch(addFeedback(status, errors)),
+    editFeedbackClear: (status, errors) => dispatch(editFeedback(status, errors)),
     getFeedbacksClear: (
       loadedFeedbacks,
       loadFeedbackStatus,

@@ -671,6 +671,13 @@ class ProjectDetails extends Component {
                       this.props.login
                     )
                   }
+                  canEditFeedbacks={
+                    binaryPermissioner(false)(0)(1)(1)(1)(1)(1)(this.props.binPem)
+                  }
+                  isDeveloper={
+                    binaryPermissioner(false)(1)(0)(0)(0)(0)(0)(this.props.binPem)
+                  }
+                  onlyActiveAssignments={this.state.onlyActiveAssignments}
                 />
 
                 <div className="table-container table">

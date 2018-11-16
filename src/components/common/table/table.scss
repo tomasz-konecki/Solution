@@ -276,6 +276,17 @@
                   box-sizing: border-box;
 
               }
+              .fas{
+                cursor: pointer;
+                font-size: 20px;
+                margin-left: 5px;
+              }
+              .fa-minus-square{
+                color: #8c1b2f;
+              }
+              .fa-pen-square{
+                color: #1c7744;
+              }
           }
         }
     }

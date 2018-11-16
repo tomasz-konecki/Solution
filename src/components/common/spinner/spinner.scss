@@ -29,6 +29,20 @@
     font-size: 1.1em;
   }
 }
+.deleteFeedbackSpinner{
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  margin: auto;
+  width: 30px!important;
+}
+
+.deleteFeedbackSpinner::before, .deleteFeedbackSpinner::after{
+  width: 10px!important;
+  height: 10px!important;
+}
 
 .load-page-spinner,
 .load-page-spinner:after {

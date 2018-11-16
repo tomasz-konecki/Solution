@@ -37,9 +37,8 @@ const ResultBlock = ({
     errorObjects.map((error, i) => {
       let key = Object.keys(error.errors);
       return (
-        <li key={i}>
-          <b>{t("ErrorModel")}:</b> <span>{error.model + "  "}</span>
-          <b>{t("Error")}:</b> <span>{error.errors[key[0]]}</span>
+        <li key={i}>          
+          <span>{error.errors[key[0]]}</span>
         </li>)
     })
     : null;
@@ -59,7 +58,7 @@ const ResultBlock = ({
 
       errorStatusContent = (errorMessage === null || errorMessage === undefined) ? (
         <div>
-          <h1><strong>{errorStatus}</strong> {t(errorStatusMessage)}</h1>
+          <b>{t("Error")}:</b>
           <p>{errorBlock.message}</p>
           <ul>{errorObjectsList}</ul>
           {errorImg}

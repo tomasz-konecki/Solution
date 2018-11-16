@@ -5,7 +5,7 @@ import { bindActionCreators } from "redux";
 import * as asyncActions from "./../../../actions/asyncActions";
 import LoaderHorizontal from "./../LoaderHorizontal";
 import ResultBlock from "../ResultBlock";
-import { SET_ACTION_CONFIRMATION_RESULT, SET_ACTION_CONFIRMATION } from "../../../constants";
+import { SET_ACTION_CONFIRMATION_RESULT, SET_ACTION_CONFIRMATION, SET_ACTION_CONFIRMATION_RESULT_WITHOUT_ENDING } from "../../../constants";
 import PropTypes from 'prop-types';
 import { translate } from 'react-translate';
 
@@ -25,6 +25,11 @@ class Confirmation extends Component {
       this.state.resultBlock = nextProps.resultBlock;
       this.hideAfterSuccess();
     }
+
+    if (nextProps.type === SET_ACTION_CONFIRMATION_RESULT_WITHOUT_ENDING) {
+        this.state.resultBlock = nextProps.resultBlock;
+    }
+
     if (nextProps.type === SET_ACTION_CONFIRMATION && !this.props.shown) {
       this.state.resultBlock = {};
       this.state.toConfirm = {};

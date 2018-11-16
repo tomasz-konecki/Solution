@@ -44,7 +44,7 @@ class PlanQuarter extends React.PureComponent{
             title: this.props.t("Year"), mode: "type-and-select", value: "", error: "", canBeNull: false,
             inputType: "strongNumber",
             placeholder: this.props.t("YearHolder"),
-            dataToMap: pushMomentValuesDynamicly(20,"2010-12-19", 1, 'years', "YYYY")
+            dataToMap: pushMomentValuesDynamicly(5, moment().format('YYYY-MM-DD'), 1, 'years', "YYYY")
         }
         
       ]

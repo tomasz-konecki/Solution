@@ -14,8 +14,12 @@ class AddEditClient extends Component {
   handleButtonClick = () => {
     this.setState({ showAddClientModal: true });
   };
-  handleCloseAddClientModal = () => {
+  handleCloseAddClientModal = () => {     
+    const { addClientResult } = this.props;
     this.setState({ showAddClientModal: false });
+    if (addClientResult) {
+        addClientResult(null);
+    };
   };
 
   componentWillReceiveProps = nextProps => {
@@ -24,11 +28,10 @@ class AddEditClient extends Component {
       nextProps.resultBlock !== this.props.resultBlock
     )
       if (!nextProps.resultBlock.errorOccurred()) {
-        setTimeout(() => {
-          this.handleCloseAddClientModal();
-        }, 2000);
+        setTimeout(() => this.handleCloseAddClientModal(), 2000);
       }
   };
+
   render() {
     let {
       addClient,

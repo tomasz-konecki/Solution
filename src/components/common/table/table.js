@@ -19,7 +19,7 @@ import Spinner from "components/common/spinner/spinner";
 import OperationStatusPrompt from "../../form/operationStatusPrompt/operationStatusPrompt";
 import { withRouter } from "react-router-dom";
 import { translate } from "react-translate";
-import smallSpinner from "../spinner/small-spinner";
+import SmallSpinner from "../spinner/small-spinner";
 
 class Table extends Component {
   state = {
@@ -89,11 +89,11 @@ class Table extends Component {
     this.setState({ currentTrs: currentTrs, currentOpenedRowId: null, isFeedbackLoaded: false });
   };
 
-  pushUserDetailsIntoTableDOM = (id, t) => {
+  pushUserDetailsIntoTableDOM = (id, t, shouldClose = true) => {
     const { currentOpenedRowId, trs } = this.state;
     if (
       currentOpenedRowId !== null &&
-      id === currentOpenedRowId
+      id === currentOpenedRowId && shouldClose
     )
     this.closeCurrentOpenedRow();
     else {
@@ -102,7 +102,6 @@ class Table extends Component {
         teamRows.push(trs[i]);
       }
       const { items, history, canEditFeedbacks, isDeveloper, projectId, onlyActiveAssignments } = this.props;
-      console.log(items)
       teamRows.push(
         <tr key="uniq" className="detail-table-header">
           <td>
@@ -186,17 +185,14 @@ class Table extends Component {
               {(isDeveloper && items[id].userFeedback) && (
                 <button
                 className="option-btn option-very-dang"
-                onClick={() => {
-                  this.setState({deleteFeedbackSpinner: true})
-                  this.props.deleteFeedback(items[id].userFeedback.id, projectId, onlyActiveAssignments).
-                  then(this.setState({deleteFeedbackSpinner: false}))}}
+                onClick={() => this.deleteFeedbackFromProjectDetails(items[id].userFeedback.id, id, t)}
               >
                 {t("DeleteFeedback")}
               </button>
               )}
-              { this.state.deleteFeedbackSpinner && (
+              {this.state.deleteFeedbackSpinner && (
                 <div>
-                  <smallSpinner/>
+                  <SmallSpinner nameOfClass="deleteFeedbackSpinner"/>
                 </div>
               )}
 
@@ -261,6 +257,13 @@ class Table extends Component {
   deleteFeedback = feedbackId => {
     this.props.deleteFeedback(feedbackId, this.props.projectId, this.props.onlyActiveAssignments)
     .then(() => this.getFeedbacks());
+  }
+  deleteFeedbackFromProjectDetails = (feedbackId, id, t) => {
+    this.setState({deleteFeedbackSpinner: true}, () => {
+      this.pushUserDetailsIntoTableDOM(id, t, false)
+    });
+    this.props.deleteFeedback(feedbackId, this.props.projectId, this.props.onlyActiveAssignments).
+      then(() => this.setState({deleteFeedbackSpinner: false}));
   }
   editFeedback = (feedbackId, feedbackContent) => {
     const feedbackTemp = [...this.state.feedbackItems];
@@ -403,7 +406,6 @@ class Table extends Component {
               <header>
                 <h3 className="section-heading">
                   {modalType ? modalEdit ? t("EditFeedback") : t("AddFeedback") : t("FeedbacksList")}
-                  {console.log(items[this.state.currentOpenedRowId])}
                   <span>: {items[this.state.currentOpenedRowId].firstName} {items[this.state.currentOpenedRowId].lastName}</span>
                 </h3>
               </header>
@@ -442,10 +444,10 @@ class Table extends Component {
                             {t("Author")}: {j.author} => {j.client}
                           {canEditFeedbacks && (
                             <React.Fragment>
-                            <i className="fas fa-minus-square"
-                            onClick={() => this.deleteFeedback(j.id)}></i>
-                            <i className="fas fa-pen-square"
-                            onClick={() => this.editFeedback(j.id, j.description)}></i>
+                              <i className="fas fa-minus-square"
+                              onClick={() => this.deleteFeedback(j.id)}></i>
+                              <i className="fas fa-pen-square"
+                              onClick={() => this.editFeedback(j.id, j.description)}></i>
                             </React.Fragment>
                           )}
                           </p>
@@ -479,7 +481,6 @@ class Table extends Component {
                       {modalType ? t("ShowFeedbacks") : t("AddFeedbackShort")}
                     </button>
                   ))
-
             )}
             </div>
           </Modal>
@@ -511,8 +512,6 @@ class Table extends Component {
             />
           )
         }
-
-
       </div>
     );
   }

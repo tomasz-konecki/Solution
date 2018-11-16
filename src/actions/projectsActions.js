@@ -31,7 +31,6 @@ import {
 import { errorCatcher } from "../services/errorsHandler";
 import { cutNotNeededKeysFromArray } from "../services/methods";
 import moment from "moment";
-import dispatch from './../containers/login/LoginScreen';
 
 export const loadProjectsSuccess = (projects, resultBlock) => {
   return {

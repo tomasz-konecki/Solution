@@ -369,7 +369,6 @@ class ProjectDetails extends Component {
   };
 
   editEmployee = (employeeData) => {
-    console.log(employeeData)
     const addEmployeToProjectFormItems = [
       ...this.state.addEmployeToProjectFormItems
     ];

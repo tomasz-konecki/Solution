@@ -5,7 +5,10 @@ import {
   GET_PROJECT,
   ADD_EMPLOYEE_TO_PROJECT,
   ADD_FEEDBACK,
+  GET_MY_FEEDBACK,
   GET_FEEDBACKS,
+  EDIT_FEEDBACK,
+  DELETE_FEEDBACK,
   EDIT_PROJECT,
   CHANGE_PROJECT_SKILLS,
   ADD_SKILLS_TO_PROJECT,
@@ -40,9 +43,19 @@ const initialState = {
   addFeedbackStatus: null,
   addFeedbackErrors: [],
 
+  loadedFeedback: [],
+  getMyFeedbackStatus: null,
+  getMyFeedbackErrors: [],
+
   loadedFeedbacks: [],
   loadFeedbackStatus: null,
   loadFeedbackErrors: [],
+
+  deleteFeedbackStatus: null,
+  deleteFeedbackErrors: [],
+
+  editFeedbackStatus: null,
+  editFeedbackErrors: [],
 
   editProjectStatus: null,
   editProjectErrors: [],
@@ -140,6 +153,18 @@ export const projectsReducer = (state = initialState, action) => {
         loadedFeedbacks: action.loadedFeedbacks,
         loadFeedbackStatus: action.loadFeedbackStatus,
         loadFeedbackErrors: action.loadFeedbackErrors
+      });
+
+    case EDIT_FEEDBACK:
+      return updateObject(state, {
+        editFeedbackStatus: action.editFeedbackStatus,
+        editFeedbackErrors: action.editFeedbackErrors
+      });
+
+    case DELETE_FEEDBACK:
+      return updateObject(state, {
+        deleteFeedbackStatus: action.deleteFeedbackStatus,
+        deleteFeedbackErrors: action.deleteFeedbackErrors
       });
 
     case EDIT_PROJECT:

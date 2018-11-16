@@ -8,6 +8,8 @@ import {
   CHANGE_PROJECT_SKILLS,
   ADD_FEEDBACK,
   GET_FEEDBACKS,
+  DELETE_FEEDBACK,
+  EDIT_FEEDBACK,
   EDIT_PROJECT,
   ADD_SKILLS_TO_PROJECT,
   CHANGE_PROJECT_STATE,
@@ -29,6 +31,7 @@ import {
 import { errorCatcher } from "../services/errorsHandler";
 import { cutNotNeededKeysFromArray } from "../services/methods";
 import moment from "moment";
+import dispatch from './../containers/login/LoginScreen';
 
 export const loadProjectsSuccess = (projects, resultBlock) => {
   return {
@@ -330,7 +333,7 @@ export const addFeedback = (addFeedbackStatus, addFeedbackErrors) => {
   };
 };
 
-export const addFeedbackACreator = (projectId, employeeId, description) => {
+export const addFeedbackACreator = (projectId, employeeId, description, onlyActiveAssignments) => {
   return dispatch => {
     const objectToSend = {
       projectId: projectId,
@@ -341,6 +344,7 @@ export const addFeedbackACreator = (projectId, employeeId, description) => {
       .feedback(objectToSend)
       .then(response => {
         dispatch(addFeedback(true, []));
+        dispatch(getProjectACreator(projectId, onlyActiveAssignments));
       })
       .catch(error => {
         dispatch(addFeedback(false, errorCatcher(error)));
@@ -364,13 +368,63 @@ export const getFeedbacks = (
 export const getFeedbacksACreator = employeeId => {
   return dispatch => {
     WebApi.feedbacks.get
-      .byEmployee(employeeId)
-      .then(response => {
-        dispatch(getFeedbacks(response.replyBlock.data.dtoObjects, true, []));
-      })
-      .catch(error => {
-        dispatch(getFeedbacks([], false, errorCatcher(error)));
-      });
+    .byEmployee(employeeId)
+    .then(response => {
+      dispatch(getFeedbacks(response.replyBlock.data.dtoObjects, true, []));
+    })
+    .catch(error => {
+      dispatch(getFeedbacks([], false, errorCatcher(error)));
+    });
+  };
+};
+
+export const deleteFeedback = (
+  deleteFeedbackStatus,
+  deleteFeedbackErrors
+) => {
+  return {
+    type: DELETE_FEEDBACK,
+    deleteFeedbackStatus,
+    deleteFeedbackErrors
+  };
+};
+
+export const deleteFeedbackACreator = (feedbackId, projectId, onlyActiveAssignments) => dispatch => {
+  return new Promise((resolve, reject) => {
+    WebApi.feedbacks.delete
+    .deleteById(feedbackId)
+    .then(response => {
+      dispatch(deleteFeedback(response.replyBlock.data.dtoObjects, true, []));
+      dispatch(getProjectACreator(projectId, onlyActiveAssignments));
+      resolve();
+    })
+    .catch(error => {
+      dispatch(deleteFeedback([], false, errorCatcher(error)));
+      reject();
+    });
+  });
+};
+
+export const editFeedback = (editFeedbackStatus, editFeedbackErrors) => {
+  return {
+    type: EDIT_FEEDBACK,
+    editFeedbackStatus,
+    editFeedbackErrors
+  };
+};
+
+export const editFeedbackACreator = (feedbackId, description, projectId, onlyActiveAssignments) => {
+  return dispatch => {
+    WebApi.feedbacks.put
+    .feedback(feedbackId, description)
+    .then(response => {
+      dispatch(editFeedback(true, []));
+      dispatch(getProjectACreator(projectId, onlyActiveAssignments));
+    })
+    .catch(error => {
+      dispatch(editFeedback(false, errorCatcher(error)));
+    })
+
   };
 };
 

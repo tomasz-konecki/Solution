@@ -476,6 +476,18 @@ const WebApi = {
     post: {
       feedback: model => {
         return WebAround.post(`${API_ENDPOINT}/feedbacks`, model);
+      },
+    },
+    put: {
+      feedback: (feedbackId, model) => {
+        return WebAround.put(`${API_ENDPOINT}/feedbacks/${feedbackId}`, model);
+      }
+    },
+    delete: {
+      deleteById: feedbackId => {
+        return WebAround.delete(
+          `${API_ENDPOINT}/feedbacks/${feedbackId}`
+        );
       }
     }
   },

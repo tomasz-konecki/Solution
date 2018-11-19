@@ -3,6 +3,7 @@ import "./table.scss";
 import moment from "moment";
 import Hoc from "../../../services/auxilary";
 import Modal from "react-responsive-modal";
+import ConfirmModal from "../confimModal/confirmModal";
 import Form from "components/form/form";
 import { connect } from "react-redux";
 import {
@@ -32,6 +33,8 @@ class Table extends Component {
     modalType: false,
     modalEdit: false,
     deleteFeedbackSpinner: false,
+    deleteFeedbackId: -1,
+    confirmModalOpen: false,
     addFeedbackItems: [
       {
         title: this.props.t("Feedback"),
@@ -256,7 +259,7 @@ class Table extends Component {
   };
   deleteFeedback = feedbackId => {
     this.props.deleteFeedback(feedbackId, this.props.projectId, this.props.onlyActiveAssignments)
-    .then(() => this.getFeedbacks());
+    .then(() => {this.getFeedbacks(); this.setState({confirmModalOpen: false})} );
   }
   deleteFeedbackFromProjectDetails = (feedbackId, id, t) => {
     this.setState({deleteFeedbackSpinner: true}, () => {
@@ -305,6 +308,7 @@ class Table extends Component {
     const {
       addFeedbackStatus,
       loadFeedbackStatus,
+      deleteFeedbackStatus,
       addFeedbackClear,
       editFeedbackClear,
       getFeedbacksClear,
@@ -333,6 +337,8 @@ class Table extends Component {
       addFeedbackErrors,
       editFeedbackStatus,
       editFeedbackErrors,
+      deleteFeedbackStatus,
+      deleteFeedbackErrors,
       loadedFeedbacks,
       loadedFeedback,
       loadFeedbackStatus,
@@ -348,7 +354,7 @@ class Table extends Component {
       canEditFeedbacks,
       addFeedbackClear,
       editFeedbackClear,
-      currentUserEmail
+      deleteFeedbackClear
 
     } = this.props;
     const { modalType, modalEdit } = this.state;
@@ -445,7 +451,7 @@ class Table extends Component {
                           {canEditFeedbacks && (
                             <React.Fragment>
                               <i className="fas fa-minus-square"
-                              onClick={() => this.deleteFeedback(j.id)}></i>
+                              onClick={() => this.setState({confirmModalOpen: true, deleteFeedbackId: j.id})/*this.deleteFeedback(j.id)*/}></i>
                               <i className="fas fa-pen-square"
                               onClick={() => this.editFeedback(j.id, j.description)}></i>
                             </React.Fragment>
@@ -512,6 +518,34 @@ class Table extends Component {
             />
           )
         }
+        {(deleteFeedbackStatus !== null && deleteFeedbackStatus !== undefined )
+          && (
+            <OperationStatusPrompt
+              closePrompt={() => deleteFeedbackClear(null, [])}
+              operationPromptContent={
+                deleteFeedbackStatus
+                  ? t("FeedbackDeleted")
+                  : deleteFeedbackErrors && deleteFeedbackErrors[0]
+              }
+              operationPrompt={deleteFeedbackStatus}
+            />
+          )
+        }
+        <ConfirmModal
+        open={this.state.confirmModalOpen}
+        content="Delete feedback modal"
+        onClose={() =>
+          this.setState({
+            confirmModalOpen: !this.state.confirmModalOpen,
+          })
+        }
+        header={t("AreYouSureYouWantToDeleteFeedback")}
+        operationName={t("Delete")}
+        denyName={"Cancel"}
+        operation={() =>
+          this.deleteFeedback(this.state.deleteFeedbackId)
+        }
+        />
       </div>
     );
   }
@@ -547,6 +581,7 @@ const mapDispatchToProps = dispatch => {
     deleteFeedback: (feedbackId, projectId, onlyActiveAssignments) => dispatch(deleteFeedbackACreator(feedbackId, projectId, onlyActiveAssignments)),
     addFeedbackClear: (status, errors) => dispatch(addFeedback(status, errors)),
     editFeedbackClear: (status, errors) => dispatch(editFeedback(status, errors)),
+    deleteFeedbackClear: (status, errors) => dispatch(deleteFeedback(status, errors)),
     getFeedbacksClear: (
       loadedFeedbacks,
       loadFeedbackStatus,

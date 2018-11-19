@@ -391,12 +391,12 @@ export const deleteFeedbackACreator = (feedbackId, projectId, onlyActiveAssignme
     WebApi.feedbacks.delete
     .deleteById(feedbackId)
     .then(response => {
-      dispatch(deleteFeedback(response.replyBlock.data.dtoObjects, true, []));
+      dispatch(deleteFeedback(true, []));
       dispatch(getProjectACreator(projectId, onlyActiveAssignments));
       resolve();
     })
     .catch(error => {
-      dispatch(deleteFeedback([], false, errorCatcher(error)));
+      dispatch(deleteFeedback(false, errorCatcher(error)));
       reject();
     });
   });

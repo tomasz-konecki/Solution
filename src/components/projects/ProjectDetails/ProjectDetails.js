@@ -55,6 +55,7 @@ import Owners from "./Owners/Owners";
 import ShareProject from "./ShareProject";
 import NotFound404 from "../../notFound404/NotFound404";
 import Spinner from '../../common/spinner/spinner';
+import SmoothTable from '../../common/SmoothTable';
 
 class ProjectDetails extends Component {
   workerNames = [
@@ -65,6 +66,12 @@ class ProjectDetails extends Component {
     this.props.t("StartDate"),
     this.props.t("EndDate")
   ];
+  projectPhasesNames = [
+    this.props.t("Name"),
+    this.props.t("StartDate"),
+    this.props.t("EndDate"),
+    this.props.t("Status")
+  ]
   state = {
     isLoadingProject: true,
     isChangingAssignments: false,
@@ -444,12 +451,32 @@ class ProjectDetails extends Component {
     })
   }
 
+  projectPhaseData = () => {
+    const {project} = this.props;
+    let projectPhases = project.projectPhases.map(phase => ({...phase}) );
+
+    
+    // for(let item of project.projectPhases) {
+    //   const keys = Object.keys(item).filter(key => item[key] !== null);
+    //   console.log(keys)
+    // }
+    for(let phase of projectPhases) {
+      for(let key in phase){
+        if(phase[key] === null){
+          delete(phase[key]);
+        }
+      }
+    }
+    return projectPhases;
+  }
+
   render() {
     const { project, loading, loadProjectStatus, addEmployeeToProjectStatus,
       addEmployeeToProjectErrors, changeProjectState, changeProjectStateStatus,
       changeProjectStateErrors, getSuggestEmployeesStatus, suggestEmployees,
       addProjectOwnerToProjectStatus, addProjectOwnerToProjectErrors, t } = this.props;
-
+    const projectPhases = project ? this.projectPhaseData() : null;
+    console.log(projectPhases, project)
     const { reactivate, close } = WebApi.projects.put;
     const { projectStatus, onlyActiveAssignments, matches, currentOpenedRow,
       isChangingAssignments, isLoadingProject } = this.state;
@@ -678,9 +705,33 @@ class ProjectDetails extends Component {
                     binaryPermissioner(false)(1)(0)(0)(0)(0)(0)(this.props.binPem)
                   }
                   onlyActiveAssignments={this.state.onlyActiveAssignments}
-                />
+                />                
 
-                <div className="table-container table">
+                  {project && project.projectPhases.length > 0 && (
+                    <div className="table-container table">
+                    <h3>{t("ProjectPhases")}</h3>
+                      <table key={15}>
+                      <thead>
+                        <tr>
+                          {this.projectPhasesNames.map((th, i) => <th key={i}>{th}</th>)}
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {projectPhases.map((phase,i) => (
+                          <tr key={i}>
+                            <td>{phase.name}</td>
+                            <td>{phase.startDate.slice(0,10)}</td>
+                            <td>{phase.estimatedEndDate.slice(0,10)}</td>
+                            <td>{phase.status ? t("NotActive"): t("Active")}</td>
+                          </tr>
+                        )
+                          )}
+                      </tbody>
+                        
+                      </table>
+                    </div>)}
+                  
+                  <div className="table-container table">
                   {suggestEmployees && (
                     <label
                       className="switch"

@@ -486,6 +486,8 @@ const translations = {
     ProjectHasBeenEdited: "Project has been succesfully edited"
   },
   ProjectDetails: {
+    Status: "Status",
+    ProjectPhases: "Project phases",
     GeneralInfo: "Overview",
     LoadingProjectMessage: "Loading project data",
     ResponsiblePerson: "Responsible person",

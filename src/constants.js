@@ -58,7 +58,8 @@ export const overViewNames = [
   "Client",
   "StartDate",
   "EstimatedEndDate",
-  "EndDate"
+  "EndDate",
+  "projectPhases"
 ];
 export const ADD_PROJECT_OWNER_TO_PROJECT = "ADD_PROJECT_OWNER_TO_PROJECT";
 export const ADD_EMPLOYEE_TO_PROJECT = "ADD_EMPLOYEE_TO_PROJECT";

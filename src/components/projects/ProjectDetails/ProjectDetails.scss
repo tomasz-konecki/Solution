@@ -18,6 +18,22 @@
   position: relative;
   font-size: 0.7rem;
 
+  .add-programmer-btn{
+    padding: 10px;
+    border-radius: 5px;
+    margin: 15px 0;
+    font-size: 0.8rem;
+    cursor: pointer;
+    background-color: #883e4a;
+    color: white;
+    width: 100px;
+    transition: 0.5s all ease-in-out;
+    border: none;
+  }
+  .add-programmer-btn:hover{
+      background-color: #994f5b;
+  }
+
   button:focus {
     outline: none;
   }

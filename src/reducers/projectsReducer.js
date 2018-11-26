@@ -73,6 +73,9 @@ const initialState = {
   createProjectStatus: null,
   createProjectErrors: [],
 
+  createProjectPhaseStatus: null,
+  createProjectPhaseError: [],
+
   getSuggestEmployeesStatus: null,
   getSuggestEmployeesError: [],
 
@@ -194,6 +197,11 @@ export const projectsReducer = (state = initialState, action) => {
       return updateObject(state, {
         createProjectStatus: action.createProjectStatus,
         createProjectErrors: action.createProjectErrors
+      });
+    case CREATE_PROJECT_PHASE:
+      return updateObject(state, {
+        createProjectPhaseStatus: action.createProjectPhaseStatus,
+        createProjectPhaseError: action.createProjectPhaseError
       });
     case GET_SUGGEST_EMPLOYEES:
       return updateObject(state, { suggestEmployees: action.suggestEmployees });

@@ -162,7 +162,7 @@ class ProjectDetails extends Component {
     onlyActiveAssignments: true,
   };
   componentDidMount() {
-    this.loadProjectData("isLoadingProject");
+    this.loadProjectData("isLoadingProject",null);
     const { getSuggest } = this.props;
     getSuggest(this.props.match.params.id);
   }
@@ -172,13 +172,19 @@ class ProjectDetails extends Component {
     this.setState({ onlyActiveAssignments: !onlyActiveAssignments }, () => this.loadProjectData("isChangingAssignments"));
   };
 
-  loadProjectData = operationName => {
+  loadProjectData = (operationName, projectId) => {
     this.setState({[operationName]: true});
     const { getProjectDataACreator, match } = this.props;
     const { onlyActiveAssignments } = this.state;
-    getProjectDataACreator(match.params.id, onlyActiveAssignments).then(() => {
-      this.setState({[operationName]: false});
-    }).catch(() => this.setState({[operationName]: false}));
+    if(projectId){
+      getProjectDataACreator(projectId, onlyActiveAssignments).then(() => {
+        this.setState({[operationName]: false});
+      }).catch(() => this.setState({[operationName]: false}));
+    } else {
+      getProjectDataACreator(match.params.id, onlyActiveAssignments).then(() => {
+        this.setState({[operationName]: false});
+      }).catch(() => this.setState({[operationName]: false}));
+    }
   }
 
 
@@ -207,6 +213,11 @@ class ProjectDetails extends Component {
   };
 
   componentWillReceiveProps(nextProps) {
+    if (this.props.match.params.id !== nextProps.match.params.id){
+      this.loadProjectData("isLoadingProject", nextProps.match.params.id);
+      const { getSuggest } = this.props;
+      getSuggest(nextProps.match.params.id);
+    }
     if (
       this.props.project === null ||
       this.props.project !== nextProps.project
@@ -247,7 +258,8 @@ class ProjectDetails extends Component {
             }
           : null
       );
-    }
+    }    
+
   }
 
   createLTEPicker = range => {
@@ -455,11 +467,6 @@ class ProjectDetails extends Component {
     const {project} = this.props;
     let projectPhases = project.projectPhases.map(phase => ({...phase}) );
 
-    
-    // for(let item of project.projectPhases) {
-    //   const keys = Object.keys(item).filter(key => item[key] !== null);
-    //   console.log(keys)
-    // }
     for(let phase of projectPhases) {
       for(let key in phase){
         if(phase[key] === null){
@@ -470,13 +477,18 @@ class ProjectDetails extends Component {
     return projectPhases;
   }
 
+  pushIntoRoute = path => {
+    const {history} = this.props;
+    history.push(path);
+  }
+
   render() {
     const { project, loading, loadProjectStatus, addEmployeeToProjectStatus,
       addEmployeeToProjectErrors, changeProjectState, changeProjectStateStatus,
       changeProjectStateErrors, getSuggestEmployeesStatus, suggestEmployees,
       addProjectOwnerToProjectStatus, addProjectOwnerToProjectErrors, t } = this.props;
     const projectPhases = project ? this.projectPhaseData() : null;
-    console.log(projectPhases, project)
+    console.log("this.props.overViewKeys", this.props.overViewKeys)
     const { reactivate, close } = WebApi.projects.put;
     const { projectStatus, onlyActiveAssignments, matches, currentOpenedRow,
       isChangingAssignments, isLoadingProject } = this.state;
@@ -590,7 +602,7 @@ class ProjectDetails extends Component {
                   items={this.props.overViewKeys}
                   headerTitle={t("GeneralInfo")}
                   originalObject={project}
-                  dateKeys={["startDate", "estimatedEndDate", "endDate"]}
+                  dateKeys={["startDate", "estimatedEndDate", "endDate", "projectPhases"]}
                   t={t}
                 />
 
@@ -717,8 +729,8 @@ class ProjectDetails extends Component {
                         </tr>
                       </thead>
                       <tbody>
-                        {projectPhases.map((phase,i) => (
-                          <tr key={i}>
+                        {projectPhases.map((phase) => (
+                          <tr key={phase.id} onClick={() => this.pushIntoRoute(`/main/projects/${phase.id}`)}>
                             <td>{phase.name}</td>
                             <td>{phase.startDate.slice(0,10)}</td>
                             <td>{phase.estimatedEndDate.slice(0,10)}</td>
@@ -726,10 +738,11 @@ class ProjectDetails extends Component {
                           </tr>
                         )
                           )}
-                      </tbody>
-                        
+                      </tbody>                        
                       </table>
-                    </div>)}
+                      <button className="add-programmer-btn">{t("Add")}</button>
+                    </div>
+                  )}
                   
                   <div className="table-container table">
                   {suggestEmployees && (

@@ -770,7 +770,7 @@ export const getContactPersonData = (
   };
 };
 
-export const getContactPersonDataACreator = clientId => dispatch => {
+export const getContactPersonDataACreator = clientId => dispatch => { 
   return new Promise((resolve, reject) => {
     WebApi.responsiblePerson.get
       .byClient(clientId)

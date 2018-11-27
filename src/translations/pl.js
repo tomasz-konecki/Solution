@@ -488,6 +488,15 @@ const translations = {
     ProjectHasBeenEdited: "Projekt został pomyślnie edytowany"
   },
   ProjectDetails: {
+    ProjectPhaseHasBeenAdded: "Faza projektu została dodana. Jesteś przekierowywany...",
+    Back: "Wróć",
+    Phone: "Nr. telefonu",
+    CloudPlaceHolder: "wpisz własną lub wybierz chmure z listy",
+    ContactPerson: "Wybierz lub dodaj osobę do kontaktu",
+    Insert: "Wpisz",
+    ProjectName: "Nazwa fazy projektu",
+    AddProject: "Dodaj fazę projektu",
+    Next: "Dalej",
     Status: "Status",
     ProjectPhases: "Fazy projektu",
     LoadingProjectMessage: "Trwa wczytywanie danych projektu",

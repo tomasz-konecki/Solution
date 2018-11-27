@@ -104,10 +104,10 @@ module.exports = {
     Config: JSON.stringify(
       process.env.NODE_ENV === "production"
         ? {
-            serverUrl: "http://localhost:56133"
+            serverUrl: "https://10.255.20.241"
           }
         : {
-            serverUrl: "http://localhost:56133"
+            serverUrl: "https://10.255.20.241"
           }
     )
   }

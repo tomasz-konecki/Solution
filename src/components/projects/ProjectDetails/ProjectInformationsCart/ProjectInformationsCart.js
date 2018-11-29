@@ -25,7 +25,7 @@ const projectInformationsCart = props => {
                         <span>{t(props.items.names[index])}: </span>
                     }
 
-                    {field &&
+                    {field && 
 
                     <b>
                        { 

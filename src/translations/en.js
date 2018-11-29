@@ -486,6 +486,16 @@ const translations = {
     ProjectHasBeenEdited: "Project has been succesfully edited"
   },
   ProjectDetails: {
+    parentName: "Main project",
+    EmptyProjectPhases: "This project has no phases yet",
+    ProjectPhaseHasBeenAdded: "Project phase has been added. Redirecting...",
+    Back: "Back",
+    Phone: "Phone number",
+    ContactPerson: "Choose or add contact person",
+    Insert: "Insert",
+    ProjectName: "Project phase name",
+    AddPProjectPhase: "Add project phase",
+    Next: "Next",
     Status: "Status",
     ProjectPhases: "Project phases",
     GeneralInfo: "Overview",

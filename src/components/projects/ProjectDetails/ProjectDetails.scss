@@ -18,7 +18,72 @@
   position: relative;
   font-size: 0.7rem;
 
-  .add-programmer-btn{
+  .fa-arrow-circle-right {
+    position: absolute;
+    top: -16px;
+    left: 6%;
+    cursor: pointer;
+  }
+
+  .parent-name-span {
+    position: absolute;
+    top: -10px;
+    left: 90px;
+    color: #000;
+    font-weight: 700;
+    word-break: break-all
+  }
+
+  .empty-project-phases-container {
+    width: 100%;
+    min-height: 270px;
+    margin: 25px auto;
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 20px;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+    @media(min-width: 764px){
+      width: 74%;
+    }
+    @media(min-width: 1110px){
+        width: 100%;
+    }
+    div{
+        position: relative;
+        span{
+            font-size: 0.8rem;
+            @media(min-width: 764px){
+                font-size: 1rem;
+            }
+        }
+  }
+    .fa-briefcase{
+      bottom: -45px;
+      cursor: pointer;
+      left: 0;
+      width: 32px;
+      right: 0;
+      margin: 0 auto;
+      font-size: 32px;
+      position: absolute;
+      color: #988C98;
+    }
+    .fa-plus{
+      font-size: 18px;
+      bottom: -45px;
+      cursor: pointer;
+      left: 52px;
+      width: 32px;
+      right: 0;
+      margin: 0 auto;
+      position: absolute;
+      color: #988C98;
+    }
+  }
+
+  .add-programmer-btn {
     padding: 10px;
     border-radius: 5px;
     margin: 15px 0;

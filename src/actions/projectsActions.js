@@ -143,7 +143,7 @@ export const getProjectDataACreator = (projectId, onlyActiveAssignments) => disp
       const overViewKeys = {
         keys: cutNotNeededKeysFromArray(
           Object.keys(response.replyBlock.data.dtoObject),
-          [0, 1, 2, 4, 8, 9, 10, 11, 12, 13, 14, 15]
+          [0, 1, 2, 4, 8, 9, 10, 11, 12, 13, 14, 15, 16]
         ),
         names: overViewNames
       };
@@ -175,7 +175,7 @@ export const getProjectACreator = (projectId, onlyActiveAssignments) => {
         const overViewKeys = {
           keys: cutNotNeededKeysFromArray(
             Object.keys(response.replyBlock.data.dtoObject),
-            [0, 1, 2, 4, 8, 9, 10, 11, 12, 13, 14, 15]
+            [0, 1, 2, 4, 8, 9, 10, 11, 12, 13, 14, 15, 16]
           ),
           names: overViewNames
         };
@@ -697,21 +697,21 @@ export const createProjectPhase = (createProjectPhaseStatus, createProjectPhaseE
   return { type: CREATE_PROJECT_PHASE, createProjectPhaseStatus, createProjectPhaseErrors };
 };
 
-export const createProjectPhaseCreator = (firstArray, secondArray, parentProjectData) => dispatch => {
+export const createProjectPhaseACreator = (firstArray, secondArray, parentProjectData) => dispatch => {
   return new Promise((resolve, reject) => {
-    const model = { //TO DO, AFTER CREATE ARRAYS CHECK MODEL
+    const model = {
       name: firstArray[0].value,
       description: firstArray[1].value,
-      client: parentProjectData[1],
       responsiblePerson: {
         firstName: secondArray[1].value,
         lastName: secondArray[2].value,
         email: secondArray[0].value,
         phoneNumber: secondArray[3].value
       },
-      startDate: firstArray[4].value,
-      estimatedEndDate: firstArray[5].value,
-      parentId: parentProjectData[0].value
+      startDate: firstArray[2].value,
+      estimatedEndDate: firstArray[3].value,
+      client: parentProjectData.client,
+      parentId: parentProjectData.parentId
     };
     WebApi.projects.post
       .add(model)

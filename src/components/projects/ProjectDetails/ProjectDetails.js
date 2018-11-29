@@ -23,6 +23,7 @@ import { bindActionCreators } from "redux";
 import { loadClients } from "../../../actions/clientsActions";
 import * as projectsActions from "../../../actions/projectsActions";
 import {
+  createProjectPhaseACreator,
   getProjectDataACreator,
   getContactPersonDataACreator,
   getProjectACreator,
@@ -59,7 +60,7 @@ import ShareProject from "./ShareProject";
 import NotFound404 from "../../notFound404/NotFound404";
 import Spinner from '../../common/spinner/spinner';
 import ContactList from "../../../components/common/contactList/contactList";
-
+import { clearDataOfForm } from "../../../services/methods";
 
 class ProjectDetails extends Component {
   workerNames = [
@@ -166,52 +167,52 @@ class ProjectDetails extends Component {
     onlyActiveAssignments: true,
     addNewProjectPhaseFormValues: [
       {
-          title: this.props.t("ProjectName"),
-          type: "text",
-          placeholder: `${this.props.t("Insert")} ${this.props.t(
-            "ProjectName"
-          )}`,
-          value: "",
-          error: "",
-          inputType: "nameWithPolishLetters",
-          minLength: 3,
-          maxLength: 25,
-          canBeNull: false
-        },
-        {
-          title: this.props.t("Description"),
-          type: "text",
-          placeholder: `${this.props.t("Insert")} ${this.props.t(
-            "Description"
-          )}`,
-          mode: "textarea",
-          value: "",
-          error: "",
-          inputType: null,
-          minLength: 3,
-          maxLength: 1500,
-          canBeNull: false
-        },      
-        {
-          title: this.props.t("StartDate"),
-          name: "startDate",
-          type: "text",
-          placeholder: `${this.props.t("Insert")} ${this.props.t("StartDate")}`,
-          mode: "date-picker",
-          value: moment(),
-          error: "",
-          canBeBefore: true
-        },
-        {
-          title: this.props.t("EndDate"),
-          name: "endDate",
-          type: "text",
-          placeholder: `${this.props.t("Insert")} ${this.props.t("EndDate")}`,
-          mode: "date-picker",
-          value: moment(),
-          error: "",
-          canBeBefore: false
-        }
+        title: this.props.t("ProjectName"),
+        type: "text",
+        placeholder: `${this.props.t("Insert")} ${this.props.t(
+          "ProjectName"
+        )}`,
+        value: "",
+        error: "",
+        inputType: "nameWithPolishLetters",
+        minLength: 3,
+        maxLength: 25,
+        canBeNull: false
+      },
+      {
+        title: this.props.t("Description"),
+        type: "text",
+        placeholder: `${this.props.t("Insert")} ${this.props.t(
+          "Description"
+        )}`,
+        mode: "textarea",
+        value: "",
+        error: "",
+        inputType: null,
+        minLength: 3,
+        maxLength: 1500,
+        canBeNull: false
+      },      
+      {
+        title: this.props.t("StartDate"),
+        name: "startDate",
+        type: "text",
+        placeholder: `${this.props.t("Insert")} ${this.props.t("StartDate")}`,
+        mode: "date-picker",
+        value: moment(),
+        error: "",
+        canBeBefore: true
+      },
+      {
+        title: this.props.t("EndDate"),
+        name: "endDate",
+        type: "text",
+        placeholder: `${this.props.t("Insert")} ${this.props.t("EndDate")}`,
+        mode: "date-picker",
+        value: moment(),
+        error: "",
+        canBeBefore: false
+      }
       ],
       responsiblePersonFormValues: [
         {
@@ -288,14 +289,11 @@ class ProjectDetails extends Component {
   goForClient = () => {
     const { getContactPersonDataACreator, project, clients } = this.props;
     const matchedClient = clients.find(client => client.name === project.client);
-     console.log("siemanerko")
     if (matchedClient) {
       const clientId = matchedClient.id
       this.setState({ isLoading: true });
-      console.log(clientId)
       getContactPersonDataACreator(clientId)
       .then(response => {
-        console.log("response",response );
         if (response.length > 0) {
           let responsiblePersons = [];
           const responsiblePersonFormValues = [
@@ -314,7 +312,6 @@ class ProjectDetails extends Component {
             responsiblePersonFormValues: responsiblePersonFormValues
           });
         }
-
           this.setState({ isLoading: false });
         })
         .catch(error => {
@@ -347,7 +344,7 @@ class ProjectDetails extends Component {
     this.setState({ isLoading: true });
     const { responsiblePersonFormValues } = this.state;
     const addNewProjectPhaseFormValues = [...this.state.addNewProjectPhaseFormValues];
-    const { history, match, projectActions, project } = this.props;
+    const { projectActions, project, createProjectPhase } = this.props;
     let parentProjectData = null;
     if(project) {
       parentProjectData = {
@@ -355,25 +352,23 @@ class ProjectDetails extends Component {
         client: project.client
       }
     }
-    //change action to addProjectPhase
-    projectActions
-      .createProjectACreator(
-        addNewProjectPhaseFormValues,
-        responsiblePersonFormValues,
-        //parentProjectData
-      )
-      .then(response => {
-        clearDataOfForm(addNewProjectPhaseFormValues);
-        setTimeout(() => {
-          this.setState({
-            showAddPhaseModal: false,
-            openFirstForm: true,
-            addNewProjectPhaseFormValues: addNewProjectPhaseFormValues
-          });
-          projectActions.createProject(null, []);
-          history.push(match.url + "/" + response.id);
-        }, 1500);
-      });
+    createProjectPhase(
+      addNewProjectPhaseFormValues,
+      responsiblePersonFormValues,
+      parentProjectData
+    )
+    .then(response => {
+      clearDataOfForm(addNewProjectPhaseFormValues);
+      setTimeout(() => {
+        this.setState({
+          showAddPhaseModal: false,
+          openFirstForm: true,
+          addNewProjectPhaseFormValues: addNewProjectPhaseFormValues
+        });
+        projectActions.createProjectPhase(null, []);
+        this.loadProjectData("isLoadingProject",null);
+      }, 1500);
+    });
   };
 
   togleActiveAssignments = () => {
@@ -421,12 +416,11 @@ class ProjectDetails extends Component {
     return addEmployeToProjectFormItems;
   };
 
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps(nextProps) {      
     if (this.props.match.params.id !== nextProps.match.params.id){
       this.loadProjectData("isLoadingProject", nextProps.match.params.id);
-      const { getSuggest } = this.props;
-      getSuggest(nextProps.match.params.id);
     }
+
     if (
       this.props.project === null ||
       this.props.project !== nextProps.project
@@ -445,7 +439,6 @@ class ProjectDetails extends Component {
             project.isDeleted
           )
         });
-
         if (
           this.props.project &&
           (this.props.project.team !== project.team || project.team === null)
@@ -719,6 +712,12 @@ class ProjectDetails extends Component {
                     {projectStatus[0].name}
                   </span>
                 )}
+                {project.parentName &&
+                <div>
+                  <span className="parent-name-span">{project.parentName}</span>
+                  <i className="fas fa-arrow-circle-right"
+                    onClick={() => this.pushIntoRoute(`/main/projects/${project.parentId}`)} /> 
+                </div>}
                 <i className="fa fa-briefcase fa-2x" />
                 <b title={project.name}>
                   {project.name.length > 60
@@ -810,7 +809,7 @@ class ProjectDetails extends Component {
                   items={this.props.overViewKeys}
                   headerTitle={t("GeneralInfo")}
                   originalObject={project}
-                  dateKeys={["startDate", "estimatedEndDate", "endDate", "projectPhases"]}
+                  dateKeys={["startDate", "estimatedEndDate", "endDate"]}
                   t={t}
                 />
 
@@ -925,32 +924,43 @@ class ProjectDetails extends Component {
                     binaryPermissioner(false)(1)(0)(0)(0)(0)(0)(this.props.binPem)
                   }
                   onlyActiveAssignments={this.state.onlyActiveAssignments}
-                />                
-
-                  {project && project.projectPhases.length > 0 && (
+                />                                  
+                 {project && !project.parentId ?
+                    project.projectPhases.length > 0 ? (
                     <div className="table-container table">
                     <h3>{t("ProjectPhases")}</h3>
-                      <table key={15}>
-                      <thead>
-                        <tr>
-                          {this.projectPhasesNames.map((th, i) => <th key={i}>{th}</th>)}
+                    <table key={15}>
+                    <thead>
+                      <tr>
+                        {this.projectPhasesNames.map((th, i) => <th key={i}>{th}</th>)}
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {projectPhases.map((phase) => (
+                        <tr key={phase.id} onClick={() => this.pushIntoRoute(`/main/projects/${phase.id}`)}>
+                          <td>{phase.name}</td>
+                          <td>{phase.startDate.slice(0,10)}</td>
+                          <td>{phase.estimatedEndDate.slice(0,10)}</td>
+                          <td>{this.calculateProjectStatus(phase.status, phase.isDeleted)[0].name}</td>
                         </tr>
-                      </thead>
-                      <tbody>
-                        {projectPhases.map((phase) => (
-                          <tr key={phase.id} onClick={() => this.pushIntoRoute(`/main/projects/${phase.id}`)}>
-                            <td>{phase.name}</td>
-                            <td>{phase.startDate.slice(0,10)}</td>
-                            <td>{phase.estimatedEndDate.slice(0,10)}</td>
-                            <td>{phase.status ? t("NotActive"): t("Active")}</td>
-                          </tr>
-                        )
-                          )}
-                      </tbody>                        
-                      </table>
-                      <button className="add-programmer-btn" onClick={() => this.setState({showAddPhaseModal: true})}>{t("Add")}</button>
+                      )
+                        )}
+                    </tbody>                        
+                    </table>
+                    <button className="add-programmer-btn" onClick={() => this.setState({showAddPhaseModal: true})}>{t("Add")}</button>
+                  </div>
+                  ): 
+                  <div className="empty-project-phases-container">
+                    <div>
+                      <span>{t("EmptyProjectPhases")}</span>
+                      <div  onClick={() => this.setState({showAddPhaseModal: true})}>
+                        <i className="fas fa-briefcase fa-lg " /> 
+                        <i className="fas fa-plus" />  
+                      </div>                
                     </div>
-                  )}
+                  </div>:
+                  ''}
+                    
                   
                   <div className="table-container table">
                   {suggestEmployees && (
@@ -1073,7 +1083,7 @@ class ProjectDetails extends Component {
                             {suggestEmployees.matchedEmployees.map(
                               (employee, index) => {
                                 return (
-                                  <React.Fragment>
+                                  <React.Fragment key={index}>
                                     <tr
                                       onClick={() =>
                                         currentOpenedRow === index
@@ -1170,7 +1180,7 @@ class ProjectDetails extends Component {
             onClose={() => this.setState({ showAddPhaseModal: false })}
           >
             <header>
-              <h3>{openFirstForm ? t("AddProject") : t("ContactPerson")}</h3>
+              <h3>{openFirstForm ? t("AddProjectPhase") : t("ContactPerson")}</h3>
             </header>
 
           {openFirstForm ? (
@@ -1398,7 +1408,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     loadClients: () => dispatch(loadClients()),
-
+    createProjectPhase: (firstArray, secondArray, parentProjectData) => dispatch(createProjectPhaseACreator(firstArray, secondArray, parentProjectData)),
     projectActions: bindActionCreators(projectsActions, dispatch),
     getContactPersonDataACreator: clientId =>
       dispatch(getContactPersonDataACreator(clientId)),

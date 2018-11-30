@@ -488,7 +488,7 @@ const translations = {
     ProjectHasBeenEdited: "Projekt został pomyślnie edytowany"
   },
   ProjectDetails: {
-    parentName: "Nazwa głównego projektu",
+    ParentName: "Nazwa głównego projektu",
     EmptyProjectPhases: "Ten projekt nie ma jeszcze faz",
     ProjectPhaseHasBeenAdded: "Faza projektu została dodana. Jesteś przekierowywany...",
     Back: "Wróć",

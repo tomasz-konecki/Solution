@@ -1,131 +1,283 @@
-import React, { Component } from 'react';
-import WebApi from './../../api/index';
-import IntermediateBlock from './../common/IntermediateBlock';
-import SkillRow from './SkillRow';
-import ResultBlock from './../common/ResultBlock';
-import { translate } from 'react-translate';
+import React, { Component } from "react";
+import { translate } from "react-translate";
+import { sortStrings, getRandomColor } from "../../services/methods";
+import { connect } from "react-redux";
+import { getAllSkillsACreator } from "../../actions/skillsActions";
+import SkillList from "./skillList/skillList";
+import Spinner from "../common/LoaderCircular";
+import "./SkillsContainer.scss";
+import ServerError from "../common/serverError/serverError";
+import { validateInput } from "../../services/validation";
+import { addNewSkillACreator, addNewSkill } from "../../actions/skillsActions";
+import SmallSpinner from "../common/spinner/small-spinner";
+import CorrectOperation from "../common/correctOperation/correctOperation";
+
+const createColorIcons = currentSkills => {
+  const skillsWithColors = [];
+  for (let key in currentSkills)
+    skillsWithColors.push({
+      skill: currentSkills[key],
+      color: getRandomColor()
+    });
+
+  return skillsWithColors;
+};
 
 class SkillsContainer extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      loaded: false,
-      replyBlock: {},
-      search: ""
-    };
-  }
+  state = {
+    skills: null,
+    isLoading: true,
+    searchValue: "",
+    searchedSkills: [],
+    isAddingSkill: false,
+    newSkillName: "",
+    newSkillNameError: "",
+    isAddingSkillSpinner: false,
+    showNewAddingTemplate: false,
+    newAddSkillColor: getRandomColor()
+  };
   componentDidMount() {
-    this.loadSkills();
+    this.props.getAllSkillsACreator([]);
   }
-
-  loadSkills = () => {
-    WebApi.skills.get.all()
-      .then(reply => {
-        this.setState({
-          loaded: true,
-          skills: reply.extractData(),
-          replyBlock: reply
-        });
-      })
-      .catch(e => {
-        this.setState({
-          loaded: true,
-          replyBlock: e,
-          message: `✖ ${e.getMostSignificantText()}`
-        });
-      });
-  }
-
-  removeMessage = () => {
-    setTimeout(() => {
+  componentDidUpdate() {
+    const { skills, isAddingSkillSpinner } = this.state;
+    const {
+      loadedSkills,
+      loadSkillsStatus,
+      addNewSkillStatus,
+      addNewSkillErrors
+    } = this.props;
+    if (!skills || loadSkillsStatus === null) {
+      const skillsWithColors = createColorIcons(loadedSkills);
       this.setState({
-        message: ""
+        skills: skillsWithColors,
+        isLoading: false,
+        searchedSkills: skillsWithColors
       });
-    }, 5000);
-  }
-
-  onSearchChange = (e) => {
-    this.setState({
-      search: e.target.value
-    });
-  }
-
-  skillEdit = (skillObject, deletion) => {
-    const { t } = this.props;
-    if(deletion){
-      this.setState({
-        loaded: false
-      }, () => WebApi.skills.delete(skillObject.skillId)
-      .then(reply => {
-        let skills = this.state.skills;
-        delete skills[skillObject.skillId];
-        this.setState({
-          lastDeletedSkill: skillObject,
-          message: `✔ ${t("SuccessfullyDeleted")} '${skillObject.skillName}'`,
-          loaded: true
-        }, () => this.loadSkills());
-        this.removeMessage();
-      })
-      .catch(e => {
-        let msg = e.getMostSignificantText();
-        this.setState({
-          loaded: true,
-          replyBlock: e,
-          message: `✖ ${msg === "" ? e.diagnosis : msg}`
-        });
-        this.removeMessage();
-      }));
+    } else if (isAddingSkillSpinner && addNewSkillStatus !== null) {
+      this.modifyDataAfterSkillAdding(addNewSkillStatus, addNewSkillErrors);
     }
   }
+  modifyDataAfterSkillAdding = (result, errors) => {
+    if (result) {
+      const {
+        newSkillName,
+        searchValue,
+        searchedSkills: oldSearchedSkills,
+        newAddedCounter,
+        newAddSkillColor
+      } = this.state;
+      const newSkill = { name: newSkillName, key: newSkillName };
+      const newlyAdded = [
+        { skill: newSkill, class: "recently-added", color: newAddSkillColor }
+      ];
+      const actualSkills = [...this.state.skills];
+      const concatedSkills = newlyAdded.concat(actualSkills);
 
-  pullSkillsColumn = () => {
-    return <div>
-      <input onChange={this.onSearchChange} style={{marginTop: '10px'}} className="form-control" type="text"/>
-      <div className="scroll-container">
-      {
-        Object.entries(this.state.skills).map(([id, skillObject], index) => {
-          if(this.state.search !== ""
-          && skillObject.name.toLocaleLowerCase().indexOf(this.state.search.toLocaleLowerCase()) === -1) return null;
-          skillObject.skillId = id;
-          return <SkillRow
-            key={index}
-            skill={skillObject}
-            handleSkillEdit={this.skillEdit}
-            delo
-          />;
-        })
+      const searchedSkills =
+        searchValue === "" || oldSearchedSkills.length === 0
+          ? concatedSkills
+          : this.searchInSkills(concatedSkills, searchValue);
+
+      this.setState(
+        {
+          searchedSkills: searchedSkills,
+          isAddingSkillSpinner: false,
+          newSkillName: "",
+          showNewAddingTemplate: false,
+          isAddingSkill: false,
+          skills: concatedSkills,
+          newAddSkillColor: getRandomColor()
+        },
+        () => {
+          setTimeout(() => {
+            this.props.addNewSkill(null, []);
+          }, 1500);
+        }
+      );
+    } else {
+      this.setState({
+        isAddingSkillSpinner: false,
+        newSkillNameError: errors[0]
+      });
+    }
+  };
+
+  onChangeInputSearch = e => {
+    const lowerCasedValue = e.target.value.toLowerCase();
+    const { skills } = this.state;
+
+    this.setState({
+      searchValue: lowerCasedValue,
+      searchedSkills: this.searchInSkills(skills, lowerCasedValue)
+    });
+  };
+  searchInSkills = (skills, searchValue) => {
+    const searchedSkills = [];
+    for (let key in skills)
+      if (skills[key].skill.name.toLowerCase().search(searchValue) !== -1)
+        searchedSkills.push(skills[key]);
+
+    return searchedSkills;
+  };
+
+  initialAddingSkills = () => {
+    this.setState({ isAddingSkill: true });
+  };
+
+  closeAddingSkills = () => {
+    this.setState({
+      isAddingSkill: false,
+      newSkillNameError: "",
+      newSkillName: "",
+      showNewAddingTemplate: false
+    });
+  };
+
+  onChangeNewFolderName = e => {
+    const { value } = e.target;
+    this.setState({
+      newSkillName: value,
+      newSkillNameError: this.validate(value)
+    });
+  };
+  validate = value => {
+    const { skills } = this.state;
+    for (let key in skills) {
+      if (skills[key].skill.name.toLowerCase() === value.toLowerCase())
+        return "Ta umiejętność już istnieje";
+    }
+
+    return validateInput(value, false, 0, 120, null, "nazwa umiejętności");
+  };
+  addNewSkill = e => {
+    if (e.key === "Enter") {
+      const { newSkillName } = this.state;
+      const newSkillNameError = this.validate(newSkillName);
+
+      if (newSkillNameError) {
+        this.setState({ newSkillNameError: newSkillNameError });
+      } else {
+        this.setState({ isAddingSkillSpinner: true });
+        this.props.addNewSkillACreator(e.target.value);
       }
-      </div>
-    </div>;
-  }
-
-  pullDOM = () => {
-    const { t } = this.props;
-    return <div className="content-container skills-container form-group row">
-      <div className="row">
-        <div className="col-lg-3">
-          <IntermediateBlock
-            loaded={this.state.loaded}
-            render={this.pullSkillsColumn}
-            resultBlock={this.props.replyBlock}
-          />
-        </div>
-        <div className="col-lg-9 internum">
-          <h2>{t("Deletion")}</h2> <br/>
-          <p>
-            {t('Info1')} <br/>
-            {t('Info2')}>
-          </p>
-          <hr/>
-          {this.state.message}
-        </div>
-      </div>
-    </div>;
-  }
-
+    }
+  };
   render() {
-    return this.pullDOM();
+    const {
+      isLoading,
+      searchValue,
+      searchedSkills,
+      isAddingSkill,
+      newSkillName,
+      isAddingSkillSpinner,
+      newSkillNameError,
+      showNewAddingTemplate,
+      newAddSkillColor
+    } = this.state;
+    const {
+      loadSkillsStatus,
+      loadSkillsErrors,
+      addNewSkillStatus
+    } = this.props;
+
+    const iconType = isAddingSkill ? (
+      <i
+        onClick={isAddingSkillSpinner ? null : this.closeAddingSkills}
+        className="fa fa-times"
+      />
+    ) : (
+      <i onClick={this.initialAddingSkills} className="fa fa-plus" />
+    );
+
+    return (
+      <div className="content-container skills-panel-container">
+        {isLoading ? (
+          <Spinner />
+        ) : loadSkillsStatus === false ? (
+          <ServerError
+            errorClass="whole-page-error"
+            message={loadSkillsErrors[0]}
+          />
+        ) : (
+          <React.Fragment>
+            <div className="left-panel-container">
+              {addNewSkillStatus && <CorrectOperation />}
+              <header>
+                <span>
+                  Wszystkie umiejętności
+                  {iconType}
+                </span>
+                <div className="searcher-container">
+                  {isAddingSkill ? (
+                    <input
+                      onFocus={() =>
+                        this.setState({ showNewAddingTemplate: true })
+                      }
+                      className={newSkillNameError ? "invalid-name" : ""}
+                      onKeyPress={
+                        isAddingSkillSpinner ? null : e => this.addNewSkill(e)
+                      }
+                      type="text"
+                      value={newSkillName}
+                      placeholder="wpisz nazwę nowej umiejętności"
+                      onChange={e => this.onChangeNewFolderName(e)}
+                    />
+                  ) : (
+                    <input
+                      value={searchValue}
+                      onChange={e => this.onChangeInputSearch(e)}
+                      type="text"
+                      placeholder="wpisz nazwę umiejętności..."
+                    />
+                  )}
+                  <p className="valid-error">
+                    <span>{newSkillNameError}</span>
+                  </p>
+                  {isAddingSkill || <i className="fa fa-search" />}
+
+                  {isAddingSkillSpinner && <SmallSpinner />}
+                </div>
+              </header>
+
+              <SkillList
+                newAddSkillColor={newAddSkillColor}
+                newSkillName={newSkillName}
+                newSkillNameError={newSkillNameError}
+                skills={searchedSkills}
+                showNewAddingTemplate={showNewAddingTemplate && newSkillName}
+              />
+            </div>
+
+            <div className="right-panel-container" />
+          </React.Fragment>
+        )}
+      </div>
+    );
   }
 }
 
-export default translate("SkillsContainer")(SkillsContainer);
+const mapStateToProps = state => {
+  return {
+    loadedSkills: state.skillsReducer.loadedSkills,
+    loadSkillsStatus: state.skillsReducer.loadSkillsStatus,
+    loadSkillsErrors: state.skillsReducer.loadSkillsErrors,
+
+    addNewSkillStatus: state.skillsReducer.addNewSkillStatus,
+    addNewSkillErrors: state.skillsReducer.addNewSkillErrors
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    getAllSkillsACreator: currentSkills =>
+      dispatch(getAllSkillsACreator(currentSkills)),
+    addNewSkillACreator: name => dispatch(addNewSkillACreator(name)),
+    addNewSkill: (status, errors) => dispatch(addNewSkill(status, errors))
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(translate("SkillsContainer")(SkillsContainer));

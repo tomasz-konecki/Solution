@@ -1,0 +1,326 @@
+.top-content-container {
+  padding: 25px;
+  display: flex;
+  position: relative;
+  margin-top: 15px;
+  flex-flow: wrap;
+  justify-content: space-between;
+
+  .information-for-statuses {
+    position: absolute;
+    bottom: -150px;
+    color: #707070;
+    @media (max-width: 725px) {
+      position: static;
+      margin-top: 30px;
+    }
+    p {
+      font-size: 22px;
+      padding: 10px 0;
+    }
+    article {
+      font-size: 18px;
+      line-height: 22px;
+      b:first-of-type {
+        color: red;
+      }
+      b:last-of-type {
+        color: darkcyan;
+      }
+    }
+  }
+  @media screen and (max-width: 1470px) {
+    justify-content: center;
+  }
+  @media screen and (max-width: 450px) {
+    padding: 0;
+  }
+
+  .emp-btns-container {
+    position: absolute;
+    left: 0;
+    bottom: -280px;
+    flex-flow: wrap;
+    right: 0;
+    display: flex;
+    margin: 0 auto;
+    justify-content: center;
+
+    @media screen and (max-width: 1470px) {
+      bottom: -380px;
+    }
+  }
+  .option-btn {
+    border-radius: 29px;
+    width: 160px;
+    margin: 15px;
+    position: relative;
+    .small-spiner {
+      right: -35px;
+      top: 10px;
+    }
+  }
+  .employee-details-bar {
+    border-radius: 5px;
+    width: 650px;
+    background: #fbfbfb;
+    padding: 20px;
+    height: 320px;
+    justify-content: space-between;
+    display: flex;
+    position: relative;
+    .fte-bar-container,
+    .edit-skypeid-form,
+    .degree-bar-container {
+      @media screen and (max-width: 1470px) {
+        left: 0;
+        right: 0;
+        margin-left: auto;
+        margin-right: auto;
+      }
+    }
+    @media screen and (max-width: 764px) {
+      flex-flow: wrap;
+      height: auto;
+    }
+    .fte-bar-container {
+      width: 300px;
+      bottom: -80px;
+      left: 5px;
+      position: absolute;
+    }
+    @media screen and (max-width: 400px) {
+      & > .fte-bar-container {
+        left: 0 !important;
+        width: 100% !important;
+      }
+    }
+
+    .degree-bar-container {
+      position: absolute;
+      width: 120px;
+      left: 5px;
+      bottom: -160px;
+    }
+    .edit-skypeid-form {
+      position: absolute;
+      width: 300px;
+      left: 320px;
+      bottom: -161px;
+      height: 124px;
+
+      @media screen and (max-width: 1470px) {
+        bottom: -326px;
+        left: 0px;
+      }
+    }
+    .left-content {
+      border-right: 2px solid #707070;
+      width: 53%;
+      header {
+        display: flex;
+        position: relative;
+        margin-bottom: 10px;
+        span {
+          position: absolute;
+          right: 15px;
+          top: -10px;
+        }
+        .icon-container {
+          display: inherit;
+          align-items: center;
+          flex-flow: column;
+          figure {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 60px;
+            height: 60px;
+            border: 2px solid #707070;
+            border-radius: 50%;
+            i {
+              font-size: 25px;
+            }
+          }
+          p {
+            padding: 10px 0;
+            text-align: center;
+          }
+        }
+        img{
+          border-radius: 50%;
+          width: 130px;
+        }
+        h2 {
+          font-size: 20px;
+          color: #707070;
+          padding: 18px 0 10px 15px;
+          width: 100%;
+        }
+        .skypeDiv {
+          display: inline;
+        }
+        .skype {
+          display: inline;
+          align-items: center;
+          justify-content: center;
+          text-decoration: none;
+        }
+        .skypeId{
+          position: unset !important;
+          font-size: 15px;
+          margin-left: 5px;
+        }
+        .skypeId:hover{
+          text-decoration: underline;
+        }
+        .businessSkypeIcon{
+          width: 20px;
+          position: absolute;
+          top: 0;
+          left: 0;
+        }
+        .pencilIcon{
+          cursor: pointer;
+        }
+        .skypeDiv button{
+          margin: 5px auto 0 auto;
+          padding: 3px;
+          width: 40%;
+          height: 30px;
+          position: relative;
+        }
+        .skypeDiv .form-error span{
+          right: -5px;
+          top: 35px;
+          width: 150px;
+        }
+        .universal-form-container{
+          padding: 10px;
+        }
+        .skypeDiv .correct-status{
+          top: 110px;
+          left: 50px;
+        }
+
+      }
+      @media screen and (max-width: 764px) {
+        width: 100%;
+        border-right: none;
+        border-bottom: 2px solid #707070;
+        margin-bottom: 25px;
+      }
+      & > p {
+        color: #707070;
+        text-align: center;
+        margin-top: 15px;
+        @media screen and (max-width: 764px) {
+          margin-bottom: 25px;
+        }
+      }
+      @media screen and (max-width: 550px) {
+        & > header span {
+          top: -10px;
+          right: -10px;
+          font-size: 16px;
+        }
+        & > header .icon-container p {
+          font-size: 17px;
+        }
+        & > header .icon-container figure {
+          width: 50px;
+          height: 50px;
+          i {
+            font-size: 20px;
+          }
+        }
+      }
+      .seniority {
+        width: 65%;
+        text-align: center;
+        padding: 10px 0;
+        font-size: 17px;
+        letter-spacing: 1.5px;
+        font-weight: bold;
+        background: #d49595;
+        margin: 0 auto;
+        border-radius: 22px;
+        color: white;
+        @media screen and (max-width: 764px) {
+          margin: 25px auto;
+        }
+      }
+
+      .has-acc {
+        color: #00ae6d;
+      }
+      .no-acc {
+        color: red;
+      }
+    }
+    .right-content {
+      width: 48%;
+      padding: 0 10px;
+      position: relative;
+      button {
+        color: lightseagreen;
+        position: absolute;
+        bottom: 0;
+        background: transparent;
+        margin: 0 auto;
+        width: 100px;
+        left: 0;
+        right: 0;
+        transition: 0.5s all ease-in-out;
+        border: 1px solid transparent;
+        padding: 10px;
+        cursor: pointer;
+      }
+      @media screen and (max-width: 764px) {
+        width: 100%;
+        margin-bottom: 40px;
+        & > button {
+          bottom: -40px;
+        }
+      }
+      p {
+        margin: 15px 0;
+        display: flex;
+        font-size: 15px;
+        justify-content: space-between;
+      }
+      @media screen and (max-width: 500px) {
+        & > p {
+          flex-flow: wrap;
+        }
+      }
+      h2 {
+        text-align: center;
+        font-size: 24px;
+        color: #707070;
+      }
+
+      button:hover {
+        border-color: lightseagreen;
+      }
+    }
+  }
+  .managerHierarchy {
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    padding-top: 15px;
+    h2 {
+      margin-bottom: 15px;
+    }
+    .fas {
+      font-size: 24px;
+      opacity: 0.8;
+    }
+    div {
+      &:not(:last-child) {
+        opacity: 0.8;
+      }
+    }
+  }
+}

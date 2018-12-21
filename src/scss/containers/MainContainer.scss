@@ -33,7 +33,7 @@
     top: 0;
     width: 100%;
     position: fixed;
-    z-index: 10;
+    z-index: 11;
 
     .first-bar {
       height: 9px;
@@ -52,17 +52,17 @@
       left: 0;
       height: 94%;
       width: 62px;
+      z-index: 11;
       top: 55px;
       color: transparent;
       display: inline-block;
       vertical-align: top;
-      z-index: 1;
       transition-property: width;
       transition-duration: 0.3s;
       box-shadow: 0px 4px 3px 3px rgba(0, 0, 0, 0.75);
 
       li {
-        height: 53px;
+        // height: 53px;
         width: 100%;
         line-height: 1.5em;
         vertical-align: baseline;
@@ -84,6 +84,8 @@
         i {
           padding: 11px;
           margin-left: 10px;
+          width: 50px;
+          text-align: center;
         }
         &:hover {
           background-color: $left-menu-li-hover-background;
@@ -99,7 +101,7 @@
         }
       }
       &.extended {
-        width: 10%;
+        width: 15%;
         li {
           span {
             display: inline-block;
@@ -181,13 +183,17 @@
   }
   .content {
     height: 94vh;
-    margin-left: auto;
+    margin-left: 5%;
     margin-right: auto;
-    width: 80%;
+    width: 95%;
     padding: 1.1vh;
     box-sizing: border-box;
     margin-top: 6vh;
     color: $content-color;
+    @media screen and (max-width: 900px) {
+      padding: 0;
+      margin-top: 10vh;
+    }
   }
 }
 @media (max-width: 1366px) {
@@ -209,6 +215,7 @@
 
           li {
             display: block;
+            padding: 0px;
           }
         }
       }
@@ -227,11 +234,14 @@
       }
     }
     .content {
-      width: 95%;
+      width: 100%;
+      margin-left: auto;
+      margin-right: auto;
     }
   }
 }
 @media (max-width: 1000px) {
+  margin-top: 0px;
   .wrapper {
     height: auto;
     overflow: auto;

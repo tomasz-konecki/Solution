@@ -1,5 +1,5 @@
 import * as types from "../constants";
-
+import { updateObject } from '../services/methods';
 const initialState = {
   isAuthenticated: false,
   loading: false,
@@ -13,7 +13,12 @@ const initialState = {
     hasManagerAccess: false,
     hasAdministrativeAccess: false
   },
-  binPem: 0
+  binPem: 0,
+  oneDriveToken: "",
+  authCodeStatus: null,
+  authCodeErrors: [],
+  refreshToken: "",
+  accountRequest: false
 };
 
 let pem = (userBlock) => {
@@ -42,6 +47,10 @@ let binPem = (userBlock) => {
 
 export const authReducer = (state = initialState, action) => {
   switch (action.type) {
+    case types.SEND_CODE_TO_GET_TOKEN:
+      return updateObject(state, { oneDriveToken: action.oneDriveToken,
+        authCodeStatus: action.authCodeStatus, authCodeErrors: action.authCodeErrors,
+        refreshToken: action.refreshToken })
     case types.AUTH_SUCCESS:
       return {
         ...state,
@@ -68,6 +77,16 @@ export const authReducer = (state = initialState, action) => {
         tokens: {},
         language: "pl"
       };
+    case types.AUTH_ERROR_ACCOUNT_REQUEST:
+      return {
+        ...state,
+        accountRequest: true
+      };
+    case types.AUTH_CLEAR_ACCOUNT_REQUEST:
+      return {
+        ...state,
+        accountRequest: false
+      }
     default:
       return state;
   }

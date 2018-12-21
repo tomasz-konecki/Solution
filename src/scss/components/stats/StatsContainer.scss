@@ -1,5 +1,6 @@
 .stats-container {
   text-align: center;
+  margin-top: 3vh;
   .c3 {
     display: inline-block;
   }
@@ -12,6 +13,19 @@
       text-align: center;
       display: block;
       padding: 3px;
+    }
+  }
+
+  @media only screen and (max-width: 480px) {
+    .c3 {
+      display: flex;
+
+      g {
+        width: 200px;
+      }
+    }
+    .chart-container {
+      max-width: 288px;
     }
   }
 }

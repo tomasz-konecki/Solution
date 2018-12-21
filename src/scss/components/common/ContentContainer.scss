@@ -54,4 +54,12 @@ $default-color: $menu-element-text-color;
       transform: rotate(360deg);
     }
   }
+  @media only screen and (min-width: 960px) {
+    height: 98%;
+    padding-bottom: 10px;
+  }
+
+  @media only screen and (max-width: 900px) {
+    padding-top: 20px;
+  }
 }

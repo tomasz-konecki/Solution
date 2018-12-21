@@ -1,0 +1,130 @@
+.skills-panel-container {
+  width: 100%;
+  display: flex;
+  .left-panel-container {
+    width: 30%;
+    padding-bottom: 30px;
+    position: relative;
+    .correct-operation {
+      top: 10px;
+      right: -10px;
+    }
+    .empty-list-sk {
+      padding: 30px;
+      text-align: center;
+    }
+    header {
+      width: 100%;
+      padding-top: 30px;
+      span {
+        font-size: 22px;
+        position: relative;
+        .fa-plus,
+        .fa-times {
+          position: absolute;
+          top: -10px;
+          right: -25px;
+          font-size: 17px;
+          cursor: pointer;
+        }
+        .fa-plus {
+          color: rgb(91, 203, 98);
+        }
+      }
+      .searcher-container {
+        margin-top: 30px;
+        position: relative;
+        .valid-error {
+          height: 50px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          span {
+            color: tomato;
+            font-size: 16px;
+          }
+        }
+        .small-spiner {
+          top: 5px;
+          right: 6px;
+        }
+        .invalid-name {
+          border: 1px solid red;
+        }
+        input {
+          box-shadow: 1px 1px 1px 1px black;
+          outline: 0px;
+          width: 100%;
+          margin: 0;
+          padding: 7.5px 15px;
+          transition: 0.5s all ease-in-out;
+          height: 100%;
+          border: 1px solid transparent;
+          border-radius: 5px;
+          height: unset !important;
+          font-size: 14px;
+        }
+        i {
+          position: absolute;
+          top: 9px;
+          right: 12.5px;
+        }
+        .fa-plus {
+          color: lightseagreen;
+        }
+      }
+    }
+
+    ul {
+      height: 650px;
+      width: 100% !important;
+      padding: 0;
+      margin-right: 1%;
+      box-sizing: border-box;
+      overflow-y: auto;
+
+      .new-adding-template {
+        margin: 0 auto;
+        animation: 1s animate-template-in ease-in-out forwards;
+        height: 35px;
+        color: white;
+        padding: 0 15px;
+        border-radius: 5px;
+        letter-spacing: 1.25px;
+        @keyframes animate-template-in {
+          0% {
+            background: transparent;
+            width: 0;
+          }
+          100% {
+            background: lightcoral;
+            width: 90%;
+          }
+        }
+      }
+      li {
+        margin: 5px 0;
+        padding: 7.5px 30px 0 30px;
+        display: flex;
+        width: 100%;
+        align-items: center;
+        justify-content: space-between;
+        position: relative;
+        span {
+          max-width: 90%;
+        }
+        b {
+          display: block;
+          width: 20px;
+          height: 20px;
+        }
+        i {
+          position: absolute;
+          right: 65px;
+          color: green;
+          font-weight: bold;
+        }
+      }
+    }
+  }
+}

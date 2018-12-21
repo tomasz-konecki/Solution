@@ -1,6 +1,11 @@
 @import "./3rd/Loader";
 @import "./ColorSchema";
 
+.Modal-prefered-roles {
+  width: 350px !important;
+  height: 380px !important;
+}
+
 .login-screen {
   background: $main-color;
 }
@@ -24,6 +29,7 @@ body {
   width: 100%;
   text-align: center;
   .login-form {
+    position: relative;
     margin: auto;
     width: 15%;
     min-width: 300px;
@@ -56,6 +62,41 @@ body {
     }
   }
 
+  .context-container {
+    text-align: center;
+    z-index: 9;
+    color: whitesmoke;
+    font-size: small;
+    background-color: darkorange;
+    padding: 17px 0px;
+    width: 300px;
+    margin: auto;
+    strong {
+      width: 80%;
+      display: inline-block;
+      white-space: pre-line;
+      text-shadow: 1px 1px 2px #212529;
+    }
+  }
+
+  .error-validation-enter {
+    opacity: 0.01;
+  }
+
+  .error-validation-enter.error-validation-enter-active {
+    opacity: 1;
+    transition: opacity 1000ms ease-in;
+  }
+
+  .error-validation-leave {
+    opacity: 1;
+  }
+
+  .error-validation-leave.error-validation-leave-active {
+    opacity: 0.01;
+    transition: opacity 800ms ease-in;
+  }
+
   .container {
     padding: 0.5em;
     overflow: hidden;
@@ -69,13 +110,6 @@ body {
     button {
       width: 100%;
       font-family: "Roboto Condensed", sans-serif;
-    }
-    .context-container {
-      height: 10px;
-      font-size: small;
-      .loader {
-        padding-top: 5px;
-      }
     }
 
     .centric-container {
@@ -103,7 +137,6 @@ body {
       }
       input {
         display: inline-block;
-        padding: 0.5em;
         outline: none;
         font-family: "Roboto Condensed", sans-serif;
         font-weight: 700;
@@ -133,6 +166,12 @@ body {
     }
     .psr {
       float: right;
+    }
+    @media only screen and (max-width: 768px) {
+      input {
+        height: 50px !important;
+        font-size: 20px;
+      }
     }
   }
 }

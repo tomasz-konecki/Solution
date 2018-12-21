@@ -5,32 +5,81 @@ import * as languageActions from "../../actions/languageActions";
 import PropTypes from "prop-types";
 import submit from "../../auth/submit";
 import LoaderHorizontal from "../../components/common/LoaderHorizontal";
+import Modal from 'react-responsive-modal';
 import "../../scss/LoginForm.scss";
 import { push } from "react-router-redux";
 import { translate } from "react-translate";
-import { bindActionCreators } from 'redux';
+import { bindActionCreators } from "redux";
+import { CSSTransitionGroup } from "react-transition-group";
+import { clearAccountRequest } from "../../actions/authActions";
+import AddPreferedRoles from "./AddPreferedRolesModal";
+import loadRoles from '../../actions/usersActions';
 
 class LoginForm extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      error: "",
+      singleTimout: null,
+      showPreferedRolesModal: false,
+      userId: null,
+      userIdSaved: null
+    };
   }
 
-  componentDidMount() {
-    if(this.props.isAuthenticated){
-      if(new Date(this.props.tokenExpirationDate) > new Date()){
-        this.props.dispatch(push("/main"));
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.error && this.state.error !== nextProps.error) {
+      this.setState({ error: nextProps.error });
+    }
+
+    if (nextProps.accountRequest && this.state.showPreferedRolesModal !== nextProps.accountRequest) {
+      if (this.state.userIdSaved !== this.state.userId) {
+        this.setState({
+          showPreferedRolesModal: nextProps.accountRequest,
+          userIdSaved: this.state.userId
+        })
       }
     }
   }
 
+  componentDidMount() {
+    if (this.props.isAuthenticated) {
+      this.props.dispatch(push("/main"));
+    }
+    this.props.clearAccountRequest();
+  }
+
   languageSwitch(language) {
-    return (event) => {
+    return event => {
       this.props.lang.languageChange(language);
     };
   }
 
+  automaticlyCloseModal = () => {
+    this.setState({
+      showPreferedRolesModal: false
+    })
+  }
+
+  closePreferedRolesModal = (t) => {
+    if(window.confirm(t("CloseModalMessage"))) {
+      this.setState({
+        showPreferedRolesModal: false
+      })
+    }
+  }
+
+  handleUserIdChange = (e) => {
+    let value = e.target.value;
+
+    this.setState({
+      userId: value
+    })
+  }
+
   render() {
-    const { handleSubmit, error, t } = this.props;
+    const { handleSubmit, t } = this.props;
+    const { error } = this.state;
 
     return (
       <div className="login-wrapper">
@@ -39,6 +88,7 @@ class LoginForm extends React.Component {
             <div className="container login-details">
               <div className="user-container">
                 <Field
+                  onChange={this.handleUserIdChange}
                   component="input"
                   type="text"
                   placeholder={t("EnterUsername")}
@@ -56,12 +106,9 @@ class LoginForm extends React.Component {
                   required
                 />
               </div>
-
-              <div className="context-container">
-                {error && <strong>{error}</strong>}
+              <div style={{ height: "7px" }}>
                 {this.props.loading === true && <LoaderHorizontal />}
               </div>
-
               <div className="centric-container">
                 <button className="submitter dcmt-button" type="submit">
                   {t("Login")}
@@ -71,15 +118,52 @@ class LoginForm extends React.Component {
 
             <div className="container">
               <span className="psw">
-                {t("Forgot")} <a href="#">{t("Password")}?</a>
+                {t("Forgot")}{" "}
+                <a
+                  target="_blank"
+                  href="https://support.billennium.pl/Users/Account/RequestLostPassword"
+                >
+                  {t("Password")}?
+                </a>
               </span>
               <span className="psr">
-                <span onClick={this.languageSwitch("pl")} className="flag-pol"/>
-                <span onClick={this.languageSwitch("en")} className="flag-gbr"/>
+                <span
+                  onClick={this.languageSwitch("pl")}
+                  className="flag-pol"
+                />
+                <span
+                  onClick={this.languageSwitch("en")}
+                  className="flag-gbr"
+                />
               </span>
             </div>
           </form>
         </div>
+        <CSSTransitionGroup
+          transitionName="error-validation"
+          transitionEnterTimeout={1000}
+          transitionLeaveTimeout={1000}
+        >
+          {error && (
+            <div className="context-container">
+              <strong>{error}</strong>
+            </div>
+          )}
+        </CSSTransitionGroup>
+
+        <Modal
+          key={1}
+          open={this.state.showPreferedRolesModal}
+          classNames={{ modal: "Modal Modal-prefered-roles" }}
+          contentLabel="Choose prefered roles"
+          onClose={() => this.closePreferedRolesModal(t)}
+        >
+          <AddPreferedRoles
+            userId={this.state.userId}
+            closeModal={() => this.automaticlyCloseModal()}
+          />
+        </Modal>
+
       </div>
     );
   }
@@ -89,13 +173,15 @@ const mapStateToProps = state => {
   return {
     loading: state.authReducer.loading,
     isAuthenticated: state.authReducer.isAuthenticated,
-    tokenExpirationDate: state.authReducer.tokens.tokenExpirationDate
+    tokenExpirationDate: state.authReducer.tokens.tokenExpirationDate,
+    accountRequest: state.authReducer.accountRequest,
   };
 };
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = dispatch => {
   return {
-    lang: bindActionCreators(languageActions, dispatch)
+    lang: bindActionCreators(languageActions, dispatch),
+    clearAccountRequest: () => dispatch(clearAccountRequest()),
   };
 };
 
@@ -113,4 +199,7 @@ LoginForm.propTypes = {
   dispatch: PropTypes.func.isRequired
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(translate("LoginForm")(Form));
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(translate("LoginForm")(Form));

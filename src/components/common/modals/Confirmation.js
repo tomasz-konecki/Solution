@@ -51,7 +51,7 @@ class Confirmation extends Component {
   };
 
   isCompleted = () => {
-    return this.state.resultBlock.original !== undefined;
+    return this.state.resultBlock && this.state.resultBlock.original !== undefined;
   };
 
   render() {

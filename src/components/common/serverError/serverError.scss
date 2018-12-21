@@ -1,0 +1,15 @@
+.server-error{
+    color: tomato;
+    font-size: 30px;
+}
+
+.whole-page-error{
+    position: absolute;
+    top: 50%;
+    font-size: 30px;
+    color: tomato;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    margin: auto;
+    text-align: center;
+}

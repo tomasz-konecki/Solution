@@ -1,0 +1,349 @@
+.btn-finalized{
+    animation: 1s animate-btn-fin-color ease-in-out infinite;
+    @keyframes animate-btn-fin-color{
+        0%{
+            background: #e8e8e8;
+            color: mediumseagreen;
+        }
+        50%{
+            background: mediumseagreen;
+            color: white;
+        }
+        100%{
+            background: #e8e8e8; 
+            color: mediumseagreen;
+        }
+    }
+}
+.btn-op-failed{
+    animation: 1s animate-btn-fail-color ease-in-out infinite;
+    @keyframes animate-btn-fail-color{
+        0%{
+            background: #e8e8e8;
+            color: red;
+        }
+        50%{
+            background: red;
+            color: white;
+        }
+        100%{
+            background: #e8e8e8;
+            color: red;
+        }
+    }
+}
+
+.btn-expanded{
+    color: black;
+    right: 480px;
+    background: #e8e8e8;
+    bottom: 30px;
+    @media(max-width: 550px){
+        right: 400px;
+    }
+    @media(max-width: 460px){
+        right: 270px;
+    }
+    & > div{
+        border: 4px solid #e8e8e8;
+    }
+}
+.btn-br-top{
+    & > div{
+        animation: 2s animate-top-br ease-in-out infinite;
+        @keyframes animate-top-br{
+            0%{
+                border-top-color: #e8e8e8;
+                transform: rotate(0deg);
+            }
+            50%{
+                border-top-color: tomato;
+            }
+            100%{
+                border-top-color: #e8e8e8;
+                transform: rotate(360deg);
+            }
+        }
+    }
+}
+.btn-br-right{
+    & > div{
+        animation: 2s animate-right-br ease-in-out infinite;
+        @keyframes animate-right-br {
+            0%{
+                border-right-color: #e8e8e8;
+                border-top-color: #e8e8e8;
+                transform: rotate(0deg);
+            }
+            50%{
+                border-right-color: tomato;
+                border-top-color: tomato;
+            }                   
+            100%{
+                border-right-color: #e8e8e8;
+                border-top-color: #e8e8e8;
+                transform: rotate(360deg);
+            }
+        }
+    }
+}
+.btn-br-bot{
+    & > div{
+        animation: 2s animate-bot-br ease-in-out infinite;
+        @keyframes animate-bot-br {
+            0%{
+                border-bottom-color: #e8e8e8;
+                border-right-color: #e8e8e8;
+                border-top-color: #e8e8e8;
+                transform: rotate(0deg);
+            }
+            50%{
+                border-bottom-color: tomato;
+                border-right-color: tomato;
+                border-top-color: tomato;
+            }
+            100%{
+                border-bottom-color: #e8e8e8;
+                border-right-color: #e8e8e8;
+                border-top-color: #e8e8e8;
+                transform: rotate(360deg);
+            }
+        }
+    }
+}
+.btn-br-left{
+    & > div{
+        animation: 2s animate-left-br ease-in-out infinite;
+        @keyframes animate-left-br {
+            0%{
+                border-bottom-color: #e8e8e8;
+                border-right-color: #e8e8e8;
+                border-top-color: #e8e8e8;
+                border-left-color: #e8e8e8;
+                transform: rotate(0deg);
+            }
+            50%{
+                border-bottom-color: tomato;
+                border-right-color: tomato;
+                border-top-color: tomato;
+                border-left-color: tomato;
+            }
+            100%{
+                border-bottom-color: #e8e8e8;
+                border-right-color: #e8e8e8;
+                border-top-color: #e8e8e8;
+                border-left-color: #e8e8e8;
+                transform: rotate(360deg);
+            }
+        }
+    }
+}
+.btn-collapsed{
+    color: white;
+    background: #006064;
+    right: 40px;
+    bottom: 30px;
+    @media(max-width: 460px){
+        right: 30px;
+        bottom: 30px;
+    }
+    & > div{
+        border: 4px solid #006064;
+    }
+}
+.comunicates-btn{
+    position: fixed;
+    width: 50px;
+    height: 50px;
+    border: none;
+    transition: 0.5s all ease-in-out;
+    font-size: 26px;
+    cursor: pointer;
+    z-index: 101;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    @media(max-width: 460px){
+        bottom: 8px;
+    }
+    div{
+        width: 54px;
+        height: 54px;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        margin: auto 0;
+        border-radius: 50%;
+    }
+}
+.comunicates-btn:focus{
+    outline: none;
+}
+.menu-expanded{
+    right: 0;
+}
+.menu-collapsed{
+    right: -100vw;    
+}
+.comunicates-window{
+    z-index: 100;
+    width: 500px;
+    background: white;
+    position: fixed;
+    transition: 0.5s all linear;
+    display: flex;
+    flex-flow: column;
+    height: 90vh;
+    bottom: 0;
+    @media(max-width: 550px){
+        width: 420px;
+    }
+    @media(max-width: 460px){
+        width: 290px;
+    }
+    .operations-messages{
+        width: 95%;
+        padding: 0 15px;
+        display: flex;
+        margin-left: auto;
+        align-items: center;
+        height: 65px;
+        article{
+            display: flex;
+            flex-flow: column;
+            justify-content: center;
+            b{
+                font-weight: bold;
+            }
+        }
+        p{
+            letter-spacing: 1.5px;
+            font-weight: bold;
+        }
+        .status-ok{
+            color: mediumseagreen;
+        }
+        .status-off{
+            color: red;
+        }  
+    }
+    footer{
+        width: 95%;
+        padding: 15px;
+        align-items: center;
+        display: flex;
+        justify-content: flex-end;
+        @media(max-width: 460px){
+            width: 100%;
+            padding: 15px 0;
+            justify-content: center;
+        }
+        .showed-btn{
+            color: green;
+        }
+        .not-showed-btn{
+            color: red;
+        }
+        button{
+            margin: 0 15px;
+            padding: 10px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            @media(max-width: 460px){
+                margin: 0 7.5px;
+                font-size: 16px;
+            }
+            i{
+                margin-left: 5px;
+            }
+        }
+    }
+    header{
+        padding: 15px 30px;
+        display: flex;
+        background: #006064;
+        justify-content: space-between;
+        span:first-of-type{
+            color: white;
+            font-weight: bold;
+        }
+        span:last-of-type{
+            display: flex;
+            align-items: center;
+            i{
+                margin: 0 10px;
+            }
+            .cor-status{
+                color: lightgreen;
+            }
+            .err-status{
+                color: red;
+            }
+        }
+    }
+    .notifictions{
+        height: 77%;
+        overflow-y: auto;
+        li{
+            font-size: 17px !important;
+            display: flex;
+            padding: 20px 30px;
+            margin: 25px 0 25px auto;
+            justify-content: space-between;
+            align-items: center;
+            width: 95%;
+            border-bottom: 1px solid #E5E5DE;
+            @media(max-width: 550px){
+                width: 98%;
+                padding: 25px 30px;
+            }
+            @media(max-width: 460px){
+                margin: 0 0 0 auto;
+            }
+            p{
+                padding: 10px 20px;
+                color: lightcoral;
+                text-align: right;
+                @media(max-width: 460px){
+                    padding: 10px;
+                    margin: 5px 0;
+                    font-size: 14px;
+                }
+                b{
+                    @media(max-width: 460px){
+                        display: none;
+                    }
+                }
+            }
+            i{
+                font-size: 24px;
+                @media(max-width: 550px){
+                    font-size: 20px;
+                }
+            }
+            .fa-check{
+                color: green;
+            }
+            .fa-times{
+                color: red;
+            }
+            .not-content{
+                height: 65px;
+                max-width: 86%;
+                @media(max-width: 550px){
+                    font-size: 16px;
+                }
+                @media(max-width: 460px){
+                    font-size: 15px;
+                    max-width: 80%;
+                    height: 75px;
+                }
+                & > b{
+                    font-weight: bold;
+                }
+            }
+        }
+    }
+}

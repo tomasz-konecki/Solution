@@ -1,0 +1,311 @@
+.reports-container {
+  width: 100%;
+  background-color: white;
+  color: black;
+  box-sizing: border-box;
+  position: relative;
+  .generate-raport-btn {
+    .fa-times {
+      right: 10px;
+      position: absolute;
+    }
+  }
+  .lds-ring {
+    top: 38vh !important;
+    z-index: 200;
+  }
+  .server-error {
+    color: tomato;
+    padding: 100px;
+    text-align: center;
+    font-size: 18px;
+  }
+
+  header {
+    height: 120px;
+    position: relative;
+    @media (max-width: 890px) {
+      height: 200px;
+    }
+    @media (max-width: 500px) {
+      height: 300px;
+    }
+    .btns-container {
+      @media (max-width: 890px) {
+        margin-top: 40px;
+        margin: 40px auto 0 auto;
+      }
+    }
+    .btns-container button:first-of-type {
+      margin-right: 10px;
+    }
+    h1 {
+      font-size: 22px;
+      margin-top: 20px;
+      padding: 10px 0;
+    }
+    nav {
+      height: 50px;
+      width: 100%;
+      padding: 0 65px;
+      display: flex;
+      justify-content: space-between;
+      @media (max-width: 1000px) {
+        padding: 0;
+      }
+      @media (max-width: 890px) {
+        flex-flow: column;
+      }
+      @media (max-width: 500px) {
+        align-items: center;
+        margin: 15px 0;
+      }
+      div:first-of-type {
+        b {
+          position: relative;
+        }
+        b:last-of-type::before {
+          content: "znaleziono";
+          color: green;
+          position: absolute;
+          font-size: 14px;
+          right: -40px;
+          bottom: -20px;
+        }
+        b:first-of-type::before {
+          content: "dodano";
+          color: green;
+          position: absolute;
+          font-size: 14px;
+          left: -40px;
+          top: -10px;
+          @media (max-width: 1000px) {
+            left: -20px;
+            top: -15px;
+          }
+        }
+        b:first-of-type,
+        .fa-users {
+          margin: 15px 15px 0 10px;
+          font-size: 20px;
+        }
+        b:last-of-type,
+        .fa-search {
+          font-size: 20px;
+        }
+        .fa-search {
+          margin-right: 10px;
+        }
+        b:last-of-type {
+          margin-left: 10px;
+        }
+      }
+      .searcher-container {
+        position: absolute;
+        width: 220px;
+        height: 35px;
+        .fa-search {
+          position: absolute;
+          right: 6px;
+          top: 7.5px;
+        }
+        @media (min-width: 891px) {
+          left: 0;
+          right: 0;
+          margin: 0 auto;
+        }
+        @media (max-width: 890px) {
+          right: 0;
+        }
+        @media (max-width: 500px) {
+          right: 0;
+          left: 0;
+          margin: 0 auto;
+          bottom: 20px;
+        }
+
+        input {
+          border: 1px solid black !important;
+          width: 100%;
+          padding: 15px;
+          height: 100%;
+          border: none;
+          border-radius: 5px;
+          font-size: 14px;
+        }
+        input:disabled {
+          background-color: rgba(0, 0, 0, 0.3);
+          color: white;
+        }
+      }
+    }
+  }
+}
+
+.reports-items-list {
+  margin: 25px;
+  overflow-y: auto;
+  max-height: 40%;
+
+  .inc-list-item {
+    color: red;
+  }
+  li {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    padding: 2.5px 0;
+    align-items: center;
+    label {
+      position: relative;
+      b {
+        position: absolute;
+        right: -50px;
+        top: -1px;
+        i {
+          margin-right: 5px;
+        }
+      }
+    }
+    input {
+      width: 50px;
+      border-radius: 5px;
+      @media (max-width: 450px) {
+        width: 35px;
+      }
+    }
+    & > i {
+      color: red;
+      right: 80px;
+      bottom: 15px;
+      cursor: pointer;
+      position: absolute;
+      @media (max-width: 450px) {
+        right: 50px;
+      }
+    }
+  }
+}
+.checkbox-container {
+  color: white;
+  position: absolute;
+  bottom: -90px;
+  display: flex;
+  padding: 10px;
+  box-sizing: border-box;
+  flex-flow: column;
+  font-size: 16px;
+  width: 100%;
+  left: 0;
+  letter-spacing: 1.5px;
+
+  @media (max-width: 400px) {
+    bottom: -85px;
+    label {
+      font-size: 14px;
+    }
+  }
+  label {
+    margin-bottom: 15px;
+  }
+  input {
+    height: 20px;
+    width: 20px;
+    align-self: flex-end;
+  }
+}
+
+.choosen-folder-content {
+  // display: flex;
+  min-height: 50%;
+  margin: 0 auto;
+  padding: 5px 25px;
+  flex-flow: wrap;
+  .gen-report-not-able-to-gen-prompt {
+    padding: 15px;
+    line-height: 20px;
+    font-style: italic;
+    color: tomato;
+    font-weight: bold;
+    // margin-top: 20px;
+    @media (max-width: 500px) {
+      margin: 0;
+      padding: 0;
+      line-height: 18px;
+    }
+    a {
+      margin-left: 2.5px;
+    }
+  }
+  & > p {
+    bottom: -50px;
+    font-size: 20px;
+  }
+  .correct-status {
+    color: lightgreen;
+  }
+  @media (max-width: 625px) {
+    .folder-details {
+      width: 100% !important;
+    }
+    .icon-container {
+      display: none;
+    }
+  }
+  @media (max-width: 530px) {
+    .submit-btn {
+      bottom: -15px !important;
+    }
+    .folder-details {
+      p:first-of-type {
+        word-break: break-all;
+      }
+      p {
+        margin: 5px 0 !important;
+        text-align: center;
+      }
+      p,
+      span {
+        font-size: 14px !important;
+      }
+    }
+  }
+  .folder-details {
+    width: 80%;
+    p {
+      margin: 10px 0;
+      span {
+        font-size: 17px;
+      }
+      b {
+        font-weight: bold;
+        font-size: 16px;
+      }
+    }
+  }
+  .icon-container {
+    width: 20%;
+    .fa-folder {
+      font-size: 84px;
+    }
+    span {
+      font-size: 16px;
+      color: rgba(69, 69, 209, 0.81);
+      cursor: pointer;
+      margin-left: 5px;
+      i {
+        margin-left: 5px;
+      }
+    }
+  }
+  .availableUntil{
+    display: flex;
+    align-items: baseline;
+    label{
+      margin-right: 10px;
+    }
+  }
+}
+.Modal-report-modal{
+  height: 500px !important;
+}

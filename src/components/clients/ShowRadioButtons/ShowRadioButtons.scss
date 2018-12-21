@@ -1,0 +1,125 @@
+$default-color: white;
+
+$darkNavy: #213140;
+$teal1: #66b3fb;
+$teal2: #4b9dea;
+$charcoal: #555555;
+$gold: #b6985a;
+
+$activeShadow: 0 0 10px rgba($teal1, 0.5);
+/* MIXINS */
+@mixin focusOutline {
+  outline: dotted 1px #ccc;
+  outline-offset: 0.45rem;
+}
+@mixin hideInput {
+  width: 0;
+  height: 0;
+  position: absolute;
+  left: -9999px;
+}
+@mixin breakpoint($point) {
+  @if $point == 1100 {
+    @media (max-width: 1100px) {
+      @content;
+    }
+  } @else if $point == 800 {
+    @media (max-width: 800px) {
+      @content;
+    }
+  }
+}
+
+.show-clients-container {
+  .btn {
+    color: #d83552;
+  }
+  .smooth-radio-button1 {
+    border-radius: 6px 0 0 6px;
+    border-right: 0px !important;
+    cursor: pointer;
+  }
+
+  .smooth-radio-button3 {
+    border-radius: 0 6px 6px 0;
+    border-left: 0px !important;
+    cursor: pointer;
+  }
+  @media screen and (max-width: 1120px) {
+    margin-top: 10px;
+  }
+  @media screen and (min-width: 501px) {
+    span {
+      margin: 0px;
+      white-space: nowrap;
+    }
+  }
+
+  @media screen and (min-width: 500px) {
+    form {
+      display: flex;
+    }
+  }
+
+  @media screen and (min-width: 501px) {
+    box-sizing: border-box;
+    font-size: 0;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: flex-start;
+    align-items: center;
+    input[type="radio"] {
+      @include hideInput;
+    }
+    input[type="radio"] + label {
+      margin: 0;
+      padding: 0.75rem 2rem;
+      box-sizing: border-box;
+      position: relative;
+      display: inline-block;
+      border: solid 1px #ddd;
+      background-color: #fff;
+      font-size: 1rem;
+      line-height: 140%;
+      font-weight: 600;
+      text-align: center;
+      box-shadow: 0 0 0 rgba(255, 255, 255, 0);
+      transition: border-color 0.15s ease-out, color 0.25s ease-out,
+        background-color 0.15s ease-out, box-shadow 0.15s ease-out;
+
+      /* ADD THESE PROPERTIES TO SWITCH FROM AUTO WIDTH TO FULL WIDTH */
+      /*flex: 0 0 50%; display: flex; justify-content: center; align-items: center;*/
+      /* ----- */
+    }
+
+    input[type="radio"]:hover + label {
+      border-color: $darkNavy;
+    }
+    input[type="radio"]:checked + label {
+      background-color: $teal2;
+      color: #fff;
+      box-shadow: $activeShadow;
+      border-color: $teal2;
+      z-index: 1;
+      outline: none !important;
+    }
+    input[type="radio"]:focus + label {
+      @include focusOutline;
+    }
+
+    @include breakpoint(800) {
+      input[type="radio"] + label {
+        padding: 0.75rem 2rem;
+        flex: 0 0 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+    }
+
+    .smooth-radio-span {
+      margin: 0px;
+      white-space: nowrap;
+    }
+  }
+}

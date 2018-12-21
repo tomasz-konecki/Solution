@@ -1,0 +1,28 @@
+.backdrop{
+    width: 100%;
+    min-height: 100vh;
+    background-color: rgba(0, 0, 0, 0.6);
+    position: fixed;
+    top: 0;
+    display: flex;
+    text-align: center;
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+
+    left: 0;
+    .lds-ring{
+        z-index: 100;
+        border-color: white transparent transparent transparent !important;
+    }
+    p{
+        z-index: 30;
+        color: tomato;
+        font-size: 28px;
+        @media(max-width: 440px){
+            font-size: 20px;
+            padding: 10px;
+        }
+        
+    }
+}

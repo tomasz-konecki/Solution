@@ -17,21 +17,18 @@
   padding: 0 10px;
   box-sizing: border-box;
   vertical-align: top;
-
-  @media only screen and (max-width: 1366px) {
-    & {
-      font-size: 100%;
-    }
-  }
-
+  border-radius: 6px;
   i {
     padding-right: 5px;
   }
 
-  &.button-disabled {
+  &.button-disabled,
+  &:disabled {
     background: #333;
+    cursor: not-allowed;
     &:hover {
       background: #222;
+      cursor: not-allowed;
     }
   }
 
@@ -53,14 +50,14 @@
     }
   }
 
-  &.submitter {
-    margin-top: 2em;
-  }
   &:hover {
     background-color: $button-element-hover-background;
     border: 1.2px solid lighten($button-element-hover-background, 5%);
     color: lighten($menu-element-icon-hover-color, 55%);
     cursor: pointer;
+  }
+  &:disabled {
+    background: #333;
   }
   &.nav-compact {
     border: 0;
@@ -75,6 +72,34 @@
 
     i {
       padding-left: 10px;
+    }
+  }
+  &.submitter {
+    margin-top: 2em;
+  }
+
+  @media only screen and (max-width: 480px) {
+    width: 100%;
+    &.submitter {
+      margin-top: 0em;
+    }
+  }
+
+  @media only screen and (max-width: 768px) {
+    &.submitter {
+      margin-top: 0.5em;
+    }
+  }
+
+  @media only screen and (min-width: 768px) {
+    &.submitter {
+      margin-top: 0.5em;
+    }
+  }
+
+  @media only screen and (max-width: 1366px) {
+    & {
+      font-size: 100%;
     }
   }
 }

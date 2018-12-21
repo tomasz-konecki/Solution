@@ -1,0 +1,26 @@
+.degree-bar{
+    width: 100%;
+    display: flex;
+    height: 100%;
+    justify-content: space-around;
+    position: relative;
+    p{
+        position: absolute;
+        width: 100%;
+        text-align: center;
+        bottom: -22.5px;
+        font-weight: bold;
+        letter-spacing: 1.5px;
+    }
+    span{
+        height: 32px;
+        cursor: pointer;
+        transition: 0.5s all ease-in-out;
+    }
+    .small-spiner{
+        bottom: -50px;
+        left: 0;
+        right: 0;
+        margin: 0 auto;
+    }
+}

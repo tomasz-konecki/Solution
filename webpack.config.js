@@ -1,8 +1,9 @@
 const webpack = require("webpack");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
-const UglifyJSPlugin = require("uglifyjs-webpack-plugin");
 const OptimizeJsPlugin = require("optimize-js-plugin");
-
+// const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const path = require("path");
+// var CompressionPlugin = require('compression-webpack-plugin');
 const env = process.env.NODE_ENV || "development";
 
 const plugins = [
@@ -11,25 +12,37 @@ const plugins = [
     filename: "index.html",
     inject: "body"
   })
+  // new BundleAnalyzerPlugin()
 ];
 
-if (env === "production") {
+if (env == "production") {
   plugins.push(
     new webpack.optimize.UglifyJsPlugin(),
     new OptimizeJsPlugin({
       sourceMap: false
+    }),
+    new webpack.ContextReplacementPlugin(/moment[/\\]locale$/, /pl|en/),
+    new webpack.DefinePlugin({
+      'process.env.NODE_ENV': JSON.stringify('production')
     })
   );
 }
 
 module.exports = {
+  devtool: "source-map",
   entry: ["react-hot-loader/patch", "./src/index.js"],
   output: {
-    path: __dirname + "/dist",
+    path: path.resolve(__dirname, "dist"),
     filename: "app.bundle.js",
     publicPath: "/"
   },
-
+  resolve: {
+    extensions: [".js", ".jsx"],
+    alias: {
+      Src: path.resolve(__dirname, "src/")
+    },
+    modules: ["node_modules", "src"]
+  },
   module: {
     rules: [
       {
@@ -54,7 +67,7 @@ module.exports = {
         }
       },
       {
-        test: /\.(png|svg|gif)(\?v=\d+\.\d+\.\d+)?$/,
+        test: /\.(png|jpe?g|svg|gif)(\?v=\d+\.\d+\.\d+)?$/,
         loader: "url-loader?limit=50000&name=./public/img/[name].[ext]"
       },
       {
@@ -84,8 +97,18 @@ module.exports = {
   plugins: plugins,
   devServer: {
     historyApiFallback: {
-      index:'/'
+      index: "/"
     }
   },
-  devtool:'source-map',
+  externals: {
+    Config: JSON.stringify(
+      process.env.NODE_ENV === "production"
+        ? {
+            serverUrl: "https://10.255.20.241"
+          }
+        : {
+            serverUrl: "https://10.255.20.241"
+          }
+    )
+  }
 };

@@ -1,0 +1,214 @@
+.lds-ring {
+    display: inline-block;
+    position: absolute;
+    width: 64px;
+    height: 64px;
+    margin: 0 auto;
+    z-index: 250;
+    left: 0;
+    right: 0;
+    top: 45%;
+  }
+  .lds-ring div {
+    box-sizing: border-box;
+    display: block;
+    position: absolute;
+    width: 51px;
+    height: 51px;
+    margin: 6px;
+    border: 6px solid lightgreen;
+    border-radius: 50%;
+    animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+    border-color: lightgreen transparent transparent transparent;
+  }
+  .lds-ring div:nth-child(1) {
+    animation-delay: -0.45s;
+  }
+  .lds-ring div:nth-child(2) {
+    animation-delay: -0.3s;
+  }
+  .lds-ring div:nth-child(3) {
+    animation-delay: -0.15s;
+  }
+  @keyframes lds-ring {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+.small-spiner{
+  width: 20px;
+  height: 20px;
+  position: absolute;
+  right: 5px;
+  bottom: 3px;
+  display: block;
+  border-radius: 50%;
+  transition: 0.5s all ease-in-out;
+  border: none;
+  animation: 1s animate-btn linear infinite;
+}
+.small-spiner::after,
+.small-spiner::before{
+  content: '';
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background-color: grey;
+  border-radius: 50%;
+}
+.small-spiner::before{
+  bottom: 2px;
+  right: 2px;
+}
+.small-spiner::after{
+  top: 2px;
+  left: 2px;
+}
+
+@keyframes animate-btn{
+  0%{
+      transform: rotate(0);
+  }
+  25%{
+      transform: rotate(90deg);
+  }
+  50%{
+      transform: rotate(180deg);
+  }
+  75%{
+      transform: rotate(270deg);
+  }
+  100%{
+      transform: rotate(360deg);
+  }
+}
+
+.redirect-prompt{
+  color: lightseagreen;
+  position: absolute;
+  bottom: 40px;
+  width: 100%;
+  text-align: center;
+  left: 0;
+  right: 0;
+  font-size: 20px;
+  animation: 2.5s hide-content linear forwards;
+}
+
+.redirect-prompt::before{
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -40px;
+  transition: 0.5s all ease-in-out;
+  border: 2px solid lightseagreen;
+  animation: 2.5s animate-redirect linear forwards;
+} 
+@keyframes animate-redirect {
+  0%{
+    width: 0;
+    opacity: 0;
+  }
+  50%{
+    width: 100%;
+    opacity: 1;
+    border-color: green;
+  }
+  100%{
+    opacity: 0;
+  }
+}
+@keyframes hide-content{
+  0%{
+    opacity: 1;
+  }
+  100%{
+    opacity: 0;
+  }
+
+}
+
+
+
+.sk-folding-cube {
+  padding: 0 !important;
+  background: transparent !important;
+}
+
+.sk-folding-cube .sk-cube {
+  width: 17%;
+  height: 17%;
+  position: absolute;
+}
+.sk-folding-cube .sk-cube:before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #333;
+  -webkit-animation: sk-foldCubeAngle 2.4s infinite linear both;
+          animation: sk-foldCubeAngle 2.4s infinite linear both;
+  -webkit-transform-origin: 100% 100%;
+      -ms-transform-origin: 100% 100%;
+          transform-origin: 100% 100%;
+}
+.sk-folding-cube .sk-cube2 {
+  -webkit-transform: scale(1.1) rotateZ(90deg);
+          transform: scale(1.1) rotateZ(90deg);
+}
+.sk-folding-cube .sk-cube3 {
+  -webkit-transform: scale(1.1) rotateZ(180deg);
+          transform: scale(1.1) rotateZ(180deg);
+}
+.sk-folding-cube .sk-cube4 {
+  -webkit-transform: scale(1.1) rotateZ(270deg);
+          transform: scale(1.1) rotateZ(270deg);
+}
+.sk-folding-cube .sk-cube2:before {
+  -webkit-animation-delay: 0.3s;
+          animation-delay: 0.3s;
+}
+.sk-folding-cube .sk-cube3:before {
+  -webkit-animation-delay: 0.6s;
+          animation-delay: 0.6s; 
+}
+.sk-folding-cube .sk-cube4:before {
+  -webkit-animation-delay: 0.9s;
+          animation-delay: 0.9s;
+}
+@-webkit-keyframes sk-foldCubeAngle {
+  0%, 10% {
+    -webkit-transform: perspective(140px) rotateX(-180deg);
+            transform: perspective(140px) rotateX(-180deg);
+    opacity: 0; 
+  } 25%, 75% {
+    -webkit-transform: perspective(140px) rotateX(0deg);
+            transform: perspective(140px) rotateX(0deg);
+    opacity: 1; 
+  } 90%, 100% {
+    -webkit-transform: perspective(140px) rotateY(180deg);
+            transform: perspective(140px) rotateY(180deg);
+    opacity: 0; 
+  } 
+}
+
+@keyframes sk-foldCubeAngle {
+  0%, 10% {
+    -webkit-transform: perspective(140px) rotateX(-180deg);
+            transform: perspective(140px) rotateX(-180deg);
+    opacity: 0; 
+  } 25%, 75% {
+    -webkit-transform: perspective(140px) rotateX(0deg);
+            transform: perspective(140px) rotateX(0deg);
+    opacity: 1; 
+  } 90%, 100% {
+    -webkit-transform: perspective(140px) rotateY(180deg);
+            transform: perspective(140px) rotateY(180deg);
+    opacity: 0; 
+  }
+}

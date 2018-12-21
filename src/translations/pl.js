@@ -5,7 +5,12 @@ const translations = {
     EnterPassword: "Podaj hasło",
     Login: "Zaloguj",
     Forgot: "Zapomniałeś",
-    Password: "hasła"
+    Password: "hasła",
+    CloseModalMessage: 'Czy na pewno nie chcesz wybrać preferowanych roli w serwisie ? \nTej operacji nie można powtórzyć !'
+  },
+  NotFound404: {
+    PageNotFound: "Nie znaleziono strony",
+    PageNotFoundText: "Nie chcesz tutaj być..."
   },
   TopBar: {
     Logout: "Wyloguj"
@@ -13,17 +18,42 @@ const translations = {
   LeftMenu: {
     Users: "Użytkownicy",
     Employees: "Pracownicy",
+    Clients: "Klienci",
     Projects: "Projekty",
     Assign: "Przypisz",
     Stats: "Statystyki",
-    Skills: "Umiejętności"
+    Skills: "Umiejętności",
+    Reports: "Raporty",
+    ImportCV: "Import CV"
+  },
+  PreferedRoles: {
+    ChooseRoles: "Wybierz preferowane role w serwisie",
+    SavedSuccessfully: "Poprawnie zapisano wybrane role",
+    Save: "Zapisz"
   },
   SmoothTable: {
     Search: "Szukaj",
     DeleteFilters: "Usuń filtry",
-    ShowDeleted: "Pokaż usunięte",
+    ShowDeleted: "Usunięte",
+    Deleted: "Usunięty",
+    ShowNotActivated: "Nieaktywowane",
+    ShowActivated: "Aktywne",
+    ShowAll: "Wszystkie",
     Today: "Dzisiaj",
-    NoDataOrResults: "Brak danych bądź wyników"
+    NoDataOrResults: "Brak danych bądź wyników",
+    Reports: "Raporty"
+  },
+  StatsContainer: {
+    DevLocalization: "Lokalizacja Pracowników",
+    EmployeesWithoutProjects: "Pracownicy bez projektów",
+    Without: "BEZ",
+    With: "Z",
+    ActiveProjects: "Aktywne Projekty",
+    Active: "Aktywne",
+    Archive: "Archiwalne",
+    EmployeesFTE: "FTE Pracowników",
+    UnUsed: "Wolne",
+    Used: "Zajęte"
   },
   UsersList: {
     Add: "Dodaj",
@@ -31,28 +61,102 @@ const translations = {
     Surname: "Nazwisko",
     Email: "Email",
     Phone: "Telefon",
+    Date: "Data",
+    userId: "Id Użytkownika",
     ReactivateUserImperativus: "Reaktywuj użytkownika",
     ReactivateUserInfinitive: "Reaktywować użytkownika",
     UserReactivated: "Użytkownik został reaktywowany",
     DeleteUserImperativus: "Usuń użytkownika",
+    DownloadCV: "Pobierz CV",
     DeleteUserInfinitive: "Usunąć użytkownika",
+    DeleteUserRequestImperativus: "Usuń prośbę o utworzenie konta",
+    DeleteUserRequestInfinitive: "Usunąć prośbę o utworzenie konta",
     UserDeleted: "Użytkownik został usunięty",
+    UserRequestDeleted:
+      "Prośba o utworzenie konta użytkownika została usunięta",
     EditUserImperativus: "Edytuj użytkownika",
-    DeleteEdit: "Usuń/Edytuj"
+    DeleteEdit: "Opcje",
+    DeleteAdd: "Opcje",
+    AddUserWhenRequestImperativus: "Dodaj użytkownika"
+  },
+  ClientsContainer: {
+    Add: "Dodaj",
+    Name: "Nazwa",
+    Options: "Opcje",
+    DeleteClient: "Usuń Klienta",
+    EditClient: "Edytuj Klienta",
+    ReactivateClient: "Reaktywuj Klienta",
+    SaveClient: "Zapisz Klienta",
+    ClientRemoved: "Klient został usunięty",
+    ClientReactivated: "Klient został reaktywowany",
+    Removing: "Zamierzasz usunąć klienta",
+    RemovingCloud: "Zamierzasz usunąć chmurę",
+    ReactivatingCloud: "Zamierzasz reaktywować chmurę",
+    Reactivating: "Zamierzasz reaktywować klienta",
+    CloudReactivated: "Chmura została reaktywowana",
+    Search: "Szukaj",
+    ClientsNotFound: "Brak klientów",
+    Activated: "Aktywne",
+    NotActivated: "Nieaktywne",
+    ClientCloudsList: "Lista Chmur Klienta",
+    AddCloud: "Dodaj Chmurę",
+    CloudsNotFound: "Nie znaleziono żadnej chmury.",
+    CloudName: "Nazwa Chmury",
+    NoClientDescription: "Brak opisu Klienta",
+    CloudRemoved: "Chmura została usunięta",
+    ResponsiblePersonList: "Lista Osób Odpowiedzialnych",
+    ResponsiblePersonNotFound: "Nie znaleziono żadnych rekordów.",
+    InsertCloudName: "Wpisz nazwę chmury..",
+    FirstName: "Imię",
+    LastName: "Nazwisko",
+    Email: "Email",
+    PhoneNumber: "Numer Telefonu",
+    Insert: "Wprowadź",
+    AddResponsiblePerson: "Dodaj Osobę Odpowiedzialną",
+    ResponsiblePersonAdded: "Dodano Osobę Odpowiedzialną.",
+    CloudAdded: "Dodano Chmurę.",
+    EditCloud: "Edytuj Chmurę",
+    Save: "Zapisz",
+    CloudEdited: "Edytowano szczegóły Chmury.",
+    ResponsiblePersonEdited: "Edytowano szczegóły Osoby Odpowiedzialnej.",
+    EditResponsiblePerson: "Edytuj Osobę Odpowiedzialną",
+    ReactivatingResponsiblePerson: "Reaktywować Osobę Odpowiedzialną",
+    ResponsiblePersonReactivated: "Osoba Odpowiedzialna została Aktywowana.",
+    RemovingResponsiblePerson: "Usunąć Osobę Odpowiedzialną",
+    ResponsiblePersonRemoved: "Odpowiedzialna Osoba została dezaktywowana.",
+    showDeleted: "Pokaż usunięte",
+    showActive: "Pokaż aktywne",
+    NewInputLabel: "Nazwa Pola",
+    NewInputValue: "Wartośc Pola",
+    AddInput: "Dodaj pole"
+  },
+  AddClient: {
+    Add: "Dodaj",
+    Edit: "Edytuj",
+    Client: "Klienta",
+    ClientName: "Nazwa Klienta",
+    ClientDescription: "Opis Klienta",
+    ClientAddedSuccess: "Klient został dodany.",
+    ClientEditedSuccess: "Szczegóły Klienta zostały zaktualizowane.",
+    Save: "Zapisz"
   },
   ProjectsList: {
     Add: "Dodaj",
-    DeleteOwnerFuture: "Usunąć {{ownerFullName}} jako właściciela projektu o numerze {{projectName}}",
+    DeleteOwnerFuture:
+      "Usunąć {{ownerFullName}} jako właściciela projektu o numerze {{projectName}}",
     OwnerHasBeenDeleted: "Właściciel został usunięty",
-    ChangeSkillSettingsFuture: "Zmienić ustawienia umiejętności projektu o numerze {{projectId}}",
+    ChangeSkillSettingsFuture:
+      "Zmienić ustawienia umiejętności projektu o numerze {{projectId}}",
     SettingsHaveBeenSaved: "Ustawienia zostały zapisane",
     ProjectName: "Nazwa projektu",
     Client: "Klient",
     StartDate: "Data rozpoczęcia",
     EndDate: "Data zakończenia",
     Status: "Status",
-    Active: "Aktywny",
-    Closed: "Zakończony",
+    Activated: "Aktywny",
+    NotActivated: "Nieaktywny",
+    Closed: "Zamknięty",
+    SelectStatus: "Wybierz status...",
     CloseProjectImperativus: "Zamknij projekt",
     CloseProjectInfinitive: "Zamknąć projekt",
     ProjectClosed: "Projekt został zamknięty",
@@ -64,7 +168,8 @@ const translations = {
     ProjectDeleted: "Projekt został usunięty",
     EditProject: "Edytuj projekt",
     DeactivateDeleteEdit: "Deaktywuj/Usuń/Edytuj",
-    SeeMore: "Zobacz więcej"
+    SeeMore: "Zobacz więcej",
+    Deleted: "Usunięte"
   },
   EmployeesList: {
     Name: "Imię",
@@ -73,7 +178,123 @@ const translations = {
     Location: "Lokalizacja",
     Status: "Status",
     AccountActive: "Aktywny",
-    AccountInactive: "Nieaktywny"
+    AccountInactive: "Nieaktywny",
+    SelectStatus: "Wybierz status...",
+    DownloadCV: "Pobierz CV",
+    Options: "Opcje",
+    ActivateEmployee: "Aktywuj pracownika",
+    EmployeeHasBeenActivated: "Pracownik został Aktywowany.",
+    ActivateEmployeeInfinitive: "Aktywować pracownika",
+    DeleteEmployee: "Usuń pracownika",
+    DeleteEmployeeInfinitive: "Usunąć pracownika",
+    EmployeeHasBeenDeleted: "Pracownik został Usunięty."
+  },
+  EmployeeDetails: {
+    EmployeeDetails: "Szczegóły Pracownika",
+    Active: "Aktywny",
+    NotActive: "Nieaktywny",
+    Deleted: "Usunięty",
+    Details: "Szczegóły",
+    Localization: "Lokalizacja",
+    Phone: "Telefon",
+    Superiors: "Przełożeni",
+    EmailMissing: "Brak email'a",
+    RoleMissing: "Brak roli",
+    NoLevel: "Brak poziomu",
+    CallSkype: "Zadzwoń Skype",
+    CallBusinessSkype: "Zadzwoń Skype for Business",
+    InsertSkypeId: "Wpisz SkypeId",
+    SkypeIdUpdated: "Zaktualizowano SkypeId",
+    Activate: "Aktywuj",
+    BeforeYouChangeStatus: "Zanim zmnienisz status!",
+    BeforeYouChangeStatusContent: `Zmiana statusów pracownika polega na przypisaniu mu wymiaru czasu
+              pracy oraz poziomu doświadczenia. Pamiętaj, że możesz także
+              zmienić jego status na <b>Usunięty</b> co spowoduje zablokowanie
+              możliwości edycji. Zmiana statusu na <b>Aktywny</b> pozwoli na
+              ponowną zmiane danych tego pracownika.`,
+    Save: "Zapisz",
+    Delete: "Usuń",
+    ActiveProjects: "Aktywne Projekty",
+    Skills: "Umiejętności",
+    Missing: "Brak",
+    Assignments: "Przypisania",
+    ProfilePhoto: "Zdjęcie profilowe"
+  },
+  Quaters: {
+    Add: "Dodaj",
+    Active: "Aktywny",
+    NotActive: "Nieaktywny",
+    QuarterTalk: "Rozmowa kwartalna",
+    QuaterTalks: "Rozmowy kwartalne",
+    Missing: "Brak",
+    Deleted: "Usuniętych",
+    Active: "Aktywnych",
+    Delete: "Usuń",
+    DeleteQuarterTalkConfirmation:
+      "Czy jestes pewny, że chcesz usunąć rozmowę?",
+    OperationSuccessful: "Pomyślnie wykonano operację",
+    QuarterTalkAdded: "Pomyślnie dodano rozmowę kwartalną",
+    QuarterTalkActivated: "Aktywowano rozmowę kwartalną"
+  },
+  EmployeeSkills: {
+    Skills: "Umiejętności",
+    NoSkills: "Brak umiejętności",
+    ManageSkills: "Zarządzaj umiejętnościami",
+    Find: "Znajdź",
+    ShowAdded: "Pokaż dodane",
+    ShowAll: "Pokaż wszystkie",
+    NoDataToShow: "Brak danych do wyświetlenia",
+    NewSkills: "Nowe umiejętności",
+    ApproveChanges: "Zatwierdź zmiany",
+    SkillsAddedSuccessfull: "Pomyślnie dodano umiejętności",
+    Search: "Wyszukaj",
+    SearchInAdded: "szukasz w dodanych...",
+    SearchInAll: "szukasz we wszystkich...",
+  },
+  EmployeeTable: {
+    AddedBy: "Dodany przez",
+    Project: "Projekt",
+    Role: "Rola",
+    StartDate: "Data rozpoczęcia",
+    EndDate: "Data zakoczenia",
+    EmptyAssignments: "Puste przypisania",
+  },
+  ActivateCheckbox: {
+    ShowDeleted: "Pokaż usunięte"
+  },
+  EmployeeCertificates: {
+    Name: "Nazwa",
+    Description: "Opis",
+    Date: "Data",
+    Options: "Opcje",
+    Edit: "Edytuj",
+    Delete: "Usuń",
+    Title: "Certyfikaty",
+    Deleting: "Usunąć certyfikat",
+    SuccesfullDelete: "Pomyślnie usunięto certyfikat"
+  },
+  EmployeeAddCertificate: {
+    Add: "Dodaj",
+    Name: "Nazwa certifikatu",
+    Description: "Opis",
+    Date: "Data",
+    CertificateAddedSuccessfully: "Certyfikat dodany poprawnie",
+    CertificateEditedSuccessfully: "Certyfikat edytowamy poprawnie",
+    AddingCertificate: "Dodawanie certyfikatu",
+    EditingCertificate: "Edytowanie certyfikatu",
+    Edit: "Zapisz"
+  },
+  ImportCVContainer: {
+    Name: "Nazwa",
+    Size: "Rozmiar",
+    LastModifiedDate: "Data ostatniej modyfikacji",
+    Actions: "Akcje",
+    SelectFiles: "Wybierz pliki",
+    DropHere: "Przeciągnij pliki lub wciśnij przycisk poniżej.",
+    OnlyDocx: "Akceptowane są jedynie pliki z rozszerzeniem .docx",
+    Import: "Importuj",
+    Imported: "Zaimportowano",
+    Result: "Rezultat importu"
   },
   Confirmation: {
     YouAreAboutTo: "Właśnie chcesz",
@@ -92,15 +313,10 @@ const translations = {
     NotImplemented: "Funkcjonalność jeszcze nie istnieje",
     ServiceUnavailable: "Serwer niedostępny",
     GatewayTimeout: "Brak odpowiedzi",
-    UnexpectedError: "Nieoczekiwany błąd"
-  },
-  EmployeesRowUnfurl: {
-    ActivateEmployee: "Aktywuj pracownika",
-    Confirm: "Potwierdź",
-    Cancel: "Anuluj",
-    Edit: "Edytuj",
-    Save: "Zapisz",
-    Add: "Dodaj"
+    UnexpectedError: "Nieoczekiwany błąd",
+    ErrorModel: "Model błędu",
+    Error: "Błąd",
+    OK: ""
   },
   AddProjectOwner: {
     AddOwner: "Dodaj właściciela",
@@ -108,18 +324,29 @@ const translations = {
     Add: "Dodaj"
   },
   AddProjectScreen: {
+    AddProject: "Dodaj Projekt",
+    Next: "Dalej",
+    Insert: "Wpisz",
+    Name: "Imię",
+    Surname: "Nazwisko",
+    Phone: "Telefon",
+    SelectPeopleToContact: "Wybierz Ludzi do kontaktu",
+    ProjectHasBeenAdded: "Projekt został dodany. Jesteś przekierowywany...",
+    Back: "Cofnij",
+    ResponsiblePerson: "Odpowiedzialna Osoba",
     ProjectName: "Nazwa projektu",
     CannotContainSpecial: "Nazwa projektu nie może zawierać znaków specjalnych",
     Description: "Opis",
     Client: "Klient",
+    Cloud: "Wybierz chmure",
     ContactPerson: "Osoba do kontaktu",
     StartDate: "Data rozpoczęcia",
     EndDate: "Data zakończenia",
     ProjectAddedSuccessfully: "Projekt dodano pomyślnie",
-    Add: "Dodaj"
-  },
-  EditProjectDetails: {
-    ProjectSuccessfullyEdited: "Projekt edytowano pomyślnie"
+    Add: "Dodaj",
+    CloudPlaceHolder: "wpisz własną lub wybierz chmure z listy",
+    ClientPlaceHolder: "wpisz własnego klienta lub wybierz z listy"
+
   },
   ProjectDetailsBlock: {
     EditProjectData: "Edycja danych projektu",
@@ -131,13 +358,20 @@ const translations = {
     StartDate: "Data rozpoczęcia",
     EndDate: "Data zakończenia",
     Today: "Dzisiaj",
-    Confirm: "Potwierdź"
+    Confirm: "Potwierdź",
+    Next: "Dalej",
+    Send: "Potwierdź",
+    Back: "Wróć"
   },
   ResponsiblePersonBlock: {
     NameNoSpecial: "Imię nie może zawierać znaków specjalnych ani cyfr.",
     SurnameNoSpecial: "Nazwisko nie może zawierać znaków specjalnych ani cyfr.",
-    EmailToBeValid: "Adres email powinien mieć odpowiednią strukturę, np. me@mydomain.com.",
-    NumberValid: "Numer telefonu powinien zawierać od 9 do 11 cyfr."
+    EmailToBeValid:
+      "Adres email powinien mieć odpowiednią strukturę, np. me@mydomain.com.",
+    NumberValid: "Numer telefonu powinien zawierać od 9 do 11 cyfr.",
+    Back: "Wróć",
+    ResponsiblePerson: "Osoba odpowiedzialna",
+    ProjectHasBeenEdited: "Projekt został pomyślnie edytowany"
   },
   ProjectRowUnfurl: {
     OwnersList: "Lista właścicieli",
@@ -156,11 +390,15 @@ const translations = {
   },
   EditUserDetails: {
     Confirm: "Potwierdź",
-    RolesSuccessfullyEdited: "Role edytowano pomyślnie"
+    RolesSuccessfullyEdited: "Role edytowano pomyślnie",
+    UserSuccesfullyAdded: "Pomyślnie dodano użytkownika"
   },
   StageOne: {
     SearchAD: "Wyszukaj użytkownika w AD",
-    Next: "Dalej"
+    UserNotFoundInAD: "Nie znaleziono użytkownika w AD",
+    Next: "Dalej",
+    HasAccount: "Ten użytkownik posiada już konto w serwisie",
+    SelectUser: "Wybierz użytkownika"
   },
   StageTwo: {
     AddRoles: "Dodaj role!",
@@ -169,12 +407,13 @@ const translations = {
     Add: "Dodaj"
   },
   UserDetailsBlock: {
-    EditUsersData: "Edycja danych użytkownika",
+    UserData: "Szczegóły użytkownika",
     Name: "Imię",
     Surname: "Nazwisko",
     Email: "Email",
     Phone: "Telefon",
-    Roles: "Role"
+    Roles: "Role",
+    EditRoles: "Edycja ról"
   },
   UserRoleAssigner: {
     Developer: "Developer",
@@ -205,7 +444,8 @@ const translations = {
     Add: "Dodaj",
     Save: "Zapisz",
     Edit: "Edytuj",
-    DeleteOwnerFuture: "Usunąć {{ownerFullName}} jako właściciela projektu o nazwie {{projectName}}",
+    DeleteOwnerFuture:
+      "Usunąć {{ownerFullName}} jako właściciela projektu o nazwie {{projectName}}",
     OwnerHasBeenDeleted: "Właściciel został usunięty",
     ResponsiblePerson: "Osoba odpowiedzialna",
     Yes: "Tak",
@@ -218,7 +458,7 @@ const translations = {
     ProjectClosed: "Projekt został zamknięty",
     DeleteProjectInfinitive: "Usunąć projekt",
     ProjectDeleted: "Projekt został usunięty",
-	ReactivateProjectInfinitive: "Reaktywować projekt",
+    ReactivateProjectInfinitive: "Reaktywować projekt",
     ProjectReactivated: "Projekt został reaktywowany"
   },
   TeamMember: {
@@ -230,38 +470,24 @@ const translations = {
     Begun: "Rozpoczął",
     Ends: "Zakończy"
   },
-  EmployeeDetailContainer: {
-    ErrorOccuredSHNBS: "Wystąpił błąd, umiejętności nie zostały przesłane",
-    NoSkills: "Brak umiejętności",
-    Active: "Aktywny",
-    Inactive: "Nieaktywny",
-    Title: "Stanowisko",
-    Seniority: "Stopień",
-    Localization: "Lokalizacja",
-    Email: "Email",
-    Phone: "Telefon",
-    Capacity: "Capacity",
-    Cancel: "Anuluj",
-    Add: "Dodaj",
-    Save: "Zapisz",
-    Activate: "Aktywuj",
-    Edit: "Edytuj"
-  },
-  AssignsContainer: {
-    LastName: "Imię/Nazwisko",
-    Position: "Stanowisko",
-    Skills: "Umiejętności(po przecinku)",
-    MinLevelAbove: "Minimalny poziom powyż.",
-    MinExperience: "Min. lat doświadczenia",
-    Name: "Nazwa",
-    Projects: "Projekty",
-    Employees: "Pracownicy"
-  },
   SkillsContainer: {
     Deletion: "Usuwanie",
-    Info1: "Ten proces jest permanentny. Usuwa wpis z bazy danych i wszystkich powiązanych miejsc.",
+    Info1:
+      "Ten proces jest permanentny. Usuwa wpis z bazy danych i wszystkich powiązanych miejsc.",
     Info2: "Cofnięcie tej akcji jest niemożliwe.",
     SuccessfullyDeleted: "Pomyślnie usunięto umiejętność"
+  },
+  FileInput: {
+    ChooseFile: "Wybierz plik",
+    WrongFileType: "Zły format pliku",
+    FileIsTooBig: "Za duży plik",
+    WrongAspectRatio: "Obrazek ma złe proporcje"
+  },
+  SideProgressBar: {
+    Notifications: "Powiadomienia",
+    SuccessFullyGeneratedReport: "Pomyślnie wygenerowano raport",
+    Read: "Odczytane",
+    Unread: "Nieodczytane"
   }
 };
 

@@ -1,0 +1,26 @@
+.emp-table{
+    border-top: 2px solid black;
+    margin: 150px 0;
+    padding: 10px 0;
+    @media(min-width: 800px){
+        padding: 10px 40px;
+    }
+    h2{
+        font-size: 24px;
+        color: #707070;
+        position: relative;
+        padding: 20px 0;
+        align-self: flex-start;
+        .small-spiner{
+            position: absolute;
+            left: 180px;
+            top: 0;
+        }
+    }
+    .asign-error{
+        color: tomato;
+        padding-top: 30px;
+        text-align: center;
+        font-size: 20px;
+    }
+}
